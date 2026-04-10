@@ -1,0 +1,79 @@
+import { cn } from '../utils/cn'
+import { NetworkBadge, type NetworkType } from './network-badge'
+import { AssetIcon } from './asset-icon'
+
+export interface AssetCardProps {
+  /** Asset ticker symbol (e.g. "BTC", "USDT") */
+  ticker: string
+  /** Display name (e.g. "Bitcoin") */
+  name: string
+  /** Formatted display balance string */
+  displayBalance: string
+  /** Networks this asset is available on */
+  networks?: NetworkType[]
+  /** Logo URI override */
+  logoUri?: string
+  /** Whether balance should be masked */
+  balanceVisible?: boolean
+  onClick?: () => void
+  className?: string
+}
+
+export function AssetCard({
+  ticker,
+  name,
+  displayBalance,
+  networks = [],
+  logoUri,
+  balanceVisible = true,
+  onClick,
+  className,
+}: AssetCardProps) {
+  const shown = balanceVisible ? displayBalance : '••••••'
+
+  return (
+    <div
+      className={cn(
+        'p-4 rounded-card bg-background-dark/40 backdrop-blur-xl border border-white/5 transition-all shadow-sm relative overflow-hidden group',
+        onClick && 'cursor-pointer hover:border-primary/40 hover:shadow-glow-subtle active:scale-[0.98]',
+        className
+      )}
+      onClick={onClick}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+      <div className="flex items-center justify-between relative z-10">
+        <div className="flex items-center gap-3">
+          <AssetIcon
+            ticker={ticker}
+            logoUri={logoUri}
+            size={44}
+            className="group-hover:scale-105 transition-transform"
+          />
+          <div className="flex flex-col">
+            <span
+              className={cn(
+                'font-bold text-base leading-tight tracking-wide text-white',
+                onClick && 'group-hover:text-primary transition-colors'
+              )}
+            >
+              {name}
+            </span>
+            <div className="flex flex-wrap gap-1 mt-1">
+              {networks.map((network) => (
+                <NetworkBadge key={network} network={network} />
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="text-right">
+          <p className="font-bold text-base tracking-tight text-white group-hover:text-white/90 transition-colors">
+            {shown}
+          </p>
+          <p className="text-tiny text-slate-400 font-medium tracking-wide uppercase mt-0.5">
+            {ticker}
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}

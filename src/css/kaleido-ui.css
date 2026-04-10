@@ -1,0 +1,197 @@
+/*
+ * KaleidoSwap UI — CSS Custom Properties, Glass Effects & Animations
+ *
+ * Import in your entry point:
+ *   import '@kaleidorg/kaleido-ui/css'
+ *
+ * NOTE: This file does NOT include Tailwind directives (@tailwind base/components/utilities).
+ * Your consumer app must have its own Tailwind setup with the kaleido-ui preset.
+ * Font imports (@fontsource/geist-sans, @fontsource/geist-mono, material-symbols)
+ * must also be done in the consumer app.
+ */
+
+/* ------------------------------------------------------------------ */
+/*  Material Symbols                                                   */
+/* ------------------------------------------------------------------ */
+
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+/* ------------------------------------------------------------------ */
+/*  CSS Custom Properties (Light Theme — :root)                        */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --background: 150 7% 97%;
+  --foreground: 144 53% 8%;
+  --card: 0 0% 100%;
+  --card-foreground: 144 53% 8%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 144 53% 8%;
+  --primary: 151 88% 52%;
+  --primary-foreground: 144 53% 8%;
+  --secondary: 150 10% 90%;
+  --secondary-foreground: 144 53% 8%;
+  --muted: 150 10% 90%;
+  --muted-foreground: 150 10% 40%;
+  --accent: 150 10% 90%;
+  --accent-foreground: 144 53% 8%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 150 10% 85%;
+  --input: 150 10% 85%;
+  --ring: 151 88% 52%;
+  --radius: 0.75rem;
+
+  --surface: 0 0% 100%;
+  --surface-foreground: 144 53% 8%;
+  --text-secondary: 151 30% 68%;
+  --warning: 45 93% 47%;
+  --warning-foreground: 0 0% 0%;
+  --success: 151 88% 52%;
+  --success-foreground: 144 53% 8%;
+}
+
+/* ------------------------------------------------------------------ */
+/*  CSS Custom Properties (Dark Theme)                                 */
+/* ------------------------------------------------------------------ */
+
+.dark {
+  --background: 144 53% 8%;
+  --foreground: 0 0% 100%;
+  --card: 146 36% 13%;
+  --card-foreground: 0 0% 100%;
+  --popover: 146 36% 13%;
+  --popover-foreground: 0 0% 100%;
+  --primary: 151 88% 52%;
+  --primary-foreground: 144 53% 8%;
+  --secondary: 146 30% 18%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 146 30% 18%;
+  --muted-foreground: 150 15% 60%;
+  --accent: 146 30% 20%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62% 50%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 146 25% 20%;
+  --input: 146 30% 15%;
+  --ring: 151 88% 52%;
+
+  --surface: 146 36% 13%;
+  --surface-foreground: 0 0% 100%;
+  --text-secondary: 151 30% 68%;
+  --warning: 45 93% 47%;
+  --warning-foreground: 0 0% 0%;
+  --success: 151 88% 52%;
+  --success-foreground: 144 53% 8%;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Glass Effects                                                      */
+/* ------------------------------------------------------------------ */
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-heavy {
+  background: rgba(14, 30, 20, 0.78);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(43, 238, 121, 0.12);
+}
+
+.glass-card {
+  background: rgba(26, 46, 33, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  transition: all 0.2s ease-out;
+}
+
+.glass-card:active {
+  transform: scale(0.98);
+  background: rgba(26, 46, 33, 0.8);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Glow Utilities                                                     */
+/* ------------------------------------------------------------------ */
+
+.shadow-glow-subtle {
+  box-shadow: 0 0 10px rgba(43, 238, 121, 0.1);
+}
+
+.shadow-glow {
+  box-shadow: 0 0 20px rgba(43, 238, 121, 0.2);
+}
+
+.shadow-glow-strong {
+  box-shadow: 0 0 30px rgba(43, 238, 121, 0.3);
+}
+
+.shadow-glow-accent {
+  box-shadow: 0 4px 30px rgba(43, 238, 121, 0.25);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Utility Classes                                                    */
+/* ------------------------------------------------------------------ */
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.pb-safe {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* ------------------------------------------------------------------ */
+/*  Animations                                                         */
+/* ------------------------------------------------------------------ */
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(43, 238, 121, 0.2); }
+  50% { box-shadow: 0 0 30px rgba(43, 238, 121, 0.4); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-from-bottom {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-fade-in { animation: fade-in 0.3s ease-out; }
+.animate-slide-up { animation: slide-up 0.3s ease-out; }
+.animate-slide-in-from-bottom { animation: slide-in-from-bottom 0.4s ease-out; }
