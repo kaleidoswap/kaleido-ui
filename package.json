@@ -31,7 +31,10 @@
     "./css": "./dist/css/kaleido-ui.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "native",
+    "tokens",
+    "tailwind"
   ],
   "scripts": {
     "build": "tsup && cp src/css/kaleido-ui.css dist/css/kaleido-ui.css",
@@ -93,13 +96,11 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tabs": "^1.1.13",
     "@radix-ui/react-toast": "^1.2.15",
-    "@types/react": "^18.3.0",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "@types/react-native": "^0.72.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
     "tailwind-merge": "^2.6.1",
     "tsup": "^8.0.0",
     "typescript": "^5.9.0"

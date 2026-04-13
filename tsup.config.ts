@@ -27,6 +27,8 @@ export default defineConfig([
     external: [
       'react',
       'react-dom',
+      'react/jsx-runtime',
+      'react/jsx-dev-runtime',
       '@radix-ui/react-dialog',
       '@radix-ui/react-label',
       '@radix-ui/react-slot',
@@ -47,6 +49,8 @@ export default defineConfig([
     outDir: 'dist',
     external: [
       'react',
+      'react/jsx-runtime',
+      'react/jsx-dev-runtime',
       'react-native',
       '@tetherto/wdk-uikit-react-native',
     ],
