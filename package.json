@@ -39,6 +39,8 @@
   "scripts": {
     "build": "tsup && cp src/css/kaleido-ui.css dist/css/kaleido-ui.css",
     "dev": "tsup --watch",
+    "showcase": "vite --config showcase/vite.config.ts",
+    "showcase:build": "vite build --config showcase/vite.config.ts",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
@@ -99,11 +101,18 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/react-native": "^0.72.8",
+    "@vitejs/plugin-react": "^4.3.0",
+    "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "postcss": "^8.4.49",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "tailwind-merge": "^2.6.1",
+    "tailwindcss": "^3.4.17",
     "tsup": "^8.0.0",
-    "typescript": "^5.9.0"
+    "typescript": "^5.9.0",
+    "vite": "^5.4.11"
   },
   "repository": {
     "type": "git",
