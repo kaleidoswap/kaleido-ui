@@ -59,9 +59,15 @@ jobs:
             echo "already_published=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Publish to npm
-        if: steps.npm_check.outputs.already_published == 'false'
+      - name: Publish to npm with provenance
+        if: steps.npm_check.outputs.already_published == 'false' && github.event.repository.private == false
         run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to npm without provenance
+        if: steps.npm_check.outputs.already_published == 'false' && github.event.repository.private == true
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
