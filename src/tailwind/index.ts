@@ -2,10 +2,10 @@
  * KaleidoSwap Tailwind CSS Preset
  *
  * Add to your tailwind.config.js:
- *   presets: [require('@kaleidorg/kaleido-ui/tailwind')]
+ *   presets: [require('kaleido-ui/tailwind')]
  *
  * And include the library in your content paths:
- *   content: ['./node_modules/@kaleidorg/kaleido-ui/dist/web/*.js']
+ *   content: ['./node_modules/kaleido-ui/dist/web/*.js']
  */
 import { colors } from '../tokens/colors'
 import { typeScale, fontFamily } from '../tokens/typography'

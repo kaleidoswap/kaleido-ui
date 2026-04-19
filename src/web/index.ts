@@ -4,7 +4,7 @@
  * Tailwind CSS + Radix UI based components for web applications.
  *
  * Usage:
- *   import { Button, Card, StatusBadge } from '@kaleidorg/kaleido-ui'
+ *   import { Button, Card, StatusBadge } from 'kaleido-ui'
  */
 
 // Utilities

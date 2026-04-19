@@ -2,7 +2,7 @@
  * KaleidoSwap UI — CSS Custom Properties, Glass Effects & Animations
  *
  * Import in your entry point:
- *   import '@kaleidorg/kaleido-ui/css'
+ *   import 'kaleido-ui/css'
  *
  * NOTE: This file does NOT include Tailwind directives (@tailwind base/components/utilities).
  * Your consumer app must have its own Tailwind setup with the kaleido-ui preset.
