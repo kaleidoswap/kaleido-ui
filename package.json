@@ -107,7 +107,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kaleidoswap/kaleido-ui.git"
+    "url": "git+https://github.com/kaleidoswap/kaleido-ui.git"
   },
   "keywords": [
     "kaleidoswap",
@@ -117,5 +117,8 @@
     "react-native",
     "tailwind",
     "radix"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }
