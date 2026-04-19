@@ -1,22 +1,22 @@
-# @kaleidorg/kaleido-ui
+# kaleido-ui
 
 Shared UI library for KaleidoSwap — design tokens, web components (Tailwind + Radix), and React Native components extending [WDK UI Kit](https://docs.wdk.tether.io/ui-kits/react-native-ui-kit).
 
 ## Installation
 
 ```bash
-npm install @kaleidorg/kaleido-ui
+npm install kaleido-ui
 ```
 
 ## Entry Points
 
 | Import | Description |
 |--------|-------------|
-| `@kaleidorg/kaleido-ui` | Web components (Tailwind CSS + Radix UI) |
-| `@kaleidorg/kaleido-ui/tokens` | Platform-agnostic design tokens (zero deps) |
-| `@kaleidorg/kaleido-ui/native` | React Native components (WDK + custom) |
-| `@kaleidorg/kaleido-ui/tailwind` | Tailwind CSS preset |
-| `@kaleidorg/kaleido-ui/css` | CSS custom properties, glass effects, animations |
+| `kaleido-ui` | Web components (Tailwind CSS + Radix UI) |
+| `kaleido-ui/tokens` | Platform-agnostic design tokens (zero deps) |
+| `kaleido-ui/native` | React Native components (WDK + custom) |
+| `kaleido-ui/tailwind` | Tailwind CSS preset |
+| `kaleido-ui/css` | CSS custom properties, glass effects, animations |
 
 ## Quick Start — Web
 
@@ -27,9 +27,9 @@ npm install @kaleidorg/kaleido-ui
 module.exports = {
   content: [
     './src/**/*.{ts,tsx}',
-    './node_modules/@kaleidorg/kaleido-ui/dist/web/*.js',
+    './node_modules/kaleido-ui/dist/web/*.js',
   ],
-  presets: [require('@kaleidorg/kaleido-ui/tailwind')],
+  presets: [require('kaleido-ui/tailwind')],
 }
 ```
 
@@ -37,13 +37,13 @@ module.exports = {
 
 ```ts
 // main.tsx
-import '@kaleidorg/kaleido-ui/css'
+import 'kaleido-ui/css'
 ```
 
 ### 3. Use Components
 
 ```tsx
-import { Button, Card, CardContent, StatusBadge, AssetCard } from '@kaleidorg/kaleido-ui'
+import { Button, Card, CardContent, StatusBadge, AssetCard } from 'kaleido-ui'
 
 function App() {
   return (
@@ -74,7 +74,7 @@ npm install @tetherto/wdk-uikit-react-native react-native
 ### 2. Wrap with theme provider
 
 ```tsx
-import { KaleidoThemeProvider } from '@kaleidorg/kaleido-ui/native'
+import { KaleidoThemeProvider } from 'kaleido-ui/native'
 
 export default function App() {
   return (
@@ -94,7 +94,7 @@ import {
   AssetSelector,
   StatusBadge,
   NetworkBadge,
-} from '@kaleidorg/kaleido-ui/native'
+} from 'kaleido-ui/native'
 ```
 
 ## Quick Start — Tokens Only
@@ -102,7 +102,7 @@ import {
 Works in any JS runtime (Node.js, React Native, web) with zero dependencies.
 
 ```ts
-import { colors, typeScale, radius, shadow } from '@kaleidorg/kaleido-ui/tokens'
+import { colors, typeScale, radius, shadow } from 'kaleido-ui/tokens'
 
 console.log(colors.primary)        // '#2BEE79'
 console.log(colors.network.bitcoin) // '#F7931A'
@@ -182,6 +182,34 @@ npm install --legacy-peer-deps
 npm run build    # Build all entry points
 npm run dev      # Watch mode
 ```
+
+## CI Publish to npm (GitHub Actions)
+
+This repository includes a publish workflow at `.github/workflows/publish-npm.yml`.
+
+### One-time setup
+
+1. Create an npm automation token (npmjs.com -> Access Tokens).
+2. In GitHub, add repository secret `NPM_TOKEN`.
+3. Ensure the package is configured for public publish on npm.
+
+### Release flow
+
+1. Bump version locally:
+
+```bash
+npm version patch
+```
+
+2. Push commit and tag:
+
+```bash
+git push --follow-tags
+```
+
+3. GitHub Actions runs on `v*` tags, validates tag/version match, builds, type-checks, and publishes to npm.
+
+If a version already exists on npm, the workflow exits cleanly without re-publishing.
 
 ## License
 

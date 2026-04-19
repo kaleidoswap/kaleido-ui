@@ -4,7 +4,7 @@
  * Wraps WDK's ThemeProvider with KaleidoSwap's brand config.
  *
  * Usage:
- *   import { KaleidoThemeProvider } from '@kaleidorg/kaleido-ui/native'
+ *   import { KaleidoThemeProvider } from 'kaleido-ui/native'
  *
  *   <KaleidoThemeProvider>
  *     <App />

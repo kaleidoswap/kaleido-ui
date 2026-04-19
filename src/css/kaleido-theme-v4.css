@@ -2,7 +2,7 @@
  * KaleidoSwap UI — Tailwind CSS v4 Theme
  *
  * For Tailwind v4 consumers, import this file in your entry CSS:
- *   @import '@kaleidorg/kaleido-ui/css/v4';
+ *   @import 'kaleido-ui/css/v4';
  *
  * Then override :root / .dark CSS variables in your own CSS to customize
  * the palette for your app.

@@ -5,7 +5,7 @@
  * plus custom native components.
  *
  * Usage:
- *   import { KaleidoThemeProvider, StatusBadge } from '@kaleidorg/kaleido-ui/native'
+ *   import { KaleidoThemeProvider, StatusBadge } from 'kaleido-ui/native'
  */
 
 // Theme & Provider
