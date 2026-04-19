@@ -1,0 +1,319 @@
+/*
+ * KaleidoSwap UI — Tailwind CSS v4 Theme
+ *
+ * For Tailwind v4 consumers, import this file in your entry CSS:
+ *   @import '@kaleidorg/kaleido-ui/css/v4';
+ *
+ * Then override :root / .dark CSS variables in your own CSS to customize
+ * the palette for your app.
+ *
+ * NOTE: This file does NOT include Tailwind directives (@import "tailwindcss").
+ * Font imports (material-symbols, etc.) must also be done in the consumer app.
+ */
+
+/* ------------------------------------------------------------------ */
+/*  Material Symbols                                                   */
+/* ------------------------------------------------------------------ */
+
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+/* ------------------------------------------------------------------ */
+/*  CSS Custom Properties (Light Theme — :root)                        */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --background: #F6F8F7;
+  --foreground: #102217;
+  --card: #FFFFFF;
+  --card-foreground: #102217;
+  --popover: #FFFFFF;
+  --popover-foreground: #102217;
+  --primary: #2BEE79;
+  --primary-foreground: #102217;
+  --secondary: #E3E8E6;
+  --secondary-foreground: #102217;
+  --muted: #E3E8E6;
+  --muted-foreground: #5C7066;
+  --accent: #E3E8E6;
+  --accent-foreground: #102217;
+  --destructive: #EF4343;
+  --destructive-foreground: #FFFFFF;
+  --border: #D5DDD9;
+  --input: #D5DDD9;
+  --ring: #2BEE79;
+
+  --surface: #FFFFFF;
+  --surface-foreground: #102217;
+  --text-secondary: #92C9A8;
+  --warning: #F59E0B;
+  --warning-foreground: #000000;
+  --success: #2BEE79;
+  --success-foreground: #102217;
+}
+
+/* ------------------------------------------------------------------ */
+/*  CSS Custom Properties (Dark Theme)                                 */
+/* ------------------------------------------------------------------ */
+
+.dark {
+  --background: #102217;
+  --foreground: #FFFFFF;
+  --card: #162E21;
+  --card-foreground: #FFFFFF;
+  --popover: #162E21;
+  --popover-foreground: #FFFFFF;
+  --primary: #2BEE79;
+  --primary-foreground: #102217;
+  --secondary: #203C2C;
+  --secondary-foreground: #FAFAFA;
+  --muted: #203C2C;
+  --muted-foreground: #8AA899;
+  --accent: #243E30;
+  --accent-foreground: #FAFAFA;
+  --destructive: #CF3030;
+  --destructive-foreground: #FFFFFF;
+  --border: #264031;
+  --input: #1B3225;
+  --ring: #2BEE79;
+
+  --surface: #162E21;
+  --surface-foreground: #FFFFFF;
+  --text-secondary: #92C9A8;
+  --warning: #F59E0B;
+  --warning-foreground: #000000;
+  --success: #2BEE79;
+  --success-foreground: #102217;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Tailwind v4 Theme — maps CSS vars to utility classes                */
+/* ------------------------------------------------------------------ */
+
+@theme inline {
+  /* ── Semantic colors ─────────────────────────────────────────────── */
+  --color-background:             var(--background);
+  --color-foreground:             var(--foreground);
+  --color-card:                   var(--card);
+  --color-card-foreground:        var(--card-foreground);
+  --color-popover:                var(--popover);
+  --color-popover-foreground:     var(--popover-foreground);
+  --color-primary:                var(--primary);
+  --color-primary-foreground:     var(--primary-foreground);
+  --color-primary-dark:           #1FA855;
+  --color-secondary:              var(--secondary);
+  --color-secondary-foreground:   var(--secondary-foreground);
+  --color-muted:                  var(--muted);
+  --color-muted-foreground:       var(--muted-foreground);
+  --color-accent:                 var(--accent);
+  --color-accent-foreground:      var(--accent-foreground);
+  --color-destructive:            var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border:                 var(--border);
+  --color-input:                  var(--input);
+  --color-ring:                   var(--ring);
+
+  /* ── Extended semantic ───────────────────────────────────────────── */
+  --color-surface:                var(--surface);
+  --color-surface-foreground:     var(--surface-foreground);
+  --color-warning:                var(--warning);
+  --color-warning-foreground:     var(--warning-foreground);
+  --color-success:                var(--success);
+  --color-success-foreground:     var(--success-foreground);
+
+  /* ── Surface shades ──────────────────────────────────────────────── */
+  --color-background-light:       #F6F8F7;
+  --color-background-dark:        #102217;
+  --color-surface-dark:           #162E21;
+  --color-surface-light:          #FFFFFF;
+  --color-surface-highlight:      #243E30;
+  --color-surface-border:         #244A35;
+  --color-surface-darker:         #0B1810;
+
+  /* ── Network / layer colors ──────────────────────────────────────── */
+  --color-network-bitcoin:        #F7931A;
+  --color-network-rgb:            #DD352E;
+  --color-network-arkade:         #7C3AED;
+  --color-network-spark:          #FF6D00;
+  --color-network-lightning:      #F6C343;
+
+  /* ── Transaction direction ───────────────────────────────────────── */
+  --color-tx-sent:                #F94040;
+  --color-tx-receive:             #2BEE79;
+  --color-tx-swap:                #4290FF;
+
+  /* ── Typography ──────────────────────────────────────────────────── */
+  --font-display: "Geist Sans", system-ui, -apple-system, sans-serif;
+  --font-mono:    "Geist Mono", monospace;
+
+  /* Custom type scale */
+  --text-xxs:      10px;   --text-xxs--line-height:      14px;
+  --text-tiny:     11px;   --text-tiny--line-height:     16px;
+  --text-caption:  13px;   --text-caption--line-height:  18px;
+  --text-body:     15px;   --text-body--line-height:     22px;
+  --text-subhead:  17px;   --text-subhead--line-height:  24px;
+  --text-title:    20px;   --text-title--line-height:    28px;
+  --text-headline: 28px;   --text-headline--line-height: 34px;
+  --text-display:  36px;   --text-display--line-height:  40px;
+
+  /* ── Border radii ────────────────────────────────────────────────── */
+  --radius-sm:    8px;
+  --radius-md:    12px;
+  --radius-lg:    16px;
+  --radius-xl:    20px;
+  --radius-2xl:   24px;
+  --radius-3xl:   28px;
+  --radius-full:  9999px;
+  /* Named radii */
+  --radius-card:  20px;
+  --radius-panel: 22px;
+  --radius-pill:  24px;
+  --radius-nav:   14px;
+
+  /* ── Box shadows (glow effects) ──────────────────────────────────── */
+  --shadow-glow:        0 0 20px rgba(43, 238, 121, 0.15);
+  --shadow-glow-strong: 0 0 30px rgba(43, 238, 121, 0.3);
+  --shadow-glow-subtle: 0 0 15px rgba(43, 238, 121, 0.15);
+  --shadow-glow-accent: 0 4px 30px rgba(43, 238, 121, 0.25);
+
+  /* ── Animations ──────────────────────────────────────────────────── */
+  --animate-accordion-down:       accordion-down 0.2s ease-out;
+  --animate-accordion-up:         accordion-up 0.2s ease-out;
+  --animate-pulse-glow:           pulse-glow 2s ease-in-out infinite;
+  --animate-fade-in:              fade-in 0.3s ease-out;
+  --animate-slide-up:             slide-up 0.3s ease-out;
+  --animate-slide-in-from-bottom: slide-in-from-bottom 0.4s ease-out;
+  --animate-stagger-up:           stagger-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  --animate-shimmer:              shimmer 2s linear infinite;
+  --animate-bounce-slight:        bounce-slight 2s infinite;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Glass Effects                                                      */
+/* ------------------------------------------------------------------ */
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-heavy {
+  background: rgba(14, 30, 20, 0.78);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(43, 238, 121, 0.12);
+}
+
+.glass-card {
+  background: rgba(26, 46, 33, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  transition: all 0.2s ease-out;
+}
+
+.glass-card:active {
+  transform: scale(0.98);
+  background: rgba(26, 46, 33, 0.8);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Glow Utilities                                                     */
+/* ------------------------------------------------------------------ */
+
+.shadow-glow-subtle {
+  box-shadow: 0 0 10px rgba(43, 238, 121, 0.1);
+}
+
+.shadow-glow {
+  box-shadow: 0 0 20px rgba(43, 238, 121, 0.2);
+}
+
+.shadow-glow-strong {
+  box-shadow: 0 0 30px rgba(43, 238, 121, 0.3);
+}
+
+.shadow-glow-accent {
+  box-shadow: 0 4px 30px rgba(43, 238, 121, 0.25);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Utility Classes                                                    */
+/* ------------------------------------------------------------------ */
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.pb-safe {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* ------------------------------------------------------------------ */
+/*  Keyframes                                                          */
+/* ------------------------------------------------------------------ */
+
+@keyframes accordion-down {
+  from { height: 0; }
+  to   { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to   { height: 0; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(43, 238, 121, 0.2); }
+  50%      { box-shadow: 0 0 30px rgba(43, 238, 121, 0.4); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-from-bottom {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes stagger-up {
+  0%   { opacity: 0; transform: translateY(15px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce-slight {
+  0%, 100% { transform: translateY(-5%); }
+  50%      { transform: translateY(0); }
+}

@@ -64,3 +64,35 @@ export { ErrorBoundary } from './components/error-boundary'
 // Hooks
 export { useToast, toast } from './hooks/use-toast'
 export { useAssetIcon, getAssetIconUrl, getFallbackAssetIconUrl } from './hooks/use-asset-icon'
+
+// WDK (Widget Development Kit) — Crypto-specific components
+export {
+  AmountInput,
+  type AmountInputProps,
+  type AmountInputMode,
+  Balance,
+  type BalanceProps,
+  type BalanceSize,
+  QRCode,
+  type QRCodeProps,
+  SeedPhrase,
+  type SeedPhraseProps,
+  type SeedPhraseMode,
+  CryptoAddressInput,
+  type CryptoAddressInputProps,
+  NetworkSelector,
+  NETWORK_PRESETS,
+  type NetworkSelectorProps,
+  type NetworkOption,
+  AssetSelector,
+  type AssetSelectorProps,
+  type WdkToken,
+  TransactionItem,
+  type TransactionItemProps,
+  type TxDirection,
+  type TxStatus,
+  type TxNetwork,
+  TransactionList,
+  type TransactionListProps,
+  type TransactionSection,
+} from './wdk'
