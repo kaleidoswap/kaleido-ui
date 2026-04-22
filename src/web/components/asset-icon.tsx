@@ -91,7 +91,7 @@ export function AssetIcon({ ticker, logoUri, cdnBaseUrl, size = 40, className }:
   return (
     <div
       className={cn(
-        'rounded-full flex items-center justify-center font-bold text-white shadow-inner border border-white/10',
+        'rounded-full flex items-center justify-center font-bold text-foreground shadow-inner border border-border',
         bgColor,
         className
       )}

@@ -8,16 +8,16 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-glow-subtle hover:shadow-glow',
+        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        outline: 'border border-border bg-transparent hover:bg-accent hover:text-accent-foreground hover:border-primary/30',
+        outline: 'border border-border bg-transparent hover:bg-accent hover:text-accent-foreground',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-white/5 hover:text-foreground',
+        ghost: 'hover:bg-accent hover:text-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
-        glow: 'bg-primary text-primary-foreground shadow-glow hover:shadow-glow-strong animate-pulse-glow',
-        surface: 'bg-card text-card-foreground border border-border hover:bg-accent hover:border-primary/30',
-        cta: 'w-full bg-primary hover:bg-primary-dark text-primary-foreground font-bold rounded-2xl shadow-glow-accent disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none',
-        'cta-gradient': 'w-full bg-gradient-to-r from-primary to-primary-dark text-primary-foreground font-extrabold rounded-2xl shadow-[0_8px_30px_rgba(43,238,121,0.35)] hover:opacity-90 hover:-translate-y-0.5 active:translate-y-0 active:opacity-100 disabled:opacity-40 disabled:shadow-none disabled:cursor-not-allowed disabled:bg-surface-highlight disabled:text-white/50',
+        glow: 'bg-primary text-primary-foreground shadow-md',
+        surface: 'bg-card text-card-foreground border border-border hover:bg-accent',
+        cta: 'w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-2xl shadow-md disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none',
+        'cta-gradient': 'w-full bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-extrabold rounded-2xl shadow-lg hover:opacity-90 hover:-translate-y-0.5 active:translate-y-0 active:opacity-100 disabled:opacity-40 disabled:shadow-none disabled:cursor-not-allowed disabled:bg-accent disabled:text-muted-foreground',
         'danger-subtle': 'w-full bg-red-500/10 border border-red-500/20 text-red-400 font-bold rounded-xl hover:bg-red-500/20',
       },
       size: {

@@ -1,19 +1,3 @@
-/*
- * KaleidoSwap UI — CSS Custom Properties, Glass Effects & Animations
- *
- * Import in your entry point:
- *   import 'kaleido-ui/css'
- *
- * NOTE: This file does NOT include Tailwind directives (@tailwind base/components/utilities).
- * Your consumer app must have its own Tailwind setup with the kaleido-ui preset.
- * Font imports (@fontsource/geist-sans, @fontsource/geist-mono, material-symbols)
- * must also be done in the consumer app.
- */
-
-/* ------------------------------------------------------------------ */
-/*  Material Symbols                                                   */
-/* ------------------------------------------------------------------ */
-
 .material-symbols-outlined {
   font-variation-settings:
     'FILL' 0,
@@ -30,168 +14,87 @@
     'opsz' 24;
 }
 
-/* ------------------------------------------------------------------ */
-/*  CSS Custom Properties (Light Theme — :root)                        */
-/* ------------------------------------------------------------------ */
-
 :root {
-  --background: 150 7% 97%;
-  --foreground: 144 53% 8%;
-  --card: 0 0% 100%;
-  --card-foreground: 144 53% 8%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 144 53% 8%;
-  --primary: 151 88% 52%;
-  --primary-foreground: 144 53% 8%;
-  --secondary: 150 10% 90%;
-  --secondary-foreground: 144 53% 8%;
-  --muted: 150 10% 90%;
-  --muted-foreground: 150 10% 40%;
-  --accent: 150 10% 90%;
-  --accent-foreground: 144 53% 8%;
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 100%;
-  --border: 150 10% 85%;
-  --input: 150 10% 85%;
-  --ring: 151 88% 52%;
-  --radius: 0.75rem;
-
-  --surface: 0 0% 100%;
-  --surface-foreground: 144 53% 8%;
-  --text-secondary: 151 30% 68%;
-  --warning: 45 93% 47%;
-  --warning-foreground: 0 0% 0%;
-  --success: 151 88% 52%;
-  --success-foreground: 144 53% 8%;
+  --accent: #f5f5f5;
+  --accent-foreground: #171717;
+  --background: #ffffff;
+  --border: #e5e5e5;
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
+  --chart-1: #f54900;
+  --chart-2: #009689;
+  --chart-3: #104e64;
+  --chart-4: #ffb900;
+  --chart-5: #fe9a00;
+  --destructive: #e7000b;
+  --destructive-foreground: #fafafa;
+  --foreground: #0a0a0a;
+  --input: #e5e5e5;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --popover: #ffffff;
+  --popover-foreground: #0a0a0a;
+  --primary: #171717;
+  --primary-foreground: #fafafa;
+  --ring: #a1a1a1;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #171717;
+  --semantic-background: #696867;
+  --semantic-border: #898887;
+  --sidebar: #fafafa;
+  --sidebar-accent: #f5f5f5;
+  --sidebar-accent-foreground: #171717;
+  --sidebar-border: #e5e5e5;
+  --sidebar-foreground: #0a0a0a;
+  --sidebar-primary: #171717;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-ring: #a1a1a1;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+  --radius-4xl: 32px;
+  --radius-full: 9999px;
+  --radius-none: 0px;
+  --radius: var(--radius-lg);
 }
-
-/* ------------------------------------------------------------------ */
-/*  CSS Custom Properties (Dark Theme)                                 */
-/* ------------------------------------------------------------------ */
 
 .dark {
-  --background: 144 53% 8%;
-  --foreground: 0 0% 100%;
-  --card: 146 36% 13%;
-  --card-foreground: 0 0% 100%;
-  --popover: 146 36% 13%;
-  --popover-foreground: 0 0% 100%;
-  --primary: 151 88% 52%;
-  --primary-foreground: 144 53% 8%;
-  --secondary: 146 30% 18%;
-  --secondary-foreground: 0 0% 98%;
-  --muted: 146 30% 18%;
-  --muted-foreground: 150 15% 60%;
-  --accent: 146 30% 20%;
-  --accent-foreground: 0 0% 98%;
-  --destructive: 0 62% 50%;
-  --destructive-foreground: 0 0% 100%;
-  --border: 146 25% 20%;
-  --input: 146 30% 15%;
-  --ring: 151 88% 52%;
-
-  --surface: 146 36% 13%;
-  --surface-foreground: 0 0% 100%;
-  --text-secondary: 151 30% 68%;
-  --warning: 45 93% 47%;
-  --warning-foreground: 0 0% 0%;
-  --success: 151 88% 52%;
-  --success-foreground: 144 53% 8%;
+  --accent: #262626;
+  --accent-foreground: #fafafa;
+  --background: #0a0a0a;
+  --border: #ffffff1a;
+  --card: #171717;
+  --card-foreground: #fafafa;
+  --chart-1: #1447e6;
+  --chart-2: #00bc7d;
+  --chart-3: #fe9a00;
+  --chart-4: #ad46ff;
+  --chart-5: #ff2056;
+  --destructive: #ff6467;
+  --destructive-foreground: #fafafa;
+  --foreground: #fafafa;
+  --input: #ffffff26;
+  --muted: #262626;
+  --muted-foreground: #a1a1a1;
+  --popover: #171717;
+  --popover-foreground: #fafafa;
+  --primary: #e5e5e5;
+  --primary-foreground: #171717;
+  --ring: #737373;
+  --secondary: #262626;
+  --secondary-foreground: #fafafa;
+  --semantic-background: #272625;
+  --semantic-border: #535151;
+  --sidebar: #171717;
+  --sidebar-accent: #262626;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: #ffffff1a;
+  --sidebar-foreground: #fafafa;
+  --sidebar-primary: #1447e6;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-ring: #737373;
 }
-
-/* ------------------------------------------------------------------ */
-/*  Glass Effects                                                      */
-/* ------------------------------------------------------------------ */
-
-.glass-panel {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.glass-panel-heavy {
-  background: rgba(14, 30, 20, 0.78);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  border: 1px solid rgba(43, 238, 121, 0.12);
-}
-
-.glass-card {
-  background: rgba(26, 46, 33, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  transition: all 0.2s ease-out;
-}
-
-.glass-card:active {
-  transform: scale(0.98);
-  background: rgba(26, 46, 33, 0.8);
-}
-
-/* ------------------------------------------------------------------ */
-/*  Glow Utilities                                                     */
-/* ------------------------------------------------------------------ */
-
-.shadow-glow-subtle {
-  box-shadow: 0 0 10px rgba(43, 238, 121, 0.1);
-}
-
-.shadow-glow {
-  box-shadow: 0 0 20px rgba(43, 238, 121, 0.2);
-}
-
-.shadow-glow-strong {
-  box-shadow: 0 0 30px rgba(43, 238, 121, 0.3);
-}
-
-.shadow-glow-accent {
-  box-shadow: 0 4px 30px rgba(43, 238, 121, 0.25);
-}
-
-/* ------------------------------------------------------------------ */
-/*  Utility Classes                                                    */
-/* ------------------------------------------------------------------ */
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.pb-safe {
-  padding-bottom: max(1rem, env(safe-area-inset-bottom));
-}
-
-/* ------------------------------------------------------------------ */
-/*  Animations                                                         */
-/* ------------------------------------------------------------------ */
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(43, 238, 121, 0.2); }
-  50% { box-shadow: 0 0 30px rgba(43, 238, 121, 0.4); }
-}
-
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slide-up {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slide-in-from-bottom {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
-.animate-fade-in { animation: fade-in 0.3s ease-out; }
-.animate-slide-up { animation: slide-up 0.3s ease-out; }
-.animate-slide-in-from-bottom { animation: slide-in-from-bottom 0.4s ease-out; }

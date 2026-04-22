@@ -3,7 +3,7 @@
  */
 
 export const fontFamily = {
-  display: "'Geist Sans', system-ui, -apple-system, sans-serif",
+  display: "'Satoshi', system-ui, -apple-system, sans-serif",
   mono: "'Geist Mono', monospace",
 } as const
 

@@ -29,10 +29,10 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         this.props.fallback ?? (
-          <div className="min-h-screen bg-background-dark text-white font-display flex flex-col items-center justify-center p-6 gap-4">
+          <div className="min-h-screen bg-background text-foreground font-display flex flex-col items-center justify-center p-6 gap-4">
             <span className="material-symbols-outlined text-red-400 text-[48px]">error</span>
             <h2 className="text-lg font-bold">Something went wrong</h2>
-            <p className="text-sm text-white/50 text-center">
+            <p className="text-sm text-muted-foreground text-center">
               {this.state.error?.message ?? 'An unexpected error occurred.'}
             </p>
             <button
@@ -40,7 +40,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 this.setState({ hasError: false, error: null })
                 this.props.onReset?.()
               }}
-              className="px-6 py-3 rounded-xl bg-primary text-black font-bold hover:bg-primary/90 transition-all"
+              className="px-6 py-3 rounded-xl bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-all"
             >
               Try Again
             </button>

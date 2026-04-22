@@ -31,8 +31,8 @@ export function SettingItem({
   return (
     <div
       className={cn(
-        'p-5 rounded-2xl glass-panel border border-white/10 shadow-inner transition-all duration-200',
-        isClickable && 'cursor-pointer hover:bg-white/5 active:scale-[0.98]',
+        'p-5 rounded-2xl bg-card border border-border transition-all duration-200',
+        isClickable && 'cursor-pointer hover:bg-accent active:scale-[0.98]',
         className
       )}
       onClick={onClick}
@@ -42,7 +42,7 @@ export function SettingItem({
           {(icon || iconSrc) && (
             <div
               className={cn(
-                'flex-shrink-0 size-10 rounded-xl flex items-center justify-center bg-black/20 shadow-inner border border-white/5',
+                'flex-shrink-0 size-10 rounded-xl flex items-center justify-center bg-muted border border-border',
                 iconColor
               )}
             >
@@ -54,16 +54,16 @@ export function SettingItem({
             </div>
           )}
           <div className="flex flex-col flex-1 min-w-0">
-            <span className="font-bold text-body text-white tracking-wide">{title}</span>
+            <span className="font-bold text-body text-foreground tracking-wide">{title}</span>
             {description && (
-              <span className="text-sm text-slate-400 mt-0.5 font-medium">{description}</span>
+              <span className="text-sm text-muted-foreground mt-0.5 font-medium">{description}</span>
             )}
           </div>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
-          {value && <span className="text-xs text-slate-400 font-mono">{value}</span>}
+          {value && <span className="text-xs text-muted-foreground font-mono">{value}</span>}
           {showChevron && isClickable && (
-            <span className="material-symbols-outlined text-[16px] text-slate-500">chevron_right</span>
+            <span className="material-symbols-outlined text-[16px] text-muted-foreground">chevron_right</span>
           )}
         </div>
       </div>

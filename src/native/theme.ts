@@ -13,7 +13,7 @@ import { colors } from '../tokens/colors'
  */
 export const kaleidoswapBrandConfig = {
   primaryColor: colors.primary,
-  secondaryColor: colors.primaryDark,
+  secondaryColor: colors.secondary,
 }
 
 /**
@@ -22,12 +22,11 @@ export const kaleidoswapBrandConfig = {
 export const kaleidoswapTokens = {
   colors: {
     primary: colors.primary,
-    primaryDark: colors.primaryDark,
     primaryFg: colors.primaryFg,
-    background: colors.bgDark,
-    surface: colors.surfaceDark,
-    surfaceHighlight: colors.surfaceHighlight,
-    border: colors.surfaceBorder,
+    background: colors.background,
+    surface: colors.card,
+    surfaceHighlight: colors.accent,
+    border: colors.border,
     textPrimary: colors.textPrimary,
     textSecondary: colors.textSecondary,
     success: colors.success,

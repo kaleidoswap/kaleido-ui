@@ -2,13 +2,13 @@
  * KaleidoSwap Border Radius Tokens
  */
 export const radius = {
-  sm: '8px',
-  md: '12px',
-  lg: '16px',
-  xl: '20px',
-  card: '20px',
-  panel: '22px',
-  pill: '24px',
-  nav: '14px',
+  sm: '4px',
+  md: '6px',
+  lg: '8px',
+  xl: '12px',
+  card: '16px',
+  panel: '24px',
+  pill: '9999px',
+  nav: '32px',
   full: '9999px',
 } as const

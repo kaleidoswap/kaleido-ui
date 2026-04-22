@@ -3,34 +3,46 @@
  *
  * Single source of truth for all color constants across web and native.
  */
+const darkSemanticColors = {
+  background: '#0a0a0a',
+  foreground: '#fafafa',
+  border: '#ffffff1a',
+  input: '#ffffff26',
+  destructive: '#ff6467',
+  secondary: '#262626',
+  secondaryFg: '#fafafa',
+  muted: '#262626',
+  mutedFg: '#a1a1a1',
+  primary: '#e5e5e5',
+  primaryFg: '#171717',
+  accent: '#262626',
+  accentFg: '#fafafa',
+  ring: '#737373',
+  card: '#171717',
+  cardFg: '#fafafa',
+  popover: '#171717',
+  popoverFg: '#fafafa',
+  chart1: '#1447e6',
+  chart2: '#00bc7d',
+  chart3: '#fe9a00',
+  chart4: '#ad46ff',
+  chart5: '#ff2056',
+  semanticBackground: '#272625',
+  semanticBorder: '#535151',
+} as const
+
 export const colors = {
-  /** Brand */
-  primary: '#2BEE79',
-  primaryDark: '#1FA855',
-  primaryFg: '#102217',
-
-  /** Surfaces (dark theme — the default) */
-  bgDark: '#102217',
-  surfaceDark: '#162E21',
-  surfaceHighlight: '#243E30',
-  surfaceBorder: '#244A35',
-  surfaceDarker: '#0B1810',
-
-  /** Surfaces (light theme) */
-  bgLight: '#F6F8F7',
-  surfaceLight: '#FFFFFF',
-
-  /** Text */
-  textPrimary: '#FFFFFF',
-  textSecondary: '#92C9A8',
-  textMuted: 'rgba(255,255,255,0.5)',
-  textDimmed: 'rgba(255,255,255,0.35)',
+  ...darkSemanticColors,
+  textPrimary: darkSemanticColors.foreground,
+  textSecondary: darkSemanticColors.mutedFg,
+  textMuted: darkSemanticColors.border,
+  textDimmed: darkSemanticColors.ring,
 
   /** Semantic */
-  success: '#2BEE79',
-  warning: '#F59E0B',
-  error: '#F94040',
-  info: '#4290FF',
+  success: darkSemanticColors.primary,
+  warning: darkSemanticColors.chart3,
+  error: darkSemanticColors.destructive,
+  info: darkSemanticColors.chart1,
 
   /** Network / Layer */
   network: {

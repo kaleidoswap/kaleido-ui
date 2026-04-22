@@ -31,7 +31,7 @@ function ToastWithProgress({ id, title, description, action, duration = 4000, va
     if (variant === 'destructive') {
       return <Icon name="error" size="md" className="text-red-400" />
     }
-    return <Icon name="check_circle" size="md" className="text-primary" />
+    return <Icon name="check_circle" size="md" className="text-foreground" />
   }
 
   return (

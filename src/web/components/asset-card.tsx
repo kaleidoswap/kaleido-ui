@@ -34,8 +34,8 @@ export function AssetCard({
   return (
     <div
       className={cn(
-        'p-4 rounded-card bg-background-dark/40 backdrop-blur-xl border border-white/5 transition-all shadow-sm relative overflow-hidden group',
-        onClick && 'cursor-pointer hover:border-primary/40 hover:shadow-glow-subtle active:scale-[0.98]',
+        'p-4 rounded-card bg-background/40 backdrop-blur-xl border border-border transition-all shadow-sm relative overflow-hidden group',
+        onClick && 'cursor-pointer hover:border-primary/40 active:scale-[0.98]',
         className
       )}
       onClick={onClick}
@@ -52,7 +52,7 @@ export function AssetCard({
           <div className="flex flex-col">
             <span
               className={cn(
-                'font-bold text-base leading-tight tracking-wide text-white',
+                'font-bold text-base leading-tight tracking-wide text-foreground',
                 onClick && 'group-hover:text-primary transition-colors'
               )}
             >
@@ -66,10 +66,10 @@ export function AssetCard({
           </div>
         </div>
         <div className="text-right">
-          <p className="font-bold text-base tracking-tight text-white group-hover:text-white/90 transition-colors">
+          <p className="font-bold text-base tracking-tight text-foreground group-hover:opacity-90 transition-colors">
             {shown}
           </p>
-          <p className="text-tiny text-slate-400 font-medium tracking-wide uppercase mt-0.5">
+          <p className="text-tiny text-muted-foreground font-medium tracking-wide uppercase mt-0.5">
             {ticker}
           </p>
         </div>

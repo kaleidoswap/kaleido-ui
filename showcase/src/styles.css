@@ -1,0 +1,242 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/*  Semantic tokens — sourced from tokens-sample/mode/                */
+/*  Light: mode/light mode.json  |  Dark: mode/dark mode.json         */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --background:           #ffffff;
+  --foreground:           #0a0a0a;
+  --card:                 #ffffff;
+  --card-foreground:      #0a0a0a;
+  --popover:              #ffffff;
+  --popover-foreground:   #0a0a0a;
+  --primary:              #171717;
+  --primary-foreground:   #fafafa;
+  --secondary:            #f5f5f5;
+  --secondary-foreground: #171717;
+  --muted:                #f5f5f5;
+  --muted-foreground:     #737373;
+  --accent:               #f5f5f5;
+  --accent-foreground:    #171717;
+  --destructive:          #e7000b;
+  --border:               #e5e5e5;
+  --input:                #e5e5e5;
+  --ring:                 #a1a1a1;
+}
+
+.dark {
+  --background:           #0a0a0a;
+  --foreground:           #fafafa;
+  --card:                 #171717;
+  --card-foreground:      #fafafa;
+  --popover:              #171717;
+  --popover-foreground:   #fafafa;
+  --primary:              #e5e5e5;
+  --primary-foreground:   #171717;
+  --secondary:            #262626;
+  --secondary-foreground: #fafafa;
+  --muted:                #262626;
+  --muted-foreground:     #a1a1a1;
+  --accent:               #262626;
+  --accent-foreground:    #fafafa;
+  --destructive:          #ff6467;
+  --border:               #ffffff1a;
+  --input:                #ffffff26;
+  --ring:                 #737373;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Radius — tw/border-radius/Mode 1.json                             */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --radius-none: 0px;
+  --radius-xs:   2px;
+  --radius-sm:   4px;
+  --radius-md:   6px;
+  --radius-lg:   8px;
+  --radius-xl:   12px;
+  --radius-2xl:  16px;
+  --radius-3xl:  24px;
+  --radius-4xl:  32px;
+  --radius-full: 9999px;
+  --radius:      var(--radius-lg); /* default alias used by Radix */
+}
+
+/* ------------------------------------------------------------------ */
+/*  Tailwind v4 theme                                                  */
+/* ------------------------------------------------------------------ */
+
+@theme inline {
+  /* Semantic colors */
+  --color-background:           var(--background);
+  --color-foreground:           var(--foreground);
+  --color-card:                 var(--card);
+  --color-card-foreground:      var(--card-foreground);
+  --color-popover:              var(--popover);
+  --color-popover-foreground:   var(--popover-foreground);
+  --color-primary:              var(--primary);
+  --color-primary-foreground:   var(--primary-foreground);
+  --color-secondary:            var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted:                var(--muted);
+  --color-muted-foreground:     var(--muted-foreground);
+  --color-accent:               var(--accent);
+  --color-accent-foreground:    var(--accent-foreground);
+  --color-destructive:          var(--destructive);
+  --color-border:               var(--border);
+  --color-input:                var(--input);
+  --color-ring:                 var(--ring);
+
+  /* KaleidoSwap surface colors (not yet in tokens-sample) */
+  --color-background-dark:   #102217;
+  --color-background-light:  #F6F8F7;
+  --color-surface-dark:      #162E21;
+  --color-surface-highlight: #243E30;
+  --color-surface-border:    #244A35;
+  --color-surface-darker:    #0B1810;
+
+  /* Network colors */
+  --color-network-bitcoin:   #F7931A;
+  --color-network-rgb:       #DD352E;
+  --color-network-arkade:    #7C3AED;
+  --color-network-spark:     #FF6D00;
+  --color-network-lightning: #F6C343;
+
+  /* Transaction */
+  --color-tx-sent:    #F94040;
+  --color-tx-receive: #2BEE79;
+  --color-tx-swap:    #4290FF;
+
+  /* Typography — tw/font/Mode 1.json */
+  --font-display: 'Satoshi', system-ui, sans-serif;
+  --font-mono:    'Geist Mono', monospace;
+
+  /* Type scale */
+  --text-xxs:      10px;
+  --text-tiny:     11px;
+  --text-caption:  13px;
+  --text-body:     15px;
+  --text-subhead:  17px;
+  --text-title:    20px;
+  --text-headline: 28px;
+  --text-display:  36px;
+
+  /* Border radius — tw/border-radius/Mode 1.json */
+  --radius-none: var(--radius-none);
+  --radius-xs:   var(--radius-xs);
+  --radius-sm:   var(--radius-sm);
+  --radius-md:   var(--radius-md);
+  --radius-lg:   var(--radius-lg);
+  --radius-xl:   var(--radius-xl);
+  --radius-2xl:  var(--radius-2xl);
+  --radius-3xl:  var(--radius-3xl);
+  --radius-4xl:  var(--radius-4xl);
+  --radius-full: var(--radius-full);
+
+  /* Component-specific radius aliases */
+  --radius-card:  20px;
+  --radius-panel: 22px;
+  --radius-pill:  24px;
+  --radius-nav:   14px;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                               */
+/* ------------------------------------------------------------------ */
+
+@layer base {
+  * { border-color: var(--border); }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-display);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Material Symbols (from kaleido-ui — inlined to avoid var conflict) */
+/* ------------------------------------------------------------------ */
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.material-symbols-outlined.filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Glass effects                                                      */
+/* ------------------------------------------------------------------ */
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-heavy {
+  background: rgba(14, 30, 20, 0.78);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(43, 238, 121, 0.12);
+}
+
+.glass-card {
+  background: rgba(26, 46, 33, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  transition: all 0.2s ease-out;
+}
+.glass-card:active { transform: scale(0.98); }
+
+/* ------------------------------------------------------------------ */
+/*  Glow utilities                                                     */
+/* ------------------------------------------------------------------ */
+
+.shadow-glow-subtle { box-shadow: 0 0 10px rgba(43, 238, 121, 0.1); }
+.shadow-glow        { box-shadow: 0 0 20px rgba(43, 238, 121, 0.2); }
+.shadow-glow-strong { box-shadow: 0 0 30px rgba(43, 238, 121, 0.3); }
+.shadow-glow-accent { box-shadow: 0 4px 30px rgba(43, 238, 121, 0.25); }
+
+/* ------------------------------------------------------------------ */
+/*  Utilities                                                          */
+/* ------------------------------------------------------------------ */
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.pb-safe { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+
+/* ------------------------------------------------------------------ */
+/*  Animations                                                         */
+/* ------------------------------------------------------------------ */
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(43, 238, 121, 0.2); }
+  50%       { box-shadow: 0 0 30px rgba(43, 238, 121, 0.4); }
+}
+@keyframes fade-in {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slide-in-from-bottom {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.animate-pulse-glow          { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-fade-in             { animation: fade-in 0.3s ease-out; }
+.animate-slide-up            { animation: slide-up 0.3s ease-out; }
+.animate-slide-in-from-bottom{ animation: slide-in-from-bottom 0.4s ease-out; }
+.animate-shimmer             { animation: shimmer 2s linear infinite; }
