@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "../../src/web/**/*.{ts,tsx}";
 
 /* ------------------------------------------------------------------ */
 /*  Semantic tokens — sourced from tokens-sample/mode/                */
@@ -27,24 +28,24 @@
 }
 
 .dark {
-  --background:           #0a0a0a;
-  --foreground:           #fafafa;
-  --card:                 #171717;
-  --card-foreground:      #fafafa;
-  --popover:              #171717;
-  --popover-foreground:   #fafafa;
-  --primary:              #e5e5e5;
-  --primary-foreground:   #171717;
-  --secondary:            #262626;
-  --secondary-foreground: #fafafa;
-  --muted:                #262626;
-  --muted-foreground:     #a1a1a1;
-  --accent:               #262626;
-  --accent-foreground:    #fafafa;
-  --destructive:          #ff6467;
-  --border:               #ffffff1a;
-  --input:                #ffffff26;
-  --ring:                 #737373;
+  --background:           hsl(158 58% 7%);
+  --foreground:           #ffffff;
+  --card:                 hsl(156 32% 12%);
+  --card-foreground:      #ffffff;
+  --popover:              hsl(154 26% 17%);
+  --popover-foreground:   #ffffff;
+  --primary:              #2BEE79;
+  --primary-foreground:   #051B10;
+  --secondary:            hsl(154 26% 17%);
+  --secondary-foreground: #ffffff;
+  --muted:                hsl(156 32% 12%);
+  --muted-foreground:     rgba(255, 255, 255, 0.55);
+  --accent:               hsl(154 26% 17%);
+  --accent-foreground:    #ffffff;
+  --destructive:          hsl(0 62% 50%);
+  --border:               hsl(150 20% 24%);
+  --input:                rgba(255, 255, 255, 0.15);
+  --ring:                 #2BEE79;
 }
 
 /* ------------------------------------------------------------------ */
