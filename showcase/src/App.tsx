@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { StateSnapshot } from './pages/StateSnapshot'
 import {
   Button,
   buttonVariants,
@@ -104,6 +105,27 @@ export function App() {
   const { toast } = useToast()
   const [dialogOpen, setDialogOpen] = useState(false)
 
+  // Hash-based route: `#/state-snapshot` renders the State Snapshot page,
+  // anything else renders the normal component showcase.
+  const [route, setRoute] = useState(() =>
+    typeof window === 'undefined' ? '' : window.location.hash,
+  )
+  useEffect(() => {
+    const onChange = () => setRoute(window.location.hash)
+    window.addEventListener('hashchange', onChange)
+    return () => window.removeEventListener('hashchange', onChange)
+  }, [])
+
+  if (route.startsWith('#/state-snapshot')) {
+    return (
+      <StateSnapshot
+        onBack={() => {
+          window.location.hash = ''
+        }}
+      />
+    )
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Toaster />
@@ -117,6 +139,12 @@ export function App() {
             <span className="text-xs text-slate-500 font-mono">showcase</span>
           </div>
           <div className="flex items-center gap-2">
+            <a
+              href="#/state-snapshot"
+              className="text-xs font-bold text-white/90 px-3 py-1 rounded-full bg-white/10 border border-white/20 hover:bg-white/15 hover:border-white/30 transition-colors"
+            >
+              State Snapshot →
+            </a>
             <span className="text-xs font-mono text-primary px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20">
               v0.1.0
             </span>
