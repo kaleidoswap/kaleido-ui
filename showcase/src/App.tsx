@@ -177,7 +177,6 @@ export function App() {
           <Section id="buttons" title="Buttons" description="11 variants, 9 sizes.">
             <Row label="Variants">
               <Button variant="default">Default</Button>
-              <Button variant="secondary">Secondary</Button>
               <Button variant="outline">Outline</Button>
               <Button variant="ghost">Ghost</Button>
               <Button variant="link">Link</Button>
@@ -236,18 +235,20 @@ export function App() {
               </div>
             </Row>
             <Row label="Common icons">
-              {[
-                'home', 'settings', 'person', 'notifications', 'search',
-                'arrow_back', 'close', 'check', 'add', 'remove',
-                'visibility', 'visibility_off', 'copy_all', 'download', 'upload',
-              ].map((name) => (
-                <div key={name} className="flex flex-col items-center gap-1">
-                  <div className="size-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
-                    <Icon name={name} size="md" className="text-slate-300" />
+              <div className="flex flex-wrap gap-4">
+                {[
+                  'home', 'settings', 'person', 'notifications', 'search',
+                  'arrow_back', 'close', 'check', 'add', 'remove',
+                  'visibility', 'visibility_off', 'copy_all', 'download', 'upload',
+                ].map((name) => (
+                  <div key={name} className="flex flex-col items-center gap-1">
+                    <div className="size-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+                      <Icon name={name} size="md" className="text-primary" />
+                    </div>
+                    <span className="text-xxs text-slate-500 font-mono">{name}</span>
                   </div>
-                  <span className="text-xxs text-slate-500 font-mono">{name}</span>
-                </div>
-              ))}
+                ))}
+              </div>
             </Row>
           </Section>
 

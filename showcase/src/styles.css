@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @source "../../src/web/**/*.{ts,tsx}";
 
+@variant dark (&:where(.dark, .dark *));
+
 /* ------------------------------------------------------------------ */
 /*  Semantic tokens — sourced from tokens-sample/mode/                */
 /*  Light: mode/light mode.json  |  Dark: mode/dark mode.json         */
