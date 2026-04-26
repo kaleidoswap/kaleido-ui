@@ -18,7 +18,7 @@ const buttonVariants = cva(
         surface: 'bg-card text-card-foreground border border-border hover:bg-accent',
         cta: 'w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-2xl shadow-md disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none',
         'cta-gradient': 'w-full bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-extrabold rounded-2xl shadow-lg hover:opacity-90 hover:-translate-y-0.5 active:translate-y-0 active:opacity-100 disabled:opacity-40 disabled:shadow-none disabled:cursor-not-allowed disabled:bg-accent disabled:text-muted-foreground',
-        'danger-subtle': 'w-full bg-red-500/10 border border-red-500/20 text-red-400 font-bold rounded-xl hover:bg-red-500/20',
+        'danger-subtle': 'bg-red-500/10 border border-red-500/20 text-red-400 font-bold rounded-xl hover:bg-red-500/20',
       },
       size: {
         default: 'h-11 px-5 py-2',

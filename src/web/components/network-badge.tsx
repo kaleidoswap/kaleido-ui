@@ -18,9 +18,9 @@ const networkConfig: Record<NetworkType, { color: string; bg: string; border: st
     iconSuffix: 'bitcoin/bitcoin-logo.svg',
   },
   LN: {
-    color: 'text-purple-400',
-    bg: 'bg-purple-500/10 backdrop-blur-md',
-    border: 'border-purple-500/20',
+    color: 'text-network-lightning',
+    bg: 'bg-network-lightning/10 backdrop-blur-md',
+    border: 'border-network-lightning/20',
     label: 'LN',
     iconSuffix: 'lightning/lightning.svg',
   },
@@ -53,9 +53,9 @@ const networkConfig: Record<NetworkType, { color: string; bg: string; border: st
     iconSuffix: 'rgb/rgb-logo.svg',
   },
   Spark: {
-    color: 'text-network-spark',
-    bg: 'bg-network-spark/10 backdrop-blur-md',
-    border: 'border-network-spark/20',
+    color: 'text-black dark:text-white',
+    bg: 'bg-black/10 dark:bg-white/10 backdrop-blur-md',
+    border: 'border-black/20 dark:border-white/20',
     label: 'Spark',
     iconSuffix: 'spark/Asterisk/Spark Asterisk White.svg',
   },
@@ -85,7 +85,7 @@ export function NetworkBadge({ network, iconBasePath = '/icons', className }: Ne
       <img
         src={icon}
         alt={network}
-        className={cn('size-3 object-contain', network === 'Spark' && 'opacity-80')}
+        className={cn('size-3 object-contain', network === 'Spark' && 'brightness-0 dark:brightness-0 dark:invert')}
       />
       {label}
     </span>
