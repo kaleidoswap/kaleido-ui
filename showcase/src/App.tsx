@@ -188,7 +188,6 @@ export function App() {
             <Row label="CTA variants (full-width)" wrap={false}>
               <div className="flex flex-col gap-3 w-full max-w-sm">
                 <Button variant="cta" size="cta">Swap Now</Button>
-                <Button variant="cta-gradient" size="cta">Swap Now (Gradient)</Button>
                 <Button variant="cta" size="cta" disabled>Disabled</Button>
               </div>
             </Row>
