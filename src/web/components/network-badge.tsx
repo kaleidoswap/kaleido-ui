@@ -6,6 +6,8 @@ interface NetworkBadgeProps {
   network: NetworkType
   /** Override the icon path (consumer provides asset path) */
   iconBasePath?: string
+  /** Show only the icon, no label */
+  iconOnly?: boolean
   className?: string
 }
 
@@ -25,30 +27,30 @@ const networkConfig: Record<NetworkType, { color: string; bg: string; border: st
     iconSuffix: 'lightning/lightning.svg',
   },
   RGB20: {
-    color: 'text-network-rgb',
-    bg: 'bg-network-rgb/10 backdrop-blur-md',
-    border: 'border-network-rgb/20',
+    color: 'text-destructive',
+    bg: 'bg-red-500/20 backdrop-blur-md',
+    border: 'border-red-500/20',
     label: 'RGB',
     iconSuffix: 'rgb/rgb-logo.svg',
   },
   RGB21: {
-    color: 'text-network-rgb',
-    bg: 'bg-network-rgb/10 backdrop-blur-md',
-    border: 'border-network-rgb/20',
+    color: 'text-destructive',
+    bg: 'bg-red-500/20 backdrop-blur-md',
+    border: 'border-red-500/20',
     label: 'RGB21',
     iconSuffix: 'rgb/rgb-logo.svg',
   },
   'RGB-L1': {
-    color: 'text-network-rgb',
-    bg: 'bg-network-rgb/10 backdrop-blur-md',
-    border: 'border-network-rgb/20',
+    color: 'text-destructive',
+    bg: 'bg-red-500/20 backdrop-blur-md',
+    border: 'border-red-500/20',
     label: 'RGB L1',
     iconSuffix: 'rgb/rgb-logo.svg',
   },
   'RGB-LN': {
-    color: 'text-network-rgb',
-    bg: 'bg-network-rgb/10 backdrop-blur-md',
-    border: 'border-network-rgb/20',
+    color: 'text-destructive',
+    bg: 'bg-red-500/20 backdrop-blur-md',
+    border: 'border-red-500/20',
     label: 'RGB LN',
     iconSuffix: 'rgb/rgb-logo.svg',
   },
@@ -60,24 +62,24 @@ const networkConfig: Record<NetworkType, { color: string; bg: string; border: st
     iconSuffix: 'spark/Asterisk/Spark Asterisk White.svg',
   },
   Arkade: {
-    color: 'text-network-arkade',
-    bg: 'bg-network-arkade/10 backdrop-blur-md',
-    border: 'border-network-arkade/20',
+    color: 'text-violet-400',
+    bg: 'bg-violet-500/15 backdrop-blur-md',
+    border: 'border-violet-500/20',
     label: 'Arkade',
     iconSuffix: 'arkade/arkade-icon.svg',
   },
 }
 
-export function NetworkBadge({ network, iconBasePath = '/icons', className }: NetworkBadgeProps) {
-  const { color, bg, border, label, iconSuffix } = networkConfig[network]
+export function NetworkBadge({ network, iconBasePath = '/icons', iconOnly = false, className }: NetworkBadgeProps) {
+  const { color, bg, label, iconSuffix } = networkConfig[network]
   const icon = `${iconBasePath}/${iconSuffix}`
 
   return (
     <span
       className={cn(
-        'text-xxs px-2 py-0.5 rounded-full font-bold border shadow-inner flex items-center justify-center gap-1 w-max transition-all',
+        'text-xs rounded-full font-bold flex items-center justify-center w-max',
+        iconOnly ? 'p-1.5' : 'px-2.5 py-1 gap-1',
         bg,
-        border,
         color,
         className
       )}
@@ -85,9 +87,9 @@ export function NetworkBadge({ network, iconBasePath = '/icons', className }: Ne
       <img
         src={icon}
         alt={network}
-        className={cn('size-3 object-contain', network === 'Spark' && 'brightness-0 dark:brightness-0 dark:invert')}
+        className={cn(iconOnly ? 'size-4' : 'size-3.5', 'object-contain', network === 'Spark' && 'brightness-0 dark:brightness-0 dark:invert')}
       />
-      {label}
+      {!iconOnly && label}
     </span>
   )
 }

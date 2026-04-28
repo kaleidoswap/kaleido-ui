@@ -29,11 +29,36 @@ export function TransactionCard({
 
   const formatDate = (ts: number) => new Date(ts * 1000).toLocaleDateString()
 
+  const statusStyle = {
+    success:   { base: 'bg-primary/5',       hover: 'hover:bg-primary/10' },
+    completed: { base: 'bg-primary/5',       hover: 'hover:bg-primary/10' },
+    pending:   { base: 'bg-yellow-500/10',   hover: 'hover:bg-yellow-500/15' },
+    failed:    { base: 'bg-red-500/10',      hover: 'hover:bg-red-500/15' },
+    error:     { base: 'bg-red-500/10',      hover: 'hover:bg-red-500/15' },
+  }[status] ?? { base: 'bg-background/40', hover: 'hover:bg-white/5' }
+
+  const iconStyle = {
+    success:   'bg-primary/20 text-primary',
+    completed: 'bg-primary/20 text-primary',
+    pending:   'bg-yellow-500/20 text-yellow-500',
+    failed:    'bg-red-500/20 text-red-500',
+    error:     'bg-red-500/20 text-red-500',
+  }[status] ?? 'bg-accent text-muted-foreground'
+
+  const textColor = {
+    success:   'text-primary',
+    completed: 'text-primary',
+    pending:   'text-yellow-500',
+    failed:    'text-red-500',
+    error:     'text-red-500',
+  }[status] ?? 'text-foreground'
+
   return (
     <div
       className={cn(
-        'p-4 rounded-card bg-background/40 backdrop-blur-xl border border-border flex items-center justify-between transition-all shadow-sm relative overflow-hidden group',
-        onClick && 'cursor-pointer hover:border-primary/40 active:scale-[0.98]',
+        'p-4 rounded-card backdrop-blur-xl flex items-center justify-between transition-all shadow-sm relative overflow-hidden group',
+        statusStyle.base,
+        onClick && `cursor-pointer active:scale-[0.98] ${statusStyle.hover}`,
         className
       )}
       onClick={onClick}
@@ -43,9 +68,7 @@ export function TransactionCard({
         <div
           className={cn(
             'size-11 rounded-full flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform',
-            isInbound
-              ? 'bg-primary/20 text-primary border border-primary/20'
-              : 'bg-accent text-muted-foreground border border-border'
+            iconStyle
           )}
         >
           <span className="material-symbols-outlined text-[20px]">
@@ -53,16 +76,11 @@ export function TransactionCard({
           </span>
         </div>
         <div className="flex flex-col">
-          <span
-            className={cn(
-              'font-bold text-sm text-foreground tracking-wide',
-              onClick && 'group-hover:text-primary transition-colors'
-            )}
-          >
+          <span className="font-bold text-sm tracking-wide text-foreground">
             {isInbound ? 'Received' : 'Sent'}
           </span>
           <div className="flex items-center gap-2 mt-1">
-            <StatusBadge status={status} className="text-xxs px-1.5 py-0.5" />
+            <StatusBadge status={status} />
             <span className="text-tiny text-muted-foreground font-medium tracking-wide">
               {formatDate(timestamp)}
             </span>
@@ -72,8 +90,8 @@ export function TransactionCard({
       <div className="text-right relative z-10">
         <p
           className={cn(
-            'font-bold text-base tracking-tight group-hover:opacity-90 transition-opacity',
-            isInbound ? 'text-primary' : 'text-foreground'
+            'font-bold text-lg tracking-tight group-hover:opacity-90 transition-opacity',
+            textColor
           )}
         >
           {isInbound ? '+' : '-'}

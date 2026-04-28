@@ -24,15 +24,15 @@ export function SettingItem({
   onClick,
   showChevron = true,
   className,
-  iconColor = 'text-primary',
+  iconColor = 'text-[#31ff8b]',
 }: SettingItemProps) {
   const isClickable = !!onClick
 
   return (
     <div
       className={cn(
-        'p-5 rounded-2xl bg-card border border-border transition-all duration-200',
-        isClickable && 'cursor-pointer hover:bg-accent active:scale-[0.98]',
+        'p-5 rounded-2xl bg-card transition-all duration-200 group',
+        isClickable && 'cursor-pointer active:scale-[0.98]',
         className
       )}
       onClick={onClick}
@@ -42,7 +42,7 @@ export function SettingItem({
           {(icon || iconSrc) && (
             <div
               className={cn(
-                'flex-shrink-0 size-10 rounded-xl flex items-center justify-center bg-muted border border-border',
+                'flex-shrink-0 size-10 rounded-xl flex items-center justify-center bg-primary/15 group-hover:bg-primary/25 group-hover:scale-105 transition-all',
                 iconColor
               )}
             >
@@ -63,7 +63,7 @@ export function SettingItem({
         <div className="flex items-center gap-2 flex-shrink-0">
           {value && <span className="text-xs text-muted-foreground font-mono">{value}</span>}
           {showChevron && isClickable && (
-            <span className="material-symbols-outlined text-[16px] text-muted-foreground">chevron_right</span>
+            <span className="material-symbols-outlined text-[16px] text-muted-foreground group-hover:scale-110 group-hover:text-white transition-all">chevron_right</span>
           )}
         </div>
       </div>
