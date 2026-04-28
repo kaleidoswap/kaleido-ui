@@ -1,4 +1,17 @@
-/* AUTO-GENERATED — do not edit by hand.
+/**
+ * Generates src/css/kaleido-ui.css from src/tokens/.
+ * Run via: tsx scripts/generate-css.ts
+ */
+import { writeFileSync } from 'node:fs'
+import { join, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { colors } from '../src/tokens/colors.ts'
+import { radius } from '../src/tokens/radius.ts'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const OUTPUT = join(__dirname, '../src/css/kaleido-ui.css')
+
+const css = `/* AUTO-GENERATED — do not edit by hand.
  * Source: scripts/generate-css.ts  ←  src/tokens/
  * Regenerate: npm run generate:css
  */
@@ -35,37 +48,41 @@
 
 /* ── Semantic colors (dark mode) — from src/tokens/colors.ts ───────────── */
 .dark {
-  --background:           hsl(158 58% 7%);
-  --foreground:           #ffffff;
-  --card:                 hsl(156 32% 12%);
-  --card-foreground:      #ffffff;
-  --popover:              hsl(154 26% 17%);
-  --popover-foreground:   #ffffff;
-  --primary:              #2BEE79;
-  --primary-foreground:   #051B10;
-  --secondary:            hsl(154 26% 17%);
-  --secondary-foreground: #ffffff;
-  --muted:                hsl(156 32% 12%);
-  --muted-foreground:     rgba(255, 255, 255, 0.55);
-  --accent:               hsl(154 26% 17%);
-  --accent-foreground:    #ffffff;
-  --destructive:          hsl(0 62% 50%);
-  --border:               hsl(150 20% 24%);
-  --input:                rgba(255, 255, 255, 0.15);
-  --ring:                 #2BEE79;
+  --background:           ${colors.background};
+  --foreground:           ${colors.foreground};
+  --card:                 ${colors.card};
+  --card-foreground:      ${colors.cardFg};
+  --popover:              ${colors.popover};
+  --popover-foreground:   ${colors.popoverFg};
+  --primary:              ${colors.primary};
+  --primary-foreground:   ${colors.primaryFg};
+  --secondary:            ${colors.secondary};
+  --secondary-foreground: ${colors.secondaryFg};
+  --muted:                ${colors.muted};
+  --muted-foreground:     ${colors.mutedFg};
+  --accent:               ${colors.accent};
+  --accent-foreground:    ${colors.accentFg};
+  --destructive:          ${colors.destructive};
+  --border:               ${colors.border};
+  --input:                ${colors.input};
+  --ring:                 ${colors.ring};
 }
 
 /* ── Border radius — from src/tokens/radius.ts ─────────────────────────── */
 :root {
   --radius-none: 0px;
   --radius-xs:   2px;
-  --radius-sm:   4px;
-  --radius-md:   6px;
-  --radius-lg:   8px;
-  --radius-xl:   12px;
+  --radius-sm:   ${radius.sm};
+  --radius-md:   ${radius.md};
+  --radius-lg:   ${radius.lg};
+  --radius-xl:   ${radius.xl};
   --radius-2xl:  16px;
   --radius-3xl:  24px;
   --radius-4xl:  32px;
-  --radius-full: 9999px;
+  --radius-full: ${radius.full};
   --radius:      var(--radius-lg);
 }
+`
+
+writeFileSync(OUTPUT, css)
+console.log(`✓ Generated ${OUTPUT}`)

@@ -1,75 +1,11 @@
 @import "tailwindcss";
+@import "../../src/css/kaleido-ui.css";
 @source "../../src/web/**/*.{ts,tsx}";
 
 @variant dark (&:where(.dark, .dark *));
 
 /* ------------------------------------------------------------------ */
-/*  Semantic tokens — sourced from tokens-sample/mode/                */
-/*  Light: mode/light mode.json  |  Dark: mode/dark mode.json         */
-/* ------------------------------------------------------------------ */
-
-:root {
-  --background:           #ffffff;
-  --foreground:           #0a0a0a;
-  --card:                 #ffffff;
-  --card-foreground:      #0a0a0a;
-  --popover:              #ffffff;
-  --popover-foreground:   #0a0a0a;
-  --primary:              #171717;
-  --primary-foreground:   #fafafa;
-  --secondary:            #f5f5f5;
-  --secondary-foreground: #171717;
-  --muted:                #f5f5f5;
-  --muted-foreground:     #737373;
-  --accent:               #f5f5f5;
-  --accent-foreground:    #171717;
-  --destructive:          #e7000b;
-  --border:               #e5e5e5;
-  --input:                #e5e5e5;
-  --ring:                 #a1a1a1;
-}
-
-.dark {
-  --background:           hsl(158 58% 7%);
-  --foreground:           #ffffff;
-  --card:                 hsl(156 32% 12%);
-  --card-foreground:      #ffffff;
-  --popover:              hsl(154 26% 17%);
-  --popover-foreground:   #ffffff;
-  --primary:              #2BEE79;
-  --primary-foreground:   #051B10;
-  --secondary:            hsl(154 26% 17%);
-  --secondary-foreground: #ffffff;
-  --muted:                hsl(156 32% 12%);
-  --muted-foreground:     rgba(255, 255, 255, 0.55);
-  --accent:               hsl(154 26% 17%);
-  --accent-foreground:    #ffffff;
-  --destructive:          hsl(0 62% 50%);
-  --border:               hsl(150 20% 24%);
-  --input:                rgba(255, 255, 255, 0.15);
-  --ring:                 #2BEE79;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Radius — tw/border-radius/Mode 1.json                             */
-/* ------------------------------------------------------------------ */
-
-:root {
-  --radius-none: 0px;
-  --radius-xs:   2px;
-  --radius-sm:   4px;
-  --radius-md:   6px;
-  --radius-lg:   8px;
-  --radius-xl:   12px;
-  --radius-2xl:  16px;
-  --radius-3xl:  24px;
-  --radius-4xl:  32px;
-  --radius-full: 9999px;
-  --radius:      var(--radius-lg); /* default alias used by Radix */
-}
-
-/* ------------------------------------------------------------------ */
-/*  Tailwind v4 theme                                                  */
+/*  Tailwind v4 theme — maps CSS vars → Tailwind utility names         */
 /* ------------------------------------------------------------------ */
 
 @theme inline {
@@ -127,7 +63,7 @@
   --text-headline: 28px;
   --text-display:  36px;
 
-  /* Border radius — tw/border-radius/Mode 1.json */
+  /* Border radius */
   --radius-none: var(--radius-none);
   --radius-xs:   var(--radius-xs);
   --radius-sm:   var(--radius-sm);
@@ -157,17 +93,6 @@
     color: var(--foreground);
     font-family: var(--font-display);
   }
-}
-
-/* ------------------------------------------------------------------ */
-/*  Material Symbols (from kaleido-ui — inlined to avoid var conflict) */
-/* ------------------------------------------------------------------ */
-
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-}
-.material-symbols-outlined.filled {
-  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
 /* ------------------------------------------------------------------ */
