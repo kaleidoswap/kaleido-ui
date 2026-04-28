@@ -8,17 +8,18 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:brightness-115 hover:drop-shadow-[0_4px_8px_rgba(43,238,121,0.35)]',
-        destructive: 'bg-destructive text-destructive-foreground hover:brightness-115 hover:drop-shadow-[0_4px_8px_rgba(231,0,11,0.35)]',
+        default: 'bg-primary text-primary-foreground hover:brightness-115',
+        destructive: 'bg-destructive text-destructive-foreground hover:brightness-115',
         outline: 'border border-primary/50 bg-transparent text-[#31ff8b] hover:bg-primary/5 hover:border-primary hover:brightness-115',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'text-[#31ff8b] hover:brightness-115 hover:bg-transparent hover:[&_span]:brightness-115',
         link: 'text-primary underline-offset-4 hover:underline',
         glow: 'bg-primary text-primary-foreground shadow-md',
         surface: 'bg-primary/15 text-[#31ff8b] hover:bg-primary/25',
-        cta: 'w-full bg-primary text-primary-foreground font-bold rounded-2xl shadow-md hover:brightness-115 hover:drop-shadow-[0_4px_8px_rgba(43,238,121,0.35)] disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none',
+        cta: 'w-full bg-primary text-primary-foreground font-bold rounded-2xl shadow-md hover:brightness-115 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none',
         'cta-gradient': 'w-full bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-extrabold rounded-2xl shadow-lg hover:opacity-90 hover:-translate-y-0.5 active:translate-y-0 active:opacity-100 disabled:opacity-40 disabled:shadow-none disabled:cursor-not-allowed disabled:bg-accent disabled:text-muted-foreground',
-        'danger-subtle': 'bg-red-500/10 border border-red-500/20 text-destructive font-bold rounded-xl hover:brightness-115 hover:drop-shadow-[0_4px_8px_rgba(231,0,11,0.35)]',
+        'danger-subtle': 'bg-red-500/10 border border-red-500/20 text-destructive font-bold rounded-xl hover:brightness-115',
+        hyperlink: 'group text-muted-foreground underline underline-offset-2 hover:text-white hover:decoration-[#31ff8b] hover:[&_.icon]:text-[#31ff8b] bg-transparent font-normal',
       },
       size: {
         default: 'h-11 px-5 py-2',

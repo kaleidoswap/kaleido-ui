@@ -179,11 +179,12 @@ export function App() {
         <main className="flex-1 min-w-0">
 
           {/* ── Buttons ─────────────────────────────────────────────────── */}
-          <Section id="buttons" title="Buttons" description="11 variants, 9 sizes.">
+          <Section id="buttons" title="Buttons" description="12 variants, 9 sizes.">
             <Row label="Enabled Variants">
               <Button variant="default">Default</Button>
               <Button variant="outline">Outline</Button>
               <Button variant="ghost">Ghost</Button>
+              <Button variant="hyperlink">Hyperlink</Button>
               <Button variant="surface">Surface</Button>
               <Button variant="destructive">Destructive</Button>
               <Button variant="danger-subtle">Danger Subtle</Button>
@@ -192,6 +193,7 @@ export function App() {
               <Button variant="default" disabled>Default</Button>
               <Button variant="outline" disabled>Outline</Button>
               <Button variant="ghost" disabled>Ghost</Button>
+              <Button variant="hyperlink" disabled>Hyperlink</Button>
               <Button variant="surface" disabled>Surface</Button>
               <Button variant="destructive" disabled>Destructive</Button>
               <Button variant="danger-subtle" disabled>Danger Subtle</Button>
@@ -216,6 +218,7 @@ export function App() {
               <Button><Icon name="send" size="sm" />Send</Button>
               <Button variant="outline"><Icon name="qr_code" size="sm" />Receive</Button>
               <Button variant="ghost"><Icon name="swap_horiz" size="sm" />Swap</Button>
+              <Button variant="hyperlink" className="no-underline"><Icon name="open_in_new" size="xs" className="!text-[15px] leading-none translate-y-[1.5px] icon" /><span className="underline underline-offset-2 group-hover:decoration-[#31ff8b]">Learn more</span></Button>
             </Row>
           </Section>
 
