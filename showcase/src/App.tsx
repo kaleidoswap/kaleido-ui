@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import { StateSnapshot } from './pages/StateSnapshot'
+import { Switch } from '@kaleido-ui/primitives/switch'
+import { Select } from '@kaleido-ui/primitives/select'
+import { NumberInput } from '@kaleido-ui/primitives/number-input'
 import {
   Button,
   buttonVariants,
@@ -104,6 +107,8 @@ const NAV_ITEMS = [
 export function App() {
   const { toast } = useToast()
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [darkMode, setDarkMode] = useState(true)
+  const [language, setLanguage] = useState('en')
 
   // Hash-based route: `#/state-snapshot` renders the State Snapshot page,
   // anything else renders the normal component showcase.
@@ -175,24 +180,30 @@ export function App() {
 
           {/* ── Buttons ─────────────────────────────────────────────────── */}
           <Section id="buttons" title="Buttons" description="11 variants, 9 sizes.">
-            <Row label="Variants">
+            <Row label="Enabled Variants">
               <Button variant="default">Default</Button>
               <Button variant="outline">Outline</Button>
               <Button variant="ghost">Ghost</Button>
-              <Button variant="link">Link</Button>
-              <Button variant="glow">Glow</Button>
               <Button variant="surface">Surface</Button>
               <Button variant="destructive">Destructive</Button>
               <Button variant="danger-subtle">Danger Subtle</Button>
             </Row>
+            <Row label="Disabled Variants">
+              <Button variant="default" disabled>Default</Button>
+              <Button variant="outline" disabled>Outline</Button>
+              <Button variant="ghost" disabled>Ghost</Button>
+              <Button variant="surface" disabled>Surface</Button>
+              <Button variant="destructive" disabled>Destructive</Button>
+              <Button variant="danger-subtle" disabled>Danger Subtle</Button>
+            </Row>
             <Row label="CTA variants (full-width)" wrap={false}>
               <div className="flex flex-col gap-3 w-full max-w-sm">
                 <Button variant="cta" size="cta">Swap Now</Button>
-                <Button variant="cta-gradient" size="cta">Swap Now (Gradient)</Button>
-                <Button variant="cta" size="cta" disabled>Disabled</Button>
+                <Button variant="destructive" size="cta">Delete</Button>
               </div>
             </Row>
             <Row label="Sizes">
+              <Button size="xs">X-Small</Button>
               <Button size="sm">Small</Button>
               <Button size="default">Default</Button>
               <Button size="lg">Large</Button>
@@ -204,30 +215,18 @@ export function App() {
             <Row label="With icons">
               <Button><Icon name="send" size="sm" />Send</Button>
               <Button variant="outline"><Icon name="qr_code" size="sm" />Receive</Button>
-              <Button variant="secondary"><Icon name="swap_horiz" size="sm" />Swap</Button>
-            </Row>
-            <Row label="States">
-              <Button disabled>Disabled</Button>
-              <Button variant="outline" disabled>Disabled Outline</Button>
+              <Button variant="ghost"><Icon name="swap_horiz" size="sm" />Swap</Button>
             </Row>
           </Section>
 
           {/* ── Icons ───────────────────────────────────────────────────── */}
           <Section id="icons" title="Icons" description="Material Symbols wrapper with size variants.">
-            <Row label="Sizes">
-              <Icon name="bolt" size="xs" />
-              <Icon name="bolt" size="sm" />
-              <Icon name="bolt" size="md" />
-              <Icon name="bolt" size="lg" />
-              <Icon name="bolt" size="xl" />
-              <Icon name="bolt" size="2xl" />
-            </Row>
             <Row label="Named shortcuts (Icons.*)">
               <div className="flex flex-wrap gap-4">
                 {Object.entries(Icons).map(([key, IconComp]) => (
                   <div key={key} className="flex flex-col items-center gap-1">
-                    <div className="size-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
-                      <IconComp size="md" className="text-primary" />
+                    <div className="size-10 rounded-xl bg-primary/15 hover:bg-primary/25 hover:scale-105 transition-all flex items-center justify-center cursor-default">
+                      <IconComp size="md" className="text-[#31ff8b]" />
                     </div>
                     <span className="text-xxs text-slate-500 font-mono">{key}</span>
                   </div>
@@ -242,8 +241,8 @@ export function App() {
                   'visibility', 'visibility_off', 'copy_all', 'download', 'upload',
                 ].map((name) => (
                   <div key={name} className="flex flex-col items-center gap-1">
-                    <div className="size-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
-                      <Icon name={name} size="md" className="text-primary" />
+                    <div className="size-10 rounded-xl bg-primary/15 hover:bg-primary/25 hover:scale-105 transition-all flex items-center justify-center cursor-default">
+                      <Icon name={name} size="md" className="text-[#31ff8b]" />
                     </div>
                     <span className="text-xxs text-slate-500 font-mono">{name}</span>
                   </div>
@@ -263,9 +262,14 @@ export function App() {
 
           {/* ── Network Badges ──────────────────────────────────────────── */}
           <Section id="network-badges" title="Network Badges" description="Layer/protocol indicators.">
-            <Row label="All networks">
+            <Row label="Network chips with text">
               {(['L1', 'LN', 'RGB20', 'RGB21', 'RGB-L1', 'RGB-LN', 'Spark', 'Arkade'] as NetworkType[]).map((n) => (
                 <NetworkBadge key={n} network={n} />
+              ))}
+            </Row>
+            <Row label="Network chips without text">
+              {(['L1', 'LN', 'RGB20', 'Spark', 'Arkade'] as NetworkType[]).map((n) => (
+                <NetworkBadge key={n} network={n} iconOnly />
               ))}
             </Row>
           </Section>
@@ -291,8 +295,8 @@ export function App() {
                   <p className="text-sm text-slate-400">Use CardFooter for action buttons or summary information.</p>
                 </CardContent>
                 <CardFooter className="gap-2">
-                  <Button variant="outline" size="sm">Cancel</Button>
                   <Button size="sm">Confirm</Button>
+                  <Button variant="outline" size="sm">Cancel</Button>
                 </CardFooter>
               </Card>
             </div>
@@ -306,6 +310,7 @@ export function App() {
                 name="Bitcoin"
                 displayBalance="0.00142000"
                 networks={['L1', 'LN', 'Spark']}
+                accentColor="#F7931A"
                 onClick={() => {}}
               />
               <AssetCard
@@ -313,6 +318,7 @@ export function App() {
                 name="Tether USD"
                 displayBalance="1,250.00"
                 networks={['RGB20', 'RGB-LN']}
+                accentColor="#26A17B"
                 onClick={() => {}}
               />
               <AssetCard
@@ -320,7 +326,9 @@ export function App() {
                 name="Bitcoin (hidden)"
                 displayBalance="0.05000000"
                 networks={['L1']}
+                accentColor="#F7931A"
                 balanceVisible={false}
+                onClick={() => {}}
               />
             </div>
           </Section>
@@ -350,13 +358,6 @@ export function App() {
                 displayAmount="500"
                 unit="sats"
                 timestamp={1699913600}
-              />
-              <TransactionCard
-                direction="inbound"
-                status="success"
-                displayAmount="0.00050000"
-                unit="BTC"
-                timestamp={1699827200}
                 onClick={() => {}}
               />
             </div>
@@ -399,14 +400,28 @@ export function App() {
               <SettingItem
                 icon="language"
                 title="Language"
-                value="English"
-                onClick={() => {}}
+                showChevron={false}
+                value={
+                  <Select
+                    value={language}
+                    onValueChange={setLanguage}
+                    options={[
+                      { value: 'en', label: 'English',    prefix: '🇬🇧' },
+                      { value: 'it', label: 'Italiano',   prefix: '🇮🇹' },
+                      { value: 'es', label: 'Español',    prefix: '🇪🇸' },
+                      { value: 'fr', label: 'Français',   prefix: '🇫🇷' },
+                      { value: 'de', label: 'Deutsch',    prefix: '🇩🇪' },
+                      { value: 'pt', label: 'Português',  prefix: '🇵🇹' },
+                      { value: 'ja', label: '日本語',      prefix: '🇯🇵' },
+                    ]}
+                  />
+                }
               />
               <SectionLabel className="mt-4">Preferences</SectionLabel>
               <SettingItem
                 icon="dark_mode"
                 title="Dark Mode"
-                value="On"
+                value={<Switch checked={darkMode} onCheckedChange={setDarkMode} />}
                 showChevron={false}
               />
               <SettingItem
@@ -427,7 +442,7 @@ export function App() {
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="amount">Amount (sats)</Label>
-                <Input id="amount" type="number" placeholder="21000" />
+                <NumberInput id="amount" placeholder="21000" />
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="disabled">Disabled</Label>
@@ -455,7 +470,7 @@ export function App() {
                         </div>
                         <div className="flex flex-col gap-2">
                           <Label>Amount</Label>
-                          <Input type="number" placeholder="0" />
+                          <NumberInput placeholder="0" />
                         </div>
                         <Button className="mt-2">Send Bitcoin</Button>
                       </div>
@@ -497,13 +512,13 @@ export function App() {
                     You are about to send <span className="text-white font-semibold">21,000 sats</span> to the following address. This action cannot be undone.
                   </DialogDescription>
                 </DialogHeader>
-                <div className="my-2 p-3 rounded-xl bg-white/5 border border-white/10">
+                <div className="my-2 p-3 rounded-xl bg-white/8">
                   <p className="text-xs font-mono text-slate-300 break-all">
                     bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
                   </p>
                 </div>
                 <DialogFooter className="gap-2">
-                  <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
+                  <Button variant="ghost" onClick={() => setDialogOpen(false)}>Cancel</Button>
                   <Button onClick={() => setDialogOpen(false)}>Confirm & Send</Button>
                 </DialogFooter>
               </DialogContent>
