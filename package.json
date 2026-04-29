@@ -23,18 +23,12 @@
       "import": "./dist/native/index.js",
       "require": "./dist/native/index.cjs"
     },
-    "./tailwind": {
-      "types": "./dist/tailwind/index.d.ts",
-      "import": "./dist/tailwind/index.js",
-      "require": "./dist/tailwind/index.cjs"
-    },
     "./css": "./dist/css/kaleido-ui.css"
   },
   "files": [
     "dist",
     "native",
-    "tokens",
-    "tailwind"
+    "tokens"
   ],
   "scripts": {
     "generate:css": "node node_modules/tsx/dist/cli.mjs scripts/generate-css.ts",

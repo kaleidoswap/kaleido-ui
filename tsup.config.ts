@@ -9,14 +9,6 @@ export default defineConfig([
     clean: false,
     outDir: 'dist',
   },
-  // Tailwind preset — pure JS, no React
-  {
-    entry: { 'tailwind/index': 'src/tailwind/index.ts' },
-    format: ['esm', 'cjs'],
-    dts: true,
-    clean: false,
-    outDir: 'dist',
-  },
   // Web components — React + Tailwind + Radix
   {
     entry: { 'web/index': 'src/web/index.ts' },

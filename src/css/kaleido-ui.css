@@ -3,6 +3,7 @@
  * Regenerate: npm run generate:css
  */
 
+/* ── Material Symbols ──────────────────────────────────────────────────── */
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
@@ -10,8 +11,7 @@
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
-/* ── Semantic colors (light mode) ──────────────────────────────────────── */
-/* Light-mode values are not yet in the token files; edit here until they are. */
+/* ── Semantic colors (light mode) — from src/tokens/colors.ts ───────────── */
 :root {
   --background:           #ffffff;
   --foreground:           #0a0a0a;
@@ -31,6 +31,11 @@
   --border:               #e5e5e5;
   --input:                #e5e5e5;
   --ring:                 #a1a1a1;
+  --chart-1:              #2BEE79;
+  --chart-2:              #F6C343;
+  --chart-3:              #F7931A;
+  --chart-4:              #7C3AED;
+  --chart-5:              #DD352E;
 }
 
 /* ── Semantic colors (dark mode) — from src/tokens/colors.ts ───────────── */
@@ -53,19 +58,193 @@
   --border:               hsl(150 20% 24%);
   --input:                rgba(255, 255, 255, 0.15);
   --ring:                 #2BEE79;
+  --chart-1:              #2BEE79;
+  --chart-2:              #F6C343;
+  --chart-3:              #F7931A;
+  --chart-4:              #7C3AED;
+  --chart-5:              #DD352E;
 }
 
-/* ── Border radius — from src/tokens/radius.ts ─────────────────────────── */
-:root {
-  --radius-none: 0px;
-  --radius-xs:   2px;
-  --radius-sm:   4px;
-  --radius-md:   6px;
-  --radius-lg:   8px;
-  --radius-xl:   12px;
-  --radius-2xl:  16px;
-  --radius-3xl:  24px;
-  --radius-4xl:  32px;
-  --radius-full: 9999px;
-  --radius:      var(--radius-lg);
+/* ─────────────────────────────────────────────────────────────────────────
+   Tailwind v4 @theme
+   @theme inline  — semantic colors: utilities reference CSS vars so dark mode works at runtime.
+   @theme         — static tokens: Tailwind owns the variable + generates the utility.
+   ───────────────────────────────────────────────────────────────────────── */
+
+@theme inline {
+  /* Semantic colors */
+  --color-background:           var(--background);
+  --color-foreground:           var(--foreground);
+  --color-card:                 var(--card);
+  --color-card-foreground:      var(--card-foreground);
+  --color-popover:              var(--popover);
+  --color-popover-foreground:   var(--popover-foreground);
+  --color-primary:              var(--primary);
+  --color-primary-foreground:   var(--primary-foreground);
+  --color-secondary:            var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted:                var(--muted);
+  --color-muted-foreground:     var(--muted-foreground);
+  --color-accent:               var(--accent);
+  --color-accent-foreground:    var(--accent-foreground);
+  --color-destructive:          var(--destructive);
+  --color-border:               var(--border);
+  --color-input:                var(--input);
+  --color-ring:                 var(--ring);
+  --color-chart-1:              var(--chart-1);
+  --color-chart-2:              var(--chart-2);
+  --color-chart-3:              var(--chart-3);
+  --color-chart-4:              var(--chart-4);
+  --color-chart-5:              var(--chart-5);
+}
+
+@theme {
+  /* Network colors */
+  --color-network-bitcoin:   #F7931A;
+  --color-network-rgb:       #DD352E;
+  --color-network-arkade:    #7C3AED;
+  --color-network-spark:     #FF6D00;
+  --color-network-lightning: #F6C343;
+
+  /* Transaction colors */
+  --color-tx-sent:    #F94040;
+  --color-tx-receive: #2BEE79;
+  --color-tx-swap:    #4290FF;
+
+  /* Typography */
+  --font-sans:    'Satoshi', system-ui, -apple-system, sans-serif;
+  --font-display: 'Satoshi', system-ui, -apple-system, sans-serif;
+  --font-mono:    'Geist Mono', monospace;
+  --text-xxs: 10px;
+  --text-xxs--line-height: 14px;
+  --text-tiny: 11px;
+  --text-tiny--line-height: 16px;
+  --text-caption: 13px;
+  --text-caption--line-height: 18px;
+  --text-body: 15px;
+  --text-body--line-height: 22px;
+  --text-subhead: 17px;
+  --text-subhead--line-height: 24px;
+  --text-title: 20px;
+  --text-title--line-height: 28px;
+  --text-headline: 28px;
+  --text-headline--line-height: 34px;
+  --text-display: 36px;
+  --text-display--line-height: 40px;
+
+  /* Border radius */
+  --radius-none:  0px;
+  --radius-xs:    2px;
+  --radius-sm:    4px;
+  --radius-md:    6px;
+  --radius-lg:    8px;
+  --radius-xl:    12px;
+  --radius-2xl:   16px;
+  --radius-3xl:   24px;
+  --radius-4xl:   32px;
+  --radius-full:  9999px;
+  --radius-card:  16px;
+  --radius-panel: 24px;
+  --radius-nav:   32px;
+  --radius-pill:  9999px;
+
+  /* Shadows */
+  --shadow-glow:        0 0 20px rgba(10, 10, 10, 0.15);
+  --shadow-glow-strong: 0 0 30px rgba(10, 10, 10, 0.25);
+  --shadow-glow-subtle: 0 0 15px rgba(10, 10, 10, 0.12);
+  --shadow-glow-accent: 0 4px 30px rgba(10, 10, 10, 0.18);
+
+  /* Transitions */
+  --transition-fast:    150ms ease-out;
+  --transition-default: 200ms ease-out;
+  --transition-slow:    300ms ease-out;
+
+  /* Animations */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-fade-in: fade-in 0.3s ease-out;
+  --animate-slide-up: slide-up 0.3s ease-out;
+  --animate-slide-in-from-bottom: slide-in-from-bottom 0.4s ease-out;
+  --animate-stagger-up: stagger-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-bounce-slight: bounce-slight 2s infinite;
+}
+
+/* ── Keyframes — from src/tokens/animations.ts ──────────────────────────── */
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-from-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes stagger-up {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce-slight {
+  0%, 100% {
+    transform: translateY(-5%);
+  }
+  50% {
+    transform: translateY(0);
+  }
 }

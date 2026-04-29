@@ -3,6 +3,32 @@
  *
  * Single source of truth for all color constants across web and native.
  */
+export const lightSemanticColors = {
+  background: '#ffffff',
+  foreground: '#0a0a0a',
+  card: '#ffffff',
+  cardFg: '#0a0a0a',
+  popover: '#ffffff',
+  popoverFg: '#0a0a0a',
+  primary: '#171717',
+  primaryFg: '#fafafa',
+  secondary: '#f5f5f5',
+  secondaryFg: '#171717',
+  muted: '#f5f5f5',
+  mutedFg: '#737373',
+  accent: '#f5f5f5',
+  accentFg: '#171717',
+  destructive: '#e7000b',
+  border: '#e5e5e5',
+  input: '#e5e5e5',
+  ring: '#a1a1a1',
+  chart1: '#2BEE79',
+  chart2: '#F6C343',
+  chart3: '#F7931A',
+  chart4: '#7C3AED',
+  chart5: '#DD352E',
+} as const
+
 const darkSemanticColors = {
   background: 'hsl(158 58% 7%)',
   foreground: '#ffffff',

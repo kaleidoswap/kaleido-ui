@@ -1,104 +1,65 @@
+/* ─── All @imports must come first ─────────────────────────────────────── */
 @import "tailwindcss";
 @import "../../src/css/kaleido-ui.css";
 @source "../../src/web/**/*.{ts,tsx}";
 
-@variant dark (&:where(.dark, .dark *));
+/* Class-based dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
 
-/* ------------------------------------------------------------------ */
-/*  Tailwind v4 theme — maps CSS vars → Tailwind utility names         */
-/* ------------------------------------------------------------------ */
+/* ─────────────────────────────────────────────────────────────────────────
+   APP-SPECIFIC THEME ADDITIONS
+   Base tokens (semantic colors, network/tx, radius, typography, shadows,
+   animations, keyframes) are provided by kaleido-ui/css imported above.
+   Only showcase-specific additions go here.
+   ───────────────────────────────────────────────────────────────────────── */
 
+/* Showcase surface palette — not yet part of the library token set */
 @theme inline {
-  /* Semantic colors */
-  --color-background:           var(--background);
-  --color-foreground:           var(--foreground);
-  --color-card:                 var(--card);
-  --color-card-foreground:      var(--card-foreground);
-  --color-popover:              var(--popover);
-  --color-popover-foreground:   var(--popover-foreground);
-  --color-primary:              var(--primary);
-  --color-primary-foreground:   var(--primary-foreground);
-  --color-secondary:            var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted:                var(--muted);
-  --color-muted-foreground:     var(--muted-foreground);
-  --color-accent:               var(--accent);
-  --color-accent-foreground:    var(--accent-foreground);
-  --color-destructive:          var(--destructive);
-  --color-border:               var(--border);
-  --color-input:                var(--input);
-  --color-ring:                 var(--ring);
-
-  /* KaleidoSwap surface colors (not yet in tokens-sample) */
   --color-background-dark:   #102217;
   --color-background-light:  #F6F8F7;
   --color-surface-dark:      #162E21;
   --color-surface-highlight: #243E30;
   --color-surface-border:    #244A35;
   --color-surface-darker:    #0B1810;
-
-  /* Network colors */
-  --color-network-bitcoin:   #F7931A;
-  --color-network-rgb:       #DD352E;
-  --color-network-arkade:    #7C3AED;
-  --color-network-spark:     #FF6D00;
-  --color-network-lightning: #F6C343;
-
-  /* Transaction */
-  --color-tx-sent:    #F94040;
-  --color-tx-receive: #2BEE79;
-  --color-tx-swap:    #4290FF;
-
-  /* Typography — tw/font/Mode 1.json */
-  --font-display: 'Satoshi', system-ui, sans-serif;
-  --font-mono:    'Geist Mono', monospace;
-
-  /* Type scale */
-  --text-xxs:      10px;
-  --text-tiny:     11px;
-  --text-caption:  13px;
-  --text-body:     15px;
-  --text-subhead:  17px;
-  --text-title:    20px;
-  --text-headline: 28px;
-  --text-display:  36px;
-
-  /* Border radius */
-  --radius-none: var(--radius-none);
-  --radius-xs:   var(--radius-xs);
-  --radius-sm:   var(--radius-sm);
-  --radius-md:   var(--radius-md);
-  --radius-lg:   var(--radius-lg);
-  --radius-xl:   var(--radius-xl);
-  --radius-2xl:  var(--radius-2xl);
-  --radius-3xl:  var(--radius-3xl);
-  --radius-4xl:  var(--radius-4xl);
-  --radius-full: var(--radius-full);
-
-  /* Component-specific radius aliases */
-  --radius-card:  20px;
-  --radius-panel: 22px;
-  --radius-pill:  24px;
-  --radius-nav:   14px;
 }
 
-/* ------------------------------------------------------------------ */
-/*  Base                                                               */
-/* ------------------------------------------------------------------ */
+/* ─────────────────────────────────────────────────────────────────────────
+   DARK MODE OVERRIDES
+   The library ships conservative defaults. The showcase uses the full
+   forest-dark / brand-green palette from DESIGN.md.
+   ───────────────────────────────────────────────────────────────────────── */
+.dark {
+  --background: hsl(158 58% 7%);
+  --foreground: #ffffff;
+  --card: hsl(156 32% 12%);
+  --card-foreground: #ffffff;
+  --popover: hsl(154 26% 17%);
+  --popover-foreground: #ffffff;
+  --primary: #2bee79;
+  --primary-foreground: #051b10;
+  --secondary: hsl(154 26% 17%);
+  --secondary-foreground: #ffffff;
+  --muted: hsl(156 32% 12%);
+  --muted-foreground: rgba(255, 255, 255, 0.55);
+  --accent: hsl(154 26% 17%);
+  --accent-foreground: #ffffff;
+  --destructive: hsl(0 62% 50%);
+  --border: hsl(150 20% 24%);
+  --input: rgba(255, 255, 255, 0.15);
+  --ring: #2bee79;
+}
 
+/* ─── Base ──────────────────────────────────────────────────────────────── */
 @layer base {
   * { border-color: var(--border); }
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: var(--font-display);
+    font-family: var(--font-sans);
   }
 }
 
-/* ------------------------------------------------------------------ */
-/*  Glass effects                                                      */
-/* ------------------------------------------------------------------ */
-
+/* ─── Glass effects ─────────────────────────────────────────────────────── */
 .glass-panel {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(16px);
@@ -122,49 +83,23 @@
 }
 .glass-card:active { transform: scale(0.98); }
 
-/* ------------------------------------------------------------------ */
-/*  Glow utilities                                                     */
-/* ------------------------------------------------------------------ */
-
+/* ─── Brand glow utilities (green-tinted, showcase-specific) ────────────── */
 .shadow-glow-subtle { box-shadow: 0 0 10px rgba(43, 238, 121, 0.1); }
 .shadow-glow        { box-shadow: 0 0 20px rgba(43, 238, 121, 0.2); }
 .shadow-glow-strong { box-shadow: 0 0 30px rgba(43, 238, 121, 0.3); }
 .shadow-glow-accent { box-shadow: 0 4px 30px rgba(43, 238, 121, 0.25); }
 
-/* ------------------------------------------------------------------ */
-/*  Utilities                                                          */
-/* ------------------------------------------------------------------ */
+/* ─── Utilities ─────────────────────────────────────────────────────────── */
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .pb-safe { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+}
 
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-.pb-safe { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
-
-/* ------------------------------------------------------------------ */
-/*  Animations                                                         */
-/* ------------------------------------------------------------------ */
-
+/* ─── App-specific keyframes ────────────────────────────────────────────── */
 @keyframes pulse-glow {
   0%, 100% { box-shadow: 0 0 20px rgba(43, 238, 121, 0.2); }
   50%       { box-shadow: 0 0 30px rgba(43, 238, 121, 0.4); }
 }
-@keyframes fade-in {
-  from { opacity: 0; } to { opacity: 1; }
-}
-@keyframes slide-up {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes slide-in-from-bottom {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position:  200% 0; }
-}
 
-.animate-pulse-glow          { animation: pulse-glow 2s ease-in-out infinite; }
-.animate-fade-in             { animation: fade-in 0.3s ease-out; }
-.animate-slide-up            { animation: slide-up 0.3s ease-out; }
-.animate-slide-in-from-bottom{ animation: slide-in-from-bottom 0.4s ease-out; }
-.animate-shimmer             { animation: shimmer 2s linear infinite; }
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
