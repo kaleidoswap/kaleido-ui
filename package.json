@@ -40,11 +40,13 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@tetherto/wdk-uikit-react-native": "^1.0.0-beta.2"
+    "@tetherto/wdk-uikit-react-native": "^1.0.0-beta.2",
+    "qr": "^0.5.5"
   },
   "peerDependencies": {
     "@radix-ui/react-dialog": "^1.1.0",
     "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-select": "^2.1.0",
     "@radix-ui/react-slot": "^1.2.0",
     "@radix-ui/react-tabs": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.0",
@@ -63,6 +65,9 @@
       "optional": true
     },
     "@radix-ui/react-dialog": {
+      "optional": true
+    },
+    "@radix-ui/react-select": {
       "optional": true
     },
     "@radix-ui/react-label": {
@@ -90,12 +95,13 @@
   "devDependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-select": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tabs": "^1.1.13",
     "@radix-ui/react-toast": "^1.2.15",
     "@tailwindcss/vite": "^4.2.4",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
+    "@types/react": "^18.3.28",
+    "@types/react-dom": "^18.3.7",
     "@types/react-native": "^0.72.8",
     "@vitejs/plugin-react": "^4.3.0",
     "autoprefixer": "^10.5.0",

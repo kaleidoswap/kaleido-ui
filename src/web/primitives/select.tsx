@@ -1,87 +1,122 @@
 import * as React from 'react'
+import * as SelectPrimitive from '@radix-ui/react-select'
 import { cn } from '../utils/cn'
 
-export interface SelectOption {
-  value: string
-  label: string
-  prefix?: string
+const Select = SelectPrimitive.Root
+const SelectGroup = SelectPrimitive.Group
+const SelectValue = SelectPrimitive.Value
+
+const SelectTrigger = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
+>(({ className, children, ...props }, ref) => (
+  <SelectPrimitive.Trigger
+    ref={ref}
+    className={cn(
+      'group flex w-full items-center justify-between gap-3 rounded-xl border border-border bg-white/[0.04] px-4 py-3 text-left text-sm transition-all',
+      'hover:border-primary/30 hover:bg-white/[0.06]',
+      'focus:outline-none focus:ring-1 focus:ring-primary/50',
+      'data-[state=open]:border-primary/30',
+      'disabled:cursor-not-allowed disabled:opacity-50',
+      className
+    )}
+    {...props}
+  >
+    {children}
+    <SelectPrimitive.Icon asChild>
+      <span className="material-symbols-outlined shrink-0 text-[18px] text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180">
+        expand_more
+      </span>
+    </SelectPrimitive.Icon>
+  </SelectPrimitive.Trigger>
+))
+SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
+
+const SelectContent = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
+>(({ className, children, position = 'popper', ...props }, ref) => (
+  <SelectPrimitive.Portal>
+    <SelectPrimitive.Content
+      ref={ref}
+      className={cn(
+        'relative z-50 min-w-[8rem] overflow-hidden rounded-2xl border border-primary/20 bg-popover/95 p-2 shadow-xl backdrop-blur',
+        position === 'popper' && 'w-[var(--radix-select-trigger-width)]',
+        className
+      )}
+      position={position}
+      sideOffset={8}
+      {...props}
+    >
+      <SelectPrimitive.Viewport>{children}</SelectPrimitive.Viewport>
+    </SelectPrimitive.Content>
+  </SelectPrimitive.Portal>
+))
+SelectContent.displayName = SelectPrimitive.Content.displayName
+
+const SelectLabel = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Label>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.Label
+    ref={ref}
+    className={cn('px-3 py-1.5 text-xs font-semibold text-muted-foreground', className)}
+    {...props}
+  />
+))
+SelectLabel.displayName = SelectPrimitive.Label.displayName
+
+interface SelectItemProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item> {
+  description?: string
 }
 
-interface SelectProps {
-  options: SelectOption[]
-  value?: string
-  onValueChange?: (value: string) => void
-  className?: string
+const SelectItem = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Item>,
+  SelectItemProps
+>(({ className, children, description, ...props }, ref) => (
+  <SelectPrimitive.Item
+    ref={ref}
+    className={cn(
+      'relative flex w-full cursor-pointer select-none items-center justify-between rounded-xl px-3 py-3 text-sm outline-none transition-colors',
+      'data-[highlighted]:bg-white/[0.06]',
+      'data-[state=checked]:bg-primary/20 data-[state=checked]:text-primary',
+      'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      className
+    )}
+    {...props}
+  >
+    <div className="min-w-0">
+      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+      {description && (
+        <p className="mt-0.5 text-[11px] text-muted-foreground">{description}</p>
+      )}
+    </div>
+    <SelectPrimitive.ItemIndicator>
+      <span className="material-symbols-outlined text-[16px] text-primary">check</span>
+    </SelectPrimitive.ItemIndicator>
+  </SelectPrimitive.Item>
+))
+SelectItem.displayName = SelectPrimitive.Item.displayName
+
+const SelectSeparator = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Separator>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.Separator
+    ref={ref}
+    className={cn('-mx-1 my-1 h-px bg-border', className)}
+    {...props}
+  />
+))
+SelectSeparator.displayName = SelectPrimitive.Separator.displayName
+
+export {
+  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
 }
-
-const Select = React.forwardRef<HTMLDivElement, SelectProps>(
-  ({ options, value, onValueChange, className }, ref) => {
-    const [open, setOpen] = React.useState(false)
-    const containerRef = React.useRef<HTMLDivElement>(null)
-    const selected = options.find(o => o.value === value) ?? options[0]
-
-    React.useEffect(() => {
-      const handleClickOutside = (e: MouseEvent) => {
-        if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-          setOpen(false)
-        }
-      }
-      if (open) document.addEventListener('mousedown', handleClickOutside)
-      return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [open])
-
-    return (
-      <div ref={containerRef} className={cn('relative', className)}>
-        {/* Trigger */}
-        <button
-          type="button"
-          onClick={(e) => { e.stopPropagation(); setOpen(o => !o) }}
-          className="flex items-center gap-1.5 text-xs text-muted-foreground font-mono hover:text-white transition-colors"
-        >
-          {selected?.prefix && <span>{selected.prefix}</span>}
-          <span>{selected?.label}</span>
-          <span
-            className={cn(
-              'material-symbols-outlined text-[14px] transition-transform duration-200 group-hover:text-white',
-              open ? 'rotate-180' : 'rotate-0'
-            )}
-          >
-            expand_more
-          </span>
-        </button>
-
-        {/* Dropdown */}
-        {open && (
-          <div className="absolute right-0 bottom-full mb-2 z-50 min-w-[140px] rounded-xl bg-card border border-border/30 shadow-xl overflow-hidden">
-            {options.map(opt => (
-              <button
-                key={opt.value}
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onValueChange?.(opt.value)
-                  setOpen(false)
-                }}
-                className={cn(
-                  'w-full flex items-center gap-2 px-3 py-2 text-xs font-mono text-left transition-colors',
-                  opt.value === selected?.value
-                    ? 'text-primary bg-primary/10'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
-                )}
-              >
-                {opt.prefix && <span>{opt.prefix}</span>}
-                <span>{opt.label}</span>
-                {opt.value === selected?.value && (
-                  <span className="material-symbols-outlined text-[12px] text-primary ml-auto">check</span>
-                )}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-    )
-  }
-)
-Select.displayName = 'Select'
-
-export { Select }

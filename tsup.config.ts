@@ -22,6 +22,7 @@ export default defineConfig([
       'react/jsx-runtime',
       'react/jsx-dev-runtime',
       '@radix-ui/react-dialog',
+      '@radix-ui/react-select',
       '@radix-ui/react-label',
       '@radix-ui/react-slot',
       '@radix-ui/react-tabs',
