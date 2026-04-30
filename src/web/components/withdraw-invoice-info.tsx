@@ -53,7 +53,7 @@ export function WithdrawInvoiceInfo({
 }: WithdrawInvoiceInfoProps) {
   if (decodedLnInvoice && addressType === 'lightning') {
     return (
-      <div className="space-y-3 rounded-2xl border border-border bg-card p-5 shadow-inner">
+      <div className="space-y-3 rounded-2xl border bg-card p-5 shadow-inner">
         <p className="text-xs font-medium uppercase tracking-wide text-primary">
           Lightning Invoice
         </p>
@@ -103,7 +103,7 @@ export function WithdrawInvoiceInfo({
 
   if (decodedRgbInvoice && addressType === 'rgb') {
     return (
-      <div className="space-y-3 rounded-2xl border border-border bg-card p-5 shadow-inner">
+      <div className="space-y-3 rounded-2xl border bg-card p-5 shadow-inner">
         <p className="text-xs font-medium uppercase tracking-wide text-primary">RGB Invoice</p>
         {decodedRgbInvoice.asset_id && (
           <div className="flex justify-between text-sm">
@@ -145,7 +145,7 @@ export function WithdrawInvoiceInfo({
 
   if (addressType === 'bitcoin' || addressType === 'arkade') {
     return (
-      <div className="rounded-2xl border border-border bg-card p-5 shadow-inner">
+      <div className="rounded-2xl border bg-card p-5 shadow-inner">
         <div className="flex justify-between text-sm">
           <span className="text-muted-foreground">
             {addressType === 'arkade' ? 'Available Arkade Balance' : 'Available Balance'}

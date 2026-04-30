@@ -72,7 +72,7 @@ export function WithdrawConfirmation({
           </p>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-border bg-card/90 shadow-inner backdrop-blur-2xl">
+        <div className="overflow-hidden rounded-2xl border bg-card/90 shadow-inner backdrop-blur-2xl">
           <div className="flex items-center justify-between border-b border-border p-5">
             <span className="text-sm text-muted-foreground">To</span>
             <span className="max-w-[200px] truncate font-mono text-sm text-white" title={destination}>

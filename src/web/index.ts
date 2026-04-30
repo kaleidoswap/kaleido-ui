@@ -87,6 +87,21 @@ export {
   type AccountStatusTabItem,
 } from './components/account-status-tabs'
 export {
+  FilterDropdown,
+  type FilterDropdownProps,
+  type FilterDropdownOption,
+} from './components/filter-dropdown'
+export {
+  SettingsTile,
+  SettingsStatusPanel,
+  SettingsActionButton,
+  type SettingsTileProps,
+} from './components/settings-tile'
+export {
+  AccountCapabilitiesCard,
+  type AccountCapabilitiesCardProps,
+} from './components/account-capabilities-card'
+export {
   WalletAssetList,
   type WalletAssetListProps,
   type WalletAssetListItem,
@@ -215,14 +230,20 @@ export {
 } from './components/deposit-invoice-generation'
 export {
   AccountHeaderIcons,
+  AccountSettingsRow,
+  getAccountNetworkLabel,
+  getAccountNetworkUi,
   getAccountStatusUi,
+  AccountStatusPills,
   AccountNetworkSelector,
   AccountNetworkPicker,
   AccountSettingsShell,
   AccountInfoGrid,
   AccountNotice,
+  AccountNetworkNotice,
   SectionTitle,
   InlineAction,
+  TransferRouteCard,
   ExpandIcon,
   type AccountSettingsProtocol,
   type AccountSettingsNetwork,

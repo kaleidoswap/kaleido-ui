@@ -39,7 +39,7 @@ export function ActivityFilterBar<TStatus extends string = string>({
           placeholder={searchPlaceholder}
           value={searchTerm}
           onChange={(event) => onSearchTermChange(event.target.value)}
-          className="h-full w-full rounded-xl border border-border bg-background/40 pl-9 pr-8 text-xs text-white shadow-sm backdrop-blur-xl transition-all placeholder:text-white/30 focus:border-primary/40 focus:outline-none"
+          className="h-full w-full rounded-xl border bg-background/40 pl-9 pr-8 text-xs text-white shadow-sm backdrop-blur-xl transition-all placeholder:text-white/30 focus:border-primary/40 focus:outline-none"
         />
         {searchTerm && (
           <button
@@ -56,7 +56,7 @@ export function ActivityFilterBar<TStatus extends string = string>({
         <select
           value={statusFilter}
           onChange={(event) => onStatusFilterChange(event.target.value as TStatus)}
-          className="h-full w-full cursor-pointer appearance-none rounded-xl border border-border bg-card/40 px-3 text-xs font-bold text-white shadow-sm backdrop-blur-xl transition-colors hover:border-border focus:border-primary/40 focus:outline-none"
+          className="h-full w-full cursor-pointer appearance-none rounded-xl border bg-card/40 px-3 text-xs font-bold text-white shadow-sm backdrop-blur-xl transition-colors hover:border-border focus:border-primary/40 focus:outline-none"
         >
           {statusOptions.map((option) => (
             <option key={option.value} value={option.value} className="bg-slate-800">

@@ -37,7 +37,7 @@ export function WithdrawSuccess({
         </p>
 
         <div className="mt-12 w-full max-w-xs space-y-4">
-          <div className="flex items-center justify-between rounded-2xl border border-border bg-card p-5 shadow-inner">
+          <div className="flex items-center justify-between rounded-2xl border bg-card p-5 shadow-inner">
             <span className="text-sm text-muted-foreground">Amount</span>
             <span className="text-xl font-bold">
               {displayAmount.toLocaleString()}{' '}
@@ -50,7 +50,7 @@ export function WithdrawSuccess({
           </div>
 
           {(txResult?.paymentHash || txResult?.payment_hash) && (
-            <div className="rounded-2xl border border-border bg-card p-5 shadow-inner">
+            <div className="rounded-2xl border bg-card p-5 shadow-inner">
               <p className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">
                 Payment Hash
               </p>
@@ -61,7 +61,7 @@ export function WithdrawSuccess({
           )}
 
           {txResult?.txid && (
-            <div className="rounded-2xl border border-border bg-card p-5 shadow-inner">
+            <div className="rounded-2xl border bg-card p-5 shadow-inner">
               <p className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">
                 Transaction ID
               </p>
@@ -80,7 +80,7 @@ export function WithdrawSuccess({
             handleReset()
             onDone()
           }}
-          className="w-full rounded-2xl border border-border bg-card py-4 text-lg font-bold text-white transition-all hover:bg-accent active:scale-[0.98]"
+          className="w-full rounded-2xl border bg-card py-4 text-lg font-bold text-white transition-all hover:bg-accent active:scale-[0.98]"
         >
           Back to Dashboard
         </button>

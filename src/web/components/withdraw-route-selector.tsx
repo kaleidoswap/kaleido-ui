@@ -101,7 +101,7 @@ export function WithdrawRouteSelector<TAccount extends string = string>({
       </div>
 
       {selectedRouteSummary && activeRouteAccount && (
-        <div className="rounded-2xl border border-border bg-white/4 p-4">
+        <div className="rounded-2xl border bg-white/4 p-4">
           <div className="flex items-center justify-between gap-3">
             <span className="text-xs uppercase tracking-wider text-white/35">Selected path</span>
             <span className="text-xs font-bold text-white">{selectedAccountTitle}</span>

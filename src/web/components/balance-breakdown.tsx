@@ -135,7 +135,7 @@ export function BalanceBreakdown({
                   )}
                   {isPartial && (
                     <span
-                      className="inline-flex size-4 items-center justify-center rounded-full border border-border bg-white/[0.06]"
+                      className="inline-flex size-4 items-center justify-center rounded-full border bg-white/[0.06]"
                       title="Loading remaining balances"
                     >
                       <span className="size-2 animate-spin rounded-full border border-primary/30 border-t-primary" />
@@ -418,7 +418,7 @@ function NetworkRow({
         {isPending ? (
           <div className="flex items-center gap-1.5">
             <div className="h-3.5 w-12 animate-pulse rounded bg-white/10" />
-            <span className="inline-flex size-3 items-center justify-center rounded-full border border-border bg-white/[0.06]">
+            <span className="inline-flex size-3 items-center justify-center rounded-full border bg-white/[0.06]">
               <span className="size-1.5 animate-spin rounded-full border border-primary/30 border-t-primary" />
             </span>
           </div>

@@ -99,7 +99,7 @@ export function DepositPreGeneration({
       </div>
 
       {channelsLoading && selectedAccount === 'RGB' && currentMethod === 'lightning' && !isBtc && (
-        <div className="flex items-center gap-2.5 rounded-xl border border-border bg-card p-3">
+        <div className="flex items-center gap-2.5 rounded-xl border bg-card p-3">
           <span className="material-symbols-outlined animate-spin text-[18px] text-primary">
             progress_activity
           </span>
@@ -140,7 +140,7 @@ export function DepositPreGeneration({
       )}
 
       {network === 'onchain' && !isBtc && (
-        <div className="space-y-2 rounded-xl border border-border bg-card p-3">
+        <div className="space-y-2 rounded-xl border bg-card p-3">
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0 flex-1">
               <h4 className="text-xs font-bold text-white">Receive with Privacy</h4>
@@ -151,7 +151,7 @@ export function DepositPreGeneration({
             <button
               type="button"
               className={cn(
-                'relative inline-flex h-5 w-9 flex-shrink-0 items-center rounded-full border border-border shadow-inner transition-colors',
+                'relative inline-flex h-5 w-9 flex-shrink-0 items-center rounded-full border shadow-inner transition-colors',
                 usePrivacy ? 'bg-primary' : 'bg-white/10'
               )}
               onClick={() => setUsePrivacy(!usePrivacy)}
@@ -189,7 +189,7 @@ export function DepositPreGeneration({
             value={amount}
             onChange={handleAmountChange}
             placeholder={`e.g. 10.00 ${selectedAsset?.ticker ?? ''}`}
-            className="w-full rounded-xl border border-border bg-white/5 px-3 py-2.5 font-mono text-sm font-bold text-white transition-all placeholder:text-white/20 focus:border-primary/50 focus:outline-none"
+            className="w-full rounded-xl border bg-white/5 px-3 py-2.5 font-mono text-sm font-bold text-white transition-all placeholder:text-white/20 focus:border-primary/50 focus:outline-none"
             inputMode="decimal"
           />
         </div>

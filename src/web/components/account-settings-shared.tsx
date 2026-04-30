@@ -12,7 +12,7 @@ const SUPPORTED_ACCOUNT_NETWORKS: Record<AccountSettingsProtocol, AccountSetting
   ARKADE: ['signet', 'mainnet'],
 }
 
-function getAccountNetworkLabel(network: AccountSettingsNetwork): string {
+export function getAccountNetworkLabel(network: AccountSettingsNetwork): string {
   switch (network) {
     case 'mainnet':
       return 'Mainnet'
@@ -25,23 +25,26 @@ function getAccountNetworkLabel(network: AccountSettingsNetwork): string {
   }
 }
 
-function getAccountNetworkUi(network: AccountSettingsNetwork) {
+export function getAccountNetworkUi(network: AccountSettingsNetwork) {
   const label = getAccountNetworkLabel(network)
   if (network === 'mainnet') {
     return {
       label,
-      badgeClassName: 'border-emerald-500/35 bg-emerald-500/12 text-emerald-200',
+      badgeClassName: 'bg-emerald-500/12 text-emerald-200',
+      bannerClassName: 'bg-emerald-500/10 text-emerald-200',
     }
   }
   if (network === 'regtest') {
     return {
       label,
-      badgeClassName: 'border-red-500/35 bg-red-500/12 text-red-200',
+      badgeClassName: 'bg-red-500/12 text-red-200',
+      bannerClassName: 'bg-red-500/10 text-red-200',
     }
   }
   return {
     label,
-    badgeClassName: 'border-orange-500/35 bg-orange-500/12 text-orange-200',
+    badgeClassName: 'bg-orange-500/12 text-orange-200',
+    bannerClassName: 'bg-orange-500/10 text-orange-200',
   }
 }
 
@@ -49,10 +52,10 @@ export function AccountHeaderIcons({ accountId }: { accountId: AccountSettingsPr
   if (accountId === 'RGB') {
     return (
       <div className="flex -space-x-1">
-        <span className="flex size-10 items-center justify-center rounded-full border border-border bg-network-bitcoin/15 shadow-inner">
+        <span className="flex size-10 items-center justify-center rounded-full bg-network-bitcoin/15 shadow-inner">
           <img src="/icons/lightning/lightning.svg" alt="Lightning" className="size-5 object-contain" />
         </span>
-        <span className="flex size-10 items-center justify-center rounded-full border border-border bg-primary/15 shadow-inner">
+        <span className="flex size-10 items-center justify-center rounded-full bg-primary/15 shadow-inner">
           <img src="/icons/rgb/rgb-logo.svg" alt="RGB" className="size-5 object-contain" />
         </span>
       </div>
@@ -61,14 +64,14 @@ export function AccountHeaderIcons({ accountId }: { accountId: AccountSettingsPr
 
   if (accountId === 'SPARK') {
     return (
-      <span className="flex size-10 items-center justify-center rounded-full border border-blue-500/20 bg-blue-500/10 shadow-inner">
+      <span className="flex size-10 items-center justify-center rounded-full bg-blue-500/10 shadow-inner">
         <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" alt="Spark" className="size-5 object-contain" />
       </span>
     )
   }
 
   return (
-    <span className="flex size-10 items-center justify-center rounded-full border border-purple-500/20 bg-purple-500/10 shadow-inner">
+    <span className="flex size-10 items-center justify-center rounded-full bg-purple-500/10 shadow-inner">
       <img src="/icons/arkade/arkade-icon.svg" alt="Arkade" className="size-5 rounded-sm object-contain" />
     </span>
   )
@@ -79,17 +82,17 @@ export function getAccountStatusUi(status: 'ready' | 'offline' | 'optional' | st
     case 'ready':
       return {
         label: 'Ready',
-        className: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-200',
+        className: 'bg-emerald-500/10 text-emerald-200',
       }
     case 'offline':
       return {
         label: 'Offline',
-        className: 'border-amber-500/30 bg-amber-500/10 text-amber-200',
+        className: 'bg-amber-500/10 text-amber-200',
       }
     default:
       return {
         label: 'Optional',
-        className: 'border-border bg-white/[0.05] text-white/55',
+        className: 'bg-white/[0.05] text-white/55',
       }
   }
 }
@@ -112,7 +115,7 @@ export function AccountNetworkSelector({
       role="radiogroup"
       aria-label="Network"
       className={cn(
-        'grid auto-cols-fr grid-flow-col gap-1 rounded-2xl border border-border bg-black/30 p-1 shadow-inner',
+        'grid auto-cols-fr grid-flow-col gap-1 rounded-2xl bg-black/30 p-1 shadow-inner',
         disabled && 'opacity-60'
       )}
     >
@@ -207,7 +210,7 @@ export function AccountSettingsShell({
 }) {
   return (
     <div className="min-h-screen bg-background pb-28 font-display text-foreground">
-      <header className="sticky top-0 z-20 border-b border-border bg-background/95 px-5 py-4 backdrop-blur">
+      <header className="sticky top-0 z-20 bg-background/95 px-5 py-4 backdrop-blur">
         <div className="flex items-start gap-3">
           <AccountHeaderIcons accountId={accountId} />
           <div className="min-w-0 flex-1">
@@ -226,7 +229,7 @@ export function AccountInfoGrid({ items }: { items: Array<{ label: string; value
   return (
     <div className="grid gap-3 sm:grid-cols-2">
       {items.map((item) => (
-        <div key={item.label} className="rounded-xl border border-white/8 bg-black/20 p-3 text-xs">
+        <div key={item.label} className="rounded-xl bg-black/20 p-3 text-xs">
           <p className="text-muted-foreground">{item.label}</p>
           <div className="mt-1 break-all text-white/90">{item.value}</div>
         </div>
@@ -245,13 +248,59 @@ export function AccountNotice({
   return (
     <div
       className={cn(
-        'rounded-xl border px-3 py-3 text-xs',
+        'rounded-xl px-3 py-3 text-xs',
         tone === 'warning'
-          ? 'border-amber-500/20 bg-amber-500/10 text-amber-100'
-          : 'border-white/8 bg-black/20 text-white/80'
+          ? 'bg-amber-500/10 text-amber-100'
+          : 'bg-black/20 text-white/80'
       )}
     >
       {children}
+    </div>
+  )
+}
+
+export function AccountNetworkNotice({
+  network,
+  children,
+}: {
+  network: AccountSettingsNetwork
+  children: ReactNode
+}) {
+  return (
+    <div className={cn('rounded-xl px-3 py-3 text-xs', getAccountNetworkUi(network).bannerClassName)}>
+      {children}
+    </div>
+  )
+}
+
+export function AccountStatusPills({
+  status,
+  network,
+}: {
+  status: 'ready' | 'offline' | 'optional' | string
+  network: AccountSettingsNetwork
+}) {
+  const statusUi = getAccountStatusUi(status)
+  const networkUi = getAccountNetworkUi(network)
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <span
+        className={cn(
+          'rounded-full px-2.5 py-1 text-xxs font-bold uppercase tracking-wider',
+          statusUi.className
+        )}
+      >
+        {statusUi.label === 'Ready' ? 'Connected' : statusUi.label}
+      </span>
+      <span
+        className={cn(
+          'rounded-full px-2.5 py-1 text-xxs font-bold uppercase tracking-wider',
+          networkUi.badgeClassName
+        )}
+      >
+        {networkUi.label}
+      </span>
     </div>
   )
 }
@@ -275,17 +324,17 @@ export function InlineAction({
 }) {
   const className =
     accent === 'purple'
-      ? 'border-purple-500/20 bg-purple-500/10 text-purple-200 hover:bg-purple-500/15'
+      ? 'bg-purple-500/10 text-purple-200 hover:bg-purple-500/15'
       : accent === 'blue'
-        ? 'border-blue-500/20 bg-blue-500/10 text-blue-200 hover:bg-blue-500/15'
-        : 'border-primary/20 bg-primary/10 text-primary hover:bg-primary/15'
+        ? 'bg-blue-500/10 text-blue-200 hover:bg-blue-500/15'
+        : 'bg-primary/10 text-primary hover:bg-primary/15'
 
   return (
     <button
       type="button"
       onClick={onClick}
       className={cn(
-        'flex w-full items-center justify-between rounded-xl border px-3 py-3 text-left transition-colors',
+        'flex w-full items-center justify-between rounded-xl px-3 py-3 text-left transition-colors',
         className
       )}
     >
@@ -298,6 +347,73 @@ export function InlineAction({
   )
 }
 
+export function TransferRouteCard({
+  label,
+  summary,
+  eta,
+  feeHint,
+}: {
+  label: string
+  summary: string
+  eta: string
+  feeHint: string
+}) {
+  return (
+    <div className="rounded-2xl bg-card/60 p-4 shadow-inner">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-sm font-bold text-white">{label}</p>
+          <p className="mt-1 text-xs text-muted-foreground">{summary}</p>
+        </div>
+        <div className="text-right">
+          <p className="text-xxs font-bold uppercase tracking-wider text-white/60">{eta}</p>
+          <p className="mt-1 text-tiny text-primary">{feeHint}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export function ExpandIcon({ expanded }: { expanded: boolean }) {
   return <Icon name={expanded ? 'expand_less' : 'expand_more'} size="md" />
+}
+
+export function AccountSettingsRow({
+  accountId,
+  title,
+  status,
+  network,
+  description,
+  onClick,
+}: {
+  accountId: AccountSettingsProtocol
+  title: string
+  status: 'ready' | 'offline' | 'optional' | string
+  network: AccountSettingsNetwork
+  description: string
+  onClick: () => void
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="w-full rounded-3xl bg-white/[0.03] p-4 text-left shadow-inner transition-colors hover:bg-white/[0.05]"
+    >
+      <div className="flex items-start gap-3">
+        <AccountHeaderIcons accountId={accountId} />
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-sm font-bold text-white">{title}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+            </div>
+            <Icon name="chevron_right" size="sm" className="text-white/40" />
+          </div>
+          <div className="mt-3">
+            <AccountStatusPills status={status} network={network} />
+          </div>
+        </div>
+      </div>
+    </button>
+  )
 }

@@ -188,7 +188,7 @@ export function DepositAssetSelection<TView extends string = string>({
             >
               <div className="relative flex-shrink-0">
                 <AssetIcon ticker={asset.ticker} size={40} />
-                <div className="absolute -bottom-1 -right-1 flex size-4 items-center justify-center rounded-full border border-border bg-card">
+                <div className="absolute -bottom-1 -right-1 flex size-4 items-center justify-center rounded-full border bg-card">
                   <img src="/icons/rgb/rgb-logo.svg" className="block h-2.5 w-2.5 object-contain" alt="RGB" />
                 </div>
               </div>
@@ -314,7 +314,7 @@ export function DepositAssetSelection<TView extends string = string>({
                 Leave empty to receive any RGB asset, or enter a specific asset ID.
               </p>
               <input
-                className="w-full rounded-xl border border-border bg-white/5 px-3 py-2 font-mono text-sm text-white transition-all placeholder:text-white/25 focus:border-purple-500/40 focus:outline-none"
+                className="w-full rounded-xl border bg-white/5 px-3 py-2 font-mono text-sm text-white transition-all placeholder:text-white/25 focus:border-purple-500/40 focus:outline-none"
                 onChange={(event) => setNewAssetId(event.target.value)}
                 placeholder="Asset ID (optional)"
                 type="text"

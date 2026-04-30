@@ -45,7 +45,7 @@ export function DepositSuccessScreen({
           {subtitle}
         </p>
 
-        <div className="mb-10 flex items-center gap-3 rounded-2xl border border-border bg-white/5 px-4 py-3">
+        <div className="mb-10 flex items-center gap-3 rounded-2xl border bg-white/5 px-4 py-3">
           <AssetIcon ticker={displayTicker} size={36} />
           <div className="text-left">
             <p className="text-sm font-bold text-white">{displayTicker}</p>

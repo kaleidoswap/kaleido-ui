@@ -79,7 +79,7 @@ export function BtcUnifiedReceive({
           value={amount}
           onChange={handleAmountChange}
           placeholder="Any amount (amountless)"
-          className="w-full rounded-lg border border-border bg-white/5 px-3 py-1.5 font-mono text-xs font-bold text-white transition-all placeholder:text-white/25 focus:border-primary/40 focus:outline-none"
+          className="w-full rounded-lg border bg-white/5 px-3 py-1.5 font-mono text-xs font-bold text-white transition-all placeholder:text-white/25 focus:border-primary/40 focus:outline-none"
           inputMode="decimal"
         />
         {amount && loading && (
@@ -181,7 +181,7 @@ export function BtcUnifiedReceive({
             setInvoiceStatus(null)
             setAccountReceiveResult(null)
           }}
-          className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-border py-3 text-xs font-bold text-muted-foreground transition-all hover:border-border hover:bg-accent hover:text-white active:scale-[0.98]"
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border py-3 text-xs font-bold text-muted-foreground transition-all hover:border-border hover:bg-accent hover:text-white active:scale-[0.98]"
         >
           <span className="material-symbols-outlined text-[14px]">refresh</span>
           New Address

@@ -73,7 +73,7 @@ export function WithdrawAmountInput({
           <label className="ml-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
             Amount
           </label>
-          <div className="relative flex flex-col items-center justify-center gap-2 overflow-hidden rounded-3xl border border-border bg-card/90 px-6 py-8 shadow-lg backdrop-blur-2xl transition-all focus-within:border-primary/50">
+          <div className="relative flex flex-col items-center justify-center gap-2 overflow-hidden rounded-3xl border bg-card/90 px-6 py-8 shadow-lg backdrop-blur-2xl transition-all focus-within:border-primary/50">
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent to-primary/5" />
             <div className="z-10 flex w-full items-baseline justify-center gap-2">
               <input
@@ -88,7 +88,7 @@ export function WithdrawAmountInput({
             </div>
             <button
               type="button"
-              className="absolute right-4 top-4 rounded-xl border border-border bg-card px-4 py-2 text-xs font-bold uppercase tracking-wider text-primary shadow-inner transition-colors hover:bg-primary/20"
+              className="absolute right-4 top-4 rounded-xl border bg-card px-4 py-2 text-xs font-bold uppercase tracking-wider text-primary shadow-inner transition-colors hover:bg-primary/20"
               onClick={handleSetMax}
             >
               Max
@@ -126,7 +126,7 @@ export function WithdrawAmountInput({
               const value = parseInt(event.target.value, 10)
               if (!Number.isNaN(value)) setWitnessAmountSat(value)
             }}
-            className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm text-white transition-colors focus:border-primary/50 focus:outline-none"
+            className="w-full rounded-xl border bg-card px-4 py-3 text-sm text-white transition-colors focus:border-primary/50 focus:outline-none"
           />
           <p className="ml-1 text-xs text-muted-foreground">
             Bitcoin amount sent to create the witness UTXO for the recipient.
@@ -173,7 +173,7 @@ export function WithdrawAmountInput({
       )}
 
       {addressType === 'rgb' && (
-        <div className="flex items-center justify-between rounded-xl border border-border bg-card p-3">
+        <div className="flex items-center justify-between rounded-xl border bg-card p-3">
           <div>
             <p className="text-sm font-medium text-white">Gift / Donation</p>
             <p className="text-xs text-muted-foreground">Skip amount checks for this transfer</p>

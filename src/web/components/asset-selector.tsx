@@ -121,7 +121,7 @@ export function AssetSelector({
                     value={search}
                     onChange={(event) => setSearch(event.target.value)}
                     placeholder="Search..."
-                    className="h-11 w-full rounded-2xl border border-border bg-black/20 pl-10 pr-3 text-sm text-white placeholder:text-white/25 focus:border-primary/50 focus:outline-none"
+                    className="h-11 w-full rounded-2xl border bg-black/20 pl-10 pr-3 text-sm text-white placeholder:text-white/25 focus:border-primary/50 focus:outline-none"
                   />
                 </div>
                 {hasCategoryFilters && (
@@ -289,7 +289,7 @@ export function AssetSelector({
               <div className="mt-1 text-sm font-semibold text-white/45">Select...</div>
             </div>
           )}
-          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-white/5 transition-colors duration-200 group-hover:border-primary/25 group-hover:bg-primary/[0.08]">
+          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border bg-white/5 transition-colors duration-200 group-hover:border-primary/25 group-hover:bg-primary/[0.08]">
             <Icon
               name="expand_more"
               size="xs"
@@ -312,7 +312,7 @@ export function AssetSelector({
           type="button"
           disabled={disabled}
           onClick={() => !disabled && setOpen((value) => !value)}
-          className="flex w-full items-center justify-between rounded-xl border border-border bg-card/70 p-3 text-left transition-all duration-200 hover:border-primary/40 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex w-full items-center justify-between rounded-xl border bg-card/70 p-3 text-left transition-all duration-200 hover:border-primary/40 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <div className="flex items-center gap-3">
             {selected ? (
