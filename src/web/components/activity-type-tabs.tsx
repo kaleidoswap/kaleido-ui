@@ -25,7 +25,7 @@ export function ActivityTypeTabs({ counts = {} }: { counts?: ActivityTypeTabCoun
       >
         <AppIcon
           name="receive"
-          className="mr-1.5 size-[14px] text-muted-foreground transition-colors group-data-[state=active]:text-tx-receive"
+          className="mr-1.5 size-icon-sm text-muted-foreground transition-colors group-data-[state=active]:text-tx-receive"
         />
         In
       </TabsTrigger>
@@ -35,7 +35,7 @@ export function ActivityTypeTabs({ counts = {} }: { counts?: ActivityTypeTabCoun
       >
         <AppIcon
           name="send"
-          className="mr-1.5 size-[14px] text-muted-foreground transition-colors group-data-[state=active]:text-tx-sent"
+          className="mr-1.5 size-icon-sm text-muted-foreground transition-colors group-data-[state=active]:text-tx-sent"
         />
         Out
       </TabsTrigger>
@@ -45,7 +45,7 @@ export function ActivityTypeTabs({ counts = {} }: { counts?: ActivityTypeTabCoun
       >
         <AppIcon
           name="swap"
-          className="mr-1.5 size-[14px] text-muted-foreground transition-colors group-data-[state=active]:text-network-arkade"
+          className="mr-1.5 size-icon-sm text-muted-foreground transition-colors group-data-[state=active]:text-network-arkade"
         />
         Swaps
       </TabsTrigger>

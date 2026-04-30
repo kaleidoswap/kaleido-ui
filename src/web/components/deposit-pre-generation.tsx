@@ -76,7 +76,7 @@ export function DepositPreGeneration({
   return (
     <div className="space-y-3">
       <div className="rounded-2xl border border-white/8 bg-white/4 p-3">
-        <p className="text-[9px] font-bold uppercase tracking-widest text-white/35">
+        <p className="text-xxs font-bold uppercase tracking-widest text-white/35">
           Receive Summary
         </p>
         <div className="mt-2 grid grid-cols-1 gap-2 text-xs">
@@ -100,7 +100,7 @@ export function DepositPreGeneration({
 
       {channelsLoading && selectedAccount === 'RGB' && currentMethod === 'lightning' && !isBtc && (
         <div className="flex items-center gap-2.5 rounded-xl border bg-card p-3">
-          <span className="material-symbols-outlined animate-spin text-[18px] text-primary">
+          <span className="material-symbols-outlined animate-spin text-icon-lg text-primary">
             progress_activity
           </span>
           <span className="text-xs font-medium text-white/60">Checking channel availability...</span>
@@ -109,15 +109,15 @@ export function DepositPreGeneration({
 
       {showChannelWarning && (
         <AlertBanner variant="warning">
-          <p className="mb-0.5 text-xs font-bold text-amber-400">No Lightning Channels</p>
-          <p className="text-tiny text-amber-400/70">Only on-chain deposits are available.</p>
+          <p className="mb-0.5 text-xs font-bold text-warning">No Lightning Channels</p>
+          <p className="text-tiny text-warning/70">Only on-chain deposits are available.</p>
         </AlertBanner>
       )}
 
       {showLiquidityWarning && (
         <AlertBanner variant="warning">
-          <p className="mb-0.5 text-xs font-bold text-amber-400">No Inbound Liquidity</p>
-          <p className="text-tiny text-amber-400/70">
+          <p className="mb-0.5 text-xs font-bold text-warning">No Inbound Liquidity</p>
+          <p className="text-tiny text-warning/70">
             No channels with inbound capacity for {selectedAsset?.ticker ?? 'this asset'}.
           </p>
         </AlertBanner>
@@ -126,7 +126,7 @@ export function DepositPreGeneration({
       {isAutoGenerate && loading && (
         <div className="flex flex-col items-center gap-4 py-10">
           <div className={cn('flex size-16 items-center justify-center rounded-2xl border', net.bg, net.border)}>
-            <span className={cn('material-symbols-outlined animate-spin text-[32px]', net.text)}>
+            <span className={cn('material-symbols-outlined animate-spin text-icon-4xl', net.text)}>
               progress_activity
             </span>
           </div>
@@ -165,7 +165,7 @@ export function DepositPreGeneration({
             </button>
           </div>
           {!usePrivacy && (
-            <p className="rounded-lg border border-amber-500/15 bg-amber-500/5 px-2.5 py-1.5 text-xxs text-amber-500/80">
+            <p className="rounded-lg border border-warning/15 bg-warning/5 px-2.5 py-1.5 text-xxs text-warning/80">
               Sender needs to add sats to create a new UTXO for you.
             </p>
           )}
@@ -175,11 +175,11 @@ export function DepositPreGeneration({
       {network === 'onchain' && !isBtc && (
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label className="text-[9px] font-bold uppercase tracking-widest text-white/40">
+            <label className="text-xxs font-bold uppercase tracking-widest text-white/40">
               Amount ({getUnitLabel()}) - Optional
             </label>
             {selectedAsset && (
-              <span className="text-[9px] text-white/30">
+              <span className="text-xxs text-white/30">
                 {selectedAsset.precision ?? 0} decimals
               </span>
             )}
@@ -199,14 +199,14 @@ export function DepositPreGeneration({
         <Button variant="cta" size="cta" onClick={generateInvoice} disabled={loading}>
           {loading ? (
             <span className="flex items-center justify-center gap-2">
-              <span className="material-symbols-outlined animate-spin text-[16px]">
+              <span className="material-symbols-outlined animate-spin text-icon-md">
                 progress_activity
               </span>
               Generating...
             </span>
           ) : (
             <span className="flex items-center justify-center gap-2">
-              <span className="material-symbols-outlined text-[16px]">qr_code_2</span>
+              <span className="material-symbols-outlined text-icon-md">qr_code_2</span>
               Generate Address
             </span>
           )}

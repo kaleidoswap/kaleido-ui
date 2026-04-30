@@ -4,6 +4,7 @@
 import React from 'react'
 import { Text, StyleSheet } from 'react-native'
 import type { ReactNode } from 'react'
+import { colors } from '../../tokens/colors'
 
 interface SectionLabelProps {
   children: ReactNode
@@ -23,6 +24,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: '900',
     letterSpacing: 2.2,
-    color: 'rgba(255, 255, 255, 0.3)',
+    color: colors.text.dimmed,
   },
 })

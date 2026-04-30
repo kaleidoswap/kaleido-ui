@@ -16,7 +16,7 @@ export interface AssetCardProps {
   logoUri?: string
   /** Whether balance should be masked */
   balanceVisible?: boolean
-  /** Accent color hex for the card gradient (e.g. "#F7931A") */
+  /** Accent color hex for the card gradient. Pass a token from `kaleido-ui/tokens` (e.g. `colors.network.bitcoin`). */
   accentColor?: string
   onClick?: () => void
   className?: string

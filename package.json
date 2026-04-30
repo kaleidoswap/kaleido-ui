@@ -32,7 +32,8 @@
   ],
   "scripts": {
     "generate:css": "node node_modules/tsx/dist/cli.mjs scripts/generate-css.ts",
-    "build": "npm run generate:css && tsup && mkdir -p dist/css && cp src/css/kaleido-ui.css dist/css/kaleido-ui.css",
+    "check:tokens": "node node_modules/tsx/dist/cli.mjs scripts/check-tokens.ts",
+    "build": "npm run generate:css && npm run check:tokens && tsup && mkdir -p dist/css && cp src/css/kaleido-ui.css dist/css/kaleido-ui.css",
     "dev": "tsup --watch",
     "showcase": "vite --config showcase/vite.config.ts",
     "showcase:build": "npm run generate:css && vite build --config showcase/vite.config.ts",

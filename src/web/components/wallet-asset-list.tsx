@@ -42,7 +42,7 @@ function AssetSkeleton({ index }: { index: number }) {
       <div className="flex items-center gap-3">
         <div className="relative">
           <div className="size-8 rounded-full bg-white/10" />
-          <div className="absolute -bottom-1 -right-1 size-[15px] rounded-full bg-white/10" />
+          <div className="absolute -bottom-1 -right-1 size-icon-md rounded-full bg-white/10" />
         </div>
         <div className="flex flex-col gap-1.5">
           <div className="h-3.5 w-20 rounded bg-white/10" />

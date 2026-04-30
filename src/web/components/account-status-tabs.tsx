@@ -136,7 +136,7 @@ export function AccountStatusTabs<TId extends string = string>({
                     selectedAccount.networkBannerClassName
                   )}
                 >
-                  <div className="text-[11px] font-black uppercase tracking-[0.18em]">
+                  <div className="text-icon-xxs font-black uppercase tracking-[0.18em]">
                     Network
                   </div>
                   <div className="mt-1 text-sm font-semibold">
@@ -144,7 +144,7 @@ export function AccountStatusTabs<TId extends string = string>({
                   </div>
                 </div>
                 <div className="rounded-2xl border bg-white/[0.04] px-4 py-3">
-                  <div className="text-[11px] font-black uppercase tracking-[0.18em] text-white/45">
+                  <div className="text-icon-xxs font-black uppercase tracking-[0.18em] text-white/45">
                     Status
                   </div>
                   <div className="mt-1 text-sm font-semibold text-white/90">
@@ -158,7 +158,7 @@ export function AccountStatusTabs<TId extends string = string>({
               </p>
 
               <div className="mt-5">
-                <div className="text-[11px] font-black uppercase tracking-[0.18em] text-white/45">
+                <div className="text-icon-xxs font-black uppercase tracking-[0.18em] text-white/45">
                   Capabilities
                 </div>
                 <div className="mt-3 flex flex-wrap gap-2">

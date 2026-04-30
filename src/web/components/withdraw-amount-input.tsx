@@ -181,13 +181,13 @@ export function WithdrawAmountInput({
           <button
             type="button"
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              donation ? 'bg-primary' : 'bg-slate-600'
+              donation ? 'bg-primary' : 'bg-secondary'
             }`}
             onClick={() => setDonation(!donation)}
           >
             <span
               className={`inline-block h-4 w-4 rounded-full transition-transform ${
-                donation ? 'translate-x-6 bg-black' : 'translate-x-1 bg-slate-200'
+                donation ? 'translate-x-6 bg-black' : 'translate-x-1 bg-foreground/90'
               }`}
             />
           </button>

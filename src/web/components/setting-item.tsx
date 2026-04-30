@@ -49,7 +49,7 @@ export function SettingItem({
               {iconSrc ? (
                 <img src={iconSrc} alt={iconAlt ?? title} className="size-5 object-contain" />
               ) : (
-                <span className="material-symbols-outlined text-[20px]">{icon}</span>
+                <span className="material-symbols-outlined text-icon-xl">{icon}</span>
               )}
             </div>
           )}
@@ -63,7 +63,7 @@ export function SettingItem({
         <div className="flex items-center gap-2 flex-shrink-0">
           {value && <span className="text-xs text-muted-foreground font-mono">{value}</span>}
           {showChevron && isClickable && (
-            <span className="material-symbols-outlined text-[16px] text-muted-foreground group-hover:scale-110 group-hover:text-white transition-all">chevron_right</span>
+            <span className="material-symbols-outlined text-icon-md text-muted-foreground group-hover:scale-110 group-hover:text-white transition-all">chevron_right</span>
           )}
         </div>
       </div>

@@ -36,3 +36,36 @@ export const letterSpacing = {
   eyebrow: '0.18em',
   eyebrowWide: '0.22em',
 } as const
+
+/**
+ * Icon size scale — drives `text-icon-*` utilities for Material Symbols glyphs
+ * and other font-driven icon sets. Exists as its own scale (separate from the
+ * body type scale) because icon sizes change in tighter steps.
+ *
+ * Usage: <span class="material-symbols-outlined text-icon-md">name</span>
+ */
+export const iconSize = {
+  xxs: '11px', // dense inline status / timestamp icons
+  xs: '13px',
+  sm: '14px',
+  md: '16px', // default
+  lg: '18px',
+  xl: '20px',
+  '2xl': '24px',
+  '3xl': '28px',
+  '4xl': '32px',
+  '5xl': '40px',
+  '6xl': '64px', // hero / success / error glyphs
+} as const
+
+/**
+ * Square icon box scale — drives `size-icon-*` utilities for SVG icons
+ * and compact icon buttons.
+ */
+export const iconBoxSize = {
+  sm: '14px',
+  md: '16px',
+  lg: '18px',
+  nav: '22px',
+  control: '34px',
+} as const

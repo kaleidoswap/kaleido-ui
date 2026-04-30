@@ -17,7 +17,7 @@ export function ActivityDetailRow({
 }: ActivityDetailRowProps) {
   return (
     <div className="flex items-center justify-between border-b border-border py-1 last:border-0 last:pb-0">
-      <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+      <span className="text-xxs font-bold uppercase tracking-wider text-muted-foreground">
         {label}
       </span>
       <div className="flex max-w-[65%] items-center gap-2">

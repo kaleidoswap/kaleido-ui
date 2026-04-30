@@ -12,4 +12,6 @@ export const shadow = {
   glowPrimaryStrong: '0 0 40px rgba(43, 238, 121, 0.5)',
   /** Floating popover / modal elevation on dark surfaces. */
   popover: '0 18px 55px rgba(0, 0, 0, 0.65)',
+  /** Toast / inline-notification elevation. */
+  toast: '0 0 30px rgba(0, 0, 0, 0.3)',
 } as const

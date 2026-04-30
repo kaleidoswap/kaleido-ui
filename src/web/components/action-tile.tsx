@@ -35,10 +35,10 @@ export function ActionTile({
         className
       )}
     >
-      <span className="flex shrink-0 items-center justify-center text-current leading-none [&_.material-symbols-outlined]:text-[18px] [&_.material-symbols-outlined]:leading-none">
+      <span className="flex shrink-0 items-center justify-center text-current leading-none [&_.material-symbols-outlined]:text-icon-lg [&_.material-symbols-outlined]:leading-none">
         {icon}
       </span>
-      <span className="text-[11px] font-semibold tracking-wide">{label}</span>
+      <span className="text-icon-xxs font-semibold tracking-wide">{label}</span>
     </button>
   )
 }

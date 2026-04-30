@@ -24,23 +24,23 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
       label: 'Completed',
     },
     pending: {
-      color: 'text-yellow-500',
-      bg: 'bg-yellow-500/10',
-      border: 'border-yellow-500/20',
+      color: 'text-warning',
+      bg: 'bg-warning/10',
+      border: 'border-warning/20',
       icon: 'schedule',
       label: 'Pending',
     },
     failed: {
-      color: 'text-red-500',
-      bg: 'bg-red-500/10',
-      border: 'border-red-500/20',
+      color: 'text-danger',
+      bg: 'bg-danger/10',
+      border: 'border-danger/20',
       icon: 'error',
       label: 'Failed',
     },
     error: {
-      color: 'text-red-500',
-      bg: 'bg-red-500/10',
-      border: 'border-red-500/20',
+      color: 'text-danger',
+      bg: 'bg-danger/10',
+      border: 'border-danger/20',
       icon: 'error',
       label: 'Error',
     },
@@ -58,7 +58,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
         className
       )}
     >
-      <span className="material-symbols-outlined text-[14px]">{icon}</span>
+      <span className="material-symbols-outlined text-icon-sm">{icon}</span>
       <span>{label}</span>
     </div>
   )

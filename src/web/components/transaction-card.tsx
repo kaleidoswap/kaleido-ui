@@ -32,25 +32,25 @@ export function TransactionCard({
   const statusStyle = {
     success:   { base: 'bg-primary/5',       hover: 'hover:bg-primary/10' },
     completed: { base: 'bg-primary/5',       hover: 'hover:bg-primary/10' },
-    pending:   { base: 'bg-yellow-500/10',   hover: 'hover:bg-yellow-500/15' },
-    failed:    { base: 'bg-red-500/10',      hover: 'hover:bg-red-500/15' },
-    error:     { base: 'bg-red-500/10',      hover: 'hover:bg-red-500/15' },
+    pending:   { base: 'bg-warning/10',   hover: 'hover:bg-warning/15' },
+    failed:    { base: 'bg-danger/10',      hover: 'hover:bg-danger/15' },
+    error:     { base: 'bg-danger/10',      hover: 'hover:bg-danger/15' },
   }[status] ?? { base: 'bg-background/40', hover: 'hover:bg-white/5' }
 
   const iconStyle = {
     success:   'bg-primary/20 text-primary',
     completed: 'bg-primary/20 text-primary',
-    pending:   'bg-yellow-500/20 text-yellow-500',
-    failed:    'bg-red-500/20 text-red-500',
-    error:     'bg-red-500/20 text-red-500',
+    pending:   'bg-warning/20 text-warning',
+    failed:    'bg-danger/20 text-danger',
+    error:     'bg-danger/20 text-danger',
   }[status] ?? 'bg-accent text-muted-foreground'
 
   const textColor = {
     success:   'text-primary',
     completed: 'text-primary',
-    pending:   'text-yellow-500',
-    failed:    'text-red-500',
-    error:     'text-red-500',
+    pending:   'text-warning',
+    failed:    'text-danger',
+    error:     'text-danger',
   }[status] ?? 'text-foreground'
 
   return (
@@ -71,7 +71,7 @@ export function TransactionCard({
             iconStyle
           )}
         >
-          <span className="material-symbols-outlined text-[20px]">
+          <span className="material-symbols-outlined text-icon-xl">
             {isInbound ? 'arrow_downward' : 'arrow_outward'}
           </span>
         </div>

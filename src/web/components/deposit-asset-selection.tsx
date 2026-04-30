@@ -152,23 +152,23 @@ export function DepositAssetSelection<TView extends string = string>({
                 icon={<span className="material-symbols-outlined leading-none text-network-bitcoin" style={{ fontSize: 10 }}>link</span>}
               />
               <NetBadge
-                className="border-yellow-400/20 bg-yellow-400/15"
+                className="border-warning/20 bg-warning/15"
                 icon={<img src="/icons/lightning/lightning.svg" className="h-2.5 w-2.5" alt="" />}
               />
               {isSparkConnected && (
                 <NetBadge
-                  className="border-blue-500/20 bg-blue-500/15"
+                  className="border-info/20 bg-info/15"
                   icon={<img src="/icons/spark/Asterisk/Spark Asterisk White.svg" className="h-2.5 w-2.5" alt="Spark" />}
                 />
               )}
               {isArkadeConnected && (
                 <NetBadge
-                  className="border-purple-500/20 bg-purple-500/15"
+                  className="border-network-arkade/20 bg-network-arkade/15"
                   icon={<img src="/icons/arkade/arkade-icon.svg" className="h-2.5 w-2.5 rounded-sm" alt="Arkade" />}
                 />
               )}
             </div>
-            <span className="material-symbols-outlined flex-shrink-0 text-[16px] text-white/20 transition-colors group-hover:text-white/50">
+            <span className="material-symbols-outlined flex-shrink-0 text-icon-md text-white/20 transition-colors group-hover:text-white/50">
               arrow_forward
             </span>
           </button>
@@ -206,11 +206,11 @@ export function DepositAssetSelection<TView extends string = string>({
                   icon={<span className="material-symbols-outlined leading-none text-network-bitcoin" style={{ fontSize: 10 }}>link</span>}
                 />
                 <NetBadge
-                  className="border-yellow-400/20 bg-yellow-400/15"
+                  className="border-warning/20 bg-warning/15"
                   icon={<img src="/icons/lightning/lightning.svg" className="h-2.5 w-2.5" alt="" />}
                 />
               </div>
-              <span className="material-symbols-outlined flex-shrink-0 text-[16px] text-white/20 transition-colors group-hover:text-white/50">
+              <span className="material-symbols-outlined flex-shrink-0 text-icon-md text-white/20 transition-colors group-hover:text-white/50">
                 arrow_forward
               </span>
             </button>
@@ -222,18 +222,18 @@ export function DepositAssetSelection<TView extends string = string>({
             <button
               type="button"
               onClick={() => setCurrentView('bridge' as TView)}
-              className="group flex w-full items-center gap-3 rounded-2xl border border-blue-500/20 bg-gradient-to-r from-blue-500/10 to-purple-500/10 p-3 transition-all hover:border-blue-500/40"
+              className="group flex w-full items-center gap-3 rounded-2xl border border-info/20 bg-gradient-to-r from-info/10 to-network-arkade/10 p-3 transition-all hover:border-info/40"
             >
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-blue-500/20">
-                <span className="material-symbols-outlined text-lg text-blue-400">swap_calls</span>
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-info/20">
+                <span className="material-symbols-outlined text-lg text-info">swap_calls</span>
               </div>
               <div className="flex-1 text-left">
-                <p className="text-sm font-semibold text-white transition-colors group-hover:text-blue-300">
+                <p className="text-sm font-semibold text-white transition-colors group-hover:text-info">
                   Bridge from another chain
                 </p>
                 <p className="text-xxs leading-tight text-white/40">USDC, USDT, ETH, SOL via Flashnet</p>
               </div>
-              <span className="material-symbols-outlined text-lg text-white/30 transition-colors group-hover:text-blue-400">
+              <span className="material-symbols-outlined text-lg text-white/30 transition-colors group-hover:text-info">
                 arrow_forward
               </span>
             </button>
@@ -267,8 +267,8 @@ export function DepositAssetSelection<TView extends string = string>({
                     className={cn(
                       'group flex min-h-[112px] flex-col items-center justify-center rounded-2xl border px-3 py-3.5 text-center text-sm transition-all',
                       active
-                        ? 'border-purple-500/30 bg-purple-500/10'
-                        : 'border-white/8 bg-white/3 hover:border-purple-500/30 hover:bg-purple-500/5'
+                        ? 'border-network-arkade/30 bg-network-arkade/10'
+                        : 'border-white/8 bg-white/3 hover:border-network-arkade/30 hover:bg-network-arkade/5'
                     )}
                     onClick={() => handleAddNewAsset(option.account)}
                   >
@@ -277,7 +277,7 @@ export function DepositAssetSelection<TView extends string = string>({
                       <div
                         className={cn(
                           'absolute -bottom-1 -right-1 flex size-4 items-center justify-center rounded-full border',
-                          active ? 'border-purple-400/40 bg-purple-500' : 'border-border bg-card'
+                          active ? 'border-network-arkade/40 bg-network-arkade' : 'border-border bg-card'
                         )}
                       >
                         {active ? (
@@ -291,7 +291,7 @@ export function DepositAssetSelection<TView extends string = string>({
                       <div
                         className={cn(
                           'text-xs font-bold tracking-wide',
-                          active ? 'text-purple-300' : 'text-muted-foreground group-hover:text-white'
+                          active ? 'text-network-arkade' : 'text-muted-foreground group-hover:text-white'
                         )}
                       >
                         {option.account}
@@ -309,12 +309,12 @@ export function DepositAssetSelection<TView extends string = string>({
       {isNewAsset && newAssetAccount === 'RGB' && (
         <>
           <div className="flex-shrink-0 px-5 pb-3 animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <div className="space-y-2 rounded-2xl border border-purple-500/20 bg-purple-500/5 p-3">
-              <p className="text-tiny leading-relaxed text-purple-400/80">
+            <div className="space-y-2 rounded-2xl border border-network-arkade/20 bg-network-arkade/5 p-3">
+              <p className="text-tiny leading-relaxed text-network-arkade/80">
                 Leave empty to receive any RGB asset, or enter a specific asset ID.
               </p>
               <input
-                className="w-full rounded-xl border bg-white/5 px-3 py-2 font-mono text-sm text-white transition-all placeholder:text-white/25 focus:border-purple-500/40 focus:outline-none"
+                className="w-full rounded-xl border bg-white/5 px-3 py-2 font-mono text-sm text-white transition-all placeholder:text-white/25 focus:border-network-arkade/40 focus:outline-none"
                 onChange={(event) => setNewAssetId(event.target.value)}
                 placeholder="Asset ID (optional)"
                 type="text"
@@ -325,7 +325,7 @@ export function DepositAssetSelection<TView extends string = string>({
           <div className="flex-shrink-0 px-5 pb-5 pt-2">
             <Button variant="cta" size="cta" onClick={handleContinueToGenerate}>
               Continue with New Asset
-              <span className="material-symbols-outlined text-[20px] font-bold">arrow_forward</span>
+              <span className="material-symbols-outlined text-icon-xl font-bold">arrow_forward</span>
             </Button>
           </div>
         </>

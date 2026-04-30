@@ -48,7 +48,7 @@ export function FilterDropdown({
       >
         <span
           className={cn(
-            'shrink-0 text-[9px] font-black uppercase tracking-widest',
+            'shrink-0 text-xxs font-black uppercase tracking-widest',
             isFiltered ? 'text-muted-foreground' : 'text-white/45'
           )}
         >
@@ -64,7 +64,7 @@ export function FilterDropdown({
                 </span>
               ))}
               {clusterOverflow > 0 && (
-                <span className="text-[10px] font-semibold leading-none text-muted-foreground">
+                <span className="text-xxs font-semibold leading-none text-muted-foreground">
                   +{clusterOverflow}
                 </span>
               )}
@@ -82,7 +82,7 @@ export function FilterDropdown({
         <Icon
           name="expand_more"
           className={cn(
-            'shrink-0 text-[12px] text-white/40 transition-transform',
+            'shrink-0 text-icon-xs text-white/40 transition-transform',
             isOpen && 'rotate-180'
           )}
         />

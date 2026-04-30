@@ -54,7 +54,7 @@ export function WithdrawDestinationInput({
               }}
               className="text-xs text-muted-foreground transition-colors hover:text-white"
             >
-              <span className="material-symbols-outlined text-[16px]">close</span>
+              <span className="material-symbols-outlined text-icon-md">close</span>
             </button>
           )}
           <button
@@ -71,7 +71,7 @@ export function WithdrawDestinationInput({
         <div className="ml-1 flex items-center gap-2 text-xs">
           {isDecoding || isResolvingLnurl ? (
             <span className="flex items-center gap-1 text-muted-foreground">
-              <span className="material-symbols-outlined animate-spin text-[14px]">
+              <span className="material-symbols-outlined animate-spin text-icon-sm">
                 progress_activity
               </span>
               {isResolvingLnurl ? 'Resolving...' : 'Decoding...'}
@@ -85,8 +85,8 @@ export function WithdrawDestinationInput({
             </>
           ) : addressType === 'invalid' ? (
             <>
-              <span className="text-red-400">&#10007;</span>
-              <span data-testid="withdraw-invalid-destination" className="text-red-400">
+              <span className="text-danger">&#10007;</span>
+              <span data-testid="withdraw-invalid-destination" className="text-danger">
                 Invalid address format
               </span>
             </>

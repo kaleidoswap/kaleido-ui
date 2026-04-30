@@ -7,10 +7,10 @@ import type { ReactNode } from 'react'
 import { colors } from '../../tokens/colors'
 
 const variantConfig = {
-  error: { bg: '#EF44441A', borderColor: '#EF444433', iconColor: '#F87171' },
-  warning: { bg: '#F59E0B1A', borderColor: '#F59E0B33', iconColor: '#FBBF24' },
-  info: { bg: '#3B82F61A', borderColor: '#3B82F633', iconColor: '#60A5FA' },
-  success: { bg: `${colors.primary}1A`, borderColor: `${colors.primary}33`, iconColor: colors.primary },
+  error: { bg: `${colors.danger}1A`, borderColor: `${colors.danger}33`, iconColor: colors.danger },
+  warning: { bg: `${colors.warning}1A`, borderColor: `${colors.warning}33`, iconColor: colors.warning },
+  info: { bg: `${colors.info}1A`, borderColor: `${colors.info}33`, iconColor: colors.info },
+  success: { bg: `${colors.success}1A`, borderColor: `${colors.success}33`, iconColor: colors.success },
 } as const
 
 interface AlertBannerProps {
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
-    color: '#FFFFFF',
+    color: colors.text.primary,
     flex: 1,
   },
 })

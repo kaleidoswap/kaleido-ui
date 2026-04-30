@@ -158,14 +158,14 @@ export function WithdrawConfirmation({
         >
           {isConfirming || isPollingStatus ? (
             <>
-              <span className="material-symbols-outlined animate-spin text-[24px]">
+              <span className="material-symbols-outlined animate-spin text-icon-2xl">
                 progress_activity
               </span>
               {isPollingStatus ? 'Waiting for confirmation...' : 'Sending...'}
             </>
           ) : (
             <>
-              <span className="material-symbols-outlined text-[24px] font-bold">fingerprint</span>
+              <span className="material-symbols-outlined text-icon-2xl font-bold">fingerprint</span>
               Confirm & Send
             </>
           )}

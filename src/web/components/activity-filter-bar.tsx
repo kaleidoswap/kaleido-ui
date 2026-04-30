@@ -47,7 +47,7 @@ export function ActivityFilterBar<TStatus extends string = string>({
             onClick={() => onSearchTermChange('')}
             className="absolute right-2 top-1/2 -translate-y-1/2 text-white/40 transition-colors hover:text-white"
           >
-            <AppIcon name="close" className="size-[14px]" />
+            <AppIcon name="close" className="size-icon-sm" />
           </button>
         )}
       </div>
@@ -59,7 +59,7 @@ export function ActivityFilterBar<TStatus extends string = string>({
           className="h-full w-full cursor-pointer appearance-none rounded-xl border bg-card/40 px-3 text-xs font-bold text-white shadow-sm backdrop-blur-xl transition-colors hover:border-border focus:border-primary/40 focus:outline-none"
         >
           {statusOptions.map((option) => (
-            <option key={option.value} value={option.value} className="bg-slate-800">
+            <option key={option.value} value={option.value} className="bg-card">
               {option.label}
             </option>
           ))}
@@ -72,7 +72,7 @@ export function ActivityFilterBar<TStatus extends string = string>({
 
       {hasActiveFilters && onClearFilters && (
         <Button variant="surface" size="icon-lg" onClick={onClearFilters} title="Clear Filters">
-          <AppIcon name="close" className="size-[18px]" />
+          <AppIcon name="close" className="size-icon-lg" />
         </Button>
       )}
     </div>

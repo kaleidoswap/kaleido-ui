@@ -29,7 +29,7 @@ function ToastWithProgress({ id, title, description, action, duration = 4000, va
 
   const getIcon = () => {
     if (variant === 'destructive') {
-      return <Icon name="error" size="md" className="text-red-400" />
+      return <Icon name="error" size="md" className="text-danger" />
     }
     return <Icon name="check_circle" size="md" className="text-primary" />
   }
@@ -50,7 +50,7 @@ function ToastWithProgress({ id, title, description, action, duration = 4000, va
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10 overflow-hidden">
         <div
           className={`h-full transition-all ease-linear ${
-            variant === 'destructive' ? 'bg-red-500' : 'bg-primary'
+            variant === 'destructive' ? 'bg-danger' : 'bg-primary'
           }`}
           style={{ width: `${progress}%` }}
         />

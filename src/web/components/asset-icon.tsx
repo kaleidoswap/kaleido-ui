@@ -52,7 +52,7 @@ export function AssetIcon({ ticker, logoUri, cdnBaseUrl, size = 40, className }:
           ? fallbackUrl || null
           : cdnUrl || fallbackUrl || null
 
-  const bgColor = ASSET_COLORS[normTicker] || 'bg-slate-600'
+  const bgColor = ASSET_COLORS[normTicker] || 'bg-secondary'
 
   if (iconUrl) {
     return (

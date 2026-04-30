@@ -310,7 +310,7 @@ export function DepositInvoiceGeneration({
           onClick={handleBack}
           className="-ml-1 flex-shrink-0 rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-white"
         >
-          <span className="material-symbols-outlined text-[20px]">arrow_back</span>
+          <span className="material-symbols-outlined text-icon-xl">arrow_back</span>
         </button>
         <div className="flex min-w-0 flex-1 items-center gap-2.5">
           <AssetIcon ticker={displayTicker} size={28} />
@@ -325,11 +325,11 @@ export function DepositInvoiceGeneration({
         </div>
         <div className="flex flex-shrink-0 items-center gap-1.5">
           <div className="flex size-5 items-center justify-center rounded-full border border-primary/30 bg-primary/10">
-            <span className="text-[9px] font-black text-primary">1</span>
+            <span className="text-xxs font-black text-primary">1</span>
           </div>
           <div className="h-px w-3 bg-white/10" />
           <div className="flex size-5 items-center justify-center rounded-full bg-primary shadow-sm">
-            <span className="text-[9px] font-black text-background">2</span>
+            <span className="text-xxs font-black text-background">2</span>
           </div>
         </div>
       </header>
@@ -337,7 +337,7 @@ export function DepositInvoiceGeneration({
       <div className="flex-shrink-0 border-b border-border bg-background px-4 py-2">
         <div className="space-y-2">
           <div>
-            <p className="text-[9px] font-bold uppercase tracking-widest text-white/35">
+            <p className="text-xxs font-bold uppercase tracking-widest text-white/35">
               Destination Account
             </p>
             <div className="mt-1.5 flex gap-1.5 overflow-x-auto no-scrollbar">
@@ -368,7 +368,7 @@ export function DepositInvoiceGeneration({
           </div>
           {!isBtc && !(isNewAsset && (network === 'spark' || network === 'arkade')) && (
             <div>
-              <p className="text-[9px] font-bold uppercase tracking-widest text-white/35">
+              <p className="text-xxs font-bold uppercase tracking-widest text-white/35">
                 Transfer Method
               </p>
               <div className="mt-1.5 flex gap-1.5 overflow-x-auto no-scrollbar">
@@ -431,7 +431,7 @@ export function DepositInvoiceGeneration({
             >
               <span
                 className={cn(
-                  'material-symbols-outlined animate-spin text-[32px]',
+                  'material-symbols-outlined animate-spin text-icon-4xl',
                   NETWORK_CONFIG[
                     btcSelectedAccount === 'SPARK'
                       ? 'spark'

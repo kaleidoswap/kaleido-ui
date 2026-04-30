@@ -50,7 +50,7 @@ const networkConfig: Record<
     color: 'text-white',
     bg: 'bg-network-rgb-chip',
     iconBg: 'bg-network-rgb-chip',
-    border: 'border-red-500/20',
+    border: 'border-danger/20',
     label: 'RGB',
     iconSuffix: 'rgb/rgb-logo.svg',
   },
@@ -58,7 +58,7 @@ const networkConfig: Record<
     color: 'text-white',
     bg: 'bg-network-rgb-chip',
     iconBg: 'bg-network-rgb-chip',
-    border: 'border-red-500/20',
+    border: 'border-danger/20',
     label: 'RGB21',
     iconSuffix: 'rgb/rgb-logo.svg',
   },
@@ -66,7 +66,7 @@ const networkConfig: Record<
     color: 'text-white',
     bg: 'bg-network-rgb-chip',
     iconBg: 'bg-network-rgb-chip',
-    border: 'border-red-500/20',
+    border: 'border-danger/20',
     label: 'RGB L1',
     iconSuffix: 'rgb/rgb-logo.svg',
   },
@@ -74,7 +74,7 @@ const networkConfig: Record<
     color: 'text-white',
     bg: 'bg-network-rgb-chip',
     iconBg: 'bg-network-rgb-chip',
-    border: 'border-red-500/20',
+    border: 'border-danger/20',
     label: 'RGB LN',
     iconSuffix: 'rgb/rgb-logo.svg',
   },
@@ -90,7 +90,7 @@ const networkConfig: Record<
     color: 'text-white',
     bg: 'bg-network-arkade-chip',
     iconBg: 'bg-network-arkade-chip',
-    border: 'border-violet-500/20',
+    border: 'border-network-arkade/20',
     label: 'Arkade',
     iconSuffix: 'arkade/arkade-icon.svg',
   },
@@ -110,7 +110,7 @@ export function NetworkBadge({
   const shouldShowLabel = showLabel ?? false
   const content = children ?? (shouldShowLabel ? label : null)
   const chipSize = size === 'sm' ? 'size-6' : 'size-8'
-  const imageSize = size === 'sm' ? 'size-3.5' : 'size-[18px]'
+  const imageSize = size === 'sm' ? 'size-3.5' : 'size-icon-lg'
 
   if (!content) {
     return (

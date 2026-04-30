@@ -30,21 +30,21 @@ export function getAccountNetworkUi(network: AccountSettingsNetwork) {
   if (network === 'mainnet') {
     return {
       label,
-      badgeClassName: 'bg-emerald-500/12 text-emerald-200',
-      bannerClassName: 'bg-emerald-500/10 text-emerald-200',
+      badgeClassName: 'bg-success/12 text-success',
+      bannerClassName: 'bg-success/10 text-success',
     }
   }
   if (network === 'regtest') {
     return {
       label,
-      badgeClassName: 'bg-red-500/12 text-red-200',
-      bannerClassName: 'bg-red-500/10 text-red-200',
+      badgeClassName: 'bg-danger/12 text-danger',
+      bannerClassName: 'bg-danger/10 text-danger',
     }
   }
   return {
     label,
-    badgeClassName: 'bg-orange-500/12 text-orange-200',
-    bannerClassName: 'bg-orange-500/10 text-orange-200',
+    badgeClassName: 'bg-warning/12 text-warning',
+    bannerClassName: 'bg-warning/10 text-warning',
   }
 }
 
@@ -64,14 +64,14 @@ export function AccountHeaderIcons({ accountId }: { accountId: AccountSettingsPr
 
   if (accountId === 'SPARK') {
     return (
-      <span className="flex size-10 items-center justify-center rounded-full bg-blue-500/10 shadow-inner">
+      <span className="flex size-10 items-center justify-center rounded-full bg-info/10 shadow-inner">
         <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" alt="Spark" className="size-5 object-contain" />
       </span>
     )
   }
 
   return (
-    <span className="flex size-10 items-center justify-center rounded-full bg-purple-500/10 shadow-inner">
+    <span className="flex size-10 items-center justify-center rounded-full bg-network-arkade/10 shadow-inner">
       <img src="/icons/arkade/arkade-icon.svg" alt="Arkade" className="size-5 rounded-sm object-contain" />
     </span>
   )
@@ -82,12 +82,12 @@ export function getAccountStatusUi(status: 'ready' | 'offline' | 'optional' | st
     case 'ready':
       return {
         label: 'Ready',
-        className: 'bg-emerald-500/10 text-emerald-200',
+        className: 'bg-success/10 text-success',
       }
     case 'offline':
       return {
         label: 'Offline',
-        className: 'bg-amber-500/10 text-amber-200',
+        className: 'bg-warning/10 text-warning',
       }
     default:
       return {
@@ -250,7 +250,7 @@ export function AccountNotice({
       className={cn(
         'rounded-xl px-3 py-3 text-xs',
         tone === 'warning'
-          ? 'bg-amber-500/10 text-amber-100'
+          ? 'bg-warning/10 text-warning'
           : 'bg-black/20 text-white/80'
       )}
     >
@@ -324,9 +324,9 @@ export function InlineAction({
 }) {
   const className =
     accent === 'purple'
-      ? 'bg-purple-500/10 text-purple-200 hover:bg-purple-500/15'
+      ? 'bg-network-arkade/10 text-network-arkade hover:bg-network-arkade/15'
       : accent === 'blue'
-        ? 'bg-blue-500/10 text-blue-200 hover:bg-blue-500/15'
+        ? 'bg-info/10 text-info hover:bg-info/15'
         : 'bg-primary/10 text-primary hover:bg-primary/15'
 
   return (
@@ -342,7 +342,7 @@ export function InlineAction({
         <p className="text-sm font-semibold text-white">{title}</p>
         <p className="mt-1 text-xs text-muted-foreground">{description}</p>
       </div>
-      <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+      <span className="material-symbols-outlined text-icon-lg">chevron_right</span>
     </button>
   )
 }

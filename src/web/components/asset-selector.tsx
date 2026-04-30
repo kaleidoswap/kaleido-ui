@@ -222,7 +222,7 @@ export function AssetSelector({
                             </div>
                             <div className="flex items-center gap-2">
                               {optionCategoryLabel && (
-                                <span className="rounded-full border border-border-default bg-surface-overlay px-2 py-0.5 text-[9px] font-semibold uppercase tracking-eyebrow text-text-dimmed">
+                                <span className="rounded-full border border-border-default bg-surface-overlay px-2 py-0.5 text-xxs font-semibold uppercase tracking-eyebrow text-text-dimmed">
                                   {optionCategoryLabel}
                                 </span>
                               )}
@@ -309,7 +309,7 @@ export function AssetSelector({
                       <NetworkBadge
                         network={selected.network}
                         showLabel
-                        className="px-1.5 py-0 text-[9px]"
+                        className="px-1.5 py-0 text-xxs"
                       />
                     )}
                   </div>

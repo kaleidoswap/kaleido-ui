@@ -17,9 +17,9 @@ interface StatusBadgeProps {
 const statusConfig: Record<StatusType, { color: string; bg: string; borderColor: string; label: string }> = {
   success: { color: colors.primary, bg: `${colors.primary}1A`, borderColor: `${colors.primary}33`, label: 'Success' },
   completed: { color: colors.primary, bg: `${colors.primary}1A`, borderColor: `${colors.primary}33`, label: 'Completed' },
-  pending: { color: '#EAB308', bg: '#EAB3081A', borderColor: '#EAB30833', label: 'Pending' },
-  failed: { color: '#EF4444', bg: '#EF44441A', borderColor: '#EF444433', label: 'Failed' },
-  error: { color: '#EF4444', bg: '#EF44441A', borderColor: '#EF444433', label: 'Error' },
+  pending: { color: colors.warning, bg: `${colors.warning}1A`, borderColor: `${colors.warning}33`, label: 'Pending' },
+  failed: { color: colors.danger, bg: `${colors.danger}1A`, borderColor: `${colors.danger}33`, label: 'Failed' },
+  error: { color: colors.danger, bg: `${colors.danger}1A`, borderColor: `${colors.danger}33`, label: 'Error' },
 }
 
 export function StatusBadge({ status, style }: StatusBadgeProps) {

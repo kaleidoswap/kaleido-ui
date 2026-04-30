@@ -16,7 +16,7 @@ import { radius } from '../src/tokens/radius.ts'
 import { shadow } from '../src/tokens/shadows.ts'
 import { gradient } from '../src/tokens/gradients.ts'
 import { transition } from '../src/tokens/transitions.ts'
-import { fontFamily, typeScale, letterSpacing } from '../src/tokens/typography.ts'
+import { fontFamily, typeScale, letterSpacing, iconSize, iconBoxSize } from '../src/tokens/typography.ts'
 import { keyframes, animation } from '../src/tokens/animations.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -48,6 +48,14 @@ const animationTheme = Object.entries(animation)
 
 const typeScaleTheme = Object.entries(typeScale)
   .map(([key, [size, lh]]) => `  --text-${key}: ${size};\n  --text-${key}--line-height: ${lh};`)
+  .join('\n')
+
+const iconSizeTheme = Object.entries(iconSize)
+  .map(([key, size]) => `  --text-icon-${key}: ${size};\n  --text-icon-${key}--line-height: 1;`)
+  .join('\n')
+
+const iconBoxSizeTheme = Object.entries(iconBoxSize)
+  .map(([key, size]) => `  --spacing-icon-${key}: ${size};`)
   .join('\n')
 
 const css = `/* AUTO-GENERATED — do not edit by hand.
@@ -173,6 +181,12 @@ const css = `/* AUTO-GENERATED — do not edit by hand.
   --color-tx-receive: ${colors.tx.receive};
   --color-tx-swap:    ${colors.tx.swap};
 
+  /* Intent colors */
+  --color-success: ${colors.success};
+  --color-warning: ${colors.warning};
+  --color-danger:  ${colors.danger};
+  --color-info:    ${colors.info};
+
   /* Surface elevation (translucent overlays for dark theme) */
   --color-surface-base:           ${colors.surface.base};
   --color-surface-card:           ${colors.surface.card};
@@ -204,6 +218,12 @@ ${typeScaleTheme}
   --tracking-eyebrow:      ${letterSpacing.eyebrow};
   --tracking-eyebrow-wide: ${letterSpacing.eyebrowWide};
 
+  /* Icon-size scale (text-icon-{xxs..5xl}) — for Material Symbols glyphs */
+${iconSizeTheme}
+
+  /* Icon box-size scale (size-icon-{sm,md,lg,nav,control}) — for SVG icons */
+${iconBoxSizeTheme}
+
   /* Border radius */
   --radius-none:  ${radius.none};
   --radius-xs:    ${radius.xs};
@@ -229,6 +249,7 @@ ${typeScaleTheme}
   --shadow-glow-primary:         ${shadow.glowPrimary};
   --shadow-glow-primary-strong:  ${shadow.glowPrimaryStrong};
   --shadow-popover:              ${shadow.popover};
+  --shadow-toast:                ${shadow.toast};
 
   /* Drop-shadows (Tailwind v4 emits drop-shadow-* utilities from --drop-shadow-*) */
   --drop-shadow-glow-primary-soft: ${shadow.glowPrimarySoft};
@@ -237,6 +258,7 @@ ${typeScaleTheme}
   /* Gradients (use as background-image: var(--gradient-page)) */
   --gradient-page:        ${gradient.pageRadial};
   --gradient-card-sheen:  ${gradient.cardSheen};
+  --gradient-headline:    ${gradient.headline};
 
   /* Transitions */
   --transition-fast:    ${transition.fast};
@@ -258,6 +280,11 @@ ${keyframesCss}
 /* Receive-panel sheen used by SwapInputCard. */
 .bg-card-sheen {
   background-image: var(--gradient-card-sheen);
+}
+/* Brand headline gradient. Pair with bg-clip-text + text-transparent
+   on the consuming element (the HeadlineGradient component does this). */
+.bg-gradient-headline {
+  background-image: var(--gradient-headline);
 }
 `
 

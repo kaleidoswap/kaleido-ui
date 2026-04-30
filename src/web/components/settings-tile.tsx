@@ -60,7 +60,7 @@ export function SettingsActionButton({
     <button
       type="button"
       onClick={onClick}
-      className="flex w-full items-center justify-center gap-2 rounded-xl bg-white/5 py-3 font-bold text-slate-300 transition-all hover:bg-accent"
+      className="flex w-full items-center justify-center gap-2 rounded-xl bg-white/5 py-3 font-bold text-muted-foreground transition-all hover:bg-accent"
     >
       {icon}
       {children}

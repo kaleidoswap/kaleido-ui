@@ -125,7 +125,7 @@ export function BalanceBreakdown({
             ) : (
               <>
                 <div className="flex min-w-0 items-center gap-2.5">
-                  <span className="block min-w-0 truncate text-[34px] font-black leading-[1.1] tracking-tighter text-white drop-shadow-sm transition-all duration-300 group-active:scale-95 group-active:text-primary">
+                  <span className="block min-w-0 truncate text-display font-black leading-[1.1] tracking-tighter text-white drop-shadow-sm transition-all duration-300 group-active:scale-95 group-active:text-primary">
                     {balanceVisible ? numberOnly(format(totalBTC)) : '••••••'}
                   </span>
                   {unit !== 'fiat' && (
@@ -160,7 +160,7 @@ export function BalanceBreakdown({
                 title="Refresh balances"
               >
                 <span
-                  className={`material-symbols-outlined text-[14px] leading-none text-white/60${isRefreshing ? ' animate-spin' : ''}`}
+                  className={`material-symbols-outlined text-icon-sm leading-none text-white/60${isRefreshing ? ' animate-spin' : ''}`}
                 >
                   refresh
                 </span>
@@ -181,11 +181,11 @@ export function BalanceBreakdown({
 
         {expanded && (
           <div className="mt-4 space-y-1 border-t border-white/[0.08] pt-4 duration-300 animate-in fade-in slide-in-from-top-2">
-            <p className="mb-3 text-[9px] font-bold uppercase tracking-widest text-white/30">
+            <p className="mb-3 text-xxs font-bold uppercase tracking-widest text-white/30">
               Bitcoin
             </p>
             <NetworkRow
-              icon={<OnchainIcon className="text-[14px]" />}
+              icon={<OnchainIcon className="text-icon-sm" />}
               iconColor="text-network-spark"
               dotColor="bg-network-spark"
               label="BTC on-chain"
@@ -223,7 +223,7 @@ export function BalanceBreakdown({
                 />
               }
               iconColor=""
-              dotColor="bg-sky-400"
+              dotColor="bg-info"
               label="BTC on Spark"
               sublabel="Spark balance"
               amount={btcSpark}
@@ -257,7 +257,7 @@ export function BalanceBreakdown({
 
             {accounts.RGB?.connected && nodeInfo?.pubkey && (
               <div className="mt-3 border-t border-white/[0.08] pt-4">
-                <p className="mb-3 text-[9px] font-bold uppercase tracking-widest text-white/30">
+                <p className="mb-3 text-xxs font-bold uppercase tracking-widest text-white/30">
                   RLN Details
                 </p>
                 <div className="grid grid-cols-3 gap-2">
@@ -275,19 +275,19 @@ export function BalanceBreakdown({
 
         <div className="relative z-10 mt-3 flex gap-2.5 border-t border-white/[0.08] pt-3">
           <ActionTile
-            icon={<span className="material-symbols-outlined text-[18px] leading-none">call_received</span>}
+            icon={<span className="material-symbols-outlined text-icon-lg leading-none">call_received</span>}
             label="Deposit"
             onClick={() => onNavigate?.('deposit')}
             data-testid="dashboard-action-deposit"
           />
           <ActionTile
-            icon={<span className="material-symbols-outlined text-[18px] leading-none">swap_horiz</span>}
+            icon={<span className="material-symbols-outlined text-icon-lg leading-none">swap_horiz</span>}
             label="Swap"
             onClick={() => onNavigate?.('swap')}
             data-testid="dashboard-action-swap"
           />
           <ActionTile
-            icon={<span className="material-symbols-outlined text-[18px] leading-none">send</span>}
+            icon={<span className="material-symbols-outlined text-icon-lg leading-none">send</span>}
             label="Withdraw"
             onClick={() => onNavigate?.('withdraw')}
             data-testid="dashboard-action-withdraw"
@@ -307,7 +307,7 @@ function RgbAssetsBreakdown({
 }) {
   return (
     <div className="mt-3 border-t border-white/[0.08] pt-4">
-      <p className="mb-3 text-[9px] font-bold uppercase tracking-widest text-white/30">
+      <p className="mb-3 text-xxs font-bold uppercase tracking-widest text-white/30">
         RGB Assets
       </p>
       <div className="space-y-2">
@@ -364,7 +364,7 @@ function RgbAssetsBreakdown({
 function StatusChip({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border border-white/[0.08] bg-white/5 px-3 py-2">
-      <div className="text-[9px] font-bold uppercase tracking-widest text-white/30">{label}</div>
+      <div className="text-xxs font-bold uppercase tracking-widest text-white/30">{label}</div>
       <div className="mt-1 truncate text-xs font-semibold text-white/80">{value}</div>
     </div>
   )
@@ -403,13 +403,13 @@ function NetworkRow({
       <div className="flex items-center gap-3">
         <div className={`h-7 w-0.5 rounded-full ${dotColor} opacity-80`} />
         <div
-          className={`flex size-7 items-center justify-center rounded-lg bg-white/5 text-[14px] ${iconColor}`}
+          className={`flex size-7 items-center justify-center rounded-lg bg-white/5 text-icon-sm ${iconColor}`}
         >
           {icon}
         </div>
         <div className="flex flex-col">
           <span className="text-xs font-semibold leading-tight text-white/80">{label}</span>
-          <span className="mt-0.5 text-[9px] font-medium leading-tight text-white/30">
+          <span className="mt-0.5 text-xxs font-medium leading-tight text-white/30">
             {sublabel}
           </span>
         </div>

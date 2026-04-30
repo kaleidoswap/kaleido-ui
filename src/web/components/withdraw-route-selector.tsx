@@ -63,7 +63,7 @@ function RouteChoiceCard<TAccount extends string>({
           {route.feeHint}
         </span>
       </div>
-      <p className="mt-3 text-xs leading-relaxed text-slate-300">{route.summary}</p>
+      <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{route.summary}</p>
     </button>
   )
 }

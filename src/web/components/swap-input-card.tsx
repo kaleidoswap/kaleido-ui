@@ -189,7 +189,7 @@ export function SwapInputCard({
       {(quoteError || quoteRateText || quoteFeeText || quoteExpiresText) && (
         <div className="rounded-xl bg-card/60 p-3">
           {quoteError ? (
-            <p className="text-center text-xs text-red-400">{quoteError}</p>
+            <p className="text-center text-xs text-danger">{quoteError}</p>
           ) : (
             <div className="space-y-1.5">
               {quoteRateText && (
@@ -210,7 +210,7 @@ export function SwapInputCard({
                       <span
                         className={cn(
                           'font-mono tabular-nums',
-                          quoteExpiresUrgent ? 'font-semibold text-orange-400' : 'text-white/40',
+                          quoteExpiresUrgent ? 'font-semibold text-warning' : 'text-white/40',
                         )}
                       >
                         {quoteExpiresText}
@@ -225,9 +225,9 @@ export function SwapInputCard({
       )}
 
       {warning && (
-        <div className="flex items-start gap-2 rounded-xl bg-red-500/10 p-3">
-          <Icon name="warning" size="sm" className="mt-0.5 text-red-400" />
-          <p className="text-xs leading-relaxed text-red-300">{warning}</p>
+        <div className="flex items-start gap-2 rounded-xl bg-danger/10 p-3">
+          <Icon name="warning" size="sm" className="mt-0.5 text-danger" />
+          <p className="text-xs leading-relaxed text-danger">{warning}</p>
         </div>
       )}
 

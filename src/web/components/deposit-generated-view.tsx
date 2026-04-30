@@ -90,7 +90,7 @@ export function DepositGeneratedView({
       {(network === 'lightning' || (network === 'arkade' && arkSubMode === 'ark')) && isBtc && (
         <div className="flex flex-col gap-1.5 rounded-xl border border-white/8 bg-white/3 p-2.5">
           <div className="flex items-center justify-between px-1">
-            <label className="text-[9px] font-bold uppercase tracking-widest text-white/40">
+            <label className="text-xxs font-bold uppercase tracking-widest text-white/40">
               Specify amount (optional)
             </label>
           </div>
@@ -99,14 +99,14 @@ export function DepositGeneratedView({
             value={amount}
             onChange={handleAmountChange}
             placeholder="Any amount (amountless)"
-            className="w-full rounded-lg border bg-white/5 px-3 py-1.5 font-mono text-xs font-bold text-white transition-all placeholder:text-white/25 focus:border-yellow-400/40 focus:outline-none"
+            className="w-full rounded-lg border bg-white/5 px-3 py-1.5 font-mono text-xs font-bold text-white transition-all placeholder:text-white/25 focus:border-warning/40 focus:outline-none"
             inputMode="decimal"
           />
           {amount && (
-            <p className="text-xxs text-yellow-400/70">
+            <p className="text-xxs text-warning/70">
               {loading ? (
                 <span className="flex items-center gap-1">
-                  <span className="material-symbols-outlined animate-spin text-[11px]">
+                  <span className="material-symbols-outlined animate-spin text-icon-xxs">
                     progress_activity
                   </span>
                   Updating {network === 'arkade' ? 'URI' : 'invoice'}...
@@ -124,7 +124,7 @@ export function DepositGeneratedView({
       {network === 'lightning' && !isBtc && (
         <div className="flex flex-col gap-1.5 rounded-xl border border-white/8 bg-white/3 p-2.5">
           <div className="flex items-center justify-between px-1">
-            <label className="text-[9px] font-bold uppercase tracking-widest text-white/40">
+            <label className="text-xxs font-bold uppercase tracking-widest text-white/40">
               Specify amount (optional)
             </label>
           </div>
@@ -133,14 +133,14 @@ export function DepositGeneratedView({
             value={amount}
             onChange={handleAmountChange}
             placeholder={`Any amount (${selectedAsset?.ticker ?? 'amountless'})`}
-            className="w-full rounded-lg border bg-white/5 px-3 py-1.5 font-mono text-xs font-bold text-white transition-all placeholder:text-white/25 focus:border-yellow-400/40 focus:outline-none"
+            className="w-full rounded-lg border bg-white/5 px-3 py-1.5 font-mono text-xs font-bold text-white transition-all placeholder:text-white/25 focus:border-warning/40 focus:outline-none"
             inputMode="decimal"
           />
           {amount && (
-            <p className="text-xxs text-yellow-400/70">
+            <p className="text-xxs text-warning/70">
               {loading ? (
                 <span className="flex items-center gap-1">
-                  <span className="material-symbols-outlined animate-spin text-[11px]">
+                  <span className="material-symbols-outlined animate-spin text-icon-xxs">
                     progress_activity
                   </span>
                   Updating invoice...
@@ -151,7 +151,7 @@ export function DepositGeneratedView({
             </p>
           )}
           {amount && maxDepositAmount > 0 && parseAssetAmount(amount, selectedAsset) > maxDepositAmount && (
-            <p className="rounded-lg border border-red-500/20 bg-red-500/10 px-2.5 py-1.5 text-xxs text-red-400">
+            <p className="rounded-lg border border-danger/20 bg-danger/10 px-2.5 py-1.5 text-xxs text-danger">
               Exceeds max: {formatAssetAmount(maxDepositAmount, selectedAsset)} {getUnitLabel()}
             </p>
           )}
@@ -162,14 +162,14 @@ export function DepositGeneratedView({
         <div
           className={cn(
             'relative flex flex-col items-center rounded-2xl border-2 bg-white p-3.5 transition-all',
-            net.qrBorder,
-            net.qrGlow
+            net.qrBorder
           )}
+          style={net.qrGlow}
         >
           {network !== 'spark' && network !== 'arkade' && (
             <div
               className={cn(
-                'absolute right-2.5 top-2.5 flex items-center gap-1 rounded-full border bg-white/90 px-1.5 py-0.5 text-[8px] font-bold shadow-sm',
+                'absolute right-2.5 top-2.5 flex items-center gap-1 rounded-full border bg-white/90 px-1.5 py-0.5 text-xxs font-bold shadow-sm',
                 net.text,
                 net.border
               )}
@@ -185,7 +185,7 @@ export function DepositGeneratedView({
         <button
           type="button"
           className={cn(
-            'flex items-center gap-1 rounded-full border px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest transition-all',
+            'flex items-center gap-1 rounded-full border px-2.5 py-1 text-xxs font-bold uppercase tracking-widest transition-all',
             copied
               ? 'border-primary/30 bg-primary/10 text-primary'
               : 'border-border bg-white/5 text-muted-foreground hover:border-white/20 hover:bg-accent hover:text-white'
@@ -224,7 +224,7 @@ export function DepositGeneratedView({
           {net.icon}
         </div>
         <div className="min-w-0 flex-1">
-          <p className={cn('text-[9px] font-bold uppercase tracking-widest', net.text)}>
+          <p className={cn('text-xxs font-bold uppercase tracking-widest', net.text)}>
             <span data-testid="deposit-address-label">{addressLabel}</span>
           </p>
           <p className="mt-0.5 truncate font-mono text-tiny text-muted-foreground">
@@ -247,7 +247,7 @@ export function DepositGeneratedView({
             <Icon name="person" size="xs" className="text-primary" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-[9px] font-bold uppercase tracking-widest text-primary">
+            <p className="text-xxs font-bold uppercase tracking-widest text-primary">
               Recipient ID
             </p>
             <p className="mt-0.5 truncate font-mono text-tiny text-muted-foreground">
@@ -281,11 +281,11 @@ export function DepositGeneratedView({
           }}
           className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border py-3 text-xs font-bold text-muted-foreground transition-all hover:border-border hover:bg-accent hover:text-white active:scale-[0.98]"
         >
-          <span className="material-symbols-outlined text-[14px]">refresh</span>
+          <span className="material-symbols-outlined text-icon-sm">refresh</span>
           New {network === 'lightning' ? 'Invoice' : 'Address'}
         </button>
         <Button variant="cta" onClick={handleDone}>
-          <span className="material-symbols-outlined text-[14px]">check</span>
+          <span className="material-symbols-outlined text-icon-sm">check</span>
           Done
         </Button>
       </div>

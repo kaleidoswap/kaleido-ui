@@ -51,7 +51,7 @@ export function BottomNav<TValue extends string = string>({
                   : 'text-muted-foreground hover:text-white/75 active:scale-95'
               )}
             >
-              {icon ?? (iconName ? <Icon name={iconName} className="text-[22px]" /> : null)}
+              {icon ?? (iconName ? <Icon name={iconName} className="text-icon-xl" /> : null)}
               <span className="mt-0.5 text-xxs font-semibold transition-colors duration-300">
                 {label}
               </span>

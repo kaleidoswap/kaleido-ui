@@ -70,7 +70,7 @@ export function BtcUnifiedReceive({
     <div className="space-y-3 animate-in fade-in zoom-in-95 duration-300">
       <div className="flex flex-col gap-1.5 rounded-xl border border-white/8 bg-white/3 p-2.5">
         <div className="flex items-center justify-between px-1">
-          <label className="text-[9px] font-bold uppercase tracking-widest text-white/40">
+          <label className="text-xxs font-bold uppercase tracking-widest text-white/40">
             Amount (optional)
           </label>
         </div>
@@ -83,8 +83,8 @@ export function BtcUnifiedReceive({
           inputMode="decimal"
         />
         {amount && loading && (
-          <p className="flex items-center gap-1 text-xxs text-yellow-400/70">
-            <span className="material-symbols-outlined animate-spin text-[11px]">
+          <p className="flex items-center gap-1 text-xxs text-warning/70">
+            <span className="material-symbols-outlined animate-spin text-icon-xxs">
               progress_activity
             </span>
             Updating invoice...
@@ -96,9 +96,9 @@ export function BtcUnifiedReceive({
         <div
           className={cn(
             'relative flex flex-col items-center rounded-2xl border-2 bg-white p-2 transition-all',
-            qrNetwork.qrBorder,
-            qrNetwork.qrGlow
+            qrNetwork.qrBorder
           )}
+          style={qrNetwork.qrGlow}
         >
           <QrCode value={accountReceiveResult.qrValue} size={200} />
           {isInvoicePaid && <PaidOverlay />}
@@ -106,7 +106,7 @@ export function BtcUnifiedReceive({
         <button
           type="button"
           className={cn(
-            'flex items-center gap-1 rounded-full border px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest transition-all',
+            'flex items-center gap-1 rounded-full border px-2.5 py-1 text-xxs font-bold uppercase tracking-widest transition-all',
             copied
               ? 'border-primary/30 bg-primary/10 text-primary'
               : 'border-border bg-white/5 text-muted-foreground hover:border-white/20 hover:bg-accent hover:text-white'
@@ -131,7 +131,7 @@ export function BtcUnifiedReceive({
       )}
 
       <div className="space-y-1.5">
-        <p className="text-[9px] font-bold uppercase tracking-widest text-white/30">
+        <p className="text-xxs font-bold uppercase tracking-widest text-white/30">
           Available Addresses
         </p>
         {accountReceiveResult.addresses.map((address) => {
@@ -151,7 +151,7 @@ export function BtcUnifiedReceive({
                 {network.icon}
               </div>
               <div className="min-w-0 flex-1">
-                <p className={cn('text-[9px] font-bold uppercase tracking-widest', network.text)}>
+                <p className={cn('text-xxs font-bold uppercase tracking-widest', network.text)}>
                   {address.label}
                 </p>
                 <p className="mt-0.5 truncate font-mono text-tiny text-muted-foreground">
@@ -183,11 +183,11 @@ export function BtcUnifiedReceive({
           }}
           className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border py-3 text-xs font-bold text-muted-foreground transition-all hover:border-border hover:bg-accent hover:text-white active:scale-[0.98]"
         >
-          <span className="material-symbols-outlined text-[14px]">refresh</span>
+          <span className="material-symbols-outlined text-icon-sm">refresh</span>
           New Address
         </button>
         <Button variant="cta" onClick={handleDone}>
-          <span className="material-symbols-outlined text-[14px]">check</span>
+          <span className="material-symbols-outlined text-icon-sm">check</span>
           Done
         </Button>
       </div>

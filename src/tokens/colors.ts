@@ -64,11 +64,13 @@ export const colors = {
   textMuted: darkSemanticColors.border,
   textDimmed: darkSemanticColors.ring,
 
-  /** Semantic */
+  /** Semantic intent colors (use as text-success, bg-warning/15, etc.) */
   success: darkSemanticColors.primary,
-  warning: darkSemanticColors.chart3,
+  warning: '#FACC15',
+  danger: '#F94040',
+  info: '#4290FF',
+  /** @deprecated alias for `danger` — kept for back-compat. */
   error: darkSemanticColors.destructive,
-  info: darkSemanticColors.chart1,
 
   /** Surface elevation — translucent overlays applied over the page background */
   surface: {

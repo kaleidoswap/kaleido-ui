@@ -32,8 +32,8 @@ export function AccountCapabilitiesCard({
     accent === 'primary'
       ? 'bg-primary/5 text-primary'
       : accent === 'blue'
-        ? 'bg-blue-500/5 text-blue-300'
-        : 'bg-purple-500/5 text-purple-300'
+        ? 'bg-info/5 text-info'
+        : 'bg-network-arkade/5 text-network-arkade'
 
   return (
     <div className="rounded-2xl bg-card/70 p-4 shadow-inner transition-all duration-300">
@@ -75,7 +75,7 @@ export function AccountCapabilitiesCard({
               Capabilities
             </h4>
             {capabilities.map((capability) => (
-              <div key={capability} className="flex items-center gap-2 text-xs text-slate-300">
+              <div key={capability} className="flex items-center gap-2 text-xs text-muted-foreground">
                 <span className="inline-block size-1.5 rounded-full bg-current opacity-80" />
                 <span>{capability}</span>
               </div>

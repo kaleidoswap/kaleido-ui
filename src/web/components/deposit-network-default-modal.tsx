@@ -19,7 +19,7 @@ const NETWORK_OPTIONS: Record<DepositAccountId, DepositNetworkOption> = {
     account: 'RGB',
     label: 'On-chain / Lightning',
     description: 'Classic Bitcoin address or Lightning invoice via the RLN node.',
-    icon: <span className="material-symbols-outlined text-[18px]">link</span>,
+    icon: <span className="material-symbols-outlined text-icon-lg">link</span>,
     accentBg: 'bg-network-bitcoin/10',
     accentBorder: 'border-network-bitcoin/30',
     accentText: 'text-network-bitcoin',
@@ -30,9 +30,9 @@ const NETWORK_OPTIONS: Record<DepositAccountId, DepositNetworkOption> = {
     label: 'Spark',
     description: 'Receive directly into your Spark account. Fast and free.',
     icon: <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" alt="" className="h-[18px]" />,
-    accentBg: 'bg-blue-500/10',
-    accentBorder: 'border-blue-500/30',
-    accentText: 'text-blue-300',
+    accentBg: 'bg-info/10',
+    accentBorder: 'border-info/30',
+    accentText: 'text-info',
   },
   ARKADE: {
     network: 'arkade',
@@ -40,9 +40,9 @@ const NETWORK_OPTIONS: Record<DepositAccountId, DepositNetworkOption> = {
     label: 'Arkade',
     description: 'Receive directly into your Arkade account. Low fees, near-instant settlement.',
     icon: <img src="/icons/arkade/arkade-icon.svg" alt="" className="h-[18px]" />,
-    accentBg: 'bg-purple-500/10',
-    accentBorder: 'border-purple-500/30',
-    accentText: 'text-purple-300',
+    accentBg: 'bg-network-arkade/10',
+    accentBorder: 'border-network-arkade/30',
+    accentText: 'text-network-arkade',
   },
 }
 
@@ -114,7 +114,7 @@ export function DepositNetworkDefaultModal({
                     {isSuggested && (
                       <span
                         className={cn(
-                          'rounded-full px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider',
+                          'rounded-full px-1.5 py-0.5 text-xxs font-black uppercase tracking-wider',
                           option.accentBg,
                           option.accentText
                         )}
@@ -128,7 +128,7 @@ export function DepositNetworkDefaultModal({
 
                 <span
                   className={cn(
-                    'material-symbols-outlined flex-shrink-0 text-[18px]',
+                    'material-symbols-outlined flex-shrink-0 text-icon-lg',
                     isSuggested ? option.accentText : 'text-white/25'
                   )}
                 >

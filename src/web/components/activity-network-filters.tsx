@@ -20,7 +20,7 @@ export interface ActivityNetworkFiltersProps<TValue extends string = ActivityNet
 export function getActivityNetworkFilterIcon(filter: ActivityNetworkFilterValue) {
   switch (filter) {
     case 'onchain':
-      return <AppIcon name="onchain" className="size-[14px]" />
+      return <AppIcon name="onchain" className="size-icon-sm" />
     case 'lightning':
       return <LightningNetworkIcon className="size-3.5" alt="" />
     case 'spark':
@@ -28,7 +28,7 @@ export function getActivityNetworkFilterIcon(filter: ActivityNetworkFilterValue)
     case 'arkade':
       return <ArkadeNetworkIcon className="size-3.5 rounded" alt="" />
     default:
-      return <AppIcon name="allNetworks" className="size-[14px]" />
+      return <AppIcon name="allNetworks" className="size-icon-sm" />
   }
 }
 
@@ -50,7 +50,7 @@ export function ActivityNetworkFilters<TValue extends string = ActivityNetworkFi
             type="button"
             onClick={() => onChange(filter.value)}
             className={cn(
-              'inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all active:scale-95',
+              'inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-xxs font-bold uppercase tracking-wider transition-all active:scale-95',
               isActive
                 ? 'border-primary/25 bg-primary/15 text-primary shadow-inner'
                 : 'border-border bg-white/[0.02] text-white/40 hover:border-border hover:bg-white/[0.06] hover:text-white/80'

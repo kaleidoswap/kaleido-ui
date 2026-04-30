@@ -121,6 +121,12 @@
   --color-tx-receive: #2BEE79;
   --color-tx-swap:    #4290FF;
 
+  /* Intent colors */
+  --color-success: #2BEE79;
+  --color-warning: #FACC15;
+  --color-danger:  #F94040;
+  --color-info:    #4290FF;
+
   /* Surface elevation (translucent overlays for dark theme) */
   --color-surface-base:           rgba(255, 255, 255, 0.03);
   --color-surface-card:           rgba(255, 255, 255, 0.05);
@@ -167,6 +173,37 @@
   --tracking-eyebrow:      0.18em;
   --tracking-eyebrow-wide: 0.22em;
 
+  /* Icon-size scale (text-icon-{xxs..5xl}) — for Material Symbols glyphs */
+  --text-icon-xxs: 11px;
+  --text-icon-xxs--line-height: 1;
+  --text-icon-xs: 13px;
+  --text-icon-xs--line-height: 1;
+  --text-icon-sm: 14px;
+  --text-icon-sm--line-height: 1;
+  --text-icon-md: 16px;
+  --text-icon-md--line-height: 1;
+  --text-icon-lg: 18px;
+  --text-icon-lg--line-height: 1;
+  --text-icon-xl: 20px;
+  --text-icon-xl--line-height: 1;
+  --text-icon-2xl: 24px;
+  --text-icon-2xl--line-height: 1;
+  --text-icon-3xl: 28px;
+  --text-icon-3xl--line-height: 1;
+  --text-icon-4xl: 32px;
+  --text-icon-4xl--line-height: 1;
+  --text-icon-5xl: 40px;
+  --text-icon-5xl--line-height: 1;
+  --text-icon-6xl: 64px;
+  --text-icon-6xl--line-height: 1;
+
+  /* Icon box-size scale (size-icon-{sm,md,lg,nav,control}) — for SVG icons */
+  --spacing-icon-sm: 14px;
+  --spacing-icon-md: 16px;
+  --spacing-icon-lg: 18px;
+  --spacing-icon-nav: 22px;
+  --spacing-icon-control: 34px;
+
   /* Border radius */
   --radius-none:  0px;
   --radius-xs:    2px;
@@ -192,6 +229,7 @@
   --shadow-glow-primary:         0 0 30px rgba(43, 238, 121, 0.45);
   --shadow-glow-primary-strong:  0 0 40px rgba(43, 238, 121, 0.5);
   --shadow-popover:              0 18px 55px rgba(0, 0, 0, 0.65);
+  --shadow-toast:                0 0 30px rgba(0, 0, 0, 0.3);
 
   /* Drop-shadows (Tailwind v4 emits drop-shadow-* utilities from --drop-shadow-*) */
   --drop-shadow-glow-primary-soft: 0 0 8px rgba(43, 238, 121, 0.5);
@@ -200,6 +238,7 @@
   /* Gradients (use as background-image: var(--gradient-page)) */
   --gradient-page:        radial-gradient(ellipse at 60% 10%, rgba(255, 255, 255, 0.06) 0%, transparent 55%), radial-gradient(ellipse at 30% 85%, rgba(124, 58, 237, 0.08) 0%, transparent 50%);
   --gradient-card-sheen:  linear-gradient(to bottom right, rgba(255, 255, 255, 0.01), rgba(43, 238, 121, 0.04));
+  --gradient-headline:    linear-gradient(to right, #ffffff, #ffffff, rgba(255, 255, 255, 0.45));
 
   /* Transitions */
   --transition-fast:    150ms ease-out;
@@ -304,4 +343,9 @@
 /* Receive-panel sheen used by SwapInputCard. */
 .bg-card-sheen {
   background-image: var(--gradient-card-sheen);
+}
+/* Brand headline gradient. Pair with bg-clip-text + text-transparent
+   on the consuming element (the HeadlineGradient component does this). */
+.bg-gradient-headline {
+  background-image: var(--gradient-headline);
 }

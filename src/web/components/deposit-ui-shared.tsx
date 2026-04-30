@@ -1,6 +1,17 @@
-import { useState, type ReactNode } from 'react'
+import { useState, type CSSProperties, type ReactNode } from 'react'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
+import { colors } from '../../tokens/colors'
+
+/**
+ * 15%-alpha brand-tinted QR glow. Tailwind cannot statically generate
+ * per-network shadow utilities, so this is exposed as an inline style
+ * object that consumers spread into the QR backdrop's `style` prop.
+ */
+const GLOW_ALPHA = '26'
+function qrGlowStyle(hex: string): CSSProperties {
+  return { boxShadow: `0 0 30px ${hex}${GLOW_ALPHA}` }
+}
 
 export type DepositAccountId = 'RGB' | 'SPARK' | 'ARKADE'
 export type DepositTransferMethod =
@@ -19,49 +30,50 @@ export interface DepositNetworkConfigEntry {
   text: string
   border: string
   qrBorder: string
-  qrGlow: string
+  /** Inline style. Apply via `style={network.qrGlow}`. */
+  qrGlow: CSSProperties
   icon: ReactNode
 }
 
 export const NETWORK_CONFIG: Record<DepositNetworkKey, DepositNetworkConfigEntry> = {
   onchain: {
     label: 'On-chain',
-    color: '#F7931A',
+    color: colors.network.bitcoin,
     bg: 'bg-network-bitcoin/15',
     text: 'text-network-bitcoin',
     border: 'border-network-bitcoin/40',
     qrBorder: 'border-network-bitcoin/30',
-    qrGlow: 'shadow-[0_0_30px_rgba(247,147,26,0.15)]',
-    icon: <span className="material-symbols-outlined text-[13px] leading-none">link</span>,
+    qrGlow: qrGlowStyle(colors.network.bitcoin),
+    icon: <span className="material-symbols-outlined text-icon-xs leading-none">link</span>,
   },
   lightning: {
     label: 'Lightning',
-    color: '#FACC15',
-    bg: 'bg-yellow-400/15',
-    text: 'text-yellow-400',
-    border: 'border-yellow-400/40',
-    qrBorder: 'border-yellow-400/30',
-    qrGlow: 'shadow-[0_0_30px_rgba(250,204,21,0.15)]',
+    color: colors.network.lightning,
+    bg: 'bg-network-lightning/15',
+    text: 'text-network-lightning',
+    border: 'border-network-lightning/40',
+    qrBorder: 'border-network-lightning/30',
+    qrGlow: qrGlowStyle(colors.network.lightning),
     icon: <img src="/icons/lightning/lightning.svg" className="size-3" alt="" />,
   },
   spark: {
     label: 'Spark',
-    color: '#60A5FA',
-    bg: 'bg-blue-500/15',
-    text: 'text-blue-400',
-    border: 'border-blue-500/40',
-    qrBorder: 'border-blue-500/30',
-    qrGlow: 'shadow-[0_0_30px_rgba(96,165,250,0.15)]',
+    color: colors.info,
+    bg: 'bg-info/15',
+    text: 'text-info',
+    border: 'border-info/40',
+    qrBorder: 'border-info/30',
+    qrGlow: qrGlowStyle(colors.info),
     icon: <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" className="h-3 w-3" alt="" />,
   },
   arkade: {
     label: 'Arkade',
-    color: '#A855F7',
-    bg: 'bg-purple-500/15',
-    text: 'text-purple-400',
-    border: 'border-purple-500/40',
-    qrBorder: 'border-purple-500/30',
-    qrGlow: 'shadow-[0_0_30px_rgba(168,85,247,0.15)]',
+    color: colors.network.arkade,
+    bg: 'bg-network-arkade/15',
+    text: 'text-network-arkade',
+    border: 'border-network-arkade/40',
+    qrBorder: 'border-network-arkade/30',
+    qrGlow: qrGlowStyle(colors.network.arkade),
     icon: <img src="/icons/arkade/arkade-icon.svg" className="h-3 w-3 rounded-sm" alt="" />,
   },
 }
@@ -85,9 +97,9 @@ const ACCOUNT_META: Record<
   },
   SPARK: {
     shortLabel: 'Spark',
-    accentBg: 'bg-blue-500/10',
-    accentText: 'text-blue-300',
-    accentBorder: 'border-blue-500/30',
+    accentBg: 'bg-info/10',
+    accentText: 'text-info',
+    accentBorder: 'border-info/30',
     icon: (
       <img
         src="/icons/spark/Asterisk/Spark Asterisk White.svg"
@@ -98,9 +110,9 @@ const ACCOUNT_META: Record<
   },
   ARKADE: {
     shortLabel: 'Arkade',
-    accentBg: 'bg-purple-500/10',
-    accentText: 'text-purple-300',
-    accentBorder: 'border-purple-500/30',
+    accentBg: 'bg-network-arkade/10',
+    accentText: 'text-network-arkade',
+    accentBorder: 'border-network-arkade/30',
     icon: <img src="/icons/arkade/arkade-icon.svg" alt="" className="h-2.5 w-2.5 rounded-[1px] object-contain" />,
   },
 }
@@ -132,13 +144,13 @@ export function InvoiceStatusBanner({
         isInvoicePaid
           ? 'border-primary/30 bg-primary/10 text-primary'
           : isInvoiceFailedOrExpired
-            ? 'border-red-500/20 bg-red-500/10 text-red-400'
-            : 'border-yellow-400/20 bg-yellow-400/10 text-yellow-400'
+            ? 'border-danger/20 bg-danger/10 text-danger'
+            : 'border-warning/20 bg-warning/10 text-warning'
       )}
     >
       {isInvoicePending && (
         <>
-          <span className="material-symbols-outlined animate-spin text-[15px]">
+          <span className="material-symbols-outlined animate-spin text-icon-sm">
             progress_activity
           </span>
           <span>Waiting for payment...</span>
@@ -146,13 +158,13 @@ export function InvoiceStatusBanner({
       )}
       {isInvoicePaid && (
         <>
-          <span className="material-symbols-outlined text-[15px]">check_circle</span>
+          <span className="material-symbols-outlined text-icon-sm">check_circle</span>
           <span>Payment received!</span>
         </>
       )}
       {isInvoiceFailedOrExpired && (
         <>
-          <span className="material-symbols-outlined text-[15px]">cancel</span>
+          <span className="material-symbols-outlined text-icon-sm">cancel</span>
           <span>Invoice {invoiceStatus?.toLowerCase() === 'expired' ? 'expired' : 'failed'}</span>
         </>
       )}
@@ -165,7 +177,7 @@ export function PaidOverlay() {
     <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-background/80">
       <div className="flex flex-col items-center gap-2">
         <div className="flex size-14 items-center justify-center rounded-full bg-primary">
-          <span className="material-symbols-outlined text-[32px] text-background">check</span>
+          <span className="material-symbols-outlined text-icon-4xl text-background">check</span>
         </div>
         <span className="text-sm font-bold text-primary">Received!</span>
       </div>
@@ -205,7 +217,7 @@ export function AccountChoiceChip({
       onClick={onClick}
       data-testid={`deposit-account-${account.toLowerCase()}`}
       className={cn(
-        'flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-1.5 text-[11px] font-bold transition-all',
+        'flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-1.5 text-icon-xxs font-bold transition-all',
         active
           ? cn(meta.accentBg, meta.accentText, meta.accentBorder)
           : 'border-white/8 bg-white/5 text-muted-foreground hover:border-white/20 hover:text-white/80'
@@ -281,7 +293,7 @@ export function NetworkInfoDisclosure({
         className="flex w-full items-center gap-2 px-2.5 py-1.5 text-left transition-colors hover:bg-white/4"
       >
         <Icon name="info" size="xs" className="text-white/40" />
-        <span className="flex-1 text-[10px] font-bold uppercase tracking-widest text-white/50">
+        <span className="flex-1 text-xxs font-bold uppercase tracking-widest text-white/50">
           What are these networks?
         </span>
         <Icon name={open ? 'expand_less' : 'expand_more'} size="xs" className="text-white/40" />
@@ -297,14 +309,14 @@ export function NetworkInfoDisclosure({
                   <div className={cn('flex size-4 flex-shrink-0 items-center justify-center rounded-md', cfg.bg)}>
                     {cfg.icon}
                   </div>
-                  <span className={cn('text-[10px] font-bold uppercase tracking-widest', cfg.text)}>
+                  <span className={cn('text-xxs font-bold uppercase tracking-widest', cfg.text)}>
                     {info.title}
                   </span>
                 </div>
                 <p className="pl-5 text-tiny leading-snug text-muted-foreground">{info.detail}</p>
                 <ul className="space-y-0.5 pl-5">
                   {info.bullets.map((bullet) => (
-                    <li key={bullet} className="flex items-start gap-1.5 text-[10px] leading-snug text-white/50">
+                    <li key={bullet} className="flex items-start gap-1.5 text-xxs leading-snug text-white/50">
                       <span className="mt-[1px] text-white/30">-</span>
                       <span>{bullet}</span>
                     </li>
@@ -341,7 +353,7 @@ export function MethodChoiceChip({
       disabled={!enabled}
       data-testid={`deposit-method-${method}`}
       className={cn(
-        'flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-1.5 text-[11px] font-bold transition-all',
+        'flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-1.5 text-icon-xxs font-bold transition-all',
         active
           ? 'border-white/20 bg-white/12 text-white shadow-sm'
           : enabled
@@ -351,7 +363,7 @@ export function MethodChoiceChip({
     >
       {meta.label}
       {!enabled && disabledReason && (
-        <span className="text-[9px] font-normal opacity-60">{disabledReason}</span>
+        <span className="text-xxs font-normal opacity-60">{disabledReason}</span>
       )}
     </button>
   )

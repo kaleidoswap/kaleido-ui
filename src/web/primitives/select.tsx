@@ -24,7 +24,7 @@ const SelectTrigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <span className="material-symbols-outlined shrink-0 text-[18px] text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180">
+      <span className="material-symbols-outlined shrink-0 text-icon-lg text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180">
         expand_more
       </span>
     </SelectPrimitive.Icon>
@@ -88,11 +88,11 @@ const SelectItem = React.forwardRef<
     <div className="min-w-0">
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
       {description && (
-        <p className="mt-0.5 text-[11px] text-muted-foreground">{description}</p>
+        <p className="mt-0.5 text-icon-xxs text-muted-foreground">{description}</p>
       )}
     </div>
     <SelectPrimitive.ItemIndicator>
-      <span className="material-symbols-outlined text-[16px] text-primary">check</span>
+      <span className="material-symbols-outlined text-icon-md text-primary">check</span>
     </SelectPrimitive.ItemIndicator>
   </SelectPrimitive.Item>
 ))

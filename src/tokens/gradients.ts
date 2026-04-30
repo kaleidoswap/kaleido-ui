@@ -16,4 +16,10 @@ export const gradient = {
   /** Subtle highlight for the swap-input card receive panel. */
   cardSheen:
     'linear-gradient(to bottom right, rgba(255, 255, 255, 0.01), rgba(43, 238, 121, 0.04))',
+  /**
+   * Brand headline gradient — white-to-fade. Used by `<HeadlineGradient />`
+   * via the `bg-gradient-headline` utility plus `bg-clip-text text-transparent`.
+   */
+  headline:
+    'linear-gradient(to right, #ffffff, #ffffff, rgba(255, 255, 255, 0.45))',
 } as const

@@ -27,7 +27,7 @@ export function WithdrawSuccess({
         <div className="relative mb-8">
           <div className="absolute inset-0 animate-pulse rounded-full bg-primary/30 blur-2xl" />
           <div className="relative scale-110 rounded-full bg-primary p-6 text-background shadow-2xl">
-            <span className="material-symbols-outlined text-[64px] font-bold">check</span>
+            <span className="material-symbols-outlined text-icon-6xl font-bold">check</span>
           </div>
         </div>
 

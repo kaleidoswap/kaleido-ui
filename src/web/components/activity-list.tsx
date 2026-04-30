@@ -3,6 +3,7 @@ import { Button } from '../primitives/button'
 import { TransactionCard } from './transaction-card'
 import { NetworkBadge, type NetworkType } from './network-badge'
 import { Icon } from '../primitives/icon'
+import { LoadingCard, ErrorCard } from './page-shell'
 import type { StatusType } from './status-badge'
 import { cn } from '../utils/cn'
 
@@ -62,31 +63,11 @@ export function ActivityList<TData = unknown>({
   filteredEmptyDescription = 'Try adjusting your search, status, or network filter.',
 }: ActivityListProps<TData>) {
   if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center py-16">
-        <div className="mb-4 size-12 animate-spin rounded-full border-2 border-primary/20 border-t-primary" />
-        <p className="text-sm text-muted-foreground">Loading activity...</p>
-      </div>
-    )
+    return <LoadingCard message="Loading activity..." />
   }
 
   if (error && items.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center py-16">
-        <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-red-500/10">
-          <span className="material-symbols-outlined text-red-400" style={{ fontSize: '32px' }}>
-            error
-          </span>
-        </div>
-        <h3 className="mb-1 text-base font-semibold">Failed to load</h3>
-        <p className="mb-4 max-w-[240px] text-center text-xs text-muted-foreground">{error}</p>
-        {onRetry && (
-          <Button variant="surface" size="sm" onClick={onRetry}>
-            Try Again
-          </Button>
-        )}
-      </div>
-    )
+    return <ErrorCard title="Failed to load" description={error} onRetry={onRetry} />
   }
 
   if (items.length === 0) {
@@ -135,7 +116,7 @@ export function ActivityList<TData = unknown>({
               <div className="flex items-center gap-1.5 border-t border-border/60 bg-black/10 px-3 py-2">
                 {item.network && <NetworkBadge network={item.network} showLabel />}
                 {item.label && (
-                  <span className="text-[10px] font-medium text-muted-foreground">
+                  <span className="text-xxs font-medium text-muted-foreground">
                     {item.label}
                   </span>
                 )}
@@ -145,7 +126,7 @@ export function ActivityList<TData = unknown>({
               <Icon
                 name="expand_more"
                 className={cn(
-                  'pointer-events-none absolute bottom-3 right-3 z-10 text-[18px] text-foreground/30 transition-transform duration-300',
+                  'pointer-events-none absolute bottom-3 right-3 z-10 text-icon-lg text-foreground/30 transition-transform duration-300',
                   isExpanded && 'rotate-180 text-primary'
                 )}
               />
