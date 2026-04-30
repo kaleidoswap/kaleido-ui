@@ -37,10 +37,15 @@ import {
   AlertBanner,
   ActionTile,
   AccountChoiceChip,
+  AccountCapabilitiesCard,
   AccountInfoGrid,
+  AccountNetworkNotice,
   AccountNetworkSelector,
   AccountNotice,
+  AccountSettingsRow,
+  AccountStatusPills,
   AccountStatusTabs,
+  AppIcon,
   AssetSelector,
   BalanceBreakdown,
   BottomNav,
@@ -51,6 +56,12 @@ import {
   PaidOverlay,
   QrCode,
   SectionTitle,
+  SettingsActionButton,
+  SettingsStatusPanel,
+  SettingsTile,
+  FilterDropdown,
+  SwapInputCard,
+  TransferRouteCard,
   WalletAssetList,
   ActivityList,
   ActivityDetailRow,
@@ -145,7 +156,10 @@ export function App() {
   const [activityStatus, setActivityStatus] = useState('all')
   const [activityNetwork, setActivityNetwork] = useState('all')
   const [activitySearch, setActivitySearch] = useState('')
+  const [featureFilter, setFeatureFilter] = useState('all')
   const [selectedAssetTicker, setSelectedAssetTicker] = useState('BTC')
+  const [swapToTicker, setSwapToTicker] = useState('USDB')
+  const [swapAmount, setSwapAmount] = useState('21000')
   const [accountNetwork, setAccountNetwork] = useState<'mainnet' | 'testnet' | 'signet' | 'regtest'>('testnet')
   const [withdrawDestination, setWithdrawDestination] = useState('bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh')
   const [withdrawAmount, setWithdrawAmount] = useState('21000')
@@ -438,7 +452,7 @@ export function App() {
                   onNavigate={setActiveView}
                   onRefresh={() => {}}
                 />
-                <div className="relative rounded-2xl border border-border bg-card/60 p-4">
+                <div className="relative rounded-2xl bg-card/60 p-4">
                   <BottomNav
                     activeView={activeView}
                     onChange={setActiveView}
@@ -462,6 +476,32 @@ export function App() {
                     { id: 'usdt', ticker: 'USDT', name: 'Tether USD', displayBalance: '1,670.00', networks: ['RGB-LN'], accentColor: '#26A17B' },
                   ]}
                 />
+                <FilterDropdown
+                  label="Network"
+                  value={featureFilter}
+                  onChange={setFeatureFilter}
+                  options={[
+                    { value: 'all', label: 'All Networks' },
+                    { value: 'lightning', label: 'Lightning' },
+                    { value: 'spark', label: 'Spark' },
+                    { value: 'arkade', label: 'Arkade' },
+                  ]}
+                />
+                <div className="space-y-3">
+                  <SettingsTile
+                    icon={<AppIcon name="vault" className="size-5 text-blue-400" />}
+                    title="Change Password"
+                    description="Update your wallet password"
+                    onClick={() => {}}
+                  />
+                  <SettingsStatusPanel label="Wallet status" value="ready" />
+                  <SettingsActionButton
+                    icon={<AppIcon name="lock" className="size-5" />}
+                    onClick={() => {}}
+                  >
+                    Lock Wallet
+                  </SettingsActionButton>
+                </div>
               </div>
               <div className="space-y-5 max-w-md">
                 <div className="flex gap-2.5">
@@ -487,7 +527,7 @@ export function App() {
                 />
                 <QrCode value="kaleidoswap:receive:sample" size={168} />
               </div>
-              <div className="max-w-md rounded-2xl border border-border bg-card/60 p-4">
+              <div className="max-w-md rounded-2xl bg-card/60 p-4">
                 <AccountStatusTabs
                   accounts={[
                     {
@@ -521,6 +561,51 @@ export function App() {
                       accentBorder: 'border-blue-500/20',
                     },
                   ]}
+                />
+              </div>
+              <div className="space-y-4 max-w-md">
+                <AccountSettingsRow
+                  accountId="SPARK"
+                  title="Spark Account"
+                  status="ready"
+                  network="mainnet"
+                  description="Spark balance, operator connection, SDK details, and network selection."
+                  onClick={() => {}}
+                />
+                <AccountCapabilitiesCard
+                  accountId="ARKADE"
+                  title="Arkade"
+                  description="Arkade BTC and Arkade-native assets are available on mainnet."
+                  status="ready"
+                  capabilities={['Direct receive', 'Bitcoin boarding', 'VTXO lifecycle controls']}
+                  accent="purple"
+                  isExpanded
+                  onToggle={() => {}}
+                  collapsible={false}
+                >
+                  <div className="space-y-4">
+                    <AccountStatusPills status="ready" network="mainnet" />
+                    <AccountInfoGrid
+                      items={[
+                        { label: 'Summary', value: 'Arkade-native assets and BTC routing.' },
+                        { label: 'Network', value: 'Mainnet' },
+                        { label: 'Server', value: 'https://arkade.example' },
+                        { label: 'SDKs', value: '@arkade-os/sdk' },
+                      ]}
+                    />
+                    <AccountNetworkNotice network="mainnet">
+                      Network changes affect destination validation and route safety warnings.
+                    </AccountNetworkNotice>
+                    <AccountNotice tone="warning">
+                      Double-check addresses and invoices after changing networks.
+                    </AccountNotice>
+                  </div>
+                </AccountCapabilitiesCard>
+                <TransferRouteCard
+                  label="Spark"
+                  summary="Fast Spark-native transfers when the destination supports it."
+                  eta="Instant"
+                  feeHint="Low fee"
                 />
               </div>
             </div>
@@ -602,17 +687,17 @@ export function App() {
                 <NetworkInfoDisclosure networks={['onchain', 'lightning', 'spark', 'arkade']} />
               </div>
               <div className="space-y-4">
-                <div className="relative flex min-h-[220px] items-center justify-center rounded-2xl border border-border bg-card/70 p-5">
+                <div className="relative flex min-h-[220px] items-center justify-center rounded-2xl bg-card/70 p-5">
                   <div className="relative rounded-2xl border-2 border-primary/30 bg-white p-3">
                     <QrCode value="lightning:lnbc21000sampleinvoice" size={168} />
                     <PaidOverlay />
                   </div>
                 </div>
-                <button className="flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-xs font-bold text-white">
+                <button className="flex items-center gap-2 rounded-xl bg-card px-3 py-2 text-xs font-bold text-white">
                   <CopyIcon copied={false} />
                   Copy invoice
                 </button>
-                <div className="rounded-xl border border-border bg-card/70 p-3">
+                <div className="rounded-xl bg-card/70 p-3">
                   <div className="mb-2 flex items-center gap-2 text-xs font-bold text-white">
                     <span className={`flex size-5 items-center justify-center rounded-md ${NETWORK_CONFIG.lightning.bg}`}>
                       {NETWORK_CONFIG.lightning.icon}
@@ -810,48 +895,118 @@ export function App() {
           </Section>
 
           {/* ── Tabs ────────────────────────────────────────────────────── */}
-          <Section id="tabs" title="Tabs" description="Tab navigation via Radix UI.">
-            <div className="max-w-md">
+          <Section id="tabs" title="Tabs" description="Tabbed wallet workflow using send, receive, and swap components together.">
+            <div className="max-w-lg">
               <Tabs defaultValue="send">
                 <TabsList className="w-full">
                   <TabsTrigger value="send" className="flex-1">Send</TabsTrigger>
                   <TabsTrigger value="receive" className="flex-1">Receive</TabsTrigger>
                   <TabsTrigger value="swap" className="flex-1">Swap</TabsTrigger>
                 </TabsList>
-                <TabsContent value="send">
-                  <Card>
-                    <CardContent className="pt-4">
-                      <div className="flex flex-col gap-3">
-                        <div className="flex flex-col gap-2">
-                          <Label>Recipient</Label>
-                          <Input placeholder="bc1q..." />
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          <Label>Amount</Label>
-                          <NumberInput placeholder="0" />
-                        </div>
-                        <Button className="mt-2">Send Bitcoin</Button>
+                <TabsContent value="send" className="mt-4">
+                  <div className="space-y-4 rounded-3xl bg-card/60 p-4">
+                    <WithdrawDestinationInput
+                      destination={withdrawDestination}
+                      setDestination={setWithdrawDestination}
+                      addressType="bitcoin"
+                      detectedNetworkLabel="Bitcoin L1"
+                      isDecoding={false}
+                      isResolvingLnurl={false}
+                      handlePaste={() => setWithdrawDestination('bc1qsampledestinationaddress')}
+                      handleReset={() => setWithdrawDestination('')}
+                    />
+                    <WithdrawAmountInput
+                      addressType="bitcoin"
+                      amount={withdrawAmount}
+                      handleAmountChange={(event) => setWithdrawAmount(event.target.value)}
+                      handleSetMax={() => setWithdrawAmount('125000')}
+                      selectedAssetId="BTC"
+                      selectedAssetTicker="BTC"
+                      formattedBalance="125,000"
+                      decodedLnInvoice={null}
+                      decodedRgbInvoice={null}
+                      lnurlPayData={null}
+                      witnessAmountSat={512}
+                      setWitnessAmountSat={() => {}}
+                      feeRate={feeRate}
+                      setFeeRate={setFeeRate}
+                      feeRates={{ slow: 2, normal: 5, fast: 9 }}
+                      donation={donation}
+                      setDonation={setDonation}
+                    />
+                    <Button variant="cta" size="cta">Review Send</Button>
+                  </div>
+                </TabsContent>
+                <TabsContent value="receive" className="mt-4">
+                  <div className="space-y-4 rounded-3xl bg-card/60 p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                          Receive
+                        </p>
+                        <p className="mt-1 text-sm font-semibold text-white">Lightning Invoice</p>
                       </div>
-                    </CardContent>
-                  </Card>
+                      <NetworkBadge network="LN" />
+                    </div>
+                    <div className="relative flex min-h-[220px] items-center justify-center rounded-2xl bg-black/20 p-5">
+                      <div className="relative rounded-2xl bg-white p-3">
+                        <QrCode value="lightning:lnbc21000sampleinvoice" size={168} />
+                        <PaidOverlay />
+                      </div>
+                    </div>
+                    <InvoiceStatusBanner
+                      invoiceStatus="pending"
+                      isInvoicePending
+                      isInvoicePaid={false}
+                      isInvoiceFailedOrExpired={false}
+                    />
+                    <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-white/[0.05] px-3 py-3 text-xs font-bold text-white transition-colors hover:bg-white/[0.08]">
+                      <CopyIcon copied={false} />
+                      Copy invoice
+                    </button>
+                    <NetworkInfoDisclosure networks={['onchain', 'lightning', 'spark', 'arkade']} />
+                  </div>
                 </TabsContent>
-                <TabsContent value="receive">
-                  <Card>
-                    <CardContent className="pt-4">
-                      <p className="text-sm text-slate-400 text-center py-4">
-                        Your receive address QR code would appear here.
-                      </p>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-                <TabsContent value="swap">
-                  <Card>
-                    <CardContent className="pt-4">
-                      <p className="text-sm text-slate-400 text-center py-4">
-                        Swap interface would appear here.
-                      </p>
-                    </CardContent>
-                  </Card>
+                <TabsContent value="swap" className="mt-4">
+                  <SwapInputCard
+                    fromTicker={selectedAssetTicker}
+                    toTicker={swapToTicker}
+                    fromInput={swapAmount}
+                    fromOptions={[
+                      { ticker: 'BTC', name: 'Bitcoin', network: 'LN' },
+                      { ticker: 'USDB', name: 'Bitcoin Dollar', network: 'Spark', category: 'stablecoins' },
+                      { ticker: 'MSTR', name: 'MicroStrategy', network: 'RGB-LN', category: 'rwa' },
+                    ]}
+                    toOptions={[
+                      { ticker: 'BTC', name: 'Bitcoin', network: 'LN' },
+                      { ticker: 'USDB', name: 'Bitcoin Dollar', network: 'Spark', category: 'stablecoins' },
+                      { ticker: 'MSTR', name: 'MicroStrategy', network: 'RGB-LN', category: 'rwa' },
+                    ]}
+                    categories={[
+                      { id: 'stablecoins', label: 'Stablecoins' },
+                      { id: 'rwa', label: 'RWA' },
+                      { id: 'meme', label: 'Meme' },
+                    ]}
+                    defaultActiveCategories={['stablecoins', 'rwa']}
+                    availableText="125,000 sats"
+                    selectedPercentage={50}
+                    fromUnitLabel="sats"
+                    receiveAmount="20.82"
+                    receiveUnitLabel={swapToTicker}
+                    quoteRateText="1 BTC = 99,140 USDB"
+                    quoteFeeText="0.3%"
+                    quoteExpiresText="24s"
+                    submitLabel="Review Swap"
+                    onFromTickerChange={setSelectedAssetTicker}
+                    onToTickerChange={setSwapToTicker}
+                    onFromInputChange={setSwapAmount}
+                    onPercentageClick={(percent) => setSwapAmount(String(Math.floor((125000 * percent) / 100)))}
+                    onFlip={() => {
+                      setSelectedAssetTicker(swapToTicker)
+                      setSwapToTicker(selectedAssetTicker)
+                    }}
+                    onSubmit={() => {}}
+                  />
                 </TabsContent>
               </Tabs>
             </div>

@@ -121,6 +121,10 @@ export {
   type AssetSelectorCategory,
 } from './components/asset-selector'
 export {
+  SwapInputCard,
+  type SwapInputCardProps,
+} from './components/swap-input-card'
+export {
   ActivityList,
   type ActivityListProps,
   type ActivityListItem,
