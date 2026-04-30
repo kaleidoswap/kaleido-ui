@@ -86,29 +86,6 @@ export function SwapInputCard({
         <div className="p-4 pb-5">
           <div className="mb-3 flex items-center justify-between">
             <p className="text-xs font-bold uppercase tracking-widest text-white/60">You Pay</p>
-            <div className="flex items-center gap-2">
-              <p className="text-xxs font-medium text-white/60">
-                {showMaxText && maxText ? `Max: ${maxText}` : `Avail: ${availableText}`}
-              </p>
-              <div className="flex items-center gap-1">
-                {PERCENTAGES.map((percent) => (
-                  <button
-                    key={percent}
-                    type="button"
-                    disabled={percentageDisabled}
-                    onClick={() => onPercentageClick(percent)}
-                    className={cn(
-                      'rounded px-1.5 py-0.5 text-xxs font-bold transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-40',
-                      selectedPercentage === percent
-                        ? 'border-primary/50 bg-primary/20 text-primary shadow-sm'
-                        : 'bg-white/[0.03] text-muted-foreground hover:text-white',
-                    )}
-                  >
-                    {percent}%
-                  </button>
-                ))}
-              </div>
-            </div>
           </div>
           <div className="flex items-center gap-3">
             <AssetSelector
@@ -130,6 +107,29 @@ export function SwapInputCard({
               className="min-w-0 flex-1 border-none bg-transparent text-right text-2xl font-bold text-white placeholder:text-white/15 focus:outline-none"
             />
           </div>
+          <div className="mt-3 flex items-center justify-between gap-2">
+            <p className="text-xxs font-medium text-white/60">
+              {showMaxText && maxText ? `Max: ${maxText}` : `Available: ${availableText}`}
+            </p>
+            <div className="flex items-center gap-1">
+              {PERCENTAGES.map((percent) => (
+                <button
+                  key={percent}
+                  type="button"
+                  disabled={percentageDisabled}
+                  onClick={() => onPercentageClick(percent)}
+                  className={cn(
+                    'rounded px-1.5 py-0.5 text-xxs font-bold transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-40',
+                    selectedPercentage === percent
+                      ? 'border-primary/50 bg-primary/20 text-primary shadow-sm'
+                      : 'bg-white/[0.03] text-muted-foreground hover:text-white',
+                  )}
+                >
+                  {percent}%
+                </button>
+              ))}
+            </div>
+          </div>
           {fromUnitIsToggle && onToggleFromUnit ? (
             <button
               type="button"
@@ -144,7 +144,7 @@ export function SwapInputCard({
           )}
         </div>
 
-        <div className="relative flex h-px w-full items-center justify-center bg-white/[0.08]">
+        <div className="relative mx-4 flex h-px items-center justify-center bg-white/[0.08]">
           <button
             type="button"
             onClick={onFlip}

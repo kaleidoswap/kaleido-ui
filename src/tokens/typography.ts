@@ -27,3 +27,12 @@ export const fontWeight = {
   semibold: '600',
   bold: '700',
 } as const
+
+/**
+ * Letter-spacing tokens — reused across uppercase eyebrow labels.
+ * These replace the scattered `tracking-[0.18em]` / `tracking-[0.22em]` arbitraries.
+ */
+export const letterSpacing = {
+  eyebrow: '0.18em',
+  eyebrowWide: '0.22em',
+} as const

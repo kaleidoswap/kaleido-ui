@@ -323,12 +323,12 @@ export function App() {
           <Section id="network-badges" title="Network Badges" description="Layer/protocol indicators.">
             <Row label="Network chips with text">
               {(['L1', 'LN', 'RGB20', 'RGB21', 'RGB-L1', 'RGB-LN', 'Spark', 'Arkade'] as NetworkType[]).map((n) => (
-                <NetworkBadge key={n} network={n} />
+                <NetworkBadge key={n} network={n} showLabel />
               ))}
             </Row>
             <Row label="Network chips without text">
               {(['L1', 'LN', 'RGB20', 'Spark', 'Arkade'] as NetworkType[]).map((n) => (
-                <NetworkBadge key={n} network={n} iconOnly />
+                <NetworkBadge key={n} network={n} />
               ))}
             </Row>
           </Section>
@@ -656,7 +656,7 @@ export function App() {
                     renderDetails={(item) => (
                       <>
                         <ActivityDetailRow label="Reference" value={item.id} />
-                        <ActivityDetailRow label="Network" value={<NetworkBadge network={item.network ?? 'LN'} />} />
+                        <ActivityDetailRow label="Network" value={<NetworkBadge network={item.network ?? 'LN'} showLabel />} />
                         <ActivityDetailRow label="Status" value={<StatusBadge status={item.status} />} />
                       </>
                     )}
@@ -946,7 +946,7 @@ export function App() {
                         </p>
                         <p className="mt-1 text-sm font-semibold text-white">Lightning Invoice</p>
                       </div>
-                      <NetworkBadge network="LN" />
+                      <NetworkBadge network="LN" showLabel />
                     </div>
                     <div className="relative flex min-h-[220px] items-center justify-center rounded-2xl bg-black/20 p-5">
                       <div className="relative rounded-2xl bg-white p-3">

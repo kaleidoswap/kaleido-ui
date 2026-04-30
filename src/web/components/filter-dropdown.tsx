@@ -59,13 +59,7 @@ export function FilterDropdown({
           {value === 'all' ? (
             <div className="flex items-center gap-1">
               {displayedCluster.map((option) => (
-                <span
-                  key={option.id}
-                  className={cn(
-                    'inline-flex size-[11px] shrink-0 items-center justify-center rounded-full opacity-60',
-                    option.tintClass
-                  )}
-                >
+                <span key={option.id} className="inline-flex shrink-0 items-center justify-center">
                   {option.clusterIcon ?? option.icon}
                 </span>
               ))}
@@ -77,7 +71,7 @@ export function FilterDropdown({
             </div>
           ) : (
             <>
-              <div className="flex size-4 shrink-0 items-center justify-center">
+              <div className="flex size-8 shrink-0 items-center justify-center">
                 {selected?.icon}
               </div>
               <span className="truncate text-tiny font-bold text-white">{selected?.label}</span>
@@ -113,7 +107,7 @@ export function FilterDropdown({
                     : 'text-white/60 hover:bg-accent hover:text-white/90'
                 )}
               >
-                <div className="flex size-4 shrink-0 items-center justify-center">{option.icon}</div>
+                <div className="flex size-8 shrink-0 items-center justify-center">{option.icon}</div>
                 <span className={cn('text-xs', value === option.id ? 'font-bold' : 'font-medium')}>
                   {option.label}
                 </span>

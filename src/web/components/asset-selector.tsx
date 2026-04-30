@@ -84,13 +84,13 @@ export function AssetSelector({
             }}
           >
             <div
-              className="flex max-h-[85vh] w-full max-w-[26rem] flex-col overflow-hidden rounded-t-3xl border-t border-border bg-popover/95 shadow-[0_18px_55px_rgba(0,0,0,0.65)] backdrop-blur-2xl duration-300 animate-in slide-in-from-bottom-8 sm:max-h-[80vh] sm:rounded-3xl sm:border sm:slide-in-from-bottom-0 sm:zoom-in-95"
+              className="flex max-h-[85vh] w-full max-w-[26rem] flex-col overflow-hidden rounded-t-3xl border-t border-border bg-popover/95 shadow-popover backdrop-blur-2xl duration-300 animate-in slide-in-from-bottom-8 sm:max-h-[80vh] sm:rounded-3xl sm:border sm:slide-in-from-bottom-0 sm:zoom-in-95"
               onClick={(event) => event.stopPropagation()}
             >
               <div className="flex-shrink-0 border-b border-white/[0.08] bg-white/[0.03] px-4 py-3.5">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="text-xxs font-bold uppercase tracking-[0.24em] text-white/35">
+                    <p className="text-xxs font-bold uppercase tracking-eyebrow-wide text-text-dimmed">
                       {label} Asset
                     </p>
                     <p className="mt-1 text-sm font-semibold text-white/90">
@@ -140,7 +140,7 @@ export function AssetSelector({
                             )
                           }
                           className={cn(
-                            'rounded-full border px-3 py-1 text-xxs font-bold uppercase tracking-[0.16em] transition-colors',
+                            'rounded-full border px-3 py-1 text-xxs font-bold uppercase tracking-eyebrow transition-colors',
                             isActive
                               ? 'border-primary/35 bg-primary/[0.14] text-primary'
                               : 'border-border bg-white/[0.03] text-white/40 hover:border-white/20 hover:text-white/65',
@@ -205,7 +205,8 @@ export function AssetSelector({
                               {option.network && (
                                 <NetworkBadge
                                   network={option.network}
-                                  className="border-none bg-black/20 py-[1px]"
+                                  showLabel
+                                  className="py-[1px]"
                                 />
                               )}
                             </div>
@@ -221,7 +222,7 @@ export function AssetSelector({
                             </div>
                             <div className="flex items-center gap-2">
                               {optionCategoryLabel && (
-                                <span className="rounded-full border border-white/[0.08] bg-black/20 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-white/35">
+                                <span className="rounded-full border border-border-default bg-surface-overlay px-2 py-0.5 text-[9px] font-semibold uppercase tracking-eyebrow text-text-dimmed">
                                   {optionCategoryLabel}
                                 </span>
                               )}
@@ -246,56 +247,39 @@ export function AssetSelector({
 
   if (compact) {
     return (
-      <div ref={ref} className="relative w-[10.5rem] flex-shrink-0">
+      <div ref={ref} className="relative w-36 flex-shrink-0">
         <button
           type="button"
           disabled={disabled}
           onClick={() => !disabled && setOpen((value) => !value)}
           className={cn(
-            'group flex w-full items-center gap-2 rounded-2xl px-2.5 py-2 text-left transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50',
+            'group flex w-full items-center gap-3 rounded-full border border-white/[0.08] px-3 py-2 text-left transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50',
             open ? 'bg-primary/[0.12] shadow-md' : 'bg-black/20 hover:bg-black/35',
           )}
         >
           {selected ? (
             <>
               <div className="relative shrink-0">
-                <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={30} />
-                <span className="absolute -bottom-0.5 -right-0.5 block h-2 w-2 rounded-full border border-background bg-primary shadow-sm" />
+                <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={38} />
+                {selected.network && (
+                  <NetworkBadge
+                    network={selected.network}
+                    size="sm"
+                    className="absolute -bottom-2 -right-2 border-2 border-background"
+                  />
+                )}
               </div>
               <div className="min-w-0 flex-1 text-left">
-                <div className="text-[8px] font-semibold uppercase tracking-[0.14em] text-white/24">
-                  {label}
-                </div>
-                <div className="mt-0.5 flex items-center gap-1.5 leading-tight">
-                  <span className="truncate text-[15px] font-bold text-white">
-                    {selected.ticker}
-                  </span>
-                  {selected.network && (
-                    <span className="shrink-0 rounded-full border border-white/8 bg-white/[0.04] px-1.5 py-0 text-[8px] font-medium uppercase tracking-[0.08em] text-white/45">
-                      {selected.network}
-                    </span>
-                  )}
-                </div>
-                <div className="mt-0.5 truncate text-[10px] leading-tight text-white/40">
-                  {selected.name}
-                </div>
+                <span className="truncate text-xl font-bold leading-tight text-white">
+                  {selected.ticker}
+                </span>
               </div>
             </>
           ) : (
             <div className="px-1 py-1">
-              <div className="text-xxs font-bold uppercase tracking-[0.22em] text-white/35">
-                {label}
-              </div>
-              <div className="mt-1 text-sm font-semibold text-white/45">Select...</div>
+              <div className="text-sm font-semibold text-white/45">Select...</div>
             </div>
           )}
-          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border bg-white/5 transition-colors duration-200 group-hover:border-primary/25 group-hover:bg-primary/[0.08]">
-            <Icon
-              name="expand_more"
-              size="xs"
-              className={`text-white/35 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
-            />
-          </div>
         </button>
         {modalOverlay}
       </div>
@@ -324,7 +308,8 @@ export function AssetSelector({
                     {selected.network && (
                       <NetworkBadge
                         network={selected.network}
-                        className="border-border px-1.5 py-0 text-[9px]"
+                        showLabel
+                        className="px-1.5 py-0 text-[9px]"
                       />
                     )}
                   </div>

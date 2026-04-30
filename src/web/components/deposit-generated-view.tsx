@@ -240,7 +240,7 @@ export function DepositGeneratedView({
             'group flex cursor-pointer items-center gap-2 rounded-xl border bg-primary/5 px-2.5 py-1.5',
             'border-primary/20 transition-all hover:bg-primary/8 active:scale-[0.98]'
           )}
-          style={{ borderLeftWidth: 3, borderLeftColor: 'rgb(43, 238, 121)' }}
+          style={{ borderLeftWidth: 3, borderLeftColor: 'var(--primary)' }}
           onClick={() => void copyToClipboard(recipientId)}
         >
           <div className="flex size-5 flex-shrink-0 items-center justify-center rounded-md bg-primary/15">

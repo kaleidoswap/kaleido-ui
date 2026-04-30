@@ -133,7 +133,7 @@ export function ActivityList<TData = unknown>({
             />
             {(item.network || item.label) && (
               <div className="flex items-center gap-1.5 border-t border-border/60 bg-black/10 px-3 py-2">
-                {item.network && <NetworkBadge network={item.network} />}
+                {item.network && <NetworkBadge network={item.network} showLabel />}
                 {item.label && (
                   <span className="text-[10px] font-medium text-muted-foreground">
                     {item.label}

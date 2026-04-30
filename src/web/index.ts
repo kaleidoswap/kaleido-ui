@@ -63,7 +63,7 @@ export { Icon, Icons, type IconProps } from './primitives/icon'
 
 // Shared Components
 export { StatusBadge, type StatusType } from './components/status-badge'
-export { NetworkBadge, type NetworkType } from './components/network-badge'
+export { NetworkBadge, type NetworkBadgeProps, type NetworkType } from './components/network-badge'
 export { AssetIcon } from './components/asset-icon'
 export { AssetCard, type AssetCardProps } from './components/asset-card'
 export { TransactionCard, type TransactionCardProps } from './components/transaction-card'

@@ -13,9 +13,9 @@ interface AssetIconProps {
 
 const ASSET_COLORS: Record<string, string> = {
   BTC: 'bg-transparent',
-  ETH: 'bg-[#627EEA]',
-  USDT: 'bg-[#26A17B]',
-  USDC: 'bg-[#2775CA]',
+  ETH: 'bg-asset-eth',
+  USDT: 'bg-asset-usdt',
+  USDC: 'bg-asset-usdc',
 }
 
 const LOCAL_ICONS: Record<string, string> = {

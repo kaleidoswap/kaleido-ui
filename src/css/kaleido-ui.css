@@ -105,11 +105,42 @@
   --color-network-arkade:    #7C3AED;
   --color-network-spark:     #FF6D00;
   --color-network-lightning: #F6C343;
+  --color-network-bitcoin-chip:   #A65D0D;
+  --color-network-rgb-chip:       #7F2623;
+  --color-network-arkade-chip:    #43208B;
+  --color-network-spark-chip:     #314238;
+  --color-network-lightning-chip: #53611E;
+
+  /* Asset icon brand colors */
+  --color-asset-eth:  #627EEA;
+  --color-asset-usdt: #26A17B;
+  --color-asset-usdc: #2775CA;
 
   /* Transaction colors */
   --color-tx-sent:    #F94040;
   --color-tx-receive: #2BEE79;
   --color-tx-swap:    #4290FF;
+
+  /* Surface elevation (translucent overlays for dark theme) */
+  --color-surface-base:           rgba(255, 255, 255, 0.03);
+  --color-surface-card:           rgba(255, 255, 255, 0.05);
+  --color-surface-elevated:       rgba(255, 255, 255, 0.08);
+  --color-surface-overlay:        rgba(0, 0, 0, 0.20);
+  --color-surface-overlay-strong: rgba(0, 0, 0, 0.35);
+  --color-surface-scrim:          rgba(0, 0, 0, 0.60);
+
+  /* Border ladder */
+  --color-border-subtle:  rgba(255, 255, 255, 0.04);
+  --color-border-default: rgba(255, 255, 255, 0.08);
+  --color-border-strong:  rgba(255, 255, 255, 0.15);
+
+  /* Text ladder for dark surfaces */
+  --color-text-primary:   #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.65);
+  --color-text-muted:     rgba(255, 255, 255, 0.45);
+  --color-text-dimmed:    rgba(255, 255, 255, 0.35);
+  --color-text-disabled:  rgba(255, 255, 255, 0.25);
+  --color-text-on-accent: #051B10;
 
   /* Typography */
   --font-sans:    'Satoshi', system-ui, -apple-system, sans-serif;
@@ -132,6 +163,10 @@
   --text-display: 36px;
   --text-display--line-height: 40px;
 
+  /* Letter spacing — uppercase eyebrow labels */
+  --tracking-eyebrow:      0.18em;
+  --tracking-eyebrow-wide: 0.22em;
+
   /* Border radius */
   --radius-none:  0px;
   --radius-xs:    2px;
@@ -149,10 +184,22 @@
   --radius-pill:  9999px;
 
   /* Shadows */
-  --shadow-glow:        0 0 20px rgba(10, 10, 10, 0.15);
-  --shadow-glow-strong: 0 0 30px rgba(10, 10, 10, 0.25);
-  --shadow-glow-subtle: 0 0 15px rgba(10, 10, 10, 0.12);
-  --shadow-glow-accent: 0 4px 30px rgba(10, 10, 10, 0.18);
+  --shadow-glow:                 0 0 20px rgba(10, 10, 10, 0.15);
+  --shadow-glow-strong:          0 0 30px rgba(10, 10, 10, 0.25);
+  --shadow-glow-subtle:          0 0 15px rgba(10, 10, 10, 0.12);
+  --shadow-glow-accent:          0 4px 30px rgba(10, 10, 10, 0.18);
+  --shadow-glow-primary-soft:    0 0 8px rgba(43, 238, 121, 0.5);
+  --shadow-glow-primary:         0 0 30px rgba(43, 238, 121, 0.45);
+  --shadow-glow-primary-strong:  0 0 40px rgba(43, 238, 121, 0.5);
+  --shadow-popover:              0 18px 55px rgba(0, 0, 0, 0.65);
+
+  /* Drop-shadows (Tailwind v4 emits drop-shadow-* utilities from --drop-shadow-*) */
+  --drop-shadow-glow-primary-soft: 0 0 8px rgba(43, 238, 121, 0.5);
+  --drop-shadow-glow-primary:      0 0 30px rgba(43, 238, 121, 0.45);
+
+  /* Gradients (use as background-image: var(--gradient-page)) */
+  --gradient-page:        radial-gradient(ellipse at 60% 10%, rgba(255, 255, 255, 0.06) 0%, transparent 55%), radial-gradient(ellipse at 30% 85%, rgba(124, 58, 237, 0.08) 0%, transparent 50%);
+  --gradient-card-sheen:  linear-gradient(to bottom right, rgba(255, 255, 255, 0.01), rgba(43, 238, 121, 0.04));
 
   /* Transitions */
   --transition-fast:    150ms ease-out;
@@ -247,4 +294,14 @@
   50% {
     transform: translateY(0);
   }
+}
+
+/* ── Reusable utilities backed by tokens ───────────────────────────────── */
+/* Page-shell radial wash. Usage: <div className="bg-page-radial"> */
+.bg-page-radial {
+  background-image: var(--gradient-page);
+}
+/* Receive-panel sheen used by SwapInputCard. */
+.bg-card-sheen {
+  background-image: var(--gradient-card-sheen);
 }

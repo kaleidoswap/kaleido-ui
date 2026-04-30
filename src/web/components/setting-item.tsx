@@ -24,7 +24,7 @@ export function SettingItem({
   onClick,
   showChevron = true,
   className,
-  iconColor = 'text-[#31ff8b]',
+  iconColor = 'text-primary',
 }: SettingItemProps) {
   const isClickable = !!onClick
 

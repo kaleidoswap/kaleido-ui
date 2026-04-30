@@ -21,31 +21,31 @@ export function ActivityTypeTabs({ counts = {} }: { counts?: ActivityTypeTabCoun
       </TabsTrigger>
       <TabsTrigger
         value="received"
-        className="group rounded-2xl px-1.5 py-2 text-xs font-bold tracking-wide transition-all data-[state=active]:bg-[#2BEE79]/15 data-[state=active]:text-[#2BEE79]"
+        className="group rounded-2xl px-1.5 py-2 text-xs font-bold tracking-wide transition-all data-[state=active]:bg-tx-receive/15 data-[state=active]:text-tx-receive"
       >
         <AppIcon
           name="receive"
-          className="mr-1.5 size-[14px] text-muted-foreground transition-colors group-data-[state=active]:text-[#2BEE79]"
+          className="mr-1.5 size-[14px] text-muted-foreground transition-colors group-data-[state=active]:text-tx-receive"
         />
         In
       </TabsTrigger>
       <TabsTrigger
         value="sent"
-        className="group rounded-2xl px-1.5 py-2 text-xs font-bold tracking-wide transition-all data-[state=active]:bg-[#F94040]/15 data-[state=active]:text-[#F94040]"
+        className="group rounded-2xl px-1.5 py-2 text-xs font-bold tracking-wide transition-all data-[state=active]:bg-tx-sent/15 data-[state=active]:text-tx-sent"
       >
         <AppIcon
           name="send"
-          className="mr-1.5 size-[14px] text-muted-foreground transition-colors group-data-[state=active]:text-[#F94040]"
+          className="mr-1.5 size-[14px] text-muted-foreground transition-colors group-data-[state=active]:text-tx-sent"
         />
         Out
       </TabsTrigger>
       <TabsTrigger
         value="swaps"
-        className="group rounded-2xl px-1.5 py-2 text-xs font-bold tracking-wide transition-all data-[state=active]:bg-[#7C3AED]/15 data-[state=active]:text-[#7C3AED]"
+        className="group rounded-2xl px-1.5 py-2 text-xs font-bold tracking-wide transition-all data-[state=active]:bg-network-arkade/15 data-[state=active]:text-network-arkade"
       >
         <AppIcon
           name="swap"
-          className="mr-1.5 size-[14px] text-muted-foreground transition-colors group-data-[state=active]:text-[#7C3AED]"
+          className="mr-1.5 size-[14px] text-muted-foreground transition-colors group-data-[state=active]:text-network-arkade"
         />
         Swaps
       </TabsTrigger>

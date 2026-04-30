@@ -1,84 +1,141 @@
 import { cn } from '../utils/cn'
+import type { ReactNode } from 'react'
 
 export type NetworkType = 'L1' | 'LN' | 'RGB20' | 'RGB21' | 'RGB-L1' | 'RGB-LN' | 'Spark' | 'Arkade'
 
-interface NetworkBadgeProps {
+export interface NetworkBadgeProps {
   network: NetworkType
   /** Override the icon path (consumer provides asset path) */
   iconBasePath?: string
-  /** Show only the icon, no label */
+  /** @deprecated Use showLabel={false}. Kept for compatibility. */
   iconOnly?: boolean
+  /** Adds the network label after the icon. Defaults to false. */
+  showLabel?: boolean
+  /** Optional content rendered after the icon. Overrides the built-in label. */
+  children?: ReactNode
+  size?: 'sm' | 'md'
   className?: string
+  iconClassName?: string
 }
 
-const networkConfig: Record<NetworkType, { color: string; bg: string; border: string; label: string; iconSuffix: string }> = {
+const networkConfig: Record<
+  NetworkType,
+  {
+    color: string
+    bg: string
+    iconBg: string
+    border: string
+    label: string
+    iconSuffix: string
+    defaultIconClassName?: string
+  }
+> = {
   L1: {
-    color: 'text-network-bitcoin',
-    bg: 'bg-network-bitcoin/10 backdrop-blur-md',
+    color: 'text-white',
+    bg: 'bg-network-bitcoin-chip',
+    iconBg: 'bg-network-bitcoin-chip',
     border: 'border-network-bitcoin/20',
     label: 'L1',
     iconSuffix: 'bitcoin/bitcoin-logo.svg',
   },
   LN: {
-    color: 'text-network-lightning',
-    bg: 'bg-network-lightning/10 backdrop-blur-md',
+    color: 'text-white',
+    bg: 'bg-network-lightning-chip',
+    iconBg: 'bg-network-lightning-chip',
     border: 'border-network-lightning/20',
     label: 'LN',
     iconSuffix: 'lightning/lightning.svg',
   },
   RGB20: {
-    color: 'text-destructive',
-    bg: 'bg-red-500/20 backdrop-blur-md',
+    color: 'text-white',
+    bg: 'bg-network-rgb-chip',
+    iconBg: 'bg-network-rgb-chip',
     border: 'border-red-500/20',
     label: 'RGB',
     iconSuffix: 'rgb/rgb-logo.svg',
   },
   RGB21: {
-    color: 'text-destructive',
-    bg: 'bg-red-500/20 backdrop-blur-md',
+    color: 'text-white',
+    bg: 'bg-network-rgb-chip',
+    iconBg: 'bg-network-rgb-chip',
     border: 'border-red-500/20',
     label: 'RGB21',
     iconSuffix: 'rgb/rgb-logo.svg',
   },
   'RGB-L1': {
-    color: 'text-destructive',
-    bg: 'bg-red-500/20 backdrop-blur-md',
+    color: 'text-white',
+    bg: 'bg-network-rgb-chip',
+    iconBg: 'bg-network-rgb-chip',
     border: 'border-red-500/20',
     label: 'RGB L1',
     iconSuffix: 'rgb/rgb-logo.svg',
   },
   'RGB-LN': {
-    color: 'text-destructive',
-    bg: 'bg-red-500/20 backdrop-blur-md',
+    color: 'text-white',
+    bg: 'bg-network-rgb-chip',
+    iconBg: 'bg-network-rgb-chip',
     border: 'border-red-500/20',
     label: 'RGB LN',
     iconSuffix: 'rgb/rgb-logo.svg',
   },
   Spark: {
-    color: 'text-black dark:text-white',
-    bg: 'bg-black/10 dark:bg-white/10 backdrop-blur-md',
+    color: 'text-white',
+    bg: 'bg-network-spark-chip',
+    iconBg: 'bg-network-spark-chip',
     border: 'border-black/20 dark:border-white/20',
     label: 'Spark',
     iconSuffix: 'spark/Asterisk/Spark Asterisk White.svg',
   },
   Arkade: {
-    color: 'text-violet-400',
-    bg: 'bg-violet-500/15 backdrop-blur-md',
+    color: 'text-white',
+    bg: 'bg-network-arkade-chip',
+    iconBg: 'bg-network-arkade-chip',
     border: 'border-violet-500/20',
     label: 'Arkade',
     iconSuffix: 'arkade/arkade-icon.svg',
   },
 }
 
-export function NetworkBadge({ network, iconBasePath = '/icons', iconOnly = false, className }: NetworkBadgeProps) {
-  const { color, bg, label, iconSuffix } = networkConfig[network]
+export function NetworkBadge({
+  network,
+  iconBasePath = '/icons',
+  showLabel,
+  children,
+  size = 'md',
+  className,
+  iconClassName,
+}: NetworkBadgeProps) {
+  const { color, bg, iconBg, label, iconSuffix, defaultIconClassName } = networkConfig[network]
   const icon = `${iconBasePath}/${iconSuffix}`
+  const shouldShowLabel = showLabel ?? false
+  const content = children ?? (shouldShowLabel ? label : null)
+  const chipSize = size === 'sm' ? 'size-6' : 'size-8'
+  const imageSize = size === 'sm' ? 'size-3.5' : 'size-[18px]'
+
+  if (!content) {
+    return (
+      <span
+        className={cn(
+          'flex items-center justify-center rounded-full shadow-inner',
+          chipSize,
+          iconBg,
+          className,
+        )}
+      >
+        <img
+          src={icon}
+          alt={network}
+          className={cn(imageSize, 'object-contain', defaultIconClassName, iconClassName)}
+        />
+      </span>
+    )
+  }
 
   return (
     <span
       className={cn(
-        'text-xs rounded-full font-bold flex items-center justify-center w-max',
-        iconOnly ? 'p-1.5' : 'px-2.5 py-1 gap-1',
+        'flex w-max items-center justify-center gap-1 rounded-full font-bold',
+        size === 'sm' ? 'px-2 py-0.5 text-xxs' : 'px-2.5 py-1 text-xs',
         bg,
         color,
         className
@@ -87,9 +144,9 @@ export function NetworkBadge({ network, iconBasePath = '/icons', iconOnly = fals
       <img
         src={icon}
         alt={network}
-        className={cn(iconOnly ? 'size-4' : 'size-3.5', 'object-contain', network === 'Spark' && 'brightness-0 dark:brightness-0 dark:invert')}
+        className={cn(size === 'sm' ? 'size-3' : 'size-3.5', 'object-contain', defaultIconClassName, iconClassName)}
       />
-      {!iconOnly && label}
+      {content}
     </span>
   )
 }

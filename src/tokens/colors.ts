@@ -70,6 +70,33 @@ export const colors = {
   error: darkSemanticColors.destructive,
   info: darkSemanticColors.chart1,
 
+  /** Surface elevation — translucent overlays applied over the page background */
+  surface: {
+    base: 'rgba(255, 255, 255, 0.03)',
+    card: 'rgba(255, 255, 255, 0.05)',
+    elevated: 'rgba(255, 255, 255, 0.08)',
+    overlay: 'rgba(0, 0, 0, 0.20)',
+    overlayStrong: 'rgba(0, 0, 0, 0.35)',
+    scrim: 'rgba(0, 0, 0, 0.60)',
+  },
+
+  /** Border ladder — translucent edges on dark surfaces */
+  borderToken: {
+    subtle: 'rgba(255, 255, 255, 0.04)',
+    default: 'rgba(255, 255, 255, 0.08)',
+    strong: 'rgba(255, 255, 255, 0.15)',
+  },
+
+  /** Text ladder for dark surfaces */
+  text: {
+    primary: '#ffffff',
+    secondary: 'rgba(255, 255, 255, 0.65)',
+    muted: 'rgba(255, 255, 255, 0.45)',
+    dimmed: 'rgba(255, 255, 255, 0.35)',
+    disabled: 'rgba(255, 255, 255, 0.25)',
+    onAccent: '#051B10',
+  },
+
   /** Network / Layer */
   network: {
     bitcoin: '#F7931A',
@@ -77,6 +104,20 @@ export const colors = {
     arkade: '#7C3AED',
     spark: '#FF6D00',
     lightning: '#F6C343',
+  },
+  networkChip: {
+    bitcoin: '#A65D0D',
+    rgb: '#7F2623',
+    arkade: '#43208B',
+    spark: '#314238',
+    lightning: '#53611E',
+  },
+
+  /** Asset icon brand colors — used as solid backgrounds behind glyphs */
+  assetIcon: {
+    eth: '#627EEA',
+    usdt: '#26A17B',
+    usdc: '#2775CA',
   },
 
   /** Transaction direction */

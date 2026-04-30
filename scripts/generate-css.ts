@@ -14,8 +14,9 @@ import { fileURLToPath } from 'node:url'
 import { colors, lightSemanticColors } from '../src/tokens/colors.ts'
 import { radius } from '../src/tokens/radius.ts'
 import { shadow } from '../src/tokens/shadows.ts'
+import { gradient } from '../src/tokens/gradients.ts'
 import { transition } from '../src/tokens/transitions.ts'
-import { fontFamily, typeScale } from '../src/tokens/typography.ts'
+import { fontFamily, typeScale, letterSpacing } from '../src/tokens/typography.ts'
 import { keyframes, animation } from '../src/tokens/animations.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -156,17 +157,52 @@ const css = `/* AUTO-GENERATED — do not edit by hand.
   --color-network-arkade:    ${colors.network.arkade};
   --color-network-spark:     ${colors.network.spark};
   --color-network-lightning: ${colors.network.lightning};
+  --color-network-bitcoin-chip:   ${colors.networkChip.bitcoin};
+  --color-network-rgb-chip:       ${colors.networkChip.rgb};
+  --color-network-arkade-chip:    ${colors.networkChip.arkade};
+  --color-network-spark-chip:     ${colors.networkChip.spark};
+  --color-network-lightning-chip: ${colors.networkChip.lightning};
+
+  /* Asset icon brand colors */
+  --color-asset-eth:  ${colors.assetIcon.eth};
+  --color-asset-usdt: ${colors.assetIcon.usdt};
+  --color-asset-usdc: ${colors.assetIcon.usdc};
 
   /* Transaction colors */
   --color-tx-sent:    ${colors.tx.sent};
   --color-tx-receive: ${colors.tx.receive};
   --color-tx-swap:    ${colors.tx.swap};
 
+  /* Surface elevation (translucent overlays for dark theme) */
+  --color-surface-base:           ${colors.surface.base};
+  --color-surface-card:           ${colors.surface.card};
+  --color-surface-elevated:       ${colors.surface.elevated};
+  --color-surface-overlay:        ${colors.surface.overlay};
+  --color-surface-overlay-strong: ${colors.surface.overlayStrong};
+  --color-surface-scrim:          ${colors.surface.scrim};
+
+  /* Border ladder */
+  --color-border-subtle:  ${colors.borderToken.subtle};
+  --color-border-default: ${colors.borderToken.default};
+  --color-border-strong:  ${colors.borderToken.strong};
+
+  /* Text ladder for dark surfaces */
+  --color-text-primary:   ${colors.text.primary};
+  --color-text-secondary: ${colors.text.secondary};
+  --color-text-muted:     ${colors.text.muted};
+  --color-text-dimmed:    ${colors.text.dimmed};
+  --color-text-disabled:  ${colors.text.disabled};
+  --color-text-on-accent: ${colors.text.onAccent};
+
   /* Typography */
   --font-sans:    ${fontFamily.display};
   --font-display: ${fontFamily.display};
   --font-mono:    ${fontFamily.mono};
 ${typeScaleTheme}
+
+  /* Letter spacing — uppercase eyebrow labels */
+  --tracking-eyebrow:      ${letterSpacing.eyebrow};
+  --tracking-eyebrow-wide: ${letterSpacing.eyebrowWide};
 
   /* Border radius */
   --radius-none:  ${radius.none};
@@ -185,10 +221,22 @@ ${typeScaleTheme}
   --radius-pill:  ${radius.pill};
 
   /* Shadows */
-  --shadow-glow:        ${shadow.glow};
-  --shadow-glow-strong: ${shadow.glowStrong};
-  --shadow-glow-subtle: ${shadow.glowSubtle};
-  --shadow-glow-accent: ${shadow.glowAccent};
+  --shadow-glow:                 ${shadow.glow};
+  --shadow-glow-strong:          ${shadow.glowStrong};
+  --shadow-glow-subtle:          ${shadow.glowSubtle};
+  --shadow-glow-accent:          ${shadow.glowAccent};
+  --shadow-glow-primary-soft:    ${shadow.glowPrimarySoft};
+  --shadow-glow-primary:         ${shadow.glowPrimary};
+  --shadow-glow-primary-strong:  ${shadow.glowPrimaryStrong};
+  --shadow-popover:              ${shadow.popover};
+
+  /* Drop-shadows (Tailwind v4 emits drop-shadow-* utilities from --drop-shadow-*) */
+  --drop-shadow-glow-primary-soft: ${shadow.glowPrimarySoft};
+  --drop-shadow-glow-primary:      ${shadow.glowPrimary};
+
+  /* Gradients (use as background-image: var(--gradient-page)) */
+  --gradient-page:        ${gradient.pageRadial};
+  --gradient-card-sheen:  ${gradient.cardSheen};
 
   /* Transitions */
   --transition-fast:    ${transition.fast};
@@ -201,6 +249,16 @@ ${animationTheme}
 
 /* ── Keyframes — from src/tokens/animations.ts ──────────────────────────── */
 ${keyframesCss}
+
+/* ── Reusable utilities backed by tokens ───────────────────────────────── */
+/* Page-shell radial wash. Usage: <div className="bg-page-radial"> */
+.bg-page-radial {
+  background-image: var(--gradient-page);
+}
+/* Receive-panel sheen used by SwapInputCard. */
+.bg-card-sheen {
+  background-image: var(--gradient-card-sheen);
+}
 `
 
 writeFileSync(OUTPUT, css)

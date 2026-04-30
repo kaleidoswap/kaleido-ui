@@ -52,7 +52,7 @@ export function ActivityNetworkFilters<TValue extends string = ActivityNetworkFi
             className={cn(
               'inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all active:scale-95',
               isActive
-                ? 'border-[rgba(43,238,121,0.22)] bg-primary/[0.14] text-primary shadow-inner'
+                ? 'border-primary/25 bg-primary/15 text-primary shadow-inner'
                 : 'border-border bg-white/[0.02] text-white/40 hover:border-border hover:bg-white/[0.06] hover:text-white/80'
             )}
           >
