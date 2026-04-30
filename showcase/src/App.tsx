@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
 import { StateSnapshot } from './pages/StateSnapshot'
-import { Switch } from '@kaleido-ui/primitives/switch'
-import { Select } from '@kaleido-ui/primitives/select'
-import { NumberInput } from '@kaleido-ui/primitives/number-input'
+import { Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput } from '@kaleido-ui/index'
 import {
   Button,
   buttonVariants,
@@ -37,6 +35,33 @@ import {
   SettingItem,
   SectionLabel,
   AlertBanner,
+  ActionTile,
+  AccountChoiceChip,
+  AccountInfoGrid,
+  AccountNetworkSelector,
+  AccountNotice,
+  AccountStatusTabs,
+  AssetSelector,
+  BalanceBreakdown,
+  BottomNav,
+  CopyIcon,
+  InvoiceStatusBanner,
+  MethodChoiceChip,
+  NetworkInfoDisclosure,
+  PaidOverlay,
+  QrCode,
+  SectionTitle,
+  WalletAssetList,
+  ActivityList,
+  ActivityDetailRow,
+  ActivityFilterBar,
+  ActivityNetworkFilters,
+  ActivityTypeTabs,
+  WithdrawAmountInput,
+  WithdrawDestinationInput,
+  WithdrawInvoiceInfo,
+  WithdrawRouteSelector,
+  NETWORK_CONFIG,
 } from '@kaleido-ui/index'
 import type { StatusType, NetworkType } from '@kaleido-ui/index'
 
@@ -94,6 +119,11 @@ const NAV_ITEMS = [
   { id: 'cards', label: 'Cards' },
   { id: 'asset-cards', label: 'Asset Cards' },
   { id: 'transaction-cards', label: 'Transaction Cards' },
+  { id: 'feature-components', label: 'Feature Components' },
+  { id: 'activity-components', label: 'Activity Components' },
+  { id: 'deposit-components', label: 'Deposit Components' },
+  { id: 'withdraw-components', label: 'Withdraw Components' },
+  { id: 'account-components', label: 'Account Components' },
   { id: 'alert-banners', label: 'Alert Banners' },
   { id: 'setting-items', label: 'Setting Items' },
   { id: 'inputs', label: 'Inputs' },
@@ -109,6 +139,18 @@ export function App() {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [darkMode, setDarkMode] = useState(true)
   const [language, setLanguage] = useState('en')
+  const [activeView, setActiveView] = useState('dashboard')
+  const [expandedActivityId, setExpandedActivityId] = useState<string | null>('tx-1')
+  const [activityTab, setActivityTab] = useState('all')
+  const [activityStatus, setActivityStatus] = useState('all')
+  const [activityNetwork, setActivityNetwork] = useState('all')
+  const [activitySearch, setActivitySearch] = useState('')
+  const [selectedAssetTicker, setSelectedAssetTicker] = useState('BTC')
+  const [accountNetwork, setAccountNetwork] = useState<'mainnet' | 'testnet' | 'signet' | 'regtest'>('testnet')
+  const [withdrawDestination, setWithdrawDestination] = useState('bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh')
+  const [withdrawAmount, setWithdrawAmount] = useState('21000')
+  const [feeRate, setFeeRate] = useState<'slow' | 'normal' | 'fast'>('normal')
+  const [donation, setDonation] = useState(true)
 
   // Hash-based route: `#/state-snapshot` renders the State Snapshot page,
   // anything else renders the normal component showcase.
@@ -366,6 +408,314 @@ export function App() {
             </div>
           </Section>
 
+          {/* ── Feature Components ─────────────────────────────────────── */}
+          <Section id="feature-components" title="Feature Components" description="Wallet feature surfaces used by the extension.">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+              <div className="space-y-5 max-w-md">
+                <BalanceBreakdown
+                  btcOnchain={125000}
+                  btcLightning={42000}
+                  btcSpark={88000}
+                  btcArkade={21000}
+                  totalBTC={276000}
+                  rgbAssets={[
+                    {
+                      asset_id: 'usdt-rgb',
+                      ticker: 'USDT',
+                      name: 'Tether USD',
+                      precision: 2,
+                      balance: { future: 125000, offchain_outbound: 42000 },
+                    },
+                  ]}
+                  accounts={{ RGB: { connected: true } }}
+                  nodeInfo={{ pubkey: '028f73c947c2197c21f4abfe9024a7b762bd99122de4b7f9d1d25d5e6a0f99b0a1', num_peers: 3, num_channels: 2 }}
+                  balanceVisible
+                  format={(sats) => `${sats.toLocaleString()} sats`}
+                  formatFiatValue={(sats) => `$${(sats * 0.00065).toFixed(2)}`}
+                  unit="sats"
+                  label="sats"
+                  cycle={() => {}}
+                  onNavigate={setActiveView}
+                  onRefresh={() => {}}
+                />
+                <div className="relative rounded-2xl border border-border bg-card/60 p-4">
+                  <BottomNav
+                    activeView={activeView}
+                    onChange={setActiveView}
+                    position="inline"
+                    className="mx-auto"
+                    items={[
+                      { id: 'dashboard', label: 'Wallet', iconName: 'account_balance_wallet' },
+                      { id: 'swap', label: 'Swap', iconName: 'swap_horiz' },
+                      { id: 'activity-list', label: 'Activity', iconName: 'history' },
+                      { id: 'settings', label: 'Settings', iconName: 'settings' },
+                    ]}
+                  />
+                </div>
+              </div>
+              <div className="space-y-5 max-w-md">
+                <WalletAssetList
+                  title="Assets"
+                  bottomSpacer={false}
+                  items={[
+                    { id: 'btc', ticker: 'BTC', name: 'Bitcoin', displayBalance: '276,000', networks: ['L1', 'LN', 'Spark'], accentColor: '#F7931A' },
+                    { id: 'usdt', ticker: 'USDT', name: 'Tether USD', displayBalance: '1,670.00', networks: ['RGB-LN'], accentColor: '#26A17B' },
+                  ]}
+                />
+              </div>
+              <div className="space-y-5 max-w-md">
+                <div className="flex gap-2.5">
+                  <ActionTile icon={<Icon name="call_received" size="sm" />} label="Deposit" onClick={() => {}} />
+                  <ActionTile icon={<Icon name="swap_horiz" size="sm" />} label="Swap" onClick={() => {}} />
+                  <ActionTile icon={<Icon name="send" size="sm" />} label="Withdraw" onClick={() => {}} />
+                </div>
+                <AssetSelector
+                  label="From"
+                  selectedTicker={selectedAssetTicker}
+                  onChange={setSelectedAssetTicker}
+                  categories={[
+                    { id: 'stablecoins', label: 'Stablecoins' },
+                    { id: 'rwa', label: 'RWA' },
+                    { id: 'meme', label: 'Meme' },
+                  ]}
+                  defaultActiveCategories={['stablecoins', 'rwa']}
+                  options={[
+                    { ticker: 'BTC', name: 'Bitcoin', network: 'LN' },
+                    { ticker: 'USDB', name: 'Bitcoin Dollar', network: 'Spark', category: 'stablecoins' },
+                    { ticker: 'MSTR', name: 'MicroStrategy', network: 'RGB-LN', category: 'rwa' },
+                  ]}
+                />
+                <QrCode value="kaleidoswap:receive:sample" size={168} />
+              </div>
+              <div className="max-w-md rounded-2xl border border-border bg-card/60 p-4">
+                <AccountStatusTabs
+                  accounts={[
+                    {
+                      id: 'RGB',
+                      label: 'RLN',
+                      state: 'Ready',
+                      detail: 'RGB and Lightning features are available.',
+                      icon: <img src="/icons/rgb/rgb-logo.svg" alt="" className="size-5" />,
+                      dotTone: 'bg-primary',
+                      title: 'RGB & Lightning',
+                      description: 'RGB assets and Lightning channels.',
+                      capabilityBullets: ['RGB assets', 'Lightning invoices', 'On-chain receive'],
+                      networkLabel: 'Testnet',
+                      networkBannerClassName: 'border-primary/20 bg-primary/10 text-primary',
+                      accentBg: 'bg-primary/10',
+                      accentBorder: 'border-primary/20',
+                    },
+                    {
+                      id: 'SPARK',
+                      label: 'Spark',
+                      state: 'Ready',
+                      detail: 'Spark account is connected.',
+                      icon: <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" alt="" className="size-5" />,
+                      dotTone: 'bg-blue-300',
+                      title: 'Spark',
+                      description: 'Fast Spark BTC and native assets.',
+                      capabilityBullets: ['Instant receive', 'Native assets'],
+                      networkLabel: 'Signet',
+                      networkBannerClassName: 'border-blue-500/20 bg-blue-500/10 text-blue-200',
+                      accentBg: 'bg-blue-500/10',
+                      accentBorder: 'border-blue-500/20',
+                    },
+                  ]}
+                />
+              </div>
+            </div>
+          </Section>
+
+          {/* ── Activity Components ────────────────────────────────────── */}
+          <Section id="activity-components" title="Activity Components" description="Search, filters, tabs, list rows, and expanded details from the extension Activity page.">
+            <div className="max-w-md space-y-4">
+              <ActivityFilterBar
+                searchTerm={activitySearch}
+                onSearchTermChange={setActivitySearch}
+                statusFilter={activityStatus}
+                onStatusFilterChange={setActivityStatus}
+                hasActiveFilters={activitySearch !== '' || activityStatus !== 'all' || activityNetwork !== 'all'}
+                onClearFilters={() => {
+                  setActivitySearch('')
+                  setActivityStatus('all')
+                  setActivityNetwork('all')
+                }}
+                statusOptions={[
+                  { value: 'all', label: 'All Status' },
+                  { value: 'confirmed', label: 'Confirmed' },
+                  { value: 'pending', label: 'Pending' },
+                  { value: 'failed', label: 'Failed' },
+                ]}
+              />
+              <ActivityNetworkFilters
+                activeFilter={activityNetwork}
+                onChange={setActivityNetwork}
+                filters={[
+                  { value: 'all', label: 'All' },
+                  { value: 'onchain', label: 'On-chain' },
+                  { value: 'lightning', label: 'Lightning' },
+                  { value: 'spark', label: 'Spark' },
+                  { value: 'arkade', label: 'Arkade' },
+                ]}
+              />
+              <Tabs value={activityTab} onValueChange={setActivityTab}>
+                <ActivityTypeTabs counts={{ all: 12, received: 7, sent: 3, swaps: 2 }} />
+                <TabsContent value={activityTab} className="mt-3">
+                  <ActivityList
+                    expandedId={expandedActivityId}
+                    onExpandedChange={setExpandedActivityId}
+                    items={[
+                      { id: 'tx-1', direction: 'inbound', status: 'completed', displayAmount: '42,000', unit: 'sats', timestamp: 1700000000, network: 'LN', label: 'Lightning Receive' },
+                      { id: 'tx-2', direction: 'outbound', status: 'pending', displayAmount: '125.00', unit: 'USDT', timestamp: 1700086400, network: 'RGB-LN', label: 'RGB Transfer' },
+                    ]}
+                    renderDetails={(item) => (
+                      <>
+                        <ActivityDetailRow label="Reference" value={item.id} />
+                        <ActivityDetailRow label="Network" value={<NetworkBadge network={item.network ?? 'LN'} />} />
+                        <ActivityDetailRow label="Status" value={<StatusBadge status={item.status} />} />
+                      </>
+                    )}
+                  />
+                </TabsContent>
+              </Tabs>
+            </div>
+          </Section>
+
+          {/* ── Deposit Components ─────────────────────────────────────── */}
+          <Section id="deposit-components" title="Deposit Components" description="Reusable receive-flow pieces.">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-4xl">
+              <div className="space-y-4">
+                <Row label="Account and Method Choices">
+                  <AccountChoiceChip account="RGB" active onClick={() => {}} />
+                  <AccountChoiceChip account="SPARK" active={false} onClick={() => {}} />
+                  <AccountChoiceChip account="ARKADE" active={false} onClick={() => {}} />
+                  <MethodChoiceChip method="bitcoin_l1" active enabled onClick={() => {}} />
+                  <MethodChoiceChip method="lightning" active={false} enabled onClick={() => {}} />
+                  <MethodChoiceChip method="spark" active={false} enabled={false} disabledReason="offline" onClick={() => {}} />
+                </Row>
+                <InvoiceStatusBanner
+                  invoiceStatus="pending"
+                  isInvoicePending
+                  isInvoicePaid={false}
+                  isInvoiceFailedOrExpired={false}
+                />
+                <NetworkInfoDisclosure networks={['onchain', 'lightning', 'spark', 'arkade']} />
+              </div>
+              <div className="space-y-4">
+                <div className="relative flex min-h-[220px] items-center justify-center rounded-2xl border border-border bg-card/70 p-5">
+                  <div className="relative rounded-2xl border-2 border-primary/30 bg-white p-3">
+                    <QrCode value="lightning:lnbc21000sampleinvoice" size={168} />
+                    <PaidOverlay />
+                  </div>
+                </div>
+                <button className="flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-xs font-bold text-white">
+                  <CopyIcon copied={false} />
+                  Copy invoice
+                </button>
+                <div className="rounded-xl border border-border bg-card/70 p-3">
+                  <div className="mb-2 flex items-center gap-2 text-xs font-bold text-white">
+                    <span className={`flex size-5 items-center justify-center rounded-md ${NETWORK_CONFIG.lightning.bg}`}>
+                      {NETWORK_CONFIG.lightning.icon}
+                    </span>
+                    {NETWORK_CONFIG.lightning.label}
+                  </div>
+                  <p className="text-xs text-muted-foreground">Lightning invoice generation, payment state, copy affordance, and network disclosure all come from the library.</p>
+                </div>
+              </div>
+            </div>
+          </Section>
+
+          {/* ── Withdraw Components ────────────────────────────────────── */}
+          <Section id="withdraw-components" title="Withdraw Components" description="Reusable send-flow controls.">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-4xl">
+              <div className="space-y-4">
+                <WithdrawDestinationInput
+                  destination={withdrawDestination}
+                  setDestination={setWithdrawDestination}
+                  addressType="bitcoin"
+                  detectedNetworkLabel="Bitcoin L1"
+                  isDecoding={false}
+                  isResolvingLnurl={false}
+                  handlePaste={() => setWithdrawDestination('bc1qsampledestinationaddress')}
+                  handleReset={() => {}}
+                />
+                <WithdrawAmountInput
+                  addressType="bitcoin"
+                  amount={withdrawAmount}
+                  handleAmountChange={(event) => setWithdrawAmount(event.target.value)}
+                  handleSetMax={() => setWithdrawAmount('125000')}
+                  selectedAssetId="BTC"
+                  selectedAssetTicker="BTC"
+                  formattedBalance="125,000"
+                  decodedLnInvoice={null}
+                  decodedRgbInvoice={null}
+                  lnurlPayData={null}
+                  witnessAmountSat={512}
+                  setWitnessAmountSat={() => {}}
+                  feeRate={feeRate}
+                  setFeeRate={setFeeRate}
+                  feeRates={{ slow: 2, normal: 5, fast: 9 }}
+                  donation={donation}
+                  setDonation={setDonation}
+                />
+              </div>
+              <div className="space-y-4">
+                <WithdrawInvoiceInfo
+                  addressType="bitcoin"
+                  decodedLnInvoice={null}
+                  decodedRgbInvoice={null}
+                  allAssets={[{ asset_id: 'BTC', ticker: 'BTC', precision: 0 }]}
+                  selectedAssetId="BTC"
+                  selectedAssetTicker="BTC"
+                  assetBalance={125000}
+                  maxLightningCapacity={750000}
+                />
+                <WithdrawRouteSelector
+                  routes={[
+                    { account: 'RGB', method: 'bitcoin_l1', summary: 'Spend from the RGB on-chain wallet.', accountTitle: 'RGB & Lightning', methodLabel: 'Bitcoin L1 transfer', feeHint: 'Miner fee' },
+                    { account: 'ARKADE', method: 'boarding', summary: 'Spend from Arkade and board out to Bitcoin.', accountTitle: 'Arkade', methodLabel: 'Arkade boarding', feeHint: 'Low' },
+                  ]}
+                  activeRouteAccount="RGB"
+                  recommendedRouteAccount="RGB"
+                  selectedRouteSummary={{ method: 'bitcoin_l1', summary: 'Standard on-chain Bitcoin transfer.', methodLabel: 'Bitcoin L1 transfer' }}
+                  selectedAccountTitle="RGB & Lightning"
+                  onRouteChange={() => {}}
+                />
+              </div>
+            </div>
+          </Section>
+
+          {/* ── Account Components ─────────────────────────────────────── */}
+          <Section id="account-components" title="Account Components" description="Settings surfaces shared with the extension.">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-4xl">
+              <div className="space-y-4">
+                <SectionTitle>Network</SectionTitle>
+                <AccountNetworkSelector
+                  accountId="SPARK"
+                  value={accountNetwork}
+                  onChange={setAccountNetwork}
+                />
+                <AccountNotice>
+                  Spark will reconnect using the selected network after saving in the consuming app.
+                </AccountNotice>
+              </div>
+              <div className="space-y-4">
+                <SectionTitle>Account Info</SectionTitle>
+                <AccountInfoGrid
+                  items={[
+                    { label: 'Status', value: 'Ready' },
+                    { label: 'Network', value: accountNetwork },
+                    { label: 'Pubkey', value: '02c4f7...91ac' },
+                    { label: 'Assets', value: 'BTC, USDB' },
+                  ]}
+                />
+                <AccountNotice tone="warning">
+                  Network switching affects addresses and invoices generated after the change.
+                </AccountNotice>
+              </div>
+            </div>
+          </Section>
+
           {/* ── Alert Banners ───────────────────────────────────────────── */}
           <Section id="alert-banners" title="Alert Banners" description="Contextual feedback messages.">
             <div className="flex flex-col gap-3 max-w-lg">
@@ -405,19 +755,24 @@ export function App() {
                 title="Language"
                 showChevron={false}
                 value={
-                  <Select
-                    value={language}
-                    onValueChange={setLanguage}
-                    options={[
-                      { value: 'en', label: 'English',    prefix: '🇬🇧' },
-                      { value: 'it', label: 'Italiano',   prefix: '🇮🇹' },
-                      { value: 'es', label: 'Español',    prefix: '🇪🇸' },
-                      { value: 'fr', label: 'Français',   prefix: '🇫🇷' },
-                      { value: 'de', label: 'Deutsch',    prefix: '🇩🇪' },
-                      { value: 'pt', label: 'Português',  prefix: '🇵🇹' },
-                      { value: 'ja', label: '日本語',      prefix: '🇯🇵' },
-                    ]}
-                  />
+                  <Select value={language} onValueChange={setLanguage}>
+                    <SelectTrigger className="w-auto py-1.5 px-3 text-xs font-mono">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[
+                        { value: 'en', label: '🇬🇧 English' },
+                        { value: 'it', label: '🇮🇹 Italiano' },
+                        { value: 'es', label: '🇪🇸 Español' },
+                        { value: 'fr', label: '🇫🇷 Français' },
+                        { value: 'de', label: '🇩🇪 Deutsch' },
+                        { value: 'pt', label: '🇵🇹 Português' },
+                        { value: 'ja', label: '🇯🇵 日本語' },
+                      ].map(opt => (
+                        <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 }
               />
               <SectionLabel className="mt-4">Preferences</SectionLabel>
