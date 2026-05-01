@@ -99,6 +99,13 @@ export const colors = {
     onAccent: '#051B10',
   },
 
+  /** Scrollbar treatment for app-owned scroll regions */
+  scrollbar: {
+    thumb: 'rgba(255, 255, 255, 0.16)',
+    thumbHover: 'rgba(43, 238, 121, 0.55)',
+    track: 'transparent',
+  },
+
   /** Network / Layer */
   network: {
     bitcoin: '#F7931A',
@@ -108,11 +115,18 @@ export const colors = {
     lightning: '#F6C343',
   },
   networkChip: {
-    bitcoin: '#A65D0D',
-    rgb: '#7F2623',
-    arkade: '#43208B',
-    spark: '#314238',
-    lightning: '#53611E',
+    bitcoin: '#44341F',
+    rgb: '#44282B',
+    arkade: '#362B55',
+    spark: '#284338',
+    lightning: '#3D421F',
+  },
+  networkText: {
+    bitcoin: '#F2B063',
+    rgb: '#E87872',
+    arkade: '#A98CF2',
+    spark: '#D6E5DE',
+    lightning: '#E4D56F',
   },
 
   /** Asset icon brand colors — used as solid backgrounds behind glyphs */

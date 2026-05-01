@@ -73,7 +73,7 @@ export function AssetCard({
             </span>
             <div className="flex flex-wrap gap-1 mt-1">
               {networks.map((network) => (
-                <NetworkBadge key={network} network={network} showLabel />
+                <NetworkBadge key={network} network={network} showLabel size="sm" />
               ))}
             </div>
           </div>

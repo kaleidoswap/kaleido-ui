@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { AssetIcon } from './asset-icon'
 import { NetworkBadge, type NetworkType } from './network-badge'
+import { ScrollArea } from './scroll-area'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 
@@ -77,7 +78,7 @@ export function AssetSelector({
     open && typeof document !== 'undefined'
       ? createPortal(
           <div
-            className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm duration-200 animate-in fade-in sm:items-center sm:p-4"
+            className="fixed inset-0 z-[var(--z-modal)] flex items-end justify-center bg-black/60 backdrop-blur-sm duration-200 animate-in fade-in sm:items-center sm:p-4"
             onClick={() => {
               setOpen(false)
               setSearch('')
@@ -154,7 +155,7 @@ export function AssetSelector({
                 )}
               </div>
 
-              <div className="overflow-y-auto px-2 py-2 app-scrollbar">
+              <ScrollArea className="min-h-0" viewportClassName="px-2 py-2">
                 {filtered.length === 0 ? (
                   <div className="flex flex-col items-center gap-2 px-4 py-10 text-center text-sm text-white/30">
                     <Icon name="search" size="md" className="opacity-40" />
@@ -238,7 +239,7 @@ export function AssetSelector({
                     )
                   })
                 )}
-              </div>
+              </ScrollArea>
             </div>
           </div>,
           document.body,
@@ -253,7 +254,7 @@ export function AssetSelector({
           disabled={disabled}
           onClick={() => !disabled && setOpen((value) => !value)}
           className={cn(
-            'group flex w-full items-center gap-3 rounded-full border border-white/[0.08] px-3 py-2 text-left transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50',
+            'group flex w-full items-center gap-3 rounded-full px-3 py-2 text-left transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50',
             open ? 'bg-primary/[0.12] shadow-md' : 'bg-black/20 hover:bg-black/35',
           )}
         >

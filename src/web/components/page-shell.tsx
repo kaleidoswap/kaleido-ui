@@ -31,7 +31,7 @@ export function PageShell({
       )}
     >
       <div aria-hidden className="absolute inset-0 bg-page-radial pointer-events-none" />
-      <div className="relative z-10 w-full">{children}</div>
+      <div className={cn('relative z-10 w-full', !centered && 'h-full min-h-0')}>{children}</div>
     </div>
   )
 }

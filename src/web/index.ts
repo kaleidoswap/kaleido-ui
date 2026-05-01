@@ -68,6 +68,8 @@ export { AssetIcon } from './components/asset-icon'
 export { AssetCard, type AssetCardProps } from './components/asset-card'
 export { TransactionCard, type TransactionCardProps } from './components/transaction-card'
 export { AppIcon, type AppIconProps, type AppIconName } from './components/app-icon'
+export { ScrollArea, type ScrollAreaProps } from './components/scroll-area'
+export { NetworkStatusChip, type NetworkStatusChipProps } from './components/network-status-chip'
 export {
   LightningNetworkIcon,
   SparkNetworkIcon,

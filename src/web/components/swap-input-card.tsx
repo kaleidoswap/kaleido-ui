@@ -82,12 +82,12 @@ export function SwapInputCard({
 }: SwapInputCardProps) {
   return (
     <>
-      <div className="relative mb-4 flex flex-col rounded-3xl bg-white/[0.03] shadow-2xl shadow-black/40 backdrop-blur-2xl transition-all duration-300">
-        <div className="p-4 pb-5">
-          <div className="mb-3 flex items-center justify-between">
+      <div className="relative mb-3 flex flex-col rounded-3xl bg-white/[0.03] shadow-2xl shadow-black/40 backdrop-blur-2xl transition-all duration-300">
+        <div className="p-3.5 pb-4">
+          <div className="mb-2 flex items-center justify-between">
             <p className="text-xs font-bold uppercase tracking-widest text-white/60">You Pay</p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <AssetSelector
               compact
               label="From"
@@ -98,16 +98,30 @@ export function SwapInputCard({
               disabledTicker={toTicker}
               onChange={onFromTickerChange}
             />
-            <input
-              type="text"
-              inputMode="decimal"
-              value={fromInput}
-              onChange={(event) => onFromInputChange(event.target.value)}
-              placeholder="0"
-              className="min-w-0 flex-1 border-none bg-transparent text-right text-2xl font-bold text-white placeholder:text-white/15 focus:outline-none"
-            />
+            <div className="min-w-0 flex-1 text-right">
+              <input
+                type="text"
+                inputMode="decimal"
+                value={fromInput}
+                onChange={(event) => onFromInputChange(event.target.value)}
+                placeholder="0"
+                className="w-full border-none bg-transparent text-right text-2xl font-bold text-white placeholder:text-white/15 focus:outline-none"
+              />
+              {fromUnitIsToggle && onToggleFromUnit ? (
+                <button
+                  type="button"
+                  onClick={onToggleFromUnit}
+                  className="mt-0.5 text-right text-xs text-muted-foreground underline decoration-dotted transition-colors hover:text-primary"
+                  title="Tap to switch unit"
+                >
+                  {fromUnitLabel}
+                </button>
+              ) : (
+                <p className="mt-0.5 text-xs text-muted-foreground">{fromUnitLabel}</p>
+              )}
+            </div>
           </div>
-          <div className="mt-3 flex items-center justify-between gap-2">
+          <div className="mt-2 flex items-center justify-between gap-2">
             <p className="text-xxs font-medium text-white/60">
               {showMaxText && maxText ? `Max: ${maxText}` : `Available: ${availableText}`}
             </p>
@@ -130,36 +144,24 @@ export function SwapInputCard({
               ))}
             </div>
           </div>
-          {fromUnitIsToggle && onToggleFromUnit ? (
-            <button
-              type="button"
-              onClick={onToggleFromUnit}
-              className="ml-auto mt-1.5 block text-right text-xs text-muted-foreground underline decoration-dotted transition-colors hover:text-primary"
-              title="Tap to switch unit"
-            >
-              {fromUnitLabel}
-            </button>
-          ) : (
-            <p className="mt-1.5 text-right text-xs text-muted-foreground">{fromUnitLabel}</p>
-          )}
         </div>
 
-        <div className="relative mx-4 flex h-px items-center justify-center bg-white/[0.08]">
+        <div className="relative mx-6 flex h-px items-center justify-center bg-white/[0.08]">
           <button
             type="button"
             onClick={onFlip}
             title="Flip assets"
-            className="absolute flex h-9 w-9 items-center justify-center rounded-full bg-card text-primary transition-all duration-500 hover:rotate-180 hover:bg-accent active:scale-95"
+            className="absolute flex h-11 w-11 items-center justify-center rounded-full bg-card text-primary shadow-lg shadow-black/35 transition-all duration-500 hover:rotate-180 hover:bg-accent active:scale-95 active:shadow-none"
           >
-            <Icon name="swap_vert" size="sm" />
+            <Icon name="swap_vert" size="md" />
           </button>
         </div>
 
-        <div className="rounded-b-3xl bg-gradient-to-br from-white/[0.01] to-primary/[0.04] p-4 pt-5 transition-all duration-300">
-          <p className="mb-3 text-xs font-bold uppercase tracking-widest text-primary/70">
+        <div className="rounded-b-3xl bg-gradient-to-br from-white/[0.01] to-primary/[0.04] p-3.5 pt-4 transition-all duration-300">
+          <p className="mb-2 text-xs font-bold uppercase tracking-widest text-primary/70">
             You Receive
           </p>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <AssetSelector
               compact
               label="To"
@@ -178,11 +180,11 @@ export function SwapInputCard({
               ) : (
                 <span className="text-2xl font-bold text-white/15">-</span>
               )}
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                {receiveUnitLabel || toTicker || '-'}
+              </p>
             </div>
           </div>
-          <p className="mt-1 text-right text-xs text-muted-foreground">
-            {receiveUnitLabel || toTicker || '-'}
-          </p>
         </div>
       </div>
 

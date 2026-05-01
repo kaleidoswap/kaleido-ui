@@ -31,7 +31,7 @@ const networkConfig: Record<
   }
 > = {
   L1: {
-    color: 'text-white',
+    color: 'text-network-bitcoin-text',
     bg: 'bg-network-bitcoin-chip',
     iconBg: 'bg-network-bitcoin-chip',
     border: 'border-network-bitcoin/20',
@@ -39,7 +39,7 @@ const networkConfig: Record<
     iconSuffix: 'bitcoin/bitcoin-logo.svg',
   },
   LN: {
-    color: 'text-white',
+    color: 'text-network-lightning-text',
     bg: 'bg-network-lightning-chip',
     iconBg: 'bg-network-lightning-chip',
     border: 'border-network-lightning/20',
@@ -47,7 +47,7 @@ const networkConfig: Record<
     iconSuffix: 'lightning/lightning.svg',
   },
   RGB20: {
-    color: 'text-white',
+    color: 'text-network-rgb-text',
     bg: 'bg-network-rgb-chip',
     iconBg: 'bg-network-rgb-chip',
     border: 'border-danger/20',
@@ -55,7 +55,7 @@ const networkConfig: Record<
     iconSuffix: 'rgb/rgb-logo.svg',
   },
   RGB21: {
-    color: 'text-white',
+    color: 'text-network-rgb-text',
     bg: 'bg-network-rgb-chip',
     iconBg: 'bg-network-rgb-chip',
     border: 'border-danger/20',
@@ -63,7 +63,7 @@ const networkConfig: Record<
     iconSuffix: 'rgb/rgb-logo.svg',
   },
   'RGB-L1': {
-    color: 'text-white',
+    color: 'text-network-rgb-text',
     bg: 'bg-network-rgb-chip',
     iconBg: 'bg-network-rgb-chip',
     border: 'border-danger/20',
@@ -71,7 +71,7 @@ const networkConfig: Record<
     iconSuffix: 'rgb/rgb-logo.svg',
   },
   'RGB-LN': {
-    color: 'text-white',
+    color: 'text-network-rgb-text',
     bg: 'bg-network-rgb-chip',
     iconBg: 'bg-network-rgb-chip',
     border: 'border-danger/20',
@@ -79,7 +79,7 @@ const networkConfig: Record<
     iconSuffix: 'rgb/rgb-logo.svg',
   },
   Spark: {
-    color: 'text-white',
+    color: 'text-network-spark-text',
     bg: 'bg-network-spark-chip',
     iconBg: 'bg-network-spark-chip',
     border: 'border-black/20 dark:border-white/20',
@@ -87,7 +87,7 @@ const networkConfig: Record<
     iconSuffix: 'spark/Asterisk/Spark Asterisk White.svg',
   },
   Arkade: {
-    color: 'text-white',
+    color: 'text-network-arkade-text',
     bg: 'bg-network-arkade-chip',
     iconBg: 'bg-network-arkade-chip',
     border: 'border-network-arkade/20',
@@ -134,8 +134,8 @@ export function NetworkBadge({
   return (
     <span
       className={cn(
-        'flex w-max items-center justify-center gap-1 rounded-full font-bold',
-        size === 'sm' ? 'px-2 py-0.5 text-xxs' : 'px-2.5 py-1 text-xs',
+        'flex w-max items-center justify-center gap-1 rounded-full font-bold shadow-inner',
+        size === 'sm' ? 'px-2 py-1 text-xxs' : 'px-2.5 py-1 text-xs',
         bg,
         color,
         className
