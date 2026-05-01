@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '../primitives/dialog'
+import { NetworkStatusChip } from './network-status-chip'
 import { cn } from '../utils/cn'
 
 export interface AccountStatusTabItem<TId extends string = string> {
@@ -39,20 +40,15 @@ export function AccountStatusTabs<TId extends string = string>({
   return (
     <>
       <div className="flex max-w-full items-center justify-end overflow-x-auto no-scrollbar pl-3">
-        <div className="flex items-center gap-2 px-1">
+        <div className="flex items-center gap-1 px-1">
           {accounts.map((account) => (
             <div key={account.id} className="group relative shrink-0">
-              <button
-                type="button"
+              <NetworkStatusChip
                 onClick={() => setSelectedAccountId(account.id)}
-                className={cn(
-                  'inline-flex items-center gap-2 rounded-full border bg-white/[0.06] px-3 py-2 backdrop-blur-md transition-all hover:border-white/15 hover:bg-white/[0.1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30'
-                )}
-                aria-label={`Open ${account.title} details`}
-              >
-                <span className="shrink-0">{account.icon}</span>
-                <span className={cn('size-2 rounded-full', account.dotTone)} />
-              </button>
+                icon={account.icon}
+                dotClassName={account.dotTone}
+                ariaLabel={`Open ${account.title} details`}
+              />
 
               <div
                 className={cn(

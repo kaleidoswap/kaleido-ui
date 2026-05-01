@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
+import { PageHeader } from './page-header'
 import { cn } from '../utils/cn'
 
 export type AccountSettingsProtocol = 'RGB' | 'SPARK' | 'ARKADE'
@@ -210,15 +211,13 @@ export function AccountSettingsShell({
 }) {
   return (
     <div className="min-h-screen bg-background pb-28 font-display text-foreground">
-      <header className="sticky top-0 z-20 bg-background/95 px-5 py-4 backdrop-blur">
-        <div className="flex items-start gap-3">
-          <AccountHeaderIcons accountId={accountId} />
-          <div className="min-w-0 flex-1">
-            <div className="text-lg font-bold">{title}</div>
-            <p className="mt-1 text-xs text-muted-foreground">{subtitle}</p>
-          </div>
-        </div>
-      </header>
+      <PageHeader
+        title={title}
+        subtitle={subtitle}
+        titleAlign="start"
+        left={<AccountHeaderIcons accountId={accountId} />}
+        className="px-5 py-4"
+      />
 
       <main className="space-y-6 px-5 py-6">{children}</main>
     </div>

@@ -30,7 +30,7 @@ export function BottomNav<TValue extends string = string>({
       className={cn(
         'w-[90%] max-w-[340px] rounded-full bg-card/60 shadow-lg backdrop-blur-xl',
         position === 'fixed'
-          ? 'fixed bottom-6 left-1/2 z-40 -translate-x-1/2'
+          ? 'fixed bottom-6 left-1/2 z-[var(--z-nav)] -translate-x-1/2'
           : 'relative',
         className
       )}

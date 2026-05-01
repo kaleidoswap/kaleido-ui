@@ -105,11 +105,16 @@
   --color-network-arkade:    #7C3AED;
   --color-network-spark:     #FF6D00;
   --color-network-lightning: #F6C343;
-  --color-network-bitcoin-chip:   #A65D0D;
-  --color-network-rgb-chip:       #7F2623;
-  --color-network-arkade-chip:    #43208B;
-  --color-network-spark-chip:     #314238;
-  --color-network-lightning-chip: #53611E;
+  --color-network-bitcoin-chip:   #44341F;
+  --color-network-rgb-chip:       #44282B;
+  --color-network-arkade-chip:    #362B55;
+  --color-network-spark-chip:     #284338;
+  --color-network-lightning-chip: #3D421F;
+  --color-network-bitcoin-text:   #F2B063;
+  --color-network-rgb-text:       #E87872;
+  --color-network-arkade-text:    #A98CF2;
+  --color-network-spark-text:     #D6E5DE;
+  --color-network-lightning-text: #E4D56F;
 
   /* Asset icon brand colors */
   --color-asset-eth:  #627EEA;
@@ -147,6 +152,20 @@
   --color-text-dimmed:    rgba(255, 255, 255, 0.35);
   --color-text-disabled:  rgba(255, 255, 255, 0.25);
   --color-text-on-accent: #051B10;
+
+  /* Scrollbar colors */
+  --color-scrollbar-thumb:       rgba(255, 255, 255, 0.16);
+  --color-scrollbar-thumb-hover: rgba(43, 238, 121, 0.55);
+  --color-scrollbar-track:       transparent;
+  --spacing-scrollbar:           2px;
+  --spacing-scrollbar-hover:     6px;
+  --spacing-scrollbar-thumb-min: 24px;
+
+  /* Layers */
+  --z-header:    50;
+  --z-nav:       2147483646;
+  --z-scrollbar: 2147483645;
+  --z-modal:     2147483647;
 
   /* Typography */
   --font-sans:    'Satoshi', system-ui, -apple-system, sans-serif;
@@ -225,6 +244,7 @@
   --shadow-glow-strong:          0 0 30px rgba(10, 10, 10, 0.25);
   --shadow-glow-subtle:          0 0 15px rgba(10, 10, 10, 0.12);
   --shadow-glow-accent:          0 4px 30px rgba(10, 10, 10, 0.18);
+  --shadow-header:               0 10px 24px rgba(0, 0, 0, 0.22), 0 1px 0 rgba(255, 255, 255, 0.04);
   --shadow-glow-primary-soft:    0 0 8px rgba(43, 238, 121, 0.5);
   --shadow-glow-primary:         0 0 30px rgba(43, 238, 121, 0.45);
   --shadow-glow-primary-strong:  0 0 40px rgba(43, 238, 121, 0.5);
@@ -348,4 +368,20 @@
    on the consuming element (the HeadlineGradient component does this). */
 .bg-gradient-headline {
   background-image: var(--gradient-headline);
+}
+/* Legacy app scroll region. Prefer the ScrollArea component for visible overlay scrollbars. */
+.app-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.app-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+/* Hidden horizontal scroller utility used by compact chip rows. */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

@@ -13,6 +13,8 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { colors, lightSemanticColors } from '../src/tokens/colors.ts'
 import { radius } from '../src/tokens/radius.ts'
+import { sizing } from '../src/tokens/sizing.ts'
+import { layer } from '../src/tokens/layers.ts'
 import { shadow } from '../src/tokens/shadows.ts'
 import { gradient } from '../src/tokens/gradients.ts'
 import { transition } from '../src/tokens/transitions.ts'
@@ -170,6 +172,11 @@ const css = `/* AUTO-GENERATED — do not edit by hand.
   --color-network-arkade-chip:    ${colors.networkChip.arkade};
   --color-network-spark-chip:     ${colors.networkChip.spark};
   --color-network-lightning-chip: ${colors.networkChip.lightning};
+  --color-network-bitcoin-text:   ${colors.networkText.bitcoin};
+  --color-network-rgb-text:       ${colors.networkText.rgb};
+  --color-network-arkade-text:    ${colors.networkText.arkade};
+  --color-network-spark-text:     ${colors.networkText.spark};
+  --color-network-lightning-text: ${colors.networkText.lightning};
 
   /* Asset icon brand colors */
   --color-asset-eth:  ${colors.assetIcon.eth};
@@ -208,6 +215,20 @@ const css = `/* AUTO-GENERATED — do not edit by hand.
   --color-text-disabled:  ${colors.text.disabled};
   --color-text-on-accent: ${colors.text.onAccent};
 
+  /* Scrollbar colors */
+  --color-scrollbar-thumb:       ${colors.scrollbar.thumb};
+  --color-scrollbar-thumb-hover: ${colors.scrollbar.thumbHover};
+  --color-scrollbar-track:       ${colors.scrollbar.track};
+  --spacing-scrollbar:           ${sizing.scrollbar};
+  --spacing-scrollbar-hover:     ${sizing.scrollbarHover};
+  --spacing-scrollbar-thumb-min: ${sizing.scrollbarThumbMin};
+
+  /* Layers */
+  --z-header:    ${layer.header};
+  --z-nav:       ${layer.nav};
+  --z-scrollbar: ${layer.scrollbar};
+  --z-modal:     ${layer.modal};
+
   /* Typography */
   --font-sans:    ${fontFamily.display};
   --font-display: ${fontFamily.display};
@@ -245,6 +266,7 @@ ${iconBoxSizeTheme}
   --shadow-glow-strong:          ${shadow.glowStrong};
   --shadow-glow-subtle:          ${shadow.glowSubtle};
   --shadow-glow-accent:          ${shadow.glowAccent};
+  --shadow-header:               ${shadow.header};
   --shadow-glow-primary-soft:    ${shadow.glowPrimarySoft};
   --shadow-glow-primary:         ${shadow.glowPrimary};
   --shadow-glow-primary-strong:  ${shadow.glowPrimaryStrong};
@@ -285,6 +307,22 @@ ${keyframesCss}
    on the consuming element (the HeadlineGradient component does this). */
 .bg-gradient-headline {
   background-image: var(--gradient-headline);
+}
+/* Legacy app scroll region. Prefer the ScrollArea component for visible overlay scrollbars. */
+.app-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.app-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+/* Hidden horizontal scroller utility used by compact chip rows. */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 `
 

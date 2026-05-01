@@ -2,6 +2,8 @@ import type { ReactNode } from 'react'
 import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
 import { AssetIcon } from './asset-icon'
+import { PageHeader } from './page-header'
+import { ScrollArea } from './scroll-area'
 import { cn } from '../utils/cn'
 import type { DepositAccountId } from './deposit-ui-shared'
 
@@ -79,17 +81,7 @@ export function DepositAssetSelection<TView extends string = string>({
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background font-display text-foreground">
-      <header className="z-20 flex flex-shrink-0 items-center justify-between border-b border-border bg-background/95 px-5 py-4 backdrop-blur">
-        <button
-          type="button"
-            onClick={() => setCurrentView('dashboard' as TView)}
-          className="-ml-2 rounded-full p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-white"
-        >
-          <span className="material-symbols-outlined">arrow_back</span>
-        </button>
-        <div className="text-base font-bold">Deposit</div>
-        <div className="w-10" />
-      </header>
+      <PageHeader title="Deposit" onBack={() => setCurrentView('dashboard' as TView)} />
 
       <div className="flex-shrink-0 space-y-2 px-5 pb-3 pt-4">
         <div className="flex items-center gap-2">
@@ -131,7 +123,7 @@ export function DepositAssetSelection<TView extends string = string>({
         </div>
       </div>
 
-      <div className="min-h-0 flex-1 space-y-1.5 overflow-y-auto px-5 pb-3 app-scrollbar">
+      <ScrollArea className="min-h-0 flex-1" viewportClassName="space-y-1.5 px-5 pb-3">
         {btcAsset && (
           <button
             type="button"
@@ -304,7 +296,7 @@ export function DepositAssetSelection<TView extends string = string>({
             </div>
           </div>
         )}
-      </div>
+      </ScrollArea>
 
       {isNewAsset && newAssetAccount === 'RGB' && (
         <>

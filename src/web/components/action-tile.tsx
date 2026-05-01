@@ -28,9 +28,9 @@ export function ActionTile({
       aria-label={ariaLabel ?? label}
       data-testid={dataTestId}
       className={cn(
-        'group flex h-9 flex-1 items-center justify-start gap-2 overflow-hidden rounded-xl px-3',
-        'bg-white/[0.07] text-foreground transition-all',
-        'hover:bg-primary hover:text-background',
+        'group flex h-10 flex-1 items-center justify-center gap-1.5 overflow-hidden rounded-xl px-2.5',
+        'bg-primary/15 text-primary transition-all',
+        'hover:bg-primary/25 hover:brightness-115',
         'active:scale-95 disabled:pointer-events-none disabled:opacity-50',
         className
       )}
@@ -38,7 +38,7 @@ export function ActionTile({
       <span className="flex shrink-0 items-center justify-center text-current leading-none [&_.material-symbols-outlined]:text-icon-lg [&_.material-symbols-outlined]:leading-none">
         {icon}
       </span>
-      <span className="text-icon-xxs font-semibold tracking-wide">{label}</span>
+      <span className="truncate text-tiny font-semibold tracking-wide">{label}</span>
     </button>
   )
 }

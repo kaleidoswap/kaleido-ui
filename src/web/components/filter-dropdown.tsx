@@ -24,7 +24,7 @@ export function FilterDropdown({
   value,
   options,
   onChange,
-  clusterMax = 4,
+  clusterMax = 3,
   className,
 }: FilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
@@ -40,7 +40,7 @@ export function FilterDropdown({
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          'flex w-full items-center justify-between gap-1.5 rounded-xl px-3 py-2 leading-none outline-none transition-all',
+          'flex w-full items-center justify-between gap-1.5 rounded-2xl px-2.5 py-2 leading-none outline-none transition-all',
           isFiltered
             ? 'bg-white/[0.13] shadow-inner'
             : 'bg-white/[0.09] backdrop-blur-md hover:bg-white/[0.13]'
@@ -48,7 +48,7 @@ export function FilterDropdown({
       >
         <span
           className={cn(
-            'shrink-0 text-xxs font-black uppercase tracking-widest',
+            'shrink-0 text-xxs font-black uppercase tracking-wide',
             isFiltered ? 'text-muted-foreground' : 'text-white/45'
           )}
         >
@@ -57,21 +57,23 @@ export function FilterDropdown({
 
         <div className="flex min-w-0 flex-1 items-center justify-center gap-1.5">
           {value === 'all' ? (
-            <div className="flex items-center gap-1">
-              {displayedCluster.map((option) => (
-                <span key={option.id} className="inline-flex shrink-0 items-center justify-center">
-                  {option.clusterIcon ?? option.icon}
-                </span>
-              ))}
+            <div className="flex min-w-0 items-center justify-center">
+              <div className="flex shrink-0 items-center -space-x-2">
+                {displayedCluster.map((option) => (
+                  <span key={option.id} className="inline-flex shrink-0 items-center justify-center">
+                    {option.clusterIcon ?? option.icon}
+                  </span>
+                ))}
+              </div>
               {clusterOverflow > 0 && (
-                <span className="text-xxs font-semibold leading-none text-muted-foreground">
+                <span className="ml-1 text-xxs font-semibold leading-none text-muted-foreground">
                   +{clusterOverflow}
                 </span>
               )}
             </div>
           ) : (
             <>
-              <div className="flex size-8 shrink-0 items-center justify-center">
+              <div className="flex size-6 shrink-0 items-center justify-center">
                 {selected?.icon}
               </div>
               <span className="truncate text-tiny font-bold text-white">{selected?.label}</span>
@@ -90,8 +92,7 @@ export function FilterDropdown({
 
       {isOpen && (
         <>
-          <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
-          <div className="absolute left-0 top-full z-50 mt-2 flex min-w-[156px] flex-col gap-0.5 rounded-2xl bg-popover/95 p-1.5 shadow-2xl backdrop-blur-xl">
+          <div className="absolute left-0 top-full z-50 mt-1.5 flex min-w-[140px] flex-col gap-0.5 rounded-2xl bg-popover/95 p-1.5 shadow-2xl backdrop-blur-xl">
             {options.map((option) => (
               <button
                 key={option.id}
@@ -101,13 +102,13 @@ export function FilterDropdown({
                   setIsOpen(false)
                 }}
                 className={cn(
-                  'flex w-full items-center gap-2.5 rounded-xl px-4 py-3 text-left leading-none transition-all',
+                  'flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left leading-none transition-all',
                   value === option.id
                     ? 'bg-white/15 text-white shadow-sm'
                     : 'text-white/60 hover:bg-accent hover:text-white/90'
                 )}
               >
-                <div className="flex size-8 shrink-0 items-center justify-center">{option.icon}</div>
+                <div className="flex size-6 shrink-0 items-center justify-center">{option.icon}</div>
                 <span className={cn('text-xs', value === option.id ? 'font-bold' : 'font-medium')}>
                   {option.label}
                 </span>

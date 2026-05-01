@@ -7,6 +7,8 @@
 export { colors, lightSemanticColors } from './colors'
 export { fontFamily, typeScale, fontWeight, letterSpacing, iconSize, iconBoxSize } from './typography'
 export { radius } from './radius'
+export { sizing } from './sizing'
+export { layer } from './layers'
 export { shadow } from './shadows'
 export { gradient } from './gradients'
 export { transition } from './transitions'

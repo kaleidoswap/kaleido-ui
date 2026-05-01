@@ -12,6 +12,8 @@ import { DepositSuccessScreen } from './deposit-success-screen'
 import { BtcUnifiedReceive, type BtcUnifiedReceiveResult } from './btc-unified-receive'
 import { DepositPreGeneration } from './deposit-pre-generation'
 import { DepositGeneratedView } from './deposit-generated-view'
+import { PageHeader } from './page-header'
+import { ScrollArea } from './scroll-area'
 
 export interface DepositInvoiceAsset {
   asset_id?: string
@@ -304,35 +306,24 @@ export function DepositInvoiceGeneration({
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background font-display text-foreground">
-      <header className="z-20 flex flex-shrink-0 items-center gap-3 border-b border-border bg-background px-4 py-2.5">
-        <button
-          type="button"
-          onClick={handleBack}
-          className="-ml-1 flex-shrink-0 rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-white"
-        >
-          <span className="material-symbols-outlined text-icon-xl">arrow_back</span>
-        </button>
-        <div className="flex min-w-0 flex-1 items-center gap-2.5">
-          <AssetIcon ticker={displayTicker} size={28} />
-          <div className="min-w-0 flex-1">
-            <div className="truncate text-sm font-bold leading-tight">
-              Receive {selectedAsset?.ticker ?? (isNewAsset ? 'RGB' : 'Asset')}
+      <PageHeader
+        title={`Receive ${selectedAsset?.ticker ?? (isNewAsset ? 'RGB' : 'Asset')}`}
+        subtitle={selectedAsset?.name}
+        titleAlign="start"
+        onBack={handleBack}
+        left={<AssetIcon ticker={displayTicker} size={28} />}
+        right={
+          <div className="flex shrink-0 items-center gap-1.5">
+            <div className="flex size-5 items-center justify-center rounded-full bg-primary/10 shadow-inner">
+              <span className="text-xxs font-black text-primary">1</span>
             </div>
-            {selectedAsset?.name && (
-              <div className="truncate text-xxs leading-tight text-white/40">{selectedAsset.name}</div>
-            )}
+            <div className="h-px w-3 bg-white/10" />
+            <div className="flex size-5 items-center justify-center rounded-full bg-primary shadow-sm">
+              <span className="text-xxs font-black text-background">2</span>
+            </div>
           </div>
-        </div>
-        <div className="flex flex-shrink-0 items-center gap-1.5">
-          <div className="flex size-5 items-center justify-center rounded-full border border-primary/30 bg-primary/10">
-            <span className="text-xxs font-black text-primary">1</span>
-          </div>
-          <div className="h-px w-3 bg-white/10" />
-          <div className="flex size-5 items-center justify-center rounded-full bg-primary shadow-sm">
-            <span className="text-xxs font-black text-background">2</span>
-          </div>
-        </div>
-      </header>
+        }
+      />
 
       <div className="flex-shrink-0 border-b border-border bg-background px-4 py-2">
         <div className="space-y-2">
@@ -388,7 +379,7 @@ export function DepositInvoiceGeneration({
         </div>
       </div>
 
-      <main className="flex-1 space-y-2.5 overflow-y-auto px-4 py-2.5 app-scrollbar">
+      <ScrollArea className="flex-1" viewportAs="main" viewportClassName="space-y-2.5 px-4 py-2.5">
         {isBtc && accountReceiveResult ? (
           <BtcUnifiedReceive
             btcSelectedAccount={btcSelectedAccount}
@@ -497,7 +488,7 @@ export function DepositInvoiceGeneration({
             handleDone={handleDone}
           />
         )}
-      </main>
+      </ScrollArea>
     </div>
   )
 }
