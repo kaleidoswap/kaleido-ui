@@ -50,10 +50,10 @@ export function ActivityNetworkFilters<TValue extends string = ActivityNetworkFi
             type="button"
             onClick={() => onChange(filter.value)}
             className={cn(
-              'inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-xxs font-bold uppercase tracking-wider transition-all active:scale-95',
+              'inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xxs font-bold uppercase tracking-wider transition-all active:scale-95',
               isActive
-                ? 'border-primary/25 bg-primary/15 text-primary shadow-inner'
-                : 'border-border bg-white/[0.02] text-white/40 hover:border-border hover:bg-white/[0.06] hover:text-white/80'
+                ? 'bg-primary/15 text-primary shadow-inner hover:bg-primary/20'
+                : 'bg-surface-card text-white/45 hover:bg-surface-elevated hover:text-white/80'
             )}
           >
             <span

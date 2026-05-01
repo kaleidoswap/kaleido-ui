@@ -16,7 +16,7 @@ export function ActivityDetailRow({
   isCopied,
 }: ActivityDetailRowProps) {
   return (
-    <div className="flex items-center justify-between border-b border-border py-1 last:border-0 last:pb-0">
+    <div className="flex items-center justify-between py-1 last:pb-0">
       <span className="text-xxs font-bold uppercase tracking-wider text-muted-foreground">
         {label}
       </span>

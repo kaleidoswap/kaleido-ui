@@ -30,12 +30,12 @@ export function TransactionCard({
   const formatDate = (ts: number) => new Date(ts * 1000).toLocaleDateString()
 
   const statusStyle = {
-    success:   { base: 'bg-primary/5',       hover: 'hover:bg-primary/10' },
-    completed: { base: 'bg-primary/5',       hover: 'hover:bg-primary/10' },
-    pending:   { base: 'bg-warning/10',   hover: 'hover:bg-warning/15' },
-    failed:    { base: 'bg-danger/10',      hover: 'hover:bg-danger/15' },
-    error:     { base: 'bg-danger/10',      hover: 'hover:bg-danger/15' },
-  }[status] ?? { base: 'bg-background/40', hover: 'hover:bg-white/5' }
+    success:   { base: 'bg-primary/10', hover: 'hover:bg-primary/15' },
+    completed: { base: 'bg-primary/10', hover: 'hover:bg-primary/15' },
+    pending:   { base: 'bg-warning/10', hover: 'hover:bg-warning/15' },
+    failed:    { base: 'bg-danger/10',  hover: 'hover:bg-danger/15' },
+    error:     { base: 'bg-danger/10',  hover: 'hover:bg-danger/15' },
+  }[status] ?? { base: 'bg-surface-card', hover: 'hover:bg-surface-elevated' }
 
   const iconStyle = {
     success:   'bg-primary/20 text-primary',
@@ -56,7 +56,7 @@ export function TransactionCard({
   return (
     <div
       className={cn(
-        'p-4 rounded-card backdrop-blur-xl flex items-center justify-between transition-all shadow-sm relative overflow-hidden group',
+        'rounded-3xl p-4 backdrop-blur-xl flex items-center justify-between transition-all shadow-sm relative overflow-hidden group',
         statusStyle.base,
         onClick && `cursor-pointer active:scale-[0.98] ${statusStyle.hover}`,
         className
