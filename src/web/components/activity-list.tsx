@@ -2,10 +2,8 @@ import type { ReactNode } from 'react'
 import { Button } from '../primitives/button'
 import { TransactionCard } from './transaction-card'
 import { NetworkBadge, type NetworkType } from './network-badge'
-import { Icon } from '../primitives/icon'
 import { LoadingCard, ErrorCard } from './page-shell'
 import type { StatusType } from './status-badge'
-import { cn } from '../utils/cn'
 
 export interface ActivityListItem<TData = unknown> {
   id: string
@@ -94,7 +92,7 @@ export function ActivityList<TData = unknown>({
   }
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2.5">
       {items.map((item) => {
         const isExpanded = expandedId === item.id
         const details = renderDetails?.(item)
@@ -102,7 +100,7 @@ export function ActivityList<TData = unknown>({
         return (
           <div
             key={item.id}
-            className="relative mb-1.5 overflow-hidden rounded-card border bg-card shadow-inner transition-all animate-in fade-in slide-in-from-bottom-2 duration-500"
+            className="relative overflow-hidden rounded-3xl bg-surface-card shadow-inner transition-all animate-in fade-in slide-in-from-bottom-2 duration-500"
           >
             <TransactionCard
               direction={item.direction}
@@ -112,28 +110,19 @@ export function ActivityList<TData = unknown>({
               timestamp={item.timestamp}
               onClick={() => onExpandedChange?.(isExpanded ? null : item.id)}
             />
-            {(item.network || item.label) && (
-              <div className="flex items-center gap-1.5 border-t border-border/60 bg-black/10 px-3 py-2">
-                {item.network && <NetworkBadge network={item.network} showLabel />}
-                {item.label && (
-                  <span className="text-xxs font-medium text-muted-foreground">
-                    {item.label}
-                  </span>
+            {isExpanded && (
+              <div className="bg-gradient-to-b from-white/[0.025] to-primary/[0.035] shadow-inner animate-in slide-in-from-top-2 duration-300">
+                {(item.network || item.label) && (
+                  <div className="flex items-center gap-1.5 px-3 py-2.5">
+                    {item.network && <NetworkBadge network={item.network} showLabel />}
+                    {item.label && (
+                      <span className="text-xxs font-medium text-muted-foreground">
+                        {item.label}
+                      </span>
+                    )}
+                  </div>
                 )}
-              </div>
-            )}
-            {renderDetails && (
-              <Icon
-                name="expand_more"
-                className={cn(
-                  'pointer-events-none absolute bottom-3 right-3 z-10 text-icon-lg text-foreground/30 transition-transform duration-300',
-                  isExpanded && 'rotate-180 text-primary'
-                )}
-              />
-            )}
-            {isExpanded && details && (
-              <div className="space-y-1.5 border-t border-border bg-black/20 px-3 py-3 shadow-inner animate-in slide-in-from-top-2 duration-300">
-                {details}
+                {details && <div className="space-y-1.5 px-3 pb-3 pt-1">{details}</div>}
               </div>
             )}
           </div>

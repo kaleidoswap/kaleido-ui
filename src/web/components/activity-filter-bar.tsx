@@ -1,5 +1,12 @@
 import { AppIcon } from './app-icon'
 import { Button } from '../primitives/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../primitives/select'
 
 export interface ActivityStatusOption<TValue extends string = string> {
   value: TValue
@@ -39,7 +46,7 @@ export function ActivityFilterBar<TStatus extends string = string>({
           placeholder={searchPlaceholder}
           value={searchTerm}
           onChange={(event) => onSearchTermChange(event.target.value)}
-          className="h-full w-full rounded-xl border bg-background/40 pl-9 pr-8 text-xs text-white shadow-sm backdrop-blur-xl transition-all placeholder:text-white/30 focus:border-primary/40 focus:outline-none"
+          className="h-full w-full rounded-2xl bg-surface-card pl-9 pr-8 text-xs text-white shadow-inner backdrop-blur-xl transition-all placeholder:text-white/30 focus:bg-surface-elevated focus:outline-none"
         />
         {searchTerm && (
           <button
@@ -52,22 +59,22 @@ export function ActivityFilterBar<TStatus extends string = string>({
         )}
       </div>
 
-      <div className="group relative h-full w-28 shrink-0">
-        <select
+      <div className="h-full w-28 shrink-0">
+        <Select
           value={statusFilter}
-          onChange={(event) => onStatusFilterChange(event.target.value as TStatus)}
-          className="h-full w-full cursor-pointer appearance-none rounded-xl border bg-card/40 px-3 text-xs font-bold text-white shadow-sm backdrop-blur-xl transition-colors hover:border-border focus:border-primary/40 focus:outline-none"
+          onValueChange={(value) => onStatusFilterChange(value as TStatus)}
         >
-          {statusOptions.map((option) => (
-            <option key={option.value} value={option.value} className="bg-card">
-              {option.label}
-            </option>
-          ))}
-        </select>
-        <AppIcon
-          name="chevronDown"
-          className="pointer-events-none absolute right-2 top-1/2 size-4 -translate-y-1/2 text-white/40 transition-colors group-focus-within:text-primary"
-        />
+          <SelectTrigger className="h-full rounded-2xl border-0 bg-surface-card px-3 py-0 text-xs font-bold text-white shadow-inner backdrop-blur-xl hover:bg-surface-elevated focus:ring-0 data-[state=open]:bg-surface-elevated">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent className="border-0 bg-popover/95 p-1.5 shadow-popover">
+            {statusOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value} className="py-2 text-xs">
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {hasActiveFilters && onClearFilters && (
