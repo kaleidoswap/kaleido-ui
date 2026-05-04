@@ -57,6 +57,7 @@ export interface DepositPreGenerationProps {
   needsColorableUtxos?: boolean
   /** Invoked by the inline "Create Colorable UTXOs" CTA. */
   onOpenCreateUtxos?: () => void
+  showReceiveSummary?: boolean
 }
 
 export function DepositPreGeneration({
@@ -79,33 +80,36 @@ export function DepositPreGeneration({
   generateInvoice,
   needsColorableUtxos = false,
   onOpenCreateUtxos,
+  showReceiveSummary = true,
 }: DepositPreGenerationProps) {
   const method = METHOD_META[currentMethod]
 
   return (
     <div className="space-y-3">
-      <div className="rounded-2xl border border-white/8 bg-white/4 p-3">
-        <p className="text-xxs font-bold uppercase tracking-widest text-white/35">
-          Receive Summary
-        </p>
-        <div className="mt-2 grid grid-cols-1 gap-2 text-xs">
-          <div className="flex items-center justify-between gap-3">
-            <span className="text-white/45">Asset</span>
-            <span className="font-bold text-white">
-              {selectedAsset?.ticker ?? (isBtc ? 'BTC' : 'Asset')}
-            </span>
+      {showReceiveSummary && (
+        <div className="rounded-2xl border border-white/8 bg-white/4 p-3">
+          <p className="text-xxs font-bold uppercase tracking-widest text-white/35">
+            Receive Summary
+          </p>
+          <div className="mt-2 grid grid-cols-1 gap-2 text-xs">
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-white/45">Asset</span>
+              <span className="font-bold text-white">
+                {selectedAsset?.ticker ?? (isBtc ? 'BTC' : 'Asset')}
+              </span>
+            </div>
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-white/45">Destination account</span>
+              <span className="font-bold text-white">{ACCOUNT_TITLES[selectedAccount]}</span>
+            </div>
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-white/45">Transfer method</span>
+              <span className="font-bold text-white">{method.label}</span>
+            </div>
+            <p className="text-tiny text-white/35">{method.summary}</p>
           </div>
-          <div className="flex items-center justify-between gap-3">
-            <span className="text-white/45">Destination account</span>
-            <span className="font-bold text-white">{ACCOUNT_TITLES[selectedAccount]}</span>
-          </div>
-          <div className="flex items-center justify-between gap-3">
-            <span className="text-white/45">Transfer method</span>
-            <span className="font-bold text-white">{method.label}</span>
-          </div>
-          <p className="text-tiny text-white/35">{method.summary}</p>
         </div>
-      </div>
+      )}
 
       {channelsLoading && selectedAccount === 'RGB' && currentMethod === 'lightning' && !isBtc && (
         <div className="flex items-center gap-2.5 rounded-xl border bg-card p-3">

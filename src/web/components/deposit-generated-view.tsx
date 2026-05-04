@@ -40,6 +40,7 @@ export interface DepositGeneratedViewProps {
   setRecipientId: (value: string) => void
   setAmount: (value: string) => void
   setInvoiceStatus: (value: string | null) => void
+  showQrNetworkBadge?: boolean
   /**
    * @deprecated Done button removed in v0.1.8 per the v1.0.0 wallet redesign;
    * users navigate away via the standard back button. Prop kept for source
@@ -93,6 +94,7 @@ export function DepositGeneratedView({
   setRecipientId,
   setAmount,
   setInvoiceStatus,
+  showQrNetworkBadge = true,
   onRegenerate,
 }: DepositGeneratedViewProps) {
   return (
@@ -176,7 +178,7 @@ export function DepositGeneratedView({
           )}
           style={net.qrGlow}
         >
-          {network !== 'spark' && network !== 'arkade' && (
+          {showQrNetworkBadge && network !== 'spark' && network !== 'arkade' && (
             <div
               className={cn(
                 'absolute right-2.5 top-2.5 flex items-center gap-1 rounded-full border bg-white/90 px-1.5 py-0.5 text-xxs font-bold shadow-sm',
