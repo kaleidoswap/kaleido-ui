@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Button } from '../primitives/button'
+import { DotPagination } from '../primitives/dot-pagination'
 import { Icon } from '../primitives/icon'
 import { AssetIcon } from './asset-icon'
 import { PageHeader } from './page-header'
@@ -58,24 +59,35 @@ export function DepositAssetSelection<TView extends string = string>({
   const btcAsset = filteredAssets.find((asset) => asset.ticker === 'BTC')
   const rgbAssets = filteredAssets.filter((asset) => asset.ticker !== 'BTC')
   const noResults = filteredAssets.length === 0 && !!searchQuery
+  // Per-protocol color tokens for the NEW ASSET cards.
+  // Idle uses a low-opacity protocol tint; hover/active brighten the same hue.
   const newAssetOptions = [
     {
       account: 'RGB' as const,
       title: 'New RGB Asset',
       ticker: 'RGB',
       enabled: isRgbConnected,
+      idleClass: 'bg-primary/10 hover:bg-primary/20',
+      activeClass: 'bg-primary/25',
+      titleHoverClass: 'group-hover:text-primary',
     },
     {
       account: 'SPARK' as const,
       title: 'New Spark Asset',
       ticker: 'SPARK',
       enabled: isSparkConnected,
+      idleClass: 'bg-info/10 hover:bg-info/20',
+      activeClass: 'bg-info/25',
+      titleHoverClass: 'group-hover:text-info',
     },
     {
       account: 'ARKADE' as const,
       title: 'New Arkade Asset',
       ticker: 'ARKADE',
       enabled: isArkadeConnected,
+      idleClass: 'bg-network-arkade/10 hover:bg-network-arkade/20',
+      activeClass: 'bg-network-arkade/25',
+      titleHoverClass: 'group-hover:text-network-arkade',
     },
   ].filter((option) => option.enabled)
 
@@ -83,25 +95,12 @@ export function DepositAssetSelection<TView extends string = string>({
     <div className="flex h-screen flex-col overflow-hidden bg-background font-display text-foreground">
       <PageHeader title="Deposit" onBack={() => setCurrentView('dashboard' as TView)} />
 
-      <div className="flex-shrink-0 space-y-2 px-5 pb-3 pt-4">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2">
-            <div className="flex size-6 items-center justify-center rounded-full bg-primary shadow-sm">
-              <span className="text-tiny font-black text-background">1</span>
-            </div>
-            <span className="text-xs font-bold tracking-wide text-primary">Select Asset</span>
-          </div>
-          <div className="mx-1 h-px flex-1 bg-white/10" />
-          <div className="flex items-center gap-2">
-            <div className="flex size-6 items-center justify-center rounded-full border border-white/20">
-              <span className="text-tiny font-black text-white/30">2</span>
-            </div>
-            <span className="text-xs font-bold tracking-wide text-white/30">Receive</span>
-          </div>
-        </div>
-        <div className="h-0.5 w-full overflow-hidden rounded-full bg-white/5">
-          <div className="h-full w-1/2 rounded-full bg-primary transition-all duration-500" />
-        </div>
+      <div className="flex-shrink-0 px-5 pb-3 pt-4">
+        <DotPagination
+          count={2}
+          index={0}
+          ariaLabel="Deposit step 1 of 2: select asset"
+        />
       </div>
 
       <div className="flex-shrink-0 px-5 pb-3">
@@ -214,18 +213,18 @@ export function DepositAssetSelection<TView extends string = string>({
             <button
               type="button"
               onClick={() => setCurrentView('bridge' as TView)}
-              className="group flex w-full items-center gap-3 rounded-2xl border border-info/20 bg-gradient-to-r from-info/10 to-network-arkade/10 p-3 transition-all hover:border-info/40"
+              className="group flex w-full items-center gap-3 rounded-2xl bg-gradient-to-r from-primary/10 to-primary/5 p-3 transition-all hover:from-primary/20 hover:to-primary/10"
             >
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-info/20">
-                <span className="material-symbols-outlined text-lg text-info">swap_calls</span>
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/20">
+                <span className="material-symbols-outlined text-lg text-primary">swap_calls</span>
               </div>
               <div className="flex-1 text-left">
-                <p className="text-sm font-semibold text-white transition-colors group-hover:text-info">
+                <p className="text-sm font-semibold text-white transition-colors group-hover:text-primary">
                   Bridge from another chain
                 </p>
                 <p className="text-xxs leading-tight text-white/40">USDC, USDT, ETH, SOL via Flashnet</p>
               </div>
-              <span className="material-symbols-outlined text-lg text-white/30 transition-colors group-hover:text-info">
+              <span className="material-symbols-outlined text-lg text-white/30 transition-colors group-hover:text-primary">
                 arrow_forward
               </span>
             </button>
@@ -257,38 +256,31 @@ export function DepositAssetSelection<TView extends string = string>({
                     type="button"
                     data-testid={`deposit-new-asset-${option.account.toLowerCase()}`}
                     className={cn(
-                      'group flex min-h-[112px] flex-col items-center justify-center rounded-2xl border px-3 py-3.5 text-center text-sm transition-all',
-                      active
-                        ? 'border-network-arkade/30 bg-network-arkade/10'
-                        : 'border-white/8 bg-white/3 hover:border-network-arkade/30 hover:bg-network-arkade/5'
+                      'group flex min-h-[112px] flex-col items-center justify-center rounded-2xl px-3 py-3.5 text-center text-sm transition-all',
+                      active ? option.activeClass : option.idleClass
                     )}
                     onClick={() => handleAddNewAsset(option.account)}
                   >
                     <div className="relative">
                       <AssetIcon ticker={option.ticker} size={40} />
-                      <div
-                        className={cn(
-                          'absolute -bottom-1 -right-1 flex size-4 items-center justify-center rounded-full border',
-                          active ? 'border-network-arkade/40 bg-network-arkade' : 'border-border bg-card'
-                        )}
-                      >
+                      <div className="absolute -bottom-1 -right-1 flex size-4 items-center justify-center rounded-full bg-primary">
                         {active ? (
-                          <Icon name="check" size="xs" className="text-white" />
+                          <Icon name="check" size="xs" className="text-background" />
                         ) : (
-                          <Icon name="add" size="xs" className="text-muted-foreground" />
+                          <Icon name="add" size="xs" className="text-background" />
                         )}
                       </div>
                     </div>
                     <div className="mt-2 min-w-0">
                       <div
                         className={cn(
-                          'text-xs font-bold tracking-wide',
-                          active ? 'text-network-arkade' : 'text-muted-foreground group-hover:text-white'
+                          'text-sm font-bold tracking-wide',
+                          active ? 'text-white' : 'text-white group-hover:opacity-90',
+                          !active && option.titleHoverClass
                         )}
                       >
-                        {option.account}
+                        {option.title}
                       </div>
-                      <div className="mt-1 text-xxs leading-tight text-white/40">{option.title}</div>
                     </div>
                   </button>
                 )
