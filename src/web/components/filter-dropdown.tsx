@@ -48,7 +48,7 @@ export function FilterDropdown({
       >
         <span
           className={cn(
-            'shrink-0 text-xxs font-black uppercase tracking-wide',
+            'shrink-0 text-mini font-bold uppercase tracking-wider',
             isFiltered ? 'text-muted-foreground' : 'text-white/45'
           )}
         >

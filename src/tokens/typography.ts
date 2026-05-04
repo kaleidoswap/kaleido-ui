@@ -11,6 +11,7 @@ export const fontFamily = {
  * Type scale — [fontSize, lineHeight]
  */
 export const typeScale = {
+  mini: ['9px', '12px'],
   xxs: ['10px', '14px'],
   tiny: ['11px', '16px'],
   caption: ['13px', '18px'],

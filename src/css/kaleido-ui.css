@@ -171,6 +171,8 @@
   --font-sans:    'Satoshi', system-ui, -apple-system, sans-serif;
   --font-display: 'Satoshi', system-ui, -apple-system, sans-serif;
   --font-mono:    'Geist Mono', monospace;
+  --text-mini: 9px;
+  --text-mini--line-height: 12px;
   --text-xxs: 10px;
   --text-xxs--line-height: 14px;
   --text-tiny: 11px;
