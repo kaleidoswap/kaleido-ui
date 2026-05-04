@@ -312,6 +312,7 @@ export function DepositInvoiceGeneration({
     !isSparkConnected
   const showLiquidityWarning =
     !isSparkLightning && network === 'lightning' && maxDepositAmount === 0 && !channelsLoading && !isBtc
+  const isNewRgbAsset = isNewAsset && assetFamily === 'RGB'
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background font-display text-foreground">
@@ -481,6 +482,7 @@ export function DepositInvoiceGeneration({
             generateInvoice={generateInvoice}
             needsColorableUtxos={needsColorableUtxos}
             onOpenCreateUtxos={onOpenCreateUtxos}
+            showReceiveSummary={!isNewRgbAsset}
           />
         ) : (
           <DepositGeneratedView
@@ -508,6 +510,7 @@ export function DepositInvoiceGeneration({
             setAmount={setAmount}
             setInvoiceStatus={setInvoiceStatus}
             handleDone={handleDone}
+            showQrNetworkBadge={false}
           />
         )}
       </ScrollArea>
