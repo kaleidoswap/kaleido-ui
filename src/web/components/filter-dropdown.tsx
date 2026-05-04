@@ -112,7 +112,6 @@ export function FilterDropdown({
                 <span className={cn('text-xs', value === option.id ? 'font-bold' : 'font-medium')}>
                   {option.label}
                 </span>
-                {value === option.id && <div className="ml-auto size-1.5 rounded-full bg-primary" />}
               </button>
             ))}
           </div>
