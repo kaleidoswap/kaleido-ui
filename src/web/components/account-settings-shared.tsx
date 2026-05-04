@@ -203,11 +203,14 @@ export function AccountSettingsShell({
   title,
   subtitle,
   children,
+  onBack,
 }: {
   accountId: AccountSettingsProtocol
   title: string
   subtitle: string
   children: ReactNode
+  /** Optional back callback — if provided, renders a back button inline with the title. */
+  onBack?: () => void
 }) {
   return (
     <div className="min-h-screen bg-background pb-28 font-display text-foreground">
@@ -216,6 +219,7 @@ export function AccountSettingsShell({
         subtitle={subtitle}
         titleAlign="start"
         left={<AccountHeaderIcons accountId={accountId} />}
+        onBack={onBack}
         className="px-5 py-4"
       />
 

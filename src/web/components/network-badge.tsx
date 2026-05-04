@@ -112,6 +112,25 @@ export function NetworkBadge({
   const chipSize = size === 'sm' ? 'size-6' : 'size-8'
   const imageSize = size === 'sm' ? 'size-3.5' : 'size-icon-lg'
 
+  // L1 (on-chain Bitcoin) uses a generic chain glyph rather than the BTC logo —
+  // the BTC logo is reserved for the asset itself, not the network it lives on.
+  const renderGlyph = (className: string) =>
+    network === 'L1' ? (
+      <span
+        className={cn('material-symbols-outlined leading-none', color, className)}
+        style={{ fontSize: size === 'sm' ? 12 : 16 }}
+        aria-hidden
+      >
+        link
+      </span>
+    ) : (
+      <img
+        src={icon}
+        alt={network}
+        className={cn(className, 'object-contain', defaultIconClassName, iconClassName)}
+      />
+    )
+
   if (!content) {
     return (
       <span
@@ -122,11 +141,7 @@ export function NetworkBadge({
           className,
         )}
       >
-        <img
-          src={icon}
-          alt={network}
-          className={cn(imageSize, 'object-contain', defaultIconClassName, iconClassName)}
-        />
+        {renderGlyph(imageSize)}
       </span>
     )
   }
@@ -141,11 +156,7 @@ export function NetworkBadge({
         className
       )}
     >
-      <img
-        src={icon}
-        alt={network}
-        className={cn(size === 'sm' ? 'size-3' : 'size-3.5', 'object-contain', defaultIconClassName, iconClassName)}
-      />
+      {renderGlyph(size === 'sm' ? 'size-3' : 'size-3.5')}
       {content}
     </span>
   )

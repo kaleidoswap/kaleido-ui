@@ -264,11 +264,7 @@ export function DepositAssetSelection<TView extends string = string>({
                     <div className="relative">
                       <AssetIcon ticker={option.ticker} size={40} />
                       <div className="absolute -bottom-1 -right-1 flex size-4 items-center justify-center rounded-full bg-primary">
-                        {active ? (
-                          <Icon name="check" size="xs" className="text-background" />
-                        ) : (
-                          <Icon name="add" size="xs" className="text-background" />
-                        )}
+                        <Icon name="add" size="xs" className="text-background" />
                       </div>
                     </div>
                     <div className="mt-2 min-w-0">
