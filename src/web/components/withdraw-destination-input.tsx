@@ -39,7 +39,7 @@ export function WithdrawDestinationInput({
         <input
           type="text"
           data-testid="withdraw-destination-input"
-          className="w-full rounded-2xl border bg-card px-5 py-4 pr-20 font-mono text-sm text-white shadow-inner transition-all placeholder:text-white/20 focus:border-primary/50 focus:outline-none"
+          className="w-full rounded-2xl bg-card px-5 py-4 pr-20 font-mono text-sm text-white shadow-inner transition-all placeholder:text-white/20 focus:outline focus:outline-2 focus:outline-primary/50"
           placeholder="Address, Invoice, or RGB Invoice"
           value={destination}
           onChange={(event) => setDestination(event.target.value)}
