@@ -27,10 +27,17 @@ export interface AccountStatusTabItem<TId extends string = string> {
 
 export interface AccountStatusTabsProps<TId extends string = string> {
   accounts: AccountStatusTabItem<TId>[]
+  /**
+   * If provided, tapping an account chip calls this with the account id
+   * instead of opening the built-in modal. Use to navigate to a dedicated
+   * account/network settings page.
+   */
+  onSelect?: (id: TId) => void
 }
 
 export function AccountStatusTabs<TId extends string = string>({
   accounts,
+  onSelect,
 }: AccountStatusTabsProps<TId>) {
   const [selectedAccountId, setSelectedAccountId] = useState<TId | null>(null)
   const selectedAccount = selectedAccountId
@@ -44,10 +51,14 @@ export function AccountStatusTabs<TId extends string = string>({
           {accounts.map((account) => (
             <div key={account.id} className="group relative shrink-0">
               <NetworkStatusChip
-                onClick={() => setSelectedAccountId(account.id)}
+                onClick={() =>
+                  onSelect ? onSelect(account.id) : setSelectedAccountId(account.id)
+                }
                 icon={account.icon}
                 dotClassName={account.dotTone}
-                ariaLabel={`Open ${account.title} details`}
+                ariaLabel={
+                  onSelect ? `Open ${account.title}` : `Open ${account.title} details`
+                }
               />
 
               <div
