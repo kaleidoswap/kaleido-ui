@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { Button } from '../primitives/button'
 import { DotPagination } from '../primitives/dot-pagination'
 import { Icon } from '../primitives/icon'
@@ -13,6 +13,27 @@ export interface DepositSelectionAsset {
   ticker: string
   name?: string
   precision?: number
+  /** Account/protocol the asset lives on — drives the protocol badge in "Your assets". */
+  accountId?: DepositAccountId
+  /** Spendable balance in raw (smallest) units; used for sorting and the right-aligned amount. */
+  balance?: number
+}
+
+const PROTOCOL_BADGE: Record<DepositAccountId, { label: string; className: string }> = {
+  RGB: { label: 'RGB', className: 'bg-network-rgb-chip text-network-rgb-text' },
+  SPARK: { label: 'Spark', className: 'bg-network-spark-chip text-network-spark-text' },
+  ARKADE: { label: 'Arkade', className: 'bg-network-arkade-chip text-network-arkade-text' },
+}
+
+function formatAssetBalance(asset: DepositSelectionAsset): string {
+  const raw = asset.balance ?? 0
+  if (raw === 0) return '0'
+  const precision = asset.precision ?? 0
+  const value = raw / Math.pow(10, precision)
+  return value.toLocaleString('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: Math.min(precision, 8),
+  })
 }
 
 export interface DepositAssetSelectionProps<TView extends string = string> {
@@ -57,8 +78,19 @@ export function DepositAssetSelection<TView extends string = string>({
   isArkadeConnected,
 }: DepositAssetSelectionProps<TView>) {
   const btcAsset = filteredAssets.find((asset) => asset.ticker === 'BTC')
-  const rgbAssets = filteredAssets.filter((asset) => asset.ticker !== 'BTC')
+  const ownedAssets = filteredAssets
+    .filter((asset) => asset.ticker !== 'BTC')
+    .slice()
+    .sort((a, b) => (b.balance ?? 0) - (a.balance ?? 0))
+  const ownedAssetsCount = ownedAssets.length
   const noResults = filteredAssets.length === 0 && !!searchQuery
+  const isSearching = !!searchQuery
+  // Collapsed by default; auto-expand whenever the user starts a search.
+  const [assetsExpanded, setAssetsExpanded] = useState(false)
+  useEffect(() => {
+    if (isSearching) setAssetsExpanded(true)
+  }, [isSearching])
+  const showOwnedAssets = isSearching ? true : assetsExpanded
   // Per-protocol color tokens for the NEW ASSET cards.
   // Idle uses a low-opacity protocol tint; hover/active brighten the same hue.
   const newAssetOptions = [
@@ -169,44 +201,89 @@ export function DepositAssetSelection<TView extends string = string>({
           <div className="py-8 text-center text-sm text-white/30">
             No assets match &quot;{searchQuery}&quot;
           </div>
-        ) : (
-          rgbAssets.map((asset) => (
+        ) : ownedAssetsCount > 0 ? (
+          <div className="space-y-1.5 pt-1">
             <button
-              key={asset.asset_id}
               type="button"
-              className="group flex w-full items-center gap-3 rounded-2xl border border-white/8 bg-white/3 px-4 py-3 text-sm transition-all hover:border-border hover:bg-accent"
-              onClick={() => onSelectAsset(asset)}
+              data-testid="deposit-toggle-owned-assets"
+              onClick={() => !isSearching && setAssetsExpanded((value) => !value)}
+              disabled={isSearching}
+              className={cn(
+                'flex w-full items-center gap-2 rounded-2xl border px-4 py-2.5 transition-all',
+                showOwnedAssets
+                  ? 'border-white/10 bg-white/4'
+                  : 'border-white/8 bg-white/3 hover:border-border hover:bg-accent',
+                isSearching && 'cursor-default',
+              )}
             >
-              <div className="relative flex-shrink-0">
-                <AssetIcon ticker={asset.ticker} size={40} />
-                <div className="absolute -bottom-1 -right-1 flex size-4 items-center justify-center rounded-full border bg-card">
-                  <img src="/icons/rgb/rgb-logo.svg" className="block h-2.5 w-2.5 object-contain" alt="RGB" />
-                </div>
-              </div>
-              <div className="min-w-0 flex-1 text-left">
-                <div className="font-bold tracking-wide text-white transition-colors group-hover:text-primary/90">
-                  {asset.ticker}
-                </div>
-                <div className="mt-0.5 truncate text-xs text-white/40">
-                  {asset.name ?? 'RGB Asset'}
-                </div>
-              </div>
-              <div className="flex flex-shrink-0 gap-1">
-                <NetBadge
-                  className="border-network-bitcoin/20 bg-network-bitcoin/15"
-                  icon={<span className="material-symbols-outlined leading-none text-network-bitcoin" style={{ fontSize: 10 }}>link</span>}
-                />
-                <NetBadge
-                  className="border-warning/20 bg-warning/15"
-                  icon={<img src="/icons/lightning/lightning.svg" className="h-2.5 w-2.5" alt="" />}
-                />
-              </div>
-              <span className="material-symbols-outlined flex-shrink-0 text-icon-md text-white/20 transition-colors group-hover:text-white/50">
-                arrow_forward
+              <span className="text-xxs font-bold uppercase tracking-[0.18em] text-white/55">
+                Your assets
               </span>
+              <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-tiny font-bold text-white/70">
+                {ownedAssetsCount}
+              </span>
+              <div className="flex-1" />
+              {!isSearching && (
+                <span className="material-symbols-outlined text-icon-md text-white/40">
+                  {showOwnedAssets ? 'expand_less' : 'expand_more'}
+                </span>
+              )}
             </button>
-          ))
-        )}
+
+            {showOwnedAssets && (
+              <div className="space-y-1.5 duration-200 animate-in fade-in slide-in-from-top-1">
+                {ownedAssets.map((asset) => {
+                  const protocolBadge = asset.accountId ? PROTOCOL_BADGE[asset.accountId] : null
+                  const balance = asset.balance ?? 0
+                  return (
+                    <button
+                      key={asset.asset_id}
+                      type="button"
+                      data-testid={`deposit-asset-${asset.asset_id}`}
+                      className="group flex w-full items-center gap-3 rounded-2xl border border-white/8 bg-white/3 px-4 py-3 text-sm transition-all hover:border-border hover:bg-accent"
+                      onClick={() => onSelectAsset(asset)}
+                    >
+                      <AssetIcon ticker={asset.ticker} size={40} className="flex-shrink-0" />
+                      <div className="min-w-0 flex-1 text-left">
+                        <div className="flex items-center gap-1.5">
+                          <span className="truncate font-bold tracking-wide text-white transition-colors group-hover:text-primary/90">
+                            {asset.ticker}
+                          </span>
+                          {protocolBadge && (
+                            <span
+                              className={cn(
+                                'shrink-0 rounded-full px-1.5 py-0.5 text-tiny font-bold uppercase tracking-wider',
+                                protocolBadge.className,
+                              )}
+                            >
+                              {protocolBadge.label}
+                            </span>
+                          )}
+                        </div>
+                        <div className="mt-0.5 truncate text-xs text-white/40">
+                          {asset.name ?? 'Asset'}
+                        </div>
+                      </div>
+                      {balance > 0 && (
+                        <div className="flex-shrink-0 text-right">
+                          <div className="font-mono text-xs font-bold text-white">
+                            {formatAssetBalance(asset)}
+                          </div>
+                          <div className="mt-0.5 text-tiny uppercase tracking-wider text-white/35">
+                            {asset.ticker}
+                          </div>
+                        </div>
+                      )}
+                      <span className="material-symbols-outlined flex-shrink-0 text-icon-sm text-white/20 transition-colors group-hover:text-white/50">
+                        arrow_forward
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        ) : null}
 
         {!searchQuery && (
           <div className="pb-1 pt-2">
