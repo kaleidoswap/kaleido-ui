@@ -60,6 +60,11 @@ export {
 } from './primitives/toast'
 export { Toaster } from './primitives/toaster'
 export { Icon, Icons, type IconProps } from './primitives/icon'
+export {
+  DotPagination,
+  type DotPaginationProps,
+  type DotTone,
+} from './primitives/dot-pagination'
 
 // Shared Components
 export { StatusBadge, type StatusType } from './components/status-badge'
