@@ -334,38 +334,47 @@ export function DepositInvoiceGeneration({
         }
       />
 
-      <div className="flex-shrink-0 border-b border-border bg-background px-4 py-2">
-        <div className="space-y-2">
-          <div>
-            <p className="text-xxs font-bold uppercase tracking-widest text-white/35">
-              Destination Account
-            </p>
-            <div className="mt-1.5 flex gap-1.5 overflow-x-auto no-scrollbar">
-              {availableAccounts.map((account) => (
-                <AccountChoiceChip
-                  key={account}
-                  account={account}
-                  active={isBtc ? btcSelectedAccount === account : selectedAccount === account}
-                  onClick={() => {
-                    if (isBtc) {
-                      if (account === 'SPARK') {
-                        setWalletChoice('SPARK')
-                        setNetwork('spark')
-                      } else if (account === 'ARKADE') {
-                        setNetwork('arkade')
-                        setWalletChoice('RGB')
-                      } else {
-                        setWalletChoice('RGB')
-                        setNetwork('onchain')
-                      }
-                    } else {
-                      handleAccountSelect(account)
-                    }
-                  }}
-                />
-              ))}
-            </div>
-          </div>
+      {(() => {
+        // Suppress the destination/transfer chip rail entirely when the user
+        // is creating a new Spark or Arkade asset — the destination is
+        // implicit (it's the protocol they just chose on the asset
+        // selection step), so the chip row is just visual noise.
+        const hideDestinationRail =
+          isNewAsset && (network === 'spark' || network === 'arkade')
+        if (hideDestinationRail) return null
+        return (
+          <div className="flex-shrink-0 border-b border-border bg-background px-4 py-2">
+            <div className="space-y-2">
+              <div>
+                <p className="text-xxs font-bold uppercase tracking-widest text-white/35">
+                  Destination Account
+                </p>
+                <div className="mt-1.5 flex gap-1.5 overflow-x-auto no-scrollbar">
+                  {availableAccounts.map((account) => (
+                    <AccountChoiceChip
+                      key={account}
+                      account={account}
+                      active={isBtc ? btcSelectedAccount === account : selectedAccount === account}
+                      onClick={() => {
+                        if (isBtc) {
+                          if (account === 'SPARK') {
+                            setWalletChoice('SPARK')
+                            setNetwork('spark')
+                          } else if (account === 'ARKADE') {
+                            setNetwork('arkade')
+                            setWalletChoice('RGB')
+                          } else {
+                            setWalletChoice('RGB')
+                            setNetwork('onchain')
+                          }
+                        } else {
+                          handleAccountSelect(account)
+                        }
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
           {!isBtc && !(isNewAsset && (network === 'spark' || network === 'arkade')) && (
             <div>
               <p className="text-xxs font-bold uppercase tracking-widest text-white/35">
@@ -385,8 +394,10 @@ export function DepositInvoiceGeneration({
               </div>
             </div>
           )}
-        </div>
-      </div>
+            </div>
+          </div>
+        )
+      })()}
 
       <ScrollArea className="flex-1" viewportAs="main" viewportClassName="space-y-2.5 px-4 py-2.5">
         {isBtc && accountReceiveResult ? (
