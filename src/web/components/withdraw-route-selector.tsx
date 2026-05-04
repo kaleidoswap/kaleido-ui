@@ -7,6 +7,10 @@ export interface WithdrawRouteOption<TAccount extends string = string> {
   accountTitle: string
   methodLabel: string
   feeHint: string
+  /** When true, the route is unavailable (e.g. insufficient liquidity) and not clickable. */
+  disabled?: boolean
+  /** Short reason shown under the disabled card. Pair with `disabled`. */
+  disabledReason?: string
 }
 
 export interface WithdrawRouteSummary {
@@ -35,25 +39,36 @@ function RouteChoiceCard<TAccount extends string>({
   recommended: boolean
   onClick: () => void
 }) {
+  const { disabled = false, disabledReason } = route
   return (
     <button
       type="button"
       data-testid={`withdraw-route-${route.account.toLowerCase()}`}
       onClick={onClick}
+      disabled={disabled}
+      aria-disabled={disabled}
+      title={disabled ? disabledReason : undefined}
       className={cn(
         'w-full rounded-2xl border p-4 text-left transition-all',
-        selected
-          ? 'border-primary/30 bg-primary/10'
-          : 'border-border bg-white/4 hover:border-white/20 hover:bg-white/6'
+        disabled
+          ? 'cursor-not-allowed border-danger/15 bg-danger/5 opacity-60'
+          : selected
+            ? 'border-primary/30 bg-primary/10'
+            : 'border-border bg-white/4 hover:border-white/20 hover:bg-white/6'
       )}
     >
       <div className="flex items-start justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
             <span className="text-sm font-bold text-white">{route.accountTitle}</span>
-            {recommended && (
+            {recommended && !disabled && (
               <span className="rounded-full border border-primary/20 bg-primary/10 px-2 py-0.5 text-xxs font-bold uppercase tracking-wider text-primary">
                 Recommended
+              </span>
+            )}
+            {disabled && (
+              <span className="rounded-full border border-danger/20 bg-danger/10 px-2 py-0.5 text-xxs font-bold uppercase tracking-wider text-danger">
+                Insufficient
               </span>
             )}
           </div>
@@ -64,6 +79,9 @@ function RouteChoiceCard<TAccount extends string>({
         </span>
       </div>
       <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{route.summary}</p>
+      {disabled && disabledReason && (
+        <p className="mt-2 text-xxs leading-relaxed text-danger/80">{disabledReason}</p>
+      )}
     </button>
   )
 }
