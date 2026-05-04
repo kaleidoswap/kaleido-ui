@@ -1,12 +1,10 @@
 import type { ChangeEvent } from 'react'
-import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
 import { QrCode } from './qr-code'
 import { cn } from '../utils/cn'
 import {
   CopyIcon,
   InvoiceStatusBanner,
-  NetworkInfoDisclosure,
   PaidOverlay,
   type DepositNetworkConfigEntry,
   type DepositNetworkKey,
@@ -42,7 +40,12 @@ export interface DepositGeneratedViewProps {
   setRecipientId: (value: string) => void
   setAmount: (value: string) => void
   setInvoiceStatus: (value: string | null) => void
-  handleDone: () => void
+  /**
+   * @deprecated Done button removed in v0.1.8 per the v1.0.0 wallet redesign;
+   * users navigate away via the standard back button. Prop kept for source
+   * compatibility — it is no longer invoked.
+   */
+  handleDone?: () => void
 }
 
 function parseAssetAmount(amountString: string, asset: DepositGeneratedAsset | null): number {
@@ -83,7 +86,6 @@ export function DepositGeneratedView({
   setRecipientId,
   setAmount,
   setInvoiceStatus,
-  handleDone,
 }: DepositGeneratedViewProps) {
   return (
     <div className="space-y-3 animate-in fade-in zoom-in-95 duration-300">
@@ -260,17 +262,7 @@ export function DepositGeneratedView({
         </div>
       )}
 
-      <NetworkInfoDisclosure
-        networks={
-          network === 'arkade'
-            ? arkSubMode === 'boarding'
-              ? ['onchain', 'arkade']
-              : ['arkade']
-            : [network]
-        }
-      />
-
-      <div className="flex gap-2.5 pt-1">
+      <div className="flex justify-center pt-1">
         <button
           type="button"
           onClick={() => {
@@ -279,15 +271,11 @@ export function DepositGeneratedView({
             setAmount('')
             setInvoiceStatus(null)
           }}
-          className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border py-3 text-xs font-bold text-muted-foreground transition-all hover:border-border hover:bg-accent hover:text-white active:scale-[0.98]"
+          className="flex items-center justify-center gap-1.5 rounded-xl bg-primary/15 px-5 py-3 text-xs font-bold text-primary transition-all hover:bg-primary/25 active:scale-[0.98]"
         >
           <span className="material-symbols-outlined text-icon-sm">refresh</span>
           New {network === 'lightning' ? 'Invoice' : 'Address'}
         </button>
-        <Button variant="cta" onClick={handleDone}>
-          <span className="material-symbols-outlined text-icon-sm">check</span>
-          Done
-        </Button>
       </div>
     </div>
   )
