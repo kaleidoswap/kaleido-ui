@@ -20,6 +20,11 @@ const buttonVariants = cva(
         'cta-gradient': 'w-full bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-extrabold rounded-2xl shadow-lg hover:opacity-90 hover:-translate-y-0.5 active:translate-y-0 active:opacity-100 disabled:opacity-40 disabled:shadow-none disabled:cursor-not-allowed disabled:bg-accent disabled:text-muted-foreground',
         'danger-subtle': 'bg-danger/10 border border-danger/20 text-danger font-bold rounded-xl hover:brightness-115',
         hyperlink: 'group text-muted-foreground underline underline-offset-2 hover:text-white hover:decoration-primary hover:[&_.icon]:text-primary bg-transparent font-normal',
+        // Hierarchy variants — primary/secondary/tertiary action emphasis.
+        // Pair with size="lg" or size="cta" for full-bleed buttons.
+        h1: 'w-full bg-primary text-primary-foreground font-bold rounded-2xl shadow-md hover:brightness-115 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none',
+        h2: 'w-full bg-primary/15 text-primary font-semibold rounded-xl border border-primary/20 hover:bg-primary/25 hover:border-primary/35',
+        h3: 'text-primary font-semibold rounded-lg hover:bg-primary/10 active:bg-primary/15',
       },
       size: {
         default: 'h-11 px-5 py-2',

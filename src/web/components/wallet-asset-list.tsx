@@ -26,6 +26,8 @@ export interface WalletAssetListProps {
   items: WalletAssetListItem[]
   title?: string
   amountLabel?: string
+  /** When true, suppress the title/amount header row (caller renders its own). */
+  hideHeader?: boolean
   isLoading?: boolean
   loadingRows?: number
   emptyStates?: WalletAssetListEmptyState[]
@@ -79,6 +81,7 @@ export function WalletAssetList({
   items,
   title = 'Your Assets',
   amountLabel = 'Amount',
+  hideHeader = false,
   isLoading = false,
   loadingRows = 2,
   emptyStates = [],
@@ -87,14 +90,16 @@ export function WalletAssetList({
 }: WalletAssetListProps) {
   return (
     <div className={cn('flex flex-col gap-3', className)}>
-      <div className="mb-1 mt-3 flex items-center justify-between px-2">
-        <span className="text-xs font-bold uppercase tracking-widest text-foreground/80">
-          {title}
-        </span>
-        <span className="text-xs font-bold uppercase tracking-widest text-foreground/80">
-          {amountLabel}
-        </span>
-      </div>
+      {!hideHeader && (
+        <div className="mb-1 mt-3 flex items-center justify-between px-2">
+          <span className="text-xs font-bold uppercase tracking-widest text-foreground/80">
+            {title}
+          </span>
+          <span className="text-xs font-bold uppercase tracking-widest text-foreground/80">
+            {amountLabel}
+          </span>
+        </div>
+      )}
 
       {isLoading && (
         <div className="flex flex-col gap-3">

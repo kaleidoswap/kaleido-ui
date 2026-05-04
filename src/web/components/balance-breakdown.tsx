@@ -124,12 +124,12 @@ export function BalanceBreakdown({
               </div>
             ) : (
               <>
-                <div className="flex min-w-0 items-center gap-2.5">
-                  <span className="block min-w-0 truncate text-display font-black leading-[1.1] tracking-tighter text-white drop-shadow-sm transition-all duration-300 group-active:scale-95 group-active:text-primary">
+                <div className="flex min-w-0 max-w-full flex-wrap items-baseline gap-x-2.5 gap-y-1">
+                  <span className="text-display font-black leading-[1.1] tracking-tighter text-white drop-shadow-sm transition-all duration-300 group-active:scale-95 group-active:text-primary">
                     {balanceVisible ? numberOnly(format(totalBTC)) : '••••••'}
                   </span>
                   {unit !== 'fiat' && (
-                    <span className="inline-block rounded-md border border-primary/20 bg-primary/10 px-2 py-0.5 text-tiny font-bold uppercase tracking-widest text-primary/80">
+                    <span className="inline-block rounded-md border border-white/10 bg-white/5 px-2 py-0.5 text-tiny font-bold uppercase tracking-widest text-white/45">
                       {label}
                     </span>
                   )}
@@ -142,9 +142,14 @@ export function BalanceBreakdown({
                     </span>
                   )}
                 </div>
-                {balanceVisible && fiatTotal && unit !== 'fiat' && (
+                {balanceVisible && unit !== 'fiat' && fiatTotal && (
                   <span className="mt-1 font-mono text-xs font-medium text-white/45">
                     {fiatTotal}
+                  </span>
+                )}
+                {balanceVisible && unit === 'fiat' && totalBTC > 0 && (
+                  <span className="mt-1 font-mono text-xs font-medium text-white/45">
+                    {(totalBTC / 1e8).toFixed(8).replace(/\.?0+$/, '')}&nbsp;BTC
                   </span>
                 )}
               </>
@@ -287,7 +292,11 @@ export function BalanceBreakdown({
             data-testid="dashboard-action-swap"
           />
           <ActionTile
-            icon={<span className="material-symbols-outlined text-icon-lg leading-none">send</span>}
+            icon={
+              <span className="material-symbols-outlined text-icon-lg leading-none">
+                arrow_outward
+              </span>
+            }
             label="Withdraw"
             onClick={() => onNavigate?.('withdraw')}
             data-testid="dashboard-action-withdraw"
