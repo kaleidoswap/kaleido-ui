@@ -50,6 +50,13 @@ export interface DepositPreGenerationProps {
   handleAmountChange: (event: ChangeEvent<HTMLInputElement>) => void
   getUnitLabel: () => string
   generateInvoice: () => Promise<void>
+  /**
+   * RGB on-chain only: true when the user needs to create at least one
+   * uncolored UTXO before an invoice can be generated.
+   */
+  needsColorableUtxos?: boolean
+  /** Invoked by the inline "Create Colorable UTXOs" CTA. */
+  onOpenCreateUtxos?: () => void
 }
 
 export function DepositPreGeneration({
@@ -70,6 +77,8 @@ export function DepositPreGeneration({
   handleAmountChange,
   getUnitLabel,
   generateInvoice,
+  needsColorableUtxos = false,
+  onOpenCreateUtxos,
 }: DepositPreGenerationProps) {
   const method = METHOD_META[currentMethod]
 
@@ -195,23 +204,43 @@ export function DepositPreGeneration({
         </div>
       )}
 
-      {!isAutoGenerate && (
-        <Button variant="cta" size="cta" onClick={generateInvoice} disabled={loading}>
-          {loading ? (
-            <span className="flex items-center justify-center gap-2">
-              <span className="material-symbols-outlined animate-spin text-icon-md">
-                progress_activity
-              </span>
-              Generating...
-            </span>
-          ) : (
-            <span className="flex items-center justify-center gap-2">
-              <span className="material-symbols-outlined text-icon-md">qr_code_2</span>
-              Generate Address
-            </span>
-          )}
-        </Button>
+      {/* RGB on-chain: warn the user before they hit Generate that the wallet
+          needs at least one uncolored UTXO to back the invoice. */}
+      {needsColorableUtxos && (
+        <AlertBanner variant="warning">
+          <p className="mb-0.5 text-xs font-bold text-warning">Colorable UTXOs Required</p>
+          <p className="text-tiny text-warning/70">
+            To receive RGB assets on-chain you need at least one uncolored UTXO. Create some now
+            and the invoice will be generated automatically.
+          </p>
+        </AlertBanner>
       )}
+
+      {!isAutoGenerate &&
+        (needsColorableUtxos && onOpenCreateUtxos ? (
+          <Button variant="cta" size="cta" onClick={onOpenCreateUtxos} disabled={loading}>
+            <span className="flex items-center justify-center gap-2">
+              <span className="material-symbols-outlined text-icon-md">add_circle</span>
+              Create Colorable UTXOs
+            </span>
+          </Button>
+        ) : (
+          <Button variant="cta" size="cta" onClick={generateInvoice} disabled={loading}>
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="material-symbols-outlined animate-spin text-icon-md">
+                  progress_activity
+                </span>
+                Generating...
+              </span>
+            ) : (
+              <span className="flex items-center justify-center gap-2">
+                <span className="material-symbols-outlined text-icon-md">qr_code_2</span>
+                Generate Address
+              </span>
+            )}
+          </Button>
+        ))}
     </div>
   )
 }

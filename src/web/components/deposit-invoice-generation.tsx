@@ -69,6 +69,13 @@ export interface DepositInvoiceGenerationProps {
   setArkSubMode: (mode: 'ark' | 'boarding') => void
   btcSelectedAccount: DepositAccountId
   gen: DepositGenerationController
+  /**
+   * RGB on-chain only: when true, the pre-generation step shows a warning
+   * banner and swaps the Generate CTA for "Create Colorable UTXOs". Wire
+   * `onOpenCreateUtxos` to open your own RGB UTXO creation modal.
+   */
+  needsColorableUtxos?: boolean
+  onOpenCreateUtxos?: () => void
 }
 
 type AssetFamily = 'BTC' | 'RGB' | 'SPARK' | 'ARKADE'
@@ -162,6 +169,8 @@ export function DepositInvoiceGeneration({
   setArkSubMode,
   btcSelectedAccount,
   gen,
+  needsColorableUtxos,
+  onOpenCreateUtxos,
 }: DepositInvoiceGenerationProps) {
   const {
     amount,
@@ -459,6 +468,8 @@ export function DepositInvoiceGeneration({
             handleAmountChange={handleAmountChange}
             getUnitLabel={getUnitLabel}
             generateInvoice={generateInvoice}
+            needsColorableUtxos={needsColorableUtxos}
+            onOpenCreateUtxos={onOpenCreateUtxos}
           />
         ) : (
           <DepositGeneratedView
