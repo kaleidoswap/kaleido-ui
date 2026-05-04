@@ -46,6 +46,13 @@ export interface DepositGeneratedViewProps {
    * compatibility — it is no longer invoked.
    */
   handleDone?: () => void
+  /**
+   * Optional regenerate callback. When provided, the "New Address" button
+   * calls it directly (instead of just clearing local state via the
+   * setters above). Required for flows whose auto-generation effect does
+   * not refire on cleared state — e.g. RGB on-chain.
+   */
+  onRegenerate?: () => Promise<void> | void
 }
 
 function parseAssetAmount(amountString: string, asset: DepositGeneratedAsset | null): number {
@@ -86,6 +93,7 @@ export function DepositGeneratedView({
   setRecipientId,
   setAmount,
   setInvoiceStatus,
+  onRegenerate,
 }: DepositGeneratedViewProps) {
   return (
     <div className="space-y-3 animate-in fade-in zoom-in-95 duration-300">
@@ -182,6 +190,15 @@ export function DepositGeneratedView({
           )}
           <QrCode value={address} size={188} />
           {isInvoicePaid && <PaidOverlay />}
+          {loading && !isInvoicePaid && (
+            // Loading scrim — sits over the QR while a fresh address/invoice
+            // is being fetched (e.g. after the New Address button).
+            <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-white/80 backdrop-blur-sm">
+              <span className="material-symbols-outlined animate-spin text-icon-3xl text-network-bitcoin">
+                progress_activity
+              </span>
+            </div>
+          )}
         </div>
 
         <button
@@ -265,16 +282,31 @@ export function DepositGeneratedView({
       <div className="flex justify-center pt-1">
         <button
           type="button"
+          aria-label={`New ${network === 'lightning' ? 'invoice' : 'address'}`}
+          title={`New ${network === 'lightning' ? 'invoice' : 'address'}`}
+          disabled={loading}
           onClick={() => {
+            if (onRegenerate) {
+              // Keep the existing QR visible (we render a loading overlay on
+              // top via `loading`) until the new value arrives. Avoids a
+              // flash back to the pre-generation step.
+              void onRegenerate()
+              return
+            }
+            // Legacy callers without onRegenerate fall back to clearing
+            // local state and relying on the parent's auto-regen effect.
             setAddress('')
             setRecipientId('')
             setAmount('')
             setInvoiceStatus(null)
           }}
-          className="flex items-center justify-center gap-1.5 rounded-xl bg-primary/15 px-5 py-3 text-xs font-bold text-primary transition-all hover:bg-primary/25 active:scale-[0.98]"
+          className="flex size-10 items-center justify-center rounded-full bg-primary/15 text-primary transition-all hover:bg-primary/25 active:scale-[0.98] disabled:opacity-50"
         >
-          <span className="material-symbols-outlined text-icon-sm">refresh</span>
-          New {network === 'lightning' ? 'Invoice' : 'Address'}
+          <span
+            className={cn('material-symbols-outlined text-icon-md', loading && 'animate-spin')}
+          >
+            refresh
+          </span>
         </button>
       </div>
     </div>
