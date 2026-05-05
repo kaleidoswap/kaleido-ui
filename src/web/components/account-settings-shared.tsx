@@ -410,6 +410,7 @@ export function AccountSettingsRow({
   onClick,
   hideNetworkChip = false,
   accent = false,
+  beta = false,
 }: {
   accountId: AccountSettingsProtocol
   title: string
@@ -423,6 +424,9 @@ export function AccountSettingsRow({
   /** Render the row with the per-account accent gradient (used on the
       Settings main page so account rows mirror dashboard asset cards). */
   accent?: boolean
+  /** Show a small BETA chip next to the title — used for accounts that
+      haven't graduated to mainnet yet (e.g. RGB on testchains only). */
+  beta?: boolean
 }) {
   return (
     <button
@@ -437,8 +441,15 @@ export function AccountSettingsRow({
         <AccountHeaderIcons accountId={accountId} />
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-3">
-            <div>
-              <p className="text-sm font-bold text-white">{title}</p>
+            <div className="min-w-0">
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-bold text-white">{title}</p>
+                {beta && (
+                  <span className="rounded-full bg-warning/15 px-1.5 py-0.5 text-tiny font-bold uppercase tracking-wider text-warning">
+                    Beta
+                  </span>
+                )}
+              </div>
               <p className="mt-1 text-xs text-muted-foreground">{description}</p>
             </div>
             <Icon name="chevron_right" size="sm" className="text-white/40" />
