@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { cn } from '../utils/cn'
 
 export interface WithdrawRouteOption<TAccount extends string = string> {
@@ -11,6 +12,10 @@ export interface WithdrawRouteOption<TAccount extends string = string> {
   disabled?: boolean
   /** Short reason shown under the disabled card. Pair with `disabled`. */
   disabledReason?: string
+  /** Optional account/protocol logo rendered on the left of the card (e.g. NetworkBadge). */
+  accountIcon?: ReactNode
+  /** Optional pre-formatted balance label (e.g. "1.23 BTC available") shown on the card. */
+  balanceLabel?: string
 }
 
 export interface WithdrawRouteSummary {
@@ -39,7 +44,7 @@ function RouteChoiceCard<TAccount extends string>({
   recommended: boolean
   onClick: () => void
 }) {
-  const { disabled = false, disabledReason } = route
+  const { disabled = false, disabledReason, accountIcon, balanceLabel } = route
   return (
     <button
       type="button"
@@ -58,25 +63,33 @@ function RouteChoiceCard<TAccount extends string>({
       )}
     >
       <div className="flex items-start justify-between gap-3">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-white">{route.accountTitle}</span>
-            {recommended && !disabled && (
-              <span className="rounded-full border border-primary/20 bg-primary/10 px-2 py-0.5 text-xxs font-bold uppercase tracking-wider text-primary">
-                Recommended
-              </span>
-            )}
-            {disabled && (
-              <span className="rounded-full border border-danger/20 bg-danger/10 px-2 py-0.5 text-xxs font-bold uppercase tracking-wider text-danger">
-                Insufficient
-              </span>
-            )}
+        <div className="flex min-w-0 items-start gap-3">
+          {accountIcon && <div className="mt-0.5 shrink-0">{accountIcon}</div>}
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm font-bold text-white">{route.accountTitle}</span>
+              {recommended && !disabled && (
+                <span className="rounded-full border border-primary/20 bg-primary/10 px-2 py-0.5 text-xxs font-bold uppercase tracking-wider text-primary">
+                  Recommended
+                </span>
+              )}
+              {disabled && (
+                <span className="rounded-full border border-danger/20 bg-danger/10 px-2 py-0.5 text-xxs font-bold uppercase tracking-wider text-danger">
+                  Insufficient
+                </span>
+              )}
+            </div>
+            <p className="mt-1 text-xs text-white/45">{route.methodLabel}</p>
           </div>
-          <p className="mt-1 text-xs text-white/45">{route.methodLabel}</p>
         </div>
-        <span className="text-xxs font-bold uppercase tracking-wider text-white/35">
-          {route.feeHint}
-        </span>
+        <div className="flex shrink-0 flex-col items-end gap-1">
+          <span className="text-xxs font-bold uppercase tracking-wider text-white/35">
+            {route.feeHint}
+          </span>
+          {balanceLabel && (
+            <span className="font-mono text-xxs text-white/50">{balanceLabel}</span>
+          )}
+        </div>
       </div>
       <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{route.summary}</p>
       {disabled && disabledReason && (
