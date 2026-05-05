@@ -133,7 +133,18 @@ export function AssetSelector({
                   />
                 </div>
                 {hasCategoryFilters && (
-                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                  /*
+                   * Multi-select category chips — spec calls for "Filter and
+                   * Order menus (like in Blog)" but multi-select is the more
+                   * useful behaviour for an asset picker (lets the user see
+                   * stables + RWA together while comparing) and chips are
+                   * more discoverable than a dropdown for 3 short labels.
+                   * Restyle the chips to read as borderless pills consistent
+                   * with the rest of the modal, and add a small "Clear"
+                   * affordance when at least one chip is off so the user
+                   * can return to "all" without toggling each one.
+                   */
+                  <div className="mt-3 flex flex-wrap items-center gap-1.5">
                     {categories.map((category) => {
                       const isActive = activeCategories.includes(category.id)
                       return (
@@ -148,16 +159,27 @@ export function AssetSelector({
                             )
                           }
                           className={cn(
-                            'rounded-full border px-3 py-1 text-xxs font-bold uppercase tracking-eyebrow transition-colors',
+                            'rounded-full px-2.5 py-1 text-tiny font-bold uppercase tracking-wide shadow-inner transition-colors',
                             isActive
-                              ? 'border-primary/35 bg-primary/[0.14] text-primary'
-                              : 'border-border bg-white/[0.03] text-white/40 hover:border-white/20 hover:text-white/65',
+                              ? 'bg-primary/[0.14] text-primary'
+                              : 'bg-surface-card text-text-dimmed hover:text-white/75',
                           )}
                         >
                           {category.label}
                         </button>
                       )
                     })}
+                    {activeCategories.length !== categories.length && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setActiveCategories(categories.map((category) => category.id))
+                        }
+                        className="ml-auto rounded-full px-2 py-1 text-tiny font-bold uppercase tracking-wide text-white/40 transition-colors hover:text-white/75"
+                      >
+                        All
+                      </button>
+                    )}
                   </div>
                 )}
               </div>
@@ -199,49 +221,65 @@ export function AssetSelector({
                               : 'border-transparent bg-transparent hover:border-border hover:bg-accent',
                         )}
                       >
+                        {/*
+                         * Row geometry mirrors WalletAssetList / AssetCard so
+                         * users get the same visual rhythm in the picker that
+                         * they see on the dashboard:
+                         *   [icon 38] | name (top) + network badge (bottom) |
+                         *             | right column: CURRENT chip / category
+                         *               chip in the same vertical slot the
+                         *               wallet card uses for balance, with
+                         *               the ticker beneath as the muted line
+                         * 38px keeps the picker scannable (~6 rows visible
+                         * in the popup viewport vs ~4 with the wallet's 44px).
+                         */}
                         <AssetIcon
                           ticker={option.ticker}
                           logoUri={option.icon}
-                          size={32}
+                          size={38}
                           className={cn(
-                            'transition-transform duration-200',
+                            'shrink-0 transition-transform duration-200',
                             !isDisabled && 'group-hover:scale-[1.04]',
                           )}
                         />
-                        <div className="min-w-0 flex-1 text-left">
-                          <div className="flex items-center justify-between gap-2 font-semibold text-white">
-                            <div className="flex min-w-0 items-center gap-1.5">
-                              <span>{option.ticker}</span>
-                              {option.network && (
+                        <div className="flex min-w-0 flex-1 items-center justify-between gap-3 text-left">
+                          <div className="min-w-0 flex flex-col leading-tight">
+                            <span className="truncate text-base font-bold tracking-wide text-white">
+                              {option.name ?? option.ticker}
+                            </span>
+                            {option.network && (
+                              <span className="mt-1">
                                 <NetworkBadge
                                   network={option.network}
                                   showLabel
+                                  size="sm"
                                   className="py-[1px]"
                                 />
-                              )}
-                            </div>
-                            {isSelected && (
-                              <span className="rounded-full border border-primary/20 bg-primary/10 px-2 py-0.5 text-xxs font-bold uppercase tracking-wide text-primary">
-                                Current
                               </span>
                             )}
                           </div>
-                          <div className="mt-0.5 flex items-center justify-between gap-3">
-                            <div className="truncate text-xs text-white/35">
-                              {option.name ?? option.ticker}
-                            </div>
-                            <div className="flex items-center gap-2">
-                              {optionCategoryLabel && (
-                                <span className="rounded-full border border-border-default bg-surface-overlay px-2 py-0.5 text-xxs font-semibold uppercase tracking-eyebrow text-text-dimmed">
+                          <div className="flex shrink-0 flex-col items-end gap-0.5">
+                            {/* Top slot — CURRENT chip when selected, otherwise
+                                the asset category chip (e.g. STABLECOIN) so it
+                                lands in the same column the wallet card uses
+                                for balance. */}
+                            {isSelected ? (
+                              <span className="rounded-full border border-primary/25 bg-primary/[0.14] px-2 py-0.5 text-xxs font-bold uppercase tracking-wide text-primary">
+                                Current
+                              </span>
+                            ) : (
+                              optionCategoryLabel && (
+                                <span className="rounded-full bg-surface-card px-2 py-0.5 text-tiny font-bold uppercase tracking-wide text-text-dimmed shadow-inner">
                                   {optionCategoryLabel}
                                 </span>
-                              )}
-                              {isDisabled && (
-                                <span className="text-xxs font-medium uppercase tracking-wide text-white/25">
-                                  In use
-                                </span>
-                              )}
-                            </div>
+                              )
+                            )}
+                            {/* Lower slot — muted ticker, mirroring the wallet
+                                card's `<p className="text-tiny ... uppercase">`
+                                ticker line beneath the balance. */}
+                            <span className="text-tiny font-medium uppercase tracking-wide text-white/35">
+                              {isDisabled ? 'In use' : option.ticker}
+                            </span>
                           </div>
                         </div>
                       </button>
