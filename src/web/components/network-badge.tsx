@@ -129,17 +129,23 @@ export function NetworkBadge({
       )
     }
     if (network === 'RGB-LN') {
+      // Tighter inner glyphs so the dual chip stays visually similar in
+      // weight to a single-icon NetworkBadge — the previous size matched
+      // the single-icon size, which made the dual chip read as ~2× wider
+      // than its single-icon siblings and visibly clipped the parent
+      // asset icon when used as a corner overlay (the USDT / USDB cards).
+      const innerGlyph = size === 'sm' ? 'size-2.5' : 'size-3'
       return (
         <span className="inline-flex items-center gap-0.5">
           <img
             src={`${iconBasePath}/rgb/rgb-logo.svg`}
             alt="RGB"
-            className={cn(className, 'object-contain', defaultIconClassName, iconClassName)}
+            className={cn(innerGlyph, 'object-contain', defaultIconClassName, iconClassName)}
           />
           <img
             src={`${iconBasePath}/lightning/lightning.svg`}
             alt="Lightning"
-            className={cn(className, 'object-contain', iconClassName)}
+            className={cn(innerGlyph, 'object-contain', iconClassName)}
           />
         </span>
       )
@@ -156,6 +162,9 @@ export function NetworkBadge({
   if (!content) {
     // RGB-LN renders two glyphs side by side, so use a pill (auto width)
     // instead of the square `chipSize` used by single-icon badges.
+    // Keep the pill height equal to the single-icon chip and tighten
+    // horizontal padding so the dual chip stays compact when it overlays
+    // the corner of an asset icon.
     const isDualGlyph = network === 'RGB-LN'
     return (
       <span
@@ -163,8 +172,8 @@ export function NetworkBadge({
           'flex items-center justify-center rounded-full shadow-inner',
           isDualGlyph
             ? size === 'sm'
-              ? 'h-6 px-1.5'
-              : 'h-8 px-2'
+              ? 'h-5 px-1'
+              : 'h-7 px-1.5'
             : chipSize,
           iconBg,
           className,
