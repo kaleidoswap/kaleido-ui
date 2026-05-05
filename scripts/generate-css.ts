@@ -68,6 +68,19 @@ const css = `/* AUTO-GENERATED — do not edit by hand.
 /* ── Material Symbols ──────────────────────────────────────────────────── */
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  /*
+   * Glyph spans default to baseline alignment with the parent's line-height,
+   * which makes Material Symbols render a few pixels above text in flex
+   * rows next to <img>-based icons. Force the glyph to render centered
+   * within its own box (line-height 1, vertical-align middle, inline-flex
+   * items-center) so it sits on the same visual axis as adjacent text and
+   * image icons everywhere they're used.
+   */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  vertical-align: middle;
 }
 .material-symbols-outlined.filled {
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
