@@ -54,6 +54,12 @@ export interface DepositGeneratedViewProps {
    * not refire on cleared state — e.g. RGB on-chain.
    */
   onRegenerate?: () => Promise<void> | void
+  /**
+   * Hide the "New Address" / "New Invoice" round button. Use when the
+   * regenerate flow is broken or unsupported for the current path so the
+   * user doesn't get stuck on a non-functional control.
+   */
+  showRegenerate?: boolean
 }
 
 function parseAssetAmount(amountString: string, asset: DepositGeneratedAsset | null): number {
@@ -96,6 +102,7 @@ export function DepositGeneratedView({
   setInvoiceStatus,
   showQrNetworkBadge = true,
   onRegenerate,
+  showRegenerate = true,
 }: DepositGeneratedViewProps) {
   return (
     <div className="space-y-3 animate-in fade-in zoom-in-95 duration-300">
@@ -281,36 +288,38 @@ export function DepositGeneratedView({
         </div>
       )}
 
-      <div className="flex justify-center pt-1">
-        <button
-          type="button"
-          aria-label={`New ${network === 'lightning' ? 'invoice' : 'address'}`}
-          title={`New ${network === 'lightning' ? 'invoice' : 'address'}`}
-          disabled={loading}
-          onClick={() => {
-            if (onRegenerate) {
-              // Keep the existing QR visible (we render a loading overlay on
-              // top via `loading`) until the new value arrives. Avoids a
-              // flash back to the pre-generation step.
-              void onRegenerate()
-              return
-            }
-            // Legacy callers without onRegenerate fall back to clearing
-            // local state and relying on the parent's auto-regen effect.
-            setAddress('')
-            setRecipientId('')
-            setAmount('')
-            setInvoiceStatus(null)
-          }}
-          className="flex size-10 items-center justify-center rounded-full bg-primary/15 text-primary transition-all hover:bg-primary/25 active:scale-[0.98] disabled:opacity-50"
-        >
-          <span
-            className={cn('material-symbols-outlined text-icon-md', loading && 'animate-spin')}
+      {showRegenerate && (
+        <div className="flex justify-center pt-1">
+          <button
+            type="button"
+            aria-label={`New ${network === 'lightning' ? 'invoice' : 'address'}`}
+            title={`New ${network === 'lightning' ? 'invoice' : 'address'}`}
+            disabled={loading}
+            onClick={() => {
+              if (onRegenerate) {
+                // Keep the existing QR visible (we render a loading overlay
+                // on top via `loading`) until the new value arrives. Avoids
+                // a flash back to the pre-generation step.
+                void onRegenerate()
+                return
+              }
+              // Legacy callers without onRegenerate fall back to clearing
+              // local state and relying on the parent's auto-regen effect.
+              setAddress('')
+              setRecipientId('')
+              setAmount('')
+              setInvoiceStatus(null)
+            }}
+            className="flex size-10 items-center justify-center rounded-full bg-primary/15 text-primary transition-all hover:bg-primary/25 active:scale-[0.98] disabled:opacity-50"
           >
-            refresh
-          </span>
-        </button>
-      </div>
+            <span
+              className={cn('material-symbols-outlined text-icon-md', loading && 'animate-spin')}
+            >
+              refresh
+            </span>
+          </button>
+        </div>
+      )}
     </div>
   )
 }
