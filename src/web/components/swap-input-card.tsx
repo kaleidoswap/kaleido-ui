@@ -31,6 +31,10 @@ export interface SwapInputCardProps {
   quoteFeeText?: string | null
   quoteExpiresText?: string | null
   quoteExpiresUrgent?: boolean
+  /** Routing venue label shown next to the rate row (e.g. "KaleidoSwap"). */
+  quoteVenueText?: string | null
+  /** Tone of the venue dot — primary for KaleidoSwap, info/spark for Flashnet. */
+  quoteVenueTone?: 'primary' | 'spark' | 'info'
   warning?: string | null
   submitLabel: string
   /** Optional leading icon for the submit CTA (e.g. a Material-Symbols glyph). */
@@ -71,6 +75,8 @@ export function SwapInputCard({
   quoteFeeText,
   quoteExpiresText,
   quoteExpiresUrgent = false,
+  quoteVenueText,
+  quoteVenueTone = 'primary',
   warning,
   submitLabel,
   submitIcon,
@@ -200,12 +206,29 @@ export function SwapInputCard({
         </div>
       </div>
 
-      {(quoteError || quoteRateText || quoteFeeText || quoteExpiresText) && (
+      {(quoteError || quoteRateText || quoteFeeText || quoteExpiresText || quoteVenueText) && (
         <div className="rounded-xl bg-card/60 p-3">
           {quoteError ? (
             <p className="text-center text-xs text-danger">{quoteError}</p>
           ) : (
             <div className="space-y-1.5">
+              {quoteVenueText && (
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-white/40">Provider</span>
+                  <span className="inline-flex items-center gap-1.5 font-medium text-white/65">
+                    <span
+                      className={cn(
+                        'size-1.5 rounded-full',
+                        quoteVenueTone === 'spark' && 'bg-network-spark',
+                        quoteVenueTone === 'info' && 'bg-info',
+                        quoteVenueTone === 'primary' && 'bg-primary',
+                      )}
+                      aria-hidden
+                    />
+                    {quoteVenueText}
+                  </span>
+                </div>
+              )}
               {quoteRateText && (
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-white/40">Rate</span>
