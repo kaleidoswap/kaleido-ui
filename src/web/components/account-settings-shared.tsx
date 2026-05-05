@@ -1,7 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
-import { PageHeader } from './page-header'
 import { cn } from '../utils/cn'
 
 export type AccountSettingsProtocol = 'RGB' | 'SPARK' | 'ARKADE'
@@ -213,17 +212,25 @@ export function AccountSettingsShell({
   onBack?: () => void
 }) {
   return (
-    <div className="min-h-screen bg-background pb-28 font-display text-foreground">
-      <PageHeader
-        title={title}
-        subtitle={subtitle}
-        titleAlign="start"
-        left={<AccountHeaderIcons accountId={accountId} />}
-        onBack={onBack}
-        className="px-5 py-4"
-      />
+    <div className="relative min-h-screen bg-background pb-6 pt-16 font-display text-foreground">
+      {onBack && (
+        <div className="absolute left-4 top-4 z-30">
+          <Button type="button" variant="ghost" size="icon-xl" onClick={onBack} aria-label="Go back">
+            <Icon name="arrow_back" size="xl" />
+          </Button>
+        </div>
+      )}
 
-      <main className="space-y-6 px-5 py-6">{children}</main>
+      <main className="space-y-6 px-5 py-6">
+        <section className="space-y-3">
+          <AccountHeaderIcons accountId={accountId} />
+          <div>
+            <h1 className="text-xl font-bold text-foreground">{title}</h1>
+            <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
+          </div>
+        </section>
+        {children}
+      </main>
     </div>
   )
 }
