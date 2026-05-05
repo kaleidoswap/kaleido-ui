@@ -50,7 +50,12 @@ export function ActivityNetworkFilters<TValue extends string = ActivityNetworkFi
             type="button"
             onClick={() => onChange(filter.value)}
             className={cn(
-              'inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xxs font-bold uppercase tracking-wider transition-all active:scale-95',
+              // `leading-none` on the button normalizes the line-box for
+              // both the icon span and the label span; without it the
+              // icon (now `leading-none` from Icon primitive) and the text
+              // (default leading) get center-aligned along different
+              // visual axes and the glyph drifts above the text.
+              'inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xxs font-bold uppercase tracking-wider leading-none transition-all active:scale-95',
               isActive
                 ? 'bg-primary/15 text-primary shadow-inner hover:bg-primary/20'
                 : 'bg-surface-card text-white/45 hover:bg-surface-elevated hover:text-white/80'
