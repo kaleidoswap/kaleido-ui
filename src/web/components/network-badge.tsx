@@ -114,29 +114,58 @@ export function NetworkBadge({
 
   // L1 (on-chain Bitcoin) uses a generic chain glyph rather than the BTC logo —
   // the BTC logo is reserved for the asset itself, not the network it lives on.
-  const renderGlyph = (className: string) =>
-    network === 'L1' ? (
-      <span
-        className={cn('material-symbols-outlined leading-none', color, className)}
-        style={{ fontSize: size === 'sm' ? 12 : 16 }}
-        aria-hidden
-      >
-        link
-      </span>
-    ) : (
+  // RGB-LN renders two glyphs side by side (RGB + Lightning) so users see at
+  // a glance that an RGB asset is travelling on Lightning rails.
+  const renderGlyph = (className: string) => {
+    if (network === 'L1') {
+      return (
+        <span
+          className={cn('material-symbols-outlined leading-none', color, className)}
+          style={{ fontSize: size === 'sm' ? 12 : 16 }}
+          aria-hidden
+        >
+          link
+        </span>
+      )
+    }
+    if (network === 'RGB-LN') {
+      return (
+        <span className="inline-flex items-center gap-0.5">
+          <img
+            src={`${iconBasePath}/rgb/rgb-logo.svg`}
+            alt="RGB"
+            className={cn(className, 'object-contain', defaultIconClassName, iconClassName)}
+          />
+          <img
+            src={`${iconBasePath}/lightning/lightning.svg`}
+            alt="Lightning"
+            className={cn(className, 'object-contain', iconClassName)}
+          />
+        </span>
+      )
+    }
+    return (
       <img
         src={icon}
         alt={network}
         className={cn(className, 'object-contain', defaultIconClassName, iconClassName)}
       />
     )
+  }
 
   if (!content) {
+    // RGB-LN renders two glyphs side by side, so use a pill (auto width)
+    // instead of the square `chipSize` used by single-icon badges.
+    const isDualGlyph = network === 'RGB-LN'
     return (
       <span
         className={cn(
           'flex items-center justify-center rounded-full shadow-inner',
-          chipSize,
+          isDualGlyph
+            ? size === 'sm'
+              ? 'h-6 px-1.5'
+              : 'h-8 px-2'
+            : chipSize,
           iconBg,
           className,
         )}
