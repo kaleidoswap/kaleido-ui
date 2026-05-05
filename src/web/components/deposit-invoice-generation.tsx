@@ -12,8 +12,9 @@ import { DepositSuccessScreen } from './deposit-success-screen'
 import { BtcUnifiedReceive, type BtcUnifiedReceiveResult } from './btc-unified-receive'
 import { DepositPreGeneration } from './deposit-pre-generation'
 import { DepositGeneratedView } from './deposit-generated-view'
-import { PageHeader } from './page-header'
 import { ScrollArea } from './scroll-area'
+import { Button } from '../primitives/button'
+import { Icon } from '../primitives/icon'
 
 export interface DepositInvoiceAsset {
   asset_id?: string
@@ -315,25 +316,12 @@ export function DepositInvoiceGeneration({
   const isNewRgbAsset = isNewAsset && assetFamily === 'RGB'
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-background font-display text-foreground">
-      <PageHeader
-        title={`Receive ${selectedAsset?.ticker ?? (isNewAsset ? 'RGB' : 'Asset')}`}
-        subtitle={selectedAsset?.name}
-        titleAlign="start"
-        onBack={handleBack}
-        left={<AssetIcon ticker={displayTicker} size={28} />}
-        right={
-          <div className="flex shrink-0 items-center gap-1.5">
-            <div className="flex size-5 items-center justify-center rounded-full bg-primary/10 shadow-inner">
-              <span className="text-xxs font-black text-primary">1</span>
-            </div>
-            <div className="h-px w-3 bg-white/10" />
-            <div className="flex size-5 items-center justify-center rounded-full bg-primary shadow-sm">
-              <span className="text-xxs font-black text-background">2</span>
-            </div>
-          </div>
-        }
-      />
+    <div className="relative flex h-screen flex-col overflow-hidden bg-background pt-16 font-display text-foreground">
+      <div className="absolute left-4 top-4 z-30">
+        <Button type="button" variant="ghost" size="icon-xl" onClick={handleBack} aria-label="Go back">
+          <Icon name="arrow_back" size="xl" />
+        </Button>
+      </div>
 
       {(() => {
         // Suppress the destination/transfer chip rail entirely when the user

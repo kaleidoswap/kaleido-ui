@@ -1,6 +1,6 @@
 import { Button } from '../primitives/button'
+import { Icon } from '../primitives/icon'
 import type { WithdrawAddressType } from './withdraw-destination-input'
-import { PageHeader } from './page-header'
 
 export interface WithdrawConfirmationRgbInvoice {
   recipient_type?: string
@@ -46,16 +46,23 @@ export function WithdrawConfirmation({
   handleConfirmSend,
 }: WithdrawConfirmationProps) {
   return (
-    <div className="min-h-screen bg-background pb-6 font-display text-foreground">
-      <PageHeader
-        title="Confirm Payment"
-        onBack={() => {
-          if (!isConfirming && !isPollingStatus) {
-            setShowConfirmation(false)
-          }
-        }}
-        className={isConfirming || isPollingStatus ? 'pointer-events-none opacity-70' : undefined}
-      />
+    <div className="relative min-h-screen bg-background pb-6 pt-16 font-display text-foreground">
+      <div className="absolute left-4 top-4 z-30">
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-xl"
+          onClick={() => {
+            if (!isConfirming && !isPollingStatus) {
+              setShowConfirmation(false)
+            }
+          }}
+          aria-label="Go back"
+          className={isConfirming || isPollingStatus ? 'pointer-events-none opacity-70' : undefined}
+        >
+          <Icon name="arrow_back" size="xl" />
+        </Button>
+      </div>
 
       <main className="space-y-6 px-5">
         <div className="flex flex-col items-center py-6">
