@@ -113,6 +113,8 @@ export const colors = {
     arkade: '#7C3AED',
     spark: '#FF6D00',
     lightning: '#F6C343',
+    liquid: '#22e1c9',
+    taproot: '#D1D6D8',
   },
   networkChip: {
     bitcoin: '#44341F',
@@ -120,6 +122,8 @@ export const colors = {
     arkade: '#362B55',
     spark: '#284338',
     lightning: '#3D421F',
+    liquid: '#0D2A2E',
+    taproot: '#1E2328',
   },
   networkText: {
     bitcoin: '#F2B063',
@@ -127,6 +131,8 @@ export const colors = {
     arkade: '#A98CF2',
     spark: '#D6E5DE',
     lightning: '#E4D56F',
+    liquid: '#5DE5D6',
+    taproot: '#C4CACD',
   },
 
   /** Asset icon brand colors — used as solid backgrounds behind glyphs */
