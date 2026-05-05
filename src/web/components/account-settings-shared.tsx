@@ -279,9 +279,16 @@ export function AccountNetworkNotice({
 export function AccountStatusPills({
   status,
   network,
+  hideNetworkChip = false,
 }: {
   status: 'ready' | 'offline' | 'optional' | string
   network: AccountSettingsNetwork
+  /**
+   * Drop the network (MAINNET / Regtest / …) chip. Used on the Settings
+   * main page where the network is implicit context and the chip is
+   * design noise next to the connected/offline status.
+   */
+  hideNetworkChip?: boolean
 }) {
   const statusUi = getAccountStatusUi(status)
   const networkUi = getAccountNetworkUi(network)
@@ -296,14 +303,16 @@ export function AccountStatusPills({
       >
         {statusUi.label === 'Ready' ? 'Connected' : statusUi.label}
       </span>
-      <span
-        className={cn(
-          'rounded-full px-2.5 py-1 text-xxs font-bold uppercase tracking-wider',
-          networkUi.badgeClassName
-        )}
-      >
-        {networkUi.label}
-      </span>
+      {!hideNetworkChip && (
+        <span
+          className={cn(
+            'rounded-full px-2.5 py-1 text-xxs font-bold uppercase tracking-wider',
+            networkUi.badgeClassName
+          )}
+        >
+          {networkUi.label}
+        </span>
+      )}
     </div>
   )
 }
@@ -381,6 +390,17 @@ export function ExpandIcon({ expanded }: { expanded: boolean }) {
   return <Icon name={expanded ? 'expand_less' : 'expand_more'} size="md" />
 }
 
+/**
+ * Per-account accent class used as the row's background hue. Mirrors the
+ * accent treatment on dashboard asset cards so account rows in Settings
+ * have the same visual rhythm.
+ */
+const ACCOUNT_ACCENT_BG: Record<AccountSettingsProtocol, string> = {
+  RGB: 'bg-gradient-to-br from-primary/[0.06] via-card to-primary/[0.10]',
+  SPARK: 'bg-gradient-to-br from-info/[0.06] via-card to-info/[0.10]',
+  ARKADE: 'bg-gradient-to-br from-network-arkade/[0.06] via-card to-network-arkade/[0.10]',
+}
+
 export function AccountSettingsRow({
   accountId,
   title,
@@ -388,6 +408,8 @@ export function AccountSettingsRow({
   network,
   description,
   onClick,
+  hideNetworkChip = false,
+  accent = false,
 }: {
   accountId: AccountSettingsProtocol
   title: string
@@ -395,12 +417,21 @@ export function AccountSettingsRow({
   network: AccountSettingsNetwork
   description: string
   onClick: () => void
+  /** Drop the MAINNET / Regtest pill — useful in Settings where the row
+      is one of many and the network chip is redundant noise. */
+  hideNetworkChip?: boolean
+  /** Render the row with the per-account accent gradient (used on the
+      Settings main page so account rows mirror dashboard asset cards). */
+  accent?: boolean
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="w-full rounded-3xl bg-white/[0.03] p-4 text-left shadow-inner transition-colors hover:bg-white/[0.05]"
+      className={cn(
+        'w-full rounded-3xl p-4 text-left shadow-inner transition-colors hover:brightness-110',
+        accent ? ACCOUNT_ACCENT_BG[accountId] : 'bg-white/[0.03] hover:bg-white/[0.05]'
+      )}
     >
       <div className="flex items-start gap-3">
         <AccountHeaderIcons accountId={accountId} />
@@ -413,7 +444,11 @@ export function AccountSettingsRow({
             <Icon name="chevron_right" size="sm" className="text-white/40" />
           </div>
           <div className="mt-3">
-            <AccountStatusPills status={status} network={network} />
+            <AccountStatusPills
+              status={status}
+              network={network}
+              hideNetworkChip={hideNetworkChip}
+            />
           </div>
         </div>
       </div>
