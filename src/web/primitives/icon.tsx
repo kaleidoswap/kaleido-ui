@@ -29,7 +29,12 @@ export function Icon({
   return (
     <span
       className={cn(
-        'material-symbols-outlined',
+        // `inline-flex items-center justify-center leading-none` keeps the
+        // glyph centered inside its own box rather than drifting on the
+        // parent's text baseline. Without this, a Material-Symbols span
+        // sitting next to an <img>-based icon in a flex row renders a few
+        // pixels lower because the glyph adopts the surrounding line-height.
+        'material-symbols-outlined inline-flex items-center justify-center leading-none align-middle',
         filled && 'filled',
         sizeClasses[size],
         className
