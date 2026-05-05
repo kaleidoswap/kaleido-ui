@@ -322,12 +322,12 @@ export function App() {
           {/* ── Network Badges ──────────────────────────────────────────── */}
           <Section id="network-badges" title="Network Badges" description="Layer/protocol indicators.">
             <Row label="Network chips with text">
-              {(['L1', 'LN', 'RGB20', 'RGB21', 'RGB-L1', 'RGB-LN', 'Spark', 'Arkade'] as NetworkType[]).map((n) => (
+              {(['L1', 'LN', 'RGB20', 'RGB21', 'RGB-L1', 'RGB-LN', 'Spark', 'Arkade', 'Liquid', 'Taproot'] as NetworkType[]).map((n) => (
                 <NetworkBadge key={n} network={n} showLabel />
               ))}
             </Row>
             <Row label="Network chips without text">
-              {(['L1', 'LN', 'RGB20', 'Spark', 'Arkade'] as NetworkType[]).map((n) => (
+              {(['L1', 'LN', 'RGB20', 'Spark', 'Arkade', 'Liquid', 'Taproot'] as NetworkType[]).map((n) => (
                 <NetworkBadge key={n} network={n} />
               ))}
             </Row>
