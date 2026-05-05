@@ -13,7 +13,7 @@ export interface NetworkBadgeProps {
   showLabel?: boolean
   /** Optional content rendered after the icon. Overrides the built-in label. */
   children?: ReactNode
-  size?: 'sm' | 'md'
+  size?: 'sm' | 'md' | 'lg'
   className?: string
   iconClassName?: string
 }
@@ -121,8 +121,8 @@ export function NetworkBadge({
   const icon = `${iconBasePath}/${iconSuffix}`
   const shouldShowLabel = showLabel ?? false
   const content = children ?? (shouldShowLabel ? label : null)
-  const chipSize = size === 'sm' ? 'size-6' : 'size-8'
-  const imageSize = size === 'sm' ? 'size-3.5' : 'size-icon-lg'
+  const chipSize = size === 'sm' ? 'size-6' : size === 'lg' ? 'size-14' : 'size-8'
+  const imageSize = size === 'sm' ? 'size-3.5' : size === 'lg' ? 'size-7' : 'size-icon-lg'
   const chipStyle = {
     backgroundColor: `var(${chipVar})`,
     color: `var(${textVar})`,
@@ -134,7 +134,7 @@ export function NetworkBadge({
     network === 'L1' ? (
       <span
         className={cn('material-symbols-outlined leading-none', className)}
-        style={{ fontSize: size === 'sm' ? 12 : 16 }}
+        style={{ fontSize: size === 'sm' ? 12 : size === 'lg' ? 24 : 16 }}
         aria-hidden
       >
         link
@@ -166,12 +166,16 @@ export function NetworkBadge({
     <span
       className={cn(
         'flex w-max items-center justify-center gap-1 rounded-full font-bold shadow-inner',
-        size === 'sm' ? 'px-2 py-1 text-xxs' : 'px-2.5 py-1 text-xs',
+        size === 'sm'
+          ? 'px-2 py-1 text-xxs'
+          : size === 'lg'
+            ? 'gap-2 px-4 py-3 text-sm'
+            : 'px-2.5 py-1 text-xs',
         className
       )}
       style={chipStyle}
     >
-      {renderGlyph(size === 'sm' ? 'size-3' : 'size-3.5')}
+      {renderGlyph(size === 'sm' ? 'size-3' : size === 'lg' ? 'size-6' : 'size-3.5')}
       {content}
     </span>
   )

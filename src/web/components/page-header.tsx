@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 
@@ -27,14 +28,16 @@ export function PageHeader({
   borderClassName,
 }: PageHeaderProps) {
   const backButton = onBack ? (
-    <button
+    <Button
       type="button"
+      variant="ghost"
+      size="icon-xl"
       onClick={onBack}
       aria-label={backLabel}
-      className="flex size-10 shrink-0 items-center justify-center rounded-full bg-surface-card text-muted-foreground shadow-inner transition-all hover:bg-accent hover:text-foreground active:scale-95"
+      className="shrink-0"
     >
-      <Icon name="arrow_back" size="lg" />
-    </button>
+      <Icon name="arrow_back" size="xl" />
+    </Button>
   ) : null
   const resolvedLeft =
     backButton && left ? (

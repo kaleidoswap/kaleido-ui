@@ -202,7 +202,7 @@ export { SettingItem } from './components/setting-item'
 export { SectionLabel } from './components/section-label'
 export { AlertBanner } from './components/alert-banner'
 export { ErrorBoundary } from './components/error-boundary'
-export { OrbitAnimation, type OrbitAnimationProps } from './components/orbit-animation'
+export { RecoveryPhraseCard, type RecoveryPhraseCardProps } from './components/recovery-phrase-card'
 export { MobileHeroAnimation, type MobileHeroAnimationProps } from './components/mobile-hero-animation'
 export { KaleidoScopeHeroAnimation, type KaleidoScopeHeroAnimationProps } from './components/kaleidoscope-hero-animation'
 export {
