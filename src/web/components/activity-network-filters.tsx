@@ -18,9 +18,14 @@ export interface ActivityNetworkFiltersProps<TValue extends string = ActivityNet
 }
 
 export function getActivityNetworkFilterIcon(filter: ActivityNetworkFilterValue) {
+  // size="xs" → text-icon-sm (14px) so the Material-Symbols glyph's
+  // font-size matches the size-icon-sm box and the visible glyph lines up
+  // with the 14px <img> network icons (Lightning / Spark / Arkade).
+  // Without this, AppIcon defaults to size="lg" (24px) and the glyph
+  // overflows the 14px box, rendering visibly larger and above the text.
   switch (filter) {
     case 'onchain':
-      return <AppIcon name="onchain" className="size-icon-sm" />
+      return <AppIcon name="onchain" size="xs" className="size-icon-sm" />
     case 'lightning':
       return <LightningNetworkIcon className="size-3.5" alt="" />
     case 'spark':
@@ -28,7 +33,7 @@ export function getActivityNetworkFilterIcon(filter: ActivityNetworkFilterValue)
     case 'arkade':
       return <ArkadeNetworkIcon className="size-3.5 rounded" alt="" />
     default:
-      return <AppIcon name="allNetworks" className="size-icon-sm" />
+      return <AppIcon name="allNetworks" size="xs" className="size-icon-sm" />
   }
 }
 

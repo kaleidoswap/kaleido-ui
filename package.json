@@ -1,6 +1,6 @@
 {
   "name": "kaleido-ui",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "description": "KaleidoSwap shared UI library — design tokens, web components (Tailwind + Radix), and React Native components extending WDK UI Kit",
   "license": "MIT",
   "type": "module",
