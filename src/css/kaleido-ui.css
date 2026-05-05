@@ -105,16 +105,22 @@
   --color-network-arkade:    #7C3AED;
   --color-network-spark:     #FF6D00;
   --color-network-lightning: #F6C343;
+  --color-network-liquid:    #22e1c9;
+  --color-network-taproot:   #D1D6D8;
   --color-network-bitcoin-chip:   #44341F;
   --color-network-rgb-chip:       #44282B;
   --color-network-arkade-chip:    #362B55;
   --color-network-spark-chip:     #284338;
   --color-network-lightning-chip: #3D421F;
+  --color-network-liquid-chip:    #0D2A2E;
+  --color-network-taproot-chip:   #1E2328;
   --color-network-bitcoin-text:   #F2B063;
   --color-network-rgb-text:       #E87872;
   --color-network-arkade-text:    #A98CF2;
   --color-network-spark-text:     #D6E5DE;
   --color-network-lightning-text: #E4D56F;
+  --color-network-liquid-text:    #5DE5D6;
+  --color-network-taproot-text:   #C4CACD;
 
   /* Asset icon brand colors */
   --color-asset-eth:  #627EEA;

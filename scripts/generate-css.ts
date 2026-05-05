@@ -167,16 +167,22 @@ const css = `/* AUTO-GENERATED — do not edit by hand.
   --color-network-arkade:    ${colors.network.arkade};
   --color-network-spark:     ${colors.network.spark};
   --color-network-lightning: ${colors.network.lightning};
+  --color-network-liquid:    ${colors.network.liquid};
+  --color-network-taproot:   ${colors.network.taproot};
   --color-network-bitcoin-chip:   ${colors.networkChip.bitcoin};
   --color-network-rgb-chip:       ${colors.networkChip.rgb};
   --color-network-arkade-chip:    ${colors.networkChip.arkade};
   --color-network-spark-chip:     ${colors.networkChip.spark};
   --color-network-lightning-chip: ${colors.networkChip.lightning};
+  --color-network-liquid-chip:    ${colors.networkChip.liquid};
+  --color-network-taproot-chip:   ${colors.networkChip.taproot};
   --color-network-bitcoin-text:   ${colors.networkText.bitcoin};
   --color-network-rgb-text:       ${colors.networkText.rgb};
   --color-network-arkade-text:    ${colors.networkText.arkade};
   --color-network-spark-text:     ${colors.networkText.spark};
   --color-network-lightning-text: ${colors.networkText.lightning};
+  --color-network-liquid-text:    ${colors.networkText.liquid};
+  --color-network-taproot-text:   ${colors.networkText.taproot};
 
   /* Asset icon brand colors */
   --color-asset-eth:  ${colors.assetIcon.eth};
