@@ -17,6 +17,20 @@ export interface BtcUnifiedReceiveAddress {
   network: DepositNetworkKey
   label: string
   value: string
+  /**
+   * Amount the address / invoice is bound to, in satoshis. Surfaced as
+   * a small "10,000 sats" tag next to the row label so the user can see
+   * at a glance what the LN invoice / Spark invoice / BIP21 link
+   * actually encodes — bolt11 invoices and Spark invoices carry the
+   * amount internally, but the user couldn't see it without decoding.
+   * Omit (or pass 0) for amountless / open-ended addresses.
+   */
+  amountSats?: number
+}
+
+function formatSatsForRow(value: number | undefined): string | null {
+  if (!value || value <= 0 || !Number.isFinite(value)) return null
+  return `${value.toLocaleString('en-US')} sats`
 }
 
 export interface BtcUnifiedReceiveResult {
@@ -151,9 +165,19 @@ export function BtcUnifiedReceive({
                 {network.icon}
               </div>
               <div className="min-w-0 flex-1">
-                <p className={cn('text-xxs font-bold uppercase tracking-widest', network.text)}>
-                  {address.label}
-                </p>
+                <div className="flex items-center gap-1.5">
+                  <p className={cn('text-xxs font-bold uppercase tracking-widest', network.text)}>
+                    {address.label}
+                  </p>
+                  {(() => {
+                    const amountLabel = formatSatsForRow(address.amountSats)
+                    return amountLabel ? (
+                      <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-tiny font-bold tabular-nums text-white/70">
+                        {amountLabel}
+                      </span>
+                    ) : null
+                  })()}
+                </div>
                 <p className="mt-0.5 truncate font-mono text-tiny text-muted-foreground">
                   {address.value.length > 50
                     ? `${address.value.slice(0, 18)}...${address.value.slice(-14)}`
