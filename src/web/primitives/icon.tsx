@@ -1,13 +1,14 @@
-import type { HTMLAttributes } from 'react'
+import type { SVGProps } from 'react'
 import { cn } from '../utils/cn'
+import { outlinedMap, filledMap, type IconName } from '../icons'
 
-export interface IconProps extends HTMLAttributes<HTMLSpanElement> {
-  /** Material Symbols icon name (e.g., "home", "settings", "arrow_back") */
-  name: string
-  /** Use filled variant of the icon */
+export type { IconName }
+
+export interface IconProps extends SVGProps<SVGSVGElement> {
+  name: IconName
   filled?: boolean
-  /** Icon size */
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+  className?: string
 }
 
 const sizeClasses = {
@@ -19,36 +20,20 @@ const sizeClasses = {
   '2xl': 'text-icon-5xl',
 }
 
-export function Icon({
-  name,
-  filled = false,
-  size = 'lg',
-  className,
-  ...props
-}: IconProps) {
+export function Icon({ name, filled = false, size, className, ...props }: IconProps) {
+  const SvgComponent = (filled ? filledMap[name] : undefined) ?? outlinedMap[name]
+  if (!SvgComponent) return null
   return (
-    <span
-      className={cn(
-        // `inline-flex items-center justify-center leading-none` keeps the
-        // glyph centered inside its own box rather than drifting on the
-        // parent's text baseline. Without this, a Material-Symbols span
-        // sitting next to an <img>-based icon in a flex row renders a few
-        // pixels lower because the glyph adopts the surrounding line-height.
-        'material-symbols-outlined inline-flex items-center justify-center leading-none align-middle',
-        filled && 'filled',
-        sizeClasses[size],
-        className
-      )}
+<<<<<<< HEAD
+    <SvgComponent
+      width="1em"
+      height="1em"
+      className={cn('inline-block shrink-0', size && sizeClasses[size], className)}
       {...props}
-    >
-      {name}
-    </span>
+    />
   )
 }
 
-/**
- * Convenience components for common icons
- */
 export const Icons = {
   // Navigation
   ArrowBack: (props: Omit<IconProps, 'name'>) => <Icon name="arrow_back" {...props} />,
@@ -57,13 +42,12 @@ export const Icons = {
   Menu: (props: Omit<IconProps, 'name'>) => <Icon name="menu" {...props} />,
 
   // Actions
-  Send: (props: Omit<IconProps, 'name'>) => <Icon name="arrow_upward" {...props} />,
+  Send: (props: Omit<IconProps, 'name'>) => <Icon name="arrow_outward" {...props} />,
   Receive: (props: Omit<IconProps, 'name'>) => <Icon name="arrow_downward" {...props} />,
   Swap: (props: Omit<IconProps, 'name'>) => <Icon name="swap_horiz" {...props} />,
   Copy: (props: Omit<IconProps, 'name'>) => <Icon name="content_copy" {...props} />,
   Paste: (props: Omit<IconProps, 'name'>) => <Icon name="content_paste" {...props} />,
   Refresh: (props: Omit<IconProps, 'name'>) => <Icon name="refresh" {...props} />,
-  Share: (props: Omit<IconProps, 'name'>) => <Icon name="ios_share" {...props} />,
   QrCode: (props: Omit<IconProps, 'name'>) => <Icon name="qr_code_2" {...props} />,
   QrScanner: (props: Omit<IconProps, 'name'>) => <Icon name="qr_code_scanner" {...props} />,
 
@@ -74,6 +58,7 @@ export const Icons = {
   Warning: (props: Omit<IconProps, 'name'>) => <Icon name="warning" {...props} />,
   Info: (props: Omit<IconProps, 'name'>) => <Icon name="info" {...props} />,
   Pending: (props: Omit<IconProps, 'name'>) => <Icon name="hourglass_top" {...props} />,
+  Progress: (props: Omit<IconProps, 'name'>) => <Icon name="autorenew" {...props} />,
 
   // Navigation tabs
   Wallet: (props: Omit<IconProps, 'name'>) => <Icon name="account_balance_wallet" {...props} />,
@@ -113,8 +98,4 @@ export const Icons = {
   // Agent / AI
   SmartToy: (props: Omit<IconProps, 'name'>) => <Icon name="smart_toy" {...props} />,
   Psychology: (props: Omit<IconProps, 'name'>) => <Icon name="psychology" {...props} />,
-  Event: (props: Omit<IconProps, 'name'>) => <Icon name="event" {...props} />,
-  PlayArrow: (props: Omit<IconProps, 'name'>) => <Icon name="play_arrow" {...props} />,
-  ChatBubble: (props: Omit<IconProps, 'name'>) => <Icon name="chat_bubble" {...props} />,
-  Progress: (props: Omit<IconProps, 'name'>) => <Icon name="progress_activity" {...props} />,
 }

@@ -59,7 +59,7 @@ export {
   ToastAction,
 } from './primitives/toast'
 export { Toaster } from './primitives/toaster'
-export { Icon, Icons, type IconProps } from './primitives/icon'
+export { Icon, Icons, type IconProps, type IconName } from './primitives/icon'
 export {
   DotPagination,
   type DotPaginationProps,
@@ -202,6 +202,9 @@ export { SettingItem } from './components/setting-item'
 export { SectionLabel } from './components/section-label'
 export { AlertBanner } from './components/alert-banner'
 export { ErrorBoundary } from './components/error-boundary'
+export { OrbitAnimation, type OrbitAnimationProps } from './components/orbit-animation'
+export { MobileHeroAnimation, type MobileHeroAnimationProps } from './components/mobile-hero-animation'
+export { KaleidoScopeHeroAnimation, type KaleidoScopeHeroAnimationProps } from './components/kaleidoscope-hero-animation'
 export {
   NETWORK_CONFIG,
   InvoiceStatusBanner,
