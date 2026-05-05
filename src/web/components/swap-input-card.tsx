@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { Button, type ButtonProps } from '../primitives/button'
 import { Icon } from '../primitives/icon'
 import {
@@ -32,6 +33,8 @@ export interface SwapInputCardProps {
   quoteExpiresUrgent?: boolean
   warning?: string | null
   submitLabel: string
+  /** Optional leading icon for the submit CTA (e.g. a Material-Symbols glyph). */
+  submitIcon?: ReactNode
   submitVariant?: ButtonProps['variant']
   submitDisabled?: boolean
   onFromTickerChange: (ticker: string) => void
@@ -70,6 +73,7 @@ export function SwapInputCard({
   quoteExpiresUrgent = false,
   warning,
   submitLabel,
+  submitIcon,
   submitVariant = 'cta',
   submitDisabled = false,
   onFromTickerChange,
@@ -84,8 +88,28 @@ export function SwapInputCard({
     <>
       <div className="relative mb-3 flex flex-col rounded-3xl bg-white/[0.03] shadow-2xl shadow-black/40 backdrop-blur-2xl transition-all duration-300">
         <div className="p-3.5 pb-4">
-          <div className="mb-2 flex items-center justify-between">
+          <div className="mb-2 flex items-center justify-between gap-2">
             <p className="text-xs font-bold uppercase tracking-widest text-white/60">You Pay</p>
+            {/* Percentage shortcuts now sit above the amount row per spec —
+                they read more naturally as inputs that drive the amount. */}
+            <div className="flex items-center gap-1">
+              {PERCENTAGES.map((percent) => (
+                <button
+                  key={percent}
+                  type="button"
+                  disabled={percentageDisabled}
+                  onClick={() => onPercentageClick(percent)}
+                  className={cn(
+                    'rounded px-1.5 py-0.5 text-xxs font-bold transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-40',
+                    selectedPercentage === percent
+                      ? 'border-primary/50 bg-primary/20 text-primary shadow-sm'
+                      : 'bg-white/[0.03] text-muted-foreground hover:text-white',
+                  )}
+                >
+                  {percent}%
+                </button>
+              ))}
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <AssetSelector
@@ -111,7 +135,7 @@ export function SwapInputCard({
                 <button
                   type="button"
                   onClick={onToggleFromUnit}
-                  className="mt-0.5 text-right text-xs text-muted-foreground underline decoration-dotted transition-colors hover:text-primary"
+                  className="mt-0.5 text-right text-xs text-muted-foreground transition-colors hover:text-primary"
                   title="Tap to switch unit"
                 >
                   {fromUnitLabel}
@@ -125,36 +149,24 @@ export function SwapInputCard({
             <p className="text-xxs font-medium text-white/60">
               {showMaxText && maxText ? `Max: ${maxText}` : `Available: ${availableText}`}
             </p>
-            <div className="flex items-center gap-1">
-              {PERCENTAGES.map((percent) => (
-                <button
-                  key={percent}
-                  type="button"
-                  disabled={percentageDisabled}
-                  onClick={() => onPercentageClick(percent)}
-                  className={cn(
-                    'rounded px-1.5 py-0.5 text-xxs font-bold transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-40',
-                    selectedPercentage === percent
-                      ? 'border-primary/50 bg-primary/20 text-primary shadow-sm'
-                      : 'bg-white/[0.03] text-muted-foreground hover:text-white',
-                  )}
-                >
-                  {percent}%
-                </button>
-              ))}
-            </div>
           </div>
         </div>
 
         <div className="relative mx-6 flex h-px items-center justify-center bg-white/[0.08]">
-          <button
-            type="button"
-            onClick={onFlip}
-            title="Flip assets"
-            className="absolute flex h-11 w-11 items-center justify-center rounded-full bg-card text-primary shadow-lg shadow-black/35 transition-all duration-500 hover:rotate-180 hover:bg-accent active:scale-95 active:shadow-none"
-          >
-            <Icon name="swap_vert" size="md" />
-          </button>
+          {/* The flip button rotates 180° on hover; previously it carried a
+              directional `shadow-lg shadow-black/35` that visibly slid as the
+              button rotated. Wrap the button in a non-rotating shadow host
+              and rotate only the inner glyph so the shadow stays put. */}
+          <span className="absolute flex h-11 w-11 items-center justify-center rounded-full bg-card shadow-lg shadow-black/35">
+            <button
+              type="button"
+              onClick={onFlip}
+              title="Flip assets"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-card text-primary transition-transform duration-500 hover:rotate-180 hover:bg-accent active:scale-95"
+            >
+              <Icon name="swap_vert" size="md" />
+            </button>
+          </span>
         </div>
 
         <div className="rounded-b-3xl bg-gradient-to-br from-white/[0.01] to-primary/[0.04] p-3.5 pt-4 transition-all duration-300">
@@ -240,7 +252,10 @@ export function SwapInputCard({
         onClick={onSubmit}
         disabled={submitDisabled}
       >
-        {submitLabel}
+        <span className="inline-flex items-center justify-center gap-2">
+          {submitIcon}
+          <span>{submitLabel}</span>
+        </span>
       </Button>
     </>
   )

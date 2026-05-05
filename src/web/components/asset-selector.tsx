@@ -99,11 +99,16 @@ export function AssetSelector({
                     </p>
                   </div>
                   {selected && (
-                    <div className="flex items-center gap-2 rounded-full border border-primary/15 bg-primary/10 px-2.5 py-1">
+                    /* Network-coloured chip — uses the existing NetworkBadge
+                       so the asset's network color carries through (matches
+                       the showcase / wallet main page styling). When the
+                       asset has no network we fall back to a neutral pill. */
+                    <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-2.5 py-1">
                       <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={18} />
-                      <span className="text-tiny font-semibold text-primary">
-                        {selected.ticker}
-                      </span>
+                      <span className="text-tiny font-semibold text-white">{selected.ticker}</span>
+                      {selected.network && (
+                        <NetworkBadge network={selected.network} showLabel className="py-[1px]" />
+                      )}
                     </div>
                   )}
                 </div>
@@ -122,7 +127,9 @@ export function AssetSelector({
                     value={search}
                     onChange={(event) => setSearch(event.target.value)}
                     placeholder="Search..."
-                    className="h-11 w-full rounded-2xl border bg-black/20 pl-10 pr-3 text-sm text-white placeholder:text-white/25 focus:border-primary/50 focus:outline-none"
+                    /* No idle border per spec — only show one when focused
+                       so the search reads as a soft pill in its rest state. */
+                    className="h-11 w-full rounded-2xl border border-transparent bg-black/20 pl-10 pr-3 text-sm text-white placeholder:text-white/25 focus:border-primary/50 focus:outline-none"
                   />
                 </div>
                 {hasCategoryFilters && (
@@ -155,7 +162,9 @@ export function AssetSelector({
                 )}
               </div>
 
-              <ScrollArea className="min-h-0" viewportClassName="px-2 py-2">
+              {/* `pb-6` adds breathing room below the last asset card so it
+                  doesn't sit flush against the modal's bottom edge. */}
+              <ScrollArea className="min-h-0" viewportClassName="px-2 py-2 pb-6">
                 {filtered.length === 0 ? (
                   <div className="flex flex-col items-center gap-2 px-4 py-10 text-center text-sm text-white/30">
                     <Icon name="search" size="md" className="opacity-40" />
