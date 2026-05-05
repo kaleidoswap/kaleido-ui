@@ -1,5 +1,6 @@
 import { cn } from '../utils/cn'
 import { Icon } from '../primitives/icon'
+import type { IconName } from '../primitives/icon'
 import type { ReactNode } from 'react'
 
 const variantStyles = {
@@ -11,7 +12,7 @@ const variantStyles = {
 
 interface AlertBannerProps {
   variant?: keyof typeof variantStyles
-  icon?: string
+  icon?: IconName
   children: ReactNode
   className?: string
 }

@@ -1,7 +1,7 @@
 import { cn } from '../utils/cn'
 import type { ReactNode } from 'react'
 
-export type NetworkType = 'L1' | 'LN' | 'RGB20' | 'RGB21' | 'RGB-L1' | 'RGB-LN' | 'Spark' | 'Arkade'
+export type NetworkType = 'L1' | 'LN' | 'RGB20' | 'RGB21' | 'RGB-L1' | 'RGB-LN' | 'Spark' | 'Arkade' | 'Bitcoin' | 'Liquid' | 'Taproot'
 
 export interface NetworkBadgeProps {
   network: NetworkType
@@ -21,9 +21,8 @@ export interface NetworkBadgeProps {
 const networkConfig: Record<
   NetworkType,
   {
-    color: string
-    bg: string
-    iconBg: string
+    chipVar: string
+    textVar: string
     border: string
     label: string
     iconSuffix: string
@@ -31,68 +30,81 @@ const networkConfig: Record<
   }
 > = {
   L1: {
-    color: 'text-network-bitcoin-text',
-    bg: 'bg-network-bitcoin-chip',
-    iconBg: 'bg-network-bitcoin-chip',
+    chipVar: '--color-network-bitcoin-chip',
+    textVar: '--color-network-bitcoin-text',
     border: 'border-network-bitcoin/20',
     label: 'L1',
     iconSuffix: 'bitcoin/bitcoin-logo.svg',
   },
   LN: {
-    color: 'text-network-lightning-text',
-    bg: 'bg-network-lightning-chip',
-    iconBg: 'bg-network-lightning-chip',
+    chipVar: '--color-network-lightning-chip',
+    textVar: '--color-network-lightning-text',
     border: 'border-network-lightning/20',
     label: 'LN',
     iconSuffix: 'lightning/lightning.svg',
   },
   RGB20: {
-    color: 'text-network-rgb-text',
-    bg: 'bg-network-rgb-chip',
-    iconBg: 'bg-network-rgb-chip',
+    chipVar: '--color-network-rgb-chip',
+    textVar: '--color-network-rgb-text',
     border: 'border-danger/20',
     label: 'RGB',
     iconSuffix: 'rgb/rgb-logo.svg',
   },
   RGB21: {
-    color: 'text-network-rgb-text',
-    bg: 'bg-network-rgb-chip',
-    iconBg: 'bg-network-rgb-chip',
+    chipVar: '--color-network-rgb-chip',
+    textVar: '--color-network-rgb-text',
     border: 'border-danger/20',
     label: 'RGB21',
     iconSuffix: 'rgb/rgb-logo.svg',
   },
   'RGB-L1': {
-    color: 'text-network-rgb-text',
-    bg: 'bg-network-rgb-chip',
-    iconBg: 'bg-network-rgb-chip',
+    chipVar: '--color-network-rgb-chip',
+    textVar: '--color-network-rgb-text',
     border: 'border-danger/20',
     label: 'RGB L1',
     iconSuffix: 'rgb/rgb-logo.svg',
   },
   'RGB-LN': {
-    color: 'text-network-rgb-text',
-    bg: 'bg-network-rgb-chip',
-    iconBg: 'bg-network-rgb-chip',
+    chipVar: '--color-network-rgb-chip',
+    textVar: '--color-network-rgb-text',
     border: 'border-danger/20',
     label: 'RGB LN',
     iconSuffix: 'rgb/rgb-logo.svg',
   },
   Spark: {
-    color: 'text-network-spark-text',
-    bg: 'bg-network-spark-chip',
-    iconBg: 'bg-network-spark-chip',
+    chipVar: '--color-network-spark-chip',
+    textVar: '--color-network-spark-text',
     border: 'border-black/20 dark:border-white/20',
     label: 'Spark',
     iconSuffix: 'spark/Asterisk/Spark Asterisk White.svg',
   },
   Arkade: {
-    color: 'text-network-arkade-text',
-    bg: 'bg-network-arkade-chip',
-    iconBg: 'bg-network-arkade-chip',
+    chipVar: '--color-network-arkade-chip',
+    textVar: '--color-network-arkade-text',
     border: 'border-network-arkade/20',
     label: 'Arkade',
     iconSuffix: 'arkade/arkade-icon.svg',
+  },
+  Bitcoin: {
+    chipVar: '--color-network-bitcoin-chip',
+    textVar: '--color-network-bitcoin-text',
+    border: 'border-network-bitcoin/20',
+    label: 'Bitcoin',
+    iconSuffix: 'bitcoin/bitcoin-logo.svg',
+  },
+  Liquid: {
+    chipVar: '--color-network-liquid-chip',
+    textVar: '--color-network-liquid-text',
+    border: 'border-network-liquid/20',
+    label: 'Liquid',
+    iconSuffix: 'liquid/logo-liquid.svg',
+  },
+  Taproot: {
+    chipVar: '--color-network-taproot-chip',
+    textVar: '--color-network-taproot-text',
+    border: 'border-network-taproot/20',
+    label: 'Taproot',
+    iconSuffix: 'taproot-assets/tapass-logo.svg',
   },
 }
 
@@ -105,19 +117,23 @@ export function NetworkBadge({
   className,
   iconClassName,
 }: NetworkBadgeProps) {
-  const { color, bg, iconBg, label, iconSuffix, defaultIconClassName } = networkConfig[network]
+  const { chipVar, textVar, label, iconSuffix, defaultIconClassName } = networkConfig[network]
   const icon = `${iconBasePath}/${iconSuffix}`
   const shouldShowLabel = showLabel ?? false
   const content = children ?? (shouldShowLabel ? label : null)
   const chipSize = size === 'sm' ? 'size-6' : 'size-8'
   const imageSize = size === 'sm' ? 'size-3.5' : 'size-icon-lg'
+  const chipStyle = {
+    backgroundColor: `var(${chipVar})`,
+    color: `var(${textVar})`,
+  }
 
   // L1 (on-chain Bitcoin) uses a generic chain glyph rather than the BTC logo —
   // the BTC logo is reserved for the asset itself, not the network it lives on.
   const renderGlyph = (className: string) =>
     network === 'L1' ? (
       <span
-        className={cn('material-symbols-outlined leading-none', color, className)}
+        className={cn('material-symbols-outlined leading-none', className)}
         style={{ fontSize: size === 'sm' ? 12 : 16 }}
         aria-hidden
       >
@@ -137,9 +153,9 @@ export function NetworkBadge({
         className={cn(
           'flex items-center justify-center rounded-full shadow-inner',
           chipSize,
-          iconBg,
           className,
         )}
+        style={chipStyle}
       >
         {renderGlyph(imageSize)}
       </span>
@@ -151,10 +167,9 @@ export function NetworkBadge({
       className={cn(
         'flex w-max items-center justify-center gap-1 rounded-full font-bold shadow-inner',
         size === 'sm' ? 'px-2 py-1 text-xxs' : 'px-2.5 py-1 text-xs',
-        bg,
-        color,
         className
       )}
+      style={chipStyle}
     >
       {renderGlyph(size === 'sm' ? 'size-3' : 'size-3.5')}
       {content}
