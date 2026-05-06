@@ -51,14 +51,9 @@ export function getAccountNetworkUi(network: AccountSettingsNetwork) {
 export function AccountHeaderIcons({ accountId }: { accountId: AccountSettingsProtocol }) {
   if (accountId === 'RGB') {
     return (
-      <div className="flex -space-x-1">
-        <span className="flex size-10 items-center justify-center rounded-full bg-network-bitcoin/15 shadow-inner">
-          <img src="/icons/lightning/lightning.svg" alt="Lightning" className="size-5 object-contain" />
-        </span>
-        <span className="flex size-10 items-center justify-center rounded-full bg-primary/15 shadow-inner">
-          <img src="/icons/rgb/rgb-logo.svg" alt="RGB" className="size-5 object-contain" />
-        </span>
-      </div>
+      <span className="flex size-10 items-center justify-center rounded-full bg-primary/15 shadow-inner">
+        <img src="/icons/rgb/rgb-logo.svg" alt="RGB" className="size-5 object-contain" />
+      </span>
     )
   }
 
