@@ -24,7 +24,6 @@ export function Icon({ name, filled = false, size, className, ...props }: IconPr
   const SvgComponent = (filled ? filledMap[name] : undefined) ?? outlinedMap[name]
   if (!SvgComponent) return null
   return (
-<<<<<<< HEAD
     <SvgComponent
       width="1em"
       height="1em"
