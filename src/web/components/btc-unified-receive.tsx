@@ -101,7 +101,7 @@ export function BtcUnifiedReceive({
           type="text"
           value={amount}
           onChange={handleAmountChange}
-          placeholder="Any amount (amountless)"
+          placeholder="Any amount"
           className="w-full rounded-lg border bg-white/5 px-3 py-1.5 font-mono text-xs font-bold text-white transition-all placeholder:text-white/25 focus:border-primary/40 focus:outline-none"
           inputMode="decimal"
         />
