@@ -56,6 +56,14 @@ export interface BtcUnifiedReceiveProps {
   setInvoiceStatus: (value: string | null) => void
   setAccountReceiveResult: (result: null) => void
   handleDone: () => void
+  /**
+   * Show the "New Address" regenerate button below the QR. Defaults to true
+   * for backwards compatibility. Set to false on flows where regenerating an
+   * address is not meaningful (e.g. RGB on-chain receive — the addresses
+   * are derived from the active RGB invoice and starting over from this
+   * button leads to a half-initialised state).
+   */
+  showRegenerate?: boolean
 }
 
 export function BtcUnifiedReceive({
@@ -75,6 +83,7 @@ export function BtcUnifiedReceive({
   setInvoiceStatus,
   setAccountReceiveResult,
   handleDone,
+  showRegenerate = true,
 }: BtcUnifiedReceiveProps) {
   const accountNetwork =
     btcSelectedAccount === 'SPARK' ? 'spark' : btcSelectedAccount === 'ARKADE' ? 'arkade' : 'onchain'
@@ -197,20 +206,22 @@ export function BtcUnifiedReceive({
       />
 
       <div className="flex gap-2.5 pt-1">
-        <button
-          type="button"
-          onClick={() => {
-            setAddress('')
-            setAmount('')
-            setInvoiceStatus(null)
-            setAccountReceiveResult(null)
-          }}
-          className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border py-3 text-xs font-bold text-muted-foreground transition-all hover:border-border hover:bg-accent hover:text-white active:scale-[0.98]"
-        >
-          <span className="material-symbols-outlined text-icon-sm">refresh</span>
-          New Address
-        </button>
-        <Button variant="cta" onClick={handleDone}>
+        {showRegenerate && (
+          <button
+            type="button"
+            onClick={() => {
+              setAddress('')
+              setAmount('')
+              setInvoiceStatus(null)
+              setAccountReceiveResult(null)
+            }}
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border py-3 text-xs font-bold text-muted-foreground transition-all hover:border-border hover:bg-accent hover:text-white active:scale-[0.98]"
+          >
+            <span className="material-symbols-outlined text-icon-sm">refresh</span>
+            New Address
+          </button>
+        )}
+        <Button variant="cta" onClick={handleDone} className={showRegenerate ? undefined : 'flex-1'}>
           <span className="material-symbols-outlined text-icon-sm">check</span>
           Done
         </Button>
