@@ -29,6 +29,17 @@ export interface DepositGenerationController {
   recipientId: string
   loading: boolean
   depositDetected: boolean
+  /**
+   * Which network the deposit actually arrived on. Optional and may be
+   * `null` until detection fires; consumers fall back to the currently
+   * selected `network` prop.
+   *
+   * Distinct from `network` because users can have multiple addresses
+   * displayed at once (e.g. BTC unified receive shows on-chain + Lightning),
+   * and we want the success screen to reflect the path the funds actually
+   * took, not the toggle they last touched.
+   */
+  detectedNetwork?: DepositNetworkKey | null
   invoiceStatus: string | null
   isInvoicePending: boolean
   isInvoicePaid: boolean
