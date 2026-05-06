@@ -34,7 +34,10 @@ export interface DepositGenerationController {
   isInvoicePaid: boolean
   isInvoiceFailedOrExpired: boolean
   accountReceiveResult: BtcUnifiedReceiveResult | null
-  copied: boolean
+  /** Last-copied value (or null). Per-row matching prevents the "Copied"
+      affordance from appearing on every address row when only one was
+      clicked. */
+  copied: string | null
   handleAmountChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   generateInvoice: () => Promise<void>
   copyToClipboard: (text: string) => Promise<void>

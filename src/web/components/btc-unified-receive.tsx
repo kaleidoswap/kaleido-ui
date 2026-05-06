@@ -49,7 +49,13 @@ export interface BtcUnifiedReceiveProps {
   amount: string
   handleAmountChange: (event: ChangeEvent<HTMLInputElement>) => void
   loading: boolean
-  copied: boolean
+  /**
+   * Identifier of the most recently copied value (the address/invoice text),
+   * or null when nothing was copied recently. Each row compares against its
+   * own value so the "Copied" affordance only highlights the row the user
+   * actually clicked.
+   */
+  copied: string | null
   copyToClipboard: (text: string) => Promise<void>
   setAddress: (value: string) => void
   setAmount: (value: string) => void
@@ -126,22 +132,27 @@ export function BtcUnifiedReceive({
           <QrCode value={accountReceiveResult.qrValue} size={200} />
           {isInvoicePaid && <PaidOverlay />}
         </div>
-        <button
-          type="button"
-          className={cn(
-            'flex items-center gap-1 rounded-full border px-2.5 py-1 text-xxs font-bold uppercase tracking-widest transition-all',
-            copied
-              ? 'border-primary/30 bg-primary/10 text-primary'
-              : 'border-border bg-white/5 text-muted-foreground hover:border-white/20 hover:bg-accent hover:text-white'
-          )}
-          onClick={(event) => {
-            event.stopPropagation()
-            void copyToClipboard(accountReceiveResult.qrValue)
-          }}
-        >
-          <Icon name={copied ? 'check' : 'content_copy'} size="xs" />
-          {copied ? 'Copied' : `Copy ${accountReceiveResult.qrLabel}`}
-        </button>
+        {(() => {
+          const isQrCopied = copied === accountReceiveResult.qrValue
+          return (
+            <button
+              type="button"
+              className={cn(
+                'flex items-center gap-1 rounded-full border px-2.5 py-1 text-xxs font-bold uppercase tracking-widest transition-all',
+                isQrCopied
+                  ? 'border-primary/30 bg-primary/10 text-primary'
+                  : 'border-border bg-white/5 text-muted-foreground hover:border-white/20 hover:bg-accent hover:text-white'
+              )}
+              onClick={(event) => {
+                event.stopPropagation()
+                void copyToClipboard(accountReceiveResult.qrValue)
+              }}
+            >
+              <Icon name={isQrCopied ? 'check' : 'content_copy'} size="xs" />
+              {isQrCopied ? 'Copied' : `Copy ${accountReceiveResult.qrLabel}`}
+            </button>
+          )
+        })()}
       </div>
 
       {invoiceStatus && (
@@ -193,7 +204,7 @@ export function BtcUnifiedReceive({
                     : address.value}
                 </p>
               </div>
-              <CopyIcon copied={copied} />
+              <CopyIcon copied={copied === address.value} />
             </div>
           )
         })}

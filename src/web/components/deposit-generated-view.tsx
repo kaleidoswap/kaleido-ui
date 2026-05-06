@@ -31,7 +31,13 @@ export interface DepositGeneratedViewProps {
   amount: string
   handleAmountChange: (event: ChangeEvent<HTMLInputElement>) => void
   loading: boolean
-  copied: boolean
+  /**
+   * Identifier of the most recently copied value (the address/invoice text),
+   * or null when nothing was copied recently. Each row compares against its
+   * own value so the "Copied" affordance only highlights the row the user
+   * actually clicked.
+   */
+  copied: string | null
   copyToClipboard: (text: string) => Promise<void>
   getUnitLabel: () => string
   selectedAsset: DepositGeneratedAsset | null
@@ -210,22 +216,31 @@ export function DepositGeneratedView({
           )}
         </div>
 
-        <button
-          type="button"
-          className={cn(
-            'flex items-center gap-1 rounded-full border px-2.5 py-1 text-xxs font-bold uppercase tracking-widest transition-all',
-            copied
-              ? 'border-primary/30 bg-primary/10 text-primary'
-              : 'border-border bg-white/5 text-muted-foreground hover:border-white/20 hover:bg-accent hover:text-white'
-          )}
-          onClick={(event) => {
-            event.stopPropagation()
-            void copyToClipboard(address)
-          }}
-        >
-          <Icon name={copied ? 'check' : 'content_copy'} size="xs" />
-          {copied ? 'Copied' : network === 'lightning' ? 'Copy Invoice' : 'Copy Address'}
-        </button>
+        {(() => {
+          const isAddressCopied = copied === address
+          return (
+            <button
+              type="button"
+              className={cn(
+                'flex items-center gap-1 rounded-full border px-2.5 py-1 text-xxs font-bold uppercase tracking-widest transition-all',
+                isAddressCopied
+                  ? 'border-primary/30 bg-primary/10 text-primary'
+                  : 'border-border bg-white/5 text-muted-foreground hover:border-white/20 hover:bg-accent hover:text-white'
+              )}
+              onClick={(event) => {
+                event.stopPropagation()
+                void copyToClipboard(address)
+              }}
+            >
+              <Icon name={isAddressCopied ? 'check' : 'content_copy'} size="xs" />
+              {isAddressCopied
+                ? 'Copied'
+                : network === 'lightning'
+                  ? 'Copy Invoice'
+                  : 'Copy Address'}
+            </button>
+          )
+        })()}
       </div>
 
       {network === 'lightning' && invoiceStatus && (
@@ -259,7 +274,7 @@ export function DepositGeneratedView({
             {address.length > 50 ? `${address.slice(0, 18)}...${address.slice(-14)}` : address}
           </p>
         </div>
-        <CopyIcon copied={copied} />
+        <CopyIcon copied={copied === address} />
       </div>
 
       {recipientId && (
@@ -284,7 +299,7 @@ export function DepositGeneratedView({
                 : recipientId}
             </p>
           </div>
-          <CopyIcon copied={copied} />
+          <CopyIcon copied={copied === recipientId} />
         </div>
       )}
 
