@@ -41,6 +41,7 @@ export interface DepositGeneratedViewProps {
   setAmount: (value: string) => void
   setInvoiceStatus: (value: string | null) => void
   showQrNetworkBadge?: boolean
+  showRegenerate?: boolean
   /**
    * @deprecated Done button removed in v0.1.8 per the v1.0.0 wallet redesign;
    * users navigate away via the standard back button. Prop kept for source
@@ -95,6 +96,7 @@ export function DepositGeneratedView({
   setAmount,
   setInvoiceStatus,
   showQrNetworkBadge = true,
+  showRegenerate = true,
   onRegenerate,
 }: DepositGeneratedViewProps) {
   return (
@@ -281,36 +283,38 @@ export function DepositGeneratedView({
         </div>
       )}
 
-      <div className="flex justify-center pt-1">
-        <button
-          type="button"
-          aria-label={`New ${network === 'lightning' ? 'invoice' : 'address'}`}
-          title={`New ${network === 'lightning' ? 'invoice' : 'address'}`}
-          disabled={loading}
-          onClick={() => {
-            if (onRegenerate) {
-              // Keep the existing QR visible (we render a loading overlay on
-              // top via `loading`) until the new value arrives. Avoids a
-              // flash back to the pre-generation step.
-              void onRegenerate()
-              return
-            }
-            // Legacy callers without onRegenerate fall back to clearing
-            // local state and relying on the parent's auto-regen effect.
-            setAddress('')
-            setRecipientId('')
-            setAmount('')
-            setInvoiceStatus(null)
-          }}
-          className="flex size-10 items-center justify-center rounded-full bg-primary/15 text-primary transition-all hover:bg-primary/25 active:scale-[0.98] disabled:opacity-50"
-        >
-          <span
-            className={cn('material-symbols-outlined text-icon-md', loading && 'animate-spin')}
+      {showRegenerate && (
+        <div className="flex justify-center pt-1">
+          <button
+            type="button"
+            aria-label={`New ${network === 'lightning' ? 'invoice' : 'address'}`}
+            title={`New ${network === 'lightning' ? 'invoice' : 'address'}`}
+            disabled={loading}
+            onClick={() => {
+              if (onRegenerate) {
+                // Keep the existing QR visible (we render a loading overlay on
+                // top via `loading`) until the new value arrives. Avoids a
+                // flash back to the pre-generation step.
+                void onRegenerate()
+                return
+              }
+              // Legacy callers without onRegenerate fall back to clearing
+              // local state and relying on the parent's auto-regen effect.
+              setAddress('')
+              setRecipientId('')
+              setAmount('')
+              setInvoiceStatus(null)
+            }}
+            className="flex size-10 items-center justify-center rounded-full bg-primary/15 text-primary transition-all hover:bg-primary/25 active:scale-[0.98] disabled:opacity-50"
           >
-            refresh
-          </span>
-        </button>
-      </div>
+            <span
+              className={cn('material-symbols-outlined text-icon-md', loading && 'animate-spin')}
+            >
+              refresh
+            </span>
+          </button>
+        </div>
+      )}
     </div>
   )
 }

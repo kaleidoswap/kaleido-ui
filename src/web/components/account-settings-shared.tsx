@@ -395,6 +395,9 @@ export function AccountSettingsRow({
   network,
   description,
   onClick,
+  hideNetworkChip = false,
+  accent = false,
+  beta = false,
 }: {
   accountId: AccountSettingsProtocol
   title: string
@@ -402,24 +405,39 @@ export function AccountSettingsRow({
   network: AccountSettingsNetwork
   description: string
   onClick: () => void
+  hideNetworkChip?: boolean
+  accent?: boolean
+  beta?: boolean
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="w-full rounded-3xl bg-white/[0.03] p-4 text-left shadow-inner transition-colors hover:bg-white/[0.05]"
+      className={cn(
+        'w-full rounded-3xl p-4 text-left shadow-inner transition-colors',
+        accent
+          ? 'border border-primary/15 bg-primary/[0.06] hover:bg-primary/[0.09]'
+          : 'bg-white/[0.03] hover:bg-white/[0.05]'
+      )}
     >
       <div className="flex items-start gap-3">
         <AccountHeaderIcons accountId={accountId} />
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-sm font-bold text-white">{title}</p>
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="text-sm font-bold text-white">{title}</p>
+                {beta && (
+                  <span className="rounded-full border border-warning/25 bg-warning/10 px-2 py-0.5 text-xxs font-bold uppercase tracking-wider text-warning">
+                    Beta
+                  </span>
+                )}
+              </div>
               <p className="mt-1 text-xs text-muted-foreground">{description}</p>
             </div>
             <Icon name="chevron_right" size="sm" className="text-white/40" />
           </div>
-          <div className="mt-3">
+          <div className={cn('mt-3', hideNetworkChip && '[&>span:last-child]:hidden')}>
             <AccountStatusPills status={status} network={network} />
           </div>
         </div>

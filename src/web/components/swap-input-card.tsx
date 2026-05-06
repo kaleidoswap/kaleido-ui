@@ -1,4 +1,5 @@
 import { Button, type ButtonProps } from '../primitives/button'
+import type { ReactNode } from 'react'
 import { Icon } from '../primitives/icon'
 import {
   AssetSelector,
@@ -27,11 +28,14 @@ export interface SwapInputCardProps {
   isLoadingQuote?: boolean
   quoteError?: string | null
   quoteRateText?: string | null
+  quoteVenueText?: string | null
+  quoteVenueTone?: 'primary' | 'spark' | 'muted'
   quoteFeeText?: string | null
   quoteExpiresText?: string | null
   quoteExpiresUrgent?: boolean
   warning?: string | null
   submitLabel: string
+  submitIcon?: ReactNode
   submitVariant?: ButtonProps['variant']
   submitDisabled?: boolean
   onFromTickerChange: (ticker: string) => void
@@ -65,11 +69,14 @@ export function SwapInputCard({
   isLoadingQuote = false,
   quoteError,
   quoteRateText,
+  quoteVenueText,
+  quoteVenueTone = 'primary',
   quoteFeeText,
   quoteExpiresText,
   quoteExpiresUrgent = false,
   warning,
   submitLabel,
+  submitIcon,
   submitVariant = 'cta',
   submitDisabled = false,
   onFromTickerChange,
@@ -188,7 +195,7 @@ export function SwapInputCard({
         </div>
       </div>
 
-      {(quoteError || quoteRateText || quoteFeeText || quoteExpiresText) && (
+      {(quoteError || quoteRateText || quoteVenueText || quoteFeeText || quoteExpiresText) && (
         <div className="rounded-xl bg-card/60 p-3">
           {quoteError ? (
             <p className="text-center text-xs text-danger">{quoteError}</p>
@@ -198,6 +205,23 @@ export function SwapInputCard({
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-white/40">Rate</span>
                   <span className="font-medium text-white/65">{quoteRateText}</span>
+                </div>
+              )}
+              {quoteVenueText && (
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-white/40">Venue</span>
+                  <span
+                    className={cn(
+                      'font-medium',
+                      quoteVenueTone === 'spark'
+                        ? 'text-info'
+                        : quoteVenueTone === 'muted'
+                          ? 'text-white/45'
+                          : 'text-primary'
+                    )}
+                  >
+                    {quoteVenueText}
+                  </span>
                 </div>
               )}
               {(quoteFeeText || quoteExpiresText) && (
@@ -240,6 +264,7 @@ export function SwapInputCard({
         onClick={onSubmit}
         disabled={submitDisabled}
       >
+        {submitIcon}
         {submitLabel}
       </Button>
     </>
