@@ -1,12 +1,15 @@
 import type { ReactNode } from 'react'
 import { Icon } from '../primitives/icon'
+import type { IconName } from '../primitives/icon'
 import { cn } from '../utils/cn'
 
 export interface BottomNavItem<TValue extends string = string> {
   id: TValue
   label: string
+  /** Static icon node — used when iconName is not provided */
   icon?: ReactNode
-  iconName?: string
+  /** Icon name from the SVG icon set — enables filled/outlined animation on selection */
+  iconName?: IconName
   testId?: string
 }
 
@@ -51,7 +54,27 @@ export function BottomNav<TValue extends string = string>({
                   : 'text-muted-foreground hover:text-white/75 active:scale-95'
               )}
             >
-              {icon ?? (iconName ? <Icon name={iconName} className="text-icon-xl" /> : null)}
+              {iconName ? (
+                <div className="relative size-icon-nav">
+                  <Icon
+                    name={iconName}
+                    className={cn(
+                      'absolute inset-0 size-icon-nav transition-all duration-300',
+                      isActive ? 'opacity-0 scale-75' : 'opacity-100 scale-100'
+                    )}
+                  />
+                  <Icon
+                    name={iconName}
+                    filled
+                    className={cn(
+                      'absolute inset-0 size-icon-nav transition-all duration-300',
+                      isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+                    )}
+                  />
+                </div>
+              ) : (
+                icon ?? null
+              )}
               <span className="mt-0.5 text-xxs font-semibold transition-colors duration-300">
                 {label}
               </span>

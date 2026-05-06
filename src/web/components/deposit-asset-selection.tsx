@@ -3,7 +3,6 @@ import { Button } from '../primitives/button'
 import { DotPagination } from '../primitives/dot-pagination'
 import { Icon } from '../primitives/icon'
 import { AssetIcon } from './asset-icon'
-import { PageHeader } from './page-header'
 import { ScrollArea } from './scroll-area'
 import { cn } from '../utils/cn'
 import type { DepositAccountId } from './deposit-ui-shared'
@@ -124,8 +123,18 @@ export function DepositAssetSelection<TView extends string = string>({
   ].filter((option) => option.enabled)
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-background font-display text-foreground">
-      <PageHeader title="Deposit" onBack={() => setCurrentView('dashboard' as TView)} />
+    <div className="relative flex h-screen flex-col overflow-hidden bg-background pt-16 font-display text-foreground">
+      <div className="absolute left-4 top-4 z-30">
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-xl"
+          onClick={() => setCurrentView('dashboard' as TView)}
+          aria-label="Go back"
+        >
+          <Icon name="arrow_back" size="xl" />
+        </Button>
+      </div>
 
       <div className="flex-shrink-0 px-5 pb-3 pt-4">
         <DotPagination

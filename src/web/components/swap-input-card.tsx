@@ -28,16 +28,15 @@ export interface SwapInputCardProps {
   isLoadingQuote?: boolean
   quoteError?: string | null
   quoteRateText?: string | null
-  quoteFeeText?: string | null
-  quoteExpiresText?: string | null
-  quoteExpiresUrgent?: boolean
   /** Routing venue label shown next to the rate row (e.g. "KaleidoSwap"). */
   quoteVenueText?: string | null
   /** Tone of the venue dot — primary for KaleidoSwap, info/spark for Flashnet. */
   quoteVenueTone?: 'primary' | 'spark' | 'info'
+  quoteFeeText?: string | null
+  quoteExpiresText?: string | null
+  quoteExpiresUrgent?: boolean
   warning?: string | null
   submitLabel: string
-  /** Optional leading icon for the submit CTA (e.g. a Material-Symbols glyph). */
   submitIcon?: ReactNode
   submitVariant?: ButtonProps['variant']
   submitDisabled?: boolean
@@ -72,11 +71,11 @@ export function SwapInputCard({
   isLoadingQuote = false,
   quoteError,
   quoteRateText,
+  quoteVenueText,
+  quoteVenueTone = 'primary',
   quoteFeeText,
   quoteExpiresText,
   quoteExpiresUrgent = false,
-  quoteVenueText,
-  quoteVenueTone = 'primary',
   warning,
   submitLabel,
   submitIcon,
@@ -206,7 +205,7 @@ export function SwapInputCard({
         </div>
       </div>
 
-      {(quoteError || quoteRateText || quoteFeeText || quoteExpiresText || quoteVenueText) && (
+      {(quoteError || quoteRateText || quoteVenueText || quoteFeeText || quoteExpiresText) && (
         <div className="rounded-xl bg-card/60 p-3">
           {quoteError ? (
             <p className="text-center text-xs text-danger">{quoteError}</p>

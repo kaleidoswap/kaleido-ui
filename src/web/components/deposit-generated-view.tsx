@@ -101,8 +101,8 @@ export function DepositGeneratedView({
   setAmount,
   setInvoiceStatus,
   showQrNetworkBadge = true,
-  onRegenerate,
   showRegenerate = true,
+  onRegenerate,
 }: DepositGeneratedViewProps) {
   return (
     <div className="space-y-3 animate-in fade-in zoom-in-95 duration-300">
