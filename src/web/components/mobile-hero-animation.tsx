@@ -8,7 +8,7 @@ export interface MobileHeroAnimationProps {
 }
 
 const PROTOCOLS: Array<{ name: string; network: NetworkType }> = [
-  { name: 'Bitcoin L1',     network: 'L1'      },
+  { name: 'Bitcoin',        network: 'Bitcoin' },
   { name: 'Lightning',      network: 'LN'      },
   { name: 'RGB',            network: 'RGB20'   },
   { name: 'Spark',          network: 'Spark'   },
@@ -24,7 +24,7 @@ const BADGE_HALF = BADGE_SIZE / 2
 const N = PROTOCOLS.length
 
 const PROTOCOL_COLORS: Record<string, string> = {
-  L1:      '#F7931A',
+  Bitcoin: '#F7931A',
   LN:      '#fbbf24',
   RGB20:   '#EF4444',
   Spark:   '#FFFFFF',

@@ -46,6 +46,8 @@ export interface BalanceBreakdownProps {
   onRefresh?: () => void
   isRefreshing?: boolean
   onNavigate?: (view: 'deposit' | 'swap' | 'withdraw') => void
+  /** Reduce vertical padding/margins so the card occupies less of the viewport. */
+  compact?: boolean
 }
 
 function OnchainIcon({ className = '' }: { className?: string }) {
@@ -99,13 +101,16 @@ export function BalanceBreakdown({
   onRefresh,
   isRefreshing = false,
   onNavigate,
+  compact = false,
 }: BalanceBreakdownProps) {
   const [expanded, setExpanded] = useState(false)
   const fiatTotal = formatFiatValue(totalBTC)
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="relative overflow-hidden rounded-3xl bg-card p-5">
+    <div className={`flex flex-col ${compact ? 'gap-2' : 'gap-3'}`}>
+      <div
+        className={`relative overflow-hidden rounded-3xl bg-card ${compact ? 'p-3.5' : 'p-5'}`}
+      >
         <div className="pointer-events-none absolute right-0 top-0 h-48 w-48 -translate-y-1/4 translate-x-1/4 rounded-full bg-white/[0.04] blur-[60px]" />
 
         <div className="relative z-10 flex items-start justify-between gap-3">
@@ -185,7 +190,9 @@ export function BalanceBreakdown({
         </div>
 
         {expanded && (
-          <div className="mt-4 space-y-1 border-t border-white/[0.08] pt-4 duration-300 animate-in fade-in slide-in-from-top-2">
+          <div
+            className={`space-y-1 border-t border-white/[0.08] duration-300 animate-in fade-in slide-in-from-top-2 ${compact ? 'mt-3 pt-3' : 'mt-4 pt-4'}`}
+          >
             <p className="mb-3 text-xxs font-bold uppercase tracking-widest text-white/30">
               Bitcoin
             </p>
@@ -278,7 +285,9 @@ export function BalanceBreakdown({
           </div>
         )}
 
-        <div className="relative z-10 mt-3 flex gap-2.5 border-t border-white/[0.08] pt-3">
+        <div
+          className={`relative z-10 flex gap-2.5 border-t border-white/[0.08] ${compact ? 'mt-2 pt-2' : 'mt-3 pt-3'}`}
+        >
           <ActionTile
             icon={<span className="material-symbols-outlined text-icon-lg leading-none">call_received</span>}
             label="Deposit"

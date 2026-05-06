@@ -17,6 +17,16 @@ export interface FilterDropdownProps {
   onChange: (id: string) => void
   clusterMax?: number
   className?: string
+  /**
+   * Tighten paddings and shrink the label so more cluster icons fit
+   * horizontally. Useful on narrow popups.
+   */
+  compact?: boolean
+  /**
+   * Hide the label text entirely (kept available via `aria-label`). Combine
+   * with `compact` for the densest variant.
+   */
+  hideLabel?: boolean
 }
 
 export function FilterDropdown({
@@ -26,6 +36,8 @@ export function FilterDropdown({
   onChange,
   clusterMax = 3,
   className,
+  compact = false,
+  hideLabel = false,
 }: FilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
   const selected = options.find((option) => option.id === value) ?? options[0]
@@ -39,21 +51,26 @@ export function FilterDropdown({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
+        aria-label={hideLabel ? label : undefined}
         className={cn(
-          'flex w-full items-center justify-between gap-1.5 rounded-2xl px-2.5 py-2 leading-none outline-none transition-all',
+          'flex w-full items-center justify-between rounded-2xl leading-none outline-none transition-all',
+          compact ? 'gap-1 px-2 py-1.5' : 'gap-1.5 px-2.5 py-2',
           isFiltered
             ? 'bg-white/[0.13] shadow-inner'
             : 'bg-white/[0.09] backdrop-blur-md hover:bg-white/[0.13]'
         )}
       >
-        <span
-          className={cn(
-            'shrink-0 text-mini font-bold uppercase tracking-wider',
-            isFiltered ? 'text-muted-foreground' : 'text-white/45'
-          )}
-        >
-          {label}
-        </span>
+        {!hideLabel && (
+          <span
+            className={cn(
+              'shrink-0 font-bold uppercase tracking-wider',
+              compact ? 'text-xxs' : 'text-mini',
+              isFiltered ? 'text-muted-foreground' : 'text-white/45'
+            )}
+          >
+            {label}
+          </span>
+        )}
 
         <div className="flex min-w-0 flex-1 items-center justify-center gap-1.5">
           {value === 'all' ? (
