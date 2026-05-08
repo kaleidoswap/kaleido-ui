@@ -1,22 +1,35 @@
 import * as React from 'react'
 import * as SelectPrimitive from '@radix-ui/react-select'
+import { Icon } from './icon'
 import { cn } from '../utils/cn'
 
 const Select = SelectPrimitive.Root
 const SelectGroup = SelectPrimitive.Group
 const SelectValue = SelectPrimitive.Value
 
+interface SelectTriggerProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> {
+  /** Compact pill style — matches the FilterDropdown button aesthetic. */
+  compact?: boolean
+}
+
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
+  SelectTriggerProps
+>(({ className, children, compact = false, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      'group flex w-full items-center justify-between gap-3 rounded-xl border bg-white/[0.04] px-4 py-3 text-left text-sm transition-all',
-      'hover:border-primary/30 hover:bg-white/[0.06]',
-      'focus:outline-none focus:ring-1 focus:ring-primary/50',
-      'data-[state=open]:border-primary/30',
+      'group flex items-center justify-between transition-all outline-none',
+      compact
+        ? [
+            'w-auto gap-1 rounded-2xl bg-white/[0.09] px-2 py-1.5 text-xs leading-none backdrop-blur-md',
+            'hover:bg-white/[0.13] data-[state=open]:bg-white/[0.13]',
+          ]
+        : [
+            'w-full gap-3 rounded-xl border bg-white/[0.04] px-4 py-3 text-left text-sm',
+            'hover:border-primary/30 hover:bg-white/[0.06] data-[state=open]:border-primary/30',
+          ],
+      'focus:ring-1 focus:ring-primary/50',
       'disabled:cursor-not-allowed disabled:opacity-50',
       className
     )}
@@ -24,9 +37,13 @@ const SelectTrigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <span className="material-symbols-outlined shrink-0 text-icon-lg text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180">
-        expand_more
-      </span>
+      <Icon
+        name="expand_more"
+        className={cn(
+          'shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180',
+          compact ? 'text-icon-xs text-white/40' : 'text-icon-lg text-muted-foreground',
+        )}
+      />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ))
@@ -40,7 +57,8 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        'relative z-50 min-w-[8rem] overflow-hidden rounded-2xl border border-primary/20 bg-popover/95 p-2 shadow-xl backdrop-blur',
+        'relative min-w-[8rem] overflow-hidden rounded-2xl border border-primary/20 bg-popover/95 p-2 shadow-xl backdrop-blur',
+        'z-[var(--z-popover)]',
         position === 'popper' && 'w-[var(--radix-select-trigger-width)]',
         className
       )}
@@ -92,7 +110,7 @@ const SelectItem = React.forwardRef<
       )}
     </div>
     <SelectPrimitive.ItemIndicator>
-      <span className="material-symbols-outlined text-icon-md text-primary">check</span>
+      <Icon name="check" className="text-icon-md text-primary" />
     </SelectPrimitive.ItemIndicator>
   </SelectPrimitive.Item>
 ))

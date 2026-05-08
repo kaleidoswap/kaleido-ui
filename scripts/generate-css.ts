@@ -244,6 +244,7 @@ const css = `/* AUTO-GENERATED — do not edit by hand.
 
   /* Layers */
   --z-header:    ${layer.header};
+  --z-popover:   ${layer.popover};
   --z-nav:       ${layer.nav};
   --z-scrollbar: ${layer.scrollbar};
   --z-modal:     ${layer.modal};

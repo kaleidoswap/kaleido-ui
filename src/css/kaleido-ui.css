@@ -182,6 +182,7 @@
 
   /* Layers */
   --z-header:    50;
+  --z-popover:   1000;
   --z-nav:       2147483646;
   --z-scrollbar: 2147483645;
   --z-modal:     2147483647;

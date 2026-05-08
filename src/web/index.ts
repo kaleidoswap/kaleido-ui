@@ -99,6 +99,16 @@ export {
   type FilterDropdownOption,
 } from './components/filter-dropdown'
 export {
+  InlineSelector,
+  type InlineSelectorProps,
+  type InlineSelectorOption,
+} from './components/inline-selector'
+export {
+  OptionSelector,
+  type OptionSelectorProps,
+  type OptionSelectorOption,
+} from './components/option-selector'
+export {
   SettingsTile,
   SettingsStatusPanel,
   SettingsActionButton,
