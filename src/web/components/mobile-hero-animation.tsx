@@ -259,6 +259,7 @@ export const MobileHeroAnimation: FC<MobileHeroAnimationProps> = ({
                   width: '100%',
                   height: '100%',
                   borderRadius: '50%',
+                  overflow: 'hidden',
                   background: 'rgba(255,255,255,0.05)',
                   backdropFilter: 'blur(4px)',
                   border: `1px solid ${color}55`,
