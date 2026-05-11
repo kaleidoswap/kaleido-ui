@@ -39,6 +39,8 @@ const EXEMPT_PATHS = [
   // Static SVG animation assets — raw paint values are part of the artwork.
   'src/web/components/kaleidoscope-hero-animation.tsx',
   'src/web/components/mobile-hero-animation.tsx',
+  // Bundled protocol icon SVGs/PNGs — raw paint values are part of the artwork.
+  'src/web/assets/protocol-icons.ts',
   // Generated / build artifact.
   'dist',
   // Demo/archive surfaces. Keep production library code under src token-clean.

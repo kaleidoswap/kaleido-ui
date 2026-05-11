@@ -1,5 +1,6 @@
 import { cn } from '../utils/cn'
 import type { ReactNode } from 'react'
+import { protocolIcons } from '../assets/protocol-icons'
 
 export type NetworkType = 'L1' | 'LN' | 'RGB20' | 'RGB21' | 'RGB-L1' | 'RGB-LN' | 'Spark' | 'Arkade' | 'Bitcoin' | 'Liquid' | 'Taproot'
 
@@ -110,7 +111,7 @@ const networkConfig: Record<
 
 export function NetworkBadge({
   network,
-  iconBasePath = '/icons',
+  iconBasePath,
   showLabel,
   children,
   size = 'md',
@@ -118,7 +119,7 @@ export function NetworkBadge({
   iconClassName,
 }: NetworkBadgeProps) {
   const { chipVar, textVar, label, iconSuffix, defaultIconClassName } = networkConfig[network]
-  const icon = `${iconBasePath}/${iconSuffix}`
+  const icon = iconBasePath ? `${iconBasePath}/${iconSuffix}` : (protocolIcons[network] ?? `${iconSuffix}`)
   const shouldShowLabel = showLabel ?? false
   const content = children ?? (shouldShowLabel ? label : null)
   const chipSize = size === 'sm' ? 'size-6' : size === 'lg' ? 'size-14' : 'size-8'

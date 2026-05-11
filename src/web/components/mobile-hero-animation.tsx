@@ -1,9 +1,11 @@
 import { useRef, useEffect, useState, type FC } from 'react'
 import type { NetworkType } from './network-badge'
+import { protocolIcons } from '../assets/protocol-icons'
 
 export interface MobileHeroAnimationProps {
   size?: number
   className?: string
+  /** Override icon source path. When omitted, bundled icons are used. */
   iconBasePath?: string
 }
 
@@ -49,7 +51,7 @@ const KEYFRAMES = `
 export const MobileHeroAnimation: FC<MobileHeroAnimationProps> = ({
   size = 280,
   className,
-  iconBasePath = '/icons',
+  iconBasePath,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const [reducedMotion, setReducedMotion] = useState(false)
@@ -282,7 +284,7 @@ export const MobileHeroAnimation: FC<MobileHeroAnimationProps> = ({
                   justifyContent: 'center',
                 }}>
                   <img
-                    src={`${iconBasePath}/${protocol.iconSuffix}`}
+                    src={iconBasePath ? `${iconBasePath}/${protocol.iconSuffix}` : (protocolIcons[protocol.network] ?? protocol.iconSuffix)}
                     alt={protocol.name}
                     style={{ width: 20, height: 20, objectFit: 'contain' }}
                   />
