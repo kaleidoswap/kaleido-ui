@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState, type FC } from 'react'
-import { NetworkBadge, type NetworkType } from './network-badge'
+import type { NetworkType } from './network-badge'
 
 export interface MobileHeroAnimationProps {
   size?: number
@@ -7,19 +7,19 @@ export interface MobileHeroAnimationProps {
   iconBasePath?: string
 }
 
-const PROTOCOLS: Array<{ name: string; network: NetworkType }> = [
-  { name: 'Bitcoin',        network: 'Bitcoin' },
-  { name: 'Lightning',      network: 'LN'      },
-  { name: 'RGB',            network: 'RGB20'   },
-  { name: 'Spark',          network: 'Spark'   },
-  { name: 'Arkade',         network: 'Arkade'  },
-  { name: 'Liquid',         network: 'Liquid'  },
-  { name: 'Taproot Assets', network: 'Taproot' },
+const PROTOCOLS: Array<{ name: string; network: NetworkType; iconSuffix: string }> = [
+  { name: 'Bitcoin',        network: 'Bitcoin', iconSuffix: 'bitcoin/bitcoin-logo.svg' },
+  { name: 'Lightning',      network: 'LN',      iconSuffix: 'lightning/lightning.svg' },
+  { name: 'RGB',            network: 'RGB20',   iconSuffix: 'rgb/rgb-logo.svg' },
+  { name: 'Spark',          network: 'Spark',   iconSuffix: 'spark/Asterisk/Spark Asterisk White.svg' },
+  { name: 'Arkade',         network: 'Arkade',  iconSuffix: 'arkade/arkade-icon.svg' },
+  { name: 'Liquid',         network: 'Liquid',  iconSuffix: 'liquid/logo-liquid.svg' },
+  { name: 'Taproot Assets', network: 'Taproot', iconSuffix: 'taproot-assets/tapass-logo.svg' },
 ]
 
 const C = 140
 const ORBIT_R = 118
-const BADGE_SIZE = 32  // NetworkBadge size="md" = size-8 = 32px
+const BADGE_SIZE = 40
 const BADGE_HALF = BADGE_SIZE / 2
 const N = PROTOCOLS.length
 
@@ -232,7 +232,7 @@ export const MobileHeroAnimation: FC<MobileHeroAnimationProps> = ({
           </g>
         </svg>
 
-        {/* HTML orbit layer: NetworkBadge icons */}
+        {/* HTML orbit layer: protocol icons */}
         <div style={{
           position: 'absolute', inset: 0,
           width: 280, height: 280,
@@ -242,6 +242,7 @@ export const MobileHeroAnimation: FC<MobileHeroAnimationProps> = ({
             const angle = (i / N) * 2 * Math.PI
             const x = C + Math.cos(angle) * ORBIT_R - BADGE_HALF
             const y = C + Math.sin(angle) * ORBIT_R - BADGE_HALF
+            const color = PROTOCOL_COLORS[protocol.network] ?? '#ffffff'
             return (
               <div
                 key={i}
@@ -249,10 +250,28 @@ export const MobileHeroAnimation: FC<MobileHeroAnimationProps> = ({
                   position: 'absolute',
                   left: x,
                   top: y,
+                  width: BADGE_SIZE,
+                  height: BADGE_SIZE,
                   animation: anim ? 'mha-counter-spin 20s linear infinite' : 'none',
                 }}
               >
-                <NetworkBadge network={protocol.network} iconBasePath={iconBasePath} size="md" />
+                <div style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.05)',
+                  backdropFilter: 'blur(4px)',
+                  border: `1px solid ${color}55`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <img
+                    src={`${iconBasePath}/${protocol.iconSuffix}`}
+                    alt={protocol.name}
+                    style={{ width: 20, height: 20, objectFit: 'contain' }}
+                  />
+                </div>
               </div>
             )
           })}
