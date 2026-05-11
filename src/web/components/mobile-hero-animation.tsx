@@ -148,8 +148,8 @@ export const MobileHeroAnimation: FC<MobileHeroAnimationProps> = ({
               const dy = Math.sin(angle)
               const x1 = C + dx * 28
               const y1 = C + dy * 28
-              const x2 = C + dx * ORBIT_R
-              const y2 = C + dy * ORBIT_R
+              const x2 = C + dx * (ORBIT_R - BADGE_HALF)
+              const y2 = C + dy * (ORBIT_R - BADGE_HALF)
               const color = PROTOCOL_COLORS[protocol.network] ?? '#ffffff'
               const dur = `${2 + i * 0.3}s`
               return (
@@ -198,20 +198,34 @@ export const MobileHeroAnimation: FC<MobileHeroAnimationProps> = ({
             )}
           </circle>
 
-          {/* Hexagonal border */}
-          <path d={hexPath(28)} transform={`translate(${C},${C})`}
-            fill="none" stroke="url(#mh-gp)" strokeWidth="1.5" opacity="0.4" filter="url(#mh-glow)">
-            {anim && (
-              <>
-                <animate attributeName="opacity" values="0.3;0.65;0.3" dur="3s" repeatCount="indefinite" />
-                <animate attributeName="stroke-width" values="1.5;2.5;1.5" dur="3s" repeatCount="indefinite" />
-              </>
-            )}
-          </path>
+          {/* Hexagonal border — rotates CW */}
+          <g transform={`translate(${C},${C})`}>
+            <g>
+              {anim && (
+                <animateTransform attributeName="transform" type="rotate"
+                  from="0" to="360" dur="40s" repeatCount="indefinite" additive="sum" />
+              )}
+              <path d={hexPath(34)} fill="none" stroke="url(#mh-gp)" strokeWidth="1.5" opacity="0.4" filter="url(#mh-glow)">
+                {anim && (
+                  <>
+                    <animate attributeName="opacity" values="0.3;0.65;0.3" dur="3s" repeatCount="indefinite" />
+                    <animate attributeName="stroke-width" values="1.5;2.5;1.5" dur="3s" repeatCount="indefinite" />
+                  </>
+                )}
+              </path>
+            </g>
+          </g>
 
-          {/* Inner hex fill */}
-          <path d={hexPath(26)} transform={`translate(${C},${C})`}
-            fill="rgba(10,15,30,0.75)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" />
+          {/* Inner hex fill — rotates CCW */}
+          <g transform={`translate(${C},${C})`}>
+            <g>
+              {anim && (
+                <animateTransform attributeName="transform" type="rotate"
+                  from="0" to="-360" dur="40s" repeatCount="indefinite" additive="sum" />
+              )}
+              <path d={hexPath(32)} fill="rgba(10,15,30,0.75)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" />
+            </g>
+          </g>
 
           {/* KaleidoSwap logo mark */}
           <g transform={`translate(${C - 19},${C - 19}) scale(0.182)`}>
