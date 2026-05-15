@@ -9,6 +9,11 @@
 
 // Utilities
 export { cn } from './utils/cn'
+export {
+  formatDisplayAmountText,
+  type AmountDisplayOptions,
+  type AmountDisplayUnit,
+} from './utils/amount-display'
 
 // Primitives
 export { Button, buttonVariants, type ButtonProps } from './primitives/button'

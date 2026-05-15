@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { cn } from '../utils/cn'
 import { NetworkBadge, type NetworkType } from './network-badge'
 import { AssetIcon } from './asset-icon'
+import { formatDisplayAmountText } from '../utils/amount-display'
 
 export interface AssetCardProps {
   /** Asset ticker symbol (e.g. "BTC", "USDT") */
@@ -34,6 +35,7 @@ export function AssetCard({
   className,
 }: AssetCardProps) {
   const shown = balanceVisible ? displayBalance : '••••••'
+  const displayShown = balanceVisible ? formatDisplayAmountText(displayBalance) : shown
   const [hovered, setHovered] = useState(false)
 
   const gradientStyle = accentColor
@@ -54,20 +56,21 @@ export function AssetCard({
       onMouseLeave={() => setHovered(false)}
     >
       <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-      <div className="flex items-center justify-between relative z-10">
-        <div className="flex items-center gap-3">
+      <div className="relative z-10 flex min-w-0 items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           <AssetIcon
             ticker={ticker}
             logoUri={logoUri}
             size={44}
             className="group-hover:scale-105 transition-transform"
           />
-          <div className="flex flex-col">
+          <div className="flex min-w-0 flex-col">
             <span
               className={cn(
-                'font-bold text-base leading-tight tracking-wide text-foreground',
+                'max-w-full truncate font-bold text-base leading-tight tracking-wide text-foreground',
                 onClick && 'transition-colors'
               )}
+              title={name}
             >
               {name}
             </span>
@@ -78,11 +81,14 @@ export function AssetCard({
             </div>
           </div>
         </div>
-        <div className="text-right">
-          <p className="font-bold text-lg tracking-tight text-foreground group-hover:opacity-90 transition-colors">
-            {shown}
+        <div className="min-w-0 max-w-[45%] text-right">
+          <p
+            className="max-w-full truncate font-bold text-lg tabular-nums tracking-tight text-foreground transition-colors group-hover:opacity-90"
+            title={shown}
+          >
+            {displayShown}
           </p>
-          <p className="text-tiny text-muted-foreground font-medium tracking-wide uppercase mt-0.5">
+          <p className="mt-0.5 truncate text-tiny font-medium uppercase tracking-wide text-muted-foreground">
             {ticker}
           </p>
         </div>

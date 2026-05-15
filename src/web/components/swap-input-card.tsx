@@ -7,10 +7,13 @@ import {
   type AssetSelectorOption,
 } from './asset-selector'
 import { cn } from '../utils/cn'
+import { formatDisplayAmountText, type AmountDisplayUnit } from '../utils/amount-display'
 
 export interface SwapInputCardProps {
   fromTicker: string
   toTicker: string
+  fromSelectedId?: string
+  toSelectedId?: string
   fromInput: string
   fromOptions: AssetSelectorOption[]
   toOptions: AssetSelectorOption[]
@@ -22,9 +25,11 @@ export interface SwapInputCardProps {
   selectedPercentage?: number | null
   percentageDisabled?: boolean
   fromUnitLabel: string
+  fromDisplayUnit?: AmountDisplayUnit
   fromUnitIsToggle?: boolean
   receiveAmount?: string | null
   receiveUnitLabel?: string
+  receiveDisplayUnit?: AmountDisplayUnit
   isLoadingQuote?: boolean
   quoteError?: string | null
   quoteRateText?: string | null
@@ -54,6 +59,8 @@ const PERCENTAGES = [25, 50, 75, 100]
 export function SwapInputCard({
   fromTicker,
   toTicker,
+  fromSelectedId,
+  toSelectedId,
   fromInput,
   fromOptions,
   toOptions,
@@ -65,9 +72,11 @@ export function SwapInputCard({
   selectedPercentage = null,
   percentageDisabled = false,
   fromUnitLabel,
+  fromDisplayUnit,
   fromUnitIsToggle = false,
   receiveAmount,
   receiveUnitLabel,
+  receiveDisplayUnit,
   isLoadingQuote = false,
   quoteError,
   quoteRateText,
@@ -89,6 +98,20 @@ export function SwapInputCard({
   onFlip,
   onSubmit,
 }: SwapInputCardProps) {
+  const availableDisplayText = formatDisplayAmountText(availableText, {
+    unit: fromDisplayUnit,
+  })
+  const maxDisplayText = maxText
+    ? formatDisplayAmountText(maxText, {
+        unit: fromDisplayUnit,
+      })
+    : undefined
+  const receiveDisplayText = receiveAmount
+    ? formatDisplayAmountText(receiveAmount, {
+        unit: receiveDisplayUnit,
+      })
+    : null
+
   return (
     <>
       <div className="relative mb-3 flex flex-col rounded-3xl bg-white/[0.03] shadow-2xl shadow-black/40 backdrop-blur-2xl transition-all duration-300">
@@ -121,20 +144,22 @@ export function SwapInputCard({
               compact
               label="From"
               selectedTicker={fromTicker}
+              selectedId={fromSelectedId}
               options={fromOptions}
               categories={categories}
               defaultActiveCategories={defaultActiveCategories}
-              disabledTicker={toTicker}
+              disabledId={toSelectedId}
               onChange={onFromTickerChange}
             />
-            <div className="min-w-0 flex-1 text-right">
+            <div className="min-w-0 flex-1 overflow-hidden text-right">
               <input
                 type="text"
                 inputMode="decimal"
                 value={fromInput}
+                maxLength={24}
                 onChange={(event) => onFromInputChange(event.target.value)}
                 placeholder="0"
-                className="w-full border-none bg-transparent text-right text-2xl font-bold text-white placeholder:text-white/15 focus:outline-none"
+                className="w-full min-w-0 border-none bg-transparent text-right text-2xl font-bold tabular-nums text-white placeholder:text-white/15 focus:outline-none"
               />
               {fromUnitIsToggle && onToggleFromUnit ? (
                 <button
@@ -151,8 +176,13 @@ export function SwapInputCard({
             </div>
           </div>
           <div className="mt-2 flex items-center justify-between gap-2">
-            <p className="text-xxs font-medium text-white/60">
-              {showMaxText && maxText ? `Max: ${maxText}` : `Available: ${availableText}`}
+            <p
+              className="min-w-0 max-w-full truncate text-xxs font-medium tabular-nums text-white/60"
+              title={showMaxText && maxText ? `Max: ${maxText}` : `Available: ${availableText}`}
+            >
+              {showMaxText && maxDisplayText
+                ? `Max: ${maxDisplayText}`
+                : `Available: ${availableDisplayText}`}
             </p>
           </div>
         </div>
@@ -183,17 +213,23 @@ export function SwapInputCard({
               compact
               label="To"
               selectedTicker={toTicker}
+              selectedId={toSelectedId}
               options={toOptions}
               categories={categories}
               defaultActiveCategories={defaultActiveCategories}
-              disabledTicker={fromTicker}
+              disabledId={fromSelectedId}
               onChange={onToTickerChange}
             />
             <div className="min-w-0 flex-1 text-right">
               {isLoadingQuote ? (
                 <div className="ml-auto h-8 w-28 animate-pulse rounded-lg bg-white/10" />
               ) : receiveAmount ? (
-                <span className="text-2xl font-bold text-primary">{receiveAmount}</span>
+                <span
+                  className="block max-w-full truncate text-2xl font-bold tabular-nums text-primary"
+                  title={receiveAmount}
+                >
+                  {receiveDisplayText}
+                </span>
               ) : (
                 <span className="text-2xl font-bold text-white/15">-</span>
               )}
