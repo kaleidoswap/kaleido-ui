@@ -7,10 +7,6 @@ export interface AmountDisplayOptions {
 
 const NUMBER_RE = /^(-?\d[\d,]*)(?:\.(\d+))?$/
 
-function trimTrailingZeros(value: string): string {
-  return value.replace(/(\.\d*?)0+$/u, '$1').replace(/\.$/u, '')
-}
-
 export function formatDisplayAmountText(
   value: string | number | null | undefined,
   options: AmountDisplayOptions = {},
@@ -33,11 +29,17 @@ export function formatDisplayAmountText(
   const match = numeric.match(NUMBER_RE)
   if (!match) return raw
 
-  const integer = match[1]
-  const decimals = match[2] ?? ''
-  if (maxDecimals <= 0 || decimals.length === 0) return `${integer}${suffix}`
-  if (decimals.length <= maxDecimals) return `${trimTrailingZeros(`${integer}.${decimals}`)}${suffix}`
-  return `${trimTrailingZeros(`${integer}.${decimals.slice(0, maxDecimals)}`)}${suffix}`
+  const num = parseFloat(numeric.replace(/,/g, ''))
+  if (!Number.isFinite(num)) return raw
+
+  const factor = Math.pow(10, maxDecimals)
+  const rounded = Math.round(num * factor) / factor
+  const formatted = rounded.toLocaleString('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: maxDecimals,
+  })
+
+  return `${formatted}${suffix}`
 }
 
 /**

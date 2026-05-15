@@ -76,12 +76,8 @@ export function AssetSelector({
   const filtered = options
     .filter((option) => {
       const category = option.category ?? null
-      const isSelected = option.id === selectedOptionId
       const matchesCategory =
-        !hasCategoryFilters ||
-        category === null ||
-        activeCategories.includes(category) ||
-        isSelected
+        !hasCategoryFilters || category === null || activeCategories.includes(category)
       const matchesNetwork = !networkFilter || option.network === networkFilter
       const matchesVenue = !venueFilter || option.venue === venueFilter
 
