@@ -8,11 +8,14 @@ import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 
 export interface AssetSelectorOption {
-  id?: string
+  id: string
   ticker: string
   name?: string
   icon?: string
   network?: NetworkType
+  protocol?: string
+  venue?: string
+  assetId?: string
   category?: string | null
   categoryLabel?: string
 }
@@ -29,8 +32,11 @@ export interface AssetSelectorProps {
   options: AssetSelectorOption[]
   categories?: AssetSelectorCategory[]
   defaultActiveCategories?: string[]
+  networkFilter?: NetworkType | null
+  venueFilter?: string | null
   disabled?: boolean
   disabledTicker?: string
+  disabledId?: string
   compact?: boolean
   onOpenPanelHeightChange?: (height: number) => void
   onChange: (id: string) => void
@@ -45,8 +51,11 @@ export function AssetSelector({
   options,
   categories = [],
   defaultActiveCategories,
+  networkFilter,
+  venueFilter,
   disabled,
   disabledTicker,
+  disabledId,
   compact,
   onOpenPanelHeightChange,
   onChange,
@@ -58,33 +67,48 @@ export function AssetSelector({
   )
 
   const selectedKey = selectedId ?? selectedTicker
-  const selected = options.find((option) => (option.id ?? option.ticker) === selectedKey)
+  const selected =
+    options.find((option) => option.id === selectedKey) ??
+    options.find((option) => option.ticker === selectedTicker)
+  const selectedOptionId = selected?.id ?? selectedKey
   const hasCategoryFilters = categories.length > 0
 
-  const filtered = options.filter((option) => {
-    const category = option.category ?? null
-    const matchesCategory =
-      !hasCategoryFilters ||
-      category === null ||
-      activeCategories.includes(category) ||
-      (option.id ?? option.ticker) === selectedKey ||
-      option.ticker === disabledTicker
+  const filtered = options
+    .filter((option) => {
+      const category = option.category ?? null
+      const isSelected = option.id === selectedOptionId
+      const matchesCategory =
+        !hasCategoryFilters ||
+        category === null ||
+        activeCategories.includes(category) ||
+        isSelected
+      const matchesNetwork = !networkFilter || option.network === networkFilter
+      const matchesVenue = !venueFilter || option.venue === venueFilter
 
-    if (!search) return matchesCategory
+      if (!matchesCategory || !matchesNetwork || !matchesVenue) return false
+      if (!search) return true
 
-    const searchValue = search.toLowerCase()
-    const matchesSearch =
-      option.ticker.toLowerCase().includes(searchValue) ||
-      (option.name?.toLowerCase().includes(searchValue) ?? false)
+      const searchValue = search.toLowerCase()
+      const matchesSearch =
+        option.ticker.toLowerCase().includes(searchValue) ||
+        (option.name?.toLowerCase().includes(searchValue) ?? false) ||
+        (option.assetId?.toLowerCase().includes(searchValue) ?? false) ||
+        (option.network?.toLowerCase().includes(searchValue) ?? false) ||
+        (option.category?.toLowerCase().includes(searchValue) ?? false)
 
-    return matchesCategory && matchesSearch
-  })
+      return matchesSearch
+    })
+    .sort((a, b) => {
+      if (a.id === selectedOptionId) return -1
+      if (b.id === selectedOptionId) return 1
+      return a.ticker.localeCompare(b.ticker)
+    })
 
   const inlineOptions: AssetSelectorInlineOption[] = filtered.map((option) => ({
     ...option,
-    id: option.id ?? option.ticker,
+    id: option.id,
     label: option.ticker,
-    disabled: option.ticker === disabledTicker,
+    disabled: option.id === disabledId || option.ticker === disabledTicker,
   }))
   const categoryLabelById = new Map(categories.map((category) => [category.id, category.label]))
 
@@ -109,7 +133,10 @@ export function AssetSelector({
         />
         <span className="flex min-w-0 flex-1 items-center justify-between gap-3 text-left">
           <span className="min-w-0 flex flex-col leading-tight">
-            <span className="truncate text-base font-bold tracking-wide text-white">
+            <span
+              className="max-w-full truncate text-base font-bold tracking-wide text-white"
+              title={option.name ?? option.ticker}
+            >
               {option.name ?? option.ticker}
             </span>
             {option.network && (
@@ -135,7 +162,10 @@ export function AssetSelector({
                 </span>
               )
             )}
-            <span className="text-tiny font-medium uppercase tracking-wide text-white/35">
+            <span
+              className="max-w-24 truncate text-tiny font-medium uppercase tracking-wide text-white/35"
+              title={optionDisabled ? 'In use' : option.ticker}
+            >
               {optionDisabled ? 'In use' : option.ticker}
             </span>
           </span>
@@ -237,6 +267,18 @@ export function AssetSelector({
                   </div>
                   {hasCategoryFilters && (
                     <div className="mt-3 flex flex-wrap items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => setActiveCategories(categories.map((category) => category.id))}
+                        className={cn(
+                          'rounded-full px-2.5 py-1 text-tiny font-bold uppercase tracking-wide shadow-inner transition-colors',
+                          activeCategories.length === categories.length
+                            ? 'bg-primary/[0.14] text-primary'
+                            : 'bg-surface-card text-text-dimmed hover:text-white/75',
+                        )}
+                      >
+                        All
+                      </button>
                       {categories.map((category) => {
                         const isActive = activeCategories.includes(category.id)
                         return (
@@ -261,32 +303,24 @@ export function AssetSelector({
                           </button>
                         )
                       })}
-                      {activeCategories.length !== categories.length && (
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setActiveCategories(categories.map((category) => category.id))
-                          }
-                          className="ml-auto rounded-full px-2 py-1 text-tiny font-bold uppercase tracking-wide text-white/40 transition-colors hover:text-white/75"
-                        >
-                          All
-                        </button>
-                      )}
                     </div>
                   )}
                 </div>
 
-                <ScrollArea className="min-h-0" viewportClassName="px-2 py-2 pb-6">
+                <ScrollArea className="min-h-0 flex-1" viewportClassName="max-h-[56vh] px-2 py-2 pb-6">
                   {filtered.length === 0 ? (
                     <div className="flex flex-col items-center gap-2 px-4 py-10 text-center text-sm text-white/30">
                       <Icon name="search" size="md" className="opacity-40" />
-                      <span>No results{search ? ` for "${search}"` : ''}</span>
+                      <span>
+                        No assets match {search ? `"${search}"` : 'the active filters'}
+                      </span>
                     </div>
                   ) : (
                     filtered.map((option) => {
-                      const optionKey = option.id ?? option.ticker
-                      const optionSelected = optionKey === selectedKey
-                      const optionDisabled = option.ticker === disabledTicker
+                      const optionKey = option.id
+                      const optionSelected = optionKey === selectedOptionId
+                      const optionDisabled =
+                        option.id === disabledId || option.ticker === disabledTicker
                       return (
                         <button
                           key={optionKey}
@@ -323,7 +357,7 @@ export function AssetSelector({
   return (
     <InlineSelector
       label={label}
-      value={selectedKey}
+      value={selectedOptionId}
       options={inlineOptions}
       onChange={(ticker) => {
         onChange(ticker)
@@ -415,6 +449,18 @@ export function AssetSelector({
             </div>
             {hasCategoryFilters && (
               <div className="mt-3 flex flex-wrap items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setActiveCategories(categories.map((category) => category.id))}
+                  className={cn(
+                    'rounded-full px-2.5 py-1 text-tiny font-bold uppercase tracking-wide shadow-inner transition-colors',
+                    activeCategories.length === categories.length
+                      ? 'bg-primary/[0.14] text-primary'
+                      : 'bg-surface-card text-text-dimmed hover:text-white/75',
+                  )}
+                >
+                  All
+                </button>
                 {categories.map((category) => {
                   const isActive = activeCategories.includes(category.id)
                   return (
@@ -439,15 +485,6 @@ export function AssetSelector({
                     </button>
                   )
                 })}
-                {activeCategories.length !== categories.length && (
-                  <button
-                    type="button"
-                    onClick={() => setActiveCategories(categories.map((category) => category.id))}
-                    className="ml-auto rounded-full px-2 py-1 text-tiny font-bold uppercase tracking-wide text-white/40 transition-colors hover:text-white/75"
-                  >
-                    All
-                  </button>
-                )}
               </div>
             )}
           </div>

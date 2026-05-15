@@ -520,9 +520,9 @@ export function App() {
                   ]}
                   defaultActiveCategories={['stablecoins', 'rwa']}
                   options={[
-                    { ticker: 'BTC', name: 'Bitcoin', network: 'LN' },
-                    { ticker: 'USDB', name: 'Bitcoin Dollar', network: 'Spark', category: 'stablecoins' },
-                    { ticker: 'MSTR', name: 'MicroStrategy', network: 'RGB-LN', category: 'rwa' },
+                    { id: 'kaleidoswap:BTC:btc', ticker: 'BTC', name: 'Bitcoin', network: 'LN' },
+                    { id: 'flashnet:SPARK:usdb', ticker: 'USDB', name: 'Bitcoin Dollar', network: 'Spark', category: 'stablecoins' },
+                    { id: 'kaleidoswap:RGB:mstr', ticker: 'MSTR', name: 'MicroStrategy', network: 'RGB-LN', category: 'rwa' },
                   ]}
                 />
                 <QrCode value="kaleidoswap:receive:sample" size={168} />
