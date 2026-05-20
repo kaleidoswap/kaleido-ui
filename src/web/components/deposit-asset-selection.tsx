@@ -162,17 +162,17 @@ export function DepositAssetSelection<TView extends string = string>({
           <button
             type="button"
             data-testid="deposit-asset-btc"
-            className="group flex w-full items-center gap-3 rounded-2xl bg-white/3 px-4 py-3 text-sm transition-all hover:bg-accent"
+            className="group flex w-full min-w-0 items-center gap-3 overflow-hidden rounded-2xl bg-white/3 px-4 py-3 text-sm transition-all hover:bg-accent"
             onClick={() => onSelectAsset(btcAsset)}
           >
-            <AssetIcon ticker="BTC" size={40} />
+            <AssetIcon ticker="BTC" size={40} className="flex-shrink-0" />
             <div className="min-w-0 flex-1 text-left">
               <div className="font-bold tracking-wide text-white transition-colors group-hover:text-primary/90">
                 Bitcoin
               </div>
               <div className="mt-0.5 text-xs text-white/40">Choose destination account next</div>
             </div>
-            <div className="flex flex-shrink-0 gap-1">
+            <div className="hidden min-w-0 max-w-[42%] flex-shrink flex-wrap justify-end gap-1 min-[380px]:flex">
               <NetworkBadge network="L1" size="sm" />
               <NetworkBadge network="LN" size="sm" />
               {isSparkConnected && <NetworkBadge network="Spark" size="sm" />}
@@ -225,12 +225,12 @@ export function DepositAssetSelection<TView extends string = string>({
                       key={asset.asset_id}
                       type="button"
                       data-testid={`deposit-asset-${asset.asset_id}`}
-                      className="group flex w-full items-center gap-3 rounded-2xl border border-white/8 bg-white/3 px-4 py-3 text-sm transition-all hover:border-border hover:bg-accent"
+                      className="group flex w-full min-w-0 items-center gap-3 overflow-hidden rounded-2xl border border-white/8 bg-white/3 px-4 py-3 text-sm transition-all hover:border-border hover:bg-accent"
                       onClick={() => onSelectAsset(asset)}
                     >
                       <AssetIcon ticker={asset.ticker} size={40} className="flex-shrink-0" />
                       <div className="min-w-0 flex-1 text-left">
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex min-w-0 items-center gap-1.5">
                           <span className="truncate font-bold tracking-wide text-white transition-colors group-hover:text-primary/90">
                             {asset.ticker}
                           </span>
