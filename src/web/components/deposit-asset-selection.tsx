@@ -1,8 +1,9 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '../primitives/button'
 import { DotPagination } from '../primitives/dot-pagination'
 import { Icon } from '../primitives/icon'
 import { AssetIcon } from './asset-icon'
+import { NetworkBadge } from './network-badge'
 import { ScrollArea } from './scroll-area'
 import { cn } from '../utils/cn'
 import type { DepositAccountId } from './deposit-ui-shared'
@@ -52,13 +53,6 @@ export interface DepositAssetSelectionProps<TView extends string = string> {
   isArkadeConnected: boolean
 }
 
-function NetBadge({ icon, className }: { icon: ReactNode; className: string }) {
-  return (
-    <span className={cn('inline-flex items-center justify-center rounded border px-1.5 py-0.5', className)}>
-      {icon}
-    </span>
-  )
-}
 
 export function DepositAssetSelection<TView extends string = string>({
   setCurrentView,
@@ -168,7 +162,7 @@ export function DepositAssetSelection<TView extends string = string>({
           <button
             type="button"
             data-testid="deposit-asset-btc"
-            className="group flex w-full items-center gap-3 rounded-2xl border border-white/8 bg-white/3 px-4 py-3 text-sm transition-all hover:border-border hover:bg-accent"
+            className="group flex w-full items-center gap-3 rounded-2xl bg-white/3 px-4 py-3 text-sm transition-all hover:bg-accent"
             onClick={() => onSelectAsset(btcAsset)}
           >
             <AssetIcon ticker="BTC" size={40} />
@@ -179,26 +173,10 @@ export function DepositAssetSelection<TView extends string = string>({
               <div className="mt-0.5 text-xs text-white/40">Choose destination account next</div>
             </div>
             <div className="flex flex-shrink-0 gap-1">
-              <NetBadge
-                className="border-network-bitcoin/20 bg-network-bitcoin/15"
-                icon={<span className="material-symbols-outlined leading-none text-network-bitcoin" style={{ fontSize: 10 }}>link</span>}
-              />
-              <NetBadge
-                className="border-warning/20 bg-warning/15"
-                icon={<img src="/icons/lightning/lightning.svg" className="h-2.5 w-2.5" alt="" />}
-              />
-              {isSparkConnected && (
-                <NetBadge
-                  className="border-info/20 bg-info/15"
-                  icon={<img src="/icons/spark/Asterisk/Spark Asterisk White.svg" className="h-2.5 w-2.5" alt="Spark" />}
-                />
-              )}
-              {isArkadeConnected && (
-                <NetBadge
-                  className="border-network-arkade/20 bg-network-arkade/15"
-                  icon={<img src="/icons/arkade/arkade-icon.svg" className="h-2.5 w-2.5 rounded-sm" alt="Arkade" />}
-                />
-              )}
+              <NetworkBadge network="L1" size="sm" />
+              <NetworkBadge network="LN" size="sm" />
+              {isSparkConnected && <NetworkBadge network="Spark" size="sm" />}
+              {isArkadeConnected && <NetworkBadge network="Arkade" size="sm" />}
             </div>
             <span className="material-symbols-outlined flex-shrink-0 text-icon-md text-white/20 transition-colors group-hover:text-white/50">
               arrow_forward
@@ -218,10 +196,8 @@ export function DepositAssetSelection<TView extends string = string>({
               onClick={() => !isSearching && setAssetsExpanded((value) => !value)}
               disabled={isSearching}
               className={cn(
-                'flex w-full items-center gap-2 rounded-2xl border px-4 py-2.5 transition-all',
-                showOwnedAssets
-                  ? 'border-white/10 bg-white/4'
-                  : 'border-white/8 bg-white/3 hover:border-border hover:bg-accent',
+                'flex w-full items-center gap-2 rounded-2xl px-4 py-2.5 transition-all',
+                showOwnedAssets ? 'bg-white/4' : 'bg-white/3 hover:bg-accent',
                 isSearching && 'cursor-default',
               )}
             >

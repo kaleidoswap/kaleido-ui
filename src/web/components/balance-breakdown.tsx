@@ -74,7 +74,7 @@ function ImageIcon({
 }
 
 function numberOnly(formatted: string): string {
-  return formatted.replace(/\u00a0(sats|BTC|mBTC)$/, '').replace(/^\u20bf/, '')
+  return formatted.replace(/[\u00a0 ](sats|BTC|mBTC)$/, '').replace(/^\u20bf/, '')
 }
 
 export function BalanceBreakdown({

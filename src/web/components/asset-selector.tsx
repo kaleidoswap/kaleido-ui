@@ -218,11 +218,11 @@ export function AssetSelector({
               onClick={closePanel}
             >
               <div
-                className="flex max-h-[85vh] w-full max-w-[26rem] flex-col overflow-hidden rounded-t-3xl border-t border-border bg-popover/95 shadow-popover backdrop-blur-2xl duration-300 animate-in slide-in-from-bottom-8 sm:max-h-[80vh] sm:rounded-3xl sm:border sm:slide-in-from-bottom-0 sm:zoom-in-95"
+                className="flex max-h-[85vh] w-full max-w-[26rem] flex-col overflow-hidden rounded-t-3xl bg-popover/95 shadow-popover backdrop-blur-2xl duration-300 animate-in slide-in-from-bottom-8 sm:max-h-[80vh] sm:rounded-3xl sm:border sm:slide-in-from-bottom-0 sm:zoom-in-95"
                 onClick={(event) => event.stopPropagation()}
               >
-                <div className="flex-shrink-0 border-b border-white/[0.08] bg-white/[0.03] px-4 py-3.5">
-                  <div className="flex items-start justify-between gap-3">
+                <div className="flex-shrink-0 bg-white/[0.03] px-4 py-3.5">
+                  <div className="flex items-center justify-between gap-3">
                     <div className="min-w-0">
                       <p className="text-xxs font-bold uppercase tracking-eyebrow-wide text-text-dimmed">
                         {label} Asset
@@ -232,7 +232,7 @@ export function AssetSelector({
                       </p>
                     </div>
                     {selected && (
-                      <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-2.5 py-1">
+                      <div className="flex items-center gap-2 rounded-full bg-white/5 px-2.5 py-1">
                         <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={18} />
                         <span className="text-tiny font-semibold text-white">
                           {selected.ticker}
@@ -245,7 +245,7 @@ export function AssetSelector({
                   </div>
                 </div>
 
-                <div className="flex-shrink-0 border-b border-white/[0.08] px-4 py-3">
+                <div className="flex-shrink-0 px-4 py-3">
                   <div className="relative">
                     <Icon
                       name="search"
@@ -303,6 +303,7 @@ export function AssetSelector({
                   )}
                 </div>
 
+                <div className="mx-4 h-px bg-white/[0.06]" />
                 <ScrollArea className="min-h-0 flex-1" viewportClassName="max-h-[56vh] px-2 py-2 pb-6">
                   {filtered.length === 0 ? (
                     <div className="flex flex-col items-center gap-2 px-4 py-10 text-center text-sm text-white/30">
@@ -405,8 +406,8 @@ export function AssetSelector({
       }
       renderPanelHeader={() => (
         <>
-          <div className="border-b border-white/[0.08] bg-white/[0.03] px-4 py-3.5">
-            <div className="flex items-start justify-between gap-3">
+          <div className="bg-white/[0.03] px-4 py-3.5">
+            <div className="flex items-center justify-between gap-3">
               <div className="min-w-0">
                 <p className="text-xxs font-bold uppercase tracking-eyebrow-wide text-text-dimmed">
                   {label} Asset
@@ -416,7 +417,7 @@ export function AssetSelector({
                 </p>
               </div>
               {selected && (
-                <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-2.5 py-1">
+                <div className="flex items-center gap-2 rounded-full bg-white/5 px-2.5 py-1">
                   <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={18} />
                   <span className="text-tiny font-semibold text-white">{selected.ticker}</span>
                   {selected.network && (
@@ -427,7 +428,7 @@ export function AssetSelector({
             </div>
           </div>
 
-          <div className="border-b border-white/[0.08] px-4 py-3">
+          <div className="px-4 py-3">
             <div className="relative">
               <Icon
                 name="search"

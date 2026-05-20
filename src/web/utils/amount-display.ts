@@ -13,18 +13,19 @@ export function formatDisplayAmountText(
 ): string {
   if (value === null || value === undefined || value === '') return ''
   const unit = options.unit ?? 'token'
-  const maxDecimals =
-    unit === 'sats'
-      ? 0
-      : unit === 'BTC'
-        ? 8
-        : unit === 'mBTC'
-          ? 5
-          : (options.maxDecimals ?? 6)
-
   const raw = typeof value === 'number' ? String(value) : value.trim()
   const suffixMatch = raw.match(/(\s+[A-Za-z][\w.-]*)$/u)
   const suffix = suffixMatch?.[1] ?? ''
+  const detectedUnit =
+    suffix.trim() === 'BTC' ? 'BTC' :
+    suffix.trim() === 'sats' ? 'sats' :
+    suffix.trim() === 'mBTC' ? 'mBTC' :
+    unit
+  const maxDecimals =
+    detectedUnit === 'sats' ? 0 :
+    detectedUnit === 'BTC' ? 8 :
+    detectedUnit === 'mBTC' ? 5 :
+    (options.maxDecimals ?? 6)
   const numeric = suffix ? raw.slice(0, -suffix.length) : raw
   const match = numeric.match(NUMBER_RE)
   if (!match) return raw
