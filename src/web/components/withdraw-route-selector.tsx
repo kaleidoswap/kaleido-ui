@@ -38,13 +38,40 @@ function RouteChoiceCard<TAccount extends string>({
   selected,
   recommended,
   onClick,
+  displayOnly,
 }: {
   route: WithdrawRouteOption<TAccount>
   selected: boolean
   recommended: boolean
   onClick: () => void
+  displayOnly?: boolean
 }) {
   const { disabled = false, disabledReason, accountIcon, balanceLabel } = route
+
+  if (displayOnly) {
+    return (
+      <div className="rounded-2xl bg-card/50 px-4 py-3.5">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-3">
+            {accountIcon && <div className="shrink-0">{accountIcon}</div>}
+            <div className="min-w-0">
+              <span className="text-sm font-semibold text-white">{route.accountTitle}</span>
+              <p className="mt-0.5 text-xs text-white/45">{route.methodLabel}</p>
+            </div>
+          </div>
+          <div className="flex shrink-0 flex-col items-end gap-1">
+            <span className="text-xxs font-bold uppercase tracking-wider text-white/35">
+              {route.feeHint}
+            </span>
+            {balanceLabel && (
+              <span className="font-mono text-xxs text-white/50">{balanceLabel}</span>
+            )}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <button
       type="button"
@@ -103,21 +130,15 @@ export function WithdrawRouteSelector<TAccount extends string = string>({
   routes,
   activeRouteAccount,
   recommendedRouteAccount,
-  selectedRouteSummary,
-  selectedAccountTitle,
   onRouteChange,
 }: WithdrawRouteSelectorProps<TAccount>) {
+  const isDisplayOnly = routes.length === 1 && !routes[0].disabled
+
   return (
-    <div className="space-y-3">
-      <div>
-        <label className="ml-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
-          Route
-        </label>
-        <p className="ml-1 mt-1 text-xs text-muted-foreground">
-          Choose the account to spend from. The transfer method is derived from the destination you
-          entered.
-        </p>
-      </div>
+    <div className="space-y-2">
+      <label className="ml-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+        Route
+      </label>
 
       <div className="space-y-2">
         {routes.map((route) => (
@@ -127,22 +148,10 @@ export function WithdrawRouteSelector<TAccount extends string = string>({
             selected={activeRouteAccount === route.account}
             recommended={recommendedRouteAccount === route.account}
             onClick={() => onRouteChange(route.account)}
+            displayOnly={isDisplayOnly}
           />
         ))}
       </div>
-
-      {selectedRouteSummary && activeRouteAccount && (
-        <div className="rounded-2xl border bg-white/4 p-4">
-          <div className="flex items-center justify-between gap-3">
-            <span className="text-xs uppercase tracking-wider text-white/35">Selected path</span>
-            <span className="text-xs font-bold text-white">{selectedAccountTitle}</span>
-          </div>
-          <p className="mt-2 text-sm font-semibold text-white">
-            {selectedRouteSummary.methodLabel}
-          </p>
-          <p className="mt-1 text-xs text-muted-foreground">{selectedRouteSummary.summary}</p>
-        </div>
-      )}
     </div>
   )
 }

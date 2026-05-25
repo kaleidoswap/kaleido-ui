@@ -1,5 +1,6 @@
 import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
+import { ScrollArea } from './scroll-area'
 import type { WithdrawAddressType } from './withdraw-destination-input'
 
 export interface WithdrawConfirmationRgbInvoice {
@@ -46,7 +47,7 @@ export function WithdrawConfirmation({
   handleConfirmSend,
 }: WithdrawConfirmationProps) {
   return (
-    <div className="relative min-h-screen bg-background pb-6 pt-16 font-display text-foreground">
+    <div className="relative flex h-screen flex-col overflow-hidden bg-background font-display text-foreground">
       <div className="absolute left-4 top-4 z-30">
         <Button
           type="button"
@@ -64,7 +65,8 @@ export function WithdrawConfirmation({
         </Button>
       </div>
 
-      <main className="space-y-6 px-5">
+      <ScrollArea className="flex-1" viewportClassName="px-5 pt-16 pb-6">
+      <main className="space-y-6">
         <div className="flex flex-col items-center py-6">
           <p className="mb-1 text-sm uppercase tracking-wide text-muted-foreground">Sending</p>
           <h1 className="mb-2 text-4xl font-bold">{displayAmount.toLocaleString()}</h1>
@@ -172,6 +174,7 @@ export function WithdrawConfirmation({
           )}
         </Button>
       </main>
+      </ScrollArea>
     </div>
   )
 }
