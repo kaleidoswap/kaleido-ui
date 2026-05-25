@@ -48,6 +48,12 @@ export interface BalanceBreakdownProps {
   onNavigate?: (view: 'deposit' | 'swap' | 'withdraw') => void
   /** Reduce vertical padding/margins so the card occupies less of the viewport. */
   compact?: boolean
+  /**
+   * Sats-equivalent value of all non-BTC assets with known USD prices
+   * (e.g. stablecoins). Included in totalBTC for the headline; surfaced
+   * separately here so the expanded breakdown can show it as its own row.
+   */
+  tokenValueSats?: number
 }
 
 function OnchainIcon({ className = '' }: { className?: string }) {
@@ -102,6 +108,7 @@ export function BalanceBreakdown({
   isRefreshing = false,
   onNavigate,
   compact = false,
+  tokenValueSats,
 }: BalanceBreakdownProps) {
   const [expanded, setExpanded] = useState(false)
   const fiatTotal = formatFiatValue(totalBTC)
@@ -129,7 +136,7 @@ export function BalanceBreakdown({
               </div>
             ) : (
               <>
-                <div className="flex min-w-0 max-w-full flex-wrap items-baseline gap-x-2.5 gap-y-1">
+                <div className="flex min-w-0 max-w-full flex-wrap items-baseline gap-x-1.5 gap-y-1">
                   <span className="text-display font-black leading-[1.1] tracking-tighter text-white drop-shadow-sm transition-all duration-300 group-active:scale-95 group-active:text-primary">
                     {balanceVisible ? numberOnly(format(totalBTC)) : '••••••'}
                   </span>
@@ -265,6 +272,40 @@ export function BalanceBreakdown({
 
             {rgbAssets.length > 0 && (
               <RgbAssetsBreakdown assets={rgbAssets} balanceVisible={balanceVisible} />
+            )}
+
+            {tokenValueSats !== undefined && tokenValueSats > 0 && (
+              <div className="mt-3 border-t border-white/[0.08] pt-4">
+                <p className="mb-3 text-xxs font-bold uppercase tracking-widest text-white/30">
+                  Token Holdings
+                </p>
+                <div className="flex items-center justify-between rounded-xl bg-white/[0.03] px-3 py-2">
+                  <div className="flex items-center gap-3">
+                    <div className="h-7 w-0.5 rounded-full bg-success opacity-80" />
+                    <div className="flex size-7 items-center justify-center rounded-lg bg-white/5 text-icon-sm">
+                      <span className="material-symbols-outlined leading-none" style={{ fontSize: 'inherit' }}>
+                        payments
+                      </span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-xs font-semibold leading-tight text-white/80">Stablecoins &amp; Tokens</span>
+                      <span className="mt-0.5 text-xxs font-medium leading-tight text-white/30">
+                        Converted value in BTC
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <span className="tabular-nums text-xs font-bold text-white">
+                      {balanceVisible ? format(tokenValueSats) : '••••••'}
+                    </span>
+                    {balanceVisible && (
+                      <span className="mt-0.5 font-mono text-xxs text-white/35">
+                        {formatFiatValue(tokenValueSats)}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
             )}
 
             {accounts.RGB?.connected && nodeInfo?.pubkey && (
