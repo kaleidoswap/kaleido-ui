@@ -135,16 +135,6 @@ export function AssetSelector({
             >
               {option.name ?? option.ticker}
             </span>
-            {option.network && (
-              <span className="mt-1">
-                <NetworkBadge
-                  network={option.network}
-                  showLabel
-                  size="sm"
-                  className="py-[1px]"
-                />
-              </span>
-            )}
           </span>
           <span className="flex shrink-0 flex-col items-end gap-0.5">
             {optionSelected ? (
@@ -237,9 +227,6 @@ export function AssetSelector({
                         <span className="text-tiny font-semibold text-white">
                           {selected.ticker}
                         </span>
-                        {selected.network && (
-                          <NetworkBadge network={selected.network} showLabel className="py-[1px]" />
-                        )}
                       </div>
                     )}
                   </div>
@@ -370,21 +357,14 @@ export function AssetSelector({
           <span className="mb-1.5 ml-1 block text-xs font-semibold uppercase tracking-wider text-white/40">
             {label}
           </span>
-          <span className="flex w-full items-center justify-between rounded-xl border bg-card/70 p-3 text-left transition-all duration-200 hover:border-primary/40">
+          <span className="flex w-full items-center justify-between rounded-2xl bg-card/70 px-4 py-3 text-left transition-all duration-200 hover:bg-card/90">
             <span className="flex items-center gap-3">
               {selected ? (
                 <>
                   <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={32} />
                   <span>
-                    <span className="flex items-center gap-1.5 text-sm font-semibold text-white">
+                    <span className="text-sm font-semibold text-white">
                       {selected.ticker}
-                      {selected.network && (
-                        <NetworkBadge
-                          network={selected.network}
-                          showLabel
-                          className="px-1.5 py-0 text-xxs"
-                        />
-                      )}
                     </span>
                     <span className="mt-0.5 block text-xs text-white/35">{selected.name}</span>
                   </span>
@@ -420,9 +400,6 @@ export function AssetSelector({
                 <div className="flex items-center gap-2 rounded-full bg-white/5 px-2.5 py-1">
                   <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={18} />
                   <span className="text-tiny font-semibold text-white">{selected.ticker}</span>
-                  {selected.network && (
-                    <NetworkBadge network={selected.network} showLabel className="py-[1px]" />
-                  )}
                 </div>
               )}
             </div>

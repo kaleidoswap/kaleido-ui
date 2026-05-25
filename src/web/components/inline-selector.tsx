@@ -127,7 +127,7 @@ export function InlineSelector<TOption extends InlineSelectorOption>({
           )}
         >
           {renderPanelHeader?.(renderArgs)}
-          <div className="max-h-[60vh] space-y-1 overflow-y-auto">
+          <div className="space-y-1">
             {options.length === 0 ? (
               <div className="flex flex-col items-center gap-2 px-4 py-8 text-center text-sm text-white/30">
                 <Icon name="search" size="md" className="opacity-40" />

@@ -148,7 +148,7 @@ export function DepositAssetSelection<TView extends string = string>({
           <input
             autoFocus
             data-testid="deposit-asset-search"
-            className="w-full rounded-xl border border-white/8 bg-white/5 py-2.5 pl-10 pr-4 text-sm text-white outline-none transition-all placeholder:text-white/25 focus:border-primary/40 focus:bg-white/8"
+            className="w-full rounded-xl border border-transparent bg-white/5 py-2.5 pl-10 pr-4 text-sm text-white outline-none transition-all placeholder:text-white/25 focus:border-primary/40 focus:bg-white/8"
             onChange={(event) => setSearchQuery(event.target.value)}
             placeholder="Search assets..."
             type="text"
@@ -204,7 +204,7 @@ export function DepositAssetSelection<TView extends string = string>({
               <span className="text-xxs font-bold uppercase tracking-[0.18em] text-white/55">
                 Your assets
               </span>
-              <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-tiny font-bold text-white/70">
+              <span className="inline-flex size-5 items-center justify-center rounded-full bg-white/10 text-tiny font-bold text-white/70">
                 {ownedAssetsCount}
               </span>
               <div className="flex-1" />
