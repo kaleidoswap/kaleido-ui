@@ -13,3 +13,11 @@ export { shadow } from './shadows'
 export { gradient } from './gradients'
 export { transition } from './transitions'
 export { keyframes, animation } from './animations'
+export {
+  makeTheme,
+  themes,
+  nativeType,
+  type KaleidoTheme,
+  type ThemeMode,
+  type NativeTypeLevel,
+} from './theme'

@@ -45,6 +45,7 @@ export default defineConfig([
       'react/jsx-runtime',
       'react/jsx-dev-runtime',
       'react-native',
+      'react-native-svg',
       '@tetherto/wdk-uikit-react-native',
     ],
   },
