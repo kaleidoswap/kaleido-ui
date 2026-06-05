@@ -1,6 +1,6 @@
 {
   "name": "kaleido-ui",
-  "version": "0.1.47",
+  "version": "0.1.48",
   "description": "KaleidoSwap shared UI library — design tokens, web components (Tailwind + Radix), and React Native components extending WDK UI Kit",
   "license": "MIT",
   "type": "module",
@@ -115,6 +115,7 @@
     "postcss": "^8.4.49",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-native-svg": "^15.0.0",
     "tailwind-merge": "^2.6.1",
     "tailwindcss": "^4.2.4",
     "tsup": "^8.0.0",
