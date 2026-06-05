@@ -28,6 +28,8 @@ export {
 } from '@tetherto/wdk-uikit-react-native'
 
 // Custom native components
+// KaleidoSwap-branded styled QR (rounded finders, dot modules, center logo)
+export { QrCode, type QrCodeProps } from './components/qr-code'
 export { StatusBadge, type StatusType } from './components/status-badge'
 export { NetworkBadge, type NetworkType } from './components/network-badge'
 export { AlertBanner } from './components/alert-banner'

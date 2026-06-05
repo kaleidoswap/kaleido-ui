@@ -36,6 +36,7 @@ const EXEMPT_PATHS = [
   'src/css',
   // QR brand SVG — paint values for the KaleidoSwap logo.
   'src/web/components/qr-code.tsx',
+  'src/native/components/qr-code.tsx',
   // Static SVG animation assets — raw paint values are part of the artwork.
   'src/web/components/kaleidoscope-hero-animation.tsx',
   'src/web/components/mobile-hero-animation.tsx',
