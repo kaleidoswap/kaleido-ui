@@ -90,7 +90,7 @@ const LogoPaths = () => (
   </>
 )
 
-export function QrCode({
+function QrCodeImpl({
   value,
   size = 160,
   color = '#040404',
@@ -113,6 +113,15 @@ export function QrCode({
     const els: React.ReactNode[] = []
     const dotRadius = moduleSize * 0.42
 
+    // Emit every data dot as a subpath of a SINGLE <Path> rather than one
+    // <Circle> node per module. A dense unified BIP321 QR has thousands of set
+    // modules; thousands of react-native-svg nodes blow up reconciliation and
+    // the native bridge, freezing the JS thread on every regenerate. One path
+    // string = one native node, visually identical (each circle drawn as two
+    // arcs). r ≈ dotRadius rounded so the path string stays compact.
+    const r = Math.round(dotRadius * 100) / 100
+    const d2r = r * 2
+    let dataPath = ''
     for (let row = 0; row < n; row++) {
       for (let col = 0; col < n; col++) {
         if (isFinderPattern(row, col, n)) continue
@@ -121,8 +130,12 @@ export function QrCode({
 
         const cx = quietZone + col * moduleSize + moduleSize / 2
         const cy = quietZone + row * moduleSize + moduleSize / 2
-        els.push(<Circle key={`d-${row}-${col}`} cx={cx} cy={cy} r={dotRadius} fill={fg} />)
+        // Full circle as two half-arcs starting from the left edge.
+        dataPath += `M${cx - r} ${cy}a${r} ${r} 0 1 0 ${d2r} 0a${r} ${r} 0 1 0 ${-d2r} 0Z`
       }
+    }
+    if (dataPath) {
+      els.push(<Path key="data" d={dataPath} fill={fg} />)
     }
 
     const finderPositions: [number, number][] = [
@@ -175,5 +188,9 @@ export function QrCode({
     </View>
   )
 }
+
+// Memoized: the QR matrix is expensive to build and reconcile, so skip it
+// entirely when the parent re-renders without changing the QR's inputs.
+export const QrCode = React.memo(QrCodeImpl)
 
 export default QrCode
