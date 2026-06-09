@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { AssetCard } from './asset-card'
 import type { NetworkType } from './network-badge'
+import type { StatusType } from './status-badge'
 import { cn } from '../utils/cn'
 
 export interface WalletAssetListItem {
@@ -12,6 +13,7 @@ export interface WalletAssetListItem {
   logoUri?: string
   balanceVisible?: boolean
   accentColor?: string
+  status?: StatusType
   onClick?: () => void
 }
 
@@ -119,6 +121,7 @@ export function WalletAssetList({
           logoUri={item.logoUri}
           balanceVisible={item.balanceVisible}
           accentColor={item.accentColor}
+          status={item.status}
           onClick={item.onClick}
         />
       ))}

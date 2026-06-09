@@ -3,6 +3,7 @@ import { cn } from '../utils/cn'
 import { NetworkBadge, type NetworkType } from './network-badge'
 import { AssetIcon } from './asset-icon'
 import { formatDisplayAmountText } from '../utils/amount-display'
+import { StatusBadge, type StatusType } from './status-badge'
 
 export interface AssetCardProps {
   /** Asset ticker symbol (e.g. "BTC", "USDT") */
@@ -19,6 +20,8 @@ export interface AssetCardProps {
   balanceVisible?: boolean
   /** Accent color hex for the card gradient. Pass a token from `kaleido-ui/tokens` (e.g. `colors.network.bitcoin`). */
   accentColor?: string
+  /** Optional state badge for assets that are present but not currently spendable. */
+  status?: StatusType
   onClick?: () => void
   className?: string
 }
@@ -31,6 +34,7 @@ export function AssetCard({
   logoUri,
   balanceVisible = true,
   accentColor,
+  status,
   onClick,
   className,
 }: AssetCardProps) {
@@ -81,7 +85,7 @@ export function AssetCard({
             </div>
           </div>
         </div>
-        <div className="min-w-0 max-w-[45%] text-right">
+        <div className="flex min-w-0 max-w-[45%] flex-col items-end text-right">
           <p
             className="max-w-full truncate font-bold text-lg tabular-nums tracking-tight text-foreground transition-colors group-hover:opacity-90"
             title={shown}
@@ -91,6 +95,7 @@ export function AssetCard({
           <p className="mt-0.5 truncate text-tiny font-medium uppercase tracking-wide text-muted-foreground">
             {ticker}
           </p>
+          {status && <StatusBadge status={status} className="mt-2" />}
         </div>
       </div>
     </div>
