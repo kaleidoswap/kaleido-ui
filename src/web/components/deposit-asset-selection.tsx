@@ -209,9 +209,7 @@ export function DepositAssetSelection<TView extends string = string>({
               </span>
               <div className="flex-1" />
               {!isSearching && (
-                <span className="material-symbols-outlined text-icon-md text-white/40">
-                  {showOwnedAssets ? 'expand_less' : 'expand_more'}
-                </span>
+                <Icon name={showOwnedAssets ? 'expand_less' : 'expand_more'} size="md" className="text-white/40" />
               )}
             </button>
 
