@@ -118,9 +118,11 @@ const dark: KaleidoTheme = {
   background: '#0D1813',
   card: '#121C16',
   cardElevated: '#17231C',
-  primary: '#15E99A',
-  primaryFg: '#062318',
-  violet: '#8B5CFF',
+  // Brand primary CTA green — per DESIGN.md `brand.primary`, identical to web.
+  // (#15E99A is the decorative logo brandmark, kept only in gradientBrand / QR.)
+  primary: '#2BEE79',
+  primaryFg: '#051B10',
+  violet: '#6F32FF',
   violetSurface: 'rgba(111, 50, 255, 0.18)',
   success: '#2BEE79',
   warning: '#FACC15',
@@ -135,7 +137,7 @@ const dark: KaleidoTheme = {
     secondary: 'rgba(255, 255, 255, 0.64)',
     muted: 'rgba(255, 255, 255, 0.42)',
     disabled: 'rgba(255, 255, 255, 0.26)',
-    onAccent: '#062318',
+    onAccent: '#051B10', // text on brand green — DESIGN.md `text.on-primary`
     onFill: '#FFFFFF',
   },
   border: {
