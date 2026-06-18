@@ -55,6 +55,7 @@ export {
 export { EmptyState, type EmptyStateProps } from './components/empty-state'
 export { TypingDots, type TypingDotsProps } from './components/typing-dots'
 export { ChatBubble, type ChatBubbleProps, type ChatRole } from './components/chat-bubble'
+export { SuggestionTile, type SuggestionTileProps } from './components/suggestion-tile'
 export { ModeToggle, type ModeToggleProps } from './components/mode-toggle'
 export {
   makeTheme,
