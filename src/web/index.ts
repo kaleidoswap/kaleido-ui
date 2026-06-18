@@ -213,11 +213,49 @@ export {
   FadeOverlay,
   type FadeOverlayProps,
 } from './components/page-shell'
+export {
+  ExtensionPageFrame,
+  type ExtensionPageFrameProps,
+} from './components/extension-page-frame'
 export { SettingItem } from './components/setting-item'
 export { SectionLabel } from './components/section-label'
+export { SectionHeader, type SectionHeaderProps } from './components/section-header'
 export { AlertBanner } from './components/alert-banner'
+export { InfoPanel, type InfoPanelProps } from './components/info-panel'
 export { ErrorBoundary } from './components/error-boundary'
 export { RecoveryPhraseCard, type RecoveryPhraseCardProps } from './components/recovery-phrase-card'
+export {
+  SettingsSelectorRow,
+  type SettingsSelectorRowProps,
+} from './components/settings-selector-row'
+export { BottomSheet, type BottomSheetProps, type BottomSheetAction } from './components/bottom-sheet'
+export { DisclosureCard, type DisclosureCardProps } from './components/disclosure-card'
+export {
+  StepperNumberInput,
+  type StepperNumberInputProps,
+} from './components/stepper-number-input'
+export { MetricCard, type MetricCardProps } from './components/metric-card'
+export {
+  FilterChipGroup,
+  type FilterChipGroupProps,
+  type FilterChipOption,
+} from './components/filter-chip-group'
+export { ActivityRow, type ActivityRowProps } from './components/activity-row'
+export {
+  Skeleton,
+  ListSkeletonRows,
+  type SkeletonProps,
+  type SkeletonTone,
+  type ListSkeletonRowsProps,
+} from './components/skeleton'
+export { SecretRevealCard, type SecretRevealCardProps } from './components/secret-reveal-card'
+export {
+  SettingsSectionCard,
+  ToneBadge,
+  type SettingsSectionCardProps,
+  type ToneBadgeProps,
+} from './components/settings-section-card'
+export { SelectableCard, type SelectableCardProps } from './components/selectable-card'
 export { MobileHeroAnimation, type MobileHeroAnimationProps } from './components/mobile-hero-animation'
 export { KaleidoScopeHeroAnimation, type KaleidoScopeHeroAnimationProps } from './components/kaleidoscope-hero-animation'
 export {
