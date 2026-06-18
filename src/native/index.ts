@@ -53,6 +53,7 @@ export {
   type NetworkKey,
 } from './components/network-chip'
 export { EmptyState, type EmptyStateProps } from './components/empty-state'
+export { TypingDots, type TypingDotsProps } from './components/typing-dots'
 export { ModeToggle, type ModeToggleProps } from './components/mode-toggle'
 export {
   makeTheme,
