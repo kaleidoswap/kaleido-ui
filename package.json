@@ -1,6 +1,6 @@
 {
   "name": "kaleido-ui",
-  "version": "0.1.57",
+  "version": "0.1.58",
   "description": "KaleidoSwap shared UI library — design tokens, web components (Tailwind + Radix), and React Native components extending WDK UI Kit",
   "license": "MIT",
   "type": "module",
@@ -23,6 +23,11 @@
       "import": "./dist/native/index.js",
       "require": "./dist/native/index.cjs"
     },
+    "./native/fonts": {
+      "types": "./dist/native/fonts.d.ts",
+      "import": "./dist/native/fonts.js",
+      "require": "./dist/native/fonts.cjs"
+    },
     "./css": "./dist/css/kaleido-ui.css"
   },
   "files": [
@@ -33,7 +38,7 @@
   "scripts": {
     "generate:css": "node node_modules/tsx/dist/cli.mjs scripts/generate-css.ts",
     "check:tokens": "node node_modules/tsx/dist/cli.mjs scripts/check-tokens.ts",
-    "build": "npm run generate:css && npm run check:tokens && tsup && mkdir -p dist/css && cp src/css/kaleido-ui.css dist/css/kaleido-ui.css",
+    "build": "npm run generate:css && npm run check:tokens && tsup && mkdir -p dist/css && cp src/css/kaleido-ui.css dist/css/kaleido-ui.css && mkdir -p dist/native/fonts && cp src/native/fonts/*.ttf dist/native/fonts/",
     "dev": "tsup --watch",
     "showcase": "vite --config showcase/vite.config.ts",
     "showcase:build": "npm run generate:css && vite build --config showcase/vite.config.ts",

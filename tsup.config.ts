@@ -49,4 +49,17 @@ export default defineConfig([
       '@tetherto/wdk-uikit-react-native',
     ],
   },
+  // Native fonts — Satoshi asset map. Built UNBUNDLED so the `.ttf` imports
+  // stay literal `require('./fonts/*.ttf')` calls for the consumer's Metro
+  // bundler to resolve into RN asset module ids (esbuild's bundler would
+  // otherwise rewrite them to plain path strings, which RN can't load). The
+  // .ttf files are copied into dist/native/fonts by the build script.
+  {
+    entry: { 'native/fonts': 'src/native/fonts.ts' },
+    format: ['esm', 'cjs'],
+    dts: true,
+    clean: false,
+    outDir: 'dist',
+    bundle: false,
+  },
 ])

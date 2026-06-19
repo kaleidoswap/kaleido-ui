@@ -66,5 +66,9 @@ export {
   type NativeTypeLevel,
 } from '../tokens/theme'
 
+// Satoshi brand typeface lives at the `@kaleidorg/kaleido-ui/native/fonts`
+// subpath (the asset map must stay unbundled for the consumer's Metro to
+// resolve the .ttf files) — import { kaleidoFonts, satoshiFontFamily } from there.
+
 // Re-export tokens for convenience
 export { colors, fontFamily, typeScale, fontWeight, radius, shadow, transition } from '../tokens'
