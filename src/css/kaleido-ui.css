@@ -53,22 +53,22 @@
 
 /* ── Semantic colors (dark mode) — from src/tokens/colors.ts ───────────── */
 .dark {
-  --background:           hsl(158 58% 7%);
+  --background:           #0A1326;
   --foreground:           #ffffff;
-  --card:                 hsl(156 32% 12%);
+  --card:                 #0F1C33;
   --card-foreground:      #ffffff;
-  --popover:              hsl(154 26% 17%);
+  --popover:              #16273F;
   --popover-foreground:   #ffffff;
   --primary:              #2BEE79;
   --primary-foreground:   #051B10;
-  --secondary:            hsl(154 26% 17%);
+  --secondary:            #16273F;
   --secondary-foreground: #ffffff;
-  --muted:                hsl(156 32% 12%);
+  --muted:                #0F1C33;
   --muted-foreground:     rgba(255, 255, 255, 0.55);
-  --accent:               hsl(154 26% 17%);
+  --accent:               #16273F;
   --accent-foreground:    #ffffff;
   --destructive:          hsl(0 62% 50%);
-  --border:               hsl(150 20% 24%);
+  --border:               rgba(255, 255, 255, 0.10);
   --input:                rgba(255, 255, 255, 0.15);
   --ring:                 #2BEE79;
   --chart-1:              #2BEE79;
