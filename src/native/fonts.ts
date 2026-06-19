@@ -19,6 +19,7 @@
 import SatoshiRegular from './fonts/Satoshi-Regular.ttf'
 import SatoshiMedium from './fonts/Satoshi-Medium.ttf'
 import SatoshiBold from './fonts/Satoshi-Bold.ttf'
+import SatoshiBlack from './fonts/Satoshi-Black.ttf'
 
 /**
  * Asset map keyed by the family name to register the font under. Pass straight
@@ -29,6 +30,7 @@ export const kaleidoFonts: Record<string, number> = {
   'Satoshi-Regular': SatoshiRegular,
   'Satoshi-Medium': SatoshiMedium,
   'Satoshi-Bold': SatoshiBold,
+  'Satoshi-Black': SatoshiBlack,
 }
 
 /** Registered Satoshi family names, by semantic weight. */
@@ -38,6 +40,8 @@ export const satoshiFontFamily = {
   /** No dedicated 600 face ships — semibold maps onto the bold cut. */
   semibold: 'Satoshi-Bold',
   bold: 'Satoshi-Bold',
+  /** Heaviest cut (900) — display numerals / hero balances. */
+  black: 'Satoshi-Black',
 } as const
 
 export type SatoshiWeightName = keyof typeof satoshiFontFamily
@@ -51,6 +55,7 @@ export function satoshiFamilyForWeight(weight?: string | number): string {
   if (weight === 'bold') return satoshiFontFamily.bold
   const n = typeof weight === 'number' ? weight : Number(weight)
   if (!Number.isFinite(n)) return satoshiFontFamily.regular
+  if (n >= 800) return satoshiFontFamily.black
   if (n >= 600) return satoshiFontFamily.bold
   if (n >= 500) return satoshiFontFamily.medium
   return satoshiFontFamily.regular
