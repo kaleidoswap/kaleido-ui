@@ -115,9 +115,10 @@ const NETWORK_GLYPH = {
 
 const dark: KaleidoTheme = {
   mode: 'dark',
-  background: '#0D1813',
-  card: '#121C16',
-  cardElevated: '#17231C',
+  // Dark-blue surface family (navy derived from the brand info blue #4290FF).
+  background: '#0A1326',
+  card: '#0F1C33',
+  cardElevated: '#16273F',
   // Brand primary CTA green — per DESIGN.md `brand.primary`, identical to web.
   // (#15E99A is the decorative logo brandmark, kept only in gradientBrand / QR.)
   primary: '#2BEE79',
