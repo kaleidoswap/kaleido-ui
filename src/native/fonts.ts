@@ -20,6 +20,7 @@ import SatoshiRegular from './fonts/Satoshi-Regular.ttf'
 import SatoshiMedium from './fonts/Satoshi-Medium.ttf'
 import SatoshiBold from './fonts/Satoshi-Bold.ttf'
 import SatoshiBlack from './fonts/Satoshi-Black.ttf'
+import GeistMono from './fonts/GeistMono.ttf'
 
 /**
  * Asset map keyed by the family name to register the font under. Pass straight
@@ -31,7 +32,15 @@ export const kaleidoFonts: Record<string, number> = {
   'Satoshi-Medium': SatoshiMedium,
   'Satoshi-Bold': SatoshiBold,
   'Satoshi-Black': SatoshiBlack,
+  GeistMono: GeistMono,
 }
+
+/**
+ * Monospaced family for numerals / equivalent balances — Geist Mono (the same
+ * face the web/extension references). Use for tabular amounts; pair with the
+ * `mono` text role rather than the Satoshi body face.
+ */
+export const monoFontFamily = 'GeistMono'
 
 /** Registered Satoshi family names, by semantic weight. */
 export const satoshiFontFamily = {
