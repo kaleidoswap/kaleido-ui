@@ -22,6 +22,8 @@ export interface AssetCardProps {
   accentColor?: string
   /** Optional state badge for assets that are present but not currently spendable. */
   status?: StatusType
+  /** Whether the asset is yield generating */
+  isYielding?: boolean
   onClick?: () => void
   className?: string
 }
@@ -35,12 +37,15 @@ export function AssetCard({
   balanceVisible = true,
   accentColor,
   status,
+  isYielding,
   onClick,
   className,
 }: AssetCardProps) {
   const shown = balanceVisible ? displayBalance : '••••••'
   const displayShown = balanceVisible ? formatDisplayAmountText(displayBalance) : shown
   const [hovered, setHovered] = useState(false)
+  
+  const showYield = isYielding ?? ['USDB'].includes(ticker.toUpperCase())
 
   const gradientStyle = accentColor
     ? { background: `linear-gradient(135deg, var(--card) 30%, ${accentColor}${hovered ? '77' : '55'} 75%, ${accentColor}${hovered ? 'dd' : 'b3'} 100%)`, transition: 'background 0.3s ease' }
@@ -92,9 +97,28 @@ export function AssetCard({
           >
             {displayShown}
           </p>
-          <p className="mt-0.5 truncate text-tiny font-medium uppercase tracking-wide text-muted-foreground">
-            {ticker}
-          </p>
+          <div className="flex items-center justify-end gap-1 mt-0.5">
+            <p className="truncate text-tiny font-medium uppercase tracking-wide text-muted-foreground">
+              {ticker}
+            </p>
+            {showYield && (
+              <div title="Yield Generating Asset" className="text-green-500/90 flex items-center justify-center bg-green-500/10 rounded-full p-0.5">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-3 h-3"
+                >
+                  <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+                  <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+                </svg>
+              </div>
+            )}
+          </div>
           {status && <StatusBadge status={status} className="mt-2" />}
         </div>
       </div>
