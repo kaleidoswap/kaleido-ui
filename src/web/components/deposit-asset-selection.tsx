@@ -3,10 +3,17 @@ import { Button } from '../primitives/button'
 import { DotPagination } from '../primitives/dot-pagination'
 import { Icon } from '../primitives/icon'
 import { AssetIcon } from './asset-icon'
+import { BottomSheet } from './bottom-sheet'
 import { NetworkBadge } from './network-badge'
 import { ScrollArea } from './scroll-area'
 import { cn } from '../utils/cn'
 import type { DepositAccountId } from './deposit-ui-shared'
+
+const ADD_ASSET_SUBTITLE: Record<DepositAccountId, string> = {
+  RGB: 'RGB asset on Bitcoin',
+  SPARK: 'Spark-native asset',
+  ARKADE: 'Arkade-native asset',
+}
 
 export interface DepositSelectionAsset {
   asset_id: string
@@ -80,6 +87,7 @@ export function DepositAssetSelection<TView extends string = string>({
   const isSearching = !!searchQuery
   // Collapsed by default; auto-expand whenever the user starts a search.
   const [assetsExpanded, setAssetsExpanded] = useState(false)
+  const [showAddAssetModal, setShowAddAssetModal] = useState(false)
   useEffect(() => {
     if (isSearching) setAssetsExpanded(true)
   }, [isSearching])
@@ -292,59 +300,66 @@ export function DepositAssetSelection<TView extends string = string>({
         )}
 
         {!searchQuery && newAssetOptions.length > 0 && (
-          <div className="space-y-2 pt-2">
-            <div className="px-1">
-              <p className="text-xxs font-bold uppercase tracking-[0.18em] text-white/35">
-                New Asset
-              </p>
-            </div>
-            <div
-              className={cn(
-                'grid gap-2',
-                newAssetOptions.length === 1
-                  ? 'grid-cols-1'
-                  : newAssetOptions.length === 2
-                    ? 'grid-cols-2'
-                    : 'grid-cols-3'
-              )}
+          <div className="pb-1 pt-2">
+            <button
+              type="button"
+              data-testid="deposit-add-asset"
+              onClick={() => setShowAddAssetModal(true)}
+              className="group flex w-full items-center gap-3 rounded-2xl border border-white/8 bg-white/3 p-3 transition-all hover:border-border hover:bg-accent"
             >
-              {newAssetOptions.map((option) => {
-                const active = isNewAsset && newAssetAccount === option.account
-                return (
-                  <button
-                    key={option.account}
-                    type="button"
-                    data-testid={`deposit-new-asset-${option.account.toLowerCase()}`}
-                    className={cn(
-                      'group flex min-h-[112px] flex-col items-center justify-center rounded-2xl px-3 py-3.5 text-center text-sm transition-all',
-                      active ? option.activeClass : option.idleClass
-                    )}
-                    onClick={() => handleAddNewAsset(option.account)}
-                  >
-                    <div className="relative">
-                      <AssetIcon ticker={option.ticker} size={40} />
-                      <div className="absolute -bottom-1 -right-1 flex size-4 items-center justify-center rounded-full bg-primary">
-                        <Icon name="add" size="xs" className="text-background" />
-                      </div>
-                    </div>
-                    <div className="mt-2 min-w-0">
-                      <div
-                        className={cn(
-                          'text-sm font-bold tracking-wide',
-                          active ? 'text-white' : 'text-white group-hover:opacity-90',
-                          !active && option.titleHoverClass
-                        )}
-                      >
-                        {option.title}
-                      </div>
-                    </div>
-                  </button>
-                )
-              })}
-            </div>
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/15">
+                <Icon name="add" size="md" className="text-primary" />
+              </div>
+              <div className="flex-1 text-left">
+                <p className="text-sm font-semibold text-white transition-colors group-hover:text-primary">
+                  Add an asset
+                </p>
+                <p className="text-xxs leading-tight text-white/40">
+                  Receive a new {newAssetOptions.map((o) => o.ticker).join(', ')} asset
+                </p>
+              </div>
+              <span className="material-symbols-outlined text-lg text-white/30 transition-colors group-hover:text-primary">
+                arrow_forward
+              </span>
+            </button>
           </div>
         )}
       </ScrollArea>
+
+      <BottomSheet
+        open={showAddAssetModal}
+        title="Add an asset"
+        onClose={() => setShowAddAssetModal(false)}
+      >
+        <div className="space-y-2">
+          {newAssetOptions.map((option) => (
+            <button
+              key={option.account}
+              type="button"
+              data-testid={`deposit-new-asset-${option.account.toLowerCase()}`}
+              className={cn(
+                'group flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left transition-all',
+                option.idleClass,
+              )}
+              onClick={() => {
+                setShowAddAssetModal(false)
+                handleAddNewAsset(option.account)
+              }}
+            >
+              <AssetIcon ticker={option.ticker} size={36} className="flex-shrink-0" />
+              <div className="min-w-0 flex-1">
+                <div className={cn('text-sm font-bold tracking-wide text-white', option.titleHoverClass)}>
+                  {option.title}
+                </div>
+                <div className="mt-0.5 text-xxs text-white/40">
+                  {ADD_ASSET_SUBTITLE[option.account]}
+                </div>
+              </div>
+              <Icon name="add" size="sm" className="text-white/30 transition-colors group-hover:text-white/60" />
+            </button>
+          ))}
+        </div>
+      </BottomSheet>
 
       {isNewAsset && newAssetAccount === 'RGB' && (
         <>

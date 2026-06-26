@@ -172,8 +172,9 @@ export function AccountStatusTabs<TId extends string = string>({
                   {selectedAccount.capabilityBullets.map((capability) => (
                     <span
                       key={capability}
-                      className="rounded-full border bg-white/[0.05] px-2.5 py-1 text-xxs font-medium text-white/65"
+                      className="inline-flex items-center gap-1.5 rounded-full border bg-white/[0.05] px-2.5 py-1 text-xxs font-medium text-white/70"
                     >
+                      <span className="size-1.5 rounded-full bg-primary/70" />
                       {capability}
                     </span>
                   ))}
