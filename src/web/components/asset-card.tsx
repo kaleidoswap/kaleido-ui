@@ -102,7 +102,7 @@ export function AssetCard({
               {ticker}
             </p>
             {showYield && (
-              <div title="Yield Generating Asset" className="text-green-500/90 flex items-center justify-center bg-green-500/10 rounded-full p-0.5">
+              <div title="Yield Generating Asset" className="text-success/90 flex items-center justify-center bg-success/10 rounded-full p-0.5">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
