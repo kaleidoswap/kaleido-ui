@@ -58,6 +58,18 @@ export interface DepositPreGenerationProps {
   /** Invoked by the inline "Create Colorable UTXOs" CTA. */
   onOpenCreateUtxos?: () => void
   showReceiveSummary?: boolean
+  /** RGB-asset receive: render an inline asset-id field (receive a specific asset). */
+  isNewRgbAsset?: boolean
+  /** Current asset-id value for the inline field. */
+  newAssetId?: string
+  /** Setter for the inline asset-id field. */
+  setNewAssetId?: (value: string) => void
+  /**
+   * Number of colorable (uncolored) UTXOs available for a blinded receive.
+   * `undefined` ⇒ unknown/loading; a number drives the availability hint and the
+   * create-UTXO prompt for the privacy (blinded) path.
+   */
+  colorableUtxoCount?: number
 }
 
 export function DepositPreGeneration({
@@ -81,8 +93,13 @@ export function DepositPreGeneration({
   needsColorableUtxos = false,
   onOpenCreateUtxos,
   showReceiveSummary = true,
+  isNewRgbAsset = false,
+  newAssetId = '',
+  setNewAssetId,
+  colorableUtxoCount,
 }: DepositPreGenerationProps) {
   const method = METHOD_META[currentMethod]
+  const isRgbOnchain = network === 'onchain' && !isBtc
 
   return (
     <div className="space-y-3">
@@ -152,17 +169,42 @@ export function DepositPreGeneration({
         </div>
       )}
 
-      {network === 'onchain' && !isBtc && (
-        <div className="space-y-2 rounded-xl border bg-card p-3">
+      {/* RGB asset-id: receive a specific asset, or any asset when left empty. */}
+      {isRgbOnchain && isNewRgbAsset && setNewAssetId && (
+        <div className="space-y-1.5">
+          <label className="text-xxs font-bold uppercase tracking-widest text-white/40">
+            RGB Asset ID - Optional
+          </label>
+          <input
+            type="text"
+            value={newAssetId}
+            onChange={(event) => setNewAssetId(event.target.value)}
+            placeholder="rgb:... (leave empty for any asset)"
+            spellCheck={false}
+            autoCapitalize="off"
+            className="w-full rounded-xl border bg-white/5 px-3 py-2.5 font-mono text-sm text-white transition-all placeholder:text-white/20 focus:border-primary/50 focus:outline-none"
+          />
+          <p className="text-xxs text-white/35">
+            Enter a specific asset ID to receive it, or leave empty to accept any RGB asset to this
+            invoice.
+          </p>
+        </div>
+      )}
+
+      {isRgbOnchain && (
+        <div className="space-y-2.5 rounded-xl border bg-card p-3">
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0 flex-1">
-              <h4 className="text-xs font-bold text-white">Receive with Privacy</h4>
+              <h4 className="text-xs font-bold text-white">
+                {usePrivacy ? 'Blinded receive' : 'Witness receive'}
+              </h4>
               <p className="mt-0.5 text-xxs text-muted-foreground">
-                {usePrivacy ? 'Blinded UTXO - enhanced privacy' : 'Witness address - less private'}
+                {usePrivacy ? 'Private - recommended' : 'Simpler - less private'}
               </p>
             </div>
             <button
               type="button"
+              aria-label="Toggle blinded (private) receive"
               className={cn(
                 'relative inline-flex h-5 w-9 flex-shrink-0 items-center rounded-full border shadow-inner transition-colors',
                 usePrivacy ? 'bg-primary' : 'bg-white/10'
@@ -177,9 +219,32 @@ export function DepositPreGeneration({
               />
             </button>
           </div>
-          {!usePrivacy && (
-            <p className="rounded-lg border border-warning/15 bg-warning/5 px-2.5 py-1.5 text-xxs text-warning/80">
-              Sender needs to add sats to create a new UTXO for you.
+
+          {/* Mode explainer */}
+          <p className="text-tiny leading-relaxed text-white/45">
+            {usePrivacy
+              ? 'Blinded: the sender never sees which UTXO you receive into. Spends one of your colorable UTXOs as the receiving slot.'
+              : 'Witness: the sender creates the receiving UTXO for you. No colorable UTXO needed, but the sender sees the receiving output.'}
+          </p>
+
+          {/* Colorable UTXO availability — only relevant for the blinded path. */}
+          {usePrivacy && colorableUtxoCount !== undefined && (
+            <div
+              className={cn(
+                'flex items-center justify-between rounded-lg border px-2.5 py-1.5 text-xxs',
+                colorableUtxoCount > 0
+                  ? 'border-success/20 bg-success/5 text-success/80'
+                  : 'border-warning/20 bg-warning/5 text-warning/80'
+              )}
+            >
+              <span className="font-medium">Available colorable UTXOs</span>
+              <span className="font-mono font-bold">{colorableUtxoCount}</span>
+            </div>
+          )}
+          {usePrivacy && colorableUtxoCount === 0 && (
+            <p className="text-tiny text-warning/70">
+              None available — create a colorable UTXO below to receive privately, or switch off
+              privacy to use a witness receive.
             </p>
           )}
         </div>
@@ -221,7 +286,8 @@ export function DepositPreGeneration({
       )}
 
       {!isAutoGenerate &&
-        (needsColorableUtxos && onOpenCreateUtxos ? (
+        ((needsColorableUtxos || (isRgbOnchain && usePrivacy && colorableUtxoCount === 0)) &&
+        onOpenCreateUtxos ? (
           <Button variant="cta" size="cta" onClick={onOpenCreateUtxos} disabled={loading}>
             <span className="flex items-center justify-center gap-2">
               <span className="material-symbols-outlined text-icon-md">add_circle</span>
