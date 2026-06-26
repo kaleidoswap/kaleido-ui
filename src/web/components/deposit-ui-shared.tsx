@@ -204,10 +204,13 @@ export function AccountChoiceChip({
   account,
   active,
   onClick,
+  label,
 }: {
   account: DepositAccountId
   active: boolean
   onClick: () => void
+  /** Override the short label, e.g. "RLN" vs "RGB" for the RGB account's backing. */
+  label?: string
 }) {
   const meta = ACCOUNT_META[account]
 
@@ -224,7 +227,7 @@ export function AccountChoiceChip({
       )}
     >
       {meta.icon}
-      <span>{meta.shortLabel}</span>
+      <span>{label ?? meta.shortLabel}</span>
     </button>
   )
 }
