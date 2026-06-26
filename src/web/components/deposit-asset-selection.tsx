@@ -361,30 +361,6 @@ export function DepositAssetSelection<TView extends string = string>({
         </div>
       </BottomSheet>
 
-      {isNewAsset && newAssetAccount === 'RGB' && (
-        <>
-          <div className="flex-shrink-0 px-5 pb-3 animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <div className="space-y-2 rounded-2xl border border-network-arkade/20 bg-network-arkade/5 p-3">
-              <p className="text-tiny leading-relaxed text-network-arkade/80">
-                Leave empty to receive any RGB asset, or enter a specific asset ID.
-              </p>
-              <input
-                className="w-full rounded-xl border bg-white/5 px-3 py-2 font-mono text-sm text-white transition-all placeholder:text-white/25 focus:border-network-arkade/40 focus:outline-none"
-                onChange={(event) => setNewAssetId(event.target.value)}
-                placeholder="Asset ID (optional)"
-                type="text"
-                value={newAssetId}
-              />
-            </div>
-          </div>
-          <div className="flex-shrink-0 px-5 pb-5 pt-2">
-            <Button variant="cta" size="cta" onClick={handleContinueToGenerate}>
-              Continue with New Asset
-              <span className="material-symbols-outlined text-icon-xl font-bold">arrow_forward</span>
-            </Button>
-          </div>
-        </>
-      )}
     </div>
   )
 }
