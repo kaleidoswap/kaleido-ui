@@ -89,7 +89,7 @@ const ACCOUNT_META: Record<
   }
 > = {
   RGB: {
-    shortLabel: 'RLN',
+    shortLabel: 'RGB',
     accentBg: 'bg-primary/10',
     accentText: 'text-primary',
     accentBorder: 'border-primary/30',
