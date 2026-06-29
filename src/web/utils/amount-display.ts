@@ -5,7 +5,14 @@ export interface AmountDisplayOptions {
   maxDecimals?: number
 }
 
-const NUMBER_RE = /^(-?\d[\d,]*)(?:\.(\d+))?$/
+// Matches ONLY unambiguous en-US plain numbers: either no grouping at all
+// (`3159`, `0.00053`) or commas used strictly as thousands separators in
+// groups of three (`53,000`, `1,234,567`). A string like `31,59` — where the
+// comma is a decimal separator (it-IT/de-DE/fr-FR locale output) — does NOT
+// match, so it is passed through untouched instead of being misread as
+// `3159`. Without this, locale-formatted currency strings (e.g. "31,59 USD")
+// were corrupted to "3,159 USD" by the comma-stripping reparse below.
+const NUMBER_RE = /^-?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?$/
 
 export function formatDisplayAmountText(
   value: string | number | null | undefined,
