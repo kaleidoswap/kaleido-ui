@@ -16,6 +16,9 @@ export interface OptionSelectorProps {
   compact?: boolean
   className?: string
   onOpenPanelHeightChange?: (height: number) => void
+  /** Horizontal alignment of the trigger content. Defaults to 'between'
+   * (label left, chevron right). Use 'center' to center the value + chevron. */
+  triggerAlign?: 'between' | 'center'
 }
 
 export function OptionSelector({
@@ -26,6 +29,7 @@ export function OptionSelector({
   compact = false,
   className,
   onOpenPanelHeightChange,
+  triggerAlign = 'between',
 }: OptionSelectorProps) {
   const selected = options.find((option) => option.id === value) ?? options[0]
 
@@ -42,7 +46,8 @@ export function OptionSelector({
       renderTrigger={({ open }) => (
         <span
           className={cn(
-            'flex items-center justify-between gap-1 rounded-2xl bg-white/[0.09] px-2 py-1.5 text-xs leading-none backdrop-blur-md transition-all hover:bg-white/[0.13]',
+            'flex items-center gap-1 rounded-2xl bg-white/[0.09] px-2 py-1.5 text-xs leading-none backdrop-blur-md transition-all hover:bg-white/[0.13]',
+            triggerAlign === 'center' ? 'justify-center' : 'justify-between',
             open && 'bg-white/[0.13]',
             !compact && 'w-full px-3 py-3',
           )}

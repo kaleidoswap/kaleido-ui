@@ -33,8 +33,8 @@ export function DepositSuccessScreen({
       <div className="flex flex-1 flex-col items-center justify-center p-6 text-center">
         <div className="relative mb-8">
           <div className="absolute inset-0 scale-150 animate-pulse rounded-full bg-primary/20 blur-2xl" />
-          <div className="relative flex size-28 items-center justify-center rounded-full border-2 border-primary/40 bg-primary/10 shadow-sm">
-            <span className="material-symbols-outlined text-display text-primary animate-in zoom-in-50 duration-500">
+          <div className="relative flex size-20 items-center justify-center rounded-full border-2 border-primary/40 bg-primary/10 shadow-sm">
+            <span className="material-symbols-outlined text-5xl text-primary animate-in zoom-in-50 duration-500">
               check_circle
             </span>
           </div>
@@ -65,8 +65,8 @@ export function DepositSuccessScreen({
         </div>
 
         <Button variant="cta" size="cta" onClick={handleDone}>
-          <span className="material-symbols-outlined text-icon-lg">home</span>
-          Back to Dashboard
+          <span className="material-symbols-outlined text-icon-lg">account_balance_wallet</span>
+          Back to Wallet
         </Button>
       </div>
     </div>
