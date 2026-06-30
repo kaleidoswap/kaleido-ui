@@ -12,6 +12,12 @@ import { writeFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { colors, lightSemanticColors } from '../src/tokens/colors.ts'
+import {
+  appSemanticDark,
+  appSemanticLight,
+  appSemanticOrder,
+  appStatusSubtleAlpha,
+} from '../src/tokens/app-semantic.ts'
 import { radius } from '../src/tokens/radius.ts'
 import { sizing } from '../src/tokens/sizing.ts'
 import { layer } from '../src/tokens/layers.ts'
@@ -58,6 +64,29 @@ const iconSizeTheme = Object.entries(iconSize)
 
 const iconBoxSizeTheme = Object.entries(iconBoxSize)
   .map(([key, size]) => `  --spacing-icon-${key}: ${size};`)
+  .join('\n')
+
+// ── App semantic colors (slate identity) ──────────────────────────────────
+// Channel triples ("R G B") declared under the `--app-*` namespace, then
+// surfaced as Tailwind utilities via `@theme inline` with `<alpha-value>` so
+// opacity modifiers (e.g. `bg-status-danger/10`) composite as straight rgba()
+// alpha — identical to the consuming app's pre-migration rendering.
+const appChannelVars = (vals: Record<string, string>): string =>
+  appSemanticOrder.map((k) => `  --app-${k}: ${vals[k]};`).join('\n')
+
+const appDarkVars = appChannelVars(appSemanticDark)
+const appLightVars = appChannelVars(appSemanticLight)
+
+const appThemeInline = appSemanticOrder
+  .map((k) => `  --color-${k}: rgb(var(--app-${k}) / <alpha-value>);`)
+  .join('\n')
+
+// Fixed-alpha tinted intent surfaces (`bg-status-*-subtle`).
+const appStatusSubtle = ['success', 'danger', 'warning', 'info']
+  .map(
+    (s) =>
+      `  --color-status-${s}-subtle: rgb(var(--app-status-${s}) / ${appStatusSubtleAlpha});`
+  )
   .join('\n')
 
 const css = `/* AUTO-GENERATED — do not edit by hand.
@@ -140,6 +169,19 @@ const css = `/* AUTO-GENERATED — do not edit by hand.
   --chart-5:              ${colors.chart5};
 }
 
+/* ── App semantic colors (slate identity) — from src/tokens/app-semantic.ts ─
+   RGB channels in the --app-* namespace. Dark is the default (:root, .dark);
+   light is opt-in (.light) — matching the document-root .dark/.light toggle.
+   Surfaced as Tailwind utilities below via @theme inline. ──────────────── */
+:root,
+.dark {
+${appDarkVars}
+}
+
+.light {
+${appLightVars}
+}
+
 /* ─────────────────────────────────────────────────────────────────────────
    Tailwind v4 @theme
    @theme inline  — semantic colors: utilities reference CSS vars so dark mode works at runtime.
@@ -171,6 +213,13 @@ const css = `/* AUTO-GENERATED — do not edit by hand.
   --color-chart-3:              var(--chart-3);
   --color-chart-4:              var(--chart-4);
   --color-chart-5:              var(--chart-5);
+
+  /* App semantic colors (slate identity) — channel-backed for <alpha-value>.
+     These intentionally override the shadcn-style --color-primary/--color-secondary
+     mappings above so brand utilities (bg-primary, bg-secondary, text-content-*,
+     border-border-*, bg-status-*/10, …) resolve to the canonical slate palette. */
+${appThemeInline}
+${appStatusSubtle}
 }
 
 @theme {
@@ -213,18 +262,13 @@ const css = `/* AUTO-GENERATED — do not edit by hand.
   --color-danger:  ${colors.danger};
   --color-info:    ${colors.info};
 
-  /* Surface elevation (translucent overlays for dark theme) */
-  --color-surface-base:           ${colors.surface.base};
+  /* Surface elevation — extras with no slate-semantic equivalent.
+     (surface-base / surface-elevated / surface-overlay are now the channel-backed
+     slate tokens defined in @theme inline above; the legacy translucent washes here
+     would otherwise override them by source order.) */
   --color-surface-card:           ${colors.surface.card};
-  --color-surface-elevated:       ${colors.surface.elevated};
-  --color-surface-overlay:        ${colors.surface.overlay};
   --color-surface-overlay-strong: ${colors.surface.overlayStrong};
   --color-surface-scrim:          ${colors.surface.scrim};
-
-  /* Border ladder */
-  --color-border-subtle:  ${colors.borderToken.subtle};
-  --color-border-default: ${colors.borderToken.default};
-  --color-border-strong:  ${colors.borderToken.strong};
 
   /* Text ladder for dark surfaces */
   --color-text-primary:   ${colors.text.primary};

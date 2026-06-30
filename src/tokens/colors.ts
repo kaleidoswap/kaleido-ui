@@ -3,25 +3,29 @@
  *
  * Single source of truth for all color constants across web and native.
  */
+// Slate identity (see src/tokens/app-semantic.ts). These shadcn-style semantic
+// anchors back the component-facing full-color vars (--background, --card,
+// --primary, …) consumed via raw var() and the bg-card / bg-background /
+// text-foreground utilities NOT overridden by the channel-backed app tokens.
 export const lightSemanticColors = {
-  background: '#ffffff',
-  foreground: '#0a0a0a',
-  card: '#ffffff',
-  cardFg: '#0a0a0a',
-  popover: '#ffffff',
-  popoverFg: '#0a0a0a',
-  primary: '#171717',
-  primaryFg: '#fafafa',
-  secondary: '#f5f5f5',
-  secondaryFg: '#171717',
-  muted: '#f5f5f5',
-  mutedFg: '#737373',
-  accent: '#f5f5f5',
-  accentFg: '#171717',
+  background: '#EAECF8', // surface-raised (light page body)
+  foreground: '#12131E', // content-primary
+  card: '#FFFFFF', //       surface-overlay
+  cardFg: '#12131E',
+  popover: '#FFFFFF',
+  popoverFg: '#12131E',
+  primary: '#17B581', //    brand green (light)
+  primaryFg: '#FFFFFF',
+  secondary: '#E4E6F6', //  neutral surface (bg-secondary utility is brand violet via app token)
+  secondaryFg: '#12131E',
+  muted: '#F6F7FD', //      surface-elevated
+  mutedFg: '#464A69', //    content-secondary
+  accent: '#E4E6F6', //     surface-high
+  accentFg: '#12131E',
   destructive: '#e7000b',
-  border: '#e5e5e5',
-  input: '#e5e5e5',
-  ring: '#a1a1a1',
+  border: '#C8CBE0', //     border-default
+  input: '#C8CBE0',
+  ring: '#17B581',
   chart1: '#2BEE79',
   chart2: '#F6C343',
   chart3: '#F7931A',
@@ -30,30 +34,30 @@ export const lightSemanticColors = {
 } as const
 
 const darkSemanticColors = {
-  background: '#0A1326',
-  foreground: '#ffffff',
+  background: '#12131C', // surface-base (deepest)
+  foreground: '#E8E9F2', // content-primary (cool white)
   border: 'rgba(255, 255, 255, 0.10)',
   input: 'rgba(255, 255, 255, 0.15)',
   destructive: 'hsl(0 62% 50%)',
-  secondary: '#16273F',
-  secondaryFg: '#ffffff',
-  muted: '#0F1C33',
+  secondary: '#16273F', // neutral surface (bg-secondary utility is brand violet via app token)
+  secondaryFg: '#E8E9F2',
+  muted: '#181924', //     surface-raised
   mutedFg: 'rgba(255, 255, 255, 0.55)',
-  primary: '#2BEE79',
-  primaryFg: '#051B10',
-  accent: '#16273F',
-  accentFg: '#ffffff',
-  ring: '#2BEE79',
-  card: '#0F1C33',
-  cardFg: '#ffffff',
-  popover: '#16273F',
-  popoverFg: '#ffffff',
+  primary: '#15E99A', //   brand green (dark)
+  primaryFg: '#12131C',
+  accent: '#323448', //    surface-elevated
+  accentFg: '#E8E9F2',
+  ring: '#15E99A',
+  card: '#242638', //      surface-overlay (card)
+  cardFg: '#E8E9F2',
+  popover: '#242638',
+  popoverFg: '#E8E9F2',
   chart1: '#2BEE79',
   chart2: '#F6C343',
   chart3: '#F7931A',
   chart4: '#7C3AED',
   chart5: '#DD352E',
-  semanticBackground: '#0F1C33',
+  semanticBackground: '#242638',
   semanticBorder: 'rgba(255, 255, 255, 0.10)',
 } as const
 

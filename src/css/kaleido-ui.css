@@ -26,24 +26,24 @@
 
 /* ── Semantic colors (light mode) — from src/tokens/colors.ts ───────────── */
 :root {
-  --background:           #ffffff;
-  --foreground:           #0a0a0a;
-  --card:                 #ffffff;
-  --card-foreground:      #0a0a0a;
-  --popover:              #ffffff;
-  --popover-foreground:   #0a0a0a;
-  --primary:              #171717;
-  --primary-foreground:   #fafafa;
-  --secondary:            #f5f5f5;
-  --secondary-foreground: #171717;
-  --muted:                #f5f5f5;
-  --muted-foreground:     #737373;
-  --accent:               #f5f5f5;
-  --accent-foreground:    #171717;
+  --background:           #EAECF8;
+  --foreground:           #12131E;
+  --card:                 #FFFFFF;
+  --card-foreground:      #12131E;
+  --popover:              #FFFFFF;
+  --popover-foreground:   #12131E;
+  --primary:              #17B581;
+  --primary-foreground:   #FFFFFF;
+  --secondary:            #E4E6F6;
+  --secondary-foreground: #12131E;
+  --muted:                #F6F7FD;
+  --muted-foreground:     #464A69;
+  --accent:               #E4E6F6;
+  --accent-foreground:    #12131E;
   --destructive:          #e7000b;
-  --border:               #e5e5e5;
-  --input:                #e5e5e5;
-  --ring:                 #a1a1a1;
+  --border:               #C8CBE0;
+  --input:                #C8CBE0;
+  --ring:                 #17B581;
   --chart-1:              #2BEE79;
   --chart-2:              #F6C343;
   --chart-3:              #F7931A;
@@ -53,29 +53,86 @@
 
 /* ── Semantic colors (dark mode) — from src/tokens/colors.ts ───────────── */
 .dark {
-  --background:           #0A1326;
-  --foreground:           #ffffff;
-  --card:                 #0F1C33;
-  --card-foreground:      #ffffff;
-  --popover:              #16273F;
-  --popover-foreground:   #ffffff;
-  --primary:              #2BEE79;
-  --primary-foreground:   #051B10;
+  --background:           #12131C;
+  --foreground:           #E8E9F2;
+  --card:                 #242638;
+  --card-foreground:      #E8E9F2;
+  --popover:              #242638;
+  --popover-foreground:   #E8E9F2;
+  --primary:              #15E99A;
+  --primary-foreground:   #12131C;
   --secondary:            #16273F;
-  --secondary-foreground: #ffffff;
-  --muted:                #0F1C33;
+  --secondary-foreground: #E8E9F2;
+  --muted:                #181924;
   --muted-foreground:     rgba(255, 255, 255, 0.55);
-  --accent:               #16273F;
-  --accent-foreground:    #ffffff;
+  --accent:               #323448;
+  --accent-foreground:    #E8E9F2;
   --destructive:          hsl(0 62% 50%);
   --border:               rgba(255, 255, 255, 0.10);
   --input:                rgba(255, 255, 255, 0.15);
-  --ring:                 #2BEE79;
+  --ring:                 #15E99A;
   --chart-1:              #2BEE79;
   --chart-2:              #F6C343;
   --chart-3:              #F7931A;
   --chart-4:              #7C3AED;
   --chart-5:              #DD352E;
+}
+
+/* ── App semantic colors (slate identity) — from src/tokens/app-semantic.ts ─
+   RGB channels in the --app-* namespace. Dark is the default (:root, .dark);
+   light is opt-in (.light) — matching the document-root .dark/.light toggle.
+   Surfaced as Tailwind utilities below via @theme inline. ──────────────── */
+:root,
+.dark {
+  --app-surface-base: 18 19 28;
+  --app-surface-raised: 24 25 36;
+  --app-surface-overlay: 36 38 56;
+  --app-surface-elevated: 50 52 72;
+  --app-surface-high: 66 68 90;
+  --app-primary: 21 233 154;
+  --app-primary-emphasis: 18 201 126;
+  --app-primary-foreground: 18 19 28;
+  --app-secondary: 139 92 246;
+  --app-secondary-emphasis: 124 58 237;
+  --app-secondary-foreground: 255 255 255;
+  --app-content-primary: 232 233 242;
+  --app-content-secondary: 142 146 172;
+  --app-content-tertiary: 88 92 116;
+  --app-content-inverse: 18 19 28;
+  --app-border-subtle: 40 42 60;
+  --app-border-default: 54 56 76;
+  --app-border-strong: 21 233 154;
+  --app-status-success: 34 197 94;
+  --app-status-danger: 248 113 113;
+  --app-status-warning: 245 158 11;
+  --app-status-info: 56 189 248;
+  --app-divider: 86 89 108;
+}
+
+.light {
+  --app-surface-base: 218 220 234;
+  --app-surface-raised: 234 236 248;
+  --app-surface-overlay: 255 255 255;
+  --app-surface-elevated: 246 247 253;
+  --app-surface-high: 228 230 246;
+  --app-primary: 23 181 129;
+  --app-primary-emphasis: 19 138 100;
+  --app-primary-foreground: 255 255 255;
+  --app-secondary: 111 50 255;
+  --app-secondary-emphasis: 90 31 229;
+  --app-secondary-foreground: 255 255 255;
+  --app-content-primary: 18 19 30;
+  --app-content-secondary: 70 74 105;
+  --app-content-tertiary: 118 122 152;
+  --app-content-inverse: 255 255 255;
+  --app-border-subtle: 218 220 238;
+  --app-border-default: 200 203 224;
+  --app-border-strong: 23 181 129;
+  --app-status-success: 22 163 74;
+  --app-status-danger: 220 38 38;
+  --app-status-warning: 217 119 6;
+  --app-status-info: 2 132 199;
+  --app-divider: 200 203 224;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -109,6 +166,38 @@
   --color-chart-3:              var(--chart-3);
   --color-chart-4:              var(--chart-4);
   --color-chart-5:              var(--chart-5);
+
+  /* App semantic colors (slate identity) — channel-backed for <alpha-value>.
+     These intentionally override the shadcn-style --color-primary/--color-secondary
+     mappings above so brand utilities (bg-primary, bg-secondary, text-content-*,
+     border-border-*, bg-status-*/10, …) resolve to the canonical slate palette. */
+  --color-surface-base: rgb(var(--app-surface-base) / <alpha-value>);
+  --color-surface-raised: rgb(var(--app-surface-raised) / <alpha-value>);
+  --color-surface-overlay: rgb(var(--app-surface-overlay) / <alpha-value>);
+  --color-surface-elevated: rgb(var(--app-surface-elevated) / <alpha-value>);
+  --color-surface-high: rgb(var(--app-surface-high) / <alpha-value>);
+  --color-primary: rgb(var(--app-primary) / <alpha-value>);
+  --color-primary-emphasis: rgb(var(--app-primary-emphasis) / <alpha-value>);
+  --color-primary-foreground: rgb(var(--app-primary-foreground) / <alpha-value>);
+  --color-secondary: rgb(var(--app-secondary) / <alpha-value>);
+  --color-secondary-emphasis: rgb(var(--app-secondary-emphasis) / <alpha-value>);
+  --color-secondary-foreground: rgb(var(--app-secondary-foreground) / <alpha-value>);
+  --color-content-primary: rgb(var(--app-content-primary) / <alpha-value>);
+  --color-content-secondary: rgb(var(--app-content-secondary) / <alpha-value>);
+  --color-content-tertiary: rgb(var(--app-content-tertiary) / <alpha-value>);
+  --color-content-inverse: rgb(var(--app-content-inverse) / <alpha-value>);
+  --color-border-subtle: rgb(var(--app-border-subtle) / <alpha-value>);
+  --color-border-default: rgb(var(--app-border-default) / <alpha-value>);
+  --color-border-strong: rgb(var(--app-border-strong) / <alpha-value>);
+  --color-status-success: rgb(var(--app-status-success) / <alpha-value>);
+  --color-status-danger: rgb(var(--app-status-danger) / <alpha-value>);
+  --color-status-warning: rgb(var(--app-status-warning) / <alpha-value>);
+  --color-status-info: rgb(var(--app-status-info) / <alpha-value>);
+  --color-divider: rgb(var(--app-divider) / <alpha-value>);
+  --color-status-success-subtle: rgb(var(--app-status-success) / 0.15);
+  --color-status-danger-subtle: rgb(var(--app-status-danger) / 0.15);
+  --color-status-warning-subtle: rgb(var(--app-status-warning) / 0.15);
+  --color-status-info-subtle: rgb(var(--app-status-info) / 0.15);
 }
 
 @theme {
@@ -146,23 +235,18 @@
   --color-tx-swap:    #4290FF;
 
   /* Intent colors */
-  --color-success: #2BEE79;
+  --color-success: #15E99A;
   --color-warning: #FACC15;
   --color-danger:  #F94040;
   --color-info:    #4290FF;
 
-  /* Surface elevation (translucent overlays for dark theme) */
-  --color-surface-base:           rgba(255, 255, 255, 0.03);
+  /* Surface elevation — extras with no slate-semantic equivalent.
+     (surface-base / surface-elevated / surface-overlay are now the channel-backed
+     slate tokens defined in @theme inline above; the legacy translucent washes here
+     would otherwise override them by source order.) */
   --color-surface-card:           rgba(255, 255, 255, 0.05);
-  --color-surface-elevated:       rgba(255, 255, 255, 0.08);
-  --color-surface-overlay:        rgba(0, 0, 0, 0.20);
   --color-surface-overlay-strong: rgba(0, 0, 0, 0.35);
   --color-surface-scrim:          rgba(0, 0, 0, 0.60);
-
-  /* Border ladder */
-  --color-border-subtle:  rgba(255, 255, 255, 0.04);
-  --color-border-default: rgba(255, 255, 255, 0.08);
-  --color-border-strong:  rgba(255, 255, 255, 0.15);
 
   /* Text ladder for dark surfaces */
   --color-text-primary:   #ffffff;

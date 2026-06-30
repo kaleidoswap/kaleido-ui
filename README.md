@@ -15,32 +15,31 @@ npm install kaleido-ui
 | `kaleido-ui` | Web components (Tailwind CSS + Radix UI) |
 | `kaleido-ui/tokens` | Platform-agnostic design tokens (zero deps) |
 | `kaleido-ui/native` | React Native components (WDK + custom) |
-| `kaleido-ui/tailwind` | Tailwind CSS preset |
-| `kaleido-ui/css` | CSS custom properties, glass effects, animations |
+| `kaleido-ui/css` | Tailwind v4 `@theme` tokens, CSS variables, keyframes, utilities, Material Symbols |
 
-## Quick Start — Web
+> **Tailwind v4 only.** `kaleido-ui/css` ships the full theme as Tailwind v4
+> `@theme` blocks, so there is no separate Tailwind preset to configure —
+> importing the CSS registers every token and generates the utilities.
 
-### 1. Configure Tailwind
+## Quick Start — Web (Tailwind v4)
 
-```js
-// tailwind.config.js
-module.exports = {
-  content: [
-    './src/**/*.{ts,tsx}',
-    './node_modules/kaleido-ui/dist/web/*.js',
-  ],
-  presets: [require('kaleido-ui/tailwind')],
-}
+### 1. Import Tailwind + the kaleido-ui theme
+
+```css
+/* styles.css */
+@import "tailwindcss";
+@import "kaleido-ui/css";
+
+/* Tell Tailwind which files to scan for classes */
+@source "./src/**/*.{ts,tsx}";
 ```
-
-### 2. Import CSS
 
 ```ts
 // main.tsx
-import 'kaleido-ui/css'
+import './styles.css'
 ```
 
-### 3. Use Components
+### 2. Use Components
 
 ```tsx
 import { Button, Card, CardContent, StatusBadge, AssetCard } from 'kaleido-ui'
