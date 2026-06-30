@@ -67,10 +67,12 @@ const iconBoxSizeTheme = Object.entries(iconBoxSize)
   .join('\n')
 
 // ── App semantic colors (slate identity) ──────────────────────────────────
-// Channel triples ("R G B") declared under the `--app-*` namespace, then
-// surfaced as Tailwind utilities via `@theme inline` with `<alpha-value>` so
-// opacity modifiers (e.g. `bg-status-danger/10`) composite as straight rgba()
-// alpha — identical to the consuming app's pre-migration rendering.
+// Channel triples ("R G B") declared under the `--app-*` namespace and wrapped
+// in rgb() for the Tailwind utility. Opacity modifiers (e.g. bg-status-danger
+// over 10%) resolve via Tailwind v4 color-mix(in oklab, C, transparent), which
+// is equivalent to straight rgba() alpha (mixing with transparent only scales
+// alpha) — so the consuming app's pre-migration rendering is preserved. The raw
+// --app-* channels also back manual rgb(var(--app-x) / 0.8) usages in app CSS.
 const appChannelVars = (vals: Record<string, string>): string =>
   appSemanticOrder.map((k) => `  --app-${k}: ${vals[k]};`).join('\n')
 
@@ -78,7 +80,7 @@ const appDarkVars = appChannelVars(appSemanticDark)
 const appLightVars = appChannelVars(appSemanticLight)
 
 const appThemeInline = appSemanticOrder
-  .map((k) => `  --color-${k}: rgb(var(--app-${k}) / <alpha-value>);`)
+  .map((k) => `  --color-${k}: rgb(var(--app-${k}));`)
   .join('\n')
 
 // Fixed-alpha tinted intent surfaces (`bg-status-*-subtle`).
@@ -214,10 +216,10 @@ ${appLightVars}
   --color-chart-4:              var(--chart-4);
   --color-chart-5:              var(--chart-5);
 
-  /* App semantic colors (slate identity) — channel-backed for <alpha-value>.
-     These intentionally override the shadcn-style --color-primary/--color-secondary
-     mappings above so brand utilities (bg-primary, bg-secondary, text-content-*,
-     border-border-*, bg-status-*/10, …) resolve to the canonical slate palette. */
+  /* App semantic colors (slate identity) — channel-backed via the --app-* vars.
+     These intentionally override the shadcn-style --color-primary / --color-secondary
+     mappings above so the brand utilities (bg-primary, bg-secondary, text-content-x,
+     border-border-x, bg-status-x with opacity) resolve to the canonical slate palette. */
 ${appThemeInline}
 ${appStatusSubtle}
 }

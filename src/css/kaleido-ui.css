@@ -167,33 +167,33 @@
   --color-chart-4:              var(--chart-4);
   --color-chart-5:              var(--chart-5);
 
-  /* App semantic colors (slate identity) — channel-backed for <alpha-value>.
-     These intentionally override the shadcn-style --color-primary/--color-secondary
-     mappings above so brand utilities (bg-primary, bg-secondary, text-content-*,
-     border-border-*, bg-status-*/10, …) resolve to the canonical slate palette. */
-  --color-surface-base: rgb(var(--app-surface-base) / <alpha-value>);
-  --color-surface-raised: rgb(var(--app-surface-raised) / <alpha-value>);
-  --color-surface-overlay: rgb(var(--app-surface-overlay) / <alpha-value>);
-  --color-surface-elevated: rgb(var(--app-surface-elevated) / <alpha-value>);
-  --color-surface-high: rgb(var(--app-surface-high) / <alpha-value>);
-  --color-primary: rgb(var(--app-primary) / <alpha-value>);
-  --color-primary-emphasis: rgb(var(--app-primary-emphasis) / <alpha-value>);
-  --color-primary-foreground: rgb(var(--app-primary-foreground) / <alpha-value>);
-  --color-secondary: rgb(var(--app-secondary) / <alpha-value>);
-  --color-secondary-emphasis: rgb(var(--app-secondary-emphasis) / <alpha-value>);
-  --color-secondary-foreground: rgb(var(--app-secondary-foreground) / <alpha-value>);
-  --color-content-primary: rgb(var(--app-content-primary) / <alpha-value>);
-  --color-content-secondary: rgb(var(--app-content-secondary) / <alpha-value>);
-  --color-content-tertiary: rgb(var(--app-content-tertiary) / <alpha-value>);
-  --color-content-inverse: rgb(var(--app-content-inverse) / <alpha-value>);
-  --color-border-subtle: rgb(var(--app-border-subtle) / <alpha-value>);
-  --color-border-default: rgb(var(--app-border-default) / <alpha-value>);
-  --color-border-strong: rgb(var(--app-border-strong) / <alpha-value>);
-  --color-status-success: rgb(var(--app-status-success) / <alpha-value>);
-  --color-status-danger: rgb(var(--app-status-danger) / <alpha-value>);
-  --color-status-warning: rgb(var(--app-status-warning) / <alpha-value>);
-  --color-status-info: rgb(var(--app-status-info) / <alpha-value>);
-  --color-divider: rgb(var(--app-divider) / <alpha-value>);
+  /* App semantic colors (slate identity) — channel-backed via the --app-* vars.
+     These intentionally override the shadcn-style --color-primary / --color-secondary
+     mappings above so the brand utilities (bg-primary, bg-secondary, text-content-x,
+     border-border-x, bg-status-x with opacity) resolve to the canonical slate palette. */
+  --color-surface-base: rgb(var(--app-surface-base));
+  --color-surface-raised: rgb(var(--app-surface-raised));
+  --color-surface-overlay: rgb(var(--app-surface-overlay));
+  --color-surface-elevated: rgb(var(--app-surface-elevated));
+  --color-surface-high: rgb(var(--app-surface-high));
+  --color-primary: rgb(var(--app-primary));
+  --color-primary-emphasis: rgb(var(--app-primary-emphasis));
+  --color-primary-foreground: rgb(var(--app-primary-foreground));
+  --color-secondary: rgb(var(--app-secondary));
+  --color-secondary-emphasis: rgb(var(--app-secondary-emphasis));
+  --color-secondary-foreground: rgb(var(--app-secondary-foreground));
+  --color-content-primary: rgb(var(--app-content-primary));
+  --color-content-secondary: rgb(var(--app-content-secondary));
+  --color-content-tertiary: rgb(var(--app-content-tertiary));
+  --color-content-inverse: rgb(var(--app-content-inverse));
+  --color-border-subtle: rgb(var(--app-border-subtle));
+  --color-border-default: rgb(var(--app-border-default));
+  --color-border-strong: rgb(var(--app-border-strong));
+  --color-status-success: rgb(var(--app-status-success));
+  --color-status-danger: rgb(var(--app-status-danger));
+  --color-status-warning: rgb(var(--app-status-warning));
+  --color-status-info: rgb(var(--app-status-info));
+  --color-divider: rgb(var(--app-divider));
   --color-status-success-subtle: rgb(var(--app-status-success) / 0.15);
   --color-status-danger-subtle: rgb(var(--app-status-danger) / 0.15);
   --color-status-warning-subtle: rgb(var(--app-status-warning) / 0.15);
