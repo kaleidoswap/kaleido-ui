@@ -84,6 +84,7 @@ export {
   LightningNetworkIcon,
   SparkNetworkIcon,
   ArkadeNetworkIcon,
+  RgbNetworkIcon,
   type NetworkIconProps,
 } from './components/network-icon'
 export { ActionTile, type ActionTileProps } from './components/action-tile'

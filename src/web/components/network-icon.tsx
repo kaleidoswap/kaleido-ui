@@ -1,4 +1,5 @@
 import { cn } from '../utils/cn'
+import { protocolIcons } from '../assets/protocol-icons'
 
 export interface NetworkIconProps {
   className?: string
@@ -39,4 +40,13 @@ export function ArkadeNetworkIcon({
       className={cn('object-contain', className)}
     />
   )
+}
+
+/**
+ * RGB logo. Unlike the other network icons (which reference host-app asset
+ * paths), this renders the RGB mark bundled with the library (protocolIcons),
+ * so consumers get the canonical logo without serving their own copy.
+ */
+export function RgbNetworkIcon({ className = 'size-3.5', alt = 'RGB' }: NetworkIconProps) {
+  return <img src={protocolIcons['RGB20']} alt={alt} className={cn('object-contain', className)} />
 }

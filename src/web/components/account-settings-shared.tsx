@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
+import { RgbNetworkIcon } from './network-icon'
 
 export type AccountSettingsProtocol = 'RGB' | 'SPARK' | 'ARKADE'
 export type AccountSettingsNetwork = 'mainnet' | 'testnet' | 'regtest' | 'signet'
@@ -52,7 +53,7 @@ export function AccountHeaderIcons({ accountId }: { accountId: AccountSettingsPr
   if (accountId === 'RGB') {
     return (
       <span className="flex size-10 items-center justify-center rounded-full bg-primary/15 shadow-inner">
-        <img src="/icons/rgb/rgb-logo.svg" alt="RGB" className="size-5 object-contain" />
+        <RgbNetworkIcon className="size-5" />
       </span>
     )
   }
