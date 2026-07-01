@@ -44,7 +44,9 @@ export const NETWORK_CONFIG: Record<DepositNetworkKey, DepositNetworkConfigEntry
     border: 'border-network-bitcoin/40',
     qrBorder: 'border-network-bitcoin/30',
     qrGlow: qrGlowStyle(colors.network.bitcoin),
-    icon: <span className="material-symbols-outlined text-icon-xs leading-none">link</span>,
+    icon: (
+      <span className="material-symbols-outlined text-icon-xs leading-none">currency_bitcoin</span>
+    ),
   },
   lightning: {
     label: 'Lightning',

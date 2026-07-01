@@ -1,13 +1,13 @@
-import type { ChangeEvent } from 'react'
+import { useState, type ChangeEvent } from 'react'
 import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 import { QrCode } from './qr-code'
+import { BottomSheet } from './bottom-sheet'
 import {
   CopyIcon,
   InvoiceStatusBanner,
   NETWORK_CONFIG,
-  NetworkInfoDisclosure,
   PaidOverlay,
   type DepositAccountId,
   type DepositNetworkKey,
@@ -70,10 +70,13 @@ export interface BtcUnifiedReceiveProps {
    * button leads to a half-initialised state).
    */
   showRegenerate?: boolean
+  /** Optional request description/memo, edited alongside the amount in the
+   * Edit modal. When omitted the description field is hidden. */
+  description?: string
+  onDescriptionChange?: (value: string) => void
 }
 
 export function BtcUnifiedReceive({
-  btcSelectedAccount,
   accountReceiveResult,
   invoiceStatus,
   isInvoicePending,
@@ -88,71 +91,58 @@ export function BtcUnifiedReceive({
   setAmount,
   setInvoiceStatus,
   setAccountReceiveResult,
-  handleDone,
   showRegenerate = true,
+  description,
+  onDescriptionChange,
 }: BtcUnifiedReceiveProps) {
-  const accountNetwork =
-    btcSelectedAccount === 'SPARK' ? 'spark' : btcSelectedAccount === 'ARKADE' ? 'arkade' : 'onchain'
-  const qrNetwork = NETWORK_CONFIG[accountNetwork]
+  const [showEdit, setShowEdit] = useState(false)
+  const isQrCopied = copied === accountReceiveResult.qrValue
+
+  const handleNewAddress = () => {
+    setAddress('')
+    setAmount('')
+    setInvoiceStatus(null)
+    setAccountReceiveResult(null)
+  }
 
   return (
     <div className="space-y-3 animate-in fade-in zoom-in-95 duration-300">
-      <div className="flex flex-col gap-1.5 rounded-xl border border-white/8 bg-white/3 p-2.5">
-        <div className="flex items-center justify-between px-1">
-          <label className="text-xxs font-bold uppercase tracking-widest text-white/40">
-            Amount (optional)
-          </label>
-        </div>
-        <input
-          type="text"
-          value={amount}
-          onChange={handleAmountChange}
-          placeholder="Any amount"
-          className="w-full rounded-lg border bg-white/5 px-3 py-1.5 font-mono text-xs font-bold text-white transition-all placeholder:text-white/25 focus:border-primary/40 focus:outline-none"
-          inputMode="decimal"
-        />
-        {amount && loading && (
-          <p className="flex items-center gap-1 text-xxs text-warning/70">
-            <span className="material-symbols-outlined animate-spin text-icon-xxs">
-              progress_activity
-            </span>
-            Updating invoice...
-          </p>
-        )}
-      </div>
-
+      {/* White QR directly on the app background (no white card). */}
       <div className="flex flex-col items-center gap-3">
-        <div
-          className={cn(
-            'relative flex flex-col items-center rounded-2xl border-2 bg-white p-2 transition-all',
-            qrNetwork.qrBorder
-          )}
-          style={qrNetwork.qrGlow}
-        >
-          <QrCode value={accountReceiveResult.qrValue} size={200} />
+        <div className="relative flex flex-col items-center p-2">
+          <QrCode value={accountReceiveResult.qrValue} size={200} tone="onDark" />
           {isInvoicePaid && <PaidOverlay />}
         </div>
-        {(() => {
-          const isQrCopied = copied === accountReceiveResult.qrValue
-          return (
-            <button
-              type="button"
-              className={cn(
-                'flex items-center gap-1 rounded-full border px-2.5 py-1 text-xxs font-bold uppercase tracking-widest transition-all',
-                isQrCopied
-                  ? 'border-primary/30 bg-primary/10 text-primary'
-                  : 'border-border bg-white/5 text-muted-foreground hover:border-white/20 hover:bg-accent hover:text-white'
-              )}
-              onClick={(event) => {
-                event.stopPropagation()
-                void copyToClipboard(accountReceiveResult.qrValue)
-              }}
+
+        {/* Icon-only Surface actions: Copy, New Address, Edit (amount/description). */}
+        <div className="flex items-center justify-center gap-2.5">
+          <Button
+            variant="surface"
+            size="icon-xl"
+            aria-label={`Copy ${accountReceiveResult.qrLabel}`}
+            onClick={() => void copyToClipboard(accountReceiveResult.qrValue)}
+          >
+            <Icon name={isQrCopied ? 'check' : 'content_copy'} size="lg" />
+          </Button>
+          {showRegenerate && (
+            <Button
+              variant="surface"
+              size="icon-xl"
+              aria-label="New address"
+              onClick={handleNewAddress}
             >
-              <Icon name={isQrCopied ? 'check' : 'content_copy'} size="xs" />
-              {isQrCopied ? 'Copied' : `Copy ${accountReceiveResult.qrLabel}`}
-            </button>
-          )
-        })()}
+              <Icon name="refresh" size="lg" />
+            </Button>
+          )}
+          <Button
+            variant="surface"
+            size="icon-xl"
+            aria-label="Edit amount and description"
+            onClick={() => setShowEdit(true)}
+          >
+            <Icon name="edit" size="lg" />
+          </Button>
+        </div>
       </div>
 
       {invoiceStatus && (
@@ -174,9 +164,8 @@ export function BtcUnifiedReceive({
             <div
               key={address.network}
               className={cn(
-                'group flex cursor-pointer items-center gap-2 rounded-xl border bg-white/3 px-2.5 py-1.5',
-                'transition-all hover:bg-white/6 active:scale-[0.98]',
-                network.border
+                'group flex cursor-pointer items-center gap-2 rounded-xl bg-white/3 px-2.5 py-1.5',
+                'transition-all hover:bg-white/6 active:scale-[0.98]'
               )}
               style={{ borderLeftWidth: 3, borderLeftColor: network.color }}
               onClick={() => void copyToClipboard(address.value)}
@@ -210,33 +199,55 @@ export function BtcUnifiedReceive({
         })}
       </div>
 
-      <NetworkInfoDisclosure
-        networks={Array.from(
-          new Set(accountReceiveResult.addresses.map((address) => address.network))
-        )}
-      />
+      <BottomSheet
+        open={showEdit}
+        title="Edit request"
+        icon={<Icon name="edit" size="md" />}
+        onClose={() => setShowEdit(false)}
+      >
+        <div className="space-y-4">
+          <div className="space-y-1.5">
+            <label className="text-xxs font-bold uppercase tracking-widest text-white/40">
+              Amount (optional)
+            </label>
+            <input
+              type="text"
+              value={amount}
+              onChange={handleAmountChange}
+              placeholder="Any amount"
+              className="w-full rounded-xl bg-white/5 px-3 py-2.5 font-mono text-sm font-bold text-white shadow-inner transition-all placeholder:text-white/25 focus:outline focus:outline-2 focus:outline-primary/40"
+              inputMode="decimal"
+            />
+            {amount && loading && (
+              <p className="flex items-center gap-1 text-xxs text-warning/70">
+                <span className="material-symbols-outlined animate-spin text-icon-xxs">
+                  progress_activity
+                </span>
+                Updating invoice...
+              </p>
+            )}
+          </div>
 
-      <div className="flex gap-2.5 pt-1">
-        {showRegenerate && (
-          <button
-            type="button"
-            onClick={() => {
-              setAddress('')
-              setAmount('')
-              setInvoiceStatus(null)
-              setAccountReceiveResult(null)
-            }}
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border py-3 text-xs font-bold text-muted-foreground transition-all hover:border-border hover:bg-accent hover:text-white active:scale-[0.98]"
-          >
-            <span className="material-symbols-outlined text-icon-sm">refresh</span>
-            New Address
-          </button>
-        )}
-        <Button variant="cta" onClick={handleDone} className={showRegenerate ? undefined : 'flex-1'}>
-          <span className="material-symbols-outlined text-icon-sm">check</span>
-          Done
-        </Button>
-      </div>
+          {onDescriptionChange && (
+            <div className="space-y-1.5">
+              <label className="text-xxs font-bold uppercase tracking-widest text-white/40">
+                Description (optional)
+              </label>
+              <input
+                type="text"
+                value={description ?? ''}
+                onChange={(event) => onDescriptionChange(event.target.value)}
+                placeholder="What's this for?"
+                className="w-full rounded-xl bg-white/5 px-3 py-2.5 text-sm text-white shadow-inner transition-all placeholder:text-white/25 focus:outline focus:outline-2 focus:outline-primary/40"
+              />
+            </div>
+          )}
+
+          <Button variant="cta" className="w-full" onClick={() => setShowEdit(false)}>
+            Done
+          </Button>
+        </div>
+      </BottomSheet>
     </div>
   )
 }

@@ -5,6 +5,12 @@ export interface QrCodeProps {
   value: string
   size?: number
   className?: string
+  /**
+   * 'onLight' (default) renders dark modules on a white card — use inside a
+   * white container. 'onDark' renders white modules on a transparent
+   * background so the QR sits directly on the app background.
+   */
+  tone?: 'onLight' | 'onDark'
 }
 
 function isFinderPattern(row: number, col: number, size: number): boolean {
@@ -77,7 +83,7 @@ const LOGO_PATHS = (
   </>
 )
 
-export function QrCode({ value, size = 160, className }: QrCodeProps) {
+export function QrCode({ value, size = 160, className, tone = 'onLight' }: QrCodeProps) {
   const svgContent = useMemo(() => {
     if (!value) return null
 
@@ -87,8 +93,10 @@ export function QrCode({ value, size = 160, className }: QrCodeProps) {
     const quietZone = moduleSize * 2
     const svgSize = n * moduleSize + quietZone * 2
 
-    const fg = '#040404'
-    const bg = '#ffffff'
+    // onDark renders white modules on a transparent background (the QR sits
+    // directly on the app background); onLight is the classic dark-on-white.
+    const fg = tone === 'onDark' ? '#ffffff' : '#040404'
+    const bg = tone === 'onDark' ? 'transparent' : '#ffffff'
 
     const logoModules = Math.ceil(n * 0.2)
     const logoZoneSize = logoModules % 2 === 0 ? logoModules + 1 : logoModules
@@ -153,7 +161,7 @@ export function QrCode({ value, size = 160, className }: QrCodeProps) {
         {elements}
       </svg>
     )
-  }, [value])
+  }, [value, tone])
 
   return (
     <div className={className} style={{ width: size, height: size }}>
