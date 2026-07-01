@@ -44,25 +44,27 @@ export function WithdrawDestinationInput({
           value={destination}
           onChange={(event) => setDestination(event.target.value)}
         />
-        <div className="absolute right-4 top-1/2 flex -translate-y-1/2 items-center gap-2">
+        <div className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-1">
           {destination && (
             <button
               type="button"
+              aria-label="Clear"
               onClick={() => {
                 setDestination('')
                 handleReset()
               }}
-              className="text-xs text-muted-foreground transition-colors hover:text-white"
+              className="rounded-lg p-2 text-muted-foreground transition-colors hover:text-white"
             >
               <span className="material-symbols-outlined text-icon-md">close</span>
             </button>
           )}
           <button
             type="button"
+            aria-label="Paste"
             onClick={handlePaste}
-            className="rounded-lg bg-white/10 px-2.5 py-1 text-xs font-medium text-primary transition-colors hover:bg-white/20"
+            className="rounded-lg bg-white/5 p-2 text-muted-foreground transition-colors hover:text-primary"
           >
-            Paste
+            <span className="material-symbols-outlined text-icon-md">content_paste</span>
           </button>
         </div>
       </div>

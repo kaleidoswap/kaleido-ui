@@ -142,7 +142,7 @@ export function WithdrawAmountInput({
               const value = parseInt(event.target.value, 10)
               if (!Number.isNaN(value)) setWitnessAmountSat(value)
             }}
-            className="w-full rounded-xl border bg-card px-4 py-3 text-sm text-white transition-colors focus:border-primary/50 focus:outline-none"
+            className="w-full rounded-xl bg-card px-4 py-3 text-sm text-white shadow-inner transition-all focus:outline focus:outline-2 focus:outline-primary/50"
           />
           <p className="ml-1 text-xs text-muted-foreground">
             Bitcoin amount sent to create the witness UTXO for the recipient.
@@ -161,10 +161,10 @@ export function WithdrawAmountInput({
                 key={rate}
                 type="button"
                 onClick={() => setFeeRate(rate)}
-                className={`group relative overflow-hidden rounded-[16px] border px-3 py-3 shadow-sm transition-all active:scale-[0.98] ${
+                className={`group relative overflow-hidden rounded-[16px] px-3 py-3 shadow-sm transition-all active:scale-[0.98] ${
                   feeRate === rate
-                    ? 'border-primary/40 bg-primary/10'
-                    : 'border-border bg-card/40 backdrop-blur-xl hover:border-primary/40'
+                    ? 'bg-primary/10'
+                    : 'bg-card/40 backdrop-blur-xl hover:bg-card/60'
                 }`}
               >
                 <div
@@ -189,7 +189,7 @@ export function WithdrawAmountInput({
       )}
 
       {addressType === 'rgb' && (
-        <div className="flex items-center justify-between rounded-xl border bg-card p-3">
+        <div className="flex items-center justify-between rounded-xl bg-card p-3">
           <div>
             <p className="text-sm font-medium text-white">Gift / Donation</p>
             <p className="text-xs text-muted-foreground">Skip amount checks for this transfer</p>
