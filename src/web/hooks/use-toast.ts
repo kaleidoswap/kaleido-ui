@@ -101,7 +101,10 @@ function dispatch(action: Action) {
 
 interface Toast extends Omit<ToasterToast, 'id'> {}
 
-function toast({ duration = 4000, ...props }: Toast) {
+function toast({ duration, ...props }: Toast) {
+  // Errors linger longer than the 4s default so there's time to read + copy
+  // them (callers can still override with an explicit `duration`).
+  const effectiveDuration = duration ?? (props.variant === 'destructive' ? 12000 : 4000)
   const id = genId()
 
   const update = (props: ToasterToast) =>
@@ -114,15 +117,15 @@ function toast({ duration = 4000, ...props }: Toast) {
       ...props,
       id,
       open: true,
-      duration,
+      duration: effectiveDuration,
       onOpenChange: (open) => {
         if (!open) dismiss()
       },
     },
   })
 
-  if (duration > 0) {
-    setTimeout(() => dismiss(), duration)
+  if (effectiveDuration > 0) {
+    setTimeout(() => dismiss(), effectiveDuration)
   }
 
   return { id, dismiss, update }
