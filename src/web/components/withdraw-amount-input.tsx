@@ -36,6 +36,19 @@ export interface WithdrawAmountInputProps {
   feeRate: 'slow' | 'normal' | 'fast'
   setFeeRate: (rate: 'slow' | 'normal' | 'fast') => void
   feeRates: { slow: number; normal: number; fast: number }
+  /**
+   * Optional custom fee-rate mode. When `setFeeRateMode` is provided the fee
+   * selector gains a fourth "Custom" option with a sat/vB input; otherwise it
+   * renders the plain slow/normal/fast presets (backward compatible).
+   */
+  feeRateMode?: 'slow' | 'normal' | 'fast' | 'custom'
+  setFeeRateMode?: (mode: 'slow' | 'normal' | 'fast' | 'custom') => void
+  customFeeRate?: string
+  setCustomFeeRate?: (value: string) => void
+  /** Resolved sat/vB actually used (preset or custom), for the estimate line. */
+  effectiveFeeRateSatPerVb?: number
+  /** Estimated total fee in sats, for the estimate line. */
+  estimatedFee?: number
   donation: boolean
   setDonation: (value: boolean) => void
 }
@@ -56,9 +69,18 @@ export function WithdrawAmountInput({
   feeRate,
   setFeeRate,
   feeRates,
+  feeRateMode,
+  setFeeRateMode,
+  customFeeRate,
+  setCustomFeeRate,
+  effectiveFeeRateSatPerVb,
+  estimatedFee,
   donation,
   setDonation,
 }: WithdrawAmountInputProps) {
+  // Custom mode is opt-in: callers wanting the sat/vB input pass setFeeRateMode.
+  const customFeeEnabled = typeof setFeeRateMode === 'function'
+  const activeFeeMode = feeRateMode ?? feeRate
   const unitLabel = selectedAssetId === 'BTC' ? 'sats' : (selectedAssetTicker ?? 'units')
   const showAmountInput =
     addressType === 'bitcoin' ||
@@ -155,36 +177,88 @@ export function WithdrawAmountInput({
           <label className="ml-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
             Fee Rate
           </label>
-          <div className="grid grid-cols-3 gap-3">
-            {(['slow', 'normal', 'fast'] as const).map((rate) => (
-              <button
-                key={rate}
-                type="button"
-                onClick={() => setFeeRate(rate)}
-                className={`group relative overflow-hidden rounded-[16px] px-3 py-3 shadow-sm transition-all active:scale-[0.98] ${
-                  feeRate === rate
-                    ? 'bg-primary/10'
-                    : 'bg-card/40 backdrop-blur-xl hover:bg-card/60'
-                }`}
-              >
-                <div
-                  className={`pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent transition-opacity ${feeRate === rate ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+          {customFeeEnabled ? (
+            <>
+              <div className="grid grid-cols-4 gap-2">
+                {(['slow', 'normal', 'fast', 'custom'] as const).map((mode) => {
+                  const selected = activeFeeMode === mode
+                  return (
+                    <button
+                      key={mode}
+                      type="button"
+                      onClick={() => {
+                        setFeeRateMode?.(mode)
+                        if (mode !== 'custom') setFeeRate(mode)
+                      }}
+                      className={`group relative overflow-hidden rounded-xl border px-2 py-3 shadow-sm transition-all active:scale-[0.98] ${
+                        selected
+                          ? 'border-primary/40 bg-primary/10'
+                          : 'border-border bg-card/40 hover:border-primary/40'
+                      }`}
+                    >
+                      <span
+                        className={`block text-xs font-bold capitalize ${selected ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'}`}
+                      >
+                        {mode}
+                      </span>
+                      <span
+                        className={`mt-0.5 block text-xxs font-medium ${selected ? 'text-primary/70' : 'text-white/40 group-hover:text-white/70'}`}
+                      >
+                        {mode === 'custom' ? 'sat/vB' : `${feeRates[mode]} sat/vB`}
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+              {activeFeeMode === 'custom' && (
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  placeholder={`${feeRates[feeRate]} (${feeRate})`}
+                  value={customFeeRate ?? ''}
+                  onChange={(event) => setCustomFeeRate?.(event.target.value.replace(/[^\d.]/g, ''))}
+                  className="w-full rounded-xl bg-card px-4 py-3 text-sm text-white shadow-inner transition-all focus:outline focus:outline-2 focus:outline-primary/50"
                 />
-                <div className="relative z-10 flex flex-col items-center">
+              )}
+              {typeof estimatedFee === 'number' && (
+                <p className="ml-1 text-xs text-muted-foreground">
+                  Using {effectiveFeeRateSatPerVb} sat/vB &middot; ~{estimatedFee.toLocaleString()}{' '}
+                  sats est. fee
+                </p>
+              )}
+            </>
+          ) : (
+            <div className="grid grid-cols-3 gap-3">
+              {(['slow', 'normal', 'fast'] as const).map((rate) => (
+                <button
+                  key={rate}
+                  type="button"
+                  onClick={() => setFeeRate(rate)}
+                  className={`group relative overflow-hidden rounded-[16px] px-3 py-3 shadow-sm transition-all active:scale-[0.98] ${
+                    feeRate === rate
+                      ? 'bg-primary/10'
+                      : 'bg-card/40 backdrop-blur-xl hover:bg-card/60'
+                  }`}
+                >
                   <div
-                    className={`text-sm font-bold capitalize transition-colors ${feeRate === rate ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'}`}
-                  >
-                    {rate}
+                    className={`pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent transition-opacity ${feeRate === rate ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                  />
+                  <div className="relative z-10 flex flex-col items-center">
+                    <div
+                      className={`text-sm font-bold capitalize transition-colors ${feeRate === rate ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'}`}
+                    >
+                      {rate}
+                    </div>
+                    <div
+                      className={`mt-0.5 text-xxs font-medium transition-colors ${feeRate === rate ? 'text-primary/70' : 'text-white/40 group-hover:text-white/70'}`}
+                    >
+                      {feeRates[rate]} sat/vB
+                    </div>
                   </div>
-                  <div
-                    className={`mt-0.5 text-xxs font-medium transition-colors ${feeRate === rate ? 'text-primary/70' : 'text-white/40 group-hover:text-white/70'}`}
-                  >
-                    {feeRates[rate]} sat/vB
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
