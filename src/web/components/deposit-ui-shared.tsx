@@ -44,9 +44,10 @@ export const NETWORK_CONFIG: Record<DepositNetworkKey, DepositNetworkConfigEntry
     border: 'border-network-bitcoin/40',
     qrBorder: 'border-network-bitcoin/30',
     qrGlow: qrGlowStyle(colors.network.bitcoin),
-    icon: (
-      <span className="material-symbols-outlined text-icon-xs leading-none">currency_bitcoin</span>
-    ),
+    // On-chain uses a chain-link glyph rather than the ₿ coin — the coin reads
+    // as "the BTC asset", whereas this row is specifically the *on-chain* (L1)
+    // receive rail alongside Lightning/Spark/Arkade, so a chain mark disambiguates.
+    icon: <span className="material-symbols-outlined text-icon-xs leading-none">link</span>,
   },
   lightning: {
     label: 'Lightning',
