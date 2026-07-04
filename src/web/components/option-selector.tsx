@@ -40,22 +40,25 @@ export function OptionSelector({
       options={options}
       onChange={onChange}
       className={cn(compact ? 'w-auto shrink-0' : 'w-full', className)}
-      panelClassName="right-0 left-auto min-w-[11rem]"
-      optionClassName="px-3 py-2.5"
+      panelClassName="right-0 left-auto min-w-[11rem] rounded-xl border-0 bg-card"
+      optionClassName="px-3.5 py-2.5 hover:bg-white/6 data-[selected]:bg-transparent data-[selected]:shadow-none"
       onOpenPanelHeightChange={onOpenPanelHeightChange}
       renderTrigger={({ open }) => (
         <span
           className={cn(
-            'flex items-center gap-1 rounded-2xl bg-white/[0.09] px-2 py-1.5 text-xs leading-none backdrop-blur-md transition-all hover:bg-white/[0.13]',
+            'flex h-9 min-w-[4.5rem] items-center gap-1.5 rounded-full bg-white/8 px-3.5 text-sm font-semibold leading-none text-foreground transition-colors hover:bg-white/12',
             triggerAlign === 'center' ? 'justify-center' : 'justify-between',
-            open && 'bg-white/[0.13]',
-            !compact && 'w-full px-3 py-3',
+            open && 'bg-primary/15 text-primary hover:bg-primary/15',
+            !compact && 'w-full',
           )}
         >
-          <span className="truncate font-bold text-white">{selected?.label}</span>
+          <span className="truncate">{selected?.label}</span>
           <Icon
             name="expand_more"
-            className={cn('shrink-0 text-icon-xs text-white/40 transition-transform', open && 'rotate-180')}
+            className={cn(
+              'shrink-0 text-icon-xs transition-transform',
+              open ? 'rotate-180 text-primary' : 'text-muted-foreground',
+            )}
           />
         </span>
       )}
@@ -66,14 +69,14 @@ export function OptionSelector({
             <span className="min-w-0">
               <span
                 className={cn(
-                  'block truncate text-xs',
-                  optionSelected ? 'font-bold text-white' : 'font-medium text-white/70',
+                  'block truncate text-sm',
+                  optionSelected ? 'font-semibold text-primary' : 'font-medium text-foreground',
                 )}
               >
                 {option.label}
               </span>
               {option.description && (
-                <span className="mt-0.5 block truncate text-tiny text-white/35">
+                <span className="mt-0.5 block truncate text-tiny text-muted-foreground">
                   {option.description}
                 </span>
               )}
