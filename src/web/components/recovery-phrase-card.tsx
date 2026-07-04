@@ -59,7 +59,7 @@ export function RecoveryPhraseCard({
             ))}
           </div>
         ) : (
-          <div className="rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning">
+          <div className="rounded-xl bg-warning/10 px-4 py-3 text-sm text-warning">
             {emptyMessage}
           </div>
         )}

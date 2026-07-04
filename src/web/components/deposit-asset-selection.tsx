@@ -231,7 +231,7 @@ export function DepositAssetSelection<TView extends string = string>({
                       key={asset.asset_id}
                       type="button"
                       data-testid={`deposit-asset-${asset.asset_id}`}
-                      className="group flex w-full min-w-0 items-center gap-3 overflow-hidden rounded-2xl border border-white/8 bg-white/3 px-4 py-3 text-sm transition-all hover:border-border hover:bg-accent"
+                      className="group flex w-full min-w-0 items-center gap-3 overflow-hidden rounded-2xl bg-white/3 px-4 py-3 text-sm transition-all hover:bg-accent"
                       onClick={() => onSelectAsset(asset)}
                     >
                       <AssetIcon ticker={asset.ticker} size={40} className="flex-shrink-0" />
@@ -305,7 +305,7 @@ export function DepositAssetSelection<TView extends string = string>({
               type="button"
               data-testid="deposit-add-asset"
               onClick={() => setShowAddAssetModal(true)}
-              className="group flex w-full items-center gap-3 rounded-2xl border border-white/8 bg-white/3 p-3 transition-all hover:border-border hover:bg-accent"
+              className="group flex w-full items-center gap-3 rounded-2xl bg-white/3 p-3 transition-all hover:bg-accent"
             >
               <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/15">
                 <Icon name="add" size="md" className="text-primary" />

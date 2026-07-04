@@ -208,7 +208,7 @@ export function AssetSelector({
               onClick={closePanel}
             >
               <div
-                className="flex max-h-[85vh] w-full max-w-[26rem] flex-col overflow-hidden rounded-t-3xl bg-popover/95 shadow-popover backdrop-blur-2xl duration-300 animate-in slide-in-from-bottom-8 sm:max-h-[80vh] sm:rounded-3xl sm:border sm:slide-in-from-bottom-0 sm:zoom-in-95"
+                className="flex max-h-[85vh] w-full max-w-[26rem] flex-col overflow-hidden rounded-t-3xl bg-popover/95 shadow-popover backdrop-blur-2xl duration-300 animate-in slide-in-from-bottom-8 sm:max-h-[80vh] sm:rounded-3xl sm:slide-in-from-bottom-0 sm:zoom-in-95"
                 onClick={(event) => event.stopPropagation()}
               >
                 <div className="flex-shrink-0 bg-white/[0.03] px-4 py-3.5">
@@ -320,8 +320,8 @@ export function AssetSelector({
                             optionSelected
                               ? 'border-primary/30 bg-primary/[0.12]'
                               : optionDisabled
-                                ? 'cursor-not-allowed border-white/[0.04] bg-white/[0.015] opacity-45'
-                                : 'border-transparent bg-transparent hover:border-border hover:bg-accent',
+                                ? 'cursor-not-allowed border-transparent bg-white/[0.015] opacity-45'
+                                : 'border-transparent bg-transparent hover:bg-accent',
                           )}
                         >
                           {renderAssetOption(option, optionSelected, optionDisabled)}
@@ -349,7 +349,7 @@ export function AssetSelector({
       }}
       disabled={disabled}
       className="space-y-1.5"
-      panelClassName="border-border bg-popover/95 p-0 shadow-popover"
+      panelClassName="bg-popover/95 p-0 shadow-popover"
       optionClassName="mx-1.5 px-3 py-3"
       onOpenPanelHeightChange={onOpenPanelHeightChange}
       renderTrigger={({ open }) =>

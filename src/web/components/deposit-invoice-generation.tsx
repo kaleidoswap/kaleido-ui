@@ -346,7 +346,7 @@ export function DepositInvoiceGeneration({
           isNewAsset && (network === 'spark' || network === 'arkade')
         if (hideDestinationRail) return null
         return (
-          <div className="flex-shrink-0 border-b border-border bg-background px-4 py-2">
+          <div className="flex-shrink-0 bg-background px-4 py-2">
             <div className="space-y-2">
               <div>
                 <p className="text-xxs font-bold uppercase tracking-widest text-white/35">
@@ -426,21 +426,14 @@ export function DepositInvoiceGeneration({
           <div className="flex flex-col items-center gap-4 py-10">
             <div
               className={cn(
-                'flex size-16 items-center justify-center rounded-2xl border',
+                'flex size-16 items-center justify-center rounded-2xl',
                 NETWORK_CONFIG[
                   btcSelectedAccount === 'SPARK'
                     ? 'spark'
                     : btcSelectedAccount === 'ARKADE'
                       ? 'arkade'
                       : 'onchain'
-                ].bg,
-                NETWORK_CONFIG[
-                  btcSelectedAccount === 'SPARK'
-                    ? 'spark'
-                    : btcSelectedAccount === 'ARKADE'
-                      ? 'arkade'
-                      : 'onchain'
-                ].border
+                ].bg
               )}
             >
               <span

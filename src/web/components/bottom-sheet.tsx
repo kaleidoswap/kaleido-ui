@@ -51,7 +51,7 @@ export function BottomSheet({
     >
       <div
         className={cn(
-          'max-h-[90vh] w-full overflow-y-auto rounded-t-2xl border-t border-border bg-card px-4 pb-6 pt-5 shadow-xl animate-in slide-in-from-bottom-4 duration-200',
+          'max-h-[90vh] w-full overflow-y-auto rounded-t-2xl bg-card px-4 pb-6 pt-5 shadow-xl animate-in slide-in-from-bottom-4 duration-200',
           contentClassName,
         )}
       >

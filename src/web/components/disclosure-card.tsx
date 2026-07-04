@@ -29,7 +29,7 @@ export function DisclosureCard({
         type="button"
         onClick={() => onOpenChange(!open)}
         className={cn(
-          'flex w-full items-center justify-between rounded-xl border border-border bg-white/3 px-3 py-2 text-left transition-colors hover:bg-white/6',
+          'flex w-full items-center justify-between rounded-xl bg-muted/40 px-3 py-2 text-left transition-colors hover:bg-muted/60',
           triggerClassName,
         )}
       >
@@ -45,7 +45,7 @@ export function DisclosureCard({
       {open && (
         <div
           className={cn(
-            'mt-3 rounded-xl border border-border bg-white/3 px-3 py-3',
+            'mt-3 rounded-xl bg-muted/40 px-3 py-3',
             contentClassName,
           )}
         >

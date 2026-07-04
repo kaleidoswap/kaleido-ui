@@ -104,7 +104,7 @@ export function DepositPreGeneration({
   return (
     <div className="space-y-3">
       {showReceiveSummary && (
-        <div className="rounded-2xl border border-white/8 bg-white/4 p-3">
+        <div className="rounded-2xl bg-card/70 p-3">
           <p className="text-xxs font-bold uppercase tracking-widest text-white/35">
             Receive Summary
           </p>
@@ -129,7 +129,7 @@ export function DepositPreGeneration({
       )}
 
       {channelsLoading && selectedAccount === 'RGB' && currentMethod === 'lightning' && !isBtc && (
-        <div className="flex items-center gap-2.5 rounded-xl border bg-card p-3">
+        <div className="flex items-center gap-2.5 rounded-xl bg-card/70 p-3">
           <span className="material-symbols-outlined animate-spin text-icon-lg text-primary">
             progress_activity
           </span>
@@ -155,7 +155,7 @@ export function DepositPreGeneration({
 
       {isAutoGenerate && loading && (
         <div className="flex flex-col items-center gap-4 py-10">
-          <div className={cn('flex size-16 items-center justify-center rounded-2xl border', net.bg, net.border)}>
+          <div className={cn('flex size-16 items-center justify-center rounded-2xl', net.bg)}>
             <span className={cn('material-symbols-outlined animate-spin text-icon-4xl', net.text)}>
               progress_activity
             </span>
@@ -192,7 +192,7 @@ export function DepositPreGeneration({
       )}
 
       {isRgbOnchain && (
-        <div className="space-y-2.5 rounded-xl border bg-card p-3">
+        <div className="space-y-2.5 rounded-xl bg-card/70 p-3">
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0 flex-1">
               <h4 className="text-xs font-bold text-white">
@@ -206,7 +206,7 @@ export function DepositPreGeneration({
               type="button"
               aria-label="Toggle blinded (private) receive"
               className={cn(
-                'relative inline-flex h-5 w-9 flex-shrink-0 items-center rounded-full border shadow-inner transition-colors',
+                'relative inline-flex h-5 w-9 flex-shrink-0 items-center rounded-full shadow-inner transition-colors',
                 usePrivacy ? 'bg-primary' : 'bg-white/10'
               )}
               onClick={() => setUsePrivacy(!usePrivacy)}
@@ -231,10 +231,10 @@ export function DepositPreGeneration({
           {usePrivacy && colorableUtxoCount !== undefined && (
             <div
               className={cn(
-                'flex items-center justify-between rounded-lg border px-2.5 py-1.5 text-xxs',
+                'flex items-center justify-between rounded-lg px-2.5 py-1.5 text-xxs',
                 colorableUtxoCount > 0
-                  ? 'border-success/20 bg-success/5 text-success/80'
-                  : 'border-warning/20 bg-warning/5 text-warning/80'
+                  ? 'bg-success/10 text-success/80'
+                  : 'bg-warning/10 text-warning/80'
               )}
             >
               <span className="font-medium">Available colorable UTXOs</span>

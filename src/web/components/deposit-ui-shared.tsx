@@ -28,7 +28,9 @@ export interface DepositNetworkConfigEntry {
   color: string
   bg: string
   text: string
+  /** @deprecated Borderless sweep (DESIGN.md Coherence Rules): tone comes from `bg`; no border rings. Kept for source compat. */
   border: string
+  /** @deprecated Borderless sweep: the QR panel carries only `qrGlow` now. Kept for source compat. */
   qrBorder: string
   /** Inline style. Apply via `style={network.qrGlow}`. */
   qrGlow: CSSProperties
@@ -143,12 +145,12 @@ export function InvoiceStatusBanner({
   return (
     <div
       className={cn(
-        'flex items-center justify-center gap-2 rounded-xl border px-3 py-1.5 text-xs font-bold',
+        'flex items-center justify-center gap-2 rounded-xl px-3 py-1.5 text-xs font-bold',
         isInvoicePaid
-          ? 'border-primary/30 bg-primary/10 text-primary'
+          ? 'bg-primary/10 text-primary'
           : isInvoiceFailedOrExpired
-            ? 'border-danger/20 bg-danger/10 text-danger'
-            : 'border-warning/20 bg-warning/10 text-warning'
+            ? 'bg-danger/10 text-danger'
+            : 'bg-warning/10 text-warning'
       )}
     >
       {isInvoicePending && (
@@ -291,7 +293,7 @@ export function NetworkInfoDisclosure({
   if (networks.length === 0) return null
 
   return (
-    <div className={cn('overflow-hidden rounded-xl border border-white/8 bg-white/3 transition-all', className)}>
+    <div className={cn('overflow-hidden rounded-xl bg-card/70 transition-all', className)}>
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}

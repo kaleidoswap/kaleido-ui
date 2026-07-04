@@ -65,7 +65,7 @@ function EmptyState({ state }: { state: WalletAssetListEmptyState }) {
   return (
     <div className="py-8 text-center">
       {state.icon && (
-        <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-card border bg-card">
+        <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-card bg-card">
           {state.icon}
         </div>
       )}
