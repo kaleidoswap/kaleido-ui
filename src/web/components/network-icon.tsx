@@ -42,6 +42,19 @@ export function ArkadeNetworkIcon({
   )
 }
 
+export function NostrNetworkIcon({
+  className = 'size-3.5',
+  alt = 'Nostr',
+}: NetworkIconProps) {
+  return (
+    <img
+      src="/icons/nostr-icon.svg"
+      alt={alt}
+      className={cn('object-contain', className)}
+    />
+  )
+}
+
 /**
  * RGB logo. Unlike the other network icons (which reference host-app asset
  * paths), this renders the RGB mark bundled with the library (protocolIcons),

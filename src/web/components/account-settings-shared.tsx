@@ -2,15 +2,18 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
-import { RgbNetworkIcon } from './network-icon'
+import { NostrNetworkIcon, RgbNetworkIcon } from './network-icon'
 
-export type AccountSettingsProtocol = 'RGB' | 'SPARK' | 'ARKADE'
+export type AccountSettingsProtocol = 'RGB' | 'SPARK' | 'ARKADE' | 'NOSTR'
 export type AccountSettingsNetwork = 'mainnet' | 'testnet' | 'regtest' | 'signet'
 
 const SUPPORTED_ACCOUNT_NETWORKS: Record<AccountSettingsProtocol, AccountSettingsNetwork[]> = {
   RGB: ['regtest', 'testnet', 'signet'],
   SPARK: ['regtest', 'mainnet'],
   ARKADE: ['signet', 'mainnet'],
+  // Nostr is network-agnostic; mainnet is the placeholder consumers pass
+  // (the network chip is typically hidden for NOSTR rows anyway).
+  NOSTR: ['mainnet'],
 }
 
 export function getAccountNetworkLabel(network: AccountSettingsNetwork): string {
@@ -62,6 +65,14 @@ export function AccountHeaderIcons({ accountId }: { accountId: AccountSettingsPr
     return (
       <span className="flex size-10 items-center justify-center rounded-full bg-info/10 shadow-inner">
         <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" alt="Spark" className="size-5 object-contain" />
+      </span>
+    )
+  }
+
+  if (accountId === 'NOSTR') {
+    return (
+      <span className="flex size-10 items-center justify-center rounded-full bg-network-arkade/10 shadow-inner">
+        <NostrNetworkIcon className="size-5" />
       </span>
     )
   }
@@ -402,6 +413,7 @@ const ACCOUNT_ACCENT_BG: Record<AccountSettingsProtocol, string> = {
   RGB: 'bg-gradient-to-br from-primary/[0.06] via-card to-primary/[0.10]',
   SPARK: 'bg-gradient-to-br from-info/[0.06] via-card to-info/[0.10]',
   ARKADE: 'bg-gradient-to-br from-network-arkade/[0.06] via-card to-network-arkade/[0.10]',
+  NOSTR: 'bg-gradient-to-br from-network-arkade/[0.06] via-card to-network-arkade/[0.10]',
 }
 
 export function AccountSettingsRow({
