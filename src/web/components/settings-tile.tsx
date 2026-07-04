@@ -14,7 +14,7 @@ export function SettingsTile({ icon, title, description, value, onClick }: Setti
     <button
       type="button"
       onClick={onClick}
-      className="w-full rounded-2xl bg-card p-5 text-left transition-all duration-200 hover:bg-accent active:scale-[0.98]"
+      className="w-full rounded-2xl bg-card/70 p-5 text-left transition-all duration-200 hover:bg-accent active:scale-[0.98]"
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 flex-1 items-center gap-3">

@@ -326,7 +326,7 @@
   --spacing-icon-sm: 14px;
   --spacing-icon-md: 16px;
   --spacing-icon-lg: 18px;
-  --spacing-icon-nav: 22px;
+  --spacing-icon-nav: 1.6875rem;
   --spacing-icon-control: 34px;
 
   /* Border radius */

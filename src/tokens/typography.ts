@@ -67,6 +67,6 @@ export const iconBoxSize = {
   sm: '14px',
   md: '16px',
   lg: '18px',
-  nav: '22px',
+  nav: '1.6875rem', // 27px — bottom-nav icons; rem so side-panel font scaling applies
   control: '34px',
 } as const

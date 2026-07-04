@@ -44,14 +44,14 @@ export function BottomSheet({
   return (
     <div
       className={cn(
-        'fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm',
+        'fixed inset-0 z-50 flex items-end justify-center bg-background/80 backdrop-blur-lg',
         className,
       )}
       onClick={handleBackdropClick}
     >
       <div
         className={cn(
-          'max-h-[90vh] w-full overflow-y-auto rounded-t-2xl border-t border-border bg-background px-4 pb-6 pt-5 shadow-xl animate-in slide-in-from-bottom-4 duration-200',
+          'max-h-[90vh] w-full overflow-y-auto rounded-t-2xl border-t border-border bg-card px-4 pb-6 pt-5 shadow-xl animate-in slide-in-from-bottom-4 duration-200',
           contentClassName,
         )}
       >

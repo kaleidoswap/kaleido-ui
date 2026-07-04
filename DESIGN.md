@@ -324,3 +324,20 @@ These rules exist because generated UIs kept drifting: ad-hoc borders, wrong but
 - Paired confirm/cancel: primary (or `destructive`) on the RIGHT, `ghost` cancel on the LEFT, equal widths.
 - Row-level actions inside cards are `ghost` `size="sm"`; destructive row actions (Block, Delete) are `destructive` `size="sm"` and always sit rightmost.
 - Never express an action as a styled `<div>`/`<button>` with utility classes — use `Button`.
+
+## Transparency (glass) schema
+
+Layered translucency lets the animated background glow breathe through the UI without hurting readability. Every translucent surface maps to exactly one of these roles — don't invent new alpha values.
+
+- `glass.nav` — floating chrome (bottom nav, sticky headers): `bg-card/60 backdrop-blur-xl`
+- `glass.card` — in-flow content cards over animated/haloed backgrounds: `bg-card/70`, NO blur (per-element blur on scrolling lists is a perf trap)
+- `glass.row` — rows nested inside a card: `bg-muted/40`, no blur
+- `glass.pill` — chips, filter pills, selector triggers: `bg-white/8`
+- `glass.overlay` — sheets, dialogs, scrims: `bg-background/80 backdrop-blur-lg`
+
+Rules:
+
+- **DON'T** drop text-bearing glass below 60% surface alpha — readability beats atmosphere.
+- **DON'T** nest blur inside blur. Inner layers are alpha-only; the outer surface owns the blur.
+- **DO** keep security surfaces (sign/confirm prompts, seed reveal) fully opaque `bg-card`. A decision surface never lets the background bleed through.
+- **DO** reserve `backdrop-blur` for floating chrome and overlays only — never on in-flow cards or rows.

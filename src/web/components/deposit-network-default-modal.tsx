@@ -66,8 +66,8 @@ export function DepositNetworkDefaultModal({
   const options = availableAccounts.map((id) => NETWORK_OPTIONS[id]).filter(Boolean)
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm">
-      <div className="w-full space-y-4 rounded-t-2xl border-t border-border bg-background px-4 pb-7 pt-5 animate-in slide-in-from-bottom-4 duration-200">
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-background/80 backdrop-blur-lg">
+      <div className="w-full space-y-4 rounded-t-2xl border-t border-border bg-card px-4 pb-7 pt-5 animate-in slide-in-from-bottom-4 duration-200">
         <div className="-mt-1 mb-1 flex justify-center">
           <div className="h-1 w-10 rounded-full bg-white/15" />
         </div>
