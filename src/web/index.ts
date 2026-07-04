@@ -219,6 +219,7 @@ export {
   type ExtensionPageFrameProps,
 } from './components/extension-page-frame'
 export { SettingItem } from './components/setting-item'
+export { SwitchRow, type SwitchRowProps } from './components/switch-row'
 export { SectionLabel } from './components/section-label'
 export { SectionHeader, type SectionHeaderProps } from './components/section-header'
 export { AlertBanner } from './components/alert-banner'
