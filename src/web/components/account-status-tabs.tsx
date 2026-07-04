@@ -22,6 +22,7 @@ export interface AccountStatusTabItem<TId extends string = string> {
   networkLabel: string
   networkBannerClassName: string
   accentBg?: string
+  /** @deprecated Borderless sweep (DESIGN.md Coherence Rules): the icon tile is tinted via `accentBg` only. Kept for source compat. */
   accentBorder?: string
 }
 
@@ -63,7 +64,7 @@ export function AccountStatusTabs<TId extends string = string>({
 
               <div
                 className={cn(
-                  'pointer-events-none absolute bottom-[calc(100%+12px)] right-0 z-20 hidden w-64 rounded-2xl border bg-popover/95 p-3.5 opacity-0 shadow-2xl backdrop-blur-xl transition-all duration-150 group-hover:opacity-100 md:block'
+                  'pointer-events-none absolute bottom-[calc(100%+12px)] right-0 z-20 hidden w-64 rounded-2xl bg-popover/95 p-3.5 opacity-0 shadow-2xl backdrop-blur-xl transition-all duration-150 group-hover:opacity-100 md:block'
                 )}
               >
                 <div className="flex items-start gap-3">
@@ -89,7 +90,7 @@ export function AccountStatusTabs<TId extends string = string>({
                   {account.capabilityBullets.map((capability) => (
                     <span
                       key={capability}
-                      className="rounded-full border bg-white/[0.05] px-2 py-1 text-xxs font-medium text-white/60"
+                      className="rounded-full bg-white/8 px-2 py-1 text-xxs font-medium text-white/60"
                     >
                       {capability}
                     </span>
@@ -106,17 +107,11 @@ export function AccountStatusTabs<TId extends string = string>({
         onOpenChange={(open) => !open && setSelectedAccountId(null)}
       >
         {selectedAccount && (
-          <DialogContent className="max-w-md border bg-popover p-0 text-white">
+          <DialogContent className="max-w-md bg-popover p-0 text-white">
             <div className="p-6">
               <DialogHeader className="text-left">
                 <div className="flex items-start gap-3">
-                  <div
-                    className={cn(
-                      'rounded-2xl border p-3',
-                      selectedAccount.accentBg,
-                      selectedAccount.accentBorder
-                    )}
-                  >
+                  <div className={cn('rounded-2xl p-3', selectedAccount.accentBg)}>
                     {selectedAccount.icon}
                   </div>
                   <div className="min-w-0">
@@ -139,7 +134,7 @@ export function AccountStatusTabs<TId extends string = string>({
               <div className="mt-5 grid grid-cols-2 gap-3">
                 <div
                   className={cn(
-                    'rounded-2xl border px-4 py-3',
+                    'rounded-2xl px-4 py-3',
                     selectedAccount.networkBannerClassName
                   )}
                 >
@@ -150,7 +145,7 @@ export function AccountStatusTabs<TId extends string = string>({
                     {selectedAccount.networkLabel}
                   </div>
                 </div>
-                <div className="rounded-2xl border bg-white/[0.04] px-4 py-3">
+                <div className="rounded-2xl bg-muted/40 px-4 py-3">
                   <div className="text-icon-xxs font-black uppercase tracking-[0.18em] text-white/45">
                     Status
                   </div>
@@ -172,7 +167,7 @@ export function AccountStatusTabs<TId extends string = string>({
                   {selectedAccount.capabilityBullets.map((capability) => (
                     <span
                       key={capability}
-                      className="inline-flex items-center gap-1.5 rounded-full border bg-white/[0.05] px-2.5 py-1 text-xxs font-medium text-white/70"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-white/8 px-2.5 py-1 text-xxs font-medium text-white/70"
                     >
                       <span className="size-1.5 rounded-full bg-primary/70" />
                       {capability}

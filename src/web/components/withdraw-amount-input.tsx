@@ -124,7 +124,7 @@ export function WithdrawAmountInput({
               </button>
             </div>
             <div className={cn(
-              'flex items-center justify-between border-t border-white/[0.05] px-4 py-2',
+              'flex items-center justify-between bg-muted/40 px-4 py-2',
             )}>
               <span className="text-xxs text-white/40">Available</span>
               <span className={cn(
@@ -193,7 +193,7 @@ export function WithdrawAmountInput({
                       className={`group relative overflow-hidden rounded-xl border px-2 py-3 shadow-sm transition-all active:scale-[0.98] ${
                         selected
                           ? 'border-primary/40 bg-primary/10'
-                          : 'border-border bg-card/40 hover:border-primary/40'
+                          : 'border-transparent bg-card/70 hover:border-primary/40'
                       }`}
                     >
                       <span

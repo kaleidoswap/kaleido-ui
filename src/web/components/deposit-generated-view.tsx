@@ -113,7 +113,7 @@ export function DepositGeneratedView({
   return (
     <div className="space-y-3 animate-in fade-in zoom-in-95 duration-300">
       {(network === 'lightning' || (network === 'arkade' && arkSubMode === 'ark')) && isBtc && (
-        <div className="flex flex-col gap-1.5 rounded-xl border border-white/8 bg-white/3 p-2.5">
+        <div className="flex flex-col gap-1.5 rounded-xl bg-card/70 p-2.5">
           <div className="flex items-center justify-between px-1">
             <label className="text-xxs font-bold uppercase tracking-widest text-white/40">
               Specify amount (optional)
@@ -147,7 +147,7 @@ export function DepositGeneratedView({
       )}
 
       {network === 'lightning' && !isBtc && (
-        <div className="flex flex-col gap-1.5 rounded-xl border border-white/8 bg-white/3 p-2.5">
+        <div className="flex flex-col gap-1.5 rounded-xl bg-card/70 p-2.5">
           <div className="flex items-center justify-between px-1">
             <label className="text-xxs font-bold uppercase tracking-widest text-white/40">
               Specify amount (optional)
@@ -176,7 +176,7 @@ export function DepositGeneratedView({
             </p>
           )}
           {amount && maxDepositAmount > 0 && parseAssetAmount(amount, selectedAsset) > maxDepositAmount && (
-            <p className="rounded-lg border border-danger/20 bg-danger/10 px-2.5 py-1.5 text-xxs text-danger">
+            <p className="rounded-lg bg-danger/10 px-2.5 py-1.5 text-xxs text-danger">
               Exceeds max: {formatAssetAmount(maxDepositAmount, selectedAsset)} {getUnitLabel()}
             </p>
           )}
@@ -185,10 +185,7 @@ export function DepositGeneratedView({
 
       <div className="flex flex-col items-center gap-3">
         <div
-          className={cn(
-            'relative flex flex-col items-center rounded-2xl border-2 bg-white p-3.5 transition-all',
-            net.qrBorder
-          )}
+          className="relative flex flex-col items-center rounded-2xl bg-white p-3.5 transition-all"
           style={net.qrGlow}
         >
           {showQrNetworkBadge && network !== 'spark' && network !== 'arkade' && (
@@ -256,11 +253,9 @@ export function DepositGeneratedView({
         data-testid="deposit-generated-address"
         data-address={address}
         className={cn(
-          'group flex cursor-pointer items-center gap-2 rounded-xl border bg-white/3 px-2.5 py-1.5',
-          'transition-all hover:bg-white/6 active:scale-[0.98]',
-          net.border
+          'group flex cursor-pointer items-center gap-2 rounded-xl bg-card/70 px-2.5 py-1.5',
+          'transition-all hover:bg-card active:scale-[0.98]'
         )}
-        style={{ borderLeftWidth: 3, borderLeftColor: net.color }}
         onClick={() => void copyToClipboard(address)}
       >
         <div className={cn('flex size-5 flex-shrink-0 items-center justify-center rounded-md', net.bg)}>
@@ -280,10 +275,9 @@ export function DepositGeneratedView({
       {recipientId && (
         <div
           className={cn(
-            'group flex cursor-pointer items-center gap-2 rounded-xl border bg-primary/5 px-2.5 py-1.5',
-            'border-primary/20 transition-all hover:bg-primary/8 active:scale-[0.98]'
+            'group flex cursor-pointer items-center gap-2 rounded-xl bg-primary/10 px-2.5 py-1.5',
+            'transition-all hover:bg-primary/15 active:scale-[0.98]'
           )}
-          style={{ borderLeftWidth: 3, borderLeftColor: 'var(--primary)' }}
           onClick={() => void copyToClipboard(recipientId)}
         >
           <div className="flex size-5 flex-shrink-0 items-center justify-center rounded-md bg-primary/15">

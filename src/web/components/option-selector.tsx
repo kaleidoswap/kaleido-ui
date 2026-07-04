@@ -40,7 +40,7 @@ export function OptionSelector({
       options={options}
       onChange={onChange}
       className={cn(compact ? 'w-auto shrink-0' : 'w-full', className)}
-      panelClassName="right-0 left-auto min-w-[11rem] rounded-xl border-0 bg-card"
+      panelClassName="right-0 left-auto min-w-[11rem] rounded-xl bg-card"
       optionClassName="px-3.5 py-2.5 hover:bg-white/6 data-[selected]:bg-transparent data-[selected]:shadow-none"
       onOpenPanelHeightChange={onOpenPanelHeightChange}
       renderTrigger={({ open }) => (

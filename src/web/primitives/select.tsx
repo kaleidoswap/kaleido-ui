@@ -26,7 +26,7 @@ const SelectTrigger = React.forwardRef<
             'hover:bg-white/[0.13] data-[state=open]:bg-white/[0.13]',
           ]
         : [
-            'w-full gap-3 rounded-xl border bg-white/[0.04] px-4 py-3 text-left text-sm',
+            'w-full gap-3 rounded-xl border border-transparent bg-white/[0.04] px-4 py-3 text-left text-sm',
             'hover:border-primary/30 hover:bg-white/[0.06] data-[state=open]:border-primary/30',
           ],
       'focus:ring-1 focus:ring-primary/50',
@@ -57,7 +57,7 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        'relative min-w-[8rem] overflow-hidden rounded-2xl border border-primary/20 bg-popover/95 p-2 shadow-xl backdrop-blur',
+        'relative min-w-[8rem] overflow-hidden rounded-2xl bg-popover/95 p-2 shadow-xl backdrop-blur',
         'z-[var(--z-popover)]',
         position === 'popper' && 'w-[var(--radix-select-trigger-width)]',
         className

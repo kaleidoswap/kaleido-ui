@@ -67,7 +67,7 @@ export function ActivityFilterBar<TStatus extends string = string>({
           <SelectTrigger className="h-full rounded-2xl border-0 bg-surface-card px-3 py-0 text-xs font-bold text-white shadow-inner backdrop-blur-xl hover:bg-surface-elevated focus:ring-0 data-[state=open]:bg-surface-elevated">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="border-0 bg-popover/95 p-1.5 shadow-popover">
+          <SelectContent className="bg-popover/95 p-1.5 shadow-popover">
             {statusOptions.map((option) => (
               <SelectItem key={option.value} value={option.value} className="py-2 text-xs">
                 {option.label}

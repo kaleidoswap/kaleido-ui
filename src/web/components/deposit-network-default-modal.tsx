@@ -9,6 +9,7 @@ export interface DepositNetworkOption {
   description: string
   icon: ReactNode
   accentBg: string
+  /** @deprecated Borderless sweep (DESIGN.md Coherence Rules): the suggested row is tinted via `accentBg` only. Kept for source compat. */
   accentBorder: string
   accentText: string
 }
@@ -67,7 +68,7 @@ export function DepositNetworkDefaultModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-background/80 backdrop-blur-lg">
-      <div className="w-full space-y-4 rounded-t-2xl border-t border-border bg-card px-4 pb-7 pt-5 animate-in slide-in-from-bottom-4 duration-200">
+      <div className="w-full space-y-4 rounded-t-2xl bg-card px-4 pb-7 pt-5 animate-in slide-in-from-bottom-4 duration-200">
         <div className="-mt-1 mb-1 flex justify-center">
           <div className="h-1 w-10 rounded-full bg-white/15" />
         </div>
@@ -90,10 +91,8 @@ export function DepositNetworkDefaultModal({
                 type="button"
                 onClick={() => onSelect(option.network)}
                 className={cn(
-                  'flex w-full items-center gap-3 rounded-xl border p-3 text-left transition-all',
-                  isSuggested
-                    ? cn('border-2', option.accentBorder, option.accentBg)
-                    : 'border border-white/8 bg-white/4 hover:bg-white/8'
+                  'flex w-full items-center gap-3 rounded-xl p-3 text-left transition-all',
+                  isSuggested ? option.accentBg : 'bg-muted/40 hover:bg-muted/60'
                 )}
               >
                 <div

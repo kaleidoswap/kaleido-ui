@@ -75,8 +75,8 @@ export function WithdrawConfirmation({
           </p>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border bg-card/90 shadow-inner backdrop-blur-2xl">
-          <div className="flex items-center justify-between border-b border-border p-5">
+        <div className="overflow-hidden rounded-2xl bg-card/90 py-1 shadow-inner backdrop-blur-2xl">
+          <div className="flex items-center justify-between px-5 py-4">
             <span className="text-sm text-muted-foreground">To</span>
             <span className="max-w-[200px] truncate font-mono text-sm text-white" title={destination}>
               {destination.length > 24
@@ -84,7 +84,7 @@ export function WithdrawConfirmation({
                 : destination}
             </span>
           </div>
-          <div className="flex items-center justify-between border-b border-border p-5">
+          <div className="flex items-center justify-between px-5 py-4">
             <span className="text-sm text-muted-foreground">Network</span>
             <div className="flex items-center gap-1.5">
               <div className="size-1.5 rounded-full bg-primary" />
@@ -92,25 +92,25 @@ export function WithdrawConfirmation({
             </div>
           </div>
           {routeAccount && (
-            <div className="flex items-center justify-between border-b border-border p-5">
+            <div className="flex items-center justify-between px-5 py-4">
               <span className="text-sm text-muted-foreground">From Account</span>
               <span className="text-sm font-bold text-white">{routeAccount}</span>
             </div>
           )}
           {routeMethod && (
-            <div className="flex items-center justify-between border-b border-border p-5">
+            <div className="flex items-center justify-between px-5 py-4">
               <span className="text-sm text-muted-foreground">Route Method</span>
               <span className="text-sm font-bold text-white">{routeMethod}</span>
             </div>
           )}
-          <div className="flex items-center justify-between border-b border-border p-5">
+          <div className="flex items-center justify-between px-5 py-4">
             <span className="text-sm text-muted-foreground">Asset</span>
             <span className="text-sm font-bold text-white">
               {selectedAsset?.ticker ?? selectedAssetId}
             </span>
           </div>
           {estimatedFee > 0 && (
-            <div className="flex items-center justify-between p-5">
+            <div className="flex items-center justify-between px-5 py-4">
               <span className="text-sm text-muted-foreground">Network Fee</span>
               <div className="flex flex-col items-end">
                 <span className="text-sm text-white">~{estimatedFee.toLocaleString()} sats</span>
@@ -121,7 +121,7 @@ export function WithdrawConfirmation({
             </div>
           )}
           {addressType === 'rgb' && decodedRgbInvoice?.recipient_type === 'Witness' && (
-            <div className="flex items-center justify-between border-t border-border p-4">
+            <div className="flex items-center justify-between px-5 py-4">
               <span className="text-sm text-muted-foreground">Witness Amount</span>
               <span className="text-sm text-white">{witnessAmountSat} sats</span>
             </div>
@@ -129,7 +129,7 @@ export function WithdrawConfirmation({
         </div>
 
         {selectedAssetId === 'BTC' && estimatedFee > 0 && (
-          <div className="flex items-center justify-between rounded-2xl border border-primary/20 bg-primary/10 p-5 px-2 shadow-inner">
+          <div className="flex items-center justify-between rounded-2xl bg-primary/10 p-5 px-2 shadow-inner">
             <span className="text-sm font-bold uppercase tracking-wider text-primary">
               Total to deduct
             </span>
@@ -141,7 +141,7 @@ export function WithdrawConfirmation({
         )}
 
         {isPollingStatus && (
-          <div className="flex items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 p-4">
+          <div className="flex items-center gap-3 rounded-xl bg-primary/10 p-4">
             <span className="material-symbols-outlined animate-spin text-primary">
               progress_activity
             </span>

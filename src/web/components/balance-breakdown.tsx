@@ -141,13 +141,13 @@ export function BalanceBreakdown({
                     {balanceVisible ? numberOnly(format(totalBTC)) : '••••••'}
                   </span>
                   {unit !== 'fiat' && (
-                    <span className="inline-block rounded-md border border-white/10 bg-white/5 px-2 py-0.5 text-tiny font-bold uppercase tracking-widest text-white/45">
+                    <span className="inline-block rounded-md bg-white/8 px-2 py-0.5 text-tiny font-bold uppercase tracking-widest text-white/45">
                       {label}
                     </span>
                   )}
                   {isPartial && (
                     <span
-                      className="inline-flex size-4 items-center justify-center rounded-full border bg-white/[0.06]"
+                      className="inline-flex size-4 items-center justify-center rounded-full bg-white/[0.06]"
                       title="Loading remaining balances"
                     >
                       <span className="size-2 animate-spin rounded-full border border-primary/30 border-t-primary" />
@@ -198,7 +198,7 @@ export function BalanceBreakdown({
 
         {expanded && (
           <div
-            className={`space-y-1 border-t border-white/[0.08] duration-300 animate-in fade-in slide-in-from-top-2 ${compact ? 'mt-3 pt-3' : 'mt-4 pt-4'}`}
+            className={`space-y-1 duration-300 animate-in fade-in slide-in-from-top-2 ${compact ? 'mt-3 pt-3' : 'mt-4 pt-4'}`}
           >
             <p className="mb-3 text-xxs font-bold uppercase tracking-widest text-white/30">
               Bitcoin
@@ -275,7 +275,7 @@ export function BalanceBreakdown({
             )}
 
             {tokenValueSats !== undefined && tokenValueSats > 0 && (
-              <div className="mt-3 border-t border-white/[0.08] pt-4">
+              <div className="mt-4 pt-1">
                 <p className="mb-3 text-xxs font-bold uppercase tracking-widest text-white/30">
                   Token Holdings
                 </p>
@@ -309,7 +309,7 @@ export function BalanceBreakdown({
             )}
 
             {accounts.RGB?.connected && nodeInfo?.pubkey && (
-              <div className="mt-3 border-t border-white/[0.08] pt-4">
+              <div className="mt-4 pt-1">
                 <p className="mb-3 text-xxs font-bold uppercase tracking-widest text-white/30">
                   RLN Details
                 </p>
@@ -327,7 +327,7 @@ export function BalanceBreakdown({
         )}
 
         <div
-          className={`relative z-10 flex gap-2.5 border-t border-white/[0.08] ${compact ? 'mt-2 pt-2' : 'mt-3 pt-3'}`}
+          className={`relative z-10 flex gap-2.5 ${compact ? 'mt-2 pt-2' : 'mt-3 pt-3'}`}
         >
           <ActionTile
             icon={<span className="material-symbols-outlined text-icon-lg leading-none">call_received</span>}
@@ -365,7 +365,7 @@ function RgbAssetsBreakdown({
   balanceVisible: boolean
 }) {
   return (
-    <div className="mt-3 border-t border-white/[0.08] pt-4">
+    <div className="mt-4 pt-1">
       <p className="mb-3 text-xxs font-bold uppercase tracking-widest text-white/30">
         RGB Assets
       </p>
@@ -381,7 +381,7 @@ function RgbAssetsBreakdown({
           return (
             <div key={asset.asset_id} className="flex items-start justify-between py-1">
               <div className="flex items-center gap-2.5">
-                <div className="flex size-5 items-center justify-center overflow-hidden rounded border border-network-rgb/20 bg-network-rgb/10">
+                <div className="flex size-5 items-center justify-center overflow-hidden rounded bg-network-rgb/10">
                   <img src="/icons/rgb/rgb-logo.svg" alt="RGB" className="size-3.5 object-contain" />
                 </div>
                 <div className="flex flex-col">
@@ -422,7 +422,7 @@ function RgbAssetsBreakdown({
 
 function StatusChip({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-white/[0.08] bg-white/5 px-3 py-2">
+    <div className="rounded-xl bg-muted/40 px-3 py-2">
       <div className="text-xxs font-bold uppercase tracking-widest text-white/30">{label}</div>
       <div className="mt-1 truncate text-xs font-semibold text-white/80">{value}</div>
     </div>
@@ -477,7 +477,7 @@ function NetworkRow({
         {isPending ? (
           <div className="flex items-center gap-1.5">
             <div className="h-3.5 w-12 animate-pulse rounded bg-white/10" />
-            <span className="inline-flex size-3 items-center justify-center rounded-full border bg-white/[0.06]">
+            <span className="inline-flex size-3 items-center justify-center rounded-full bg-white/[0.06]">
               <span className="size-1.5 animate-spin rounded-full border border-primary/30 border-t-primary" />
             </span>
           </div>
