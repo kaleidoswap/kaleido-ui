@@ -300,3 +300,27 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 - **DON'T** introduce new drop shadows. The only shadows in the system are the card inner shadow and the primary-button glow on hover.
 - **DO** use the `label` type token (Satoshi 800 / 9 / uppercase / 0.2em tracking) for structural labels — filter headers, section titles, pill captions. It is the typographic fingerprint of the brand.
 - **DON'T** invent new radii, spacing steps, or surface colors. If you need something the tokens don't provide, extend DESIGN.md first, then propagate to `kaleido-ui/tailwind` and `kaleido-ui/tokens`.
+
+## Coherence Rules (for agents & new components)
+
+These rules exist because generated UIs kept drifting: ad-hoc borders, wrong button variants, inconsistent row shapes. Follow them exactly; they override any generic styling instinct.
+
+### Surfaces separate by background layering, never ad-hoc borders
+
+- The layering ladder is `surface.bg` (page) → `bg-card` (card) → `bg-muted/40` (row inside a card). Depth comes from the fill, not an outline.
+- **DON'T** add arbitrary border utilities (`border-white/10`, `border-primary/20`, `border-warning/30`, `border-t` dividers…) to new markup. If a surface looks like it needs an edge, it needs a different background layer instead.
+- Borders are allowed only where a component spec above explicitly calls for one: inputs, filter pills, status pills, and the `border.primary-ghost` active state. Nothing else.
+- Separate stacked rows with `space-y-*` spacing, not divider lines.
+
+### Rows and toggles use the shipped primitives
+
+- Setting/permission toggle → `SwitchRow` (label, description, Switch). Never hand-roll a flex row around `Switch`.
+- Navigation row in Settings → `SettingsTile` / `SettingItem`. Notice/callout → `InfoPanel` (pick a `tone`; don't build colored boxes). Small status chip → `ToneBadge`. Collapsible detail → `DisclosureCard`.
+- If the primitive you need doesn't exist, add it HERE (kaleido-ui) first, then consume it — never prototype it inline in the consumer app.
+
+### Button placement & variants
+
+- One `primary` per screen, full-width, pinned at the bottom of the content flow — it is the CTA.
+- Paired confirm/cancel: primary (or `destructive`) on the RIGHT, `ghost` cancel on the LEFT, equal widths.
+- Row-level actions inside cards are `ghost` `size="sm"`; destructive row actions (Block, Delete) are `destructive` `size="sm"` and always sit rightmost.
+- Never express an action as a styled `<div>`/`<button>` with utility classes — use `Button`.
