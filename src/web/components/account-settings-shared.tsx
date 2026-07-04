@@ -410,10 +410,10 @@ export function ExpandIcon({ expanded }: { expanded: boolean }) {
  * have the same visual rhythm.
  */
 const ACCOUNT_ACCENT_BG: Record<AccountSettingsProtocol, string> = {
-  RGB: 'bg-gradient-to-br from-primary/[0.06] via-card to-primary/[0.10]',
-  SPARK: 'bg-gradient-to-br from-info/[0.06] via-card to-info/[0.10]',
-  ARKADE: 'bg-gradient-to-br from-network-arkade/[0.06] via-card to-network-arkade/[0.10]',
-  NOSTR: 'bg-gradient-to-br from-network-arkade/[0.06] via-card to-network-arkade/[0.10]',
+  RGB: 'bg-gradient-to-br from-primary/[0.06] via-card/70 to-primary/[0.10]',
+  SPARK: 'bg-gradient-to-br from-info/[0.06] via-card/70 to-info/[0.10]',
+  ARKADE: 'bg-gradient-to-br from-network-arkade/[0.06] via-card/70 to-network-arkade/[0.10]',
+  NOSTR: 'bg-gradient-to-br from-network-arkade/[0.06] via-card/70 to-network-arkade/[0.10]',
 }
 
 export function AccountSettingsRow({

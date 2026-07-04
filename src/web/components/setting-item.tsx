@@ -31,7 +31,7 @@ export function SettingItem({
   return (
     <div
       className={cn(
-        'p-5 rounded-2xl bg-card transition-all duration-200 group',
+        'p-5 rounded-2xl bg-card/70 transition-all duration-200 group',
         isClickable && 'cursor-pointer active:scale-[0.98]',
         className
       )}

@@ -19,7 +19,7 @@ export function SettingsSectionCard({
   bodyClassName,
 }: SettingsSectionCardProps) {
   return (
-    <section className={cn('space-y-4 rounded-xl bg-card p-4', className)}>
+    <section className={cn('space-y-4 rounded-xl bg-card/70 p-4', className)}>
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <h2 className="text-sm font-bold text-foreground">{title}</h2>
