@@ -28,3 +28,4 @@ export {
   type ThemeMode,
   type NativeTypeLevel,
 } from './theme'
+export { iconColors } from './icon-colors.generated'
