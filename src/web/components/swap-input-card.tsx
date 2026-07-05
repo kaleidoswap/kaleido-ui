@@ -281,7 +281,7 @@ export function SwapInputCard({
                     {quoteExpiresText && (
                       <span
                         className={cn(
-                          'font-mono tabular-nums',
+                          'tabular-nums',
                           quoteExpiresUrgent ? 'font-semibold text-warning' : 'text-white/40',
                         )}
                       >

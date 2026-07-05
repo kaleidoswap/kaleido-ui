@@ -107,7 +107,7 @@ export function AccountStatusTabs<TId extends string = string>({
         onOpenChange={(open) => !open && setSelectedAccountId(null)}
       >
         {selectedAccount && (
-          <DialogContent className="max-w-md bg-popover p-0 text-white">
+          <DialogContent className="bg-popover p-0 text-white">
             <div className="p-6">
               <DialogHeader className="text-left">
                 <div className="flex items-start gap-3">

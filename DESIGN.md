@@ -5,10 +5,10 @@ version: 0.1.0
 colors:
   brand.primary: "#2BEE79"
   brand.primary-contrast: "#051B10"
-  surface.bg: "hsl(158 58% 7%)"
-  surface.card: "hsl(156 32% 12%)"
-  surface.elevated: "hsl(154 26% 17%)"
-  border.subtle: "hsl(150 20% 24%)"
+  surface.bg: "hsl(158 35% 7%)"
+  surface.card: "hsl(160 12% 8%)"
+  surface.elevated: "hsl(158 10% 12%)"
+  border.subtle: "hsl(156 10% 18%)"
   border.primary-ghost: "rgba(43, 238, 121, 0.22)"
   text.primary: "#FFFFFF"
   text.muted: "rgba(255, 255, 255, 0.55)"
@@ -111,17 +111,17 @@ The palette is organised into six groups. Each group has a specific job; mixing 
 
 ### Surface ramp
 
-Three layers, all in the same forest-green hue family, stepping up in lightness:
+Three layers, all near-black with a whisper of the forest hue, stepping up in lightness. Under the glass system (`bg-card/70` over animated backgrounds) the old mid-green surfaces read muddy and low-contrast against white text; the ramp is now near-neutral, with the green identity carried by the page background and the brand accents:
 
-- **`surface.bg` `hsl(158 58% 7%)`** — the page background. Every full-screen view starts here.
-- **`surface.card` `hsl(156 32% 12%)`** — the default card / panel / action-tile fill.
-- **`surface.elevated` `hsl(154 26% 17%)`** — a subtle lift for nested panels, dropdowns, and hover states on cards.
+- **`surface.bg` `hsl(158 35% 7%)`** — the page background. Every full-screen view starts here. Deliberately more saturated than the cards (but no higher than ~35–40% — beyond that a 70%-alpha card composites darker than the page and the layering inverts).
+- **`surface.card` `hsl(160 12% 8%)`** — the default card / panel / action-tile fill. Near-black, low chroma, so white text and tinted chips sit on it at full contrast.
+- **`surface.elevated` `hsl(158 10% 12%)`** — one step lighter for nested panels, dropdowns, and hover states on cards.
 
-The hue drift (158 → 156 → 154) is intentional: it keeps the ramp from feeling computational-gray. Do not collapse these to a single value and do not use raw `#0a0a0a`.
+The hue stays in the 156–160 band across the ramp so the layers never drift toward computational-gray or blue. Do not collapse these to a single value and do not use raw `#0a0a0a`.
 
 ### Borders
 
-- **`border.subtle` `hsl(150 20% 24%)`** — the default hairline. Cards, inputs, filter pills at rest.
+- **`border.subtle` `hsl(156 10% 18%)`** — the default hairline. Cards, inputs, filter pills at rest. Sits ~10 lightness points above `surface.card` so it stays a visible-but-quiet edge on the near-black fill.
 - **`border.primary-ghost` `rgba(43, 238, 121, 0.22)`** — brand green at 22% alpha. Used only when a surface is in an active / selected / "this is the section you are in" state.
 
 ### Text
@@ -294,7 +294,7 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 - **DON'T** style primary buttons inline with `bg-card` — use the `surface` button variant or ActionTile if the action is secondary, or use the real `primary` variant if it is the CTA.
 - **DO** tint every network icon with its semantic color (`network.bitcoin`, `network.lightning`, etc.) even at 11 px in a filter cluster. The color *is* the information.
 - **DON'T** recolor network tokens for visual harmony. Bitcoin is orange, RGB is red, they were orange and red before this app existed.
-- **DO** use `surface.bg` (`hsl(158 58% 7%)`) as the page background on every full-screen view.
+- **DO** use `surface.bg` (`hsl(158 35% 7%)`) as the page background on every full-screen view.
 - **DON'T** use raw `#0a0a0a` or `#000` as a background. The whole point of the dark-forest palette is that it is *not* black.
 - **DO** keep filter cluster icons at `cluster-icon-size: 11` px and `cluster-opacity: 0.6`. The constraint is what makes the cluster legible.
 - **DON'T** introduce new drop shadows. The only shadows in the system are the card inner shadow and the primary-button glow on hover.

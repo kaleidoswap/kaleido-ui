@@ -75,7 +75,7 @@ export function BottomNav<TValue extends string = string>({
               ) : (
                 icon ?? null
               )}
-              <span className="mt-0.5 text-xxs font-semibold transition-colors duration-300">
+              <span className="mt-0.5 max-w-full truncate text-xxs font-semibold leading-none transition-colors duration-300">
                 {label}
               </span>
             </button>
