@@ -219,16 +219,18 @@ export function AccountSettingsShell({
   onBack?: () => void
 }) {
   return (
-    <div className="relative min-h-screen bg-background pb-6 pt-16 font-display text-foreground">
-      {onBack && (
-        <div className="absolute left-4 top-4 z-30">
+    <div className="flex h-screen flex-col overflow-hidden bg-background font-display text-foreground">
+      {/* Fixed chrome: the back button never scrolls with content (matches the
+          PageHeader pattern every other settings page uses). */}
+      <div className="flex h-14 shrink-0 items-center px-2">
+        {onBack && (
           <Button type="button" variant="ghost" size="icon-xl" onClick={onBack} aria-label="Go back">
             <Icon name="arrow_back" size="xl" />
           </Button>
-        </div>
-      )}
+        )}
+      </div>
 
-      <main className="space-y-6 px-5 py-6">
+      <main className="flex-1 space-y-6 overflow-y-auto px-5 pb-28 pt-2">
         <section className="space-y-3">
           <AccountHeaderIcons accountId={accountId} />
           <div>
