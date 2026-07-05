@@ -27,6 +27,14 @@ const STATUS_UI: Record<string, { icon: IconName; className: string }> = {
 const FALLBACK_UI = { icon: 'remove' as IconName, className: 'bg-muted text-muted-foreground' }
 
 /**
+ * Shared frame for a small badge overlaid bottom-right on an icon inside a
+ * `relative` wrapper. The `ring-card` masks the badge edge against the card
+ * surface. Used by StatusIconBadge and the AssetSelector network mini-badge.
+ */
+export const iconBadgeOverlayClass =
+  'absolute -bottom-0.5 -right-0.5 flex size-4 items-center justify-center rounded-full ring-2 ring-card'
+
+/**
  * Status-on-icon combo: renders a direction/type circle with a small status
  * badge overlaid bottom-right — same pattern as the network-on-asset icon
  * combo. Replaces the full-width Completed/Failed/Pending chips on activity
@@ -39,14 +47,7 @@ export function StatusIconBadge({ icon, status, className }: StatusIconBadgeProp
     <div className={cn('relative shrink-0', className)}>
       {icon}
       {ui && (
-        <span
-          className={cn(
-            // ring-card masks the badge edge against the card surface,
-            // exactly like the network badge on asset icons.
-            'absolute -bottom-0.5 -right-0.5 flex size-4 items-center justify-center rounded-full ring-2 ring-card',
-            ui.className
-          )}
-        >
+        <span className={cn(iconBadgeOverlayClass, ui.className)}>
           <Icon name={ui.icon} className="size-3" />
         </span>
       )}

@@ -120,7 +120,7 @@ export function SwapInputCard({
 
   return (
     <>
-      <div className="relative mb-3 flex flex-col rounded-3xl bg-white/[0.03] shadow-2xl shadow-black/40 backdrop-blur-2xl transition-all duration-300">
+      <div className="relative mb-3 flex flex-col rounded-2xl bg-white/[0.03] shadow-2xl shadow-black/40 backdrop-blur-2xl transition-all duration-300">
         <div className="p-3.5 pb-4">
           <div className="mb-2 flex items-center justify-between gap-2">
             <p className="text-xs font-bold uppercase tracking-widest text-white/60">You Pay</p>
@@ -212,7 +212,7 @@ export function SwapInputCard({
           </span>
         </div>
 
-        <div className="rounded-b-3xl bg-gradient-to-br from-white/[0.01] to-primary/[0.04] p-3.5 pt-4 transition-all duration-300">
+        <div className="rounded-b-2xl bg-gradient-to-br from-white/[0.01] to-primary/[0.04] p-3.5 pt-4 transition-all duration-300">
           <p className="mb-2 text-xs font-bold uppercase tracking-widest text-primary/70">
             You Receive
           </p>
