@@ -29,22 +29,22 @@
    forest-dark / brand-green palette from DESIGN.md.
    ───────────────────────────────────────────────────────────────────────── */
 .dark {
-  --background: hsl(158 58% 7%);
+  --background: hsl(158 35% 7%);
   --foreground: #ffffff;
-  --card: hsl(156 32% 12%);
+  --card: hsl(160 12% 8%);
   --card-foreground: #ffffff;
-  --popover: hsl(154 26% 17%);
+  --popover: hsl(158 10% 12%);
   --popover-foreground: #ffffff;
   --primary: #2bee79;
   --primary-foreground: #051b10;
-  --secondary: hsl(154 26% 17%);
+  --secondary: hsl(158 10% 12%);
   --secondary-foreground: #ffffff;
-  --muted: hsl(156 32% 12%);
+  --muted: hsl(160 12% 8%);
   --muted-foreground: rgba(255, 255, 255, 0.55);
-  --accent: hsl(154 26% 17%);
+  --accent: hsl(158 10% 12%);
   --accent-foreground: #ffffff;
   --destructive: hsl(0 62% 50%);
-  --border: hsl(150 20% 24%);
+  --border: hsl(156 10% 18%);
   --input: rgba(255, 255, 255, 0.15);
   --ring: #2bee79;
 }

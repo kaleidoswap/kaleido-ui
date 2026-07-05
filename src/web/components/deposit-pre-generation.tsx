@@ -238,7 +238,7 @@ export function DepositPreGeneration({
               )}
             >
               <span className="font-medium">Available colorable UTXOs</span>
-              <span className="font-mono font-bold">{colorableUtxoCount}</span>
+              <span className="font-bold tabular-nums">{colorableUtxoCount}</span>
             </div>
           )}
           {usePrivacy && colorableUtxoCount === 0 && (

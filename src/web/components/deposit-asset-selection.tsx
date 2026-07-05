@@ -257,7 +257,7 @@ export function DepositAssetSelection<TView extends string = string>({
                       </div>
                       {balance > 0 && (
                         <div className="flex-shrink-0 text-right">
-                          <div className="font-mono text-xs font-bold text-white">
+                          <div className="text-xs font-bold tabular-nums text-white">
                             {formatAssetBalance(asset)}
                           </div>
                           <div className="mt-0.5 text-tiny uppercase tracking-wider text-white/35">

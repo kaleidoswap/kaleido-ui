@@ -90,7 +90,7 @@ export function TransactionCard({
       <div className="text-right relative z-10">
         <p
           className={cn(
-            'font-bold text-lg tracking-tight group-hover:opacity-90 transition-opacity',
+            'font-bold text-lg tracking-tight tabular-nums group-hover:opacity-90 transition-opacity',
             textColor
           )}
         >

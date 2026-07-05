@@ -108,7 +108,7 @@ export function WithdrawAmountInput({
                 <input
                   type="text"
                   inputMode="decimal"
-                  className="w-full bg-transparent text-2xl font-bold text-white outline-none placeholder:text-white/15"
+                  className="w-full bg-transparent text-2xl font-bold tabular-nums text-white outline-none placeholder:text-white/15"
                   placeholder="0"
                   value={amount}
                   onChange={handleAmountChange}

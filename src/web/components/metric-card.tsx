@@ -40,7 +40,7 @@ export function MetricCard({
         )}
         <span className="text-xxs font-bold uppercase tracking-widest text-white/45">{label}</span>
       </div>
-      <p className="font-mono text-sm font-bold text-foreground">{value}</p>
+      <p className="text-sm font-bold tabular-nums text-foreground">{value}</p>
       {description && <p className="text-xxs text-white/45">{description}</p>}
     </div>
   )

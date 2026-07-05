@@ -137,7 +137,7 @@ export function BalanceBreakdown({
             ) : (
               <>
                 <div className="flex min-w-0 max-w-full flex-wrap items-baseline gap-x-1.5 gap-y-1">
-                  <span className="text-display font-black leading-[1.1] tracking-tighter text-white drop-shadow-sm transition-all duration-300 group-active:scale-95 group-active:text-primary">
+                  <span className="text-display font-black leading-[1.1] tracking-tighter tabular-nums text-white drop-shadow-sm transition-all duration-300 group-active:scale-95 group-active:text-primary">
                     {balanceVisible ? numberOnly(format(totalBTC)) : '••••••'}
                   </span>
                   {unit !== 'fiat' && (
@@ -155,12 +155,12 @@ export function BalanceBreakdown({
                   )}
                 </div>
                 {balanceVisible && unit !== 'fiat' && fiatTotal && (
-                  <span className="mt-1 font-mono text-xs font-medium text-white/45">
+                  <span className="mt-1 text-xs font-medium tabular-nums text-white/45">
                     {fiatTotal}
                   </span>
                 )}
                 {balanceVisible && unit === 'fiat' && totalBTC > 0 && (
-                  <span className="mt-1 font-mono text-xs font-medium text-white/45">
+                  <span className="mt-1 text-xs font-medium tabular-nums text-white/45">
                     {(totalBTC / 1e8).toFixed(8).replace(/\.?0+$/, '')}&nbsp;BTC
                   </span>
                 )}
@@ -299,7 +299,7 @@ export function BalanceBreakdown({
                       {balanceVisible ? format(tokenValueSats) : '••••••'}
                     </span>
                     {balanceVisible && (
-                      <span className="mt-0.5 font-mono text-xxs text-white/35">
+                      <span className="mt-0.5 text-xxs tabular-nums text-white/35">
                         {formatFiatValue(tokenValueSats)}
                       </span>
                     )}
@@ -487,7 +487,7 @@ function NetworkRow({
               {visible ? format(amount) : '••••••'}
             </span>
             {fiat && visible && !isEmpty && (
-              <span className="mt-0.5 font-mono text-xxs text-white/35">{fiat}</span>
+              <span className="mt-0.5 text-xxs tabular-nums text-white/35">{fiat}</span>
             )}
           </>
         )}

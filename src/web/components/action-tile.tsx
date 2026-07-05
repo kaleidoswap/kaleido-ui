@@ -38,7 +38,9 @@ export function ActionTile({
       <span className="flex shrink-0 items-center justify-center text-current leading-none [&_.material-symbols-outlined]:text-icon-lg [&_.material-symbols-outlined]:leading-none">
         {icon}
       </span>
-      <span className="truncate text-tiny font-semibold tracking-wide">{label}</span>
+      {/* rem-based size (not the px `text-tiny` token) so the side-panel root
+          font-size ladder scales the action labels with everything else. */}
+      <span className="truncate text-sm font-semibold tracking-wide">{label}</span>
     </button>
   )
 }

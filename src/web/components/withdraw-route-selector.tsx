@@ -71,7 +71,7 @@ function RouteChoiceCard<TAccount extends string>({
             )}
           </div>
           {balanceLabel && (
-            <p className="mt-0.5 font-mono text-xs text-white/55">{balanceLabel}</p>
+            <p className="mt-0.5 text-xs tabular-nums text-white/55">{balanceLabel}</p>
           )}
         </div>
       </div>
