@@ -24,6 +24,10 @@ export interface SwapInputCardProps {
   maxText?: string
   selectedPercentage?: number | null
   percentageDisabled?: boolean
+  /** Hide the 25/50/75/Max shortcuts entirely (e.g. bridge: no local balance). */
+  hidePercentages?: boolean
+  /** One-way flow: replace the flip button with a static down-arrow indicator. */
+  oneWay?: boolean
   fromUnitLabel: string
   fromDisplayUnit?: AmountDisplayUnit
   fromUnitIsToggle?: boolean
@@ -71,6 +75,8 @@ export function SwapInputCard({
   maxText,
   selectedPercentage = null,
   percentageDisabled = false,
+  hidePercentages = false,
+  oneWay = false,
   fromUnitLabel,
   fromDisplayUnit,
   fromUnitIsToggle = false,
@@ -120,6 +126,7 @@ export function SwapInputCard({
             <p className="text-xs font-bold uppercase tracking-widest text-white/60">You Pay</p>
             {/* Percentage shortcuts now sit above the amount row per spec —
                 they read more naturally as inputs that drive the amount. */}
+            {!hidePercentages && (
             <div className="flex items-center gap-1">
               {PERCENTAGES.map((percent) => (
                 <button
@@ -138,6 +145,7 @@ export function SwapInputCard({
                 </button>
               ))}
             </div>
+            )}
           </div>
           <div className="flex items-center gap-2">
             <AssetSelector
