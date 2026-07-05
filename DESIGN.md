@@ -35,7 +35,6 @@ rounded:
   pill: 999       # rounded-full — chips, status pills, filter chips, tab pills, bottom nav
   button: 12      # rounded-xl — rectangular buttons (full-bleed CTAs step up to card/16)
   nav: 20
-  hero: 24        # rounded-3xl — SwapInputCard ONLY; the single sanctioned exception
 spacing:
   1: 4
   2: 8
@@ -202,7 +201,8 @@ The `rounded` token set maps directly to usage — do not pick a radius that is 
 - **`pill: 999` (`rounded-full`)** — status badges, network pills, filter chips (`ActivityNetworkFilters`), tab pills (`ActivityTypeTabs` container and its active pill), bottom-nav container, direction/avatar circles, any chip that wraps a single short word.
 - **`button: 12`** — rectangular buttons (primary, surface, ghost, destructive) share the `inner` scale; full-bleed CTA variants step up to `card` (16).
 - **`nav: 20`** — the inner active slot of the bottom nav. Softer than `button`, tighter than `pill`, tuned for a 44 px-tall pill-in-pill.
-- **`hero: 24` (`rounded-3xl`)** — **the single exception.** Only the swap hero card (`SwapInputCard`) may use 24, to mark the one hero surface of the swap screen. No other component may use `rounded-3xl`; if a card "feels like it deserves" 24, it doesn't — use `card` (16).
+
+There is no larger step. No component may use `rounded-3xl` — the swap hero card (`SwapInputCard`) sits on `card` (16) like everything else; if a card "feels like it deserves" more, it doesn't — use `card` (16).
 
 ## Components
 

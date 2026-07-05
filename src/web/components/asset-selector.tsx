@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { AssetIcon } from './asset-icon'
 import { InlineSelector, type InlineSelectorOption } from './inline-selector'
 import { NetworkBadge, type NetworkType } from './network-badge'
+import { iconBadgeOverlayClass } from './status-icon-badge'
 import { ScrollArea } from './scroll-area'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
@@ -18,6 +19,29 @@ export interface AssetSelectorOption {
   assetId?: string
   category?: string | null
   categoryLabel?: string
+  /** URL of the network mark rendered as a mini-badge over the asset icon. */
+  networkIconUrl?: string
+  /** Right-aligned network tag: label pill tinted with `color`, ticker beneath. */
+  networkTag?: { label: string; color?: string }
+}
+
+/**
+ * Mini network badge overlaid bottom-right on an asset icon — the same
+ * icon+badge combo the activity cards use (see StatusIconBadge). Renders the
+ * network mark image when available, otherwise a lettered fallback circle.
+ */
+function NetworkMiniBadge({ iconUrl, label }: { iconUrl?: string; label?: string }) {
+  return (
+    <span className={cn(iconBadgeOverlayClass, 'overflow-hidden')}>
+      {iconUrl ? (
+        <img src={iconUrl} alt={label ?? ''} className="h-full w-full object-cover" />
+      ) : (
+        <span className="flex h-full w-full items-center justify-center bg-muted text-xxs font-bold uppercase leading-none text-muted-foreground">
+          {label?.charAt(0)}
+        </span>
+      )}
+    </span>
+  )
 }
 
 export interface AssetSelectorCategory {
@@ -90,6 +114,7 @@ export function AssetSelector({
         (option.name?.toLowerCase().includes(searchValue) ?? false) ||
         (option.assetId?.toLowerCase().includes(searchValue) ?? false) ||
         (option.network?.toLowerCase().includes(searchValue) ?? false) ||
+        (option.networkTag?.label.toLowerCase().includes(searchValue) ?? false) ||
         (option.category?.toLowerCase().includes(searchValue) ?? false)
 
       return matchesSearch
@@ -115,18 +140,27 @@ export function AssetSelector({
   ) => {
     const optionCategoryLabel =
       option.categoryLabel || (option.category ? categoryLabelById.get(option.category) : undefined)
+    const hasNetworkBadge = Boolean(option.networkIconUrl || option.networkTag)
 
     return (
       <span className="group flex w-full items-center gap-3 text-sm">
-        <AssetIcon
-          ticker={option.ticker}
-          logoUri={option.icon}
-          size={38}
-          className={cn(
-            'shrink-0 transition-transform duration-200',
-            !optionDisabled && 'group-hover:scale-[1.04]',
+        <span className="relative shrink-0">
+          <AssetIcon
+            ticker={option.ticker}
+            logoUri={option.icon}
+            size={38}
+            className={cn(
+              'shrink-0 transition-transform duration-200',
+              !optionDisabled && 'group-hover:scale-[1.04]',
+            )}
+          />
+          {hasNetworkBadge && (
+            <NetworkMiniBadge
+              iconUrl={option.networkIconUrl}
+              label={option.networkTag?.label}
+            />
           )}
-        />
+        </span>
         <span className="flex min-w-0 flex-1 items-center justify-between gap-3 text-left">
           <span className="min-w-0 flex flex-col leading-tight">
             <span
@@ -141,6 +175,23 @@ export function AssetSelector({
               <span className="rounded-full border border-primary/25 bg-primary/[0.14] px-2 py-0.5 text-xxs font-bold uppercase tracking-wide text-primary">
                 Current
               </span>
+            ) : option.networkTag ? (
+              <span
+                className={cn(
+                  'rounded-full px-2 py-0.5 text-xxs font-bold uppercase tracking-wide',
+                  !option.networkTag.color && 'bg-white/[0.08] text-muted-foreground',
+                )}
+                style={
+                  option.networkTag.color
+                    ? {
+                        backgroundColor: `color-mix(in srgb, ${option.networkTag.color} 15%, transparent)`,
+                        color: option.networkTag.color,
+                      }
+                    : undefined
+                }
+              >
+                {option.networkTag.label}
+              </span>
             ) : (
               optionCategoryLabel && (
                 <span className="rounded-full bg-surface-card px-2 py-0.5 text-tiny font-bold uppercase tracking-wide text-text-dimmed shadow-inner">
@@ -149,7 +200,12 @@ export function AssetSelector({
               )
             )}
             <span
-              className="max-w-24 truncate text-tiny font-medium uppercase tracking-wide text-white/35"
+              className={cn(
+                'max-w-24 truncate',
+                option.networkTag
+                  ? 'text-xs text-muted-foreground'
+                  : 'text-tiny font-medium uppercase tracking-wide text-white/35',
+              )}
               title={optionDisabled ? 'In use' : option.ticker}
             >
               {optionDisabled ? 'In use' : option.ticker}
@@ -181,12 +237,19 @@ export function AssetSelector({
             <>
               <span className="relative shrink-0">
                 <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={38} />
-                {selected.network && (
-                  <NetworkBadge
-                    network={selected.network}
-                    size="sm"
-                    className="absolute -bottom-2 -right-2 border-2 border-background"
+                {selected.networkIconUrl || selected.networkTag ? (
+                  <NetworkMiniBadge
+                    iconUrl={selected.networkIconUrl}
+                    label={selected.networkTag?.label}
                   />
+                ) : (
+                  selected.network && (
+                    <NetworkBadge
+                      network={selected.network}
+                      size="sm"
+                      className="absolute -bottom-2 -right-2 border-2 border-background"
+                    />
+                  )
                 )}
               </span>
               <span className="min-w-0 flex-1 text-left">
