@@ -44,6 +44,29 @@ function NetworkMiniBadge({ iconUrl, label }: { iconUrl?: string; label?: string
   )
 }
 
+/**
+ * Network-tag text color: dark brand hexes (e.g. near-black chain colors) are
+ * unreadable on the dark card, so when the color's relative luminance drops
+ * below 0.45 the text is lightened via color-mix — the pill's 15% tint
+ * background keeps the original brand color either way.
+ */
+function readableTagColor(color: string): string {
+  const raw = color.replace('#', '')
+  const hex =
+    raw.length === 3
+      ? raw
+          .split('')
+          .map((char) => char + char)
+          .join('')
+      : raw
+  if (!/^[0-9a-fA-F]{6}$/.test(hex)) return color
+  const r = parseInt(hex.slice(0, 2), 16)
+  const g = parseInt(hex.slice(2, 4), 16)
+  const b = parseInt(hex.slice(4, 6), 16)
+  const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
+  return luminance < 0.45 ? `color-mix(in srgb, ${color} 45%, white)` : color
+}
+
 export interface AssetSelectorCategory {
   id: string
   label: string
@@ -185,7 +208,7 @@ export function AssetSelector({
                   option.networkTag.color
                     ? {
                         backgroundColor: `color-mix(in srgb, ${option.networkTag.color} 15%, transparent)`,
-                        color: option.networkTag.color,
+                        color: readableTagColor(option.networkTag.color),
                       }
                     : undefined
                 }
