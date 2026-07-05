@@ -110,6 +110,26 @@ export const colors = {
     track: 'transparent',
   },
 
+  /** External bridge chains — third-party brand colors for network tags.
+   * Keyed by the lowercase chain id the bridge API uses. */
+  bridgeChain: {
+    ethereum: '#627EEA',
+    base: '#0052FF',
+    arbitrum: '#28A0F0',
+    optimism: '#FF0420',
+    polygon: '#8247E5',
+    solana: '#9945FF',
+    tron: '#FF4B4B',
+    bitcoin: '#F7931A',
+    lightning: '#F6C343',
+    spark: '#FF6D00',
+    avalanche: '#E84142',
+    bsc: '#F0B90B',
+    litecoin: '#4A7BD4',
+    ton: '#0098EA',
+    monad: '#836EF9',
+  },
+
   /** Network / Layer */
   network: {
     bitcoin: '#F7931A',
