@@ -208,7 +208,7 @@ export function AssetSelector({
               onClick={closePanel}
             >
               <div
-                className="flex max-h-[85vh] w-full max-w-[26rem] flex-col overflow-hidden rounded-t-3xl bg-popover/95 shadow-popover backdrop-blur-2xl duration-300 animate-in slide-in-from-bottom-8 sm:max-h-[80vh] sm:rounded-3xl sm:slide-in-from-bottom-0 sm:zoom-in-95"
+                className="flex max-h-[85vh] w-full max-w-[26rem] flex-col overflow-hidden rounded-t-2xl bg-popover/95 shadow-popover backdrop-blur-2xl duration-300 animate-in slide-in-from-bottom-8 sm:max-h-[80vh] sm:rounded-2xl sm:slide-in-from-bottom-0 sm:zoom-in-95"
                 onClick={(event) => event.stopPropagation()}
               >
                 <div className="flex-shrink-0 bg-white/[0.03] px-4 py-3.5">

@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 import { Icon } from '../primitives/icon'
 import type { IconName } from '../primitives/icon'
-import { StatusBadge, type StatusType } from './status-badge'
+import type { StatusType } from './status-badge'
+import { StatusIconBadge } from './status-icon-badge'
 import { cn } from '../utils/cn'
 
 export interface ActivityRowProps {
@@ -40,22 +41,28 @@ export function ActivityRow({
   const content = (
     <>
       <div className="flex min-w-0 items-center gap-3">
-        <div className={cn('flex size-10 shrink-0 items-center justify-center rounded-xl shadow-inner', ui.iconClass)}>
-          {typeof icon === 'string' || !icon ? (
-            <Icon name={(icon as IconName | undefined) ?? ui.icon} className="text-icon-xl" />
-          ) : (
-            icon
-          )}
-        </div>
+        {/* Status rides on the icon as a small corner badge (StatusIconBadge)
+            instead of a chip, keeping the meta row to just the timestamp. */}
+        <StatusIconBadge
+          status={status}
+          icon={
+            <div className={cn('flex size-10 items-center justify-center rounded-xl shadow-inner', ui.iconClass)}>
+              {typeof icon === 'string' || !icon ? (
+                <Icon name={(icon as IconName | undefined) ?? ui.icon} className="text-icon-xl" />
+              ) : (
+                icon
+              )}
+            </div>
+          }
+        />
         <div className="flex min-w-0 flex-col">
           <div className="flex min-w-0 items-center gap-1.5">
             <span className="truncate text-sm font-bold tracking-wide text-foreground">{title}</span>
             {networkBadge}
           </div>
-          {(status || timestamp) && (
+          {timestamp && (
             <div className="mt-1 flex items-center gap-2">
-              {status && <StatusBadge status={status} className="px-1.5 py-0.5 text-xxs" />}
-              {timestamp && <span className="text-xxs text-muted-foreground">{timestamp}</span>}
+              <span className="text-xxs text-muted-foreground">{timestamp}</span>
             </div>
           )}
         </div>

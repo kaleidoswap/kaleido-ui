@@ -100,7 +100,7 @@ export function ActivityList<TData = unknown>({
         return (
           <div
             key={item.id}
-            className="relative overflow-hidden rounded-3xl bg-surface-card shadow-inner transition-all animate-in fade-in slide-in-from-bottom-2 duration-500"
+            className="relative overflow-hidden rounded-2xl bg-surface-card shadow-inner transition-all animate-in fade-in slide-in-from-bottom-2 duration-500"
           >
             <TransactionCard
               direction={item.direction}

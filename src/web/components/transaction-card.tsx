@@ -1,5 +1,6 @@
 import { cn } from '../utils/cn'
-import { StatusBadge, type StatusType } from './status-badge'
+import { StatusIconBadge } from './status-icon-badge'
+import type { StatusType } from './status-badge'
 
 export interface TransactionCardProps {
   /** Direction of the transaction */
@@ -56,7 +57,7 @@ export function TransactionCard({
   return (
     <div
       className={cn(
-        'rounded-3xl p-4 backdrop-blur-xl flex items-center justify-between transition-all shadow-sm relative overflow-hidden group',
+        'rounded-2xl p-4 backdrop-blur-xl flex items-center justify-between transition-all shadow-sm relative overflow-hidden group',
         statusStyle.base,
         onClick && `cursor-pointer active:scale-[0.98] ${statusStyle.hover}`,
         className
@@ -65,26 +66,30 @@ export function TransactionCard({
     >
       <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
       <div className="flex items-center gap-3 relative z-10">
-        <div
-          className={cn(
-            'size-11 rounded-full flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform',
-            iconStyle
-          )}
-        >
-          <span className="material-symbols-outlined text-icon-xl">
-            {isInbound ? 'arrow_downward' : 'arrow_outward'}
-          </span>
-        </div>
+        {/* Status lives on the icon (small badge bottom-right) instead of a
+            full-width chip — the row keeps title + date on one line. */}
+        <StatusIconBadge
+          status={status}
+          icon={
+            <div
+              className={cn(
+                'size-11 rounded-full flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform',
+                iconStyle
+              )}
+            >
+              <span className="material-symbols-outlined text-icon-xl">
+                {isInbound ? 'arrow_downward' : 'arrow_outward'}
+              </span>
+            </div>
+          }
+        />
         <div className="flex flex-col">
           <span className="font-bold text-sm tracking-wide text-foreground">
             {isInbound ? 'Received' : 'Sent'}
           </span>
-          <div className="flex items-center gap-2 mt-1">
-            <StatusBadge status={status} />
-            <span className="text-tiny text-muted-foreground font-medium tracking-wide">
-              {formatDate(timestamp)}
-            </span>
-          </div>
+          <span className="mt-1 text-tiny text-muted-foreground font-medium tracking-wide">
+            {formatDate(timestamp)}
+          </span>
         </div>
       </div>
       <div className="text-right relative z-10">

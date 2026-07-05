@@ -32,11 +32,17 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        // Entrance/exit is a simple fast fade + 0.98→1 scale (150ms ease-out).
-        // The slide-from/to values sit at exactly -50%/-50% so the keyframe
-        // keeps the centering transform — zero positional slide, no zoom/slide
-        // combo. (BottomSheet owns its own slide-up; it does not use this.)
-        'fixed left-[50%] top-[50%] z-50 grid w-full max-w-sm translate-x-[-50%] translate-y-[-50%] gap-4 bg-card p-6 shadow-lg duration-150 ease-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-[0.98] data-[state=open]:zoom-in-[0.98] data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-1/2 data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-1/2 rounded-2xl',
+        // True-center with ZERO positional animation. The -50%/-50% centering
+        // lives on the CSS `translate` property ([translate:-50%_-50%]), NOT
+        // on `transform` — the tailwindcss-animate keyframes override the
+        // whole `transform` property while animating, so any transform-based
+        // centering (translate-x-[-50%] + slide-in-from-left-1/2) gets
+        // re-interpolated per frame and reads as a drift from the left.
+        // With centering out of `transform`, the entrance/exit is purely a
+        // fast fade + 0.98↔1 zoom (150ms ease-out) around the dialog's own
+        // center. No slide-in/out utilities may ever be added back here.
+        // (BottomSheet owns its own slide-up; it does not use this.)
+        'fixed left-1/2 top-1/2 z-50 grid w-full max-w-sm [translate:-50%_-50%] gap-4 rounded-2xl bg-card p-6 shadow-lg duration-150 ease-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-[0.98] data-[state=closed]:zoom-out-[0.98]',
         className
       )}
       {...props}

@@ -30,10 +30,12 @@ typography:
   label:   { family: "Satoshi", weight: 800, size: 9,  tracking: 0.2em, transform: uppercase }
   mono:    { family: "ui-monospace", weight: 500, size: 12 }
 rounded:
-  card: 12
-  pill: 999
-  button: 14
+  card: 16        # rounded-2xl — cards, tiles, settings/account rows, dialogs, sheet top edge
+  inner: 12       # rounded-xl — rows/inputs/icon tiles nested inside a card, ActionTile trio
+  pill: 999       # rounded-full — chips, status pills, filter chips, tab pills, bottom nav
+  button: 12      # rounded-xl — rectangular buttons (full-bleed CTAs step up to card/16)
   nav: 20
+  hero: 24        # rounded-3xl — SwapInputCard ONLY; the single sanctioned exception
 spacing:
   1: 4
   2: 8
@@ -64,7 +66,7 @@ components:
   action-tile:
     bg: "{colors.surface.card}"
     border: "{colors.border.subtle}"
-    radius: "{rounded.card}"
+    radius: "{rounded.inner}"
     icon-size: 20
     tile-size: 44
     hover.bg: "{colors.brand.primary}"
@@ -72,7 +74,7 @@ components:
   filter-pill:
     bg: "rgba(255,255,255,0.06)"
     border: "rgba(255,255,255,0.12)"
-    radius: "{rounded.card}"
+    radius: "{rounded.pill}"
     active.bg: "rgba(255,255,255,0.13)"
     active.border: "rgba(255,255,255,0.25)"
     cluster-icon-size: 11
@@ -193,12 +195,14 @@ Do not add new drop shadows, do not add blur-behind surfaces, do not fake depth 
 
 ## Shapes
 
-The `rounded` token set maps directly to usage — do not pick a radius that is not in the list.
+The `rounded` token set maps directly to usage — do not pick a radius that is not in the list. The scale is deliberately shallow: a surface is either a **card** (16), something **nested one level inside a card** (12), or a **pill** (999). Everything on one screen must sit on that ladder or the layout stops reading as one family.
 
-- **`card: 12`** — cards, asset rows, action tiles, the main-action trio (Deposit / Swap / Withdraw), filter pills at rest.
-- **`pill: 999`** — status badges, network pills, bottom-nav container, filter options in their active state, any chip that wraps a single short word.
-- **`button: 14`** — rectangular buttons (primary, surface, ghost, destructive). Slightly rounder than `card` so buttons read as interactive even without color.
+- **`card: 16` (`rounded-2xl`)** — every top-level surface: cards, tiles, settings and account rows (`SettingsTile`, `SettingItem`, `AccountSettingsRow` — plain *and* accent variants), activity/transaction cards (`TransactionCard`, `ActivityRow`, the `ActivityList` wrappers), the Activity filter-bar controls (search input, status dropdown, clear button — all `h-11`), dialogs. Bottom sheets use it on their top edge (`rounded-t-2xl`).
+- **`inner: 12` (`rounded-xl`)** — surfaces nested one level inside a card: inner rows, inputs, icon tiles, segmented-control options, the Deposit / Swap / Withdraw `ActionTile` trio. Never use `inner` for a card's own outline — nesting is what the smaller radius communicates.
+- **`pill: 999` (`rounded-full`)** — status badges, network pills, filter chips (`ActivityNetworkFilters`), tab pills (`ActivityTypeTabs` container and its active pill), bottom-nav container, direction/avatar circles, any chip that wraps a single short word.
+- **`button: 12`** — rectangular buttons (primary, surface, ghost, destructive) share the `inner` scale; full-bleed CTA variants step up to `card` (16).
 - **`nav: 20`** — the inner active slot of the bottom nav. Softer than `button`, tighter than `pill`, tuned for a 44 px-tall pill-in-pill.
+- **`hero: 24` (`rounded-3xl`)** — **the single exception.** Only the swap hero card (`SwapInputCard`) may use 24, to mark the one hero surface of the swap screen. No other component may use `rounded-3xl`; if a card "feels like it deserves" 24, it doesn't — use `card` (16).
 
 ## Components
 
@@ -207,7 +211,7 @@ The `rounded` token set maps directly to usage — do not pick a radius that is 
 **Intended use.** A Button is the single unit of commitment on a screen. `primary` is the CTA ("Confirm swap," "Send"), and only one primary button should ever be visible at a time. `surface` is every secondary action that still needs to feel like a button ("Cancel," "Choose asset"). `ghost` is the flat, chrome-free variant used inside dense lists and dropdown rows.
 
 **Key tokens.**
-- `primary`: bg `brand.primary`, fg `brand.primary-contrast`, radius `button` (14), height `44`, weight `800`. Hover adds the primary glow.
+- `primary`: bg `brand.primary`, fg `brand.primary-contrast`, radius `button` (12), height `44`, weight `800`. Hover adds the primary glow.
 - `surface`: bg `surface.card`, fg `text.primary`, border `border.subtle`, radius `button`. Hover swaps to `brand.primary` bg with `brand.primary-contrast` fg — the same fill the primary variant uses at rest.
 - `ghost`: transparent bg, fg `text.primary`, no border. Hover reveals `surface.card`.
 
@@ -221,7 +225,7 @@ Leading icon sits left of the label with spacing `2` (8 px); trailing icon, when
 
 **Intended use.** The row / tile that represents an asset in a list: logo, ticker, name, amount, fiat equivalent. The workhorse of the wallet screen.
 
-**Key tokens.** bg `surface.card`, border `border.subtle`, radius `card` (12), padding `12`. Internal layout uses spacing scale `2` for label stacks and `3` between logo and text. Hover lifts to `surface.elevated`.
+**Key tokens.** bg `surface.card`, border `border.subtle`, radius `card` (16), padding `12`. Internal layout uses spacing scale `2` for label stacks and `3` between logo and text. Hover lifts to `surface.elevated`.
 
 **Wrong vs right.**
 - Wrong: two cards stacked with no border and a hard-edged `#000` background — the rows blur together.
@@ -231,7 +235,7 @@ Leading icon sits left of the label with spacing `2` (8 px); trailing icon, when
 
 **Intended use.** The Deposit / Swap / Withdraw trio on the asset-detail screen — and any future equivalent where a small cluster of equally-weighted primary actions needs to sit side-by-side. Each tile has an icon slot on top and a label beneath.
 
-**Key tokens.** bg `surface.card`, border `border.subtle`, radius `card` (12), icon slot `tile-size: 44` px with an icon sized `20` px inside. At rest, the tile reads as a surface card. On hover it fills with `brand.primary` and its icon/label flip to `brand.primary-contrast`, and the primary glow engages. Label text below the tile uses the `label` type token.
+**Key tokens.** bg `surface.card`, border `border.subtle`, radius `inner` (12) — the trio sits inside the balance card, so it takes the nested scale — icon slot `tile-size: 44` px with an icon sized `20` px inside. At rest, the tile reads as a surface card. On hover it fills with `brand.primary` and its icon/label flip to `brand.primary-contrast`, and the primary glow engages. Label text below the tile uses the `label` type token.
 
 **Wrong vs right.**
 - Wrong: three tiles with a green icon at rest, no fill change on hover — nothing tells the user the tile is the target. (This is the current state in `rate-extension/src/components/AssetDetail.tsx:833-858`.)
@@ -241,7 +245,7 @@ Leading icon sits left of the label with spacing `2` (8 px); trailing icon, when
 
 **Intended use.** The horizontal filter strip at the top of lists ("Networks," "Assets," "Time range"). Each pill groups an icon cluster and a label; tapping one scopes the list below.
 
-**Key tokens.** bg `rgba(255,255,255,0.06)`, border `rgba(255,255,255,0.12)`, radius `card` (12). Active state: bg `rgba(255,255,255,0.13)`, border `rgba(255,255,255,0.25)`. When a pill shows a cluster of sub-icons (e.g. the networks currently included in the filter), each icon is **`cluster-icon-size: 11` px at `cluster-opacity: 0.6`**, maxing out at 4 icons plus a `+N` overflow token. The 11 px size is not a suggestion — shrinking is what keeps the cluster from competing with the pill's own label.
+**Key tokens.** bg `rgba(255,255,255,0.06)`, border `rgba(255,255,255,0.12)`, radius `pill` (999). Active state: bg `rgba(255,255,255,0.13)`, border `rgba(255,255,255,0.25)`. When a pill shows a cluster of sub-icons (e.g. the networks currently included in the filter), each icon is **`cluster-icon-size: 11` px at `cluster-opacity: 0.6`**, maxing out at 4 icons plus a `+N` overflow token. The 11 px size is not a suggestion — shrinking is what keeps the cluster from competing with the pill's own label.
 
 **Wrong vs right.**
 - Wrong: a pill with four 20 px-high network icons crammed next to a 9 px label — the icons overwhelm, the filter label is unreadable. (Current `rate-extension/src/components/Dashboard.tsx:34-129`.)
@@ -282,7 +286,7 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 
 **Intended use.** When a screen represents "the currently active section" (e.g. you navigated into "Swap" and the swap hub is the active context), wrap either the whole container or its header in a subtle brand-ghost treatment to echo the nav state inwards.
 
-**Key tokens.** Border `border.primary-ghost` (primary at 22%), background tint `primary/10` (`rgba(43,238,121,0.10)`), radius `card` (12). No glow — SectionHighlight is a passive indicator, not a CTA.
+**Key tokens.** Border `border.primary-ghost` (primary at 22%), background tint `primary/10` (`rgba(43,238,121,0.10)`), radius `card` (16). No glow — SectionHighlight is a passive indicator, not a CTA.
 
 **Wrong vs right.**
 - Wrong: full `brand.primary` border on the section container — now the section frame competes with the CTA inside it for attention.
