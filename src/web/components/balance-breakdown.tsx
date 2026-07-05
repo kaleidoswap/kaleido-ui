@@ -116,7 +116,7 @@ export function BalanceBreakdown({
   return (
     <div className={`flex flex-col ${compact ? 'gap-2' : 'gap-3'}`}>
       <div
-        className={`relative overflow-hidden rounded-3xl bg-card ${compact ? 'p-3.5' : 'p-5'}`}
+        className={`relative overflow-hidden rounded-2xl bg-card ${compact ? 'p-3.5' : 'p-5'}`}
       >
         <div className="pointer-events-none absolute right-0 top-0 h-48 w-48 -translate-y-1/4 translate-x-1/4 rounded-full bg-white/[0.04] blur-[60px]" />
 
@@ -330,20 +330,20 @@ export function BalanceBreakdown({
           className={`relative z-10 flex gap-2.5 ${compact ? 'mt-2 pt-2' : 'mt-3 pt-3'}`}
         >
           <ActionTile
-            icon={<span className="material-symbols-outlined text-icon-lg leading-none">call_received</span>}
+            icon={<span className="material-symbols-outlined text-icon-sm leading-none">call_received</span>}
             label="Deposit"
             onClick={() => onNavigate?.('deposit')}
             data-testid="dashboard-action-deposit"
           />
           <ActionTile
-            icon={<span className="material-symbols-outlined text-icon-lg leading-none">swap_horiz</span>}
+            icon={<span className="material-symbols-outlined text-icon-sm leading-none">swap_horiz</span>}
             label="Swap"
             onClick={() => onNavigate?.('swap')}
             data-testid="dashboard-action-swap"
           />
           <ActionTile
             icon={
-              <span className="material-symbols-outlined text-icon-lg leading-none">
+              <span className="material-symbols-outlined text-icon-sm leading-none">
                 arrow_outward
               </span>
             }

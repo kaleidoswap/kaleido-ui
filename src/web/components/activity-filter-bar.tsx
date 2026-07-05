@@ -35,7 +35,10 @@ export function ActivityFilterBar<TStatus extends string = string>({
   searchPlaceholder = 'Search by txid, asset...',
 }: ActivityFilterBarProps<TStatus>) {
   return (
-    <div className="flex h-10 items-center gap-2">
+    // All three controls (search input, status dropdown, clear button) share
+    // the same h-11 height and rounded-2xl card radius so the bar reads as
+    // one family with the cards below it.
+    <div className="flex h-11 items-center gap-2">
       <div className="relative h-full flex-1">
         <AppIcon
           name="search"
@@ -78,7 +81,13 @@ export function ActivityFilterBar<TStatus extends string = string>({
       </div>
 
       {hasActiveFilters && onClearFilters && (
-        <Button variant="surface" size="icon-lg" onClick={onClearFilters} title="Clear Filters">
+        <Button
+          variant="surface"
+          size="icon-lg"
+          onClick={onClearFilters}
+          title="Clear Filters"
+          className="h-11 w-11 shrink-0 rounded-2xl"
+        >
           <AppIcon name="close" className="size-icon-lg" />
         </Button>
       )}

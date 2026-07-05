@@ -448,7 +448,7 @@ export function AccountSettingsRow({
       type="button"
       onClick={onClick}
       className={cn(
-        'w-full rounded-3xl p-4 text-left shadow-inner transition-colors hover:brightness-110',
+        'w-full rounded-2xl p-4 text-left shadow-inner transition-colors hover:brightness-110',
         accent ? ACCOUNT_ACCENT_BG[accountId] : 'bg-white/[0.03] hover:bg-white/[0.05]'
       )}
     >
