@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getFallbackAssetIconUrl, useAssetIcon } from '../hooks/use-asset-icon'
+import { protocolIcons } from '../assets/protocol-icons'
 import { cn } from '../utils/cn'
 
 interface AssetIconProps {
@@ -21,8 +22,14 @@ const ASSET_COLORS: Record<string, string> = {
 const LOCAL_ICONS: Record<string, string> = {
   BTC: '/icons/bitcoin/bitcoin-logo.svg',
   ARKADE: '/icons/arkade/arkade-icon.svg',
-  RGB: '/icons/rgb/rgb-logo.svg',
+  // Bundled data-URIs (protocolIcons) — host apps don't serve /icons/rgb or
+  // /icons/liquid, and a missing host asset renders as a permanently broken
+  // image (onError bails early for local icons). protocolIcons is a Partial
+  // for type reasons but these keys are always defined.
+  RGB: protocolIcons.RGB20!,
   SPARK: '/icons/spark/Asterisk/Spark Asterisk White.svg',
+  LIQUID: protocolIcons.Liquid!,
+  'L-BTC': protocolIcons.Liquid!,
 }
 
 /**
