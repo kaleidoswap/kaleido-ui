@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { cn } from '../utils/cn'
+import { LiquidNetworkIcon } from './network-icon'
 import type { DepositAccountId, DepositNetworkKey } from './deposit-ui-shared'
 
 export interface DepositNetworkOption {
@@ -44,6 +45,18 @@ const NETWORK_OPTIONS: Record<DepositAccountId, DepositNetworkOption> = {
     accentBg: 'bg-network-arkade/10',
     accentBorder: 'border-network-arkade/30',
     accentText: 'text-network-arkade',
+  },
+  LIQUID: {
+    // Liquid is its own chain; reuse the "onchain" network key for the modal's
+    // network callback (there's no dedicated Liquid DepositNetworkKey).
+    network: 'onchain',
+    account: 'LIQUID',
+    label: 'Liquid',
+    description: 'Receive L-BTC or a Liquid asset (USDt) via a confidential Liquid address.',
+    icon: <LiquidNetworkIcon className="h-[18px] w-[18px]" />,
+    accentBg: 'bg-network-liquid/10',
+    accentBorder: 'border-network-liquid/30',
+    accentText: 'text-network-liquid',
   },
 }
 

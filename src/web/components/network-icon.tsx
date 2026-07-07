@@ -63,3 +63,14 @@ export function NostrNetworkIcon({
 export function RgbNetworkIcon({ className = 'size-3.5', alt = 'RGB' }: NetworkIconProps) {
   return <img src={protocolIcons['RGB20']} alt={alt} className={cn('object-contain', className)} />
 }
+
+/**
+ * Liquid Network mark. Like RgbNetworkIcon, renders the canonical Liquid logo
+ * bundled with the library (protocolIcons), so every surface shows the official
+ * mark rather than a placeholder — matching the extension's LiquidIcon.
+ */
+export function LiquidNetworkIcon({ className = 'size-3.5', alt = 'Liquid' }: NetworkIconProps) {
+  return (
+    <img src={protocolIcons.Liquid} alt={alt} className={cn('object-contain', className)} />
+  )
+}

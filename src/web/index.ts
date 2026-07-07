@@ -87,6 +87,7 @@ export {
   ArkadeNetworkIcon,
   RgbNetworkIcon,
   NostrNetworkIcon,
+  LiquidNetworkIcon,
   type NetworkIconProps,
 } from './components/network-icon'
 export { ActionTile, type ActionTileProps } from './components/action-tile'

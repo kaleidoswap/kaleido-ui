@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { ActionTile } from './action-tile'
 import { Icon } from '../primitives/icon'
+import { LiquidNetworkIcon } from './network-icon'
 
 export interface BalanceBreakdownAsset {
   asset_id: string
@@ -27,6 +28,8 @@ export interface BalanceBreakdownProps {
   btcLightning: number
   btcSpark: number
   btcArkade: number
+  /** L-BTC — BTC on the Liquid Network. Row shown only when > 0 or pending. */
+  btcLiquid?: number
   totalBTC: number
   rgbAssets: BalanceBreakdownAsset[]
   accounts: BalanceBreakdownAccounts
@@ -43,6 +46,7 @@ export interface BalanceBreakdownProps {
   btcLightningPending?: boolean
   btcSparkPending?: boolean
   btcArkadePending?: boolean
+  btcLiquidPending?: boolean
   onRefresh?: () => void
   isRefreshing?: boolean
   onNavigate?: (view: 'deposit' | 'swap' | 'withdraw') => void
@@ -88,6 +92,7 @@ export function BalanceBreakdown({
   btcLightning,
   btcSpark,
   btcArkade,
+  btcLiquid = 0,
   totalBTC,
   rgbAssets,
   accounts,
@@ -104,6 +109,7 @@ export function BalanceBreakdown({
   btcLightningPending = false,
   btcSparkPending = false,
   btcArkadePending = false,
+  btcLiquidPending = false,
   onRefresh,
   isRefreshing = false,
   onNavigate,
@@ -269,6 +275,20 @@ export function BalanceBreakdown({
               format={format}
               formatFiat={formatFiatValue}
             />
+            {(btcLiquid > 0 || btcLiquidPending) && (
+              <NetworkRow
+                icon={<LiquidNetworkIcon className="size-3.5" />}
+                iconColor=""
+                dotColor="bg-network-liquid"
+                label="BTC on Liquid"
+                sublabel="Liquid L-BTC balance"
+                amount={btcLiquid}
+                isPending={btcLiquidPending}
+                visible={balanceVisible}
+                format={format}
+                formatFiat={formatFiatValue}
+              />
+            )}
 
             {rgbAssets.length > 0 && (
               <RgbAssetsBreakdown assets={rgbAssets} balanceVisible={balanceVisible} />

@@ -3,6 +3,7 @@ export type WithdrawAddressType =
   | 'bitcoin'
   | 'spark'
   | 'arkade'
+  | 'liquid'
   | 'lightning'
   | 'lightning-address'
   | 'lnurl-pay'

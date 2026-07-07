@@ -99,6 +99,7 @@ const ACCOUNT_TITLES: Record<DepositAccountId, string> = {
   RGB: 'RGB & Lightning',
   SPARK: 'Spark',
   ARKADE: 'Arkade',
+  LIQUID: 'Liquid',
 }
 
 function getAssetFamily(assetId: string, ticker?: string | null): AssetFamily {
@@ -237,6 +238,9 @@ export function DepositInvoiceGeneration({
     RGB: isRgbConnected,
     SPARK: isSparkConnected,
     ARKADE: isArkadeConnected,
+    // Liquid isn't offered by kaleido-ui's own DepositInvoiceGeneration; the
+    // KaleidoSwap extension uses its own component for the Liquid receive path.
+    LIQUID: false,
   }
   const availableAccounts = resolveReceiveAccounts({ assetFamily, accounts: routeAccounts })
   const methodOptions = resolveReceiveMethodOptions({

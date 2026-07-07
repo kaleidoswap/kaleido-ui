@@ -18,6 +18,7 @@ const ACCOUNT_TITLES: Record<DepositAccountId, string> = {
   RGB: 'RGB & Lightning',
   SPARK: 'Spark',
   ARKADE: 'Arkade',
+  LIQUID: 'Liquid',
 }
 
 const METHOD_META: Record<DepositTransferMethod, { label: string; summary: string }> = {
