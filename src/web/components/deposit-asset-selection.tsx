@@ -199,6 +199,7 @@ export function DepositAssetSelection<TView extends string = string>({
               <NetworkBadge network="LN" size="sm" />
               {isSparkConnected && <NetworkBadge network="Spark" size="sm" />}
               {isArkadeConnected && <NetworkBadge network="Arkade" size="sm" />}
+              {isLiquidConnected && <NetworkBadge network="Liquid" size="sm" />}
             </div>
             <span className="material-symbols-outlined flex-shrink-0 text-icon-md text-white/20 transition-colors group-hover:text-white/50">
               arrow_forward

@@ -2,7 +2,7 @@ import { useState, type CSSProperties, type ReactNode } from 'react'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 import { colors } from '../../tokens/colors'
-import { LiquidNetworkIcon } from './network-icon'
+import { LiquidNetworkIcon, RgbNetworkIcon } from './network-icon'
 
 /**
  * 15%-alpha brand-tinted QR glow. Tailwind cannot statically generate
@@ -99,7 +99,9 @@ const ACCOUNT_META: Record<
     accentBg: 'bg-primary/10',
     accentText: 'text-primary',
     accentBorder: 'border-primary/30',
-    icon: <img src="/icons/rgb/rgb-logo.svg" alt="" className="h-2.5 w-2.5 object-contain" />,
+    // Bundled RGB mark (protocolIcons) — a host-served /icons/rgb/... path
+    // renders as a broken box in consumers that don't ship that asset.
+    icon: <RgbNetworkIcon className="h-2.5 w-2.5" />,
   },
   SPARK: {
     shortLabel: 'Spark',
