@@ -86,6 +86,7 @@ export function WithdrawAmountInput({
     addressType === 'bitcoin' ||
     addressType === 'spark' ||
     addressType === 'arkade' ||
+    addressType === 'liquid' ||
     addressType === 'lightning-address' ||
     addressType === 'lnurl-pay' ||
     (addressType === 'rgb' && !decodedRgbInvoice?.assignment?.value) ||

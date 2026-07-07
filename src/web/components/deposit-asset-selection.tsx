@@ -5,6 +5,7 @@ import { Icon } from '../primitives/icon'
 import { AssetIcon } from './asset-icon'
 import { BottomSheet } from './bottom-sheet'
 import { NetworkBadge } from './network-badge'
+import { LiquidNetworkIcon } from './network-icon'
 import { ScrollArea } from './scroll-area'
 import { cn } from '../utils/cn'
 import type { DepositAccountId } from './deposit-ui-shared'
@@ -13,6 +14,7 @@ const ADD_ASSET_SUBTITLE: Record<DepositAccountId, string> = {
   RGB: 'RGB asset on Bitcoin',
   SPARK: 'Spark-native asset',
   ARKADE: 'Arkade-native asset',
+  LIQUID: 'L-BTC or Liquid asset',
 }
 
 export interface DepositSelectionAsset {
@@ -30,6 +32,7 @@ const PROTOCOL_BADGE: Record<DepositAccountId, { label: string; className: strin
   RGB: { label: 'RGB', className: 'bg-network-rgb-chip text-network-rgb-text' },
   SPARK: { label: 'Spark', className: 'bg-network-spark-chip text-network-spark-text' },
   ARKADE: { label: 'Arkade', className: 'bg-network-arkade-chip text-network-arkade-text' },
+  LIQUID: { label: 'Liquid', className: 'bg-network-liquid-chip text-network-liquid-text' },
 }
 
 function formatAssetBalance(asset: DepositSelectionAsset): string {
@@ -58,6 +61,7 @@ export interface DepositAssetSelectionProps<TView extends string = string> {
   isRgbConnected: boolean
   isSparkConnected: boolean
   isArkadeConnected: boolean
+  isLiquidConnected?: boolean
 }
 
 
@@ -76,6 +80,7 @@ export function DepositAssetSelection<TView extends string = string>({
   isRgbConnected,
   isSparkConnected,
   isArkadeConnected,
+  isLiquidConnected = false,
 }: DepositAssetSelectionProps<TView>) {
   const btcAsset = filteredAssets.find((asset) => asset.ticker === 'BTC')
   const ownedAssets = filteredAssets
@@ -121,6 +126,15 @@ export function DepositAssetSelection<TView extends string = string>({
       idleClass: 'bg-network-arkade/10 hover:bg-network-arkade/20',
       activeClass: 'bg-network-arkade/25',
       titleHoverClass: 'group-hover:text-network-arkade',
+    },
+    {
+      account: 'LIQUID' as const,
+      title: 'New Liquid Asset',
+      ticker: 'LIQUID',
+      enabled: isLiquidConnected,
+      idleClass: 'bg-network-liquid/10 hover:bg-network-liquid/20',
+      activeClass: 'bg-network-liquid/25',
+      titleHoverClass: 'group-hover:text-network-liquid',
     },
   ].filter((option) => option.enabled)
 
@@ -346,7 +360,13 @@ export function DepositAssetSelection<TView extends string = string>({
                 handleAddNewAsset(option.account)
               }}
             >
-              <AssetIcon ticker={option.ticker} size={36} className="flex-shrink-0" />
+              {option.account === 'LIQUID' ? (
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-network-liquid/10">
+                  <LiquidNetworkIcon className="size-5" />
+                </span>
+              ) : (
+                <AssetIcon ticker={option.ticker} size={36} className="flex-shrink-0" />
+              )}
               <div className="min-w-0 flex-1">
                 <div className={cn('text-sm font-bold tracking-wide text-white', option.titleHoverClass)}>
                   {option.title}

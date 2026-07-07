@@ -143,12 +143,16 @@ export function WithdrawInvoiceInfo({
     )
   }
 
-  if (addressType === 'bitcoin' || addressType === 'arkade') {
+  if (addressType === 'bitcoin' || addressType === 'arkade' || addressType === 'liquid') {
     return (
       <div className="rounded-2xl bg-card p-5 shadow-inner">
         <div className="flex justify-between text-sm">
           <span className="text-muted-foreground">
-            {addressType === 'arkade' ? 'Available Arkade Balance' : 'Available Balance'}
+            {addressType === 'arkade'
+              ? 'Available Arkade Balance'
+              : addressType === 'liquid'
+                ? 'Available Liquid Balance'
+                : 'Available Balance'}
           </span>
           <span className="font-bold text-white">
             {formatRawAmount(assetBalance, getAssetPrecisionForId(allAssets, selectedAssetId))}{' '}

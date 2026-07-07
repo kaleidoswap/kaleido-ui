@@ -2,6 +2,7 @@ import { useState, type CSSProperties, type ReactNode } from 'react'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 import { colors } from '../../tokens/colors'
+import { LiquidNetworkIcon } from './network-icon'
 
 /**
  * 15%-alpha brand-tinted QR glow. Tailwind cannot statically generate
@@ -13,7 +14,7 @@ function qrGlowStyle(hex: string): CSSProperties {
   return { boxShadow: `0 0 30px ${hex}${GLOW_ALPHA}` }
 }
 
-export type DepositAccountId = 'RGB' | 'SPARK' | 'ARKADE'
+export type DepositAccountId = 'RGB' | 'SPARK' | 'ARKADE' | 'LIQUID'
 export type DepositTransferMethod =
   | 'bitcoin_l1'
   | 'lightning'
@@ -119,6 +120,13 @@ const ACCOUNT_META: Record<
     accentText: 'text-network-arkade',
     accentBorder: 'border-network-arkade/30',
     icon: <img src="/icons/arkade/arkade-icon.svg" alt="" className="h-2.5 w-2.5 rounded-[1px] object-contain" />,
+  },
+  LIQUID: {
+    shortLabel: 'Liquid',
+    accentBg: 'bg-network-liquid/10',
+    accentText: 'text-network-liquid',
+    accentBorder: 'border-network-liquid/30',
+    icon: <LiquidNetworkIcon className="h-2.5 w-2.5" />,
   },
 }
 
