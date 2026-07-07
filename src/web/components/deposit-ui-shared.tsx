@@ -22,7 +22,7 @@ export type DepositTransferMethod =
   | 'arkade'
   | 'boarding'
   | 'submarine_swap'
-export type DepositNetworkKey = 'onchain' | 'lightning' | 'spark' | 'arkade'
+export type DepositNetworkKey = 'onchain' | 'lightning' | 'spark' | 'arkade' | 'liquid'
 
 export interface DepositNetworkConfigEntry {
   label: string
@@ -81,6 +81,16 @@ export const NETWORK_CONFIG: Record<DepositNetworkKey, DepositNetworkConfigEntry
     qrBorder: 'border-network-arkade/30',
     qrGlow: qrGlowStyle(colors.network.arkade),
     icon: <img src="/icons/arkade/arkade-icon.svg" className="h-3 w-3 rounded-sm" alt="" />,
+  },
+  liquid: {
+    label: 'Liquid',
+    color: colors.network.liquid,
+    bg: 'bg-network-liquid/15',
+    text: 'text-network-liquid',
+    border: 'border-network-liquid/40',
+    qrBorder: 'border-network-liquid/30',
+    qrGlow: qrGlowStyle(colors.network.liquid),
+    icon: <LiquidNetworkIcon className="h-3 w-3" />,
   },
 }
 
@@ -288,6 +298,16 @@ const NETWORK_INFO: Record<DepositNetworkKey, NetworkInfoEntry> = {
       'Settles instantly between Arkade wallets',
       'Boarding address accepts on-chain Bitcoin and joins the next round',
       'VTXOs require periodic refresh to stay valid',
+    ],
+  },
+  liquid: {
+    title: 'Liquid',
+    detail:
+      'Bitcoin sidechain transaction (L-BTC or Liquid assets). One confidential address receives any Liquid asset.',
+    bullets: [
+      'Blocks every minute; ~2 confirmations to settle',
+      'Amounts are confidential on-chain by default',
+      'Sender needs a Liquid wallet (L-BTC or Liquid assets)',
     ],
   },
 }
