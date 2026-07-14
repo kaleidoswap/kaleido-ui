@@ -135,15 +135,17 @@ export const MobileHeroAnimation: FC<MobileHeroAnimationProps> = ({
           {/* Inner dashed orbit ring */}
           <circle cx={C} cy={C} r={80} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" strokeDasharray="4 4" />
 
-          {/* Connection lines — rotate in sync with orbit */}
-          <g>
-            {anim && (
-              <animateTransform
-                attributeName="transform" type="rotate"
-                from={`0 ${C} ${C}`} to={`360 ${C} ${C}`}
-                dur="20s" repeatCount="indefinite"
-              />
-            )}
+          {/* Connection lines — CSS-driven rotation (not SMIL) so they stay
+              phase-locked to the HTML icon orbit below, which is also CSS.
+              SMIL and CSS have independent timelines: mixing them let the
+              spokes drift until they pointed away from their icons. */}
+          <g
+            style={{
+              animation: anim ? 'mha-orbit-spin 20s linear infinite' : undefined,
+              transformOrigin: '50% 50%',
+              transformBox: 'view-box',
+            }}
+          >
             {PROTOCOLS.map((protocol, i) => {
               const angle = (i / N) * 2 * Math.PI
               const dx = Math.cos(angle)
