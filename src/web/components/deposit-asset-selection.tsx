@@ -170,7 +170,7 @@ export function DepositAssetSelection<TView extends string = string>({
           <input
             autoFocus
             data-testid="deposit-asset-search"
-            className="w-full rounded-xl border border-transparent bg-white/5 py-2.5 pl-10 pr-4 text-sm text-white outline-none transition-all placeholder:text-white/25 focus:border-primary/40 focus:bg-white/8"
+            className="w-full rounded-xl border border-transparent bg-white/5 py-2.5 pl-10 pr-4 text-sm text-white outline-none transition-all placeholder:text-white/25 focus:border-primary/25 focus:bg-white/8"
             onChange={(event) => setSearchQuery(event.target.value)}
             placeholder="Search assets..."
             type="text"

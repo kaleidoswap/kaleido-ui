@@ -220,24 +220,21 @@ export function AccountSettingsShell({
 }) {
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background font-display text-foreground">
-      {/* Fixed chrome: the back button never scrolls with content (matches the
-          PageHeader pattern every other settings page uses). */}
-      <div className="flex h-14 shrink-0 items-center px-2">
+      {/* Fixed chrome: back button, account icons, and title share one header
+          row that never scrolls with content (matches the PageHeader pattern
+          every other settings page uses). */}
+      <header className="flex h-14 shrink-0 items-center gap-2 px-2">
         {onBack && (
           <Button type="button" variant="ghost" size="icon-xl" onClick={onBack} aria-label="Go back">
             <Icon name="arrow_back" size="xl" />
           </Button>
         )}
-      </div>
+        <AccountHeaderIcons accountId={accountId} />
+        <h1 className="text-lg font-bold text-foreground">{title}</h1>
+      </header>
 
       <main className="flex-1 space-y-6 overflow-y-auto px-5 pb-28 pt-2">
-        <section className="space-y-3">
-          <AccountHeaderIcons accountId={accountId} />
-          <div>
-            <h1 className="text-xl font-bold text-foreground">{title}</h1>
-            <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
-          </div>
-        </section>
+        {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
         {children}
       </main>
     </div>

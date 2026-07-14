@@ -54,7 +54,7 @@ export function SelectableCard({
 
   const cardClassName = cn(
     'w-full rounded-2xl border p-4 text-left transition-all duration-200',
-    selected ? 'border-primary/40 bg-primary/10 shadow-sm' : 'border-transparent bg-card/70 hover:bg-card',
+    selected ? 'border-transparent bg-primary/[0.14] shadow-sm' : 'border-transparent bg-card/70 hover:bg-card',
     className,
   )
 

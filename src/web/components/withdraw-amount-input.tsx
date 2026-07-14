@@ -193,8 +193,8 @@ export function WithdrawAmountInput({
                       }}
                       className={`group relative overflow-hidden rounded-xl border px-2 py-3 shadow-sm transition-all active:scale-[0.98] ${
                         selected
-                          ? 'border-primary/40 bg-primary/10'
-                          : 'border-transparent bg-card/70 hover:border-primary/40'
+                          ? 'border-transparent bg-primary/[0.14]'
+                          : 'border-transparent bg-card/70 hover:bg-card'
                       }`}
                     >
                       <span
