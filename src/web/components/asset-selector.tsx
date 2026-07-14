@@ -195,7 +195,7 @@ export function AssetSelector({
           </span>
           <span className="flex shrink-0 flex-col items-end gap-0.5">
             {optionSelected ? (
-              <span className="rounded-full border border-primary/25 bg-primary/[0.14] px-2 py-0.5 text-xxs font-bold uppercase tracking-wide text-primary">
+              <span className="rounded-full bg-primary/[0.14] px-2 py-0.5 text-xxs font-bold uppercase tracking-wide text-primary">
                 Current
               </span>
             ) : option.networkTag ? (
@@ -331,7 +331,7 @@ export function AssetSelector({
                       value={search}
                       onChange={(event) => setSearch(event.target.value)}
                       placeholder="Search..."
-                      className="h-11 w-full rounded-2xl border border-transparent bg-black/20 pl-10 pr-3 text-sm text-white placeholder:text-white/25 focus:border-primary/50 focus:outline-none"
+                      className="h-11 w-full rounded-2xl border border-transparent bg-black/20 pl-10 pr-3 text-sm text-white placeholder:text-white/25 focus:border-primary/25 focus:outline-none"
                     />
                   </div>
                   {hasCategoryFilters && (
@@ -404,7 +404,7 @@ export function AssetSelector({
                           className={cn(
                             'group flex w-full items-center gap-3 rounded-2xl border px-3 py-3 text-sm transition-all duration-200',
                             optionSelected
-                              ? 'border-primary/30 bg-primary/[0.12]'
+                              ? 'border-transparent bg-primary/[0.14]'
                               : optionDisabled
                                 ? 'cursor-not-allowed border-transparent bg-white/[0.015] opacity-45'
                                 : 'border-transparent bg-transparent hover:bg-accent',
@@ -504,7 +504,7 @@ export function AssetSelector({
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search..."
-                className="h-11 w-full rounded-2xl border border-transparent bg-black/20 pl-10 pr-3 text-sm text-white placeholder:text-white/25 focus:border-primary/50 focus:outline-none"
+                className="h-11 w-full rounded-2xl border border-transparent bg-black/20 pl-10 pr-3 text-sm text-white placeholder:text-white/25 focus:border-primary/25 focus:outline-none"
               />
             </div>
             {hasCategoryFilters && (

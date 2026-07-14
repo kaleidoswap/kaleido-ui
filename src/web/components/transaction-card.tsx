@@ -28,7 +28,8 @@ export function TransactionCard({
 }: TransactionCardProps) {
   const isInbound = direction === 'inbound'
 
-  const formatDate = (ts: number) => new Date(ts * 1000).toLocaleDateString()
+  const formatDate = (ts: number) =>
+    new Date(ts * 1000).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })
 
   const statusStyle = {
     success:   { base: 'bg-primary/10', hover: 'hover:bg-primary/15' },

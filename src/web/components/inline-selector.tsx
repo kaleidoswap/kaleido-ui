@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
+import { ScrollArea } from './scroll-area'
 
 export interface InlineSelectorOption {
   id: string
@@ -127,6 +128,9 @@ export function InlineSelector<TOption extends InlineSelectorOption>({
           )}
         >
           {renderPanelHeader?.(renderArgs)}
+          {/* Long option lists scroll inside the panel with the shared thumb
+              instead of overflowing or falling back to the native scrollbar. */}
+          <ScrollArea className="max-h-72" viewportClassName="max-h-72">
           <div className="space-y-1">
             {options.length === 0 ? (
               <div className="flex flex-col items-center gap-2 px-4 py-8 text-center text-sm text-white/30">
@@ -164,6 +168,7 @@ export function InlineSelector<TOption extends InlineSelectorOption>({
               })
             )}
           </div>
+          </ScrollArea>
         </div>
       )}
     </div>
