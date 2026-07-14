@@ -52,7 +52,9 @@ export function OptionSelector({
             !compact && 'w-full',
           )}
         >
-          <span className="truncate">{selected?.label}</span>
+          {/* leading-normal (not the pill's leading-none) so descenders like
+              the "g" in "English" aren't clipped by truncate's overflow. */}
+          <span className="truncate leading-normal">{selected?.label}</span>
           <Icon
             name="expand_more"
             className={cn(
