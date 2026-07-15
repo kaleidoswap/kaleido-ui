@@ -16,7 +16,9 @@ export function ActivityDetailRow({
   isCopied,
 }: ActivityDetailRowProps) {
   return (
-    <div className="flex items-center gap-3 py-1 last:pb-0">
+    // min-h-8 equalizes text-only rows with taller value content (badges,
+    // pills) so the label-to-label rhythm stays uniform down the list.
+    <div className="flex min-h-8 items-center gap-3 py-1 last:pb-0">
       <span className="shrink-0 text-xxs font-bold uppercase tracking-wider text-muted-foreground">
         {label}
       </span>
