@@ -114,26 +114,29 @@ export function TransactionCard({
         <p className="text-tiny text-muted-foreground font-medium tracking-wide uppercase mt-0.5">
           {unit}
         </p>
-        {subAmount && (
-          <p className="flex items-center justify-end gap-1 text-tiny text-muted-foreground/70 font-medium tracking-wide tabular-nums mt-0.5">
-            {subAmount}
-            {onSubAmountInfo && (
-              <button
-                type="button"
-                aria-label="What is this value?"
-                onClick={(event) => {
-                  event.stopPropagation()
-                  onSubAmountInfo()
-                }}
-                className="-my-1 rounded-full p-0.5 text-white/30 transition-colors hover:bg-accent hover:text-primary"
-              >
-                <span className="material-symbols-outlined block" style={{ fontSize: '13px' }}>
-                  info
-                </span>
-              </button>
-            )}
-          </p>
-        )}
+        {subAmount &&
+          (onSubAmountInfo ? (
+            // The whole sub-line is the hit target; hover feedback is text
+            // color only (no background), per design.
+            <button
+              type="button"
+              aria-label="What is this value?"
+              onClick={(event) => {
+                event.stopPropagation()
+                onSubAmountInfo()
+              }}
+              className="mt-0.5 flex w-full items-center justify-end gap-1 text-tiny text-muted-foreground/70 font-medium tracking-wide tabular-nums transition-colors hover:text-foreground"
+            >
+              {subAmount}
+              <span className="material-symbols-outlined block" style={{ fontSize: '13px' }}>
+                info
+              </span>
+            </button>
+          ) : (
+            <p className="mt-0.5 flex items-center justify-end gap-1 text-tiny text-muted-foreground/70 font-medium tracking-wide tabular-nums">
+              {subAmount}
+            </p>
+          ))}
       </div>
     </div>
   )
