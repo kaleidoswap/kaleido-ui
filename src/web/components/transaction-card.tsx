@@ -9,7 +9,8 @@ export interface TransactionCardProps {
   status: StatusType
   /** Formatted amount string (e.g. "1,234") */
   displayAmount: string
-  /** Unit label (e.g. "sats", "BTC") */
+  /** Unit label appended to the amount line (e.g. "USDT"). Omit when the
+   * formatted amount already carries its unit ("1 234 sats"). */
   unit?: string
   /** Secondary amount under the unit — e.g. the sats leg an asset transfer
    * rode on ("588 sats" for an RGB-LN payment or an Arkade asset VTXO). */
@@ -27,7 +28,7 @@ export function TransactionCard({
   direction,
   status,
   displayAmount,
-  unit = 'sats',
+  unit,
   subAmount,
   onSubAmountInfo,
   timestamp,
@@ -102,6 +103,8 @@ export function TransactionCard({
         </div>
       </div>
       <div className="text-right relative z-10">
+        {/* Unit rides the amount line in the same status color — a separate
+            muted line read as disconnected from its amount. */}
         <p
           className={cn(
             'font-bold text-lg tracking-tight tabular-nums group-hover:opacity-90 transition-opacity',
@@ -110,9 +113,7 @@ export function TransactionCard({
         >
           {isInbound ? '+' : '-'}
           {displayAmount}
-        </p>
-        <p className="text-tiny text-muted-foreground font-medium tracking-wide uppercase mt-0.5">
-          {unit}
+          {unit ? ` ${unit}` : ''}
         </p>
         {subAmount &&
           (onSubAmountInfo ? (

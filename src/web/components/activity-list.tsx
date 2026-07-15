@@ -114,6 +114,10 @@ export function ActivityList<TData = unknown>({
               onSubAmountInfo={item.onSubAmountInfo}
               timestamp={item.timestamp}
               onClick={() => onExpandedChange?.(isExpanded ? null : item.id)}
+              // Square the bottom corners while expanded so the card meets
+              // the details flush — rounded corners exposed the container
+              // background as dark notches between the two.
+              className={isExpanded ? 'rounded-b-none' : undefined}
             />
             {isExpanded && (
               <div className="bg-gradient-to-b from-white/[0.025] to-primary/[0.035] shadow-inner animate-in slide-in-from-top-2 duration-300">
