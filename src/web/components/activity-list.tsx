@@ -114,17 +114,15 @@ export function ActivityList<TData = unknown>({
               onSubAmountInfo={item.onSubAmountInfo}
               timestamp={item.timestamp}
               onClick={() => onExpandedChange?.(isExpanded ? null : item.id)}
-              // Square the bottom corners while expanded so the card meets
-              // the details flush — rounded corners exposed the container
-              // background as dark notches between the two.
-              className={isExpanded ? 'rounded-b-none' : undefined}
+              // Stays above the details, which tuck underneath its rounded
+              // bottom corners.
+              className="relative z-[1]"
             />
             {isExpanded && (
-              <div className="bg-gradient-to-b from-white/[0.025] to-primary/[0.035] shadow-inner animate-in slide-in-from-top-2 duration-300">
-                {/* Soft dark falloff under the flattened card so it reads as
-                    the card casting a shadow onto the details, not a hard
-                    seam. */}
-                <div aria-hidden className="h-2.5 bg-gradient-to-b from-black/25 to-transparent" />
+              // -mt-4/pt-4 slides the details up behind the card's bottom
+              // radius, so the corner notches show the details' own
+              // background instead of the darker container.
+              <div className="-mt-4 bg-gradient-to-b from-white/[0.025] to-primary/[0.035] pt-4 shadow-inner animate-in slide-in-from-top-2 duration-300">
                 {(item.network || item.label) && (
                   <div className="flex items-center gap-1.5 px-3 py-2.5">
                     {item.network && <NetworkBadge network={item.network} showLabel />}
