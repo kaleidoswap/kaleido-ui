@@ -14,6 +14,9 @@ export interface BalanceBreakdownAsset {
 export interface BalanceBreakdownAccounts {
   RGB?: {
     connected?: boolean
+    /** RLN is set up on this wallet (node URL / NWC saved) even if the node
+     * is currently offline. Gates the "BTC on RLN" row. */
+    configured?: boolean
   }
 }
 
@@ -221,24 +224,28 @@ export function BalanceBreakdown({
               format={format}
               formatFiat={formatFiatValue}
             />
-            <NetworkRow
-              icon={
-                <ImageIcon
-                  src="/icons/lightning/lightning.svg"
-                  alt="Lightning"
-                  className="size-3.5"
-                />
-              }
-              iconColor="text-network-lightning"
-              dotColor="bg-network-lightning"
-              label="BTC on RLN"
-              sublabel="RLN balance"
-              amount={btcLightning}
-              isPending={btcLightningPending}
-              visible={balanceVisible}
-              format={format}
-              formatFiat={formatFiatValue}
-            />
+            {/* RLN is opt-in — hide its row entirely on wallets that never
+                set it up, instead of showing a permanent $0.00 line. */}
+            {(accounts.RGB?.connected || accounts.RGB?.configured) && (
+              <NetworkRow
+                icon={
+                  <ImageIcon
+                    src="/icons/lightning/lightning.svg"
+                    alt="Lightning"
+                    className="size-3.5"
+                  />
+                }
+                iconColor="text-network-lightning"
+                dotColor="bg-network-lightning"
+                label="BTC on RLN"
+                sublabel="RLN balance"
+                amount={btcLightning}
+                isPending={btcLightningPending}
+                visible={balanceVisible}
+                format={format}
+                formatFiat={formatFiatValue}
+              />
+            )}
             <NetworkRow
               icon={
                 <ImageIcon
