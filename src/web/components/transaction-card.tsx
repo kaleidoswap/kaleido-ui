@@ -11,6 +11,9 @@ export interface TransactionCardProps {
   displayAmount: string
   /** Unit label (e.g. "sats", "BTC") */
   unit?: string
+  /** Secondary amount under the unit — e.g. the sats leg an asset transfer
+   * rode on ("588 sats" for an RGB-LN payment or an Arkade asset VTXO). */
+  subAmount?: string
   /** Unix timestamp in seconds */
   timestamp: number
   onClick?: () => void
@@ -22,6 +25,7 @@ export function TransactionCard({
   status,
   displayAmount,
   unit = 'sats',
+  subAmount,
   timestamp,
   onClick,
   className,
@@ -106,6 +110,11 @@ export function TransactionCard({
         <p className="text-tiny text-muted-foreground font-medium tracking-wide uppercase mt-0.5">
           {unit}
         </p>
+        {subAmount && (
+          <p className="text-tiny text-muted-foreground/70 font-medium tracking-wide tabular-nums mt-0.5">
+            {subAmount}
+          </p>
+        )}
       </div>
     </div>
   )
