@@ -121,6 +121,10 @@ export function ActivityList<TData = unknown>({
             />
             {isExpanded && (
               <div className="bg-gradient-to-b from-white/[0.025] to-primary/[0.035] shadow-inner animate-in slide-in-from-top-2 duration-300">
+                {/* Soft dark falloff under the flattened card so it reads as
+                    the card casting a shadow onto the details, not a hard
+                    seam. */}
+                <div aria-hidden className="h-2.5 bg-gradient-to-b from-black/25 to-transparent" />
                 {(item.network || item.label) && (
                   <div className="flex items-center gap-1.5 px-3 py-2.5">
                     {item.network && <NetworkBadge network={item.network} showLabel />}
