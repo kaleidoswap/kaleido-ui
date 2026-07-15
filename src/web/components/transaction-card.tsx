@@ -14,6 +14,9 @@ export interface TransactionCardProps {
   /** Secondary amount under the unit — e.g. the sats leg an asset transfer
    * rode on ("588 sats" for an RGB-LN payment or an Arkade asset VTXO). */
   subAmount?: string
+  /** When set, renders an info affordance next to subAmount (e.g. to open a
+   * modal explaining the carrier UTXO/VTXO value). Click doesn't bubble. */
+  onSubAmountInfo?: () => void
   /** Unix timestamp in seconds */
   timestamp: number
   onClick?: () => void
@@ -26,6 +29,7 @@ export function TransactionCard({
   displayAmount,
   unit = 'sats',
   subAmount,
+  onSubAmountInfo,
   timestamp,
   onClick,
   className,
@@ -111,8 +115,23 @@ export function TransactionCard({
           {unit}
         </p>
         {subAmount && (
-          <p className="text-tiny text-muted-foreground/70 font-medium tracking-wide tabular-nums mt-0.5">
+          <p className="flex items-center justify-end gap-1 text-tiny text-muted-foreground/70 font-medium tracking-wide tabular-nums mt-0.5">
             {subAmount}
+            {onSubAmountInfo && (
+              <button
+                type="button"
+                aria-label="What is this value?"
+                onClick={(event) => {
+                  event.stopPropagation()
+                  onSubAmountInfo()
+                }}
+                className="-my-1 rounded-full p-0.5 text-white/30 transition-colors hover:bg-accent hover:text-primary"
+              >
+                <span className="material-symbols-outlined block" style={{ fontSize: '13px' }}>
+                  info
+                </span>
+              </button>
+            )}
           </p>
         )}
       </div>

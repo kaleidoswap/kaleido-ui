@@ -31,7 +31,7 @@ export function ActivityDetailRow({
               event.stopPropagation()
               onCopy()
             }}
-            className="rounded-md p-1 text-white/30 transition-colors hover:bg-accent hover:text-primary active:scale-95"
+            className="-my-1 rounded-md p-1 text-white/30 transition-colors hover:bg-accent hover:text-primary active:scale-95"
             title={fullValue ? `Copy: ${fullValue}` : 'Copy'}
           >
             <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>

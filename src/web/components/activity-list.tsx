@@ -14,6 +14,7 @@ export interface ActivityListItem<TData = unknown> {
   /** Secondary amount under the unit (e.g. the sats leg of an asset transfer). */
   subAmount?: string
   timestamp: number
+  onSubAmountInfo?: () => void
   network?: NetworkType
   label?: string
   data?: TData
@@ -110,6 +111,7 @@ export function ActivityList<TData = unknown>({
               displayAmount={item.displayAmount}
               unit={item.unit}
               subAmount={item.subAmount}
+              onSubAmountInfo={item.onSubAmountInfo}
               timestamp={item.timestamp}
               onClick={() => onExpandedChange?.(isExpanded ? null : item.id)}
             />
