@@ -103,7 +103,11 @@ export function ActivityList<TData = unknown>({
         return (
           <div
             key={item.id}
-            className="relative overflow-hidden rounded-2xl bg-surface-card shadow-inner transition-all animate-in fade-in slide-in-from-bottom-2 duration-500"
+            // The gradient lives on the wrapper (not the details block) so
+            // everything that can peek out from behind the card — corner
+            // notches, the sliver exposed by active:scale press — matches the
+            // details surface exactly.
+            className="relative overflow-hidden rounded-2xl bg-surface-card bg-gradient-to-b from-white/[0.025] to-primary/[0.035] shadow-inner transition-all animate-in fade-in slide-in-from-bottom-2 duration-500"
           >
             <TransactionCard
               direction={item.direction}
@@ -122,7 +126,7 @@ export function ActivityList<TData = unknown>({
               // -mt-4/pt-4 slides the details up behind the card's bottom
               // radius, so the corner notches show the details' own
               // background instead of the darker container.
-              <div className="-mt-4 bg-gradient-to-b from-white/[0.025] to-primary/[0.035] pt-4 shadow-inner animate-in slide-in-from-top-2 duration-300">
+              <div className="-mt-4 pt-4 animate-in slide-in-from-top-2 duration-300">
                 {(item.network || item.label) && (
                   <div className="flex items-center gap-1.5 px-3 py-2.5">
                     {item.network && <NetworkBadge network={item.network} showLabel />}
