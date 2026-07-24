@@ -973,10 +973,19 @@ export function App() {
                     toTicker={swapToTicker}
                     fromInput={swapAmount}
                     fromOptions={[
-                      { ticker: 'BTC', name: 'Bitcoin', network: 'LN' },
+                      { ticker: 'BTC', name: 'Bitcoin', network: 'LN', networkId: 'bitcoin' },
                       { ticker: 'USDB', name: 'Bitcoin Dollar', network: 'Spark', category: 'stablecoins' },
                       { ticker: 'MSTR', name: 'MicroStrategy', network: 'RGB-LN', category: 'rwa' },
+                      { id: 'ethereum:USDT', ticker: 'USDT', name: 'Tether (Ethereum)', networkId: 'ethereum', category: 'stablecoins', networkTag: { label: 'Ethereum', color: '#627eea' } },
+                      { id: 'tron:USDT', ticker: 'USDT', name: 'Tether (Tron)', networkId: 'tron', category: 'stablecoins', networkTag: { label: 'Tron', color: '#ff0013' } },
+                      { id: 'ethereum:USDC', ticker: 'USDC', name: 'USD Coin', networkId: 'ethereum', category: 'stablecoins', networkTag: { label: 'Ethereum', color: '#627eea' } },
                     ]}
+                    fromNetworks={[
+                      { id: 'bitcoin', label: 'Bitcoin', iconUrl: '/icons/bitcoin/bitcoin-logo.svg' },
+                      { id: 'ethereum', label: 'Ethereum' },
+                      { id: 'tron', label: 'Tron' },
+                    ]}
+                    fromQuickAssets={[{ ticker: 'BTC' }, { ticker: 'USDT' }, { ticker: 'USDC' }]}
                     toOptions={[
                       { ticker: 'BTC', name: 'Bitcoin', network: 'LN' },
                       { ticker: 'USDB', name: 'Bitcoin Dollar', network: 'Spark', category: 'stablecoins' },

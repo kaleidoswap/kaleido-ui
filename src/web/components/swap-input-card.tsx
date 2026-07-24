@@ -4,7 +4,9 @@ import { Icon } from '../primitives/icon'
 import {
   AssetSelector,
   type AssetSelectorCategory,
+  type AssetSelectorNetworkOption,
   type AssetSelectorOption,
+  type AssetSelectorQuickAsset,
 } from './asset-selector'
 import { cn } from '../utils/cn'
 import { formatDisplayAmountText, type AmountDisplayUnit } from '../utils/amount-display'
@@ -19,6 +21,10 @@ export interface SwapInputCardProps {
   toOptions: AssetSelectorOption[]
   categories?: AssetSelectorCategory[]
   defaultActiveCategories?: string[]
+  /** Network filter slider rendered inside the "You Pay" asset picker. */
+  fromNetworks?: AssetSelectorNetworkOption[]
+  /** Quick-asset chips rendered inside the "You Pay" asset picker. */
+  fromQuickAssets?: AssetSelectorQuickAsset[]
   availableText: string
   showMaxText?: boolean
   maxText?: string
@@ -70,6 +76,8 @@ export function SwapInputCard({
   toOptions,
   categories,
   defaultActiveCategories,
+  fromNetworks,
+  fromQuickAssets,
   availableText,
   showMaxText = false,
   maxText,
@@ -156,6 +164,8 @@ export function SwapInputCard({
               options={fromOptions}
               categories={categories}
               defaultActiveCategories={defaultActiveCategories}
+              networks={fromNetworks}
+              quickAssets={fromQuickAssets}
               disabledId={toSelectedId}
               onChange={onFromTickerChange}
             />

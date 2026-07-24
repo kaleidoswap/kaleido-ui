@@ -145,6 +145,8 @@ export {
   type AssetSelectorProps,
   type AssetSelectorOption,
   type AssetSelectorCategory,
+  type AssetSelectorNetworkOption,
+  type AssetSelectorQuickAsset,
 } from './components/asset-selector'
 export {
   SwapInputCard,

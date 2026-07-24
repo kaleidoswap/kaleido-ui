@@ -19,6 +19,8 @@ export interface AssetSelectorOption {
   assetId?: string
   category?: string | null
   categoryLabel?: string
+  /** Network id matched against the network filter slider; options without one always pass. */
+  networkId?: string
   /** URL of the network mark rendered as a mini-badge over the asset icon. */
   networkIconUrl?: string
   /** Right-aligned network tag: label pill tinted with `color`, ticker beneath. */
@@ -72,6 +74,21 @@ export interface AssetSelectorCategory {
   label: string
 }
 
+/** One entry of the single-select network filter slider inside the picker panel. */
+export interface AssetSelectorNetworkOption {
+  id: string
+  label: string
+  /** Network mark rendered inside the chip; falls back to a lettered dot. */
+  iconUrl?: string
+}
+
+/** One entry of the quick-asset filter chips (e.g. BTC / USDT / USDC). */
+export interface AssetSelectorQuickAsset {
+  ticker: string
+  /** Icon URL for the chip; falls back to AssetIcon's local/CDN resolution. */
+  iconUrl?: string
+}
+
 export interface AssetSelectorProps {
   label: string
   selectedTicker: string
@@ -79,6 +96,18 @@ export interface AssetSelectorProps {
   options: AssetSelectorOption[]
   categories?: AssetSelectorCategory[]
   defaultActiveCategories?: string[]
+  /**
+   * Single-select network filter rendered as a dropdown button in the panel's
+   * top-right corner ("All" by default). Selecting a network keeps only
+   * options whose `networkId` matches (options without a `networkId` always
+   * pass, mirroring the category convention).
+   */
+  networks?: AssetSelectorNetworkOption[]
+  /**
+   * Quick-asset chips rendered under the search input. Pressing one narrows
+   * the list to that ticker; pressing it again clears the filter.
+   */
+  quickAssets?: AssetSelectorQuickAsset[]
   networkFilter?: NetworkType | null
   venueFilter?: string | null
   disabled?: boolean
@@ -98,6 +127,8 @@ export function AssetSelector({
   options,
   categories = [],
   defaultActiveCategories,
+  networks = [],
+  quickAssets = [],
   networkFilter,
   venueFilter,
   disabled,
@@ -112,6 +143,11 @@ export function AssetSelector({
   const [activeCategories, setActiveCategories] = useState<string[]>(
     defaultActiveCategories ?? categories.map((category) => category.id),
   )
+  // Single-select network filter — null means "All".
+  const [activeNetwork, setActiveNetwork] = useState<string | null>(null)
+  const [networkMenuOpen, setNetworkMenuOpen] = useState(false)
+  // Quick-asset ticker filter — null means no ticker narrowing.
+  const [activeQuickAsset, setActiveQuickAsset] = useState<string | null>(null)
 
   const selectedKey = selectedId ?? selectedTicker
   const selected =
@@ -119,6 +155,9 @@ export function AssetSelector({
     options.find((option) => option.ticker === selectedTicker)
   const selectedOptionId = selected?.id ?? selectedKey
   const hasCategoryFilters = categories.length > 0
+  const hasNetworkFilter = networks.length > 0
+  const hasQuickAssets = quickAssets.length > 0
+  const activeNetworkOption = networks.find((network) => network.id === activeNetwork) ?? null
 
   const filtered = options
     .filter((option) => {
@@ -126,9 +165,20 @@ export function AssetSelector({
       const matchesCategory =
         !hasCategoryFilters || category === null || activeCategories.includes(category)
       const matchesNetwork = !networkFilter || option.network === networkFilter
+      const matchesNetworkFilter =
+        !activeNetwork || option.networkId == null || option.networkId === activeNetwork
+      const matchesQuickAsset =
+        !activeQuickAsset || option.ticker.toUpperCase() === activeQuickAsset
       const matchesVenue = !venueFilter || option.venue === venueFilter
 
-      if (!matchesCategory || !matchesNetwork || !matchesVenue) return false
+      if (
+        !matchesCategory ||
+        !matchesNetwork ||
+        !matchesNetworkFilter ||
+        !matchesQuickAsset ||
+        !matchesVenue
+      )
+        return false
       if (!search) return true
 
       const searchValue = search.toLowerCase()
@@ -155,6 +205,173 @@ export function AssetSelector({
     disabled: option.id === disabledId || option.ticker === disabledTicker,
   }))
   const categoryLabelById = new Map(categories.map((category) => [category.id, category.label]))
+
+  const chipBaseClass =
+    'shrink-0 rounded-full text-tiny font-bold uppercase tracking-wide shadow-inner transition-colors'
+  const chipActiveClass = 'bg-primary/[0.14] text-primary'
+  const chipIdleClass = 'bg-surface-card text-text-dimmed hover:text-white/75'
+
+  // Small network mark used by the dropdown button and its menu rows.
+  const networkMark = (network: AssetSelectorNetworkOption) =>
+    network.iconUrl ? (
+      <img src={network.iconUrl} alt="" className="size-4 shrink-0 rounded-full" />
+    ) : (
+      <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-muted text-xxs font-bold uppercase leading-none text-muted-foreground">
+        {network.label.charAt(0)}
+      </span>
+    )
+
+  // Single-select network filter: a dropdown button that sits in the panel's
+  // top-right corner, defaulting to "All".
+  const networkFilterButton = hasNetworkFilter && (
+    <div className="relative shrink-0">
+      <button
+        type="button"
+        onClick={() => setNetworkMenuOpen((value) => !value)}
+        className={cn(
+          chipBaseClass,
+          'flex items-center gap-1.5 py-1.5 pl-2 pr-2.5',
+          activeNetworkOption || networkMenuOpen ? chipActiveClass : chipIdleClass,
+        )}
+      >
+        {activeNetworkOption ? (
+          networkMark(activeNetworkOption)
+        ) : (
+          <Icon name="hub" size="xs" className="shrink-0" />
+        )}
+        {activeNetworkOption ? activeNetworkOption.label : 'All'}
+        <Icon
+          name="expand_more"
+          size="xs"
+          className={cn(
+            'shrink-0 transition-transform duration-200',
+            networkMenuOpen && 'rotate-180',
+          )}
+        />
+      </button>
+      {networkMenuOpen && (
+        <div className="absolute right-0 top-full z-10 mt-1.5 w-48 overflow-hidden rounded-xl border border-white/[0.08] bg-popover shadow-popover">
+          <div className="max-h-60 overflow-y-auto p-1">
+            <button
+              type="button"
+              onClick={() => {
+                setActiveNetwork(null)
+                setNetworkMenuOpen(false)
+              }}
+              className={cn(
+                'flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-xs font-semibold transition-colors',
+                activeNetwork === null
+                  ? 'bg-primary/[0.14] text-primary'
+                  : 'text-white/75 hover:bg-accent hover:text-white',
+              )}
+            >
+              <Icon name="hub" size="xs" className="shrink-0" />
+              <span className="min-w-0 flex-1 truncate text-left">All networks</span>
+              {activeNetwork === null && (
+                <Icon name="check" size="xs" className="shrink-0 text-primary" />
+              )}
+            </button>
+            {networks.map((network) => {
+              const isActive = activeNetwork === network.id
+              return (
+                <button
+                  key={network.id}
+                  type="button"
+                  onClick={() => {
+                    setActiveNetwork(network.id)
+                    setNetworkMenuOpen(false)
+                  }}
+                  className={cn(
+                    'flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-xs font-semibold transition-colors',
+                    isActive
+                      ? 'bg-primary/[0.14] text-primary'
+                      : 'text-white/75 hover:bg-accent hover:text-white',
+                  )}
+                >
+                  {networkMark(network)}
+                  <span className="min-w-0 flex-1 truncate text-left">{network.label}</span>
+                  {isActive && <Icon name="check" size="xs" className="shrink-0 text-primary" />}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+
+  // Filter chip rows shared by the compact bottom-sheet and the inline panel:
+  // quick-asset chips under the search input, then the legacy multi-toggle
+  // category chips.
+  const filterControls = (hasQuickAssets || hasCategoryFilters) && (
+    <>
+      {hasQuickAssets && (
+        <div className="mt-3 flex flex-wrap items-center gap-1.5">
+          {quickAssets.map((quick) => {
+            const tickerKey = quick.ticker.toUpperCase()
+            const isActive = activeQuickAsset === tickerKey
+            return (
+              <button
+                key={tickerKey}
+                type="button"
+                onClick={() => setActiveQuickAsset(isActive ? null : tickerKey)}
+                className={cn(
+                  chipBaseClass,
+                  'flex items-center gap-1.5 py-1 pl-1.5 pr-2.5',
+                  isActive ? chipActiveClass : chipIdleClass,
+                )}
+              >
+                {quick.iconUrl ? (
+                  <img src={quick.iconUrl} alt="" className="size-4 shrink-0 rounded-full" />
+                ) : (
+                  <AssetIcon ticker={quick.ticker} size={16} className="shrink-0" />
+                )}
+                {quick.ticker}
+              </button>
+            )
+          })}
+        </div>
+      )}
+      {hasCategoryFilters && (
+        <div className="mt-3 flex flex-wrap items-center gap-1.5">
+          <button
+            type="button"
+            onClick={() => setActiveCategories(categories.map((category) => category.id))}
+            className={cn(
+              chipBaseClass,
+              'px-2.5 py-1',
+              activeCategories.length === categories.length ? chipActiveClass : chipIdleClass,
+            )}
+          >
+            All
+          </button>
+          {categories.map((category) => {
+            const isActive = activeCategories.includes(category.id)
+            return (
+              <button
+                key={category.id}
+                type="button"
+                onClick={() =>
+                  setActiveCategories((current) =>
+                    current.includes(category.id)
+                      ? current.filter((value) => value !== category.id)
+                      : [...current, category.id],
+                  )
+                }
+                className={cn(
+                  chipBaseClass,
+                  'px-2.5 py-1',
+                  isActive ? chipActiveClass : chipIdleClass,
+                )}
+              >
+                {category.label}
+              </button>
+            )
+          })}
+        </div>
+      )}
+    </>
+  )
 
   const renderAssetOption = (
     option: AssetSelectorOption,
@@ -243,6 +460,7 @@ export function AssetSelector({
     const closePanel = () => {
       setOpen(false)
       setSearch('')
+      setNetworkMenuOpen(false)
     }
 
     return (
@@ -307,14 +525,15 @@ export function AssetSelector({
                         {filtered.length} option{filtered.length === 1 ? '' : 's'} available
                       </p>
                     </div>
-                    {selected && (
-                      <div className="flex items-center gap-2 rounded-full bg-white/5 px-2.5 py-1">
-                        <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={18} />
-                        <span className="text-tiny font-semibold text-white">
-                          {selected.ticker}
-                        </span>
-                      </div>
-                    )}
+                    {networkFilterButton ||
+                      (selected && (
+                        <div className="flex items-center gap-2 rounded-full bg-white/5 px-2.5 py-1">
+                          <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={18} />
+                          <span className="text-tiny font-semibold text-white">
+                            {selected.ticker}
+                          </span>
+                        </div>
+                      ))}
                   </div>
                 </div>
 
@@ -334,46 +553,7 @@ export function AssetSelector({
                       className="h-11 w-full rounded-2xl border border-transparent bg-black/20 pl-10 pr-3 text-sm text-white placeholder:text-white/25 focus:border-primary/25 focus:outline-none"
                     />
                   </div>
-                  {hasCategoryFilters && (
-                    <div className="mt-3 flex flex-wrap items-center gap-1.5">
-                      <button
-                        type="button"
-                        onClick={() => setActiveCategories(categories.map((category) => category.id))}
-                        className={cn(
-                          'rounded-full px-2.5 py-1 text-tiny font-bold uppercase tracking-wide shadow-inner transition-colors',
-                          activeCategories.length === categories.length
-                            ? 'bg-primary/[0.14] text-primary'
-                            : 'bg-surface-card text-text-dimmed hover:text-white/75',
-                        )}
-                      >
-                        All
-                      </button>
-                      {categories.map((category) => {
-                        const isActive = activeCategories.includes(category.id)
-                        return (
-                          <button
-                            key={category.id}
-                            type="button"
-                            onClick={() =>
-                              setActiveCategories((current) =>
-                                current.includes(category.id)
-                                  ? current.filter((value) => value !== category.id)
-                                  : [...current, category.id],
-                              )
-                            }
-                            className={cn(
-                              'rounded-full px-2.5 py-1 text-tiny font-bold uppercase tracking-wide shadow-inner transition-colors',
-                              isActive
-                                ? 'bg-primary/[0.14] text-primary'
-                                : 'bg-surface-card text-text-dimmed hover:text-white/75',
-                            )}
-                          >
-                            {category.label}
-                          </button>
-                        )
-                      })}
-                    </div>
-                  )}
+                  {filterControls}
                 </div>
 
                 <div className="mx-4 h-px bg-white/[0.06]" />
@@ -482,12 +662,13 @@ export function AssetSelector({
                   {filtered.length} option{filtered.length === 1 ? '' : 's'} available
                 </p>
               </div>
-              {selected && (
-                <div className="flex items-center gap-2 rounded-full bg-white/5 px-2.5 py-1">
-                  <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={18} />
-                  <span className="text-tiny font-semibold text-white">{selected.ticker}</span>
-                </div>
-              )}
+              {networkFilterButton ||
+                (selected && (
+                  <div className="flex items-center gap-2 rounded-full bg-white/5 px-2.5 py-1">
+                    <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={18} />
+                    <span className="text-tiny font-semibold text-white">{selected.ticker}</span>
+                  </div>
+                ))}
             </div>
           </div>
 
@@ -507,46 +688,7 @@ export function AssetSelector({
                 className="h-11 w-full rounded-2xl border border-transparent bg-black/20 pl-10 pr-3 text-sm text-white placeholder:text-white/25 focus:border-primary/25 focus:outline-none"
               />
             </div>
-            {hasCategoryFilters && (
-              <div className="mt-3 flex flex-wrap items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => setActiveCategories(categories.map((category) => category.id))}
-                  className={cn(
-                    'rounded-full px-2.5 py-1 text-tiny font-bold uppercase tracking-wide shadow-inner transition-colors',
-                    activeCategories.length === categories.length
-                      ? 'bg-primary/[0.14] text-primary'
-                      : 'bg-surface-card text-text-dimmed hover:text-white/75',
-                  )}
-                >
-                  All
-                </button>
-                {categories.map((category) => {
-                  const isActive = activeCategories.includes(category.id)
-                  return (
-                    <button
-                      key={category.id}
-                      type="button"
-                      onClick={() =>
-                        setActiveCategories((current) =>
-                          current.includes(category.id)
-                            ? current.filter((value) => value !== category.id)
-                            : [...current, category.id],
-                        )
-                      }
-                      className={cn(
-                        'rounded-full px-2.5 py-1 text-tiny font-bold uppercase tracking-wide shadow-inner transition-colors',
-                        isActive
-                          ? 'bg-primary/[0.14] text-primary'
-                          : 'bg-surface-card text-text-dimmed hover:text-white/75',
-                      )}
-                    >
-                      {category.label}
-                    </button>
-                  )
-                })}
-              </div>
-            )}
+            {filterControls}
           </div>
         </>
       )}
