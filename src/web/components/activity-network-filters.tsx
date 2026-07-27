@@ -15,6 +15,7 @@ export interface ActivityNetworkFiltersProps<TValue extends string = ActivityNet
   activeFilter: TValue
   onChange: (value: TValue) => void
   className?: string
+  ariaLabel?: string
 }
 
 export function getActivityNetworkFilterIcon(filter: ActivityNetworkFilterValue) {
@@ -42,39 +43,38 @@ export function ActivityNetworkFilters<TValue extends string = ActivityNetworkFi
   activeFilter,
   onChange,
   className,
+  ariaLabel = 'Filter activity by network',
 }: ActivityNetworkFiltersProps<TValue>) {
   if (filters.length <= 1) return null
 
   return (
-    <div className={cn('flex gap-1.5 overflow-x-auto py-0.5 no-scrollbar', className)}>
+    <div
+      role="group"
+      aria-label={ariaLabel}
+      className={cn('flex gap-1.5 overflow-x-auto pb-0.5 no-scrollbar', className)}
+    >
       {filters.map((filter) => {
         const isActive = activeFilter === filter.value
         return (
           <button
             key={filter.value}
             type="button"
+            aria-pressed={isActive}
             onClick={() => onChange(filter.value)}
             className={cn(
-              // `leading-none` on the button normalizes the line-box for
-              // both the icon span and the label span; without it the
-              // icon (now `leading-none` from Icon primitive) and the text
-              // (default leading) get center-aligned along different
-              // visual axes and the glyph drifts above the text.
-              'inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xxs font-bold uppercase tracking-wider leading-none transition-all active:scale-95',
+              'flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1.5 text-xxs font-bold uppercase tracking-wider transition-all',
               isActive
-                ? 'bg-primary/15 text-primary shadow-inner hover:bg-primary/20'
-                : 'bg-surface-card text-white/45 hover:bg-surface-elevated hover:text-white/80'
+                ? 'bg-primary/15 text-primary ring-1 ring-primary/20'
+                : 'bg-white/5 text-muted-foreground hover:bg-white/8 hover:text-white'
             )}
           >
             <span
-              className={cn(
-                'flex items-center justify-center',
-                isActive ? 'opacity-100' : 'scale-90 opacity-70'
-              )}
+              aria-hidden
+              className="flex size-3 items-center justify-center"
             >
               {filter.icon ?? getActivityNetworkFilterIcon(filter.value as ActivityNetworkFilterValue)}
             </span>
-            <span>{filter.label}</span>
+            {filter.label}
           </button>
         )
       })}

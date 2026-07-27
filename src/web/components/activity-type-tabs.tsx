@@ -1,4 +1,4 @@
-import { AppIcon } from './app-icon'
+import { AppIcon, type AppIconName } from './app-icon'
 import { TabsList, TabsTrigger } from '../primitives/tabs'
 
 export type ActivityTypeTabValue = 'all' | 'received' | 'sent' | 'swaps'
@@ -11,47 +11,40 @@ export interface ActivityTypeTabCounts {
 }
 
 export function ActivityTypeTabs({ counts = {} }: { counts?: ActivityTypeTabCounts }) {
+  const actions: Array<{
+    value: ActivityTypeTabValue
+    label: string
+    icon?: AppIconName
+    actionIcon?: string
+  }> = [
+    { value: 'all', label: 'All' },
+    { value: 'received', label: 'In', icon: 'receive', actionIcon: 'call_received' },
+    { value: 'swaps', label: 'Swap', icon: 'swap', actionIcon: 'swap_horiz' },
+    { value: 'sent', label: 'Out', icon: 'send', actionIcon: 'arrow_outward' },
+  ]
+
   return (
     <TabsList className="grid h-12 w-full grid-cols-4 gap-1 rounded-2xl bg-surface-card p-1 backdrop-blur-xl">
-      <TabsTrigger
-        value="all"
-        className="h-full rounded-xl px-2 text-xs font-bold tracking-wide transition-all data-[state=active]:bg-surface-elevated data-[state=active]:text-white"
-      >
-        All{counts.all ? <span className="ml-1 opacity-60">({counts.all})</span> : null}
-      </TabsTrigger>
-      <TabsTrigger
-        value="received"
-        className="group h-full rounded-xl px-1.5 text-xs font-bold tracking-wide transition-all hover:text-tx-receive data-[state=active]:bg-tx-receive/15 data-[state=active]:text-tx-receive data-[state=active]:hover:bg-tx-receive/20 data-[state=active]:hover:text-tx-receive"
-      >
-        <AppIcon
-          name="receive"
-          size="sm"
-          className="mr-1 shrink-0 leading-none text-muted-foreground transition-colors group-hover:text-tx-receive group-data-[state=active]:text-tx-receive"
-        />
-        <span>In</span>
-      </TabsTrigger>
-      <TabsTrigger
-        value="sent"
-        className="group h-full rounded-xl px-1.5 text-xs font-bold tracking-wide transition-all hover:text-tx-sent data-[state=active]:bg-tx-sent/15 data-[state=active]:text-tx-sent data-[state=active]:hover:bg-tx-sent/20 data-[state=active]:hover:text-tx-sent"
-      >
-        <AppIcon
-          name="send"
-          size="sm"
-          className="mr-1 shrink-0 leading-none text-muted-foreground transition-colors group-hover:text-tx-sent group-data-[state=active]:text-tx-sent"
-        />
-        <span>Out</span>
-      </TabsTrigger>
-      <TabsTrigger
-        value="swaps"
-        className="group h-full rounded-xl px-1.5 text-xs font-bold tracking-wide transition-all hover:text-network-arkade data-[state=active]:bg-network-arkade/15 data-[state=active]:text-network-arkade data-[state=active]:hover:bg-network-arkade/20 data-[state=active]:hover:text-network-arkade"
-      >
-        <AppIcon
-          name="swap"
-          size="sm"
-          className="mr-1 shrink-0 leading-none text-muted-foreground transition-colors group-hover:text-network-arkade group-data-[state=active]:text-network-arkade"
-        />
-        <span>Swaps</span>
-      </TabsTrigger>
+      {actions.map((action) => (
+        <TabsTrigger
+          key={action.value}
+          value={action.value}
+          data-action-icon={action.actionIcon}
+          className="group h-full rounded-xl px-1.5 text-xs font-bold tracking-wide text-muted-foreground transition-all hover:text-primary data-[state=active]:bg-primary/15 data-[state=active]:text-primary data-[state=active]:hover:bg-primary/20 data-[state=active]:hover:text-primary"
+        >
+          {action.icon && (
+            <AppIcon
+              name={action.icon}
+              size="sm"
+              className="mr-1 shrink-0 leading-none text-muted-foreground transition-colors group-hover:text-primary group-data-[state=active]:text-primary"
+            />
+          )}
+          <span>{action.label}</span>
+          {action.value === 'all' && counts.all ? (
+            <span className="ml-1">({counts.all})</span>
+          ) : null}
+        </TabsTrigger>
+      ))}
     </TabsList>
   )
 }

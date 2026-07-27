@@ -35,29 +35,29 @@ export function ActivityFilterBar<TStatus extends string = string>({
   searchPlaceholder = 'Search by txid, asset...',
 }: ActivityFilterBarProps<TStatus>) {
   return (
-    // All three controls (search input, status dropdown, clear button) share
-    // the same h-11 height and rounded-2xl card radius so the bar reads as
-    // one family with the cards below it.
     <div className="flex h-11 items-center gap-2">
       <div className="relative h-full flex-1">
         <AppIcon
           name="search"
-          className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/40"
+          size="sm"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30"
         />
         <input
           type="text"
+          data-testid="activity-search"
           placeholder={searchPlaceholder}
           value={searchTerm}
           onChange={(event) => onSearchTermChange(event.target.value)}
-          className="h-full w-full rounded-2xl bg-surface-card pl-9 pr-8 text-xs text-white shadow-inner backdrop-blur-xl transition-all placeholder:text-white/30 focus:bg-surface-elevated focus:outline-none"
+          className="h-full w-full rounded-xl border border-transparent bg-white/5 py-2.5 pl-10 pr-8 text-sm text-white outline-none transition-all placeholder:text-white/25 focus:border-primary/25 focus:bg-white/8"
         />
         {searchTerm && (
           <button
             type="button"
+            aria-label="Clear search"
             onClick={() => onSearchTermChange('')}
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-white/40 transition-colors hover:text-white"
+            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-white/40 transition-colors hover:text-white"
           >
-            <AppIcon name="close" className="size-icon-sm" />
+            <AppIcon name="close" size="sm" />
           </button>
         )}
       </div>
@@ -67,7 +67,10 @@ export function ActivityFilterBar<TStatus extends string = string>({
           value={statusFilter}
           onValueChange={(value) => onStatusFilterChange(value as TStatus)}
         >
-          <SelectTrigger className="h-full rounded-2xl border-0 bg-surface-card px-3 py-0 text-xs font-bold text-white shadow-inner backdrop-blur-xl hover:bg-surface-elevated focus:ring-0 data-[state=open]:bg-surface-elevated">
+          <SelectTrigger
+            aria-label="Filter activity by status"
+            className="h-full rounded-xl border-0 bg-white/5 px-3 py-0 text-xs font-bold text-white shadow-none hover:bg-white/8 focus:ring-0 data-[state=open]:bg-white/8"
+          >
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="bg-popover/95 p-1.5 shadow-popover">
@@ -85,10 +88,11 @@ export function ActivityFilterBar<TStatus extends string = string>({
           variant="surface"
           size="icon-lg"
           onClick={onClearFilters}
+          aria-label="Clear filters"
           title="Clear Filters"
-          className="h-11 w-11 shrink-0 rounded-2xl"
+          className="h-11 w-11 shrink-0 rounded-xl"
         >
-          <AppIcon name="close" className="size-icon-lg" />
+          <AppIcon name="close" size="lg" />
         </Button>
       )}
     </div>

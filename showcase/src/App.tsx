@@ -619,12 +619,12 @@ export function App() {
                 onSearchTermChange={setActivitySearch}
                 statusFilter={activityStatus}
                 onStatusFilterChange={setActivityStatus}
-                hasActiveFilters={activitySearch !== '' || activityStatus !== 'all' || activityNetwork !== 'all'}
+                hasActiveFilters={activitySearch !== '' || activityStatus !== 'all'}
                 onClearFilters={() => {
                   setActivitySearch('')
                   setActivityStatus('all')
-                  setActivityNetwork('all')
                 }}
+                searchPlaceholder="Search assets..."
                 statusOptions={[
                   { value: 'all', label: 'All Status' },
                   { value: 'confirmed', label: 'Confirmed' },
@@ -634,7 +634,11 @@ export function App() {
               />
               <ActivityNetworkFilters
                 activeFilter={activityNetwork}
-                onChange={setActivityNetwork}
+                onChange={(nextNetwork) =>
+                  setActivityNetwork((currentNetwork) =>
+                    nextNetwork !== 'all' && nextNetwork === currentNetwork ? 'all' : nextNetwork
+                  )
+                }
                 filters={[
                   { value: 'all', label: 'All' },
                   { value: 'onchain', label: 'On-chain' },
@@ -663,6 +667,17 @@ export function App() {
                   />
                 </TabsContent>
               </Tabs>
+              <ActivityList
+                items={[]}
+                renderEmptyActions={() => (
+                  <div className="w-full max-w-56">
+                    <Button variant="h1" size="lg">
+                      <AppIcon name="receive" size="sm" />
+                      Receive
+                    </Button>
+                  </div>
+                )}
+              />
             </div>
           </Section>
 
