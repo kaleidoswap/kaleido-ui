@@ -1,6 +1,6 @@
 {
   "name": "kaleido-ui",
-  "version": "0.1.106",
+  "version": "0.1.107",
   "description": "KaleidoSwap shared UI library — design tokens, web components (Tailwind + Radix), and React Native components extending WDK UI Kit",
   "license": "MIT",
   "type": "module",
@@ -43,6 +43,7 @@
     "showcase": "vite --config showcase/vite.config.ts",
     "showcase:build": "npm run generate:css && vite build --config showcase/vite.config.ts",
     "type-check": "tsc --noEmit",
+    "test": "node --import tsx --test tests/*.test.tsx",
     "clean": "rm -rf dist"
   },
   "dependencies": {
