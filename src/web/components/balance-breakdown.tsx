@@ -230,8 +230,8 @@ export function BalanceBreakdown({
             >
               <Icon
                 name={expanded ? 'expand_less' : 'expand_more'}
-                size="sm"
-                className="text-white/60"
+                size="md"
+                className="size-7 text-white/60"
               />
             </button>
           </div>
