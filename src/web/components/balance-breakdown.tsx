@@ -15,8 +15,37 @@ export interface BalanceBreakdownAccounts {
   RGB?: {
     connected?: boolean
     /** RLN is set up on this wallet (node URL / NWC saved) even if the node
-     * is currently offline. Gates the "BTC on RLN" row. */
+     * is currently offline. Gates the RLN-specific BTC rows. */
     configured?: boolean
+  }
+  RGB_L1?: {
+    connected?: boolean
+    configured?: boolean
+  }
+}
+
+export function getRgbBtcBreakdownLabels(accounts: BalanceBreakdownAccounts) {
+  const rlnConnected = Boolean(accounts.RGB?.connected)
+  const rgbL1Connected = Boolean(accounts.RGB_L1?.connected)
+  // The active backing wins when both old configurations remain saved.
+  const rlnEnabled = rlnConnected || (!rgbL1Connected && Boolean(accounts.RGB?.configured))
+  const rgbL1Enabled =
+    rgbL1Connected || (!rlnConnected && Boolean(accounts.RGB_L1?.configured))
+
+  return {
+    onchainLabel: rlnEnabled
+      ? 'BTC wallet on RLN'
+      : rgbL1Enabled
+        ? 'BTC on RGB L1'
+        : 'BTC on-chain',
+    onchainSublabel: rlnEnabled
+      ? 'RLN on-chain wallet'
+      : rgbL1Enabled
+        ? 'RGB L1 wallet balance'
+        : 'Standard Bitcoin balance',
+    showLightning: rlnEnabled,
+    lightningLabel: 'BTC channels on RLN',
+    lightningSublabel: 'RLN channel balance',
   }
 }
 
@@ -121,6 +150,7 @@ export function BalanceBreakdown({
 }: BalanceBreakdownProps) {
   const [expanded, setExpanded] = useState(false)
   const fiatTotal = formatFiatValue(totalBTC)
+  const rgbBtcLabels = getRgbBtcBreakdownLabels(accounts)
 
   return (
     <div className={`flex flex-col ${compact ? 'gap-2' : 'gap-3'}`}>
@@ -194,12 +224,14 @@ export function BalanceBreakdown({
             )}
             <button
               onClick={() => setExpanded(!expanded)}
+              aria-label={expanded ? 'Collapse balance breakdown' : 'Expand balance breakdown'}
+              aria-expanded={expanded}
               className="flex size-7 items-center justify-center rounded-full bg-white/[0.08] transition-all hover:bg-white/[0.12]"
             >
               <Icon
                 name={expanded ? 'expand_less' : 'expand_more'}
-                size="sm"
-                className="text-white/60"
+                size="md"
+                className="size-7 text-white/60"
               />
             </button>
           </div>
@@ -216,17 +248,17 @@ export function BalanceBreakdown({
               icon={<OnchainIcon className="text-icon-sm" />}
               iconColor="text-network-spark"
               dotColor="bg-network-spark"
-              label="BTC on-chain"
-              sublabel="Standard Bitcoin balance"
+              label={rgbBtcLabels.onchainLabel}
+              sublabel={rgbBtcLabels.onchainSublabel}
               amount={btcOnchain}
               isPending={btcOnchainPending}
               visible={balanceVisible}
               format={format}
               formatFiat={formatFiatValue}
             />
-            {/* RLN is opt-in — hide its row entirely on wallets that never
-                set it up, instead of showing a permanent $0.00 line. */}
-            {(accounts.RGB?.connected || accounts.RGB?.configured) && (
+            {/* RLN exposes two distinct BTC pools: its on-chain wallet and
+                its spendable channel balance. RGB L1 only has the on-chain row. */}
+            {rgbBtcLabels.showLightning && (
               <NetworkRow
                 icon={
                   <ImageIcon
@@ -237,8 +269,8 @@ export function BalanceBreakdown({
                 }
                 iconColor="text-network-lightning"
                 dotColor="bg-network-lightning"
-                label="BTC on RLN"
-                sublabel="RLN balance"
+                label={rgbBtcLabels.lightningLabel}
+                sublabel={rgbBtcLabels.lightningSublabel}
                 amount={btcLightning}
                 isPending={btcLightningPending}
                 visible={balanceVisible}

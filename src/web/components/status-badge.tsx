@@ -47,6 +47,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
 
   return (
     <div
+      data-slot="status-badge"
       className={cn(
         'inline-flex items-center gap-1.5 pl-1 pr-2.5 py-1 rounded-full font-medium text-xs',
         bg,

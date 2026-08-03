@@ -97,7 +97,9 @@ export function AssetCard({
           >
             {displayShown}
           </p>
-          <div className="flex items-center justify-end gap-1 mt-0.5">
+          <div className="mt-0.5 flex min-h-6 items-center justify-end gap-1">
+            {status && <StatusBadge status={status} />}
+            {status && ticker && <span className="text-tiny text-muted-foreground">·</span>}
             <p className="truncate text-tiny font-medium uppercase tracking-wide text-muted-foreground">
               {ticker}
             </p>
@@ -119,7 +121,6 @@ export function AssetCard({
               </div>
             )}
           </div>
-          {status && <StatusBadge status={status} className="mt-2" />}
         </div>
       </div>
     </div>
