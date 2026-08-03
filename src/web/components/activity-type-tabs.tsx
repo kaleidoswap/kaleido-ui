@@ -19,8 +19,8 @@ export function ActivityTypeTabs({ counts = {} }: { counts?: ActivityTypeTabCoun
   }> = [
     { value: 'all', label: 'All' },
     { value: 'received', label: 'In', icon: 'receive', actionIcon: 'call_received' },
-    { value: 'swaps', label: 'Swap', icon: 'swap', actionIcon: 'swap_horiz' },
     { value: 'sent', label: 'Out', icon: 'send', actionIcon: 'arrow_outward' },
+    { value: 'swaps', label: 'Swap', icon: 'swap', actionIcon: 'swap_horiz' },
   ]
 
   return (
