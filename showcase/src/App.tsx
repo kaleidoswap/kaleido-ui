@@ -30,6 +30,9 @@ import {
   useToast,
   StatusBadge,
   NetworkBadge,
+  InfoChip,
+  NetworkInfoChip,
+  AssetInfoChip,
   AssetCard,
   TransactionCard,
   SettingItem,
@@ -127,6 +130,7 @@ const NAV_ITEMS = [
   { id: 'icons', label: 'Icons' },
   { id: 'status-badges', label: 'Status Badges' },
   { id: 'network-badges', label: 'Network Badges' },
+  { id: 'info-chips', label: 'Info Chips' },
   { id: 'cards', label: 'Cards' },
   { id: 'asset-cards', label: 'Asset Cards' },
   { id: 'transaction-cards', label: 'Transaction Cards' },
@@ -331,6 +335,35 @@ export function App() {
                 <NetworkBadge key={n} network={n} />
               ))}
             </Row>
+          </Section>
+
+          {/* ── Info Chips ─────────────────────────────────────────────── */}
+          <Section id="info-chips" title="Info Chips" description="Compact, readable, read-only information for 400px popup layouts.">
+            <div className="grid max-w-[400px] gap-3">
+              <NetworkInfoChip
+                network="LN"
+                value="Lightning Network"
+                status="success"
+                statusLabel="Connected"
+                onEdit={() => toast({ title: 'Edit network' })}
+                editLabel="Edit selected network"
+              />
+              <AssetInfoChip
+                ticker="BTC"
+                value="Bitcoin · BTC"
+                status="info"
+                statusLabel="Native asset"
+              />
+              <InfoChip
+                leading={<Icon name="hub" />}
+                label="Node endpoint"
+                value="https://node.kaleidoswap.example/a-very-long-readable-path"
+                status="warning"
+                statusLabel="Needs review"
+                onEdit={() => toast({ title: 'Edit node endpoint' })}
+                editLabel="Edit node endpoint"
+              />
+            </div>
           </Section>
 
           {/* ── Cards ───────────────────────────────────────────────────── */}

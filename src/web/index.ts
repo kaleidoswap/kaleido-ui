@@ -229,6 +229,17 @@ export { SectionLabel } from './components/section-label'
 export { SectionHeader, type SectionHeaderProps } from './components/section-header'
 export { AlertBanner } from './components/alert-banner'
 export { InfoPanel, type InfoPanelProps } from './components/info-panel'
+export {
+  InfoChip,
+  NetworkInfoChip,
+  AssetInfoChip,
+  type InfoChipProps,
+  type InfoChipContentProps,
+  type InfoChipEditAction,
+  type InfoChipStatus,
+  type NetworkInfoChipProps,
+  type AssetInfoChipProps,
+} from './components/info-chip'
 export { ErrorBoundary } from './components/error-boundary'
 export { RecoveryPhraseCard, type RecoveryPhraseCardProps } from './components/recovery-phrase-card'
 export {

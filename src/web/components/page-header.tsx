@@ -9,6 +9,7 @@ export interface PageHeaderProps {
   subtitle?: ReactNode
   right?: ReactNode
   className?: string
+  /** @deprecated Page titles are now always left-aligned. */
   titleAlign?: 'center' | 'start'
   onBack?: () => void
   backLabel?: string
@@ -22,7 +23,6 @@ export function PageHeader({
   subtitle,
   right,
   className,
-  titleAlign = 'center',
   onBack,
   backLabel = 'Go back',
   borderClassName,
@@ -39,17 +39,8 @@ export function PageHeader({
       <Icon name="arrow_back" size="xl" />
     </Button>
   ) : null
-  const resolvedLeft =
-    backButton && left ? (
-      <div className="flex min-w-0 items-center gap-2">
-        {backButton}
-        {left}
-      </div>
-    ) : (
-      backButton ?? left
-    )
   const titleBlock = title ? (
-    <div className={cn('min-w-0', titleAlign === 'center' ? 'max-w-xs text-center' : 'text-left')}>
+    <div className="min-w-0 text-left">
       <div className="truncate font-bold text-body text-foreground">{title}</div>
       {subtitle && <div className="mt-1 truncate text-xs text-muted-foreground">{subtitle}</div>}
     </div>
@@ -62,26 +53,27 @@ export function PageHeader({
       borderClassName,
       className,
     )}>
-      {title && titleAlign === 'start' ? (
-        <>
-          <div className="flex min-w-0 flex-1 items-center gap-3">
-            {resolvedLeft}
-            {titleBlock}
-          </div>
-          <div className="ml-3 flex shrink-0 items-center justify-end gap-2">{right}</div>
-        </>
-      ) : title ? (
-        <>
-          <div className="flex min-w-0 flex-1 items-center">{resolvedLeft}</div>
-          <div className="shrink-0">{titleBlock}</div>
-          <div className="flex min-w-0 flex-1 items-center justify-end gap-2">{right}</div>
-        </>
-      ) : (
-        <>
-          <div className="flex shrink-0 items-center">{resolvedLeft}</div>
-          <div className="ml-auto flex min-w-0 items-center justify-end gap-2">{right}</div>
-        </>
-      )}
+      <div
+        data-slot="page-header-leading"
+        className={cn(
+          'flex min-w-0 items-center',
+          title ? 'flex-1 gap-3' : 'shrink-0',
+        )}
+      >
+        {title && left}
+        {backButton}
+        {!title && left}
+        {titleBlock}
+      </div>
+      <div
+        data-slot="page-header-actions"
+        className={cn(
+          'flex min-w-0 items-center justify-end gap-2',
+          title ? 'ml-3 shrink-0' : 'ml-auto',
+        )}
+      >
+        {right}
+      </div>
     </header>
   )
 }
