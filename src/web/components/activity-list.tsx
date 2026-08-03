@@ -4,6 +4,7 @@ import { TransactionCard } from './transaction-card'
 import { NetworkBadge, type NetworkType } from './network-badge'
 import { LoadingCard, ErrorCard } from './page-shell'
 import type { StatusType } from './status-badge'
+import { cn } from '../utils/cn'
 
 export interface ActivityListItem<TData = unknown> {
   id: string
@@ -80,7 +81,7 @@ export function ActivityList<TData = unknown>({
         <h3 className="mb-1 text-base font-semibold">
           {hasActiveFilters ? filteredEmptyTitle : emptyTitle}
         </h3>
-        <p className="mb-4 max-w-[240px] text-center text-xs text-muted-foreground">
+        <p className="mb-4 max-w-[240px] text-center text-xs text-white/70">
           {hasActiveFilters ? filteredEmptyDescription : emptyDescription}
         </p>
         {hasActiveFilters && onClearFilters ? (
@@ -103,11 +104,7 @@ export function ActivityList<TData = unknown>({
         return (
           <div
             key={item.id}
-            // The gradient lives on the wrapper (not the details block) so
-            // everything that can peek out from behind the card — corner
-            // notches, the sliver exposed by active:scale press — matches the
-            // details surface exactly.
-            className="relative overflow-hidden rounded-2xl bg-surface-card bg-gradient-to-b from-white/[0.025] to-primary/[0.035] shadow-inner transition-all animate-in fade-in slide-in-from-bottom-2 duration-500"
+            className="relative overflow-hidden rounded-2xl bg-card bg-none shadow-inner transition-all animate-in fade-in slide-in-from-bottom-2 duration-500"
           >
             <TransactionCard
               direction={item.direction}
@@ -120,7 +117,7 @@ export function ActivityList<TData = unknown>({
               onClick={() => onExpandedChange?.(isExpanded ? null : item.id)}
               // Stays above the details, which tuck underneath its rounded
               // bottom corners.
-              className="relative z-[1]"
+              className={cn('relative z-[1] bg-card', isExpanded && 'shadow-none')}
             />
             {isExpanded && (
               // -mt-4/pt-4 slides the details up behind the card's bottom
