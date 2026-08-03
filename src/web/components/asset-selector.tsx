@@ -97,29 +97,56 @@ function AssetSelectorNetworkMark({ network }: { network: AssetSelectorNetworkOp
   )
 }
 
+/** Max network marks shown in the collapsed "all networks" icon stack before folding the rest into a "+N" tail. */
+const NETWORK_STACK_VISIBLE = 3
+
 export interface AssetSelectorNetworkFilterTriggerProps {
   activeNetworkOption: AssetSelectorNetworkOption | null
+  /** All selectable networks — rendered as a condensed overlapping stack when no single network is active. */
+  networks: AssetSelectorNetworkOption[]
   open: boolean
   onClick: () => void
 }
 
 export function AssetSelectorNetworkFilterTrigger({
   activeNetworkOption,
+  networks,
   open,
   onClick,
 }: AssetSelectorNetworkFilterTriggerProps) {
+  const visibleNetworks = networks.slice(0, NETWORK_STACK_VISIBLE)
+  const overflowCount = networks.length - visibleNetworks.length
+
   return (
     <button
       type="button"
       onClick={onClick}
+      aria-label={activeNetworkOption ? undefined : 'All networks'}
       className={cn(
         chipBaseClass,
-        'flex items-center gap-1.5 py-1.5 pl-2 pr-2.5',
+        'flex items-center gap-1.5 py-1 pl-1.5 pr-2.5',
         activeNetworkOption || open ? chipActiveClass : chipIdleClass,
       )}
     >
-      {activeNetworkOption && <AssetSelectorNetworkMark network={activeNetworkOption} />}
-      {activeNetworkOption ? activeNetworkOption.label : 'All'}
+      {activeNetworkOption ? (
+        <>
+          <AssetSelectorNetworkMark network={activeNetworkOption} />
+          {activeNetworkOption.label}
+        </>
+      ) : (
+        <span className="flex items-center -space-x-1.5" aria-hidden="true">
+          {visibleNetworks.map((network) => (
+            <span key={network.id} className="rounded-full ring-2 ring-card">
+              <AssetSelectorNetworkMark network={network} />
+            </span>
+          ))}
+          {overflowCount > 0 && (
+            <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-muted text-xxs font-bold leading-none text-muted-foreground ring-2 ring-card">
+              +{overflowCount}
+            </span>
+          )}
+        </span>
+      )}
       <Icon
         name="expand_more"
         size="xs"
@@ -259,6 +286,7 @@ export function AssetSelector({
     <div className="relative shrink-0">
       <AssetSelectorNetworkFilterTrigger
         activeNetworkOption={activeNetworkOption}
+        networks={networks}
         open={networkMenuOpen}
         onClick={() => setNetworkMenuOpen((value) => !value)}
       />
