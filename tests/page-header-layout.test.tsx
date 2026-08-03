@@ -38,7 +38,7 @@ test('a title without a back button still uses the left header group', () => {
   assert.doesNotMatch(markup, /text-center/)
 })
 
-test('custom left content never separates a back button from its title', () => {
+test('the back button always leads, even with custom left content and a title', () => {
   const markup = renderToStaticMarkup(
     createElement(PageHeader, {
       left: createElement('span', null, 'Account'),
@@ -47,8 +47,11 @@ test('custom left content never separates a back button from its title', () => {
     }),
   )
 
+  // Back is the universal "leave this screen" affordance — it must stay the
+  // leftmost control regardless of what custom `left` content a caller adds,
+  // not sandwiched between it and the title.
   assert.match(
     markup,
-    /Account.*aria-label="Go back".*<\/button><div class="min-w-0 text-left">.*Network details/s,
+    /aria-label="Go back".*<\/button>.*Account.*<div class="min-w-0 text-left">.*Network details/s,
   )
 })

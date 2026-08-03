@@ -60,9 +60,8 @@ export function PageHeader({
           title ? 'flex-1 gap-3' : 'shrink-0',
         )}
       >
-        {title && left}
         {backButton}
-        {!title && left}
+        {left}
         {titleBlock}
       </div>
       <div
