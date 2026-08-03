@@ -34,7 +34,7 @@ export interface AssetSelectorOption {
  */
 function NetworkMiniBadge({ iconUrl, label }: { iconUrl?: string; label?: string }) {
   return (
-    <span className={cn(iconBadgeOverlayClass, 'overflow-hidden')}>
+    <span className={cn(iconBadgeOverlayClass, 'overflow-hidden bg-card')}>
       {iconUrl ? (
         <img src={iconUrl} alt={label ?? ''} className="h-full w-full object-cover" />
       ) : (
