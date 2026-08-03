@@ -100,9 +100,6 @@ export function AssetCard({
           <div className="mt-0.5 flex min-h-6 items-center justify-end gap-1">
             {status && <StatusBadge status={status} />}
             {status && ticker && <span className="text-tiny text-muted-foreground">·</span>}
-            <p className="truncate text-tiny font-medium uppercase tracking-wide text-muted-foreground">
-              {ticker}
-            </p>
             {showYield && (
               <div title="Yield Generating Asset" className="text-success/90 flex items-center justify-center bg-success/10 rounded-full p-0.5">
                 <svg
@@ -120,6 +117,9 @@ export function AssetCard({
                 </svg>
               </div>
             )}
+            <p className="truncate text-tiny font-medium uppercase tracking-wide text-muted-foreground">
+              {ticker}
+            </p>
           </div>
         </div>
       </div>
