@@ -82,6 +82,53 @@ export interface AssetSelectorNetworkOption {
   iconUrl?: string
 }
 
+const chipBaseClass =
+  'shrink-0 rounded-full text-tiny font-bold uppercase tracking-wide shadow-inner transition-colors'
+const chipActiveClass = 'bg-primary/[0.14] text-primary'
+const chipIdleClass = 'bg-surface-card text-text-dimmed hover:text-white/75'
+
+function AssetSelectorNetworkMark({ network }: { network: AssetSelectorNetworkOption }) {
+  return network.iconUrl ? (
+    <img src={network.iconUrl} alt="" className="size-4 shrink-0 rounded-full" />
+  ) : (
+    <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-muted text-xxs font-bold uppercase leading-none text-muted-foreground">
+      {network.label.charAt(0)}
+    </span>
+  )
+}
+
+export interface AssetSelectorNetworkFilterTriggerProps {
+  activeNetworkOption: AssetSelectorNetworkOption | null
+  open: boolean
+  onClick: () => void
+}
+
+export function AssetSelectorNetworkFilterTrigger({
+  activeNetworkOption,
+  open,
+  onClick,
+}: AssetSelectorNetworkFilterTriggerProps) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        chipBaseClass,
+        'flex items-center gap-1.5 py-1.5 pl-2 pr-2.5',
+        activeNetworkOption || open ? chipActiveClass : chipIdleClass,
+      )}
+    >
+      {activeNetworkOption && <AssetSelectorNetworkMark network={activeNetworkOption} />}
+      {activeNetworkOption ? activeNetworkOption.label : 'All'}
+      <Icon
+        name="expand_more"
+        size="xs"
+        className={cn('shrink-0 transition-transform duration-200', open && 'rotate-180')}
+      />
+    </button>
+  )
+}
+
 /** One entry of the quick-asset filter chips (e.g. BTC / USDT / USDC). */
 export interface AssetSelectorQuickAsset {
   ticker: string
@@ -206,49 +253,15 @@ export function AssetSelector({
   }))
   const categoryLabelById = new Map(categories.map((category) => [category.id, category.label]))
 
-  const chipBaseClass =
-    'shrink-0 rounded-full text-tiny font-bold uppercase tracking-wide shadow-inner transition-colors'
-  const chipActiveClass = 'bg-primary/[0.14] text-primary'
-  const chipIdleClass = 'bg-surface-card text-text-dimmed hover:text-white/75'
-
-  // Small network mark used by the dropdown button and its menu rows.
-  const networkMark = (network: AssetSelectorNetworkOption) =>
-    network.iconUrl ? (
-      <img src={network.iconUrl} alt="" className="size-4 shrink-0 rounded-full" />
-    ) : (
-      <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-muted text-xxs font-bold uppercase leading-none text-muted-foreground">
-        {network.label.charAt(0)}
-      </span>
-    )
-
   // Single-select network filter: a dropdown button that sits in the panel's
-  // top-right corner, defaulting to "All".
+  // top-right corner, defaulting to text-only "All".
   const networkFilterButton = hasNetworkFilter && (
     <div className="relative shrink-0">
-      <button
-        type="button"
+      <AssetSelectorNetworkFilterTrigger
+        activeNetworkOption={activeNetworkOption}
+        open={networkMenuOpen}
         onClick={() => setNetworkMenuOpen((value) => !value)}
-        className={cn(
-          chipBaseClass,
-          'flex items-center gap-1.5 py-1.5 pl-2 pr-2.5',
-          activeNetworkOption || networkMenuOpen ? chipActiveClass : chipIdleClass,
-        )}
-      >
-        {activeNetworkOption ? (
-          networkMark(activeNetworkOption)
-        ) : (
-          <Icon name="hub" size="xs" className="shrink-0" />
-        )}
-        {activeNetworkOption ? activeNetworkOption.label : 'All'}
-        <Icon
-          name="expand_more"
-          size="xs"
-          className={cn(
-            'shrink-0 transition-transform duration-200',
-            networkMenuOpen && 'rotate-180',
-          )}
-        />
-      </button>
+      />
       {networkMenuOpen && (
         <div className="absolute right-0 top-full z-10 mt-1.5 w-48 overflow-hidden rounded-xl border border-white/[0.08] bg-popover shadow-popover">
           <div className="max-h-60 overflow-y-auto p-1">
@@ -288,7 +301,7 @@ export function AssetSelector({
                       : 'text-white/75 hover:bg-accent hover:text-white',
                   )}
                 >
-                  {networkMark(network)}
+                  <AssetSelectorNetworkMark network={network} />
                   <span className="min-w-0 flex-1 truncate text-left">{network.label}</span>
                   {isActive && <Icon name="check" size="xs" className="shrink-0 text-primary" />}
                 </button>
