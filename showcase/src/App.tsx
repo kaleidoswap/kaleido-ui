@@ -76,6 +76,8 @@ import {
   WithdrawInvoiceInfo,
   WithdrawRouteSelector,
   NETWORK_CONFIG,
+  SwapStepList,
+  SummaryRows,
 } from '@kaleido-ui/index'
 import type { StatusType, NetworkType } from '@kaleido-ui/index'
 
@@ -141,6 +143,7 @@ const NAV_ITEMS = [
   { id: 'account-components', label: 'Account Components' },
   { id: 'alert-banners', label: 'Alert Banners' },
   { id: 'setting-items', label: 'Setting Items' },
+  { id: 'swap-flow', label: 'Swap Flow' },
   { id: 'inputs', label: 'Inputs' },
   { id: 'tabs', label: 'Tabs' },
   { id: 'dialog', label: 'Dialog' },
@@ -868,6 +871,46 @@ export function App() {
           </Section>
 
           {/* ── Setting Items ───────────────────────────────────────────── */}
+          <Section id="swap-flow" title="Swap Flow" description="Deciding on a pending swap (SummaryRows) and following it (SwapStepList).">
+            <div className="grid max-w-3xl gap-4 sm:grid-cols-2">
+              <div className="rounded-2xl bg-card/70 p-4">
+                <SectionLabel>Review</SectionLabel>
+                <SummaryRows
+                  className="mt-3"
+                  rows={[
+                    { label: 'You pay', value: '1,005 sats', emphasis: true },
+                    { label: 'Invoice receives', value: '1,000 sats' },
+                    { label: 'Fee', value: '5 sats', hint: '0.5% spread' },
+                    { label: 'Refund opens', value: 'in 90 min', tone: 'warning' },
+                    { label: 'Solver', value: '66422c…e3ce', mono: true },
+                  ]}
+                />
+              </div>
+              <div className="rounded-2xl bg-card/70 p-4">
+                <SectionLabel>Progress</SectionLabel>
+                <SwapStepList
+                  className="mt-3"
+                  steps={[
+                    {
+                      id: 'quote',
+                      label: 'Quote locked',
+                      description: '1,005 sats → 1,000 sat invoice',
+                      status: 'done',
+                    },
+                    {
+                      id: 'fund',
+                      label: 'Contract funded',
+                      description: 'txid a91c…04d7',
+                      status: 'done',
+                    },
+                    { id: 'fill', label: 'Solver paying invoice', status: 'active' },
+                    { id: 'claim', label: 'Invoice paid', status: 'pending' },
+                  ]}
+                />
+              </div>
+            </div>
+          </Section>
+
           <Section id="setting-items" title="Setting Items" description="Settings rows with icon, title, description, and value.">
             <div className="flex flex-col gap-3 max-w-lg">
               <SectionLabel>Account</SectionLabel>
