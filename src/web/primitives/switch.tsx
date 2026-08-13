@@ -6,15 +6,41 @@ interface SwitchProps {
   onCheckedChange?: (checked: boolean) => void
   disabled?: boolean
   className?: string
+  /**
+   * How the control is named. A `role="switch"` with no accessible name is
+   * unreachable by name for screen readers and for tests, so callers that
+   * render their own visible label (`SwitchRow`) pass it here.
+   */
+  'aria-label'?: string
+  'aria-labelledby'?: string
+  'aria-describedby'?: string
+  id?: string
 }
 
 const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
-  ({ checked = false, onCheckedChange, disabled = false, className }, ref) => {
+  (
+    {
+      checked = false,
+      onCheckedChange,
+      disabled = false,
+      className,
+      id,
+      'aria-label': ariaLabel,
+      'aria-labelledby': ariaLabelledBy,
+      'aria-describedby': ariaDescribedBy,
+    },
+    ref
+  ) => {
     return (
       <button
         ref={ref}
+        id={id}
+        type="button"
         role="switch"
         aria-checked={checked}
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
+        aria-describedby={ariaDescribedBy}
         disabled={disabled}
         onClick={() => onCheckedChange?.(!checked)}
         className={cn(
