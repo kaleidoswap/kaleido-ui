@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { Button } from '../primitives/button'
 import { TransactionCard } from './transaction-card'
 import { NetworkBadge, type NetworkType } from './network-badge'
+import { SwapBadge } from './swap-badge'
 import { LoadingCard, ErrorCard } from './page-shell'
 import type { StatusType } from './status-badge'
 import { cn } from '../utils/cn'
@@ -17,6 +18,12 @@ export interface ActivityListItem<TData = unknown> {
   timestamp: number
   onSubAmountInfo?: () => void
   network?: NetworkType
+  /**
+   * Destination network, when the entry crossed a boundary (a Boltz swap into
+   * Arkade, an on-chain deposit onboarding into Spark). Renders `network → networkTo`
+   * so the hop is legible without reading the label.
+   */
+  networkTo?: NetworkType
   label?: string
   data?: TData
 }
@@ -126,7 +133,12 @@ export function ActivityList<TData = unknown>({
               <div className="-mt-4 pt-4 animate-in slide-in-from-top-2 duration-300">
                 {(item.network || item.label) && (
                   <div className="flex items-center gap-1.5 px-3 py-2.5">
-                    {item.network && <NetworkBadge network={item.network} showLabel />}
+                    {item.network &&
+                      (item.networkTo ? (
+                        <SwapBadge from={item.network} to={item.networkTo} size="sm" />
+                      ) : (
+                        <NetworkBadge network={item.network} showLabel />
+                      ))}
                     {item.label && (
                       <span className="text-xxs font-medium text-muted-foreground">
                         {item.label}
