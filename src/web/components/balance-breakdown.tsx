@@ -290,6 +290,7 @@ export function BalanceBreakdown({
                 visible={balanceVisible}
                 format={format}
                 formatFiat={formatFiatValue}
+                testId="balance-breakdown-lightning-source"
               />
             )}
             <NetworkRow
@@ -513,6 +514,7 @@ function NetworkRow({
   visible,
   format,
   formatFiat,
+  testId,
 }: {
   icon: ReactNode
   iconColor: string
@@ -524,12 +526,15 @@ function NetworkRow({
   visible: boolean
   format: (sats: number) => string
   formatFiat: (sats: number) => string
+  /** Addresses one row directly, so a host can assert on it without class names. */
+  testId?: string
 }) {
   const fiat = formatFiat(amount)
   const isEmpty = amount === 0 && !isPending
 
   return (
     <div
+      data-testid={testId}
       className={`flex items-center justify-between rounded-xl px-3 py-2 transition-colors ${isEmpty ? 'opacity-35' : 'bg-white/[0.03] hover:bg-accent'}`}
     >
       <div className="flex items-center gap-3">
