@@ -163,6 +163,15 @@ export function BalanceBreakdown({
   const fiatTotal = formatFiatValue(totalBTC)
   const rgbBtcLabels = getRgbBtcBreakdownLabels(accounts)
   const showLightningRow = externalLightningAvailable ?? rgbBtcLabels.showLightning
+  // The prop says the Lightning balance comes from outside the account set, so
+  // the row's copy follows it: naming RLN's channels would be wrong when the
+  // sats are in someone else's node. Omitted, the account-derived copy stands.
+  const lightningLabel = externalLightningAvailable
+    ? 'BTC on Lightning'
+    : rgbBtcLabels.lightningLabel
+  const lightningSublabel = externalLightningAvailable
+    ? 'External channel balance'
+    : rgbBtcLabels.lightningSublabel
 
   return (
     <div className={`flex flex-col ${compact ? 'gap-2' : 'gap-3'}`}>
@@ -283,8 +292,8 @@ export function BalanceBreakdown({
                 }
                 iconColor="text-network-lightning"
                 dotColor="bg-network-lightning"
-                label={rgbBtcLabels.lightningLabel}
-                sublabel={rgbBtcLabels.lightningSublabel}
+                label={lightningLabel}
+                sublabel={lightningSublabel}
                 amount={btcLightning}
                 isPending={btcLightningPending}
                 visible={balanceVisible}
