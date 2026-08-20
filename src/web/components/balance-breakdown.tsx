@@ -58,6 +58,16 @@ export interface BalanceBreakdownNodeInfo {
 export interface BalanceBreakdownProps {
   btcOnchain: number
   btcLightning: number
+  /**
+   * Force the Lightning row on or off, overriding what the account set implies.
+   *
+   * A host that sources `btcLightning` from an external node (NWC, a direct LND
+   * connection) knows whether that balance is live in a way this component
+   * cannot infer from `accounts` — and rendering a zero Lightning row while the
+   * node is unreachable reads as "you have nothing" rather than "we cannot
+   * tell". Omit it and the row follows the account set exactly as before.
+   */
+  externalLightningAvailable?: boolean
   btcSpark: number
   btcArkade: number
   /** L-BTC — BTC on the Liquid Network. Row shown only when > 0 or pending. */
@@ -122,6 +132,7 @@ function numberOnly(formatted: string): string {
 export function BalanceBreakdown({
   btcOnchain,
   btcLightning,
+  externalLightningAvailable,
   btcSpark,
   btcArkade,
   btcLiquid = 0,
@@ -151,10 +162,12 @@ export function BalanceBreakdown({
   const [expanded, setExpanded] = useState(false)
   const fiatTotal = formatFiatValue(totalBTC)
   const rgbBtcLabels = getRgbBtcBreakdownLabels(accounts)
+  const showLightningRow = externalLightningAvailable ?? rgbBtcLabels.showLightning
 
   return (
     <div className={`flex flex-col ${compact ? 'gap-2' : 'gap-3'}`}>
       <div
+        data-testid="balance-breakdown-card"
         className={`relative overflow-hidden rounded-2xl bg-card ${compact ? 'p-3.5' : 'p-5'}`}
       >
         <div className="pointer-events-none absolute right-0 top-0 h-48 w-48 -translate-y-1/4 translate-x-1/4 rounded-full bg-white/[0.04] blur-[60px]" />
@@ -239,6 +252,7 @@ export function BalanceBreakdown({
 
         {expanded && (
           <div
+            aria-label="Bitcoin balance breakdown"
             className={`space-y-1 duration-300 animate-in fade-in slide-in-from-top-2 ${compact ? 'mt-3 pt-3' : 'mt-4 pt-4'}`}
           >
             <p className="mb-3 text-xxs font-bold uppercase tracking-widest text-white/30">
@@ -258,7 +272,7 @@ export function BalanceBreakdown({
             />
             {/* RLN exposes two distinct BTC pools: its on-chain wallet and
                 its spendable channel balance. RGB L1 only has the on-chain row. */}
-            {rgbBtcLabels.showLightning && (
+            {showLightningRow && (
               <NetworkRow
                 icon={
                   <ImageIcon
