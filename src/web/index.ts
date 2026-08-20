@@ -75,6 +75,7 @@ export {
 export { StatusBadge, type StatusType } from './components/status-badge'
 export { StatusIconBadge, type StatusIconBadgeProps } from './components/status-icon-badge'
 export { NetworkBadge, type NetworkBadgeProps, type NetworkType } from './components/network-badge'
+export { SwapBadge, type SwapBadgeProps } from './components/swap-badge'
 export { AssetIcon } from './components/asset-icon'
 export { AssetCard, type AssetCardProps } from './components/asset-card'
 export { TransactionCard, type TransactionCardProps } from './components/transaction-card'
