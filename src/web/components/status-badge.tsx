@@ -1,3 +1,4 @@
+import { Icon, type IconName } from '../primitives/icon'
 import { cn } from '../utils/cn'
 
 export type StatusType = 'success' | 'pending' | 'failed' | 'completed' | 'error'
@@ -10,7 +11,7 @@ interface StatusBadgeProps {
 export function StatusBadge({ status, className }: StatusBadgeProps) {
   // No border ring — status pills separate from the card by bg tint alone
   // (DESIGN.md coherence: surfaces layer by background, not ad-hoc borders).
-  const config = {
+  const config: Record<StatusType, { color: string; bg: string; icon: IconName; label: string }> = {
     success: {
       color: 'text-primary',
       bg: 'bg-primary/10',
@@ -55,7 +56,11 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
         className
       )}
     >
-      <span className="material-symbols-outlined text-icon-sm">{icon}</span>
+      {/* Inline SVG, not a Material Symbols ligature: a consumer that has not
+          self-hosted the icon font rendered the literal word ("error", "schedule")
+          inside the pill. Every glyph this component needs already exists in the
+          Icon set, so there is nothing to trade away. */}
+      <Icon name={icon} className="text-icon-sm" />
       <span>{label}</span>
     </div>
   )

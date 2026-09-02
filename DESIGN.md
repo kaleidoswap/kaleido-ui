@@ -1,40 +1,60 @@
 ---
 name: KaleidoSwap
-description: KaleidoSwap shared design system — dark-forest, brand-green, Bitcoin-native wallet UI.
-version: 0.1.0
+description: KaleidoSwap shared design system — brand-green, Bitcoin-native wallet UI.
+version: 0.1.120
+# The values below are transcribed from src/tokens/. Those files are the source
+# of truth; if the two disagree, this file is the bug. See "Keeping this file
+# honest" at the end.
 colors:
-  brand.primary: "#2BEE79"
+  brand.primary: "#15E99A"          # dark theme
+  brand.primary-light: "#17B581"    # light theme
   brand.primary-contrast: "#051B10"
-  surface.bg: "hsl(158 35% 7%)"
-  surface.card: "hsl(160 12% 8%)"
-  surface.elevated: "hsl(158 10% 12%)"
-  border.subtle: "hsl(156 10% 18%)"
+  surface.bg: "#12131C"             # surface-base
+  surface.raised: "#181924"         # muted
+  surface.card: "#242638"           # surface-overlay, card + popover
+  surface.elevated: "#323448"       # accent
+  surface.high: "rgb(66 68 90)"
+  border.default: "rgba(255, 255, 255, 0.10)"
+  border.subtle: "rgba(255, 255, 255, 0.04)"
+  border.strong: "rgba(255, 255, 255, 0.15)"
   border.primary-ghost: "rgba(43, 238, 121, 0.22)"
   text.primary: "#FFFFFF"
   text.muted: "rgba(255, 255, 255, 0.55)"
   text.on-primary: "#051B10"
   destructive: "hsl(0 62% 50%)"
-  success: "#2BEE79"
+  success: "#15E99A"                # identical to brand.primary
+  warning: "#FACC15"
+  danger: "#F94040"
+  info: "#4290FF"
   network.bitcoin: "#F7931A"
   network.lightning: "#F6C343"
   network.rgb: "#DD352E"
   network.spark: "#FF6D00"
   network.arkade: "#7C3AED"
+  network.liquid: "#22e1c9"
+  network.taproot: "#D1D6D8"
   tx.sent: "#F94040"
-  tx.received: "#2BEE79"
+  tx.receive: "#2BEE79"
   tx.swap: "#4290FF"
 typography:
-  display: { family: "Satoshi", weight: 700, size: 32, tracking: -0.02em }
-  h1:      { family: "Satoshi", weight: 700, size: 22, tracking: -0.01em }
-  body:    { family: "Satoshi", weight: 500, size: 14 }
-  label:   { family: "Satoshi", weight: 800, size: 9,  tracking: 0.2em, transform: uppercase }
-  mono:    { family: "ui-monospace", weight: 500, size: 12 }
+  # Sizes are the typeScale keys in src/tokens/typography.ts, which is what the
+  # text-* utilities emit. fontWeight tops out at 700 — there is no 800.
+  display:  { family: "Satoshi", weight: 700, size: 36, line: 40, tracking: -0.02em }
+  headline: { family: "Satoshi", weight: 700, size: 28, line: 34 }
+  title:    { family: "Satoshi", weight: 700, size: 20, line: 28, tracking: -0.01em }
+  subhead:  { family: "Satoshi", weight: 600, size: 17, line: 24 }
+  body:     { family: "Satoshi", weight: 500, size: 15, line: 22 }
+  caption:  { family: "Satoshi", weight: 500, size: 13, line: 18 }
+  tiny:     { family: "Satoshi", weight: 500, size: 11, line: 16 }
+  label:    { family: "Satoshi", weight: 700, size: 9,  line: 12, tracking: 0.18em, transform: uppercase }
+  mono:     { family: "Geist Mono", weight: 500, size: 13 }
 rounded:
   card: 16        # rounded-2xl — cards, tiles, settings/account rows, dialogs, sheet top edge
   inner: 12       # rounded-xl — rows/inputs/icon tiles nested inside a card, ActionTile trio
   pill: 999       # rounded-full — chips, status pills, filter chips, tab pills, bottom nav
   button: 12      # rounded-xl — rectangular buttons (full-bleed CTAs step up to card/16)
-  nav: 20
+  panel: 24       # rounded-3xl
+  nav: 32
 spacing:
   1: 4
   2: 8
@@ -95,7 +115,13 @@ components:
 
 ## Overview
 
-KaleidoSwap is a Bitcoin-native wallet that lives across multiple layers: on-chain BTC, Lightning (RLN), RGB assets, Spark, and Arkade. A single user action — "send," "swap," "receive" — can route through any of those rails, and the interface has to make that feel coherent rather than like five different wallets glued together. The design language is deliberately **dark-forest**: a near-black green background, layered surface cards in the same hue family, and a single punchy brand green (`#2BEE79`) that signals "this is the action, this is alive, this worked."
+KaleidoSwap is a Bitcoin-native wallet that lives across multiple layers: on-chain BTC, Lightning (RLN), RGB assets, Spark, and Arkade. A single user action — "send," "swap," "receive" — can route through any of those rails, and the interface has to make that feel coherent rather than like five different wallets glued together. The design language is **near-black and brand-green**: a cool, almost neutral
+dark ramp for every surface, and a single punchy brand green (`#15E99A`) that
+signals "this is the action, this is alive, this worked." It began as a
+*dark-forest* palette — green-tinted surfaces in the same hue family as the
+accent — and moved off that: at 70% alpha over an animated background the
+mid-green cards read muddy against white text. The green is now carried by the
+accents alone, which is why the ramp below is blue-slate rather than forest.
 
 This document is the **single source of truth** for the `kaleido-ui` package and every consumer downstream — most visibly the `rate-extension` browser wallet. It exists because the package ships neutral-gray defaults (`primary: #e5e5e5`, `bg: #0a0a0a` in `src/tokens/colors.ts`) that silently produce unstyled, off-brand output on any component a consumer forgets to re-theme. DESIGN.md replaces those defaults as the normative spec: the tokens below are what the library should render, what the Tailwind preset should expose, and what every PR is measured against.
 
@@ -107,22 +133,45 @@ The palette is organised into six groups. Each group has a specific job; mixing 
 
 ### Brand
 
-- **`brand.primary` `#2BEE79`** — *the* KaleidoSwap signal. Reserve it for three things only: primary CTAs (the single most important action on a screen), active states (selected tab, active nav slot, focused input ring), and success confirmations (completed swap, settled payment). Using it on borders of passive surfaces or as a decorative accent dilutes the signal and makes real CTAs disappear.
+- **`brand.primary` `#15E99A`** (light theme: `#17B581`) — *the* KaleidoSwap signal. Reserve it for three things only: primary CTAs (the single most important action on a screen), active states (selected tab, active nav slot, focused input ring), and success confirmations (completed swap, settled payment). Using it on borders of passive surfaces or as a decorative accent dilutes the signal and makes real CTAs disappear.
 - **`brand.primary-contrast` `#051B10`** — the near-black green that sits on top of `brand.primary`. Use it for button label text, icons inside primary-filled tiles, and any glyph that needs to punch through the green. Never use it as a surface fill.
+
+> **`#2BEE79` is not the brand primary.** It was, and it is still in the tokens —
+> as `tx.receive`, as `chart1`, and inside `border.primary-ghost`
+> (`rgba(43, 238, 121, 0.22)`) and the scrollbar hover. But the CTA/active/success
+> green is `#15E99A`. Do not "correct" one to the other; they are different jobs.
 
 ### Surface ramp
 
-Three layers, all near-black with a whisper of the forest hue, stepping up in lightness. Under the glass system (`bg-card/70` over animated backgrounds) the old mid-green surfaces read muddy and low-contrast against white text; the ramp is now near-neutral, with the green identity carried by the page background and the brand accents:
+Five layers, near-black and stepping up in lightness. Under the glass system
+(`bg-card/70` over animated backgrounds) the old mid-green surfaces read muddy and
+low-contrast against white text, so the ramp moved off the forest hue entirely:
+it now sits in a cool blue-slate band (~235°), and the green identity is carried
+by the brand accents alone rather than by the surfaces.
 
-- **`surface.bg` `hsl(158 35% 7%)`** — the page background. Every full-screen view starts here. Deliberately more saturated than the cards (but no higher than ~35–40% — beyond that a 70%-alpha card composites darker than the page and the layering inverts).
-- **`surface.card` `hsl(160 12% 8%)`** — the default card / panel / action-tile fill. Near-black, low chroma, so white text and tinted chips sit on it at full contrast.
-- **`surface.elevated` `hsl(158 10% 12%)`** — one step lighter for nested panels, dropdowns, and hover states on cards.
+- **`surface.bg` `#12131C`** — the page background. Every full-screen view starts here.
+- **`surface.raised` `#181924`** — the `muted` token: rows nested inside a card, quiet fills.
+- **`surface.card` `#242638`** — the default card / panel / action-tile fill, and `popover`.
+- **`surface.elevated` `#323448`** — the `accent` token: nested panels, dropdowns, hover states on cards.
+- **`surface.high` `rgb(66 68 90)`** — the topmost step, for a control raised above an elevated surface.
 
-The hue stays in the 156–160 band across the ramp so the layers never drift toward computational-gray or blue. Do not collapse these to a single value and do not use raw `#0a0a0a`.
+Do not collapse these to a single value, and do not use raw `#0a0a0a` or `#000`:
+the ramp is near-black but never black, and its neutrality is what lets the
+network colours and the brand green stay legible on top of it.
+
+There is a **second, separate** `surface.*` group in `src/tokens/colors.ts` —
+`base`, `card`, `elevated`, `overlay`, `overlayStrong`, `scrim` — which is a set
+of translucent white/black overlays for compositing *over* the ramp above, not
+replacements for it. Different job, same word; check which one you want.
 
 ### Borders
 
-- **`border.subtle` `hsl(156 10% 18%)`** — the default hairline. Cards, inputs, filter pills at rest. Sits ~10 lightness points above `surface.card` so it stays a visible-but-quiet edge on the near-black fill.
+Borders are translucent white, not opaque hues — they composite over whatever
+surface they sit on, so one value works at every step of the ramp:
+
+- **`border.default` `rgba(255,255,255,0.10)`** — the default hairline. Cards, inputs, filter pills at rest.
+- **`border.subtle` `rgba(255,255,255,0.04)`** — the quietest edge, for a divider that should barely register.
+- **`border.strong` `rgba(255,255,255,0.15)`** — an edge that has to be seen: a focused input, a selected pill.
 - **`border.primary-ghost` `rgba(43, 238, 121, 0.22)`** — brand green at 22% alpha. Used only when a surface is in an active / selected / "this is the section you are in" state.
 
 ### Text
@@ -134,7 +183,10 @@ The hue stays in the 156–160 band across the ramp so the layers never drift to
 ### Destructive & Success
 
 - **`destructive` `hsl(0 62% 50%)`** — delete, cancel, failed. Always paired with a confirmation step.
-- **`success` `#2BEE79`** — intentionally identical to `brand.primary`. Success *is* the brand.
+- **`success` `#15E99A`** — intentionally identical to `brand.primary`. Success *is* the brand.
+- **`warning` `#FACC15`** — a state that needs attention but is not a failure.
+- **`danger` `#F94040`** — a failure. `destructive` is the button variant; `danger` is the text/fill token.
+- **`info` `#4290FF`** — neutral notice. Also `tx.swap`, because a swap is neither in nor out.
 
 ### Network tokens (semantic, do not recolor)
 
@@ -145,26 +197,36 @@ Each supported layer has a fixed, non-negotiable brand color that users recognis
 - **`network.rgb` `#DD352E`** — RGB protocol red.
 - **`network.spark` `#FF6D00`** — Spark L2.
 - **`network.arkade` `#7C3AED`** — Arkade.
+- **`network.liquid` `#22e1c9`** — Liquid.
+- **`network.taproot` `#D1D6D8`** — Taproot Assets.
 
 These tokens are **semantic**: the orange *means* on-chain Bitcoin. Never substitute a different hue for visual balance, never desaturate them because they clash with the green — the clash is the point, it tells the user which rail they are on.
 
 ### Transaction tokens
 
 - **`tx.sent` `#F94040`** — outgoing.
-- **`tx.received` `#2BEE79`** — incoming (reuses the brand green).
+- **`tx.receive` `#2BEE79`** — incoming. This is the *old* brand green, kept deliberately: see the note under Brand.
 - **`tx.swap` `#4290FF`** — cross-layer swap, distinct from send/receive.
 
 ## Typography
 
-The entire system uses **Satoshi** (variable font, weights 500–800). Satoshi's geometric-but-warm feel reads well at both 32 px display sizes and the 9 px micro-labels this interface leans on heavily.
+The entire system uses **Satoshi** (variable font). The weight scale is
+`400 / 500 / 600 / 700` — **there is no 800**, so a spec asking for one cannot be
+met. Satoshi's geometric-but-warm feel reads well at both 36 px display sizes and
+the 9 px micro-labels this interface leans on heavily.
 
-Five roles:
+The sizes below are the `typeScale` keys, which is what the `text-*` utilities
+emit — `text-display`, `text-body`, `text-mini` and so on:
 
-- **`display` — Satoshi 700 / 32 / tracking -0.02em** — balance numbers, empty-state headlines, the single largest piece of type on any screen.
-- **`h1` — Satoshi 700 / 22 / tracking -0.01em** — screen titles, modal headers.
-- **`body` — Satoshi 500 / 14** — the default. Everything not otherwise specified renders here.
-- **`label` — Satoshi 800 / 9 / tracking 0.2em / uppercase** — the **signature micro-label** of the system. Filter headers ("NETWORKS"), section labels ("RECENT ACTIVITY"), pill captions, table column heads. When you see uppercase 9 px letter-spaced type, you know you are in a KaleidoSwap surface. Use it liberally for structural labels; never use it for content.
-- **`mono` — ui-monospace 500 / 12** — addresses, tx hashes, raw amounts where digit alignment matters.
+- **`display` — Satoshi 700 / 36 / 40 / tracking -0.02em** — balance numbers, empty-state headlines, the single largest piece of type on any screen.
+- **`headline` — Satoshi 700 / 28 / 34** — section headlines above a card group.
+- **`title` — Satoshi 700 / 20 / 28 / tracking -0.01em** — screen titles, modal headers.
+- **`subhead` — Satoshi 600 / 17 / 24** — a heading inside a card.
+- **`body` — Satoshi 500 / 15 / 22** — the default. Everything not otherwise specified renders here.
+- **`caption` — Satoshi 500 / 13 / 18** — helper text under a field.
+- **`tiny` — Satoshi 500 / 11 / 16** — timestamps, dense meta rows.
+- **`mini` / `label` — Satoshi 700 / 9 / 12 / tracking `eyebrow` 0.18em / uppercase** — the **signature micro-label** of the system. Filter headers ("NETWORKS"), section labels ("RECENT ACTIVITY"), pill captions, table column heads. When you see uppercase 9 px letter-spaced type, you know you are in a KaleidoSwap surface. Use it liberally for structural labels; never use it for content. `eyebrowWide` (0.22em) is the wider variant.
+- **`mono` — Geist Mono 500 / 13** — addresses, tx hashes, raw amounts where digit alignment matters.
 
 Numeric amounts (balances, prices) render in `display` or `body` weight 700, not `mono` — mono is reserved for identifiers that the user copy-pastes.
 
@@ -200,7 +262,7 @@ The `rounded` token set maps directly to usage — do not pick a radius that is 
 - **`inner: 12` (`rounded-xl`)** — surfaces nested one level inside a card: inner rows, inputs, icon tiles, segmented-control options, the Deposit / Swap / Withdraw `ActionTile` trio. Never use `inner` for a card's own outline — nesting is what the smaller radius communicates.
 - **`pill: 999` (`rounded-full`)** — status badges, network pills, filter chips (`ActivityNetworkFilters`), tab pills (`ActivityTypeTabs` container and its active pill), bottom-nav container, direction/avatar circles, any chip that wraps a single short word.
 - **`button: 12`** — rectangular buttons (primary, surface, ghost, destructive) share the `inner` scale; full-bleed CTA variants step up to `card` (16).
-- **`nav: 20`** — the inner active slot of the bottom nav. Softer than `button`, tighter than `pill`, tuned for a 44 px-tall pill-in-pill.
+- **`nav: 32`** — the inner active slot of the bottom nav. Softer than `pill`, wider than `panel`, tuned for a 44 px-tall pill-in-pill.
 
 There is no larger step. No component may use `rounded-3xl` — the swap hero card (`SwapInputCard`) sits on `card` (16) like everything else; if a card "feels like it deserves" more, it doesn't — use `card` (16).
 
@@ -298,11 +360,11 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 - **DON'T** style primary buttons inline with `bg-card` — use the `surface` button variant or ActionTile if the action is secondary, or use the real `primary` variant if it is the CTA.
 - **DO** tint every network icon with its semantic color (`network.bitcoin`, `network.lightning`, etc.) even at 11 px in a filter cluster. The color *is* the information.
 - **DON'T** recolor network tokens for visual harmony. Bitcoin is orange, RGB is red, they were orange and red before this app existed.
-- **DO** use `surface.bg` (`hsl(158 35% 7%)`) as the page background on every full-screen view.
-- **DON'T** use raw `#0a0a0a` or `#000` as a background. The whole point of the dark-forest palette is that it is *not* black.
+- **DO** use `surface.bg` (`#12131C`) as the page background on every full-screen view.
+- **DON'T** use raw `#0a0a0a` or `#000` as a background. The ramp is near-black but never black, and that is what keeps the network colours legible on it.
 - **DO** keep filter cluster icons at `cluster-icon-size: 11` px and `cluster-opacity: 0.6`. The constraint is what makes the cluster legible.
 - **DON'T** introduce new drop shadows. The only shadows in the system are the card inner shadow and the primary-button glow on hover.
-- **DO** use the `label` type token (Satoshi 800 / 9 / uppercase / 0.2em tracking) for structural labels — filter headers, section titles, pill captions. It is the typographic fingerprint of the brand.
+- **DO** use the `label` type token (Satoshi 700 / 9 / uppercase / `tracking-eyebrow` 0.18em) for structural labels — filter headers, section titles, pill captions. It is the typographic fingerprint of the brand.
 - **DON'T** invent new radii, spacing steps, or surface colors. If you need something the tokens don't provide, extend DESIGN.md first, then propagate to `kaleido-ui/tailwind` and `kaleido-ui/tokens`.
 
 ## Coherence Rules (for agents & new components)
@@ -345,3 +407,22 @@ Rules:
 - **DON'T** nest blur inside blur. Inner layers are alpha-only; the outer surface owns the blur.
 - **DO** keep security surfaces (sign/confirm prompts, seed reveal) fully opaque `bg-card`. A decision surface never lets the background bleed through.
 - **DO** reserve `backdrop-blur` for floating chrome and overlays only — never on in-flow cards or rows.
+
+## Keeping this file honest
+
+Every value in this document is transcribed by hand from `src/tokens/`. That
+makes drift possible, and it has happened: this file described `brand.primary` as
+`#2BEE79` on an `hsl(160 12% 8%)` forest ramp, with a 9 px label at weight 800
+and 0.2em tracking, for several releases after the tokens had moved to `#15E99A`
+on a blue-slate ramp with a 700 weight cap and 0.18em tracking. Consumers that
+followed the prose instead of the package pinned the wrong palette.
+
+**`src/tokens/` is the source of truth. If the two disagree, this file is the
+bug.** Check a value before quoting it:
+
+```bash
+node -e "const t=require('./dist/tokens/index.cjs'); console.log(t.colors.primary, t.fontWeight, t.letterSpacing)"
+```
+
+When you change a token, change this file in the same commit. When you add one,
+add it here — a token nobody documents is a token nobody uses.

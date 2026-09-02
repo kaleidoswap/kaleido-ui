@@ -19,8 +19,14 @@ test('pending assets render the unchanged shared status pill before the ticker',
 
   assert.match(markup, /data-slot="status-badge"/)
   assert.match(markup, /rounded-full/)
-  assert.match(markup, /schedule/)
+  // The pill draws its icon as an inline SVG. This used to assert the string
+  // "schedule" -- the Material Symbols ligature NAME -- which passed for the
+  // wrong reason: it is what a consumer without the icon font would have seen
+  // rendered as visible text inside the pill.
+  assert.match(markup, /<svg/)
+  assert.doesNotMatch(markup, />schedule</)
   assert.match(markup, /Pending/)
+  assert.match(markup, /bg-warning\/10/)
   assert.match(markup, /data-slot="status-badge"[\s\S]*Pending[\s\S]*·[\s\S]*TST/)
 })
 
