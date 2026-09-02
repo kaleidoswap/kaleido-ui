@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Icon } from '../primitives/icon'
 
 export interface ActivityDetailRowProps {
   label: string
@@ -36,9 +37,9 @@ export function ActivityDetailRow({
             className="-my-1 rounded-md p-1 text-white/30 transition-colors hover:bg-accent hover:text-primary active:scale-95"
             title={fullValue ? `Copy: ${fullValue}` : 'Copy'}
           >
-            <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>
-              {isCopied ? 'check' : 'content_copy'}
-            </span>
+            {/* Inline SVG rather than a Material Symbols ligature -- see
+                status-badge.tsx. Icon sizes off 1em, so fontSize still drives it. */}
+            <Icon name={isCopied ? 'check' : 'content_copy'} style={{ fontSize: '14px' }} />
           </button>
         )}
       </div>
