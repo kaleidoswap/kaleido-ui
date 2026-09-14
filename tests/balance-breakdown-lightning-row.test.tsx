@@ -49,6 +49,14 @@ test("keeps the expand control reachable so a host can open the breakdown", () =
   assert.ok(markup.includes('aria-label="Expand balance breakdown"'));
 });
 
+test("accepts host-localized receive and send action labels", () => {
+  const markup = render({ actionLabels: { receive: "Receive", send: "Send" } });
+  assert.match(markup, /aria-label="Receive"/);
+  assert.match(markup, /aria-label="Send"/);
+  assert.doesNotMatch(markup, /aria-label="Deposit"/);
+  assert.doesNotMatch(markup, /aria-label="Withdraw"/);
+});
+
 // The row's visibility itself is not observable here: the breakdown starts
 // collapsed and this suite renders to static markup, so there is no way to
 // expand it. `externalLightningAvailable` is exercised against a real DOM in
