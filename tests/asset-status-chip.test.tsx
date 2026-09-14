@@ -35,3 +35,14 @@ test('ready assets render ticker metadata without an empty status pill', () => {
   assert.doesNotMatch(markup, /data-slot="status-badge"/)
   assert.match(markup, /TST/)
 })
+
+test('asset accent gradients keep text dominant', () => {
+  const markup = renderToStaticMarkup(
+    createElement(AssetCard, { ...baseProps, accentColor: '#ff0000' }),
+  )
+
+  assert.match(markup, /var\(--card\) 35%/)
+  assert.match(markup, /#ff000033 78%/)
+  assert.match(markup, /#ff000070 100%/)
+  assert.doesNotMatch(markup, /#ff0000b3/)
+})

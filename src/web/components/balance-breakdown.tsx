@@ -92,6 +92,8 @@ export interface BalanceBreakdownProps {
   onRefresh?: () => void
   isRefreshing?: boolean
   onNavigate?: (view: 'deposit' | 'swap' | 'withdraw') => void
+  /** Localized labels for receiving and sending funds. */
+  actionLabels?: { receive: string; send: string }
   /** Reduce vertical padding/margins so the card occupies less of the viewport. */
   compact?: boolean
   /**
@@ -156,6 +158,7 @@ export function BalanceBreakdown({
   onRefresh,
   isRefreshing = false,
   onNavigate,
+  actionLabels,
   compact = false,
   tokenValueSats,
 }: BalanceBreakdownProps) {
@@ -414,7 +417,7 @@ export function BalanceBreakdown({
         >
           <ActionTile
             icon={<span className="material-symbols-outlined text-icon-sm leading-none">call_received</span>}
-            label="Deposit"
+            label={actionLabels?.receive ?? 'Deposit'}
             onClick={() => onNavigate?.('deposit')}
             data-testid="dashboard-action-deposit"
           />
@@ -430,7 +433,7 @@ export function BalanceBreakdown({
                 arrow_outward
               </span>
             }
-            label="Withdraw"
+            label={actionLabels?.send ?? 'Withdraw'}
             onClick={() => onNavigate?.('withdraw')}
             data-testid="dashboard-action-withdraw"
           />

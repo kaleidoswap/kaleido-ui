@@ -24,6 +24,12 @@ export interface WithdrawConfirmationProps {
   decodedRgbInvoice: WithdrawConfirmationRgbInvoice | null
   witnessAmountSat: number
   amount: string
+  /** Localized labels for the payment review amounts. */
+  reviewLabels?: {
+    recipientReceives: string
+    estimatedNetworkFee: string
+    totalDeducted: string
+  }
   handleConfirmSend: () => void
 }
 
@@ -44,6 +50,7 @@ export function WithdrawConfirmation({
   decodedRgbInvoice,
   witnessAmountSat,
   amount,
+  reviewLabels,
   handleConfirmSend,
 }: WithdrawConfirmationProps) {
   return (
@@ -68,7 +75,9 @@ export function WithdrawConfirmation({
       <ScrollArea className="flex-1" viewportClassName="px-5 pt-16 pb-6">
       <main className="space-y-6">
         <div className="flex flex-col items-center py-6">
-          <p className="mb-1 text-sm uppercase tracking-wide text-muted-foreground">Sending</p>
+          <p className="mb-1 text-sm uppercase tracking-wide text-muted-foreground">
+            {reviewLabels?.recipientReceives ?? 'Recipient receives'}
+          </p>
           <h1 className="mb-2 text-4xl font-bold">{displayAmount.toLocaleString()}</h1>
           <p className="text-base text-muted-foreground">
             {selectedAssetId === 'BTC' ? 'sats' : (selectedAsset?.ticker ?? 'units')}
@@ -110,8 +119,13 @@ export function WithdrawConfirmation({
             </span>
           </div>
           {estimatedFee > 0 && (
-            <div className="flex items-center justify-between px-5 py-4">
-              <span className="text-sm text-muted-foreground">Network Fee</span>
+            <div
+              data-testid="payment-review-fee"
+              className="flex items-center justify-between px-5 py-4"
+            >
+              <span className="text-sm text-muted-foreground">
+                {reviewLabels?.estimatedNetworkFee ?? 'Estimated network fee'}
+              </span>
               <div className="flex flex-col items-end">
                 <span className="text-sm text-white">~{estimatedFee.toLocaleString()} sats</span>
                 <span className="mt-0.5 text-xxs font-bold capitalize tracking-wider text-primary">
@@ -129,9 +143,12 @@ export function WithdrawConfirmation({
         </div>
 
         {selectedAssetId === 'BTC' && estimatedFee > 0 && (
-          <div className="flex items-center justify-between rounded-2xl bg-primary/10 p-5 px-2 shadow-inner">
+          <div
+            data-testid="payment-review-total"
+            className="flex items-center justify-between rounded-2xl bg-primary/10 p-5 shadow-inner"
+          >
             <span className="text-sm font-bold uppercase tracking-wider text-primary">
-              Total to deduct
+              {reviewLabels?.totalDeducted ?? 'Total deducted'}
             </span>
             <span className="text-xl font-bold text-white">
               {(Math.round(parseFloat(amount) || 0) + estimatedFee).toLocaleString()}{' '}

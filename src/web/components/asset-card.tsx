@@ -48,7 +48,10 @@ export function AssetCard({
   const showYield = isYielding ?? ['USDB'].includes(ticker.toUpperCase())
 
   const gradientStyle = accentColor
-    ? { background: `linear-gradient(135deg, var(--card) 30%, ${accentColor}${hovered ? '77' : '55'} 75%, ${accentColor}${hovered ? 'dd' : 'b3'} 100%)`, transition: 'background 0.3s ease' }
+    ? {
+        background: `linear-gradient(135deg, var(--card) 35%, ${accentColor}${hovered ? '55' : '33'} 78%, ${accentColor}${hovered ? '99' : '70'} 100%)`,
+        transition: 'background 0.3s ease',
+      }
     : undefined
 
   return (
