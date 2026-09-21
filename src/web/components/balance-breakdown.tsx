@@ -100,6 +100,12 @@ export interface BalanceBreakdownProps {
    * separately here so the expanded breakdown can show it as its own row.
    */
   tokenValueSats?: number
+  /**
+   * Names for the receive/send tiles. A localized host translates them; a host
+   * whose wallet calls them something else (Receive/Send rather than
+   * Deposit/Withdraw) renames them without forking the component.
+   */
+  actionLabels?: { receive: string; send: string }
 }
 
 function OnchainIcon({ className = '' }: { className?: string }) {
@@ -158,6 +164,7 @@ export function BalanceBreakdown({
   onNavigate,
   compact = false,
   tokenValueSats,
+  actionLabels,
 }: BalanceBreakdownProps) {
   const [expanded, setExpanded] = useState(false)
   const fiatTotal = formatFiatValue(totalBTC)
@@ -414,7 +421,7 @@ export function BalanceBreakdown({
         >
           <ActionTile
             icon={<span className="material-symbols-outlined text-icon-sm leading-none">call_received</span>}
-            label="Deposit"
+            label={actionLabels?.receive ?? 'Deposit'}
             onClick={() => onNavigate?.('deposit')}
             data-testid="dashboard-action-deposit"
           />
@@ -430,7 +437,7 @@ export function BalanceBreakdown({
                 arrow_outward
               </span>
             }
-            label="Withdraw"
+            label={actionLabels?.send ?? 'Withdraw'}
             onClick={() => onNavigate?.('withdraw')}
             data-testid="dashboard-action-withdraw"
           />
