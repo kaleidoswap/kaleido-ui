@@ -40,3 +40,30 @@ test('payment review separates recipient amount, estimated fee, and total deduct
   assert.match(markup, /Total deducted/)
   assert.match(markup, /1,250/)
 })
+
+test('a quoted fee is shown exactly, without the estimate marker', () => {
+  const markup = renderToStaticMarkup(
+    createElement(WithdrawConfirmation, {
+      isConfirming: false,
+      isPollingStatus: false,
+      setShowConfirmation: () => undefined,
+      displayAmount: 700,
+      selectedAssetId: 'BTC',
+      selectedAsset: { ticker: 'BTC' },
+      destination: 'lnbc7u1example',
+      networkLabel: 'Lightning',
+      estimatedFee: 9,
+      feeIsExact: true,
+      feeRate: 'Arkade solver',
+      addressType: 'lightning',
+      decodedRgbInvoice: null,
+      witnessAmountSat: 0,
+      amount: '700',
+      handleConfirmSend: () => undefined,
+    }),
+  )
+
+  assert.match(markup, />9 sats</)
+  assert.doesNotMatch(markup, /~9 sats/)
+  assert.match(markup, /709/)
+})

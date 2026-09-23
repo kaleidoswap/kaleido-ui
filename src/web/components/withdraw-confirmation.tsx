@@ -19,6 +19,8 @@ export interface WithdrawConfirmationProps {
   routeAccount?: string
   routeMethod?: string
   estimatedFee: number
+  /** The fee is quoted, not estimated: drop the `~`. Defaults to false. */
+  feeIsExact?: boolean
   feeRate: string
   addressType: WithdrawAddressType
   decodedRgbInvoice: WithdrawConfirmationRgbInvoice | null
@@ -45,6 +47,7 @@ export function WithdrawConfirmation({
   routeAccount,
   routeMethod,
   estimatedFee,
+  feeIsExact = false,
   feeRate,
   addressType,
   decodedRgbInvoice,
@@ -127,7 +130,9 @@ export function WithdrawConfirmation({
                 {reviewLabels?.estimatedNetworkFee ?? 'Estimated network fee'}
               </span>
               <div className="flex flex-col items-end">
-                <span className="text-sm text-white">~{estimatedFee.toLocaleString()} sats</span>
+                <span className="text-sm text-white">
+                  {`${feeIsExact ? '' : '~'}${estimatedFee.toLocaleString()} sats`}
+                </span>
                 <span className="mt-0.5 text-xxs font-bold capitalize tracking-wider text-primary">
                   {feeRate}
                 </span>
