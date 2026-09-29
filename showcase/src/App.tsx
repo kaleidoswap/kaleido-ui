@@ -1345,7 +1345,10 @@ export function App() {
                     <Icon name="menu" size="md" />
                   </Button>
                 </DrawerTrigger>
-                <DrawerContent header={<DrawerTitle>Navigation</DrawerTitle>}>
+                <DrawerContent
+                  header={<img src="/brand/kaleidoswap-pictogram.svg" alt="KaleidoSwap" className="h-8" />}
+                >
+                  <DrawerTitle className="sr-only">Navigation</DrawerTitle>
                   <DrawerDescription>Main navigation</DrawerDescription>
                   <DrawerBody>{showcaseNav}</DrawerBody>
                 </DrawerContent>
