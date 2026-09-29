@@ -301,6 +301,7 @@ export {
   type StepperNumberInputProps,
 } from './components/stepper-number-input'
 export { MetricCard, type MetricCardProps, type MetricCardSize } from './components/metric-card'
+export { CopyButton, type CopyButtonProps, type CopyButtonStatus } from './components/copy-button'
 export {
   TrendChart,
   trendChartTicks,
