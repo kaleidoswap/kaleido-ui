@@ -297,7 +297,7 @@ export function App() {
   // mobile drawer alike: each category is a submenu, as Trade and Liquidity
   // are in the desktop app, and its pages show when it is opened.
   const pageNav = (
-    <DrawerSection label="Components">
+    <DrawerSection>
       {NAV_CATEGORIES.map((category) => (
         <DrawerNavGroup
           key={category.label}
