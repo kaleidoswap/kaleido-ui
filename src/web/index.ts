@@ -67,12 +67,14 @@ export {
   DrawerBody,
   DrawerSection,
   DrawerNavItem,
+  DrawerNavGroup,
   DrawerFooter,
   useDrawerCollapsed,
   type DrawerContentProps,
   type DrawerSidebarProps,
   type DrawerSectionProps,
   type DrawerNavItemProps,
+  type DrawerNavGroupProps,
 } from './primitives/drawer'
 export {
   Table,

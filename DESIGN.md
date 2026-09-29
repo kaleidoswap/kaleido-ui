@@ -390,6 +390,10 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 
 **Items.** `rounded-xl`, `px-4 py-3`, label `body` semibold. Inactive `content.secondary`, hovering to `surface.overlay/80`. The current page is `status.success` on a 10% fill with a 2 px left rule, and carries `aria-current="page"`. Group labels are the shared eyebrow (`label` token) in `content.tertiary`.
 
+**Submenus.** `DrawerNavGroup icon label active` is a row with a submenu — the desktop app's Trade and Liquidity. The row (a button with `aria-expanded`) shows and hides its `DrawerNavItem`s under it, and a chevron on its right turns 90° when open. It opens by itself when one of its pages is current, and is then marked like a current item. Its items become the submenu's rows: indented `pl-4`, `rounded-lg`, `px-4 py-2.5`, label `caption` medium with a 16 px icon, sliding right on hover; the current one is `status.success` on a 10% fill with a 2 px left rule. On the icon rail a submenu cannot open, so the row is a link to `railHref` (usually the group's first page).
+
+**No scrollbar.** `DrawerBody` scrolls by wheel, touch and keyboard but draws no native scrollbar, which on the 80 px rail took the width the icons are centred in.
+
 **Chevron.** `p-3`, `rounded-lg`, a `divider/10` ring that turns `primary/30` on hover, 18 px. On the sidebar it points the way the panel will move (left to fold, right to unfold) and reports `aria-expanded`; on the mobile drawer it points left and closes it.
 
 **Motion.** The sidebar's width changes in 300 ms ease-in-out. The mobile drawer travels in from the left in 300 ms and leaves in 200 ms; the overlay fades. Reduced motion turns all of it off.

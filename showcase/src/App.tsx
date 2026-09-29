@@ -32,6 +32,7 @@ import {
   DrawerBody,
   DrawerSection,
   DrawerNavItem,
+  DrawerNavGroup,
   DrawerFooter,
   Icon,
   Icons,
@@ -150,9 +151,10 @@ interface NavPage {
 }
 
 // One page per component group, grouped by what the components are for.
-const NAV_CATEGORIES: { label: string; pages: NavPage[] }[] = [
+const NAV_CATEGORIES: { label: string; icon: IconName; pages: NavPage[] }[] = [
   {
     label: 'Foundations',
+    icon: 'layers',
     pages: [
       { id: 'buttons', label: 'Buttons', icon: 'touch_app' },
       { id: 'icons', label: 'Icons', icon: 'palette' },
@@ -162,6 +164,7 @@ const NAV_CATEGORIES: { label: string; pages: NavPage[] }[] = [
   },
   {
     label: 'Display',
+    icon: 'visibility',
     pages: [
       { id: 'status-badges', label: 'Status Badges', icon: 'verified' },
       { id: 'network-badges', label: 'Network Badges', icon: 'hub' },
@@ -172,6 +175,7 @@ const NAV_CATEGORIES: { label: string; pages: NavPage[] }[] = [
   },
   {
     label: 'Overlays',
+    icon: 'apps',
     pages: [
       { id: 'dialog', label: 'Dialog', icon: 'chat_bubble' },
       { id: 'drawer', label: 'Drawer', icon: 'menu' },
@@ -180,6 +184,7 @@ const NAV_CATEGORIES: { label: string; pages: NavPage[] }[] = [
   },
   {
     label: 'Wallet',
+    icon: 'account_balance_wallet',
     pages: [
       { id: 'asset-cards', label: 'Asset Cards', icon: 'token' },
       { id: 'transaction-cards', label: 'Transaction Cards', icon: 'receipt_long' },
@@ -190,6 +195,7 @@ const NAV_CATEGORIES: { label: string; pages: NavPage[] }[] = [
   },
   {
     label: 'Flows',
+    icon: 'sync_alt',
     pages: [
       { id: 'activity-components', label: 'Activity', icon: 'history' },
       { id: 'deposit-components', label: 'Deposit', icon: 'arrow_downward' },
@@ -288,20 +294,31 @@ export function App() {
   }
 
   // The showcase's own navigation, rendered by the desktop sidebar and the
-  // mobile drawer alike.
-  const pageNav = NAV_CATEGORIES.map((category) => (
-    <DrawerSection key={category.label} label={category.label}>
-      {category.pages.map((item) => (
-        <DrawerNavItem
-          key={item.id}
-          href={`#/${item.id}`}
-          label={item.label}
-          icon={<Icon name={item.icon} className="text-icon-xl" />}
-          active={item.id === page}
-        />
+  // mobile drawer alike: each category is a submenu, as Trade and Liquidity
+  // are in the desktop app, and its pages show when it is opened.
+  const pageNav = (
+    <DrawerSection label="Components">
+      {NAV_CATEGORIES.map((category) => (
+        <DrawerNavGroup
+          key={category.label}
+          label={category.label}
+          icon={<Icon name={category.icon} className="text-icon-xl" />}
+          active={category.pages.some((item) => item.id === page)}
+          railHref={`#/${category.pages[0].id}`}
+        >
+          {category.pages.map((item) => (
+            <DrawerNavItem
+              key={item.id}
+              href={`#/${item.id}`}
+              label={item.label}
+              icon={<Icon name={item.icon} className="text-icon-md" />}
+              active={item.id === page}
+            />
+          ))}
+        </DrawerNavGroup>
       ))}
     </DrawerSection>
-  ))
+  )
 
   const navFooter = (
     <DrawerFooter className="space-y-3">
@@ -323,7 +340,8 @@ export function App() {
 
   // One navigation list, rendered by both drawer demos.
   const showcaseNav = [
-    { label: 'Wallet', items: [
+    { label: 'Wallet',
+    icon: 'account_balance_wallet', items: [
       { label: 'Dashboard', icon: 'account_balance_wallet' as const },
       { label: 'Swaps', icon: 'swap_horiz' as const },
       { label: 'Activity', icon: 'history' as const },
@@ -647,7 +665,8 @@ export function App() {
                     position="inline"
                     className="mx-auto"
                     items={[
-                      { id: 'dashboard', label: 'Wallet', iconName: 'account_balance_wallet' },
+                      { id: 'dashboard', label: 'Wallet',
+    icon: 'account_balance_wallet', iconName: 'account_balance_wallet' },
                       { id: 'swap', label: 'Swap', iconName: 'swap_horiz' },
                       { id: 'activity-list', label: 'Activity', iconName: 'history' },
                       { id: 'settings', label: 'Settings', iconName: 'settings' },
