@@ -226,9 +226,13 @@ DrawerDescription.displayName = 'DrawerDescription'
 
 // ── Shared parts ───────────────────────────────────────────────────────────
 
-/** The scrolling list between the header and the footer. */
+/**
+ * The scrolling list between the header and the footer. It still scrolls by
+ * wheel, touch and keyboard, but draws no native scrollbar: on the 80px rail a
+ * classic 15px bar took the width the icons are centred in.
+ */
 const DrawerBody = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('min-h-0 flex-1 overflow-y-auto px-4 pt-4', className)} {...props} />
+  <div className={cn('app-scrollbar min-h-0 flex-1 overflow-y-auto px-4 pt-4', className)} {...props} />
 )
 DrawerBody.displayName = 'DrawerBody'
 
