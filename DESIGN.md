@@ -456,7 +456,7 @@ A small pill in a semantic tone, drawn from theme tokens only (the `muted` tone 
 - **DO** keep filter cluster icons at `cluster-icon-size: 11` px and `cluster-opacity: 0.6`. The constraint is what makes the cluster legible.
 - **DON'T** introduce new drop shadows. The only shadows in the system are the card inner shadow and the primary-button glow on hover.
 - **DO** use the `label` type token (Satoshi 700 / 9 / uppercase / `tracking-eyebrow` 0.18em) for structural labels — filter headers, section titles, pill captions. It is the typographic fingerprint of the brand.
-- **DON'T** invent new radii, spacing steps, or surface colors. If you need something the tokens don't provide, extend DESIGN.md first, then propagate to `kaleido-ui/tailwind` and `kaleido-ui/tokens`.
+- **DON'T** invent new radii, spacing steps, or surface colors. If you need something the tokens don't provide, extend DESIGN.md first, then propagate to `kaleido-ui/tokens` — `kaleido-ui/css` (Tailwind v4 `@theme`) and `kaleido-ui/tailwind` (the Tailwind v3 preset) are both generated from it. Both Tailwind versions are supported; see README.
 
 ## Coherence Rules (for agents & new components)
 

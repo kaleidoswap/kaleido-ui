@@ -28,6 +28,11 @@
       "import": "./dist/native/fonts.js",
       "require": "./dist/native/fonts.cjs"
     },
+    "./tailwind": {
+      "types": "./dist/tailwind/index.d.ts",
+      "import": "./dist/tailwind/index.js",
+      "require": "./dist/tailwind/index.cjs"
+    },
     "./css": "./dist/css/kaleido-ui.css"
   },
   "files": [
@@ -39,7 +44,8 @@
     "generate:css": "node node_modules/tsx/dist/cli.mjs scripts/generate-css.ts",
     "check:tokens": "node node_modules/tsx/dist/cli.mjs scripts/check-tokens.ts",
     "check:design-doc": "node node_modules/tsx/dist/cli.mjs scripts/check-design-doc.ts",
-    "build": "npm run generate:css && npm run check:tokens && npm run check:design-doc && tsup && mkdir -p dist/css && cp src/css/kaleido-ui.css dist/css/kaleido-ui.css && mkdir -p dist/native/fonts && cp src/native/fonts/*.ttf dist/native/fonts/",
+    "build": "npm run generate:css && npm run check:tokens && npm run check:design-doc && tsup && npm run copy:assets",
+    "copy:assets": "node node_modules/tsx/dist/cli.mjs scripts/copy-assets.ts",
     "dev": "tsup --watch",
     "showcase": "vite --config showcase/vite.config.ts",
     "showcase:build": "npm run generate:css && vite build --config showcase/vite.config.ts",
@@ -128,6 +134,8 @@
     "react-native-svg": "^15.0.0",
     "tailwind-merge": "^2.6.1",
     "tailwindcss": "^4.2.4",
+    "tailwindcss-animate": "^1.0.7",
+    "tailwindcss3": "npm:tailwindcss@^3.4.19",
     "tsup": "^8.0.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.0",

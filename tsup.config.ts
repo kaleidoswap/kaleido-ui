@@ -9,6 +9,24 @@ export default defineConfig([
     clean: false,
     outDir: 'dist',
   },
+  // Tailwind v3 preset — tokens only, no runtime deps. Built twice: the
+  // CommonJS build must be `module.exports = preset`, which is what
+  // `presets: [require('kaleido-ui/tailwind')]` expects, not `{ default }`.
+  {
+    entry: { 'tailwind/index': 'src/tailwind/index.ts' },
+    format: ['esm'],
+    dts: true,
+    clean: false,
+    outDir: 'dist',
+  },
+  {
+    entry: { 'tailwind/index': 'src/tailwind/index.ts' },
+    format: ['cjs'],
+    dts: false,
+    clean: false,
+    outDir: 'dist',
+    footer: { js: 'module.exports = module.exports.default;' },
+  },
   // Web components — React + Tailwind + Radix
   {
     entry: { 'web/index': 'src/web/index.ts' },

@@ -15,11 +15,17 @@ npm install kaleido-ui
 | `kaleido-ui` | Web components (Tailwind CSS + Radix UI) |
 | `kaleido-ui/tokens` | Platform-agnostic design tokens (zero deps) |
 | `kaleido-ui/native` | React Native components (WDK + custom) |
-| `kaleido-ui/css` | Tailwind v4 `@theme` tokens, CSS variables, keyframes, utilities, Material Symbols |
+| `kaleido-ui/css` | CSS variables (light + dark), keyframes, utilities, and the Tailwind v4 `@theme` tokens |
+| `kaleido-ui/tailwind` | Tailwind **v3** preset built from the tokens |
 
-> **Tailwind v4 only.** `kaleido-ui/css` ships the full theme as Tailwind v4
-> `@theme` blocks, so there is no separate Tailwind preset to configure —
-> importing the CSS registers every token and generates the utilities.
+> **Tailwind v4 and v3 are both supported.** The library is built with v4.
+> On v4, `kaleido-ui/css` carries the whole theme as `@theme` blocks — no
+> preset. On v3, which ignores `@theme` and only generates the opacity steps in
+> its own scale, use the `kaleido-ui/tailwind` preset *and* import
+> `kaleido-ui/css` for the variables it points at. Either way, scan the
+> package's `dist` so the components' classes are generated.
+> `tests/tailwind-v3-preset.test.tsx` compiles the components with both and
+> fails if v3 misses a class v4 generates.
 
 ## Quick Start — Web (Tailwind v4)
 
@@ -28,11 +34,35 @@ npm install kaleido-ui
 ```css
 /* styles.css */
 @import "tailwindcss";
+@import "tw-animate-css";   /* Dialog/Select/Toast enter-exit classes */
 @import "kaleido-ui/css";
 
-/* Tell Tailwind which files to scan for classes */
+/* Tell Tailwind which files to scan for classes: yours and the components' */
 @source "./src/**/*.{ts,tsx}";
+@source "../node_modules/kaleido-ui/dist/web";
 ```
+
+### Tailwind v3
+
+```js
+// tailwind.config.js
+module.exports = {
+  presets: [require('kaleido-ui/tailwind')],
+  content: ['./src/**/*.{ts,tsx}', './node_modules/kaleido-ui/dist/web/*.js'],
+  plugins: [require('tailwindcss-animate')],
+}
+```
+
+```css
+/* index.css — kaleido-ui/css first: the preset's colours are its variables */
+@import 'kaleido-ui/css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+The preset's colours are the theme's custom properties (opacity modifiers work
+through `color-mix`), so light and dark switch at runtime exactly as on v4.
 
 ```ts
 // main.tsx
