@@ -23,6 +23,16 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerSidebar,
+  DrawerBody,
+  DrawerSection,
+  DrawerNavItem,
+  DrawerFooter,
   Icon,
   Icons,
   Toaster,
@@ -147,6 +157,7 @@ const NAV_ITEMS = [
   { id: 'inputs', label: 'Inputs' },
   { id: 'tabs', label: 'Tabs' },
   { id: 'dialog', label: 'Dialog' },
+  { id: 'drawer', label: 'Drawer' },
   { id: 'toast', label: 'Toast' },
 ]
 
@@ -155,6 +166,8 @@ const NAV_ITEMS = [
 export function App() {
   const { toast } = useToast()
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [showcaseNavActive, setShowcaseNavActive] = useState('Dashboard')
   const [darkMode, setDarkMode] = useState(true)
   const [language, setLanguage] = useState('en')
   const [activeView, setActiveView] = useState('dashboard')
@@ -193,6 +206,32 @@ export function App() {
       />
     )
   }
+
+  // One navigation list, rendered by both drawer demos.
+  const showcaseNav = [
+    { label: 'Wallet', items: [
+      { label: 'Dashboard', icon: 'account_balance_wallet' as const },
+      { label: 'Swaps', icon: 'swap_horiz' as const },
+      { label: 'Activity', icon: 'history' as const },
+    ] },
+    { label: 'Account', items: [{ label: 'Settings', icon: 'settings' as const }] },
+  ].map((section) => (
+    <DrawerSection key={section.label} label={section.label}>
+      {section.items.map((item) => (
+        <DrawerNavItem
+          key={item.label}
+          href="#drawer"
+          label={item.label}
+          icon={<Icon name={item.icon} className="text-icon-xl" />}
+          active={showcaseNavActive === item.label}
+          onClick={(event) => {
+            event.preventDefault()
+            setShowcaseNavActive(item.label)
+          }}
+        />
+      ))}
+    </DrawerSection>
+  ))
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -1136,6 +1175,45 @@ export function App() {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
+          </Section>
+
+          {/* ── Drawer ──────────────────────────────────────────────────── */}
+          <Section id="drawer" title="Drawer" description="The desktop app's left sidebar: on the desktop it folds to an icon rail, on a phone it opens over the page. One navigation list renders in both.">
+            <Row label="Desktop · DrawerSidebar (chevron folds it to the rail)" wrap={false}>
+              <div className="flex h-[440px] w-full overflow-hidden rounded-2xl ring-1 ring-white/10">
+                <DrawerSidebar
+                  className="static h-full"
+                  collapsed={sidebarCollapsed}
+                  onCollapsedChange={setSidebarCollapsed}
+                  header={<img src="/brand/kaleidoswap-pictogram.svg" alt="KaleidoSwap" className="h-8" />}
+                >
+                  <DrawerBody>{showcaseNav}</DrawerBody>
+                  <DrawerFooter>
+                    <p className="truncate text-center text-tiny text-content-tertiary">v0.1</p>
+                  </DrawerFooter>
+                </DrawerSidebar>
+                <div className="flex-1 bg-surface-raised p-6">
+                  <p className="text-caption text-content-secondary">
+                    Current page: <span className="font-semibold text-foreground">{showcaseNavActive}</span>
+                  </p>
+                </div>
+              </div>
+            </Row>
+            <Row label="Mobile · Drawer (the same list, over the page)">
+              <Drawer>
+                <DrawerTrigger asChild>
+                  <Button variant="outline">
+                    <Icon name="menu" size="sm" />
+                    <span className="sr-only">Open navigation, current page: </span>
+                    {showcaseNavActive}
+                  </Button>
+                </DrawerTrigger>
+                <DrawerContent header={<DrawerTitle>Navigation</DrawerTitle>}>
+                  <DrawerDescription>Main navigation</DrawerDescription>
+                  <DrawerBody>{showcaseNav}</DrawerBody>
+                </DrawerContent>
+              </Drawer>
+            </Row>
           </Section>
 
           {/* ── Toast ───────────────────────────────────────────────────── */}

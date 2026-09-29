@@ -234,6 +234,7 @@ const FIXTURES: Record<string, () => ReactElement[]> = {
  */
 const NOT_RENDERED = new Set([
   'DialogClose', 'DialogContent', 'DialogDescription', 'DialogOverlay', 'DialogPortal', 'DialogTitle', 'DialogTrigger',
+  'DrawerClose', 'DrawerContent', 'DrawerDescription', 'DrawerOverlay', 'DrawerPortal', 'DrawerTitle', 'DrawerTrigger',
   'SelectItem', 'SelectLabel', 'SelectTrigger', 'SelectValue',
   'TabsContent', 'TabsList', 'TabsTrigger', 'ActivityTypeTabs',
   'Toast', 'ToastAction', 'ToastViewport',

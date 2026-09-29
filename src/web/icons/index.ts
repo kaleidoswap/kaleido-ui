@@ -20,6 +20,7 @@ export type IconName =
   | 'cancel'
   | 'check'
   | 'check_circle'
+  | 'chevron_left'
   | 'chevron_right'
   | 'close'
   | 'cloud_upload'
@@ -121,6 +122,7 @@ export const outlinedMap: Record<IconName, React.FC<SVGProps<SVGSVGElement>>> = 
   'cancel': Outlined.Cancel,
   'check': Outlined.Check,
   'check_circle': Outlined.CheckCircle,
+  'chevron_left': Outlined.ChevronLeft,
   'chevron_right': Outlined.ChevronRight,
   'close': Outlined.Close,
   'cloud_upload': Outlined.CloudUpload,

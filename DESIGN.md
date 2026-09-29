@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand-green, Bitcoin-native wallet UI.
-version: 0.1.124   # must equal package.json's version; check-design-doc fails otherwise
+version: 0.1.125   # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -360,6 +360,22 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 
 **`showClose={false}`** — turn the X off where dismissing is not a neutral act. The case it exists for: a secret shown exactly once (a newly created API key). A control that reads as "close" must not sit beside something the user cannot see again; the dialog closes only through an explicit action ("I have stored this key"). Do not turn it off to tidy a layout — a dialog with no visible exit and no explicit action traps the user. Escape and the overlay still close the dialog unless the consumer prevents them (`onEscapeKeyDown`, `onPointerDownOutside`), which a once-only secret should also do.
 
+### Drawer
+
+**Intended use.** The app's left navigation, and nothing else: the desktop app's sidebar, in the form the width calls for. On the desktop it is `DrawerSidebar`, always on screen and folded by its own chevron to an icon rail. Below the desktop breakpoint it is `Drawer` + `DrawerContent`, the same panel over the page, opened from a `DrawerTrigger` in the top bar that names the current page. A record opened from a list is a `Dialog`, not a drawer; a phone flow's step is `BottomSheet`.
+
+**Anatomy.** Both forms hold the same parts, so one list is written once and rendered in both: `DrawerBody` (scrolls) → `DrawerSection label` (a group) → `DrawerNavItem icon label active` (a destination; `asChild` for a router link), then `DrawerFooter` (quick actions, the version) held below. The mobile form also needs a `DrawerTitle` (its `header`) and a `DrawerDescription` (visually hidden); Radix Dialog underneath traps focus, and Escape, the overlay and choosing a destination close it.
+
+**It is the desktop app's sidebar.** `surface.base`, a `divider/30` rule on the right edge, `shadow-2xl` at 30% black, a `px-4 py-5` header row with the logo slot and the chevron. Expanded `w-72`; the rail `w-20`, which hides the logo and the group eyebrows, splits groups with a rule, centres the icons and turns labels into tooltips (they stay in the accessibility tree). The mobile form is always expanded, caps at `85vw` so a strip of the page stays visible to tap away, over the `BottomSheet` scrim.
+
+**Items.** `rounded-xl`, `px-4 py-3`, label `body` semibold. Inactive `content.secondary`, hovering to `surface.overlay/80`. The current page is `status.success` on a 10% fill with a 2 px left rule, and carries `aria-current="page"`. Group labels are the shared eyebrow (`label` token) in `content.tertiary`.
+
+**Chevron.** `p-3`, `rounded-lg`, a `divider/10` ring that turns `primary/30` on hover, 18 px. On the sidebar it points the way the panel will move (left to fold, right to unfold) and reports `aria-expanded`; on the mobile drawer it points left and closes it.
+
+**Motion.** The sidebar's width changes in 300 ms ease-in-out. The mobile drawer travels in from the left in 300 ms and leaves in 200 ms; the overlay fades. Reduced motion turns all of it off.
+
+**The edge rule.** The single hairline on the panel's right edge is a component-spec border (Coherence Rules below): the panel sits on the page's own surface, so without it the edge is only the shadow. The header has no divider under it; the rail's group rules are the one other line, standing in for the eyebrows it hides.
+
 ### Table
 
 **Intended use.** Dense data grids on desk surfaces — the partner and admin panels' swaps, keys and installs tables. Nine columns, many rows, read across. A transaction *feed* on a phone is `ActivityList`, not a table.
@@ -404,7 +420,7 @@ These rules exist because generated UIs kept drifting: ad-hoc borders, wrong but
 
 - The layering ladder is `surface.bg` (page) → `bg-card` (card) → `bg-muted/40` (row inside a card). Depth comes from the fill, not an outline.
 - **DON'T** add arbitrary border utilities (`border-white/10`, `border-primary/20`, `border-warning/30`, `border-t` dividers…) to new markup. If a surface looks like it needs an edge, it needs a different background layer instead.
-- Borders are allowed only where a component spec above explicitly calls for one: inputs, filter pills, status pills, the `border.primary-ghost` active state, and `Table` row hairlines. Nothing else.
+- Borders are allowed only where a component spec above explicitly calls for one: inputs, filter pills, status pills, the `border.primary-ghost` active state, `Table` row hairlines, and the `Drawer` edge rule and current-page rule. Nothing else.
 - Separate stacked rows with `space-y-*` spacing, not divider lines. The single exception is `Table` (see its section): a dense grid, not a list.
 
 ### Rows and toggles use the shipped primitives

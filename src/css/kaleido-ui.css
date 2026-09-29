@@ -379,6 +379,9 @@
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
   --animate-fade-in: fade-in 0.3s ease-out;
+  --animate-fade-out: fade-out 0.2s ease-in;
+  --animate-drawer-in-left: drawer-in-left 0.3s ease-in-out;
+  --animate-drawer-out-left: drawer-out-left 0.2s ease-in;
   --animate-slide-up: slide-up 0.3s ease-out;
   --animate-slide-in-from-bottom: slide-in-from-bottom 0.4s ease-out;
   --animate-stagger-up: stagger-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
@@ -411,6 +414,33 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes drawer-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes drawer-out-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
   }
 }
 

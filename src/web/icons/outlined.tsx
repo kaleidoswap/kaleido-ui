@@ -103,6 +103,12 @@ export const CheckCircle = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 )
 
+export const ChevronLeft = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 128 128" fill="currentColor" aria-hidden="true" {...props}>
+    <path d="M74.6882 31.9869L82.2051 39.5039L57.7884 63.9738L82.2051 88.4438L74.6882 95.9607L42.7013 63.9738L74.6882 31.9869Z"/>
+  </svg>
+)
+
 export const ChevronRight = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 128 128" fill="currentColor" aria-hidden="true" {...props}>
     <path d="M53.3118 31.9869L45.7949 39.5039L70.2116 63.9738L45.7949 88.4438L53.3118 95.9607L85.2987 63.9738L53.3118 31.9869Z"/>

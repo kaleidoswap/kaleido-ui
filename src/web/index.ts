@@ -55,6 +55,26 @@ export {
   type DialogContentProps,
 } from './primitives/dialog'
 export {
+  Drawer,
+  DrawerPortal,
+  DrawerOverlay,
+  DrawerClose,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerSidebar,
+  DrawerBody,
+  DrawerSection,
+  DrawerNavItem,
+  DrawerFooter,
+  useDrawerCollapsed,
+  type DrawerContentProps,
+  type DrawerSidebarProps,
+  type DrawerSectionProps,
+  type DrawerNavItemProps,
+} from './primitives/drawer'
+export {
   Table,
   TableHeader,
   TableBody,
