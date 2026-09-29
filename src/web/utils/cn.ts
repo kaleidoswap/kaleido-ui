@@ -23,7 +23,10 @@ const twMerge = extendTailwindMerge({
           ],
         },
       ],
-      tracking: [{ tracking: Object.keys(letterSpacing) }],
+      // `eyebrowWide` is emitted as `tracking-eyebrow-wide`.
+      tracking: [
+        { tracking: Object.keys(letterSpacing).map((key) => key.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)) },
+      ],
     },
   },
 })

@@ -83,10 +83,10 @@ export function ActivityList<TData = unknown>({
         <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-white/5">
           {emptyIcon ?? <DefaultEmptyIcon name="receipt_long" />}
         </div>
-        <h3 className="mb-1 text-base font-semibold">
+        <h3 className="mb-1 text-body font-semibold">
           {hasActiveFilters ? filteredEmptyTitle : emptyTitle}
         </h3>
-        <p className="mb-4 max-w-[240px] text-center text-xs text-white/70">
+        <p className="mb-4 max-w-[240px] text-center text-caption text-white/70">
           {hasActiveFilters ? filteredEmptyDescription : emptyDescription}
         </p>
         {hasActiveFilters && onClearFilters ? (

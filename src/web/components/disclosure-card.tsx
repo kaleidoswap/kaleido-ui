@@ -35,7 +35,7 @@ export function DisclosureCard({
       >
         <span className="flex min-w-0 items-center gap-1.5">
           {icon}
-          <span className="truncate text-xs font-bold text-foreground">{title}</span>
+          <span className="truncate text-caption font-bold text-foreground">{title}</span>
         </span>
         <Icon
           name={open ? 'expand_less' : 'expand_more'}

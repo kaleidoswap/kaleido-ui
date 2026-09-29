@@ -230,6 +230,26 @@ emit — `text-display`, `text-body`, `text-mini` and so on:
 
 Numeric amounts (balances, prices) render in `display` or `body` weight 700, not `mono` — mono is reserved for identifiers that the user copy-pastes.
 
+### Which step carries which role
+
+Components set text **only** with these steps — never Tailwind's default sizes (`text-xs`, `text-sm`, `text-base`, `text-lg`, `text-xl` …), which are not on the scale: they render 12 and 14 px beside a consumer's 13 and 15, and a consumer whose Tailwind config uses `typeScale` in place of the defaults gets no CSS for them. `tests/type-scale.test.tsx` fails on one.
+
+| Role | Step | Examples |
+| --- | --- | --- |
+| Hero figure | `display` 36 | the amount on a confirmation screen |
+| Big figure | `headline` 28 | a comfortable `MetricCard` value, amount inputs, success titles |
+| Screen / page title | `title` 20 | `PageHeader variant="page"`, dialog titles, `CardTitle` |
+| Heading in a card, large button label | `subhead` 17 | CTA buttons |
+| Primary text, card and section titles, values | `body` 15 | `SettingsSectionCard` and `InfoPanel` titles, `Button` |
+| Secondary text, descriptions, data cells | `caption` 13 | `InfoPanel` body, `SettingsSectionCard` description, `Table` cells |
+| Meta rows, timestamps | `tiny` 11 | `TransactionCard` meta |
+| Dense chip text | `xxs` 10 | hints, compact tile descriptions |
+| **Eyebrow** — every structural uppercase label | `mini` 9 | section titles, column heads, filter headers, tile labels, status badges |
+
+**The eyebrow is written once**, as `eyebrow` in `src/web/utils/type-roles.ts`: `text-mini font-bold uppercase tracking-eyebrow` — Satoshi 700 / 9 px / 0.18em, the `label` token above. The tokens are authoritative (weight tops out at 700; tracking is 0.18em), and this document matches them. Any uppercase letter-spaced label uses `tracking-eyebrow` (or `tracking-eyebrow-wide`); hand-written `tracking-[…]` values are not allowed.
+
+There are no spacing tokens yet; components use Tailwind's 4 px spacing scale (`p-4` card, `p-3` inner row, `p-2.5` compact tile). Follow those values rather than inventing new ones.
+
 ## Layout
 
 KaleidoSwap targets a **420 px max content width**: the browser-extension popup is the canonical viewport and everything else (webapp, mobile shell) adopts the same column so layouts translate 1:1.

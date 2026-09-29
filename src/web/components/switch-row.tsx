@@ -27,9 +27,9 @@ export function SwitchRow({
   return (
     <div className={cn('flex items-start justify-between gap-3 rounded-xl bg-muted/40 p-3', className)}>
       <div className="min-w-0">
-        <p className="text-sm font-medium text-foreground">{label}</p>
+        <p className="text-body font-medium text-foreground">{label}</p>
         {description && (
-          <p className="mt-0.5 text-xs leading-snug text-muted-foreground">{description}</p>
+          <p className="mt-0.5 text-caption leading-snug text-muted-foreground">{description}</p>
         )}
       </div>
       <Switch

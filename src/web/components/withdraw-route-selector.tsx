@@ -58,24 +58,24 @@ function RouteChoiceCard<TAccount extends string>({
         {accountIcon && <div className="mt-0.5 shrink-0">{accountIcon}</div>}
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm font-bold text-white">{route.accountTitle}</span>
+            <span className="text-body font-bold text-white">{route.accountTitle}</span>
             {recommended && !disabled && (
-              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xxs font-bold uppercase tracking-wider text-primary">
+              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-primary">
                 Recommended
               </span>
             )}
             {disabled && (
-              <span className="rounded-full bg-danger/10 px-2 py-0.5 text-xxs font-bold uppercase tracking-wider text-danger">
+              <span className="rounded-full bg-danger/10 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-danger">
                 Insufficient
               </span>
             )}
           </div>
           {balanceLabel && (
-            <p className="mt-0.5 text-xs tabular-nums text-white/55">{balanceLabel}</p>
+            <p className="mt-0.5 text-caption tabular-nums text-white/55">{balanceLabel}</p>
           )}
         </div>
       </div>
-      <span className="shrink-0 text-xxs font-bold uppercase tracking-wider text-white/40">
+      <span className="shrink-0 text-mini font-bold uppercase tracking-eyebrow text-white/40">
         {route.feeHint}
       </span>
     </div>
@@ -120,7 +120,7 @@ export function WithdrawRouteSelector<TAccount extends string = string>({
 
   return (
     <div className="space-y-2">
-      <label className="ml-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+      <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
         Route
       </label>
 

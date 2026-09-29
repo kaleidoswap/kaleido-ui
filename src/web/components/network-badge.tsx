@@ -172,8 +172,8 @@ export function NetworkBadge({
         size === 'sm'
           ? 'px-2 py-1 text-xxs'
           : size === 'lg'
-            ? 'gap-2 px-4 py-3 text-sm'
-            : 'px-2.5 py-1 text-xs',
+            ? 'gap-2 px-4 py-3 text-body'
+            : 'px-2.5 py-1 text-caption',
         className
       )}
       style={chipStyle}

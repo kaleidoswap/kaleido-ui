@@ -31,7 +31,7 @@ export function SecretRevealCard({
         <div className="rounded-xl bg-card px-3 py-3">
           <p
             className={cn(
-              'break-all font-mono text-sm text-foreground transition-all duration-300',
+              'break-all font-mono text-body text-foreground transition-all duration-300',
               !revealed && 'pointer-events-none select-none blur-sm',
               valueClassName,
             )}
@@ -44,7 +44,7 @@ export function SecretRevealCard({
             <button
               type="button"
               onClick={() => onRevealChange(true)}
-              className="flex items-center gap-2 rounded-xl bg-card px-4 py-2 text-sm font-bold text-foreground shadow-lg transition-all hover:bg-accent"
+              className="flex items-center gap-2 rounded-xl bg-card px-4 py-2 text-body font-bold text-foreground shadow-lg transition-all hover:bg-accent"
             >
               <Icon name="visibility" className="text-icon-lg" />
               {revealLabel}
@@ -56,7 +56,7 @@ export function SecretRevealCard({
         <button
           type="button"
           onClick={() => onRevealChange(!revealed)}
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-white/5 py-3 text-sm font-semibold text-muted-foreground transition-all hover:bg-accent hover:text-foreground"
+          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-white/5 py-3 text-caption font-semibold text-muted-foreground transition-all hover:bg-accent hover:text-foreground"
         >
           <Icon name={revealed ? 'visibility_off' : 'visibility'} className="text-icon-lg" />
           {revealed ? hideLabel : revealLabel}
@@ -65,7 +65,7 @@ export function SecretRevealCard({
           <button
             type="button"
             onClick={onCopy}
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-white/5 py-3 text-sm font-semibold text-muted-foreground transition-all hover:bg-accent hover:text-foreground"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-white/5 py-3 text-caption font-semibold text-muted-foreground transition-all hover:bg-accent hover:text-foreground"
           >
             <Icon name="content_copy" className="text-icon-lg" />
             {copyLabel}

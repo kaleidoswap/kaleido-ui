@@ -61,7 +61,7 @@ export function BottomSheet({
         {(title || icon) && (
           <div className="mt-4 flex items-center gap-2">
             {icon}
-            <p className="text-sm font-bold text-foreground">{title}</p>
+            <p className="text-body font-bold text-foreground">{title}</p>
           </div>
         )}
         <div className={cn((title || icon) && 'mt-3')}>{children}</div>

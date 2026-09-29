@@ -63,12 +63,12 @@ export function SettingItem({
           <div className="flex flex-col flex-1 min-w-0">
             <span className="font-bold text-body text-foreground tracking-wide">{title}</span>
             {description && (
-              <span className="text-sm text-muted-foreground mt-0.5 font-medium">{description}</span>
+              <span className="text-caption text-muted-foreground mt-0.5 font-medium">{description}</span>
             )}
           </div>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
-          {value && <span className="text-xs text-muted-foreground font-mono">{value}</span>}
+          {value && <span className="text-caption text-muted-foreground font-mono">{value}</span>}
           {showChevron && isClickable && (
             <Icon name="chevron_right" className="text-icon-md text-muted-foreground group-hover:scale-110 group-hover:text-white transition-all" />
           )}

@@ -93,7 +93,7 @@ export function TransactionCard({
           }
         />
         <div className="flex flex-col">
-          <span className="font-bold text-sm tracking-wide text-foreground">
+          <span className="font-bold text-body tracking-wide text-foreground">
             {isInbound ? 'Received' : 'Sent'}
           </span>
           <span className="mt-1 text-tiny text-muted-foreground font-medium tracking-wide">
@@ -106,7 +106,7 @@ export function TransactionCard({
             muted line read as disconnected from its amount. */}
         <p
           className={cn(
-            'font-bold text-lg tracking-tight tabular-nums group-hover:opacity-90 transition-opacity',
+            'font-bold text-subhead tracking-tight tabular-nums group-hover:opacity-90 transition-opacity',
             textColor
           )}
         >

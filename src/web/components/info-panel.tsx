@@ -68,8 +68,8 @@ export function InfoPanel({
       <div className="flex items-start gap-3">
         {renderedIcon}
         <div className="min-w-0 flex-1">
-          {title && <p className={cn('text-sm font-bold', styles.title)}>{title}</p>}
-          <div className={cn('text-xs leading-relaxed', title ? 'mt-1' : '', styles.title)}>
+          {title && <p className={cn('text-body font-bold', styles.title)}>{title}</p>}
+          <div className={cn('text-caption leading-relaxed', title ? 'mt-1' : '', styles.title)}>
             {children}
           </div>
         </div>

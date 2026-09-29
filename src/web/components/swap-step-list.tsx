@@ -86,9 +86,9 @@ export function SwapStepList({ steps, className }: SwapStepListProps) {
               )}
             </div>
             <div className={cn('min-w-0 flex-1', isLast ? 'pb-0' : 'pb-4')}>
-              <p className={cn('text-sm font-medium', labelClass[step.status])}>{step.label}</p>
+              <p className={cn('text-body font-medium', labelClass[step.status])}>{step.label}</p>
               {step.description && (
-                <p className="mt-0.5 text-xs leading-snug text-muted-foreground">
+                <p className="mt-0.5 text-caption leading-snug text-muted-foreground">
                   {step.description}
                 </p>
               )}

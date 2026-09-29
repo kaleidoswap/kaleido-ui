@@ -106,13 +106,13 @@ export function InfoChip({
       )}
 
       <dl className="min-w-0 flex-1">
-        <dt className="truncate text-xxs font-bold uppercase tracking-wider text-muted-foreground">
+        <dt className="truncate text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
           {label}
         </dt>
         <dd className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
           <span
             className={cn(
-              'min-w-0 max-w-full [overflow-wrap:anywhere] text-sm font-semibold leading-5 text-foreground',
+              'min-w-0 max-w-full [overflow-wrap:anywhere] text-body font-semibold leading-5 text-foreground',
               valueClassName,
             )}
           >

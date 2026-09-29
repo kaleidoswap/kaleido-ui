@@ -57,7 +57,7 @@ export function ActivityRow({
         />
         <div className="flex min-w-0 flex-col">
           <div className="flex min-w-0 items-center gap-1.5">
-            <span className="truncate text-sm font-bold tracking-wide text-foreground">{title}</span>
+            <span className="truncate text-body font-bold tracking-wide text-foreground">{title}</span>
             {networkBadge}
           </div>
           {timestamp && (
@@ -68,12 +68,12 @@ export function ActivityRow({
         </div>
       </div>
       <div className="shrink-0 text-right">
-        <p className={cn('text-sm font-bold tracking-wide', ui.amountClass)}>
+        <p className={cn('text-body font-bold tracking-wide', ui.amountClass)}>
           {ui.sign}
           {amount}
         </p>
         {unit && (
-          <p className="mt-0.5 text-xxs font-bold uppercase tracking-wider text-muted-foreground">
+          <p className="mt-0.5 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
             {unit}
           </p>
         )}

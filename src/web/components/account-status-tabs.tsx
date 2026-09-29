@@ -73,15 +73,15 @@ export function AccountStatusDetails<TId extends string = string>({
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className="text-xxs font-black uppercase tracking-[0.18em] text-muted-foreground">
+              <span className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
                 {account.label}
               </span>
               <span className={cn('size-2 rounded-full', account.dotTone)} />
             </div>
-            <DialogTitle className="mt-1 text-xl font-bold text-white">
+            <DialogTitle className="mt-1 text-title font-bold text-white">
               {account.title}
             </DialogTitle>
-            <DialogDescription className="mt-2 text-sm leading-relaxed text-white/60">
+            <DialogDescription className="mt-2 text-caption leading-relaxed text-white/60">
               {account.description}
             </DialogDescription>
           </div>
@@ -90,25 +90,25 @@ export function AccountStatusDetails<TId extends string = string>({
 
       <div className="mt-5 grid grid-cols-2 gap-3">
         <div className={cn('rounded-2xl px-4 py-3', account.networkBannerClassName)}>
-          <div className="text-icon-xxs font-black uppercase tracking-[0.18em]">Network</div>
-          <div className="mt-1 break-words text-sm font-semibold">{account.networkLabel}</div>
+          <div className="text-mini font-bold uppercase tracking-eyebrow">Network</div>
+          <div className="mt-1 break-words text-body font-semibold">{account.networkLabel}</div>
         </div>
         <div className="rounded-2xl bg-muted/40 px-4 py-3">
-          <div className="text-icon-xxs font-black uppercase tracking-[0.18em] text-white/45">
+          <div className="text-mini font-bold uppercase tracking-eyebrow text-white/45">
             Status
           </div>
-          <div className="mt-1 break-words text-sm font-semibold text-white/90">
+          <div className="mt-1 break-words text-body font-semibold text-white/90">
             {account.state}
           </div>
         </div>
       </div>
 
-      <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{account.detail}</p>
+      <p className="mt-5 text-caption leading-relaxed text-muted-foreground">{account.detail}</p>
 
       {account.details && account.details.length > 0 && (
         <dl className="mt-5 space-y-2 rounded-2xl bg-muted/25 px-4 py-3">
           {account.details.map((item) => (
-            <div key={item.label} className="grid grid-cols-[max-content_minmax(0,1fr)] gap-3 text-xs">
+            <div key={item.label} className="grid grid-cols-[max-content_minmax(0,1fr)] gap-3 text-caption">
               <dt className="text-muted-foreground">{item.label}</dt>
               <dd className="min-w-0 break-words text-right font-medium text-white/90">
                 {item.value}
@@ -119,7 +119,7 @@ export function AccountStatusDetails<TId extends string = string>({
       )}
 
       <div className="mt-5">
-        <div className="text-icon-xxs font-black uppercase tracking-[0.18em] text-white/45">
+        <div className="text-mini font-bold uppercase tracking-eyebrow text-white/45">
           Capabilities
         </div>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -186,17 +186,17 @@ export function AccountStatusTabs<TId extends string = string>({
                   <span className="shrink-0">{account.icon}</span>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <div className="text-xxs font-black uppercase tracking-[0.18em] text-white/55">
+                      <div className="text-mini font-bold uppercase tracking-eyebrow text-white/55">
                         {account.label}
                       </div>
                       <span className={cn('size-2 rounded-full', account.dotTone)} />
                     </div>
-                    <div className="mt-1 text-sm font-semibold text-white/90">{account.title}</div>
-                    <div className="mt-1 text-xs font-medium text-white/45">{account.state}</div>
+                    <div className="mt-1 text-body font-semibold text-white/90">{account.title}</div>
+                    <div className="mt-1 text-caption font-medium text-white/45">{account.state}</div>
                   </div>
                 </div>
-                <p className="mt-3 text-xs leading-relaxed text-white/60">{account.detail}</p>
-                <p className="mt-2 text-xs leading-relaxed text-white/45">
+                <p className="mt-3 text-caption leading-relaxed text-white/60">{account.detail}</p>
+                <p className="mt-2 text-caption leading-relaxed text-white/45">
                   {account.description}
                 </p>
                 <div className="mt-3 flex flex-wrap gap-1.5">

@@ -11,8 +11,10 @@ const setClipboard = (writeText?: (value: string) => Promise<void>) =>
     configurable: true,
   })
 
-const render = () => {
-  const view = mount(h(CopyButton, { value: 'kx_live_1234', label: 'API key prefix', resetAfter: 50 }))
+// A long reset by default, so a loaded machine cannot clear the state before
+// the assertion reads it; the reset itself is tested with a short one.
+const render = (resetAfter = 60_000) => {
+  const view = mount(h(CopyButton, { value: 'kx_live_1234', label: 'API key prefix', resetAfter }))
   const button = view.container.querySelector('button')!
   const status = view.container.querySelector('[role="status"]')!
   return { view, button, status }
@@ -35,7 +37,14 @@ test('a successful write shows a check and announces Copied', async () => {
   assert.deepEqual(written, ['kx_live_1234'])
   assert.equal(status.textContent, 'Copied')
   assert.equal(view.container.querySelector('[data-slot="copy-button"]')!.getAttribute('data-status'), 'copied')
-  await interact(() => new Promise((resolve) => setTimeout(resolve, 80)))
+  view.unmount()
+})
+
+test('the state clears after resetAfter', async () => {
+  setClipboard(async () => undefined)
+  const { view, button, status } = render(20)
+  await interact(() => button.click())
+  await interact(() => new Promise((resolve) => setTimeout(resolve, 300)))
   assert.equal(status.textContent, '')
   view.unmount()
 })

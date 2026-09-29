@@ -42,7 +42,7 @@ export function ActionTile({
       </span>
       {/* rem-based size (not the px `text-tiny` token) so the side-panel root
           font-size ladder scales the action labels with everything else. */}
-      <span className="truncate text-xs font-bold leading-none tracking-wide">{label}</span>
+      <span className="truncate text-caption font-bold leading-none tracking-wide">{label}</span>
     </button>
   )
 }

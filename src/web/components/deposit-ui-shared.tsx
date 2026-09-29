@@ -165,7 +165,7 @@ export function InvoiceStatusBanner({
   return (
     <div
       className={cn(
-        'flex items-center justify-center gap-2 rounded-xl px-3 py-1.5 text-xs font-bold',
+        'flex items-center justify-center gap-2 rounded-xl px-3 py-1.5 text-caption font-bold',
         isInvoicePaid
           ? 'bg-primary/10 text-primary'
           : isInvoiceFailedOrExpired
@@ -202,7 +202,7 @@ export function PaidOverlay() {
         <div className="flex size-14 items-center justify-center rounded-full bg-primary">
           <Icon name="check" className="text-icon-4xl text-background" />
         </div>
-        <span className="text-sm font-bold text-primary">Received!</span>
+        <span className="text-body font-bold text-primary">Received!</span>
       </div>
     </div>
   )
@@ -329,7 +329,7 @@ export function NetworkInfoDisclosure({
         className="flex w-full items-center gap-2 px-2.5 py-1.5 text-left transition-colors hover:bg-white/4"
       >
         <Icon name="info" size="xs" className="text-white/40" />
-        <span className="flex-1 text-xxs font-bold uppercase tracking-widest text-white/50">
+        <span className="flex-1 text-mini font-bold uppercase tracking-eyebrow text-white/50">
           What are these networks?
         </span>
         <Icon name={open ? 'expand_less' : 'expand_more'} size="xs" className="text-white/40" />
@@ -345,7 +345,7 @@ export function NetworkInfoDisclosure({
                   <div className={cn('flex size-4 flex-shrink-0 items-center justify-center rounded-md', cfg.bg)}>
                     {cfg.icon}
                   </div>
-                  <span className={cn('text-xxs font-bold uppercase tracking-widest', cfg.text)}>
+                  <span className={cn('text-mini font-bold uppercase tracking-eyebrow', cfg.text)}>
                     {info.title}
                   </span>
                 </div>

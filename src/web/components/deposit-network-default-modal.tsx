@@ -88,7 +88,7 @@ export function DepositNetworkDefaultModal({
         </div>
 
         <div>
-          <p className="text-sm font-bold text-white">Choose your default network</p>
+          <p className="text-body font-bold text-white">Choose your default network</p>
           <p className="mt-0.5 text-tiny text-white/45">
             Pick how you would like to receive{' '}
             <span className="font-semibold text-muted-foreground">{assetTicker}</span> by default.
@@ -121,13 +121,13 @@ export function DepositNetworkDefaultModal({
 
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className={cn('text-xs font-bold', isSuggested ? option.accentText : 'text-white')}>
+                    <span className={cn('text-caption font-bold', isSuggested ? option.accentText : 'text-white')}>
                       {option.label}
                     </span>
                     {isSuggested && (
                       <span
                         className={cn(
-                          'rounded-full px-1.5 py-0.5 text-xxs font-black uppercase tracking-wider',
+                          'rounded-full px-1.5 py-0.5 text-mini font-bold uppercase tracking-eyebrow',
                           option.accentBg,
                           option.accentText
                         )}

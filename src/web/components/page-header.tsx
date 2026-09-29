@@ -98,7 +98,7 @@ export function PageHeader({
   const titleBlock = title ? (
     <div className="min-w-0 text-left">
       <div className="truncate font-bold text-body text-foreground">{title}</div>
-      {subtitle && <div className="mt-1 truncate text-xs text-muted-foreground">{subtitle}</div>}
+      {subtitle && <div className="mt-1 truncate text-caption text-muted-foreground">{subtitle}</div>}
     </div>
   ) : null
 

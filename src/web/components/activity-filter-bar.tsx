@@ -48,7 +48,7 @@ export function ActivityFilterBar<TStatus extends string = string>({
           placeholder={searchPlaceholder}
           value={searchTerm}
           onChange={(event) => onSearchTermChange(event.target.value)}
-          className="h-full w-full rounded-xl border border-transparent bg-white/5 py-2.5 pl-10 pr-8 text-sm text-white outline-none transition-all placeholder:text-white/25 focus:border-primary/25 focus:bg-white/8"
+          className="h-full w-full rounded-xl border border-transparent bg-white/5 py-2.5 pl-10 pr-8 text-caption text-white outline-none transition-all placeholder:text-white/25 focus:border-primary/25 focus:bg-white/8"
         />
         {searchTerm && (
           <button
@@ -69,13 +69,13 @@ export function ActivityFilterBar<TStatus extends string = string>({
         >
           <SelectTrigger
             aria-label="Filter activity by status"
-            className="h-full rounded-xl border-0 bg-white/5 px-3 py-0 text-xs font-bold text-white shadow-none hover:bg-white/8 focus:ring-0 data-[state=open]:bg-white/8"
+            className="h-full rounded-xl border-0 bg-white/5 px-3 py-0 text-caption font-bold text-white shadow-none hover:bg-white/8 focus:ring-0 data-[state=open]:bg-white/8"
           >
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="bg-popover/95 p-1.5 shadow-popover">
             {statusOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value} className="py-2 text-xs">
+              <SelectItem key={option.value} value={option.value} className="py-2 text-caption">
                 {option.label}
               </SelectItem>
             ))}

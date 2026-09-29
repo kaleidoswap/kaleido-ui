@@ -43,7 +43,7 @@ export function SelectableCard({
             {badge}
           </div>
           {description && (
-            <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{description}</p>
+            <p className="mt-0.5 text-caption leading-relaxed text-muted-foreground">{description}</p>
           )}
           {children}
         </div>

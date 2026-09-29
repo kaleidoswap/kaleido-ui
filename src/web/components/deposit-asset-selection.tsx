@@ -170,7 +170,7 @@ export function DepositAssetSelection<TView extends string = string>({
           <input
             autoFocus
             data-testid="deposit-asset-search"
-            className="w-full rounded-xl border border-transparent bg-white/5 py-2.5 pl-10 pr-4 text-sm text-white outline-none transition-all placeholder:text-white/25 focus:border-primary/25 focus:bg-white/8"
+            className="w-full rounded-xl border border-transparent bg-white/5 py-2.5 pl-10 pr-4 text-caption text-white outline-none transition-all placeholder:text-white/25 focus:border-primary/25 focus:bg-white/8"
             onChange={(event) => setSearchQuery(event.target.value)}
             placeholder="Search assets..."
             type="text"
@@ -184,7 +184,7 @@ export function DepositAssetSelection<TView extends string = string>({
           <button
             type="button"
             data-testid="deposit-asset-btc"
-            className="group flex w-full min-w-0 items-center gap-3 overflow-hidden rounded-2xl bg-white/3 px-4 py-3 text-sm transition-all hover:bg-accent"
+            className="group flex w-full min-w-0 items-center gap-3 overflow-hidden rounded-2xl bg-white/3 px-4 py-3 text-body transition-all hover:bg-accent"
             onClick={() => onSelectAsset(btcAsset)}
           >
             <AssetIcon ticker="BTC" size={40} className="flex-shrink-0" />
@@ -192,7 +192,7 @@ export function DepositAssetSelection<TView extends string = string>({
               <div className="font-bold tracking-wide text-white transition-colors group-hover:text-primary/90">
                 Bitcoin
               </div>
-              <div className="mt-0.5 text-xs text-white/40">Choose destination account next</div>
+              <div className="mt-0.5 text-caption text-white/40">Choose destination account next</div>
             </div>
             <div className="hidden min-w-0 max-w-[42%] flex-shrink flex-wrap justify-end gap-1 min-[380px]:flex">
               <NetworkBadge network="L1" size="sm" />
@@ -206,7 +206,7 @@ export function DepositAssetSelection<TView extends string = string>({
         )}
 
         {noResults ? (
-          <div className="py-8 text-center text-sm text-white/30">
+          <div className="py-8 text-center text-caption text-white/30">
             No assets match &quot;{searchQuery}&quot;
           </div>
         ) : ownedAssetsCount > 0 ? (
@@ -222,7 +222,7 @@ export function DepositAssetSelection<TView extends string = string>({
                 isSearching && 'cursor-default',
               )}
             >
-              <span className="text-xxs font-bold uppercase tracking-[0.18em] text-white/55">
+              <span className="text-mini font-bold uppercase tracking-eyebrow text-white/55">
                 Your assets
               </span>
               <span className="inline-flex size-5 items-center justify-center rounded-full bg-white/10 text-tiny font-bold text-white/70">
@@ -244,7 +244,7 @@ export function DepositAssetSelection<TView extends string = string>({
                       key={asset.asset_id}
                       type="button"
                       data-testid={`deposit-asset-${asset.asset_id}`}
-                      className="group flex w-full min-w-0 items-center gap-3 overflow-hidden rounded-2xl bg-white/3 px-4 py-3 text-sm transition-all hover:bg-accent"
+                      className="group flex w-full min-w-0 items-center gap-3 overflow-hidden rounded-2xl bg-white/3 px-4 py-3 text-body transition-all hover:bg-accent"
                       onClick={() => onSelectAsset(asset)}
                     >
                       <AssetIcon ticker={asset.ticker} size={40} className="flex-shrink-0" />
@@ -256,7 +256,7 @@ export function DepositAssetSelection<TView extends string = string>({
                           {protocolBadge && (
                             <span
                               className={cn(
-                                'shrink-0 rounded-full px-1.5 py-0.5 text-tiny font-bold uppercase tracking-wider',
+                                'shrink-0 rounded-full px-1.5 py-0.5 text-mini font-bold uppercase tracking-eyebrow',
                                 protocolBadge.className,
                               )}
                             >
@@ -264,16 +264,16 @@ export function DepositAssetSelection<TView extends string = string>({
                             </span>
                           )}
                         </div>
-                        <div className="mt-0.5 truncate text-xs text-white/40">
+                        <div className="mt-0.5 truncate text-caption text-white/40">
                           {asset.name ?? 'Asset'}
                         </div>
                       </div>
                       {balance > 0 && (
                         <div className="flex-shrink-0 text-right">
-                          <div className="text-xs font-bold tabular-nums text-white">
+                          <div className="text-caption font-bold tabular-nums text-white">
                             {formatAssetBalance(asset)}
                           </div>
-                          <div className="mt-0.5 text-tiny uppercase tracking-wider text-white/35">
+                          <div className="mt-0.5 text-mini font-bold uppercase tracking-eyebrow text-white/35">
                             {asset.ticker}
                           </div>
                         </div>
@@ -298,7 +298,7 @@ export function DepositAssetSelection<TView extends string = string>({
                 <Icon name="swap_calls" className="text-icon-lg text-primary" />
               </div>
               <div className="flex-1 text-left">
-                <p className="text-sm font-semibold text-white transition-colors group-hover:text-primary">
+                <p className="text-body font-semibold text-white transition-colors group-hover:text-primary">
                   Bridge from another chain
                 </p>
                 <p className="text-xxs leading-tight text-white/40">USDC, USDT, ETH, SOL via Flashnet</p>
@@ -320,7 +320,7 @@ export function DepositAssetSelection<TView extends string = string>({
                 <Icon name="add" size="md" className="text-primary" />
               </div>
               <div className="flex-1 text-left">
-                <p className="text-sm font-semibold text-white transition-colors group-hover:text-primary">
+                <p className="text-body font-semibold text-white transition-colors group-hover:text-primary">
                   Add an asset
                 </p>
                 <p className="text-xxs leading-tight text-white/40">
@@ -361,7 +361,7 @@ export function DepositAssetSelection<TView extends string = string>({
                 <AssetIcon ticker={option.ticker} size={36} className="flex-shrink-0" />
               )}
               <div className="min-w-0 flex-1">
-                <div className={cn('text-sm font-bold tracking-wide text-white', option.titleHoverClass)}>
+                <div className={cn('text-body font-bold tracking-wide text-white', option.titleHoverClass)}>
                   {option.title}
                 </div>
                 <div className="mt-0.5 text-xxs text-white/40">

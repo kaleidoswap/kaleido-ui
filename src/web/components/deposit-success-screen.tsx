@@ -39,16 +39,16 @@ export function DepositSuccessScreen({
           </div>
         </div>
 
-        <h1 className="mb-2 text-2xl font-bold text-white">{title}</h1>
-        <p className="mb-8 max-w-[260px] text-sm leading-relaxed text-muted-foreground">
+        <h1 className="mb-2 text-headline font-bold text-white">{title}</h1>
+        <p className="mb-8 max-w-[260px] text-caption leading-relaxed text-muted-foreground">
           {subtitle}
         </p>
 
         <div className="mb-10 flex items-center gap-3 rounded-2xl bg-card/70 px-4 py-3">
           <AssetIcon ticker={displayTicker} size={36} />
           <div className="text-left">
-            <p className="text-sm font-bold text-white">{displayTicker}</p>
-            <p className="text-xs text-white/40">{selectedAsset?.name ?? displayTicker}</p>
+            <p className="text-body font-bold text-white">{displayTicker}</p>
+            <p className="text-caption text-white/40">{selectedAsset?.name ?? displayTicker}</p>
           </div>
           <div
             className={cn(

@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../utils/cn'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-caption font-semibold ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]',
   {
     variants: {
       variant: {
@@ -28,12 +28,12 @@ const buttonVariants = cva(
       },
       size: {
         default: 'h-11 px-5 py-2',
-        xs: 'h-7 rounded-lg px-2 text-xs',
-        sm: 'h-9 rounded-lg px-3 text-xs',
-        lg: 'h-14 rounded-xl px-8 text-base font-bold',
-        xl: 'h-16 rounded-2xl px-10 text-lg font-bold',
-        cta: 'h-14 py-4 px-6 text-lg',
-        'cta-lg': 'h-[60px] py-5 px-6 text-lg',
+        xs: 'h-7 rounded-lg px-2 text-caption',
+        sm: 'h-9 rounded-lg px-3 text-caption',
+        lg: 'h-14 rounded-xl px-8 text-body font-bold',
+        xl: 'h-16 rounded-2xl px-10 text-subhead font-bold',
+        cta: 'h-14 py-4 px-6 text-subhead',
+        'cta-lg': 'h-[60px] py-5 px-6 text-subhead',
         icon: 'h-6 w-6 rounded-full',
         'icon-lg': 'h-9 w-9 rounded-full',
         'icon-xl': 'h-12 w-12 rounded-full',

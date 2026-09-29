@@ -83,7 +83,7 @@ export function LoadingCard({ message = 'Loading...', className }: LoadingCardPr
       )}
     >
       <div className="mb-4 size-12 animate-spin rounded-full border-4 border-primary/20 border-t-primary" />
-      <p className="text-sm">{message}</p>
+      <p className="text-body">{message}</p>
     </div>
   )
 }
@@ -114,13 +114,13 @@ export function ErrorCard({
       <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-danger/10">
         <Icon name="error" className="text-danger text-icon-4xl" />
       </div>
-      <h3 className="mb-1 text-base font-semibold">{title}</h3>
-      <p className="mb-4 max-w-xs text-xs text-muted-foreground">{description}</p>
+      <h3 className="mb-1 text-body font-semibold">{title}</h3>
+      <p className="mb-4 max-w-xs text-caption text-muted-foreground">{description}</p>
       {onRetry && (
         <button
           type="button"
           onClick={onRetry}
-          className="rounded-xl bg-primary/15 px-4 py-2 text-xs font-semibold text-primary transition-all hover:bg-primary/25"
+          className="rounded-xl bg-primary/15 px-4 py-2 text-caption font-semibold text-primary transition-all hover:bg-primary/25"
         >
           {retryLabel}
         </button>

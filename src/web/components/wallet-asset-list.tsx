@@ -70,10 +70,10 @@ function EmptyState({ state }: { state: WalletAssetListEmptyState }) {
         </div>
       )}
       {state.title && (
-        <p className="mb-1 text-sm font-medium text-muted-foreground">{state.title}</p>
+        <p className="mb-1 text-caption font-medium text-muted-foreground">{state.title}</p>
       )}
       {state.description && (
-        <p className="text-xs text-muted-foreground/70">{state.description}</p>
+        <p className="text-caption text-muted-foreground/70">{state.description}</p>
       )}
     </div>
   )
@@ -94,10 +94,10 @@ export function WalletAssetList({
     <div className={cn('flex flex-col gap-3', className)}>
       {!hideHeader && (
         <div className="mb-1 mt-3 flex items-center justify-between px-2">
-          <span className="text-xs font-bold uppercase tracking-widest text-foreground/80">
+          <span className="text-mini font-bold uppercase tracking-eyebrow text-foreground/80">
             {title}
           </span>
-          <span className="text-xs font-bold uppercase tracking-widest text-foreground/80">
+          <span className="text-mini font-bold uppercase tracking-eyebrow text-foreground/80">
             {amountLabel}
           </span>
         </div>

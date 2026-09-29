@@ -115,7 +115,7 @@ export function DepositGeneratedView({
       {(network === 'lightning' || (network === 'arkade' && arkSubMode === 'ark')) && isBtc && (
         <div className="flex flex-col gap-1.5 rounded-xl bg-card/70 p-2.5">
           <div className="flex items-center justify-between px-1">
-            <label className="text-xxs font-bold uppercase tracking-widest text-white/40">
+            <label className="text-mini font-bold uppercase tracking-eyebrow text-white/40">
               Specify amount (optional)
             </label>
           </div>
@@ -124,7 +124,7 @@ export function DepositGeneratedView({
             value={amount}
             onChange={handleAmountChange}
             placeholder="Any amount"
-            className="w-full rounded-lg border bg-white/5 px-3 py-1.5 font-mono text-xs font-bold text-white transition-all placeholder:text-white/25 focus:border-warning/40 focus:outline-none"
+            className="w-full rounded-lg border bg-white/5 px-3 py-1.5 font-mono text-caption font-bold text-white transition-all placeholder:text-white/25 focus:border-warning/40 focus:outline-none"
             inputMode="decimal"
           />
           {amount && (
@@ -147,7 +147,7 @@ export function DepositGeneratedView({
       {network === 'lightning' && !isBtc && (
         <div className="flex flex-col gap-1.5 rounded-xl bg-card/70 p-2.5">
           <div className="flex items-center justify-between px-1">
-            <label className="text-xxs font-bold uppercase tracking-widest text-white/40">
+            <label className="text-mini font-bold uppercase tracking-eyebrow text-white/40">
               Specify amount (optional)
             </label>
           </div>
@@ -156,7 +156,7 @@ export function DepositGeneratedView({
             value={amount}
             onChange={handleAmountChange}
             placeholder={selectedAsset?.ticker ? `Any amount (${selectedAsset.ticker})` : 'Any amount'}
-            className="w-full rounded-lg border bg-white/5 px-3 py-1.5 font-mono text-xs font-bold text-white transition-all placeholder:text-white/25 focus:border-warning/40 focus:outline-none"
+            className="w-full rounded-lg border bg-white/5 px-3 py-1.5 font-mono text-caption font-bold text-white transition-all placeholder:text-white/25 focus:border-warning/40 focus:outline-none"
             inputMode="decimal"
           />
           {amount && (
@@ -213,7 +213,7 @@ export function DepositGeneratedView({
             <button
               type="button"
               className={cn(
-                'flex items-center gap-1 rounded-full border px-2.5 py-1 text-xxs font-bold uppercase tracking-widest transition-all',
+                'flex items-center gap-1 rounded-full border px-2.5 py-1 text-mini font-bold uppercase tracking-eyebrow transition-all',
                 isAddressCopied
                   ? 'border-primary/30 bg-primary/10 text-primary'
                   : 'border-border bg-white/5 text-muted-foreground hover:border-white/20 hover:bg-accent hover:text-white'
@@ -256,7 +256,7 @@ export function DepositGeneratedView({
           {net.icon}
         </div>
         <div className="min-w-0 flex-1">
-          <p className={cn('text-xxs font-bold uppercase tracking-widest', net.text)}>
+          <p className={cn('text-mini font-bold uppercase tracking-eyebrow', net.text)}>
             <span data-testid="deposit-address-label">{addressLabel}</span>
           </p>
           <p className="mt-0.5 truncate font-mono text-tiny text-muted-foreground">
@@ -278,7 +278,7 @@ export function DepositGeneratedView({
             <Icon name="person" size="xs" className="text-primary" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-xxs font-bold uppercase tracking-widest text-primary">
+            <p className="text-mini font-bold uppercase tracking-eyebrow text-primary">
               Recipient ID
             </p>
             <p className="mt-0.5 truncate font-mono text-tiny text-muted-foreground">

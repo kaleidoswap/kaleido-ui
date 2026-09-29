@@ -79,7 +79,7 @@ export function AssetCard({
           <div className="flex min-w-0 flex-col">
             <span
               className={cn(
-                'max-w-full truncate font-bold text-base leading-tight tracking-wide text-foreground',
+                'max-w-full truncate font-bold text-body leading-tight tracking-wide text-foreground',
                 onClick && 'transition-colors'
               )}
               title={name}
@@ -95,7 +95,7 @@ export function AssetCard({
         </div>
         <div className="flex min-w-0 max-w-[45%] flex-col items-end text-right">
           <p
-            className="max-w-full truncate font-bold text-lg tabular-nums tracking-tight text-foreground transition-colors group-hover:opacity-90"
+            className="max-w-full truncate font-bold text-subhead tabular-nums tracking-tight text-foreground transition-colors group-hover:opacity-90"
             title={shown}
           >
             {displayShown}
@@ -120,7 +120,7 @@ export function AssetCard({
                 </svg>
               </div>
             )}
-            <p className="truncate text-tiny font-medium uppercase tracking-wide text-muted-foreground">
+            <p className="truncate text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
               {ticker}
             </p>
           </div>

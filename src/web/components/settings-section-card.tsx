@@ -23,8 +23,8 @@ export function SettingsSectionCard({
     <section className={cn('space-y-4 rounded-xl bg-card/70 p-4', className)}>
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
-          <h2 className="text-sm font-bold text-foreground">{title}</h2>
-          {description && <p className="mt-1 text-xs text-muted-foreground">{description}</p>}
+          <h2 className="text-body font-bold text-foreground">{title}</h2>
+          {description && <p className="mt-1 text-caption text-muted-foreground">{description}</p>}
         </div>
         {badge}
       </div>
