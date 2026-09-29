@@ -14,6 +14,20 @@ export interface KScreenProps extends ViewProps {
   elevated?: boolean
 }
 
+/**
+ * Draw the page under a transparent Android status bar, as edge-to-edge does.
+ *
+ * React Native 0.81+ is edge-to-edge on Android and 0.87 removed these two
+ * props from `StatusBarProps`, so naming them in JSX fails the type build
+ * against a current react-native. Older versions still need them to paint the
+ * canvas behind the bar. Spread as an untyped bag they reach the versions that
+ * read them and are ignored by the ones that do not.
+ */
+const legacyAndroidStatusBar: Record<string, unknown> = {
+  backgroundColor: 'transparent',
+  translucent: true,
+}
+
 export function KScreen({ elevated = false, style, children, ...rest }: KScreenProps) {
   const { theme, mode } = useKaleidoTheme()
   return (
@@ -23,8 +37,7 @@ export function KScreen({ elevated = false, style, children, ...rest }: KScreenP
     >
       <StatusBar
         barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
-        backgroundColor="transparent"
-        translucent
+        {...legacyAndroidStatusBar}
       />
       {children}
     </View>

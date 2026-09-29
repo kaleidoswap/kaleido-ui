@@ -1,0 +1,13 @@
+# Check every text file out with LF, whatever core.autocrlf says. The build
+# scripts read DESIGN.md and the generated CSS byte for byte, and a CRLF
+# checkout on Windows used to fail `npm run build` before it reached tsup.
+* text=auto eol=lf
+
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+*.png binary
+*.jpg binary
+*.ico binary
+*.tgz binary

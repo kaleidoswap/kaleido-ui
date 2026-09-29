@@ -33,10 +33,19 @@ import {
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const DESIGN_DOC = join(__dirname, '..', 'DESIGN.md')
+const PACKAGE_JSON = join(__dirname, '..', 'package.json')
+
+/**
+ * DESIGN.md with its line endings normalised. A Windows checkout under the
+ * default `core.autocrlf=true` has CRLF endings, and every check below is
+ * written against `\n` — without this the script reported "no front matter"
+ * on a file that has one.
+ */
+const readDesignDoc = (): string => readFileSync(DESIGN_DOC, 'utf8').replace(/\r\n/g, '\n')
 
 /** Front matter is a flat `key: "value"` list, one per line, with # comments. */
 const readFrontMatter = (): Map<string, string> => {
-  const text = readFileSync(DESIGN_DOC, 'utf8')
+  const text = readDesignDoc()
   if (!text.startsWith('---\n')) {
     throw new Error('DESIGN.md has no YAML front matter')
   }
@@ -70,7 +79,7 @@ const readFrontMatter = (): Map<string, string> => {
 
 /** `label: { family: "Satoshi", weight: 700, size: 9, tracking: 0.18em, ... }` */
 const readTypographyRow = (name: string): Map<string, string> => {
-  const text = readFileSync(DESIGN_DOC, 'utf8')
+  const text = readDesignDoc()
   const row = new RegExp(`^\\s*${name}:\\s*\\{(.*)\\}\\s*$`, 'm').exec(text)
   if (!row) throw new Error(`DESIGN.md has no typography row for "${name}"`)
   const fields = new Map<string, string>()
@@ -95,6 +104,12 @@ const expect = (key: string, actual: string, documented: string | undefined) => 
 }
 
 const front = readFrontMatter()
+
+// ── The version the document describes ─────────────────────────────────────
+// It said 0.1.120 while the package was 0.1.122: a reader could not tell
+// whether the prose had been reviewed against the release they installed.
+const packageVersion = (JSON.parse(readFileSync(PACKAGE_JSON, 'utf8')) as { version: string }).version
+expect('version', packageVersion, front.get('version'))
 
 // ── Colours ────────────────────────────────────────────────────────────────
 expect('brand.primary', colors.primary, front.get('brand.primary'))
