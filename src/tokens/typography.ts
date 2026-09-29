@@ -39,11 +39,11 @@ export const letterSpacing = {
 } as const
 
 /**
- * Icon size scale — drives `text-icon-*` utilities for Material Symbols glyphs
- * and other font-driven icon sets. Exists as its own scale (separate from the
- * body type scale) because icon sizes change in tighter steps.
+ * Icon size scale — drives `text-icon-*` utilities. The SVG `Icon` is 1em
+ * square, so a font size is its size. Exists as its own scale (separate from
+ * the body type scale) because icon sizes change in tighter steps.
  *
- * Usage: <span class="material-symbols-outlined text-icon-md">name</span>
+ * Usage: <Icon name="check" className="text-icon-md" />
  */
 export const iconSize = {
   xxs: '11px', // dense inline status / timestamp icons

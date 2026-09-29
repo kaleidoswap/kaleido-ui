@@ -50,7 +50,7 @@ export const NETWORK_CONFIG: Record<DepositNetworkKey, DepositNetworkConfigEntry
     // On-chain uses a chain-link glyph rather than the ₿ coin — the coin reads
     // as "the BTC asset", whereas this row is specifically the *on-chain* (L1)
     // receive rail alongside Lightning/Spark/Arkade, so a chain mark disambiguates.
-    icon: <span className="material-symbols-outlined text-icon-xs leading-none">link</span>,
+    icon: <Icon name="link" className="text-icon-xs" />,
   },
   lightning: {
     label: 'Lightning',
@@ -175,21 +175,19 @@ export function InvoiceStatusBanner({
     >
       {isInvoicePending && (
         <>
-          <span className="material-symbols-outlined animate-spin text-icon-sm">
-            progress_activity
-          </span>
+          <Icon name="progress_activity" className="animate-spin text-icon-sm" />
           <span>Waiting for payment...</span>
         </>
       )}
       {isInvoicePaid && (
         <>
-          <span className="material-symbols-outlined text-icon-sm">check_circle</span>
+          <Icon name="check_circle" className="text-icon-sm" />
           <span>Payment received!</span>
         </>
       )}
       {isInvoiceFailedOrExpired && (
         <>
-          <span className="material-symbols-outlined text-icon-sm">cancel</span>
+          <Icon name="cancel" className="text-icon-sm" />
           <span>Invoice {invoiceStatus?.toLowerCase() === 'expired' ? 'expired' : 'failed'}</span>
         </>
       )}
@@ -202,7 +200,7 @@ export function PaidOverlay() {
     <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-background/80">
       <div className="flex flex-col items-center gap-2">
         <div className="flex size-14 items-center justify-center rounded-full bg-primary">
-          <span className="material-symbols-outlined text-icon-4xl text-background">check</span>
+          <Icon name="check" className="text-icon-4xl text-background" />
         </div>
         <span className="text-sm font-bold text-primary">Received!</span>
       </div>

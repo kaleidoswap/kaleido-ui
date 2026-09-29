@@ -606,3 +606,33 @@ export const Palette = (props: React.SVGProps<SVGSVGElement>) => (
 <path d="M93.2949 69.3048C97.7114 69.3048 101.292 65.7245 101.292 61.308C101.292 56.8916 97.7114 53.3113 93.2949 53.3113C88.8785 53.3113 85.2982 56.8916 85.2982 61.308C85.2982 65.7245 88.8785 69.3048 93.2949 69.3048Z"/>
   </svg>
 )
+
+// The four glyphs below were the last ones components still spelled as
+// Material Symbols ligatures. They keep the Material grid (24 / 960 units) in
+// their own viewBox, which is the same 4-unit inset the 128-unit glyphs above
+// are drawn on, so they size and align identically.
+
+export const KeyboardArrowUp = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+    <path d="M7.41 15.41 12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+  </svg>
+)
+
+export const KeyboardArrowDown = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+    <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+  </svg>
+)
+
+export const SwapCalls = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+    <path d="M18 4l-4 4h3v7c0 1.1-.9 2-2 2s-2-.9-2-2V8c0-2.21-1.79-4-4-4S5 5.79 5 8v7H2l4 4 4-4H7V8c0-1.1.9-2 2-2s2 .9 2 2v7c0 2.21 1.79 4 4 4s4-1.79 4-4V8h3l-4-4z"/>
+  </svg>
+)
+
+/** A three-quarter ring: the spinner. Pair it with `animate-spin`. */
+export const ProgressActivity = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true" {...props}>
+    <path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q17 0 28.5 11.5T520-840q0 17-11.5 28.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160q133 0 226.5-93.5T800-480q0-17 11.5-28.5T840-520q17 0 28.5 11.5T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Z"/>
+  </svg>
+)

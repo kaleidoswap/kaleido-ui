@@ -19,7 +19,7 @@ export interface ActivityNetworkFiltersProps<TValue extends string = ActivityNet
 }
 
 export function getActivityNetworkFilterIcon(filter: ActivityNetworkFilterValue) {
-  // size="xs" → text-icon-sm (14px) so the Material-Symbols glyph's
+  // size="xs" → text-icon-sm (14px) so the SVG glyph's
   // font-size matches the size-icon-sm box and the visible glyph lines up
   // with the 14px <img> network icons (Lightning / Spark / Arkade).
   // Without this, AppIcon defaults to size="lg" (24px) and the glyph

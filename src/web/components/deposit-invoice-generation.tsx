@@ -440,9 +440,10 @@ export function DepositInvoiceGeneration({
                 ].bg
               )}
             >
-              <span
+              <Icon
+                name="progress_activity"
                 className={cn(
-                  'material-symbols-outlined animate-spin text-icon-4xl',
+                  'animate-spin text-icon-4xl',
                   NETWORK_CONFIG[
                     btcSelectedAccount === 'SPARK'
                       ? 'spark'
@@ -451,9 +452,7 @@ export function DepositInvoiceGeneration({
                         : 'onchain'
                   ].text
                 )}
-              >
-                progress_activity
-              </span>
+              />
             </div>
             <div className="space-y-1 text-center">
               <p className="text-sm font-bold text-muted-foreground">Generating addresses...</p>

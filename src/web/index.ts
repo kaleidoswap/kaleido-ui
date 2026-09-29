@@ -68,6 +68,7 @@ export {
 } from './primitives/toast'
 export { Toaster } from './primitives/toaster'
 export { Icon, Icons, type IconProps, type IconName } from './primitives/icon'
+export { isIconName } from './icons'
 export {
   DotPagination,
   type DotPaginationProps,

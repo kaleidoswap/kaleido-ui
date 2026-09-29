@@ -367,7 +367,7 @@ export function InlineAction({
         <p className="text-sm font-semibold text-white">{title}</p>
         <p className="mt-1 text-xs text-muted-foreground">{description}</p>
       </div>
-      <span className="material-symbols-outlined text-icon-lg">chevron_right</span>
+      <Icon name="chevron_right" className="text-icon-lg" />
     </button>
   )
 }

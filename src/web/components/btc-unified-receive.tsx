@@ -220,9 +220,7 @@ export function BtcUnifiedReceive({
             />
             {amount && loading && (
               <p className="flex items-center gap-1 text-xxs text-warning/70">
-                <span className="material-symbols-outlined animate-spin text-icon-xxs">
-                  progress_activity
-                </span>
+                <Icon name="progress_activity" className="animate-spin text-icon-xxs" />
                 Updating invoice...
               </p>
             )}

@@ -1,3 +1,4 @@
+import { Icon } from '../primitives/icon'
 import type { ReactNode } from 'react'
 import { cn } from '../utils/cn'
 import { LiquidNetworkIcon } from './network-icon'
@@ -21,7 +22,7 @@ const NETWORK_OPTIONS: Record<DepositAccountId, DepositNetworkOption> = {
     account: 'RGB',
     label: 'On-chain / Lightning',
     description: 'Classic Bitcoin address or Lightning invoice via the RLN node.',
-    icon: <span className="material-symbols-outlined text-icon-lg">link</span>,
+    icon: <Icon name="link" className="text-icon-lg" />,
     accentBg: 'bg-network-bitcoin/10',
     accentBorder: 'border-network-bitcoin/30',
     accentText: 'text-network-bitcoin',
@@ -138,14 +139,13 @@ export function DepositNetworkDefaultModal({
                   <p className="mt-0.5 text-xxs leading-snug text-white/45">{option.description}</p>
                 </div>
 
-                <span
+                <Icon
+                  name="chevron_right"
                   className={cn(
-                    'material-symbols-outlined flex-shrink-0 text-icon-lg',
+                    'flex-shrink-0 text-icon-lg',
                     isSuggested ? option.accentText : 'text-white/25'
                   )}
-                >
-                  chevron_right
-                </span>
+                />
               </button>
             )
           })}

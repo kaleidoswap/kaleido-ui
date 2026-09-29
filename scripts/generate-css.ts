@@ -96,7 +96,11 @@ const css = `/* AUTO-GENERATED — do not edit by hand.
  * Regenerate: npm run generate:css
  */
 
-/* ── Material Symbols ──────────────────────────────────────────────────── */
+/* ── Material Symbols (opt-in) ────────────────────────────────────────────
+   No kaleido-ui component renders this class: every glyph is an inline SVG
+   (the Icon primitive), and tests/no-font-ligatures.test.tsx keeps it so.
+   These rules serve a consumer that self-hosts the Material Symbols font and
+   writes its own ligature spans. */
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   /*

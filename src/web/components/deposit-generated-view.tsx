@@ -131,9 +131,7 @@ export function DepositGeneratedView({
             <p className="text-xxs text-warning/70">
               {loading ? (
                 <span className="flex items-center gap-1">
-                  <span className="material-symbols-outlined animate-spin text-icon-xxs">
-                    progress_activity
-                  </span>
+                  <Icon name="progress_activity" className="animate-spin text-icon-xxs" />
                   Updating {network === 'arkade' ? 'URI' : 'invoice'}...
                 </span>
               ) : network === 'arkade' ? (
@@ -165,9 +163,7 @@ export function DepositGeneratedView({
             <p className="text-xxs text-warning/70">
               {loading ? (
                 <span className="flex items-center gap-1">
-                  <span className="material-symbols-outlined animate-spin text-icon-xxs">
-                    progress_activity
-                  </span>
+                  <Icon name="progress_activity" className="animate-spin text-icon-xxs" />
                   Updating invoice...
                 </span>
               ) : (
@@ -206,9 +202,7 @@ export function DepositGeneratedView({
             // Loading scrim — sits over the QR while a fresh address/invoice
             // is being fetched (e.g. after the New Address button).
             <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-white/80 backdrop-blur-sm">
-              <span className="material-symbols-outlined animate-spin text-icon-3xl text-network-bitcoin">
-                progress_activity
-              </span>
+              <Icon name="progress_activity" className="animate-spin text-icon-3xl text-network-bitcoin" />
             </div>
           )}
         </div>
@@ -321,11 +315,7 @@ export function DepositGeneratedView({
             }}
             className="flex size-10 items-center justify-center rounded-full bg-primary/15 text-primary transition-all hover:bg-primary/25 active:scale-[0.98] disabled:opacity-50"
           >
-            <span
-              className={cn('material-symbols-outlined text-icon-md', loading && 'animate-spin')}
-            >
-              refresh
-            </span>
+            <Icon name="refresh" className={cn('text-icon-md', loading && 'animate-spin')} />
           </button>
         </div>
       )}

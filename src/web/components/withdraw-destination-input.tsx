@@ -56,7 +56,7 @@ export function WithdrawDestinationInput({
               }}
               className="rounded-lg p-2 text-muted-foreground transition-colors hover:text-white"
             >
-              <span className="material-symbols-outlined text-icon-md">close</span>
+              <Icon name="close" className="text-icon-md" />
             </button>
           )}
           <button
@@ -65,7 +65,7 @@ export function WithdrawDestinationInput({
             onClick={handlePaste}
             className="rounded-lg bg-white/5 p-2 text-muted-foreground transition-colors hover:text-primary"
           >
-            <span className="material-symbols-outlined text-icon-md">content_paste</span>
+            <Icon name="content_paste" className="text-icon-md" />
           </button>
         </div>
       </div>
@@ -74,9 +74,7 @@ export function WithdrawDestinationInput({
         <div className="ml-1 flex items-center gap-2 text-xs">
           {isDecoding || isResolvingLnurl ? (
             <span className="flex items-center gap-1 text-muted-foreground">
-              <span className="material-symbols-outlined animate-spin text-icon-sm">
-                progress_activity
-              </span>
+              <Icon name="progress_activity" className="animate-spin text-icon-sm" />
               {isResolvingLnurl ? 'Resolving...' : 'Decoding...'}
             </span>
           ) : addressType !== 'unknown' && addressType !== 'invalid' ? (
@@ -98,4 +96,5 @@ export function WithdrawDestinationInput({
       )}
     </div>
   )
-}
+}import { Icon } from '../primitives/icon'
+

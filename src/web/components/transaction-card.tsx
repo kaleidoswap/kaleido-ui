@@ -1,3 +1,4 @@
+import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 import { StatusIconBadge } from './status-icon-badge'
 import type { StatusType } from './status-badge'
@@ -87,9 +88,7 @@ export function TransactionCard({
                 iconStyle
               )}
             >
-              <span className="material-symbols-outlined text-icon-xl">
-                {isInbound ? 'arrow_downward' : 'arrow_outward'}
-              </span>
+              <Icon name={isInbound ? 'arrow_downward' : 'arrow_outward'} className="text-icon-xl" />
             </div>
           }
         />
@@ -129,9 +128,7 @@ export function TransactionCard({
               className="mt-0.5 flex w-full items-center justify-end gap-1 text-tiny text-muted-foreground/70 font-medium tracking-wide tabular-nums transition-colors hover:text-foreground"
             >
               {subAmount}
-              <span className="material-symbols-outlined block" style={{ fontSize: '13px' }}>
-                info
-              </span>
+              <Icon name="info" className="text-icon-xs" />
             </button>
           ) : (
             <p className="mt-0.5 flex items-center justify-end gap-1 text-tiny text-muted-foreground/70 font-medium tracking-wide tabular-nums">

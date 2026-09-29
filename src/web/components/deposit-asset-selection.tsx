@@ -201,9 +201,7 @@ export function DepositAssetSelection<TView extends string = string>({
               {isArkadeConnected && <NetworkBadge network="Arkade" size="sm" />}
               {isLiquidConnected && <NetworkBadge network="Liquid" size="sm" />}
             </div>
-            <span className="material-symbols-outlined flex-shrink-0 text-icon-md text-white/20 transition-colors group-hover:text-white/50">
-              arrow_forward
-            </span>
+            <Icon name="arrow_forward" className="flex-shrink-0 text-icon-md text-white/20 transition-colors group-hover:text-white/50" />
           </button>
         )}
 
@@ -280,9 +278,7 @@ export function DepositAssetSelection<TView extends string = string>({
                           </div>
                         </div>
                       )}
-                      <span className="material-symbols-outlined flex-shrink-0 text-icon-sm text-white/20 transition-colors group-hover:text-white/50">
-                        arrow_forward
-                      </span>
+                      <Icon name="arrow_forward" className="flex-shrink-0 text-icon-sm text-white/20 transition-colors group-hover:text-white/50" />
                     </button>
                   )
                 })}
@@ -299,7 +295,7 @@ export function DepositAssetSelection<TView extends string = string>({
               className="group flex w-full items-center gap-3 rounded-2xl bg-gradient-to-r from-primary/10 to-primary/5 p-3 transition-all hover:from-primary/20 hover:to-primary/10"
             >
               <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/20">
-                <span className="material-symbols-outlined text-lg text-primary">swap_calls</span>
+                <Icon name="swap_calls" className="text-icon-lg text-primary" />
               </div>
               <div className="flex-1 text-left">
                 <p className="text-sm font-semibold text-white transition-colors group-hover:text-primary">
@@ -307,9 +303,7 @@ export function DepositAssetSelection<TView extends string = string>({
                 </p>
                 <p className="text-xxs leading-tight text-white/40">USDC, USDT, ETH, SOL via Flashnet</p>
               </div>
-              <span className="material-symbols-outlined text-lg text-white/30 transition-colors group-hover:text-primary">
-                arrow_forward
-              </span>
+              <Icon name="arrow_forward" className="text-icon-lg text-white/30 transition-colors group-hover:text-primary" />
             </button>
           </div>
         )}
@@ -333,9 +327,7 @@ export function DepositAssetSelection<TView extends string = string>({
                   Receive a new {newAssetOptions.map((o) => o.ticker).join(', ')} asset
                 </p>
               </div>
-              <span className="material-symbols-outlined text-lg text-white/30 transition-colors group-hover:text-primary">
-                arrow_forward
-              </span>
+              <Icon name="arrow_forward" className="text-icon-lg text-white/30 transition-colors group-hover:text-primary" />
             </button>
           </div>
         )}

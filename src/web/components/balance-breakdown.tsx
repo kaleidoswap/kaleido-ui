@@ -106,12 +106,7 @@ export interface BalanceBreakdownProps {
 
 function OnchainIcon({ className = '' }: { className?: string }) {
   return (
-    <span
-      className={`material-symbols-outlined leading-none ${className}`}
-      style={{ fontSize: 'inherit' }}
-    >
-      link
-    </span>
+    <Icon name="link" className={className} />
   )
 }
 
@@ -240,11 +235,10 @@ export function BalanceBreakdown({
                 className="flex size-7 items-center justify-center rounded-full bg-white/[0.08] transition-all hover:bg-white/[0.12] disabled:opacity-40"
                 title="Refresh balances"
               >
-                <span
-                  className={`material-symbols-outlined text-icon-sm leading-none text-white/60${isRefreshing ? ' animate-spin' : ''}`}
-                >
-                  refresh
-                </span>
+                <Icon
+                  name="refresh"
+                  className={`text-icon-sm text-white/60${isRefreshing ? ' animate-spin' : ''}`}
+                />
               </button>
             )}
             <button
@@ -369,9 +363,7 @@ export function BalanceBreakdown({
                   <div className="flex items-center gap-3">
                     <div className="h-7 w-0.5 rounded-full bg-success opacity-80" />
                     <div className="flex size-7 items-center justify-center rounded-lg bg-white/5 text-icon-sm">
-                      <span className="material-symbols-outlined leading-none" style={{ fontSize: 'inherit' }}>
-                        payments
-                      </span>
+                      <Icon name="payments" />
                     </div>
                     <div className="flex flex-col">
                       <span className="text-xs font-semibold leading-tight text-white/80">Stablecoins &amp; Tokens</span>
@@ -416,22 +408,20 @@ export function BalanceBreakdown({
           className={`relative z-10 flex gap-2.5 ${compact ? 'mt-2 pt-2' : 'mt-3 pt-3'}`}
         >
           <ActionTile
-            icon={<span className="material-symbols-outlined text-icon-sm leading-none">call_received</span>}
+            icon={<Icon name="call_received" className="text-icon-sm" />}
             label={actionLabels?.receive ?? 'Deposit'}
             onClick={() => onNavigate?.('deposit')}
             data-testid="dashboard-action-deposit"
           />
           <ActionTile
-            icon={<span className="material-symbols-outlined text-icon-sm leading-none">swap_horiz</span>}
+            icon={<Icon name="swap_horiz" className="text-icon-sm" />}
             label="Swap"
             onClick={() => onNavigate?.('swap')}
             data-testid="dashboard-action-swap"
           />
           <ActionTile
             icon={
-              <span className="material-symbols-outlined text-icon-sm leading-none">
-                arrow_outward
-              </span>
+              <Icon name="arrow_outward" className="text-icon-sm" />
             }
             label={actionLabels?.send ?? 'Withdraw'}
             onClick={() => onNavigate?.('withdraw')}

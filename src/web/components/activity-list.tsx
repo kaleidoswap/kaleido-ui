@@ -1,3 +1,4 @@
+import { Icon } from '../primitives/icon'
 import type { ReactNode } from 'react'
 import { Button } from '../primitives/button'
 import { TransactionCard } from './transaction-card'
@@ -6,6 +7,7 @@ import { SwapBadge } from './swap-badge'
 import { LoadingCard, ErrorCard } from './page-shell'
 import type { StatusType } from './status-badge'
 import { cn } from '../utils/cn'
+import type { IconName } from '../icons'
 
 export interface ActivityListItem<TData = unknown> {
   id: string
@@ -46,12 +48,8 @@ export interface ActivityListProps<TData = unknown> {
   filteredEmptyDescription?: string
 }
 
-function DefaultEmptyIcon({ name }: { name: string }) {
-  return (
-    <span className="material-symbols-outlined text-foreground/30" style={{ fontSize: '32px' }}>
-      {name}
-    </span>
-  )
+function DefaultEmptyIcon({ name }: { name: IconName }) {
+  return <Icon name={name} className="text-icon-4xl text-foreground/30" />
 }
 
 export function ActivityList<TData = unknown>({

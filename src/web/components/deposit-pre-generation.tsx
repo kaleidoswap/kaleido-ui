@@ -1,3 +1,4 @@
+import { Icon } from '../primitives/icon'
 import type { ChangeEvent } from 'react'
 import { AlertBanner } from './alert-banner'
 import { Button } from '../primitives/button'
@@ -131,9 +132,7 @@ export function DepositPreGeneration({
 
       {channelsLoading && selectedAccount === 'RGB' && currentMethod === 'lightning' && !isBtc && (
         <div className="flex items-center gap-2.5 rounded-xl bg-card/70 p-3">
-          <span className="material-symbols-outlined animate-spin text-icon-lg text-primary">
-            progress_activity
-          </span>
+          <Icon name="progress_activity" className="animate-spin text-icon-lg text-primary" />
           <span className="text-xs font-medium text-white/60">Checking channel availability...</span>
         </div>
       )}
@@ -157,9 +156,7 @@ export function DepositPreGeneration({
       {isAutoGenerate && loading && (
         <div className="flex flex-col items-center gap-4 py-10">
           <div className={cn('flex size-16 items-center justify-center rounded-2xl', net.bg)}>
-            <span className={cn('material-symbols-outlined animate-spin text-icon-4xl', net.text)}>
-              progress_activity
-            </span>
+            <Icon name="progress_activity" className={cn('animate-spin text-icon-4xl', net.text)} />
           </div>
           <div className="space-y-1 text-center">
             <p className="text-sm font-bold text-muted-foreground">
@@ -291,7 +288,7 @@ export function DepositPreGeneration({
         onOpenCreateUtxos ? (
           <Button variant="cta" size="cta" onClick={onOpenCreateUtxos} disabled={loading}>
             <span className="flex items-center justify-center gap-2">
-              <span className="material-symbols-outlined text-icon-md">add_circle</span>
+              <Icon name="add_circle" className="text-icon-md" />
               Create Colorable UTXOs
             </span>
           </Button>
@@ -299,14 +296,12 @@ export function DepositPreGeneration({
           <Button variant="cta" size="cta" onClick={generateInvoice} disabled={loading}>
             {loading ? (
               <span className="flex items-center justify-center gap-2">
-                <span className="material-symbols-outlined animate-spin text-icon-md">
-                  progress_activity
-                </span>
+                <Icon name="progress_activity" className="animate-spin text-icon-md" />
                 Generating...
               </span>
             ) : (
               <span className="flex items-center justify-center gap-2">
-                <span className="material-symbols-outlined text-icon-md">qr_code_2</span>
+                <Icon name="qr_code_2" className="text-icon-md" />
                 Generate Address
               </span>
             )}
