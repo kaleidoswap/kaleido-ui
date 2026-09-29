@@ -300,7 +300,7 @@ export {
   StepperNumberInput,
   type StepperNumberInputProps,
 } from './components/stepper-number-input'
-export { MetricCard, type MetricCardProps } from './components/metric-card'
+export { MetricCard, type MetricCardProps, type MetricCardSize } from './components/metric-card'
 export {
   TrendChart,
   trendChartTicks,

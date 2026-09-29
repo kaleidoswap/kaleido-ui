@@ -4,9 +4,21 @@ import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 
 export interface PageHeaderProps {
+  /**
+   * `bar` (default) is the mobile app bar: sticky, a back button, a small
+   * title and a `right` slot. `page` is a desk page's header: the page's `h1`,
+   * a one-line `description`, and one `action` aligned with the title that
+   * wraps under it on a narrow screen. No back button unless `onBack` is
+   * passed.
+   */
+  variant?: 'bar' | 'page'
   left?: ReactNode
-  title?: string
+  title?: ReactNode
   subtitle?: ReactNode
+  /** `page` variant: the line under the title. */
+  description?: ReactNode
+  /** `page` variant: the page's action (Refresh, Create key), at the end of the title row. */
+  action?: ReactNode
   right?: ReactNode
   className?: string
   /** @deprecated Page titles are now always left-aligned. */
@@ -18,15 +30,59 @@ export interface PageHeaderProps {
 }
 
 export function PageHeader({
+  variant = 'bar',
   left,
   title,
   subtitle,
+  description,
+  action,
   right,
   className,
   onBack,
   backLabel = 'Go back',
   borderClassName,
 }: PageHeaderProps) {
+  if (variant === 'page') {
+    return (
+      <header
+        data-slot="page-header"
+        data-variant="page"
+        className={cn('flex flex-wrap items-start justify-between gap-x-4 gap-y-3', className)}
+      >
+        <div data-slot="page-header-leading" className="flex min-w-0 flex-[1_1_16rem] items-start gap-3">
+          {onBack && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-lg"
+              onClick={onBack}
+              aria-label={backLabel}
+              className="-ml-2 shrink-0"
+            >
+              <Icon name="arrow_back" size="lg" />
+            </Button>
+          )}
+          <div className="min-w-0">
+            <h1 className="m-0 text-title font-bold text-foreground">{title}</h1>
+            {description && (
+              <p className="m-0 mt-1 text-caption text-muted-foreground">{description}</p>
+            )}
+          </div>
+        </div>
+        {(action ?? right) && (
+          // The title's line box is 28px; the action is centred on it, so it
+          // lines up with the title rather than with the title-plus-description block.
+          <div
+            data-slot="page-header-actions"
+            className="flex min-h-7 shrink-0 items-center gap-2"
+          >
+            {action ?? right}
+          </div>
+        )}
+      </header>
+    )
+  }
+
   const backButton = onBack ? (
     <Button
       type="button"

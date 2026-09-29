@@ -399,6 +399,24 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 - **No pointer needed** — hovering a period shows its figures; the plot is focusable, ←/→/Home/End move between periods and Escape clears, and the readout is a polite live region.
 - **Width** — the SVG is `width="100%"` with a `viewBox` measured from its container; a fixed pixel width would become the column's min-content and force a sideways scroll.
 
+### MetricCard
+
+**Intended use.** One figure and its label: a balance, a count, a rate. Two sizes, one per surface:
+
+- **`compact`** (default) — the phone tile in the wallet's dense metric rows: `p-2.5`, `rounded-xl`, eyebrow label, value in `body`, icon beside the label.
+- **`comfortable`** — the desk tile on panel dashboards: `p-4`, `rounded-2xl` `bg-card`, eyebrow label, value in `headline` (28 px) with `tabular-nums`, `description` in `caption` under it, and the icon at the end of the tile, right of the figure. The figure is the point of the tile, so it is the largest text on it. Do not build a second stat tile from `Card`.
+
+The tile is a `role="group"` named by its label (or `aria-label`), so a failure that replaces the value is announced as belonging to that metric.
+
+### PageHeader
+
+- **`variant="bar"`** (default) — the mobile app bar: sticky, back button, small title, `right` slot.
+- **`variant="page"`** — a desk page's header: the page's only `h1` (`title`), a one-line `description` in `caption`, and one `action` at the end of the title row, centred on the title's line and wrapping under it on a phone. No back button unless `onBack` is passed.
+
+### SummaryRows
+
+Label/value rows on `bg-muted/40`, separated by spacing. The markup follows the content: `as="dl"` (default) is a label/value list, a `dt`/`dd` per row; `as="ol"` is an ordered log (a status history); `as="ul"` an unordered one. The visual does not change with `as`. `tone: 'muted'` sets a value quieter than its label (`caption`, normal weight, `muted-foreground`), for the timestamp beside a log event.
+
 ## Do's and Don'ts
 
 - **DO** use `brand.primary` only for CTAs, active states, and success. It is a signal, not a decoration.
