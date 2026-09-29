@@ -1,3 +1,4 @@
+import { formatAmount } from '../utils/amount-display'
 import type { WithdrawAddressType } from './withdraw-destination-input'
 
 export interface WithdrawInvoiceAsset {
@@ -61,7 +62,7 @@ export function WithdrawInvoiceInfo({
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Amount</span>
             <span className="font-bold text-white">
-              {decodedLnInvoice.amount.toLocaleString()}{' '}
+              {formatAmount(decodedLnInvoice.amount)}{' '}
               {decodedLnInvoice.asset_id ? 'units' : 'sats'}
             </span>
           </div>
@@ -79,7 +80,7 @@ export function WithdrawInvoiceInfo({
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Asset Amount</span>
             <span className="font-bold text-white">
-              {decodedLnInvoice.asset_amount.toLocaleString()}
+              {formatAmount(decodedLnInvoice.asset_amount)}
             </span>
           </div>
         )}
@@ -94,7 +95,7 @@ export function WithdrawInvoiceInfo({
         <div className="flex justify-between text-sm">
           <span className="text-muted-foreground">Channel Capacity</span>
           <span className="text-white">
-            {Math.floor(maxLightningCapacity / 1000).toLocaleString()} sats
+            {formatAmount(Math.floor(maxLightningCapacity / 1000))} sats
           </span>
         </div>
       </div>

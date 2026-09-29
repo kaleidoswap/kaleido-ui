@@ -10,9 +10,12 @@
 // Utilities
 export { cn } from './utils/cn'
 export {
+  DEFAULT_AMOUNT_LOCALE,
+  formatAmount,
   formatDisplayAmountText,
   type AmountDisplayOptions,
   type AmountDisplayUnit,
+  type FormatAmountOptions,
 } from './utils/amount-display'
 
 // Primitives

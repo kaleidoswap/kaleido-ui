@@ -1,6 +1,7 @@
 import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
 import { ScrollArea } from './scroll-area'
+import { formatAmount } from '../utils/amount-display'
 import type { WithdrawAddressType } from './withdraw-destination-input'
 
 export interface WithdrawConfirmationRgbInvoice {
@@ -33,6 +34,8 @@ export interface WithdrawConfirmationProps {
     totalDeducted: string
   }
   handleConfirmSend: () => void
+  /** Locale the amounts are grouped in. Defaults to DEFAULT_AMOUNT_LOCALE (en-US), never the host's. */
+  locale?: string
 }
 
 export function WithdrawConfirmation({
@@ -55,6 +58,7 @@ export function WithdrawConfirmation({
   amount,
   reviewLabels,
   handleConfirmSend,
+  locale,
 }: WithdrawConfirmationProps) {
   return (
     <div className="relative flex h-screen flex-col overflow-hidden bg-background font-display text-foreground">
@@ -81,7 +85,7 @@ export function WithdrawConfirmation({
           <p className="mb-1 text-sm uppercase tracking-wide text-muted-foreground">
             {reviewLabels?.recipientReceives ?? 'Recipient receives'}
           </p>
-          <h1 className="mb-2 text-4xl font-bold">{displayAmount.toLocaleString()}</h1>
+          <h1 className="mb-2 text-4xl font-bold">{formatAmount(displayAmount, { locale })}</h1>
           <p className="text-base text-muted-foreground">
             {selectedAssetId === 'BTC' ? 'sats' : (selectedAsset?.ticker ?? 'units')}
           </p>
@@ -131,7 +135,7 @@ export function WithdrawConfirmation({
               </span>
               <div className="flex flex-col items-end">
                 <span className="text-sm text-white">
-                  {`${feeIsExact ? '' : '~'}${estimatedFee.toLocaleString()} sats`}
+                  {`${feeIsExact ? '' : '~'}${formatAmount(estimatedFee, { locale })} sats`}
                 </span>
                 <span className="mt-0.5 text-xxs font-bold capitalize tracking-wider text-primary">
                   {feeRate}
@@ -156,7 +160,7 @@ export function WithdrawConfirmation({
               {reviewLabels?.totalDeducted ?? 'Total deducted'}
             </span>
             <span className="text-xl font-bold text-white">
-              {(Math.round(parseFloat(amount) || 0) + estimatedFee).toLocaleString()}{' '}
+              {formatAmount(Math.round(parseFloat(amount) || 0) + estimatedFee, { locale })}{' '}
               <span className="text-lg text-primary/70">sats</span>
             </span>
           </div>
@@ -164,9 +168,7 @@ export function WithdrawConfirmation({
 
         {isPollingStatus && (
           <div className="flex items-center gap-3 rounded-xl bg-primary/10 p-4">
-            <span className="material-symbols-outlined animate-spin text-primary">
-              progress_activity
-            </span>
+            <Icon name="progress_activity" className="animate-spin text-icon-2xl text-primary" />
             <div>
               <p className="text-sm font-medium text-white">Processing payment...</p>
               <p className="text-xs text-muted-foreground">Waiting for confirmation</p>
@@ -183,14 +185,12 @@ export function WithdrawConfirmation({
         >
           {isConfirming || isPollingStatus ? (
             <>
-              <span className="material-symbols-outlined animate-spin text-icon-2xl">
-                progress_activity
-              </span>
+              <Icon name="progress_activity" className="animate-spin text-icon-2xl" />
               {isPollingStatus ? 'Waiting for confirmation...' : 'Sending...'}
             </>
           ) : (
             <>
-              <span className="material-symbols-outlined text-icon-2xl font-bold">fingerprint</span>
+              <Icon name="fingerprint" className="text-icon-2xl" />
               Confirm & Send
             </>
           )}

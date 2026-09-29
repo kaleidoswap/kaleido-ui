@@ -1,3 +1,6 @@
+import { formatAmount } from '../utils/amount-display'
+import { Icon } from '../primitives/icon'
+
 export interface WithdrawSuccessProps {
   displayAmount: number
   selectedAssetId: string
@@ -9,6 +12,8 @@ export interface WithdrawSuccessProps {
   } | null
   handleReset: () => void
   onDone: () => void
+  /** Locale the amount is grouped in. Defaults to en-US, never the host's. */
+  locale?: string
 }
 
 export function WithdrawSuccess({
@@ -18,6 +23,7 @@ export function WithdrawSuccess({
   txResult,
   handleReset,
   onDone,
+  locale,
 }: WithdrawSuccessProps) {
   return (
     <div className="relative flex min-h-screen flex-col overflow-hidden bg-background p-6 font-display text-foreground">
@@ -27,7 +33,7 @@ export function WithdrawSuccess({
         <div className="relative mb-8">
           <div className="absolute inset-0 animate-pulse rounded-full bg-primary/30 blur-2xl" />
           <div className="relative scale-110 rounded-full bg-primary p-6 text-background shadow-2xl">
-            <span className="material-symbols-outlined text-icon-6xl font-bold">check</span>
+            <Icon name="check" className="text-icon-6xl" />
           </div>
         </div>
 
@@ -40,7 +46,7 @@ export function WithdrawSuccess({
           <div className="flex items-center justify-between rounded-2xl bg-card p-5 shadow-inner">
             <span className="text-sm text-muted-foreground">Amount</span>
             <span className="text-xl font-bold">
-              {displayAmount.toLocaleString()}{' '}
+              {formatAmount(displayAmount, { locale })}{' '}
               {selectedAssetId === 'BTC' ? (
                 <span className="text-sm text-primary/70">sats</span>
               ) : (

@@ -51,6 +51,29 @@ export function formatDisplayAmountText(
 }
 
 /**
+ * The locale amounts are grouped in when a consumer does not pass one.
+ *
+ * Never the runtime's: `toLocaleString()` without a locale reads the host, so
+ * the same component printed `1,000` in a browser set to English, `1000` under
+ * Italian ICU data, and something else again during server rendering.
+ */
+export const DEFAULT_AMOUNT_LOCALE = 'en-US'
+
+export interface FormatAmountOptions {
+  /** BCP 47 locale. Defaults to {@link DEFAULT_AMOUNT_LOCALE}. */
+  locale?: string
+  maximumFractionDigits?: number
+}
+
+/** Group a number for display in an explicit locale — the one formatter the amount-bearing components share. */
+export function formatAmount(value: number, options: FormatAmountOptions = {}): string {
+  if (!Number.isFinite(value)) return String(value)
+  return new Intl.NumberFormat(options.locale ?? DEFAULT_AMOUNT_LOCALE, {
+    maximumFractionDigits: options.maximumFractionDigits ?? 20,
+  }).format(value)
+}
+
+/**
  * Format a numeric value for compact display.
  * Uses locale-aware compact notation (e.g. 1.2M, 3.4K) when the
  * absolute value exceeds the threshold.

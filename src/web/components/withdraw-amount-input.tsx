@@ -1,3 +1,4 @@
+import { formatAmount } from '../utils/amount-display'
 import type { ChangeEvent } from 'react'
 import { cn } from '../utils/cn'
 
@@ -139,8 +140,8 @@ export function WithdrawAmountInput({
           {lnurlPayData && (
             <div className="space-y-1 px-1">
               <p className="text-xs text-muted-foreground">
-                {Math.ceil(lnurlPayData.params.min).toLocaleString()} &ndash;{' '}
-                {Math.floor(lnurlPayData.params.max).toLocaleString()} sats
+                {formatAmount(Math.ceil(lnurlPayData.params.min))} &ndash;{' '}
+                {formatAmount(Math.floor(lnurlPayData.params.max))} sats
               </p>
               {lnurlPayData.params.description && (
                 <p className="text-xs italic text-muted-foreground">
@@ -223,7 +224,7 @@ export function WithdrawAmountInput({
               )}
               {typeof estimatedFee === 'number' && (
                 <p className="ml-1 text-xs text-muted-foreground">
-                  Using {effectiveFeeRateSatPerVb} sat/vB &middot; ~{estimatedFee.toLocaleString()}{' '}
+                  Using {effectiveFeeRateSatPerVb} sat/vB &middot; ~{formatAmount(estimatedFee)}{' '}
                   sats est. fee
                 </p>
               )}
