@@ -391,7 +391,11 @@ export function App() {
         <header className="sticky top-0 z-40 flex h-14 items-center gap-3 border-b border-white/5 bg-background/80 px-4 backdrop-blur-xl lg:hidden">
           <Drawer open={navOpen} onOpenChange={setNavOpen}>
             <DrawerTrigger asChild>
-              <Button variant="ghost" size="icon-lg" aria-label="Open navigation">
+              <Button
+                variant="ghost"
+                size="icon-lg"
+                aria-label={`Open navigation, current page: ${NAV_PAGES[pageIndex].label}`}
+              >
                 <Icon name="menu" size="md" />
               </Button>
             </DrawerTrigger>
@@ -404,7 +408,6 @@ export function App() {
               {navFooter}
             </DrawerContent>
           </Drawer>
-          <span className="truncate font-bold text-white">{NAV_PAGES[pageIndex].label}</span>
         </header>
 
         {/* The current page */}
@@ -1334,10 +1337,12 @@ export function App() {
             <Row label="Mobile · Drawer (the same list, over the page)">
               <Drawer>
                 <DrawerTrigger asChild>
-                  <Button variant="outline">
-                    <Icon name="menu" size="sm" />
-                    <span className="sr-only">Open navigation, current page: </span>
-                    {showcaseNavActive}
+                  <Button
+                    variant="ghost"
+                    size="icon-lg"
+                    aria-label={`Open navigation, current page: ${showcaseNavActive}`}
+                  >
+                    <Icon name="menu" size="md" />
                   </Button>
                 </DrawerTrigger>
                 <DrawerContent header={<DrawerTitle>Navigation</DrawerTitle>}>

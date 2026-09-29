@@ -382,7 +382,7 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 
 ### Drawer
 
-**Intended use.** The app's left navigation, and nothing else: the desktop app's sidebar, in the form the width calls for. On the desktop it is `DrawerSidebar`, always on screen and folded by its own chevron to an icon rail. Below the desktop breakpoint it is `Drawer` + `DrawerContent`, the same panel over the page, opened from a `DrawerTrigger` in the top bar that names the current page. A record opened from a list is a `Dialog`, not a drawer; a phone flow's step is `BottomSheet`.
+**Intended use.** The app's left navigation, and nothing else: the desktop app's sidebar, in the form the width calls for. On the desktop it is `DrawerSidebar`, always on screen and folded by its own chevron to an icon rail. Below the desktop breakpoint it is `Drawer` + `DrawerContent`, the same panel over the page, opened from a `DrawerTrigger` in the top bar: a hamburger icon with no visible text while the drawer is closed, whose accessible name says what it opens and the current page ("Open navigation, current page: Activity"). A record opened from a list is a `Dialog`, not a drawer; a phone flow's step is `BottomSheet`.
 
 **Anatomy.** Both forms hold the same parts, so one list is written once and rendered in both: `DrawerBody` (scrolls) → `DrawerSection label` (a group) → `DrawerNavItem icon label active` (a destination; `asChild` for a router link), then `DrawerFooter` (quick actions, the version) held below. The mobile form also needs a `DrawerTitle` (its `header`) and a `DrawerDescription` (visually hidden); Radix Dialog underneath traps focus, and Escape, the overlay and choosing a destination close it.
 
