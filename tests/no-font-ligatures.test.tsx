@@ -243,8 +243,6 @@ const NOT_RENDERED = new Set([
   'InlineSelector', 'MethodChoiceChip', 'NetworkBadge', 'NetworkInfoChip', 'NetworkInfoDisclosure',
   'OptionSelector', 'RecoveryPhraseCard', 'StatusBadge', 'SummaryRows', 'SwapBadge', 'SwapInputCard',
   'SwapStepList', 'WalletAssetList', 'WithdrawAmountInput', 'WithdrawRouteSelector', 'TrendChart',
-  'Table', 'TableBody', 'TableCaption', 'TableCell', 'TableFooter', 'TableHead', 'TableHeader', 'TableRow',
-  'CopyButton',
 ])
 
 const isComponent = (name: string, value: unknown): value is ComponentType<Record<string, unknown>> =>

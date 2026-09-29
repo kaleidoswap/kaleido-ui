@@ -354,6 +354,35 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 - Wrong: full `brand.primary` border on the section container — now the section frame competes with the CTA inside it for attention.
 - Right: 22% ghost border + 10% fill — just enough tint to say "you are here," quiet enough that a primary button still wins the eye.
 
+### Dialog
+
+**Intended use.** A modal decision or a short form over the current screen. `DialogContent` draws a corner X by default, because for an ordinary dialog it is the expected exit.
+
+**`showClose={false}`** — turn the X off where dismissing is not a neutral act. The case it exists for: a secret shown exactly once (a newly created API key). A control that reads as "close" must not sit beside something the user cannot see again; the dialog closes only through an explicit action ("I have stored this key"). Do not turn it off to tidy a layout — a dialog with no visible exit and no explicit action traps the user. Escape and the overlay still close the dialog unless the consumer prevents them (`onEscapeKeyDown`, `onPointerDownOutside`), which a once-only secret should also do.
+
+### Table
+
+**Intended use.** Dense data grids on desk surfaces — the partner and admin panels' swaps, keys and installs tables. Nine columns, many rows, read across. A transaction *feed* on a phone is `ActivityList`, not a table.
+
+**Key tokens.** Cells `caption` (13 px) at `px-4 py-3`: a grid is scanned, not read, and at `body` (15 px) a swaps-width grid scrolls sideways where 13 px still fits. The 16 px inset lines the first column up with a card title padded `p-4` above the table. Column heads are the eyebrow (`label` token) in `muted-foreground`. Row hover is `bg-muted/50`. Every part takes `className`.
+
+**Scrolling.** The table scrolls horizontally inside its own `min-w-0` wrapper and never widens the page or holds a grid column open.
+
+**The divider exception.** Rows divide with a `border` hairline. This is the **one** exception to "separate stacked rows with spacing, not divider lines" (Coherence Rules below): across nine columns an eye cannot follow a row on whitespace alone. It applies to `Table` rows only. It is not a licence for dividers in lists, cards or settings rows.
+
+### TrendChart
+
+**Intended use.** A count over time, readable at a glance: completed and failed swaps per bucket on the partner dashboard. Stacked bars, one per period, one segment per series. Built for up to ~120 periods (a year weekly, ninety days daily) at card width with no horizontal scroll.
+
+**Rules it enforces.**
+- **Value axis** — linear from zero, and every label names a value the data reaches. The top label *is* the tallest bar; the axis is never rounded up to a value no bar touches. The scale is stated on the chart: `scaleLabel` + "· linear, from 0" ("Swaps per day · linear, from 0").
+- **Time axis** — the first and last periods are always labelled; the rest are spaced to the width.
+- **Colour** — from theme custom properties only (`--primary`, `--destructive`, `--chart-2`, `--chart-4`, `--muted-foreground`), so it follows light and dark.
+- **Greyscale** — the first series is solid and the others hatched, so the chart is legible with colour removed.
+- **Empty** — no points renders the consumer's `empty` node, never an empty frame.
+- **No pointer needed** — hovering a period shows its figures; the plot is focusable, ←/→/Home/End move between periods and Escape clears, and the readout is a polite live region.
+- **Width** — the SVG is `width="100%"` with a `viewBox` measured from its container; a fixed pixel width would become the column's min-content and force a sideways scroll.
+
 ## Do's and Don'ts
 
 - **DO** use `brand.primary` only for CTAs, active states, and success. It is a signal, not a decoration.
@@ -375,8 +404,8 @@ These rules exist because generated UIs kept drifting: ad-hoc borders, wrong but
 
 - The layering ladder is `surface.bg` (page) → `bg-card` (card) → `bg-muted/40` (row inside a card). Depth comes from the fill, not an outline.
 - **DON'T** add arbitrary border utilities (`border-white/10`, `border-primary/20`, `border-warning/30`, `border-t` dividers…) to new markup. If a surface looks like it needs an edge, it needs a different background layer instead.
-- Borders are allowed only where a component spec above explicitly calls for one: inputs, filter pills, status pills, and the `border.primary-ghost` active state. Nothing else.
-- Separate stacked rows with `space-y-*` spacing, not divider lines.
+- Borders are allowed only where a component spec above explicitly calls for one: inputs, filter pills, status pills, the `border.primary-ghost` active state, and `Table` row hairlines. Nothing else.
+- Separate stacked rows with `space-y-*` spacing, not divider lines. The single exception is `Table` (see its section): a dense grid, not a list.
 
 ### Rows and toggles use the shipped primitives
 

@@ -52,7 +52,18 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
+  type DialogContentProps,
 } from './primitives/dialog'
+export {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCaption,
+} from './primitives/table'
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './primitives/tabs'
 export { Label } from './primitives/label'
 export {
@@ -270,6 +281,16 @@ export {
   type StepperNumberInputProps,
 } from './components/stepper-number-input'
 export { MetricCard, type MetricCardProps } from './components/metric-card'
+export {
+  TrendChart,
+  trendChartTicks,
+  trendChartLabelIndices,
+  type TrendChartProps,
+  type TrendChartPoint,
+  type TrendChartSeries,
+  type TrendChartTone,
+  type TrendChartTexture,
+} from './components/trend-chart'
 export {
   FilterChipGroup,
   type FilterChipGroupProps,
