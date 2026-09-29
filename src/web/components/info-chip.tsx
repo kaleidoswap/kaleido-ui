@@ -89,7 +89,7 @@ export function InfoChip({
       data-info-kind={dataInfoKind}
       data-testid={dataTestId}
       className={cn(
-        'flex w-full max-w-full items-center gap-3 rounded-xl border border-white/10 bg-surface-card px-3 py-2.5',
+        'flex w-full max-w-full items-center gap-3 rounded-xl border border-border bg-surface-card px-3 py-2.5',
         className,
       )}
     >

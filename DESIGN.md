@@ -417,6 +417,14 @@ The tile is a `role="group"` named by its label (or `aria-label`), so a failure 
 
 Label/value rows on `bg-muted/40`, separated by spacing. The markup follows the content: `as="dl"` (default) is a label/value list, a `dt`/`dd` per row; `as="ol"` is an ordered log (a status history); `as="ul"` an unordered one. The visual does not change with `as`. `tone: 'muted'` sets a value quieter than its label (`caption`, normal weight, `muted-foreground`), for the timestamp beside a log event.
 
+### CopyButton
+
+`<CopyButton value label />` — a real `<button>` named "Copy {label}" that writes to the clipboard. On success it shows a check and announces "Copied"; when the write rejects (insecure context, iframe, denied permission) or no clipboard exists, it shows and announces "Could not copy — select the text instead" and never the check. `CopyIcon` is only the glyph, for a row that is itself the control.
+
+### ToneBadge
+
+A small pill in a semantic tone, drawn from theme tokens only (the `muted` tone is `border-border bg-foreground/5 text-muted-foreground`, which is the old 10 % / 5 % / 55 % white on dark and stays visible on the light theme). `case="upper"` (default) is a status set as the eyebrow; `case="none"` is a value (a payout total) in `caption`, with no uppercase or tracking.
+
 ## Do's and Don'ts
 
 - **DO** use `brand.primary` only for CTAs, active states, and success. It is a signal, not a decoration.

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { cn } from '../utils/cn'
+import { eyebrow } from '../utils/type-roles'
 
 export interface SettingsSectionCardProps {
   title: ReactNode
@@ -35,6 +36,12 @@ export function SettingsSectionCard({
 export interface ToneBadgeProps {
   children: ReactNode
   tone?: 'primary' | 'info' | 'warning' | 'danger' | 'success' | 'muted'
+  /**
+   * `upper` (default) is a status — ACTIVE, REVOKED — set as the eyebrow.
+   * `none` is a value — a payout total, a count — set in `caption` with no
+   * uppercase and no tracking, so a consumer needs no size override.
+   */
+  case?: 'upper' | 'none'
   className?: string
 }
 
@@ -44,14 +51,18 @@ const badgeToneClass: Record<NonNullable<ToneBadgeProps['tone']>, string> = {
   warning: 'border-warning/30 bg-warning/10 text-warning',
   danger: 'border-danger/30 bg-danger/10 text-danger',
   success: 'border-success/30 bg-success/10 text-success',
-  muted: 'border-white/10 bg-white/[0.05] text-white/55',
+  // Theme tokens, not white alphas: on the light theme a white-on-white badge
+  // disappears. On dark these resolve to the same 10% / 5% / 55% white.
+  muted: 'border-border bg-foreground/5 text-muted-foreground',
 }
 
-export function ToneBadge({ children, tone = 'muted', className }: ToneBadgeProps) {
+export function ToneBadge({ children, tone = 'muted', case: letterCase = 'upper', className }: ToneBadgeProps) {
   return (
     <span
+      data-slot="tone-badge"
       className={cn(
-        'rounded-full border px-2.5 py-1 text-xxs font-bold uppercase tracking-wider',
+        'rounded-full border px-2.5 py-1',
+        letterCase === 'upper' ? eyebrow : 'text-caption font-semibold tabular-nums',
         badgeToneClass[tone],
         className,
       )}
