@@ -320,6 +320,8 @@ export { Pager, type PagerProps } from './components/pager'
 export { DateRangeFilter, type DateRange, type DateRangeFilterProps } from './components/date-range-filter'
 export { ValueList, type ValueListProps } from './components/value-list'
 export { EventTimeline, type EventTimelineProps, type TimelineEvent } from './components/event-timeline'
+export { NoticeBar, type NoticeBarProps } from './components/notice-bar'
+export { FloatingNotice, type FloatingNoticeProps } from './components/floating-notice'
 export {
   SummaryRows,
   type SummaryRowItem,

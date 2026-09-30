@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand-green, Bitcoin-native wallet UI.
-version: 0.1.128   # must equal package.json's version; check-design-doc fails otherwise
+version: 0.1.129   # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -520,6 +520,15 @@ The pieces a data-dense page is assembled from. None of them carries product tex
 - **`ValueList values singular plural`** — strings in a cell, never truncated: "3 addresses" closed; one monospaced, selectable, copyable value per line open.
 - **`EventTimeline`** — an ordered log (`<ol>`): the event, then its duration and timestamp, quieter. Values arrive formatted; the component never picks a locale or a time zone.
 - **Checklists** are `SwapStepList connector={false}`: steps are `done`, `pending` (to do) or `unknown` (cannot be checked), each with its own glyph and a spoken status, optional `badges` and an `action`.
+
+### Notices that stay
+
+Two containers for notices that are not toasts; neither has text of its own — put an `InfoPanel` in them.
+
+- **`NoticeBar`** — fixed to the top, full width, above the page, for a notice about everything below it (an outage, a read-only mode). It measures its height and publishes it as `--kui-notice-height` (configurable) on the document root, so the page pads itself with `var(--kui-notice-height, 0px)`; the variable is removed when the bar hides or unmounts.
+- **`FloatingNotice`** — bottom centre, above dialogs and overlays, until closed: it neither times out nor queues like a toast. It sits on an opaque card so a translucent `InfoPanel` stays legible, is `role="status"` by default, and has a named close button (`onDismiss`, `dismissible`); where the dismissal is remembered is the consumer's decision.
+
+A `Toast` cannot do either: its viewport position is fixed, only one shows at a time, and a `duration` of `Infinity` overflows `setTimeout` and closes it at once.
 
 ## Do's and Don'ts
 
