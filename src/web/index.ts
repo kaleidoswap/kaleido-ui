@@ -94,6 +94,20 @@ export {
 export { ActionTile, type ActionTileProps } from './components/action-tile'
 export { QrCode, type QrCodeProps } from './components/qr-code'
 export {
+  KaleidoswapLogo,
+  KaleidoswapMark,
+  type KaleidoswapLogoProps,
+  type KaleidoswapMarkProps,
+} from './components/kaleidoswap-logo'
+export {
+  kaleidoswapMarkArtwork,
+  kaleidoswapLogoHorizontalArtwork,
+  kaleidoswapLogoVerticalArtwork,
+  type BrandArtwork,
+  type BrandPaint,
+} from './assets/kaleidoswap-brand'
+export { HaloBackdrop, type HaloBackdropProps } from './components/halo-backdrop'
+export {
   BottomNav,
   type BottomNavProps,
   type BottomNavItem,

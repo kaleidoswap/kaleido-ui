@@ -1,0 +1,32 @@
+/* AUTO-GENERATED — do not edit by hand.
+ * Source: scripts/generate-css.ts  ←  src/tokens/brand.ts
+ * Regenerate: npm run generate:css
+ *
+ * kaleido-ui brand theme (opt-in). Import after kaleido-ui/css:
+ *   @import "kaleido-ui/css";
+ *   @import "kaleido-ui/css/brand";
+ *
+ * - Light: the primary (#17B581, 2.1 to 2.6:1 on the light ramp) becomes the
+ *   AA-safe brand green, so text-primary, links, ghost buttons and rings read.
+ * - Dark: danger and info are lifted to clear 4.5:1 on every dark surface.
+ * - Both: bg-page-radial draws the coloured brand wash instead of the haze.
+ */
+:root:not(.dark),
+.light {
+  --primary: #086E46;
+  --ring: #086E46;
+}
+
+.light {
+  --app-primary: 8 110 70;
+  --app-border-strong: 8 110 70;
+}
+
+.dark {
+  --color-danger: #FF9999;
+  --color-info: #8BBDFF;
+}
+
+:root {
+  --gradient-page: var(--gradient-page-brand);
+}
