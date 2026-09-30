@@ -19,7 +19,7 @@ import {
   appStatusSubtleAlpha,
 } from '../src/tokens/app-semantic.ts'
 import { radius } from '../src/tokens/radius.ts'
-import { sizing } from '../src/tokens/sizing.ts'
+import { sizing, spacingUnit } from '../src/tokens/sizing.ts'
 import { layer } from '../src/tokens/layers.ts'
 import { shadow } from '../src/tokens/shadows.ts'
 import { gradient } from '../src/tokens/gradients.ts'
@@ -369,6 +369,9 @@ ${brandThemeInline}
   --spacing-scrollbar:           ${sizing.scrollbar};
   --spacing-scrollbar-hover:     ${sizing.scrollbarHover};
   --spacing-scrollbar-thumb-min: ${sizing.scrollbarThumbMin};
+
+  /* Spacing unit — every padding, margin, gap and size step is a multiple of it */
+  --spacing: ${spacingUnit};
 
   /* Layers */
   --z-header:    ${layer.header};

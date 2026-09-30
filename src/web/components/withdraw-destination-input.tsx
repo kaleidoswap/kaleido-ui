@@ -33,7 +33,7 @@ export function WithdrawDestinationInput({
 }: WithdrawDestinationInputProps) {
   return (
     <div className="space-y-2">
-      <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
+      <label className="ml-1 block pb-1 leading-none text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
         Destination
       </label>
       <div className="relative">

@@ -378,6 +378,9 @@
   --spacing-scrollbar-hover:     6px;
   --spacing-scrollbar-thumb-min: 24px;
 
+  /* Spacing unit — every padding, margin, gap and size step is a multiple of it */
+  --spacing: 0.28125rem;
+
   /* Layers */
   --z-header:    50;
   --z-popover:   1000;
@@ -389,24 +392,24 @@
   --font-sans:    'Satoshi', system-ui, -apple-system, sans-serif;
   --font-display: 'Satoshi', system-ui, -apple-system, sans-serif;
   --font-mono:    'Geist Mono', monospace;
-  --text-mini: 9px;
-  --text-mini--line-height: 12px;
-  --text-xxs: 10px;
-  --text-xxs--line-height: 14px;
-  --text-tiny: 11px;
-  --text-tiny--line-height: 16px;
-  --text-caption: 13px;
-  --text-caption--line-height: 18px;
-  --text-body: 15px;
-  --text-body--line-height: 22px;
-  --text-subhead: 17px;
-  --text-subhead--line-height: 24px;
-  --text-title: 20px;
-  --text-title--line-height: 28px;
-  --text-headline: 28px;
-  --text-headline--line-height: 34px;
-  --text-display: 36px;
-  --text-display--line-height: 40px;
+  --text-mini: 10px;
+  --text-mini--line-height: 13px;
+  --text-xxs: 11px;
+  --text-xxs--line-height: 15px;
+  --text-tiny: 12px;
+  --text-tiny--line-height: 17px;
+  --text-caption: 14px;
+  --text-caption--line-height: 20px;
+  --text-body: 16px;
+  --text-body--line-height: 24px;
+  --text-subhead: 18px;
+  --text-subhead--line-height: 26px;
+  --text-title: 22px;
+  --text-title--line-height: 30px;
+  --text-headline: 30px;
+  --text-headline--line-height: 36px;
+  --text-display: 38px;
+  --text-display--line-height: 44px;
 
   /* Letter spacing — uppercase eyebrow labels */
   --tracking-eyebrow:      0.18em;

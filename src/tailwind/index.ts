@@ -27,7 +27,7 @@ import { colors } from '../tokens/colors'
 import { layer } from '../tokens/layers'
 import { radius } from '../tokens/radius'
 import { shadow } from '../tokens/shadows'
-import { sizing } from '../tokens/sizing'
+import { sizing, spacingUnit } from '../tokens/sizing'
 import { fontFamily, fontWeight, iconBoxSize, iconSize, letterSpacing, typeScale } from '../tokens/typography'
 
 const kebab = (key: string) => key.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)
@@ -73,6 +73,19 @@ const prefixed = (prefix: string, record: Record<string, string>) =>
  */
 const opacity = Object.fromEntries(
   Array.from({ length: 101 }, (_, step) => [String(step), String(step / 100)]),
+)
+
+/**
+ * v4 derives every spacing step from `--spacing` (the unit in tokens/sizing);
+ * v3 has a fixed rem scale, so the same steps are restated as multiples of the
+ * unit — `p-4` is 4 units on both.
+ */
+const spacingSteps = [
+  0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 20, 24, 28, 32, 36, 40, 44, 48,
+  52, 56, 60, 64, 72, 80, 96,
+]
+const spacingScale = Object.fromEntries(
+  spacingSteps.map((step) => [String(step), `calc(${spacingUnit} * ${step})`]),
 )
 
 /** v4 accepts any number for `brightness-*`; v3 needs the steps named. */
@@ -122,6 +135,7 @@ const preset = {
       fontWeight,
       letterSpacing: Object.fromEntries(Object.entries(letterSpacing).map(([k, v]) => [kebab(k), v])),
       spacing: {
+        ...spacingScale,
         ...prefixed('icon', iconBoxSize),
         scrollbar: sizing.scrollbar,
         'scrollbar-hover': sizing.scrollbarHover,

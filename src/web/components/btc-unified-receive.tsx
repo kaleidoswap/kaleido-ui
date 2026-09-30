@@ -207,7 +207,7 @@ export function BtcUnifiedReceive({
       >
         <div className="space-y-4">
           <div className="space-y-1.5">
-            <label className="text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
+            <label className="block pb-1 leading-none text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
               Amount (optional)
             </label>
             <input
@@ -228,7 +228,7 @@ export function BtcUnifiedReceive({
 
           {onDescriptionChange && (
             <div className="space-y-1.5">
-              <label className="text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
+              <label className="block pb-1 leading-none text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
                 Description (optional)
               </label>
               <input

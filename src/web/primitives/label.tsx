@@ -7,7 +7,7 @@ import { eyebrow } from '../utils/type-roles'
 // The field label is the eyebrow in violet, as the wallet's own fields label
 // themselves (DESTINATION, AMOUNT), set a hair in from the field's edge.
 const labelVariants = cva(
-  `ml-1 ${eyebrow} leading-none text-secondary-content peer-disabled:cursor-not-allowed peer-disabled:opacity-70`
+  `mb-1 ml-1 inline-block ${eyebrow} leading-none text-secondary-content peer-disabled:cursor-not-allowed peer-disabled:opacity-70`
 )
 
 const Label = React.forwardRef<

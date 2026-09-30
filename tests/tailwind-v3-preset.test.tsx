@@ -65,7 +65,13 @@ test('a Tailwind v3 consumer with kaleido-ui/tailwind gets a rule for every clas
   ]).process('@tailwind components;\n@tailwind utilities;', { from: undefined })
   const v3Classes = classesIn(v3Css.css)
 
-  const used = [...v4Classes].filter((name) => candidates.includes(name) && !shipped.has(name))
+  // Words the v4 scanner takes for classes although they are prop values
+  // (`placement === 'end'`, `align="start"`). With `--spacing` in the theme, v4
+  // emits a bare inset rule for them; no element carries them as a class.
+  const notClasses = new Set(['start', 'end'])
+  const used = [...v4Classes].filter(
+    (name) => candidates.includes(name) && !shipped.has(name) && !notClasses.has(name),
+  )
   const missing = used.filter((name) => !v3Classes.has(name)).sort()
 
   assert.ok(used.length > 500, `only ${used.length} classes compiled — the scan is not seeing the components`)

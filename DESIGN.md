@@ -46,14 +46,14 @@ colors:
 typography:
   # Sizes are the typeScale keys in src/tokens/typography.ts, which is what the
   # text-* utilities emit. fontWeight tops out at 700 — there is no 800.
-  display:  { family: "Satoshi", weight: 700, size: 36, line: 40, tracking: -0.02em }
-  headline: { family: "Satoshi", weight: 700, size: 28, line: 34 }
-  title:    { family: "Satoshi", weight: 700, size: 20, line: 28, tracking: -0.01em }
-  subhead:  { family: "Satoshi", weight: 600, size: 17, line: 24 }
-  body:     { family: "Satoshi", weight: 500, size: 15, line: 22 }
-  caption:  { family: "Satoshi", weight: 500, size: 13, line: 18 }
-  tiny:     { family: "Satoshi", weight: 500, size: 11, line: 16 }
-  label:    { family: "Satoshi", weight: 700, size: 9,  line: 12, tracking: 0.18em, transform: uppercase }
+  display:  { family: "Satoshi", weight: 700, size: 38, line: 44, tracking: -0.02em }
+  headline: { family: "Satoshi", weight: 700, size: 30, line: 36 }
+  title:    { family: "Satoshi", weight: 700, size: 22, line: 30, tracking: -0.01em }
+  subhead:  { family: "Satoshi", weight: 600, size: 18, line: 26 }
+  body:     { family: "Satoshi", weight: 500, size: 16, line: 24 }
+  caption:  { family: "Satoshi", weight: 500, size: 14, line: 20 }
+  tiny:     { family: "Satoshi", weight: 500, size: 12, line: 17 }
+  label:    { family: "Satoshi", weight: 700, size: 10, line: 13, tracking: 0.18em, transform: uppercase }
   mono:     { family: "Geist Mono", weight: 500, size: 13 }
 rounded:
   card: 16        # rounded-2xl — cards, tiles, settings/account rows, dialogs, sheet top edge
@@ -63,13 +63,14 @@ rounded:
   panel: 24       # rounded-3xl
   nav: 32
 spacing:
-  1: 4
-  2: 8
-  3: 12
-  4: 16
-  5: 20
-  6: 24
-  8: 32
+  # One unit is spacingUnit (0.28125rem = 4.5px), in src/tokens/sizing.ts.
+  1: 4.5
+  2: 9
+  3: 13.5
+  4: 18
+  5: 22.5
+  6: 27
+  8: 36
 components:
   button.primary:
     bg: "{colors.brand.primary}"
@@ -278,15 +279,15 @@ the 9 px micro-labels this interface leans on heavily.
 The sizes below are the `typeScale` keys, which is what the `text-*` utilities
 emit — `text-display`, `text-body`, `text-mini` and so on:
 
-- **`display` — Satoshi 700 / 36 / 40 / tracking -0.02em** — balance numbers, empty-state headlines, the single largest piece of type on any screen.
-- **`headline` — Satoshi 700 / 28 / 34** — section headlines above a card group.
-- **`title` — Satoshi 700 / 20 / 28 / tracking -0.01em** — screen titles, modal headers.
-- **`subhead` — Satoshi 600 / 17 / 24** — a heading inside a card.
-- **`body` — Satoshi 500 / 15 / 22** — the default. Everything not otherwise specified renders here.
-- **`caption` — Satoshi 500 / 13 / 18** — helper text under a field.
-- **`tiny` — Satoshi 500 / 11 / 16** — timestamps, dense meta rows.
-- **`mini` / `label` — Satoshi 700 / 9 / 12 / tracking `eyebrow` 0.18em / uppercase** — the **signature micro-label** of the system. Filter headers ("NETWORKS"), section labels ("RECENT ACTIVITY"), pill captions, table column heads. When you see uppercase 9 px letter-spaced type, you know you are in a KaleidoSwap surface. Use it liberally for structural labels; never use it for content. `eyebrowWide` (0.22em) is the wider variant.
-- **`mono` — Geist Mono 500 / 13** — addresses, tx hashes, raw amounts where digit alignment matters.
+- **`display` — Satoshi 700 / 38 / 44 / tracking -0.02em** — balance numbers, empty-state headlines, the single largest piece of type on any screen.
+- **`headline` — Satoshi 700 / 30 / 36** — section headlines above a card group.
+- **`title` — Satoshi 700 / 22 / 30 / tracking -0.01em** — screen titles, modal headers.
+- **`subhead` — Satoshi 600 / 18 / 26** — a heading inside a card.
+- **`body` — Satoshi 500 / 16 / 24** — the default. Everything not otherwise specified renders here.
+- **`caption` — Satoshi 500 / 14 / 20** — helper text under a field.
+- **`tiny` — Satoshi 500 / 12 / 17** — timestamps, dense meta rows.
+- **`mini` / `label` — Satoshi 700 / 10 / 13 / tracking `eyebrow` 0.18em / uppercase** — the **signature micro-label** of the system. Filter headers ("NETWORKS"), section labels ("RECENT ACTIVITY"), pill captions, table column heads. When you see uppercase 10 px letter-spaced type, you know you are in a KaleidoSwap surface. Use it liberally for structural labels; never use it for content. `eyebrowWide` (0.22em) is the wider variant.
+- **`mono` — Geist Mono 500 / 14** — addresses, tx hashes, raw amounts where digit alignment matters.
 
 Numeric amounts (balances, prices) render in `display` or `body` weight 700, not `mono` — mono is reserved for identifiers that the user copy-pastes.
 
@@ -296,25 +297,25 @@ Components set text **only** with these steps — never Tailwind's default sizes
 
 | Role | Step | Examples |
 | --- | --- | --- |
-| Hero figure | `display` 36 | the amount on a confirmation screen |
-| Big figure | `headline` 28 | a comfortable `MetricCard` value, amount inputs, success titles |
-| Screen / page title | `title` 20 | `PageHeader variant="page"`, dialog titles, `CardTitle` |
-| Heading in a card, large button label | `subhead` 17 | CTA buttons |
-| Primary text, card and section titles, values | `body` 15 | `SettingsSectionCard` and `InfoPanel` titles, `Button` |
-| Secondary text, descriptions, data cells | `caption` 13 | `InfoPanel` body, `SettingsSectionCard` description, `Table` cells |
-| Meta rows, timestamps | `tiny` 11 | `TransactionCard` meta |
-| Dense chip text | `xxs` 10 | hints, compact tile descriptions |
-| **Eyebrow** — every structural uppercase label | `mini` 9 | section titles, column heads, filter headers, tile labels, status badges |
+| Hero figure | `display` 38 | the amount on a confirmation screen |
+| Big figure | `headline` 30 | a comfortable `MetricCard` value, amount inputs, success titles |
+| Screen / page title | `title` 22 | `PageHeader variant="page"`, dialog titles, `CardTitle` |
+| Heading in a card, large button label | `subhead` 18 | CTA buttons |
+| Primary text, card and section titles, values | `body` 16 | `SettingsSectionCard` and `InfoPanel` titles, `Button` |
+| Secondary text, descriptions, data cells | `caption` 14 | `InfoPanel` body, `SettingsSectionCard` description, `Table` cells |
+| Meta rows, timestamps | `tiny` 12 | `TransactionCard` meta |
+| Dense chip text | `xxs` 11 | hints, compact tile descriptions |
+| **Eyebrow** — every structural uppercase label | `mini` 10 | section titles, column heads, filter headers, tile labels, status badges |
 
-**The eyebrow is written once**, as `eyebrow` in `src/web/utils/type-roles.ts`: `text-mini font-bold uppercase tracking-eyebrow` — Satoshi 700 / 9 px / 0.18em, the `label` token above. The tokens are authoritative (weight tops out at 700; tracking is 0.18em), and this document matches them. Any uppercase letter-spaced label uses `tracking-eyebrow` (or `tracking-eyebrow-wide`); hand-written `tracking-[…]` values are not allowed.
+**The eyebrow is written once**, as `eyebrow` in `src/web/utils/type-roles.ts`: `text-mini font-bold uppercase tracking-eyebrow` — Satoshi 700 / 10 px / 0.18em, the `label` token above. The tokens are authoritative (weight tops out at 700; tracking is 0.18em), and this document matches them. Any uppercase letter-spaced label uses `tracking-eyebrow` (or `tracking-eyebrow-wide`); hand-written `tracking-[…]` values are not allowed.
 
-There are no spacing tokens yet; components use Tailwind's 4 px spacing scale (`p-4` card, `p-3` inner row, `p-2.5` compact tile). Follow those values rather than inventing new ones.
+Spacing is one token, `spacingUnit` (0.28125rem = **4.5 px**, `--spacing` in `kaleido-ui/css`, restated for the v3 preset): every `p-*`, `m-*`, `gap-*`, `space-*`, `w-*`/`h-*` step is a multiple of it, so `p-4` is 18 px. It was Tailwind's 4 px; the UI read cramped (a field label sat on its box). Keep using the step names (`p-4` card, `p-3` inner row, `p-2.5` compact tile) — never px arbitraries.
 
 ## Layout
 
 KaleidoSwap targets a **420 px max content width**: the browser-extension popup is the canonical viewport and everything else (webapp, mobile shell) adopts the same column so layouts translate 1:1.
 
-- **Spacing scale**: tight, in 4 px steps — `1:4, 2:8, 3:12, 4:16, 5:20, 6:24, 8:32`. Most gaps between elements are `2` or `3`. Section-to-section breathing room is `4` or `6`. Do not invent odd values.
+- **Spacing scale**: in 4.5 px steps — `1:4.5, 2:9, 3:13.5, 4:18, 5:22.5, 6:27, 8:36`. Most gaps between elements are `2` or `3`. Section-to-section breathing room is `4` or `6`. Do not invent odd values.
 - **Horizontal padding**: views pad `16` (spacing `4`) from the viewport edge. Cards inside pad `12` (spacing `3`).
 - **Bottom nav**: floats above the content; it is not a sticky footer. Every full-height view must reserve a **88 px bottom inset** (nav height + float gap) so the last row of content is not obscured.
 - **Scroll**: only the main column scrolls. Nav, headers, and modals remain fixed.

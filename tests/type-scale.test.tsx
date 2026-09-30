@@ -60,6 +60,6 @@ test('every uppercase letter-spaced label uses the eyebrow tracking token', () =
 
 test('the shared eyebrow is DESIGN.md’s label token', () => {
   assert.equal(eyebrow, 'text-mini font-bold uppercase tracking-eyebrow')
-  assert.deepEqual(typeScale.mini, ['9px', '12px'])
+  assert.deepEqual(typeScale.mini, ['10px', '13px'])
   assert.equal(letterSpacing.eyebrow, '0.18em')
 })

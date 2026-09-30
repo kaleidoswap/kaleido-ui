@@ -15,16 +15,16 @@ export type ThemeMode = 'light' | 'dark'
 
 /** Numeric type scale for React Native (the CSS `typeScale` is px strings). */
 export const nativeType = {
-  mini: { size: 9, line: 12 },
-  xxs: { size: 10, line: 14 },
-  tiny: { size: 11, line: 16 },
-  caption: { size: 13, line: 18 },
-  body: { size: 15, line: 22 },
-  subhead: { size: 17, line: 24 },
-  title: { size: 20, line: 28 },
-  headline: { size: 28, line: 34 },
-  display: { size: 36, line: 40 },
-  hero: { size: 44, line: 48 },
+  mini: { size: 10, line: 13 },
+  xxs: { size: 11, line: 15 },
+  tiny: { size: 12, line: 17 },
+  caption: { size: 14, line: 20 },
+  body: { size: 16, line: 24 },
+  subhead: { size: 18, line: 26 },
+  title: { size: 22, line: 30 },
+  headline: { size: 30, line: 36 },
+  display: { size: 38, line: 44 },
+  hero: { size: 46, line: 52 },
 } as const
 
 export type NativeTypeLevel = keyof typeof nativeType

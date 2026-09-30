@@ -101,7 +101,7 @@ export function WithdrawAmountInput({
     <>
       {showAmountInput && (
         <div className="space-y-3">
-          <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
+          <label className="ml-1 block pb-1 leading-none text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
             Amount
           </label>
           <div className="overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-card transition-shadow focus-within:ring-1 focus-within:ring-primary/50 focus-within:shadow-glow-primary-soft">
@@ -176,7 +176,7 @@ export function WithdrawAmountInput({
 
       {(addressType === 'bitcoin' || addressType === 'rgb') && (
         <div className="space-y-2">
-          <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
+          <label className="ml-1 block pb-1 leading-none text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
             Fee Rate
           </label>
           {customFeeEnabled ? (

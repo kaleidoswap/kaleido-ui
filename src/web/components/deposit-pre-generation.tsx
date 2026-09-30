@@ -170,7 +170,7 @@ export function DepositPreGeneration({
       {/* RGB asset-id: receive a specific asset, or any asset when left empty. */}
       {isRgbOnchain && isNewRgbAsset && setNewAssetId && (
         <div className="space-y-1.5">
-          <label className="text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
+          <label className="block pb-1 leading-none text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
             RGB Asset ID - Optional
           </label>
           <input
@@ -251,7 +251,7 @@ export function DepositPreGeneration({
       {network === 'onchain' && !isBtc && (
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label className="text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
+            <label className="block pb-1 leading-none text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
               Amount ({getUnitLabel()}) - Optional
             </label>
             {selectedAsset && (
