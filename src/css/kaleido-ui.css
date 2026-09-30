@@ -53,6 +53,13 @@
   --chart-3:              #F7931A;
   --chart-4:              #7C3AED;
   --chart-5:              #DD352E;
+  /* Chart series, in slot order — from src/tokens/chart.ts */
+  --series-1:             #17a877;
+  --series-2:             #6d5ce0;
+  --series-3:             #eb6834;
+  --series-4:             #2a78d6;
+  --series-5:             #eda100;
+  --series-6:             #e87ba4;
 }
 
 /* ── Semantic colors (dark mode) — from src/tokens/colors.ts ───────────── */
@@ -80,6 +87,13 @@
   --chart-3:              #F7931A;
   --chart-4:              #7C3AED;
   --chart-5:              #DD352E;
+  /* Chart series, in slot order — from src/tokens/chart.ts */
+  --series-1:             #0fae74;
+  --series-2:             #9085e9;
+  --series-3:             #d95926;
+  --series-4:             #3987e5;
+  --series-5:             #c98500;
+  --series-6:             #d55181;
 }
 
 /* ── App semantic colors (slate identity) — from src/tokens/app-semantic.ts ─
@@ -170,6 +184,12 @@
   --color-chart-3:              var(--chart-3);
   --color-chart-4:              var(--chart-4);
   --color-chart-5:              var(--chart-5);
+  --color-series-1:             var(--series-1);
+  --color-series-2:             var(--series-2);
+  --color-series-3:             var(--series-3);
+  --color-series-4:             var(--series-4);
+  --color-series-5:             var(--series-5);
+  --color-series-6:             var(--series-6);
 
   /* App semantic colors (slate identity) — channel-backed via the --app-* vars.
      These intentionally override the shadcn-style --color-primary / --color-secondary

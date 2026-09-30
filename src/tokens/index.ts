@@ -29,3 +29,4 @@ export {
   type NativeTypeLevel,
 } from './theme'
 export { iconColors } from './icon-colors.generated'
+export { chartSeries, chartSeriesLimit, chartScatterSeriesLimit } from './chart'

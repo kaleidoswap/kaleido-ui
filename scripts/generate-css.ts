@@ -26,6 +26,11 @@ import { gradient } from '../src/tokens/gradients.ts'
 import { transition } from '../src/tokens/transitions.ts'
 import { fontFamily, typeScale, letterSpacing, iconSize, iconBoxSize } from '../src/tokens/typography.ts'
 import { keyframes, animation } from '../src/tokens/animations.ts'
+import { chartSeries } from '../src/tokens/chart.ts'
+
+/** `--series-N` declarations for one theme's chart palette. */
+const seriesVars = (steps: readonly string[]) =>
+  steps.map((hex, index) => `  --series-${index + 1}:             ${hex};`).join('\n')
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const OUTPUT = join(__dirname, '../src/css/kaleido-ui.css')
@@ -146,6 +151,8 @@ const css = `/* AUTO-GENERATED — do not edit by hand.
   --chart-3:              ${lightSemanticColors.chart3};
   --chart-4:              ${lightSemanticColors.chart4};
   --chart-5:              ${lightSemanticColors.chart5};
+  /* Chart series, in slot order — from src/tokens/chart.ts */
+${seriesVars(chartSeries.light)}
 }
 
 /* ── Semantic colors (dark mode) — from src/tokens/colors.ts ───────────── */
@@ -173,6 +180,8 @@ const css = `/* AUTO-GENERATED — do not edit by hand.
   --chart-3:              ${colors.chart3};
   --chart-4:              ${colors.chart4};
   --chart-5:              ${colors.chart5};
+  /* Chart series, in slot order — from src/tokens/chart.ts */
+${seriesVars(chartSeries.dark)}
 }
 
 /* ── App semantic colors (slate identity) — from src/tokens/app-semantic.ts ─
@@ -219,6 +228,7 @@ ${appLightVars}
   --color-chart-3:              var(--chart-3);
   --color-chart-4:              var(--chart-4);
   --color-chart-5:              var(--chart-5);
+${chartSeries.dark.map((_, index) => `  --color-series-${index + 1}:             var(--series-${index + 1});`).join('\n')}
 
   /* App semantic colors (slate identity) — channel-backed via the --app-* vars.
      These intentionally override the shadcn-style --color-primary / --color-secondary

@@ -244,6 +244,9 @@ const NOT_RENDERED = new Set([
   'InlineSelector', 'MethodChoiceChip', 'NetworkBadge', 'NetworkInfoChip', 'NetworkInfoDisclosure',
   'OptionSelector', 'RecoveryPhraseCard', 'StatusBadge', 'SummaryRows', 'SwapBadge', 'SwapInputCard',
   'SwapStepList', 'WalletAssetList', 'WithdrawAmountInput', 'WithdrawRouteSelector', 'TrendChart',
+  // Charts need their data; tests/charts.test.tsx renders every one of them.
+  'LineChart', 'AreaChart', 'BarChart', 'BarList', 'DonutChart', 'ScatterChart', 'Sparkline',
+  'ChartLegend', 'ChartTooltip', 'ChartFrame',
 ])
 
 const isComponent = (name: string, value: unknown): value is ComponentType<Record<string, unknown>> =>

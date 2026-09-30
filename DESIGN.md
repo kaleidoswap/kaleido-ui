@@ -423,6 +423,29 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 - **No pointer needed** — hovering a period shows its figures; the plot is focusable, ←/→/Home/End move between periods and Escape clears, and the readout is a polite live region.
 - **Width** — the SVG is `width="100%"` with a `viewBox` measured from its container; a fixed pixel width would become the column's min-content and force a sideways scroll.
 
+### Charts
+
+**Pick the form by the data's job, before any colour.** A single figure is a `MetricCard` (with a `Sparkline` for its recent trend), not a chart. Then:
+
+| Job | Component |
+| --- | --- |
+| Change over time, several series | `LineChart` |
+| One series over time, where the level matters | `AreaChart` |
+| A count per period, split in parts (up to ~120 periods) | `TrendChart` |
+| Compare a few series across a few categories | `BarChart` (grouped) |
+| Part-to-whole per category | `BarChart layout="stacked"` |
+| Many or long-named categories, one series | `BarChart orientation="horizontal"` |
+| A ranked or dated list with every value printed | `BarList` |
+| Part-to-whole at a glance, ≤ 6 parts | `DonutChart` (close values belong in a bar chart) |
+| How two measures relate, ≤ 3 series | `ScatterChart` |
+| One ratio against a limit | `Meter` |
+
+**Colour.** Series take the `chartSeries` slots in order — green (the brand), violet, orange, blue, yellow, magenta — as `--series-1…6`, a step per theme. The brand colours themselves sit above the lightness band a series colour must stay inside on the dark surface, so these are the brand's hues snapped into it. The order is the colour-blind-safety mechanism: every adjacent pair passes CVD separation (worst ΔE 13.2 dark, 16.3 light) and the normal-vision floor. Never cycle past six: fold the tail into "Other" (`DonutChart` does it for you). Scatter charts are capped at three series (the slots that also pass for every pair) and throw on a fourth. One series means one colour for every bar — never a value ramp on nominal categories.
+
+**Marks.** Lines 2 px, round joins; end markers r 4 with a 2 px ring in the card colour; area fills a 10 % wash; bars at most 24 px thick with a 4 px rounded data end and a square baseline end; a 2 px surface gap between touching bars and stacked segments; gridlines solid hairlines on `border` — never dashed. Text never wears a series colour: values, labels and legends stay in text tokens beside a coloured key.
+
+**Every chart has** a value axis linear from zero whose top label is the largest value; a legend for two or more series (none for one — the label names it); a hover layer (a crosshair and every series at that x on line and area charts, the whole category band as the target on bars, the nearest point on a scatter) with the same readout on keyboard focus through ←/→, Home/End and Escape and a polite live region; a **table view** one toggle away, which is also the relief channel for the two light-theme slots below 3:1 on white; and an `empty` node instead of an empty frame.
+
 ### MetricCard
 
 **Intended use.** One figure and its label: a balance, a count, a rate. Two sizes, one per surface:

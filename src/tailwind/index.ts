@@ -47,6 +47,7 @@ const semantic = [
   'background', 'foreground', 'card', 'card-foreground', 'popover', 'popover-foreground',
   'secondary-foreground', 'muted', 'muted-foreground', 'accent', 'accent-foreground',
   'destructive', 'border', 'input', 'ring', 'chart-1', 'chart-2', 'chart-3', 'chart-4', 'chart-5',
+  'series-1', 'series-2', 'series-3', 'series-4', 'series-5', 'series-6',
 ] as const
 
 const semanticColors = Object.fromEntries(semantic.map((name) => [name, cssVar(name)]))
