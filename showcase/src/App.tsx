@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { StateSnapshot } from './pages/StateSnapshot'
+import { ChartsGallery } from './pages/ChartsGallery'
 import { Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput } from '@kaleido-ui/index'
 import {
   Button,
@@ -202,6 +203,11 @@ const NAV_CATEGORIES: { label: string; icon: IconName; pages: NavPage[] }[] = [
       { id: 'withdraw-components', label: 'Withdraw', icon: 'arrow_outward' },
       { id: 'swap-flow', label: 'Swap Flow', icon: 'swap_horiz' },
     ],
+  },
+  {
+    label: 'Data',
+    icon: 'trending_up',
+    pages: [{ id: 'charts', label: 'Charts', icon: 'trending_up' }],
   },
 ]
 
@@ -1392,6 +1398,15 @@ export function App() {
                 Destructive
               </Button>
             </Row>
+          </Section>
+
+          {/* ── Charts ──────────────────────────────────────────────────── */}
+          <Section
+            id="charts"
+            title="Charts"
+            description="The common chart forms, one per job: trend, comparison, part-to-whole, relation, a single figure. Plain SVG, theme colours, a table view on every chart."
+          >
+            <ChartsGallery />
           </Section>
 
           {/* Page to page, in nav order */}
