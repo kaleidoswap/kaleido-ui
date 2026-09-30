@@ -5,6 +5,7 @@ import { TransactionCard } from './transaction-card'
 import { NetworkBadge, type NetworkType } from './network-badge'
 import { SwapBadge } from './swap-badge'
 import { LoadingCard, ErrorCard } from './page-shell'
+import { EmptyState } from './empty-state'
 import type { StatusType } from './status-badge'
 import { cn } from '../utils/cn'
 import type { IconName } from '../icons'
@@ -79,24 +80,22 @@ export function ActivityList<TData = unknown>({
 
   if (items.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16">
-        <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-white/5">
-          {emptyIcon ?? <DefaultEmptyIcon name="receipt_long" />}
-        </div>
-        <h3 className="mb-1 text-body font-semibold">
-          {hasActiveFilters ? filteredEmptyTitle : emptyTitle}
-        </h3>
-        <p className="mb-4 max-w-[240px] text-center text-caption text-white/70">
-          {hasActiveFilters ? filteredEmptyDescription : emptyDescription}
-        </p>
-        {hasActiveFilters && onClearFilters ? (
-          <Button variant="surface" size="sm" onClick={onClearFilters}>
-            Clear Filters
-          </Button>
-        ) : (
-          renderEmptyActions?.()
-        )}
-      </div>
+      <EmptyState
+        icon={emptyIcon ?? <DefaultEmptyIcon name="receipt_long" />}
+        title={hasActiveFilters ? filteredEmptyTitle : emptyTitle}
+        description={hasActiveFilters ? filteredEmptyDescription : emptyDescription}
+        // The activity feed has always set its description a step brighter.
+        descriptionClassName="text-white/70"
+        action={
+          hasActiveFilters && onClearFilters ? (
+            <Button variant="surface" size="sm" onClick={onClearFilters}>
+              Clear Filters
+            </Button>
+          ) : (
+            renderEmptyActions?.()
+          )
+        }
+      />
     )
   }
 

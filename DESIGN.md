@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand-green, Bitcoin-native wallet UI.
-version: 0.1.127   # must equal package.json's version; check-design-doc fails otherwise
+version: 0.1.128   # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -506,6 +506,20 @@ Mutually exclusive options — a chart / list view toggle — are `FilterChipGro
 ### Breakpoints
 
 `breakpoint` in the tokens names the widths the `sm:` / `md:` … classes switch at (Tailwind's defaults: `sm` 40rem). `useMediaQuery(query)` is safe on the server and in jsdom (false without `matchMedia`); `useIsNarrow()` is true below `sm`.
+
+### Lists and data
+
+The pieces a data-dense page is assembled from. None of them carries product text; every visible label and accessible name has an English default and a prop to override it.
+
+- **`QueryState`** keeps loading, error and empty apart, so a failed read never looks like an empty list. Loading: skeleton rows inside `role="status"`, named by `loadingLabel`, no visible text. Error: an `InfoPanel` inside `role="alert"`, worded by `classifyError(error) → { title, message, tone, retryable }` (a minimal default is provided), with `errorConsequence` above the message and "Try again" only when `retryable` and `onRetry`. Empty: `EmptyState`.
+- **`EmptyState`** — title (required), description, one action, optional glyph; centred. `ActivityList`'s empty state renders through it.
+- **`RecordList` / `RecordItem` / `RecordField`** — the stacked form of a table row for narrow screens: the same data, another layout. `identifier` and `status` on the first line, `summary` under the identifier, `RecordField`s (`<dt>`/`<dd>`, `wide` for two columns) in a two-column grid, `actions` bottom right. With `onOpen` the whole item opens it *and* an explicit chevron button does, since a clickable `<li>` is not reachable by keyboard; the button and the actions stop propagation. `selected` sets `aria-current`. Items divide with a `border` hairline — the `Table` divider exception, because this is a table row laid out differently.
+- **`FilterBar activeCount onClear`** — the filters of a list. Wide: the controls in a row, "N filters applied" and "Clear all" when any is set. Narrow (`useIsNarrow`): one "Filters" toggle whose name carries the count ("Filters, 2 active"), opening the controls stacked under it (a `Collapsible`), "Clear all" still beside it.
+- **`Pager offset limit returned`** — offset paging for an API with no total: a next page only after a full page, "{noun} 51–100" and never "of N", nothing at all when there is one page. `DotPagination` is for carousel steps, not data pages.
+- **`DateRangeFilter`** — labelled From / To date inputs, "Clear" (disabled when empty), an optional refresh that spins while `isRefreshing`.
+- **`ValueList values singular plural`** — strings in a cell, never truncated: "3 addresses" closed; one monospaced, selectable, copyable value per line open.
+- **`EventTimeline`** — an ordered log (`<ol>`): the event, then its duration and timestamp, quieter. Values arrive formatted; the component never picks a locale or a time zone.
+- **Checklists** are `SwapStepList connector={false}`: steps are `done`, `pending` (to do) or `unknown` (cannot be checked), each with its own glyph and a spoken status, optional `badges` and an `action`.
 
 ## Do's and Don'ts
 

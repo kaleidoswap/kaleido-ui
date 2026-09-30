@@ -248,6 +248,8 @@ const NOT_RENDERED = new Set([
   // tests/primitives-p1.test.tsx.
   'CollapsibleContent', 'CollapsibleTrigger', 'DropdownMenuContent', 'DropdownMenuItem', 'DropdownMenuPortal',
   'DropdownMenuTrigger', 'FormField', 'PopoverAnchor', 'PopoverClose', 'PopoverContent', 'PopoverTrigger',
+  // Need their data; tests/lists-p3.test.tsx renders them.
+  'DateRangeFilter', 'EventTimeline', 'ValueList',
   // Charts need their data; tests/charts.test.tsx renders every one of them.
   'LineChart', 'AreaChart', 'BarChart', 'BarList', 'DonutChart', 'ScatterChart', 'Sparkline',
   'ChartLegend', 'ChartTooltip', 'ChartFrame',
