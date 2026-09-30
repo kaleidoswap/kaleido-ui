@@ -208,7 +208,27 @@ export function PaidOverlay() {
   )
 }
 
-export function CopyIcon({ copied }: { copied: boolean }) {
+export interface CopyIconProps {
+  copied: boolean
+  /**
+   * `tile` (default) is the padded, tinted tile for a row that is itself the
+   * button. `bare` is the glyph alone — copy, or the check once copied — for a
+   * control that draws its own surface, such as `CopyButton`.
+   */
+  variant?: 'tile' | 'bare'
+  className?: string
+}
+
+export function CopyIcon({ copied, variant = 'tile', className }: CopyIconProps) {
+  if (variant === 'bare') {
+    return (
+      <Icon
+        name={copied ? 'check' : 'content_copy'}
+        aria-hidden="true"
+        className={cn('text-icon-sm', copied && 'text-primary', className)}
+      />
+    )
+  }
   return (
     <div
       className={cn(

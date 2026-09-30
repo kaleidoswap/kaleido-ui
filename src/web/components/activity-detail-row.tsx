@@ -1,10 +1,17 @@
 import type { ReactNode } from 'react'
 import { Icon } from '../primitives/icon'
+import { CopyButton } from './copy-button'
 
 export interface ActivityDetailRowProps {
   label: string
   value: ReactNode
   fullValue?: string
+  /**
+   * The row copies this itself, with a `CopyButton` that reports failure.
+   * Prefer it to `onCopy`; when both are given, `onCopy` wins.
+   */
+  copyValue?: string
+  /** Kept for compatibility: the consumer copies and drives `isCopied` itself. */
   onCopy?: () => void
   isCopied?: boolean
 }
@@ -13,6 +20,7 @@ export function ActivityDetailRow({
   label,
   value,
   fullValue,
+  copyValue,
   onCopy,
   isCopied,
 }: ActivityDetailRowProps) {
@@ -42,6 +50,7 @@ export function ActivityDetailRow({
             <Icon name={isCopied ? 'check' : 'content_copy'} style={{ fontSize: '14px' }} />
           </button>
         )}
+        {!onCopy && copyValue !== undefined && <CopyButton value={copyValue} label={label.toLowerCase()} />}
       </div>
     </div>
   )

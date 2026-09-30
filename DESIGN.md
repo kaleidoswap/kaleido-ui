@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand-green, Bitcoin-native wallet UI.
-version: 0.1.126   # must equal package.json's version; check-design-doc fails otherwise
+version: 0.1.127   # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -466,7 +466,13 @@ Label/value rows on `bg-muted/40`, separated by spacing. The markup follows the 
 
 ### CopyButton
 
-`<CopyButton value label />` — a real `<button>` named "Copy {label}" that writes to the clipboard. On success it shows a check and announces "Copied"; when the write rejects (insecure context, iframe, denied permission) or no clipboard exists, it shows and announces "Could not copy — select the text instead" and never the check. `CopyIcon` is only the glyph, for a row that is itself the control.
+Copying reports what actually happened, everywhere. `useCopyToClipboard()` returns `{ state: 'idle' | 'copied' | 'failed', copy(value), reset() }`: a missing clipboard (an insecure context) or a rejected write is `failed`, never `copied`, and there is no timer — the state changes only on the next copy or `reset()`.
+
+- **`CopyButton value label`** — a 24×24 ghost icon button named "Copy {label}" with `CopyIcon`'s glyph (`variant="bare"`): the copy glyph, the check once copied. A success is announced ("{label} copied to the clipboard"); a failure shows "Copy failed — select it and copy by hand." beside it as an alert. It stops the click's propagation, since it usually sits in a clickable row.
+- **`Copyable value label`** — the value (or a shortened `children`) plus its `CopyButton`; the text stays `select-all` and its `title` is the full value, which is also what is copied.
+- **`CodeBlock code label language`** — a monospaced `<pre>` that scrolls sideways, with a `CopyButton` top right; `language` is a label, not highlighting.
+
+`ActivityDetailRow`, `SecretRevealCard` and `RecoveryPhraseCard` take `copyValue` to copy themselves this way; `onCopy` still works for existing callers. The destructive toast's copy control uses the hook and no longer shows "Copied" after a failed write. `CopyIcon` alone (`variant="tile"`) is the glyph for a row that is itself the control.
 
 ### ToneBadge
 

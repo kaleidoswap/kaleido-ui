@@ -8,6 +8,7 @@ import {
   ToastViewport,
 } from './toast'
 import { useToast } from '../hooks/use-toast'
+import { useCopyToClipboard } from '../hooks/use-copy-to-clipboard'
 import { Icon } from './icon'
 
 function toPlainText(node: any): string {
@@ -21,7 +22,17 @@ function toPlainText(node: any): string {
 
 function ToastWithProgress({ id, title, description, action, duration = 4000, variant, ...props }: any) {
   const [progress, setProgress] = useState(100)
-  const [copied, setCopied] = useState(false)
+  const clipboard = useCopyToClipboard()
+  const copied = clipboard.state === 'copied'
+  const copyFailed = clipboard.state === 'failed'
+
+  // "Copied" goes back to the copy glyph after a moment; a failure stays until
+  // the next attempt, so it is never mistaken for a success.
+  useEffect(() => {
+    if (!copied) return
+    const timer = setTimeout(clipboard.reset, 1500)
+    return () => clearTimeout(timer)
+  }, [copied, clipboard.reset])
 
   useEffect(() => {
     const interval = 50
@@ -50,10 +61,10 @@ function ToastWithProgress({ id, title, description, action, duration = 4000, va
   const copyText = () => {
     const text = [toPlainText(title), toPlainText(description)].filter(Boolean).join('\n')
     if (!text) return
-    void Promise.resolve(navigator?.clipboard?.writeText?.(text)).catch(() => {})
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
+    // It used to show "Copied" whether or not the write succeeded.
+    void clipboard.copy(text)
   }
+  const copyLabel = copied ? 'Copied' : copyFailed ? 'Copy failed — select the message and copy it by hand' : 'Copy error'
 
   return (
     <Toast {...props} variant={variant}>
@@ -73,12 +84,17 @@ function ToastWithProgress({ id, title, description, action, duration = 4000, va
           <button
             type="button"
             onClick={copyText}
-            aria-label={copied ? 'Copied' : 'Copy error'}
-            title={copied ? 'Copied' : 'Copy error'}
+            aria-label={copyLabel}
+            title={copyLabel}
             className="rounded-md p-1 text-foreground/60 hover:text-foreground hover:bg-white/10 transition-colors"
           >
-            <Icon name={copied ? 'check' : 'content_copy'} size="sm" />
+            <Icon name={copied ? 'check' : copyFailed ? 'error' : 'content_copy'} size="sm" />
           </button>
+        )}
+        {showCopy && (
+          <span aria-live="polite" className="sr-only">
+            {copied ? 'Copied' : copyFailed ? copyLabel : ''}
+          </span>
         )}
         <ToastClose />
       </div>

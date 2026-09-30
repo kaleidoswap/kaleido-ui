@@ -334,7 +334,20 @@ export {
   type StepperNumberInputProps,
 } from './components/stepper-number-input'
 export { MetricCard, type MetricCardProps, type MetricCardSize } from './components/metric-card'
-export { CopyButton, type CopyButtonProps, type CopyButtonStatus } from './components/copy-button'
+export {
+  CopyButton,
+  COPY_FAILED_MESSAGE,
+  type CopyButtonProps,
+  type CopyButtonStatus,
+} from './components/copy-button'
+export { Copyable, type CopyableProps } from './components/copyable'
+export { CodeBlock, type CodeBlockProps } from './components/code-block'
+export {
+  useCopyToClipboard,
+  type CopyState,
+  type CopyCallbacks,
+  type UseCopyToClipboard,
+} from './hooks/use-copy-to-clipboard'
 export {
   TrendChart,
   trendChartTicks,
@@ -405,6 +418,7 @@ export {
   InvoiceStatusBanner,
   PaidOverlay,
   CopyIcon,
+  type CopyIconProps,
   AccountChoiceChip,
   NetworkInfoDisclosure,
   MethodChoiceChip,

@@ -1,104 +1,81 @@
-import { useEffect, useRef, useState } from 'react'
+import type { MouseEvent } from 'react'
 import { Button, type ButtonProps } from '../primitives/button'
-import { Icon } from '../primitives/icon'
+import { CopyIcon } from './deposit-ui-shared'
+import { useCopyToClipboard, type CopyState } from '../hooks/use-copy-to-clipboard'
 import { cn } from '../utils/cn'
 
-export type CopyButtonStatus = 'idle' | 'copied' | 'failed'
+/** @deprecated Use `CopyState` from `useCopyToClipboard`; kept as an alias. */
+export type CopyButtonStatus = CopyState
 
 export interface CopyButtonProps
-  extends Omit<ButtonProps, 'value' | 'onClick' | 'children' | 'asChild'> {
-  /** The text written to the clipboard. */
+  extends Omit<ButtonProps, 'value' | 'onClick' | 'children' | 'asChild' | 'size'> {
+  /** The full value written to the clipboard. */
   value: string
-  /** What is being copied, for the button's name: "API key prefix" → "Copy API key prefix". */
+  /** What is copied, for the button's name and the announcement: "transaction id". */
   label: string
-  /** How long the success or failure state stays up, in ms. */
-  resetAfter?: number
+  /** The visible failure message. */
+  failedMessage?: string
+  /** The accessible name. Defaults to `Copy ${label}`. */
+  copyLabel?: string
+  /** The success announcement. Defaults to `${label} copied to the clipboard`. */
+  copiedAnnouncement?: string
   onCopied?: () => void
   onCopyError?: (error: unknown) => void
 }
 
-const FAILURE_TEXT = 'Could not copy — select the text instead'
-
-async function writeClipboard(value: string): Promise<void> {
-  // Outside a secure context, in some iframes and without permission,
-  // `navigator.clipboard` is missing or its write rejects. Both are failures.
-  if (typeof navigator === 'undefined' || !navigator.clipboard?.writeText) {
-    throw new Error('Clipboard unavailable')
-  }
-  await navigator.clipboard.writeText(value)
-}
+export const COPY_FAILED_MESSAGE = 'Copy failed — select it and copy by hand.'
 
 /**
- * A real copy button: it writes `value` to the clipboard and says whether that
- * worked.
+ * A 24×24 ghost icon button that copies `value` and says whether it worked:
+ * the copy glyph, a check once copied, and on failure a visible message
+ * (`role="alert"`) instead of a check — never "copied" when nothing was.
+ * A success is announced through a polite live region.
  *
- * The part consumers got wrong is the failure. `navigator.clipboard.writeText`
- * rejects outside a secure context, in some iframes and when permission is
- * denied; a button that shows "Copied" anyway tells the user something false.
- * On success this shows a check and announces "Copied"; on failure it shows
- * and announces that copying failed, and never the check.
- *
- * `CopyIcon` stays what it is: the glyph, for a row that is itself the button.
+ * It stops the click's propagation: it usually sits inside a clickable row.
+ * The state stays until the next copy; there is no timer.
  */
 export function CopyButton({
   value,
   label,
-  resetAfter = 2000,
+  failedMessage = COPY_FAILED_MESSAGE,
+  copyLabel,
+  copiedAnnouncement,
   onCopied,
   onCopyError,
   variant = 'ghost',
-  size = 'icon-lg',
   className,
   disabled,
   ...props
 }: CopyButtonProps) {
-  const [status, setStatus] = useState<CopyButtonStatus>('idle')
-  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const { state, copy } = useCopyToClipboard()
 
-  useEffect(() => () => clearTimeout(timer.current), [])
-
-  const settle = (next: CopyButtonStatus) => {
-    setStatus(next)
-    clearTimeout(timer.current)
-    timer.current = setTimeout(() => setStatus('idle'), resetAfter)
-  }
-
-  const copy = async () => {
-    try {
-      await writeClipboard(value)
-      settle('copied')
-      onCopied?.()
-    } catch (error) {
-      settle('failed')
-      onCopyError?.(error)
-    }
+  const onClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
+    void copy(value, { onSuccess: onCopied, onError: onCopyError })
   }
 
   return (
-    <span data-slot="copy-button" data-status={status} className="inline-flex items-center gap-2">
+    <span data-slot="copy-button" data-status={state} className="inline-flex items-center gap-2">
       <Button
         type="button"
         variant={variant}
-        size={size}
-        aria-label={`Copy ${label}`}
+        size="icon"
+        aria-label={copyLabel ?? `Copy ${label}`}
         disabled={disabled}
-        onClick={() => void copy()}
-        className={cn(status === 'failed' && 'text-danger', className)}
+        onClick={onClick}
+        className={cn('rounded-md text-muted-foreground hover:text-primary', className)}
         {...props}
       >
-        <Icon
-          name={status === 'copied' ? 'check' : status === 'failed' ? 'error' : 'content_copy'}
-          className="text-icon-md"
-        />
+        <CopyIcon copied={state === 'copied'} variant="bare" />
       </Button>
-      {status === 'failed' && (
-        <span data-slot="copy-button-error" aria-hidden="true" className="text-caption text-danger">
-          {FAILURE_TEXT}
+      {state === 'failed' && (
+        <span data-slot="copy-button-error" role="alert" className="text-caption text-danger">
+          {failedMessage}
         </span>
       )}
-      {/* Always mounted, so the change of text is what gets announced. */}
-      <span role="status" aria-live="polite" className="sr-only">
-        {status === 'copied' ? 'Copied' : status === 'failed' ? FAILURE_TEXT : ''}
+      {/* Always mounted, so a change of text is what gets announced. */}
+      <span aria-live="polite" className="sr-only">
+        {state === 'copied' ? (copiedAnnouncement ?? `${label} copied to the clipboard`) : ''}
       </span>
     </span>
   )
