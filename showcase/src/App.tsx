@@ -1,6 +1,19 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { StateSnapshot } from './pages/StateSnapshot'
 import { ChartsGallery } from './pages/ChartsGallery'
+import {
+  AvatarGallery,
+  BadgesGallery,
+  CollapsibleGallery,
+  CopyGallery,
+  DialogShowCloseDemo,
+  FormsGallery,
+  ListsGallery,
+  NoticesGallery,
+  PageLayoutGallery,
+  PopoverMenuGallery,
+  TableGallery,
+} from './pages/ComponentGalleries'
 import { Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput } from '@kaleido-ui/index'
 import {
   Button,
@@ -161,6 +174,8 @@ const NAV_CATEGORIES: { label: string; icon: IconName; pages: NavPage[] }[] = [
       { id: 'icons', label: 'Icons', icon: 'palette' },
       { id: 'inputs', label: 'Inputs', icon: 'edit' },
       { id: 'tabs', label: 'Tabs', icon: 'tune' },
+      { id: 'forms', label: 'Forms', icon: 'edit' },
+      { id: 'table', label: 'Table', icon: 'grid_view' },
     ],
   },
   {
@@ -172,6 +187,9 @@ const NAV_CATEGORIES: { label: string; icon: IconName; pages: NavPage[] }[] = [
       { id: 'info-chips', label: 'Info Chips', icon: 'info' },
       { id: 'cards', label: 'Cards', icon: 'grid_view' },
       { id: 'alert-banners', label: 'Alert Banners', icon: 'warning' },
+      { id: 'tone-badges', label: 'Tone Badges', icon: 'verified' },
+      { id: 'avatar', label: 'Avatar', icon: 'person' },
+      { id: 'collapsible', label: 'Collapsible', icon: 'expand_more' },
     ],
   },
   {
@@ -181,6 +199,8 @@ const NAV_CATEGORIES: { label: string; icon: IconName; pages: NavPage[] }[] = [
       { id: 'dialog', label: 'Dialog', icon: 'chat_bubble' },
       { id: 'drawer', label: 'Drawer', icon: 'menu' },
       { id: 'toast', label: 'Toast', icon: 'description' },
+      { id: 'popover-menu', label: 'Popover & Menu', icon: 'apps' },
+      { id: 'notices', label: 'Notices', icon: 'info' },
     ],
   },
   {
@@ -202,6 +222,15 @@ const NAV_CATEGORIES: { label: string; icon: IconName; pages: NavPage[] }[] = [
       { id: 'deposit-components', label: 'Deposit', icon: 'arrow_downward' },
       { id: 'withdraw-components', label: 'Withdraw', icon: 'arrow_outward' },
       { id: 'swap-flow', label: 'Swap Flow', icon: 'swap_horiz' },
+    ],
+  },
+  {
+    label: 'Patterns',
+    icon: 'receipt_long',
+    pages: [
+      { id: 'copy', label: 'Copy', icon: 'content_copy' },
+      { id: 'lists', label: 'Lists & filters', icon: 'tune' },
+      { id: 'page-layout', label: 'Page layout', icon: 'description' },
     ],
   },
   {
@@ -1316,6 +1345,7 @@ export function App() {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
+            <DialogShowCloseDemo />
           </Section>
 
           {/* ── Drawer ──────────────────────────────────────────────────── */}
@@ -1398,6 +1428,37 @@ export function App() {
                 Destructive
               </Button>
             </Row>
+          </Section>
+
+          <Section id="forms" title="Forms" description="FormField and the segmented control.">
+            <FormsGallery />
+          </Section>
+          <Section id="table" title="Table" description="The dense data grid for desk surfaces.">
+            <TableGallery />
+          </Section>
+          <Section id="tone-badges" title="Tone Badges" description="ToneBadge tones, including secondary and outline, and case=&quot;none&quot; for values.">
+            <BadgesGallery />
+          </Section>
+          <Section id="avatar" title="Avatar" description="Image, initials or the person glyph.">
+            <AvatarGallery />
+          </Section>
+          <Section id="collapsible" title="Collapsible" description="The open/close primitive, and DisclosureCard built on it.">
+            <CollapsibleGallery />
+          </Section>
+          <Section id="popover-menu" title="Popover & Menu" description="An anchored panel, and a real menu.">
+            <PopoverMenuGallery />
+          </Section>
+          <Section id="notices" title="Notices" description="Notices that stay until closed: the top bar and the floating notice.">
+            <NoticesGallery />
+          </Section>
+          <Section id="copy" title="Copy" description="Copying that says whether it worked.">
+            <CopyGallery />
+          </Section>
+          <Section id="lists" title="Lists & filters" description="QueryState, EmptyState, RecordList, FilterBar, Pager, ValueList, EventTimeline and checklists.">
+            <ListsGallery />
+          </Section>
+          <Section id="page-layout" title="Page layout" description="The desk page header, MetricCard sizes and an ordered log.">
+            <PageLayoutGallery />
           </Section>
 
           {/* ── Charts ──────────────────────────────────────────────────── */}
