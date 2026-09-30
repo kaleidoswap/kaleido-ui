@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand-green, Bitcoin-native wallet UI.
-version: 0.1.125   # must equal package.json's version; check-design-doc fails otherwise
+version: 0.1.126   # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -471,6 +471,35 @@ Label/value rows on `bg-muted/40`, separated by spacing. The markup follows the 
 ### ToneBadge
 
 A small pill in a semantic tone, drawn from theme tokens only (the `muted` tone is `border-border bg-foreground/5 text-muted-foreground`, which is the old 10 % / 5 % / 55 % white on dark and stays visible on the light theme). `case="upper"` (default) is a status set as the eyebrow; `case="none"` is a value (a payout total) in `caption`, with no uppercase or tracking.
+
+### Popover and DropdownMenu
+
+Two floating surfaces on one look — `bg-popover`, a `border` hairline, `shadow-popover`, the same fade and 0.98 zoom as `Dialog` and `Select` — and two jobs:
+
+- **`Popover`** is a panel anchored to a trigger for content that is *not* a menu: a note, a few buttons, a copy control. Tab walks everything inside in order.
+- **`DropdownMenu`** is a real menu (`role="menu"`): `DropdownMenuItem`s (with `destructive` for Revoke / Delete, kept last), `DropdownMenuSeparator`, `DropdownMenuLabel`. The arrow keys move between items.
+
+Both are Radix: Escape and a click outside close them and focus returns to the trigger. Never hand-roll either — `InlineSelector`'s panel predates them and handles neither Escape nor focus return.
+
+### Collapsible
+
+A button that opens and closes a section: `Collapsible` → `CollapsibleTrigger` (with `CollapsibleChevron`, which turns) → `CollapsibleContent`. Controlled or not (`open` / `defaultOpen` / `onOpenChange`); the trigger carries `aria-expanded` and `aria-controls`. It is the base of submenus, expandable lists and filter panels, and `DisclosureCard` is a card-styled Collapsible.
+
+### Avatar
+
+A circle, `sm` 32 px or `lg` 40 px: an image, or a fallback on the violet-to-info gradient (`from-secondary to-info`) with initials or the person glyph. Decorative (`aria-hidden`) unless `alt` is passed with an image that is itself the information.
+
+### FormField
+
+`<FormField label hint error>{control}</FormField>` wires a `Label` to its control (`htmlFor` / `id`, generated when absent), attaches the hint and the error with `aria-describedby`, marks the control `aria-invalid` on error and announces the error as an alert. Do not wire these by hand.
+
+### Segmented control
+
+Mutually exclusive options — a chart / list view toggle — are `FilterChipGroup variant="segmented"`: a radio group with one Tab stop, the arrow keys moving and selecting. An option may be icon-only; it then needs `ariaLabel`, which is also its tooltip. The default `chips` variant (the filter strip) is unchanged.
+
+### Breakpoints
+
+`breakpoint` in the tokens names the widths the `sm:` / `md:` … classes switch at (Tailwind's defaults: `sm` 40rem). `useMediaQuery(query)` is safe on the server and in jsdom (false without `matchMedia`); `useIsNarrow()` is true below `sm`.
 
 ## Do's and Don'ts
 

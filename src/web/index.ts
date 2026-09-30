@@ -86,6 +86,37 @@ export {
   TableCell,
   TableCaption,
 } from './primitives/table'
+export {
+  Popover,
+  PopoverTrigger,
+  PopoverAnchor,
+  PopoverClose,
+  PopoverContent,
+  type PopoverContentProps,
+} from './primitives/popover'
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuGroup,
+  DropdownMenuPortal,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  type DropdownMenuContentProps,
+  type DropdownMenuItemProps,
+} from './primitives/dropdown-menu'
+export {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+  CollapsibleChevron,
+  type CollapsibleTriggerProps,
+  type CollapsibleContentProps,
+} from './primitives/collapsible'
+export { Avatar, avatarVariants, type AvatarProps } from './primitives/avatar'
+export { FormField, type FormFieldProps } from './components/form-field'
+export { useMediaQuery, useIsNarrow } from './hooks/use-media-query'
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './primitives/tabs'
 export { Label } from './primitives/label'
 export {

@@ -82,7 +82,9 @@ const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTML
       ref={ref}
       data-slot="table-row"
       className={cn(
-        'border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted',
+        // Selected by `aria-selected="true"` (a selectable grid row) or
+        // `data-state="selected"` (a row the consumer marks itself).
+        'border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted aria-selected:bg-muted',
         className,
       )}
       {...props}

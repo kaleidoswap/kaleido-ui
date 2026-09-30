@@ -244,6 +244,10 @@ const NOT_RENDERED = new Set([
   'InlineSelector', 'MethodChoiceChip', 'NetworkBadge', 'NetworkInfoChip', 'NetworkInfoDisclosure',
   'OptionSelector', 'RecoveryPhraseCard', 'StatusBadge', 'SummaryRows', 'SwapBadge', 'SwapInputCard',
   'SwapStepList', 'WalletAssetList', 'WithdrawAmountInput', 'WithdrawRouteSelector', 'TrendChart',
+  // Parts of a Radix root, and a field that needs its control; covered by
+  // tests/primitives-p1.test.tsx.
+  'CollapsibleContent', 'CollapsibleTrigger', 'DropdownMenuContent', 'DropdownMenuItem', 'DropdownMenuPortal',
+  'DropdownMenuTrigger', 'FormField', 'PopoverAnchor', 'PopoverClose', 'PopoverContent', 'PopoverTrigger',
   // Charts need their data; tests/charts.test.tsx renders every one of them.
   'LineChart', 'AreaChart', 'BarChart', 'BarList', 'DonutChart', 'ScatterChart', 'Sparkline',
   'ChartLegend', 'ChartTooltip', 'ChartFrame',

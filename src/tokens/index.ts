@@ -30,3 +30,4 @@ export {
 } from './theme'
 export { iconColors } from './icon-colors.generated'
 export { chartSeries, chartSeriesLimit, chartScatterSeriesLimit } from './chart'
+export { breakpoint } from './breakpoints'

@@ -35,7 +35,12 @@ export function SettingsSectionCard({
 
 export interface ToneBadgeProps {
   children: ReactNode
-  tone?: 'primary' | 'info' | 'warning' | 'danger' | 'success' | 'muted'
+  /**
+   * The badge's colour. `muted` is the neutral default; `secondary` is the
+   * brand violet; `outline` has no fill, only the hairline — for a label that
+   * should not compete with a status next to it.
+   */
+  tone?: 'primary' | 'secondary' | 'info' | 'warning' | 'danger' | 'success' | 'muted' | 'outline'
   /**
    * `upper` (default) is a status — ACTIVE, REVOKED — set as the eyebrow.
    * `none` is a value — a payout total, a count — set in `caption` with no
@@ -54,6 +59,8 @@ const badgeToneClass: Record<NonNullable<ToneBadgeProps['tone']>, string> = {
   // Theme tokens, not white alphas: on the light theme a white-on-white badge
   // disappears. On dark these resolve to the same 10% / 5% / 55% white.
   muted: 'border-border bg-foreground/5 text-muted-foreground',
+  secondary: 'border-secondary/30 bg-secondary/10 text-secondary',
+  outline: 'border-border bg-transparent text-foreground',
 }
 
 export function ToneBadge({ children, tone = 'muted', case: letterCase = 'upper', className }: ToneBadgeProps) {
