@@ -54,12 +54,12 @@
   --chart-4:              #7C3AED;
   --chart-5:              #DD352E;
   /* Chart series, in slot order — from src/tokens/chart.ts */
-  --series-1:             #17a877;
-  --series-2:             #eb6834;
-  --series-3:             #1c95d4;
-  --series-4:             #eda100;
-  --series-5:             #6d5ce0;
-  --series-6:             #e87ba4;
+  --series-1:             #0b764d;
+  --series-2:             #4e40a0;
+  --series-3:             #0f9cd0;
+  --series-4:             #dea805;
+  --series-5:             #c34189;
+  --series-6:             #fe904d;
 }
 
 /* ── Semantic colors (dark mode) — from src/tokens/colors.ts ───────────── */
@@ -88,12 +88,12 @@
   --chart-4:              #7C3AED;
   --chart-5:              #DD352E;
   /* Chart series, in slot order — from src/tokens/chart.ts */
-  --series-1:             #0fae74;
-  --series-2:             #d95926;
-  --series-3:             #1f9ad6;
-  --series-4:             #c98500;
-  --series-5:             #9085e9;
-  --series-6:             #d55181;
+  --series-1:             #098356;
+  --series-2:             #7061db;
+  --series-3:             #179fd4;
+  --series-4:             #b3880f;
+  --series-5:             #db589e;
+  --series-6:             #de6907;
 }
 
 /* ── App semantic colors (slate identity) — from src/tokens/app-semantic.ts ─
