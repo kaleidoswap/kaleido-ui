@@ -55,10 +55,10 @@
   --chart-5:              #DD352E;
   /* Chart series, in slot order — from src/tokens/chart.ts */
   --series-1:             #17a877;
-  --series-2:             #6d5ce0;
-  --series-3:             #eb6834;
-  --series-4:             #2a78d6;
-  --series-5:             #eda100;
+  --series-2:             #eb6834;
+  --series-3:             #1c95d4;
+  --series-4:             #eda100;
+  --series-5:             #6d5ce0;
   --series-6:             #e87ba4;
 }
 
@@ -89,10 +89,10 @@
   --chart-5:              #DD352E;
   /* Chart series, in slot order — from src/tokens/chart.ts */
   --series-1:             #0fae74;
-  --series-2:             #9085e9;
-  --series-3:             #d95926;
-  --series-4:             #3987e5;
-  --series-5:             #c98500;
+  --series-2:             #d95926;
+  --series-3:             #1f9ad6;
+  --series-4:             #c98500;
+  --series-5:             #9085e9;
   --series-6:             #d55181;
 }
 
