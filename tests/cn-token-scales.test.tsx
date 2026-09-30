@@ -28,3 +28,11 @@ test('two sizes still resolve to the last one', () => {
   assert.equal(cn('text-icon-sm', 'text-icon-lg'), 'text-icon-lg')
   assert.equal(cn('tracking-eyebrow', 'tracking-normal'), 'tracking-normal')
 })
+
+test('a gradient class keeps the colour it sits on', () => {
+  assert.equal(cn('bg-card bg-gradient-card'), 'bg-card bg-gradient-card')
+  assert.equal(cn('bg-secondary', 'bg-gradient-violet'), 'bg-secondary bg-gradient-violet')
+  assert.equal(cn('text-white text-gradient-brand'), 'text-white text-gradient-brand')
+  assert.equal(cn('border-border border-gradient-brand'), 'border-border border-gradient-brand')
+  assert.equal(cn('bg-gradient-card', 'bg-gradient-violet'), 'bg-gradient-violet')
+})

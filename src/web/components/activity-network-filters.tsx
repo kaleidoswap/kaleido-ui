@@ -64,8 +64,8 @@ export function ActivityNetworkFilters<TValue extends string = ActivityNetworkFi
             className={cn(
               'flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1.5 text-mini font-bold uppercase tracking-eyebrow transition-all',
               isActive
-                ? 'bg-primary/15 text-primary ring-1 ring-primary/20'
-                : 'bg-white/5 text-muted-foreground hover:bg-white/8 hover:text-white'
+                ? 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
+                : 'bg-white/5 text-muted-foreground hover:bg-secondary/10 hover:text-secondary-content'
             )}
           >
             <span

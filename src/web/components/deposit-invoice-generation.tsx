@@ -334,7 +334,7 @@ export function DepositInvoiceGeneration({
   const isNewRgbAsset = isNewAsset && assetFamily === 'RGB'
 
   return (
-    <div className="relative flex h-screen flex-col overflow-hidden bg-background pt-16 font-display text-foreground">
+    <div className="relative flex h-screen flex-col overflow-hidden bg-background bg-page-radial pt-16 font-display text-foreground">
       <div className="absolute left-4 top-4 z-30">
         <Button type="button" variant="ghost" size="icon-xl" onClick={handleBack} aria-label="Go back">
           <Icon name="arrow_back" size="xl" />
@@ -350,10 +350,10 @@ export function DepositInvoiceGeneration({
           isNewAsset && (network === 'spark' || network === 'arkade')
         if (hideDestinationRail) return null
         return (
-          <div className="flex-shrink-0 bg-background px-4 py-2">
+          <div className="flex-shrink-0 px-4 py-2">
             <div className="space-y-2">
               <div>
-                <p className="text-mini font-bold uppercase tracking-eyebrow text-white/35">
+                <p className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
                   Destination Account
                 </p>
                 <div className="mt-1.5 flex gap-1.5 overflow-x-auto no-scrollbar">
@@ -384,7 +384,7 @@ export function DepositInvoiceGeneration({
               </div>
           {!isBtc && !(isNewAsset && (network === 'spark' || network === 'arkade')) && (
             <div>
-              <p className="text-mini font-bold uppercase tracking-eyebrow text-white/35">
+              <p className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
                 Transfer Method
               </p>
               <div className="mt-1.5 flex gap-1.5 overflow-x-auto no-scrollbar">
@@ -430,7 +430,7 @@ export function DepositInvoiceGeneration({
           <div className="flex flex-col items-center gap-4 py-10">
             <div
               className={cn(
-                'flex size-16 items-center justify-center rounded-2xl',
+                'flex size-16 items-center justify-center rounded-2xl shadow-raised',
                 NETWORK_CONFIG[
                   btcSelectedAccount === 'SPARK'
                     ? 'spark'

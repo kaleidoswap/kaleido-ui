@@ -4,12 +4,14 @@
  * Shared assistant primitive: the cards in an empty/first-run chat state that
  * map to quick actions ("Check balance", "Create invoice", …). The glyph is a
  * render function (consumer supplies the icon set; the tile controls color +
- * size) and the chip uses a flat accent fill, matching the brand's flat-fill
- * treatment. Pure RN + useKaleidoTheme — no Expo / SVG deps.
+ * size) and the chip uses a flat accent fill with a matching coloured glow.
+ * The tile is a raised card (violet-black drop + top rim light) that picks up
+ * a violet ring and lifted shadow while pressed. Pure RN + useKaleidoTheme — no Expo / SVG deps.
  */
 import React, { type ReactNode } from 'react'
 import { Pressable, View, StyleSheet, type ViewStyle } from 'react-native'
 import { useKaleidoTheme } from '../theme-context'
+import { kaleidoShadow } from '../theme'
 import { KText } from './k-text'
 
 export interface SuggestionTileProps {
@@ -36,14 +38,30 @@ export function SuggestionTile({ title, subtitle, icon, accent, onPress, style }
       style={({ pressed }) => [
         styles.card,
         {
-          backgroundColor: theme.card,
-          borderColor: theme.border.subtle,
-          opacity: pressed ? 0.85 : 1,
+          backgroundColor: pressed ? theme.cardElevated : theme.card,
+          borderColor: pressed ? theme.violetBorder : theme.border.subtle,
+          borderTopColor: pressed ? theme.violetBorder : theme.highlight,
         },
+        kaleidoShadow(theme, pressed ? 'cardHover' : 'card'),
         style,
       ]}
     >
-      <View style={[styles.chip, { backgroundColor: chipColor }]}>{icon(theme.text.onFill, 18)}</View>
+      <View
+        style={[
+          styles.chip,
+          {
+            backgroundColor: chipColor,
+            borderColor: theme.highlight,
+            shadowColor: chipColor,
+            shadowOffset: { width: 0, height: 3 },
+            shadowOpacity: 0.4,
+            shadowRadius: 8,
+            elevation: 3,
+          },
+        ]}
+      >
+        {icon(theme.text.onFill, 18)}
+      </View>
       <View style={styles.textArea}>
         <KText variant="caption" weight="semibold" numberOfLines={1}>
           {title}
@@ -73,6 +91,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 12,
+    borderTopWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

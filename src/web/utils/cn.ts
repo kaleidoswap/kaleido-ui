@@ -52,10 +52,33 @@ const roundedGroups = [
   'rounded-bl',
 ] as const
 
-const twMerge = extendTailwindMerge({
+/**
+ * The gradient classes in kaleido-ui/css are background IMAGES, but a stock
+ * tailwind-merge reads `bg-gradient-card` as a background COLOUR, so
+ * `cn('bg-card bg-gradient-card')` dropped the fill the gradient sits on.
+ * `text-gradient-brand` and `border-gradient-brand` are their own things.
+ */
+const bgImages = [
+  'gradient-brand',
+  'gradient-brand-dark',
+  'gradient-primary',
+  'gradient-violet',
+  'gradient-card',
+  'gradient-card-hero',
+  'gradient-active',
+  'gradient-headline',
+  'page-radial',
+  'page-brand',
+  'card-sheen',
+]
+
+const twMerge = extendTailwindMerge<'text-gradient' | 'border-gradient'>({
   extend: {
     classGroups: {
       'font-size': [{ text: fontSizes }],
+      'bg-image': [{ bg: bgImages }],
+      'text-gradient': ['text-gradient-brand'],
+      'border-gradient': ['border-gradient-brand'],
       tracking: [{ tracking: Object.keys(letterSpacing).map(camelToKebab) }],
       shadow: [{ shadow: shadows }],
       ...Object.fromEntries(

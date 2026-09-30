@@ -151,6 +151,7 @@ export function ScrollArea({
           <div
             className={cn(
               'absolute right-0 rounded-full bg-scrollbar-thumb transition-[width,background-color]',
+              isHoveringThumb && 'bg-secondary-content/60 shadow-glow-violet-soft',
               thumbClassName,
             )}
             onPointerDown={handleThumbPointerDown}

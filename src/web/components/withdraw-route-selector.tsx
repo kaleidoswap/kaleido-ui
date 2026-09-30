@@ -60,7 +60,7 @@ function RouteChoiceCard<TAccount extends string>({
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-body font-bold text-white">{route.accountTitle}</span>
             {recommended && !disabled && (
-              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-primary">
+              <span className="rounded-full bg-primary/15 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-primary shadow-glow-primary-soft">
                 Recommended
               </span>
             )}
@@ -82,7 +82,7 @@ function RouteChoiceCard<TAccount extends string>({
   )
 
   if (displayOnly) {
-    return <div className="rounded-2xl bg-card/50 px-4 py-3.5">{body}</div>
+    return <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-4 py-3.5 shadow-card">{body}</div>
   }
 
   return (
@@ -94,12 +94,15 @@ function RouteChoiceCard<TAccount extends string>({
       aria-disabled={disabled}
       title={disabled ? disabledReason : undefined}
       className={cn(
-        'w-full rounded-2xl p-4 text-left transition-all',
+        'w-full rounded-2xl p-4 text-left transition-all duration-200',
         disabled
           ? 'cursor-not-allowed bg-danger/5 opacity-60'
           : selected
-            ? (accentClassName ?? 'bg-primary/10')
-            : 'bg-white/4 hover:bg-white/6'
+            ? cn(
+                'bg-gradient-active shadow-glow-primary-soft ring-1 ring-inset ring-primary/40',
+                accentClassName ?? 'bg-secondary/10',
+              )
+            : 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-card hover:bg-secondary/10 hover:shadow-card-hover'
       )}
     >
       {body}
@@ -120,7 +123,7 @@ export function WithdrawRouteSelector<TAccount extends string = string>({
 
   return (
     <div className="space-y-2">
-      <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+      <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
         Route
       </label>
 

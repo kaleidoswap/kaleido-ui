@@ -35,7 +35,7 @@ const toneClasses: Record<NonNullable<MetricCardProps['tone']>, string> = {
   info: 'bg-info/10 text-info',
   warning: 'bg-warning/10 text-warning',
   success: 'bg-success/10 text-success',
-  muted: 'bg-white/8 text-muted-foreground',
+  muted: 'bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25',
 }
 
 /**
@@ -65,7 +65,7 @@ export function MetricCard({
       data-slot="metric-card-icon"
       className={cn(
         'flex shrink-0 items-center justify-center',
-        comfortable ? 'size-9 rounded-xl' : 'size-5 rounded-md',
+        comfortable ? 'size-9 rounded-xl shadow-raised' : 'size-5 rounded-md',
         toneClasses[tone],
       )}
     >
@@ -90,7 +90,9 @@ export function MetricCard({
       data-slot="metric-card"
       data-size={size}
       className={cn(
-        comfortable ? 'rounded-2xl bg-card p-4' : 'rounded-xl bg-card/70 p-2.5',
+        comfortable
+          ? 'rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero p-4 shadow-card'
+          : 'rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero p-2.5 shadow-raised',
         placement === 'end' ? 'flex items-start justify-between gap-3' : 'space-y-1',
         className,
       )}

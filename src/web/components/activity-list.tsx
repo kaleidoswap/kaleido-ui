@@ -50,7 +50,7 @@ export interface ActivityListProps<TData = unknown> {
 }
 
 function DefaultEmptyIcon({ name }: { name: IconName }) {
-  return <Icon name={name} className="text-icon-4xl text-foreground/30" />
+  return <Icon name={name} className="text-icon-4xl text-secondary-content" />
 }
 
 export function ActivityList<TData = unknown>({
@@ -108,7 +108,7 @@ export function ActivityList<TData = unknown>({
         return (
           <div
             key={item.id}
-            className="relative overflow-hidden rounded-2xl bg-card bg-none shadow-inner transition-all animate-in fade-in slide-in-from-bottom-2 duration-500"
+            className="relative overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-card transition-all hover:shadow-card-hover animate-in fade-in slide-in-from-bottom-2 duration-500"
           >
             <TransactionCard
               direction={item.direction}
@@ -121,7 +121,7 @@ export function ActivityList<TData = unknown>({
               onClick={() => onExpandedChange?.(isExpanded ? null : item.id)}
               // Stays above the details, which tuck underneath its rounded
               // bottom corners.
-              className={cn('relative z-[1] bg-card', isExpanded && 'shadow-none')}
+              className={cn('relative z-[1] bg-card', isExpanded && 'shadow-raised')}
             />
             {isExpanded && (
               // -mt-4/pt-4 slides the details up behind the card's bottom

@@ -7,58 +7,80 @@
 // anchors back the component-facing full-color vars (--background, --card,
 // --primary, …) consumed via raw var() and the bg-card / bg-background /
 // text-foreground utilities NOT overridden by the channel-backed app tokens.
+/** Brand scales — the two KaleidoSwap accents (brand book). */
+export const brand = {
+  green: {
+    50: '#E8FDF4',
+    100: '#B0F6DA',
+    200: '#6EEDC0',
+    400: '#15E99A', // primary
+    600: '#17B581', // brand anchor
+    800: '#0D7A58',
+    900: '#053D2C',
+  },
+  violet: {
+    50: '#EDE8FF',
+    100: '#C9BAFF',
+    200: '#A48AFF',
+    400: '#6F32FF', // primary
+    600: '#5420CC',
+    800: '#371488',
+    900: '#1C0A45',
+  },
+} as const
+
 export const lightSemanticColors = {
-  background: '#EAECF8', // surface-raised (light page body)
-  foreground: '#12131E', // content-primary
+  background: '#F1EEFC', // surface-raised (light page body, lavender)
+  foreground: '#15122A', // content-primary
   card: '#FFFFFF', //       surface-overlay
-  cardFg: '#12131E',
+  cardFg: '#15122A',
   popover: '#FFFFFF',
-  popoverFg: '#12131E',
+  popoverFg: '#15122A',
   primary: '#17B581', //    brand green (light)
   primaryFg: '#FFFFFF',
-  secondary: '#E4E6F6', //  neutral surface (bg-secondary utility is brand violet via app token)
-  secondaryFg: '#12131E',
-  muted: '#F6F7FD', //      surface-elevated
-  mutedFg: '#464A69', //    content-secondary
-  accent: '#E4E6F6', //     surface-high
-  accentFg: '#12131E',
+  secondary: '#EAE5FC', //  neutral surface (bg-secondary utility is brand violet via app token)
+  secondaryFg: '#15122A',
+  muted: '#F8F6FF', //      surface-elevated
+  mutedFg: '#4F4A75', //    content-secondary
+  accent: '#EAE5FC', //     surface-high
+  accentFg: '#15122A',
   destructive: '#e7000b',
-  border: '#C8CBE0', //     border-default
-  input: '#C8CBE0',
+  border: '#D6CFF2', //     border-default (violet-tinted)
+  input: '#CEC7EC',
   ring: '#17B581',
   chart1: '#2BEE79',
   chart2: '#F6C343',
   chart3: '#F7931A',
-  chart4: '#7C3AED',
+  chart4: '#6F32FF',
   chart5: '#DD352E',
 } as const
 
 const darkSemanticColors = {
-  background: '#12131C', // surface-base (deepest)
-  foreground: '#E8E9F2', // content-primary (cool white)
-  border: 'rgba(255, 255, 255, 0.10)',
-  input: 'rgba(255, 255, 255, 0.15)',
+  background: '#0E0D16', // surface-base (deepest, near-black with a violet cast)
+  foreground: '#EDECF6', // content-primary (cool white)
+  border: 'rgba(200, 192, 240, 0.11)', // lavender hairline
+  input: 'rgba(200, 192, 240, 0.16)',
   destructive: 'hsl(0 62% 50%)',
-  secondary: '#16273F', // neutral surface (bg-secondary utility is brand violet via app token)
-  secondaryFg: '#E8E9F2',
-  muted: '#181924', //     surface-raised
-  mutedFg: 'rgba(255, 255, 255, 0.55)',
+  secondary: '#282638', // neutral surface (bg-secondary utility is brand violet via app token)
+  secondaryFg: '#EDECF6',
+  muted: '#14131E', //     surface-raised
+  mutedFg: 'rgba(232, 230, 245, 0.58)',
   primary: '#15E99A', //   brand green (dark)
-  primaryFg: '#12131C',
-  accent: '#323448', //    surface-elevated
-  accentFg: '#E8E9F2',
+  primaryFg: '#0E0D16',
+  accent: '#282638', //    surface-elevated
+  accentFg: '#EDECF6',
   ring: '#15E99A',
-  card: '#242638', //      surface-overlay (card)
-  cardFg: '#E8E9F2',
-  popover: '#242638',
-  popoverFg: '#E8E9F2',
+  card: '#1C1A2A', //      surface-overlay (card)
+  cardFg: '#EDECF6',
+  popover: '#211F31',
+  popoverFg: '#EDECF6',
   chart1: '#2BEE79',
   chart2: '#F6C343',
   chart3: '#F7931A',
-  chart4: '#7C3AED',
+  chart4: '#8B5CF6',
   chart5: '#DD352E',
-  semanticBackground: '#242638',
-  semanticBorder: 'rgba(255, 255, 255, 0.10)',
+  semanticBackground: '#1C1A2A',
+  semanticBorder: 'rgba(200, 192, 240, 0.11)',
 } as const
 
 export const colors = {
@@ -88,9 +110,9 @@ export const colors = {
 
   /** Border ladder — translucent edges on dark surfaces */
   borderToken: {
-    subtle: 'rgba(255, 255, 255, 0.04)',
-    default: 'rgba(255, 255, 255, 0.08)',
-    strong: 'rgba(255, 255, 255, 0.15)',
+    subtle: 'rgba(200, 192, 240, 0.05)',
+    default: 'rgba(200, 192, 240, 0.09)',
+    strong: 'rgba(200, 192, 240, 0.18)',
   },
 
   /** Text ladder for dark surfaces */
@@ -106,7 +128,7 @@ export const colors = {
   /** Scrollbar treatment for app-owned scroll regions */
   scrollbar: {
     thumb: 'rgba(255, 255, 255, 0.16)',
-    thumbHover: 'rgba(43, 238, 121, 0.55)',
+    thumbHover: 'rgba(21, 233, 154, 0.55)',
     track: 'transparent',
   },
 

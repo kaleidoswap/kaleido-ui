@@ -1,9 +1,13 @@
 /**
  * NetworkBadge — React Native version
+ *
+ * Network glyph colours are fixed brand tokens (never recoloured); the pill
+ * reads them from the active Kaleido theme.
  */
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import { colors } from '../../tokens/colors'
+import type { KaleidoTheme } from '../../tokens/theme'
+import { useKaleidoTheme } from '../theme-context'
 
 export type NetworkType = 'L1' | 'LN' | 'RGB20' | 'RGB21' | 'RGB-L1' | 'RGB-LN' | 'Spark' | 'Arkade'
 
@@ -12,19 +16,21 @@ interface NetworkBadgeProps {
   style?: any
 }
 
-const networkConfig: Record<NetworkType, { color: string; label: string }> = {
-  L1: { color: colors.network.bitcoin, label: 'L1' },
-  LN: { color: colors.network.lightning, label: 'LN' },
-  RGB20: { color: colors.network.rgb, label: 'RGB' },
-  RGB21: { color: colors.network.rgb, label: 'RGB21' },
-  'RGB-L1': { color: colors.network.rgb, label: 'RGB L1' },
-  'RGB-LN': { color: colors.network.rgb, label: 'RGB LN' },
-  Spark: { color: colors.network.spark, label: 'Spark' },
-  Arkade: { color: colors.network.arkade, label: 'Arkade' },
+const networkConfig: Record<NetworkType, { key: keyof KaleidoTheme['network']; label: string }> = {
+  L1: { key: 'bitcoin', label: 'L1' },
+  LN: { key: 'lightning', label: 'LN' },
+  RGB20: { key: 'rgb', label: 'RGB' },
+  RGB21: { key: 'rgb', label: 'RGB21' },
+  'RGB-L1': { key: 'rgb', label: 'RGB L1' },
+  'RGB-LN': { key: 'rgb', label: 'RGB LN' },
+  Spark: { key: 'spark', label: 'Spark' },
+  Arkade: { key: 'arkade', label: 'Arkade' },
 }
 
 export function NetworkBadge({ network, style }: NetworkBadgeProps) {
-  const config = networkConfig[network]
+  const { theme } = useKaleidoTheme()
+  const entry = networkConfig[network]
+  const config = { color: theme.network[entry.key], label: entry.label }
 
   return (
     <View style={[styles.container, { backgroundColor: `${config.color}1A`, borderColor: `${config.color}33` }, style]}>

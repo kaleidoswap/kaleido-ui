@@ -10,7 +10,7 @@
 
 // Theme & Provider
 export { KaleidoThemeProvider } from './provider'
-export { kaleidoswapBrandConfig, kaleidoswapTokens } from './theme'
+export { kaleidoswapBrandConfig, kaleidoswapTokens, kaleidoShadow, type KaleidoShadow } from './theme'
 
 // Re-export WDK UI Kit components (consumers get them pre-themed via KaleidoThemeProvider)
 export {

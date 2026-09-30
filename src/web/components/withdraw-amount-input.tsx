@@ -101,10 +101,10 @@ export function WithdrawAmountInput({
     <>
       {showAmountInput && (
         <div className="space-y-3">
-          <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+          <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
             Amount
           </label>
-          <div className="overflow-hidden rounded-2xl bg-card/70">
+          <div className="overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-card transition-shadow focus-within:ring-1 focus-within:ring-primary/50 focus-within:shadow-glow-primary-soft">
             <div className="flex items-center gap-3 px-4 pt-3.5 pb-2.5">
               <div className="min-w-0 flex-1">
                 <input
@@ -119,7 +119,7 @@ export function WithdrawAmountInput({
               </div>
               <button
                 type="button"
-                className="shrink-0 rounded-lg bg-primary/15 px-3 py-1.5 text-mini font-bold uppercase tracking-eyebrow text-primary transition-colors hover:bg-primary/25"
+                className="shrink-0 rounded-lg bg-secondary bg-gradient-violet px-3 py-1.5 text-mini font-bold uppercase tracking-eyebrow text-white shadow-button-violet transition-shadow hover:shadow-glow-violet"
                 onClick={handleSetMax}
               >
                 Max
@@ -166,7 +166,7 @@ export function WithdrawAmountInput({
               const value = parseInt(event.target.value, 10)
               if (!Number.isNaN(value)) setWitnessAmountSat(value)
             }}
-            className="w-full rounded-xl bg-card px-4 py-3 text-body text-white shadow-inner transition-all focus:outline focus:outline-2 focus:outline-primary/50"
+            className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-4 py-3 text-body text-white shadow-inner transition-all focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
           />
           <p className="ml-1 text-caption text-muted-foreground">
             Bitcoin amount sent to create the witness UTXO for the recipient.
@@ -176,7 +176,7 @@ export function WithdrawAmountInput({
 
       {(addressType === 'bitcoin' || addressType === 'rgb') && (
         <div className="space-y-2">
-          <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+          <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
             Fee Rate
           </label>
           {customFeeEnabled ? (
@@ -192,14 +192,14 @@ export function WithdrawAmountInput({
                         setFeeRateMode?.(mode)
                         if (mode !== 'custom') setFeeRate(mode)
                       }}
-                      className={`group relative overflow-hidden rounded-xl border px-2 py-3 shadow-sm transition-all active:scale-[0.98] ${
+                      className={`group relative overflow-hidden rounded-xl border px-2 py-3 transition-all active:scale-[0.98] ${
                         selected
-                          ? 'border-transparent bg-primary/[0.14]'
-                          : 'border-transparent bg-card/70 hover:bg-card'
+                          ? 'border-transparent bg-gradient-active ring-1 ring-inset ring-primary/40 shadow-glow-primary-soft'
+                          : 'border-transparent bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-raised hover:bg-secondary/10'
                       }`}
                     >
                       <span
-                        className={`block text-caption font-bold capitalize ${selected ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'}`}
+                        className={`block text-caption font-bold capitalize ${selected ? 'text-primary' : 'text-muted-foreground group-hover:text-secondary-content'}`}
                       >
                         {mode}
                       </span>
@@ -219,7 +219,7 @@ export function WithdrawAmountInput({
                   placeholder={`${feeRates[feeRate]} (${feeRate})`}
                   value={customFeeRate ?? ''}
                   onChange={(event) => setCustomFeeRate?.(event.target.value.replace(/[^\d.]/g, ''))}
-                  className="w-full rounded-xl bg-card px-4 py-3 text-body text-white shadow-inner transition-all focus:outline focus:outline-2 focus:outline-primary/50"
+                  className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-4 py-3 text-body text-white shadow-inner transition-all focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
                 />
               )}
               {typeof estimatedFee === 'number' && (
@@ -236,18 +236,18 @@ export function WithdrawAmountInput({
                   key={rate}
                   type="button"
                   onClick={() => setFeeRate(rate)}
-                  className={`group relative overflow-hidden rounded-[16px] px-3 py-3 shadow-sm transition-all active:scale-[0.98] ${
+                  className={`group relative overflow-hidden rounded-[16px] px-3 py-3 transition-all active:scale-[0.98] ${
                     feeRate === rate
-                      ? 'bg-primary/10'
-                      : 'bg-card/40 backdrop-blur-xl hover:bg-card/60'
+                      ? 'bg-gradient-active ring-1 ring-inset ring-primary/40 shadow-glow-primary-soft'
+                      : 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-raised hover:bg-secondary/10'
                   }`}
                 >
                   <div
-                    className={`pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent transition-opacity ${feeRate === rate ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                    className={`pointer-events-none absolute inset-0 bg-gradient-to-br from-secondary/15 to-transparent transition-opacity ${feeRate === rate ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
                   />
                   <div className="relative z-10 flex flex-col items-center">
                     <div
-                      className={`text-body font-bold capitalize transition-colors ${feeRate === rate ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'}`}
+                      className={`text-body font-bold capitalize transition-colors ${feeRate === rate ? 'text-primary' : 'text-muted-foreground group-hover:text-secondary-content'}`}
                     >
                       {rate}
                     </div>
@@ -265,7 +265,7 @@ export function WithdrawAmountInput({
       )}
 
       {addressType === 'rgb' && (
-        <div className="flex items-center justify-between rounded-xl bg-card p-3">
+        <div className="flex items-center justify-between rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-3 shadow-card">
           <div>
             <p className="text-body font-medium text-white">Gift / Donation</p>
             <p className="text-caption text-muted-foreground">Skip amount checks for this transfer</p>
@@ -273,7 +273,7 @@ export function WithdrawAmountInput({
           <button
             type="button"
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              donation ? 'bg-primary' : 'bg-secondary'
+              donation ? 'bg-primary bg-gradient-primary shadow-glow-primary-soft' : 'bg-white/10 shadow-inner'
             }`}
             onClick={() => setDonation(!donation)}
           >

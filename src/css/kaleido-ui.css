@@ -30,28 +30,28 @@
 
 /* ── Semantic colors (light mode) — from src/tokens/colors.ts ───────────── */
 :root {
-  --background:           #EAECF8;
-  --foreground:           #12131E;
+  --background:           #F1EEFC;
+  --foreground:           #15122A;
   --card:                 #FFFFFF;
-  --card-foreground:      #12131E;
+  --card-foreground:      #15122A;
   --popover:              #FFFFFF;
-  --popover-foreground:   #12131E;
+  --popover-foreground:   #15122A;
   --primary:              #17B581;
   --primary-foreground:   #FFFFFF;
-  --secondary:            #E4E6F6;
-  --secondary-foreground: #12131E;
-  --muted:                #F6F7FD;
-  --muted-foreground:     #464A69;
-  --accent:               #E4E6F6;
-  --accent-foreground:    #12131E;
+  --secondary:            #EAE5FC;
+  --secondary-foreground: #15122A;
+  --muted:                #F8F6FF;
+  --muted-foreground:     #4F4A75;
+  --accent:               #EAE5FC;
+  --accent-foreground:    #15122A;
   --destructive:          #e7000b;
-  --border:               #C8CBE0;
-  --input:                #C8CBE0;
+  --border:               #D6CFF2;
+  --input:                #CEC7EC;
   --ring:                 #17B581;
   --chart-1:              #2BEE79;
   --chart-2:              #F6C343;
   --chart-3:              #F7931A;
-  --chart-4:              #7C3AED;
+  --chart-4:              #6F32FF;
   --chart-5:              #DD352E;
   /* Chart series, in slot order — from src/tokens/chart.ts */
   --series-1:             #0b764d;
@@ -64,28 +64,28 @@
 
 /* ── Semantic colors (dark mode) — from src/tokens/colors.ts ───────────── */
 .dark {
-  --background:           #12131C;
-  --foreground:           #E8E9F2;
-  --card:                 #242638;
-  --card-foreground:      #E8E9F2;
-  --popover:              #242638;
-  --popover-foreground:   #E8E9F2;
+  --background:           #0E0D16;
+  --foreground:           #EDECF6;
+  --card:                 #1C1A2A;
+  --card-foreground:      #EDECF6;
+  --popover:              #211F31;
+  --popover-foreground:   #EDECF6;
   --primary:              #15E99A;
-  --primary-foreground:   #12131C;
-  --secondary:            #16273F;
-  --secondary-foreground: #E8E9F2;
-  --muted:                #181924;
-  --muted-foreground:     rgba(255, 255, 255, 0.55);
-  --accent:               #323448;
-  --accent-foreground:    #E8E9F2;
+  --primary-foreground:   #0E0D16;
+  --secondary:            #282638;
+  --secondary-foreground: #EDECF6;
+  --muted:                #14131E;
+  --muted-foreground:     rgba(232, 230, 245, 0.58);
+  --accent:               #282638;
+  --accent-foreground:    #EDECF6;
   --destructive:          hsl(0 62% 50%);
-  --border:               rgba(255, 255, 255, 0.10);
-  --input:                rgba(255, 255, 255, 0.15);
+  --border:               rgba(200, 192, 240, 0.11);
+  --input:                rgba(200, 192, 240, 0.16);
   --ring:                 #15E99A;
   --chart-1:              #2BEE79;
   --chart-2:              #F6C343;
   --chart-3:              #F7931A;
-  --chart-4:              #7C3AED;
+  --chart-4:              #8B5CF6;
   --chart-5:              #DD352E;
   /* Chart series, in slot order — from src/tokens/chart.ts */
   --series-1:             #098356;
@@ -102,55 +102,69 @@
    Surfaced as Tailwind utilities below via @theme inline. ──────────────── */
 :root,
 .dark {
-  --app-surface-base: 18 19 28;
-  --app-surface-raised: 24 25 36;
-  --app-surface-overlay: 36 38 56;
-  --app-surface-elevated: 50 52 72;
-  --app-surface-high: 66 68 90;
+  --app-surface-base: 14 13 22;
+  --app-surface-raised: 20 19 30;
+  --app-surface-overlay: 28 26 42;
+  --app-surface-elevated: 40 38 56;
+  --app-surface-high: 54 51 74;
   --app-primary: 21 233 154;
   --app-primary-emphasis: 18 201 126;
-  --app-primary-foreground: 18 19 28;
-  --app-secondary: 139 92 246;
-  --app-secondary-emphasis: 124 58 237;
+  --app-primary-foreground: 14 13 22;
+  --app-secondary: 111 50 255;
+  --app-secondary-emphasis: 84 32 204;
   --app-secondary-foreground: 255 255 255;
-  --app-content-primary: 232 233 242;
-  --app-content-secondary: 142 146 172;
-  --app-content-tertiary: 88 92 116;
-  --app-content-inverse: 18 19 28;
-  --app-border-subtle: 40 42 60;
-  --app-border-default: 54 56 76;
+  --app-secondary-content: 164 138 255;
+  --app-content-primary: 237 236 246;
+  --app-content-secondary: 152 149 180;
+  --app-content-tertiary: 98 95 124;
+  --app-content-inverse: 14 13 22;
+  --app-border-subtle: 38 36 54;
+  --app-border-default: 52 50 72;
   --app-border-strong: 21 233 154;
   --app-status-success: 34 197 94;
   --app-status-danger: 248 113 113;
   --app-status-warning: 245 158 11;
   --app-status-info: 56 189 248;
-  --app-divider: 86 89 108;
+  --app-divider: 86 83 110;
+  /* Elevation ink — shadows are cast in a near-black violet. */
+  --app-shadow: 7 4 22;
+  --app-shadow-strength: 1;
+  --app-rim-alpha: 0.06;
+  /* Glass edge — the hairline a glass card catches light on. */
+  --app-glass-edge: 220 216 240;
+  --app-glass-edge-alpha: 0.09;
 }
 
 .light {
-  --app-surface-base: 218 220 234;
-  --app-surface-raised: 234 236 248;
+  --app-surface-base: 226 222 244;
+  --app-surface-raised: 241 238 252;
   --app-surface-overlay: 255 255 255;
-  --app-surface-elevated: 246 247 253;
-  --app-surface-high: 228 230 246;
+  --app-surface-elevated: 248 246 255;
+  --app-surface-high: 234 229 252;
   --app-primary: 23 181 129;
   --app-primary-emphasis: 19 138 100;
   --app-primary-foreground: 255 255 255;
   --app-secondary: 111 50 255;
-  --app-secondary-emphasis: 90 31 229;
+  --app-secondary-emphasis: 84 32 204;
   --app-secondary-foreground: 255 255 255;
-  --app-content-primary: 18 19 30;
-  --app-content-secondary: 70 74 105;
-  --app-content-tertiary: 118 122 152;
+  --app-secondary-content: 84 32 204;
+  --app-content-primary: 21 18 42;
+  --app-content-secondary: 79 74 117;
+  --app-content-tertiary: 122 116 160;
   --app-content-inverse: 255 255 255;
-  --app-border-subtle: 218 220 238;
-  --app-border-default: 200 203 224;
+  --app-border-subtle: 226 221 246;
+  --app-border-default: 206 199 236;
   --app-border-strong: 23 181 129;
   --app-status-success: 22 163 74;
   --app-status-danger: 220 38 38;
   --app-status-warning: 217 119 6;
   --app-status-info: 2 132 199;
-  --app-divider: 200 203 224;
+  --app-divider: 206 199 236;
+  --app-shadow: 55 20 136;
+  --app-shadow-strength: 0.28;
+  --app-rim-alpha: 0.7;
+  --app-glass-edge: 255 255 255;
+  --app-glass-edge-alpha: 0.7;
 }
 
 /* ── Brand layer — from src/tokens/brand.ts ─────────────────────────────
@@ -256,6 +270,7 @@
   --color-secondary: rgb(var(--app-secondary));
   --color-secondary-emphasis: rgb(var(--app-secondary-emphasis));
   --color-secondary-foreground: rgb(var(--app-secondary-foreground));
+  --color-secondary-content: rgb(var(--app-secondary-content));
   --color-content-primary: rgb(var(--app-content-primary));
   --color-content-secondary: rgb(var(--app-content-secondary));
   --color-content-tertiary: rgb(var(--app-content-tertiary));
@@ -291,6 +306,12 @@
   --shadow-glow-send: var(--glow-send);
   --shadow-glow-recv: var(--glow-recv);
   --shadow-glow-card: var(--glow-card);
+
+  /* Themeable elevation — cast in --app-shadow, scaled per theme. Inline so
+     the utility resolves the ink on the element, not once on :root. */
+  --shadow-card:       inset 0 1px 0 0 rgb(255 255 255 / var(--app-rim-alpha)), inset 0 0 0 1px rgb(var(--app-glass-edge) / var(--app-glass-edge-alpha)), 0 2px 6px -1px rgb(var(--app-shadow) / calc(0.45 * var(--app-shadow-strength))), 0 12px 32px -12px rgb(var(--app-shadow) / calc(0.7 * var(--app-shadow-strength)));
+  --shadow-card-hover: inset 0 1px 0 0 rgb(255 255 255 / var(--app-rim-alpha)), inset 0 0 0 1px rgb(var(--app-glass-edge) / var(--app-glass-edge-alpha)), 0 4px 12px -2px rgb(var(--app-shadow) / calc(0.5 * var(--app-shadow-strength))), 0 20px 44px -14px rgba(111, 50, 255, 0.26);
+  --shadow-raised:     inset 0 1px 0 0 rgb(255 255 255 / var(--app-rim-alpha)), 0 2px 4px -1px rgb(var(--app-shadow) / calc(0.4 * var(--app-shadow-strength))), 0 6px 14px -6px rgb(var(--app-shadow) / calc(0.55 * var(--app-shadow-strength)));
 }
 
 @theme {
@@ -351,7 +372,7 @@
 
   /* Scrollbar colors */
   --color-scrollbar-thumb:       rgba(255, 255, 255, 0.16);
-  --color-scrollbar-thumb-hover: rgba(43, 238, 121, 0.55);
+  --color-scrollbar-thumb-hover: rgba(21, 233, 154, 0.55);
   --color-scrollbar-track:       transparent;
   --spacing-scrollbar:           2px;
   --spacing-scrollbar-hover:     6px;
@@ -443,21 +464,35 @@
   --shadow-glow-strong:          0 0 30px rgba(10, 10, 10, 0.25);
   --shadow-glow-subtle:          0 0 15px rgba(10, 10, 10, 0.12);
   --shadow-glow-accent:          0 4px 30px rgba(10, 10, 10, 0.18);
-  --shadow-header:               0 10px 24px rgba(0, 0, 0, 0.22), 0 1px 0 rgba(255, 255, 255, 0.04);
-  --shadow-glow-primary-soft:    0 0 8px rgba(43, 238, 121, 0.5);
-  --shadow-glow-primary:         0 0 30px rgba(43, 238, 121, 0.45);
-  --shadow-glow-primary-strong:  0 0 40px rgba(43, 238, 121, 0.5);
-  --shadow-popover:              0 18px 55px rgba(0, 0, 0, 0.65);
-  --shadow-toast:                0 0 30px rgba(0, 0, 0, 0.3);
+  --shadow-header:               0 10px 24px rgba(7, 4, 22, 0.35), 0 1px 0 rgba(164, 138, 255, 0.08);
+  --shadow-glow-primary-soft:    0 0 8px rgba(21, 233, 154, 0.5);
+  --shadow-glow-primary:         0 0 30px rgba(21, 233, 154, 0.45);
+  --shadow-glow-primary-strong:  0 0 40px rgba(21, 233, 154, 0.55);
+  --shadow-glow-violet-soft:     0 0 12px rgba(111, 50, 255, 0.45);
+  --shadow-glow-violet:          0 0 30px rgba(111, 50, 255, 0.5);
+  --shadow-glow-brand:           -10px 0 32px -8px rgba(21, 233, 154, 0.45), 10px 0 32px -8px rgba(111, 50, 255, 0.55);
+  --shadow-button-primary:       0 8px 22px -8px rgba(21, 233, 154, 0.65);
+  --shadow-button-violet:        0 8px 22px -8px rgba(111, 50, 255, 0.75);
+  --shadow-popover:              0 0 0 1px rgba(164, 138, 255, 0.10), 0 24px 60px -12px rgba(7, 4, 22, 0.8), 0 0 48px -16px rgba(111, 50, 255, 0.35);
+  --shadow-toast:                0 0 0 1px rgba(164, 138, 255, 0.10), 0 12px 36px -8px rgba(7, 4, 22, 0.6);
 
   /* Drop-shadows (Tailwind v4 emits drop-shadow-* utilities from --drop-shadow-*) */
-  --drop-shadow-glow-primary-soft: 0 0 8px rgba(43, 238, 121, 0.5);
-  --drop-shadow-glow-primary:      0 0 30px rgba(43, 238, 121, 0.45);
+  --drop-shadow-glow-primary-soft: 0 0 8px rgba(21, 233, 154, 0.5);
+  --drop-shadow-glow-primary:      0 0 30px rgba(21, 233, 154, 0.45);
+  --drop-shadow-glow-violet:       0 0 30px rgba(111, 50, 255, 0.5);
 
   /* Gradients (use as background-image: var(--gradient-page)) */
-  --gradient-page:        radial-gradient(ellipse at 60% 10%, rgba(255, 255, 255, 0.06) 0%, transparent 55%), radial-gradient(ellipse at 30% 85%, rgba(124, 58, 237, 0.08) 0%, transparent 50%);
-  --gradient-card-sheen:  linear-gradient(to bottom right, rgba(255, 255, 255, 0.01), rgba(43, 238, 121, 0.04));
+  --gradient-page:        radial-gradient(ellipse 80% 55% at 85% -5%, rgba(111, 50, 255, 0.18) 0%, transparent 60%), radial-gradient(ellipse 60% 45% at 10% 40%, rgba(21, 233, 154, 0.05) 0%, transparent 65%), radial-gradient(ellipse 70% 50% at 0% 105%, rgba(21, 233, 154, 0.12) 0%, transparent 60%);
+  --gradient-card-sheen:  linear-gradient(135deg, rgba(111, 50, 255, 0.10), rgba(21, 233, 154, 0.05));
   --gradient-headline:    linear-gradient(to right, #ffffff, #ffffff, rgba(255, 255, 255, 0.45));
+  --gradient-brand:       linear-gradient(135deg, #15E99A 0%, #6F32FF 100%);
+  --gradient-brand-dark:  linear-gradient(135deg, #17B581 0%, #5420CC 100%);
+  --gradient-brand-text:  linear-gradient(135deg, #6EEDC0 0%, #A48AFF 100%);
+  --gradient-primary:     linear-gradient(135deg, #6EEDC0 0%, #15E99A 45%, #17B581 100%);
+  --gradient-violet:      linear-gradient(135deg, #8B5CF6 0%, #6F32FF 50%, #5420CC 100%);
+  --gradient-card:        linear-gradient(135deg, rgba(111, 50, 255, 0.06) 0%, rgba(111, 50, 255, 0) 55%);
+  --gradient-card-hero:   linear-gradient(135deg, rgba(111, 50, 255, 0.16) 0%, rgba(111, 50, 255, 0.03) 50%, rgba(21, 233, 154, 0.12) 100%);
+  --gradient-active:      linear-gradient(135deg, rgba(21, 233, 154, 0.16) 0%, rgba(21, 233, 154, 0.04) 100%);
 
   /* Transitions */
   --transition-fast:    150ms ease-out;
@@ -670,6 +705,59 @@
   from { transform: translate3d(0, 18%, 0) scale(1); }
   50% { transform: translate3d(-5%, -5%, 0) scale(1.08); }
   to { transform: translate3d(7%, -26%, 0) scale(0.95); }
+}
+/* Brand gradients — 135° linear, from src/tokens/gradients.ts. They set only
+   background-image, so they layer over a bg-* colour utility. */
+.bg-gradient-brand {
+  background-image: var(--gradient-brand);
+}
+.bg-gradient-brand-dark {
+  background-image: var(--gradient-brand-dark);
+}
+.bg-gradient-primary {
+  background-image: var(--gradient-primary);
+}
+.bg-gradient-violet {
+  background-image: var(--gradient-violet);
+}
+.bg-gradient-card {
+  background-image: var(--gradient-card);
+}
+.bg-gradient-card-hero {
+  background-image: var(--gradient-card-hero);
+}
+.bg-gradient-active {
+  background-image: var(--gradient-active);
+}
+/* State-driven gradients — the gradient classes above take no Tailwind
+   variants, so a Radix trigger that is styled by its own data-state uses
+   these: the gradient appears only while the element is active/selected. */
+.active-gradient-violet:is([data-state='active'], [data-state='on'], [aria-selected='true'], [aria-current='page']) {
+  background-image: var(--gradient-violet);
+}
+.active-gradient-primary:is([data-state='active'], [data-state='on'], [aria-selected='true'], [aria-current='page']) {
+  background-image: var(--gradient-primary);
+}
+.active-gradient-active:is([data-state='active'], [data-state='on'], [aria-selected='true'], [aria-current='page']) {
+  background-image: var(--gradient-active);
+}
+/* A 1px brand-gradient border drawn outside the element's own background.
+   Needs a positioned element; the ring sits in ::before so content and
+   radius are untouched. */
+.border-gradient-brand {
+  position: relative;
+}
+.border-gradient-brand::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: var(--gradient-brand);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
 }
 /* Legacy app scroll region. Prefer the ScrollArea component for visible overlay scrollbars. */
 .app-scrollbar {

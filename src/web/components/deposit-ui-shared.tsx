@@ -167,7 +167,7 @@ export function InvoiceStatusBanner({
       className={cn(
         'flex items-center justify-center gap-2 rounded-xl px-3 py-1.5 text-caption font-bold',
         isInvoicePaid
-          ? 'bg-primary/10 text-primary'
+          ? 'bg-primary/10 text-primary shadow-glow-primary-soft'
           : isInvoiceFailedOrExpired
             ? 'bg-danger/10 text-danger'
             : 'bg-warning/10 text-warning'
@@ -197,12 +197,12 @@ export function InvoiceStatusBanner({
 
 export function PaidOverlay() {
   return (
-    <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-background/80">
+    <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-background/85 bg-gradient-card-hero">
       <div className="flex flex-col items-center gap-2">
-        <div className="flex size-14 items-center justify-center rounded-full bg-primary">
+        <div className="flex size-14 items-center justify-center rounded-full bg-primary bg-gradient-primary shadow-glow-brand">
           <Icon name="check" className="text-icon-4xl text-background" />
         </div>
-        <span className="text-body font-bold text-primary">Received!</span>
+        <span className="text-body font-bold text-gradient-brand">Received!</span>
       </div>
     </div>
   )
@@ -234,8 +234,8 @@ export function CopyIcon({ copied, variant = 'tile', className }: CopyIconProps)
       className={cn(
         'flex-shrink-0 rounded-lg p-2 transition-all',
         copied
-          ? 'bg-primary/15 text-primary'
-          : 'bg-white/5 text-white/40 group-hover:bg-primary/10 group-hover:text-primary'
+          ? 'bg-primary/15 text-primary shadow-glow-primary-soft'
+          : 'bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25 group-hover:bg-secondary group-hover:bg-gradient-violet group-hover:text-white'
       )}
     >
       {copied ? <Icon name="check" size="sm" /> : <Icon name="content_copy" size="sm" />}
@@ -265,8 +265,8 @@ export function AccountChoiceChip({
       className={cn(
         'flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-1.5 text-icon-xxs font-bold transition-all',
         active
-          ? cn(meta.accentBg, meta.accentText, meta.accentBorder)
-          : 'border-white/8 bg-white/5 text-muted-foreground hover:border-white/20 hover:text-white/80'
+          ? cn(meta.accentBg, meta.accentText, meta.accentBorder, 'shadow-raised')
+          : 'border-white/8 bg-white/5 text-muted-foreground hover:border-secondary/40 hover:bg-secondary/10 hover:text-white/80'
       )}
     >
       {meta.icon}
@@ -341,15 +341,15 @@ export function NetworkInfoDisclosure({
   if (networks.length === 0) return null
 
   return (
-    <div className={cn('overflow-hidden rounded-xl bg-card/70 transition-all', className)}>
+    <div className={cn('overflow-hidden rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-raised transition-all', className)}>
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
-        className="flex w-full items-center gap-2 px-2.5 py-1.5 text-left transition-colors hover:bg-white/4"
+        className="flex w-full items-center gap-2 px-2.5 py-1.5 text-left transition-colors hover:bg-secondary/10"
       >
-        <Icon name="info" size="xs" className="text-white/40" />
-        <span className="flex-1 text-mini font-bold uppercase tracking-eyebrow text-white/50">
+        <Icon name="info" size="xs" className="text-secondary-content" />
+        <span className="flex-1 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
           What are these networks?
         </span>
         <Icon name={open ? 'expand_less' : 'expand_more'} size="xs" className="text-white/40" />
@@ -411,9 +411,9 @@ export function MethodChoiceChip({
       className={cn(
         'flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-1.5 text-icon-xxs font-bold transition-all',
         active
-          ? 'border-white/20 bg-white/12 text-white shadow-sm'
+          ? 'border-transparent bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
           : enabled
-            ? 'border-white/8 bg-white/5 text-muted-foreground hover:border-white/20 hover:text-white/80'
+            ? 'border-white/8 bg-white/5 text-muted-foreground hover:border-secondary/40 hover:bg-secondary/10 hover:text-white/80'
             : 'cursor-not-allowed border-border bg-white/3 text-white/20'
       )}
     >

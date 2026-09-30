@@ -82,9 +82,9 @@ export function DepositNetworkDefaultModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-background/80 backdrop-blur-lg">
-      <div className="w-full space-y-4 rounded-t-2xl bg-card px-4 pb-7 pt-5 animate-in slide-in-from-bottom-4 duration-200">
+      <div className="w-full space-y-4 rounded-t-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero px-4 pb-7 pt-5 shadow-popover animate-in slide-in-from-bottom-4 duration-200">
         <div className="-mt-1 mb-1 flex justify-center">
-          <div className="h-1 w-10 rounded-full bg-white/15" />
+          <div className="h-1 w-10 rounded-full bg-secondary/40" />
         </div>
 
         <div>
@@ -106,14 +106,16 @@ export function DepositNetworkDefaultModal({
                 onClick={() => onSelect(option.network)}
                 className={cn(
                   'flex w-full items-center gap-3 rounded-xl p-3 text-left transition-all',
-                  isSuggested ? option.accentBg : 'bg-muted/40 hover:bg-muted/60'
+                  isSuggested
+                    ? cn(option.accentBg, 'shadow-glow-violet-soft ring-1 ring-inset ring-secondary/50')
+                    : 'bg-muted/40 shadow-raised hover:bg-secondary/10'
                 )}
               >
                 <div
                   className={cn(
                     'flex size-8 flex-shrink-0 items-center justify-center rounded-lg',
-                    isSuggested ? option.accentBg : 'bg-white/8',
-                    isSuggested ? option.accentText : 'text-white/60'
+                    isSuggested ? cn(option.accentBg, 'shadow-raised') : 'bg-secondary/15 ring-1 ring-inset ring-secondary/25',
+                    isSuggested ? option.accentText : 'text-secondary-content'
                   )}
                 >
                   {option.icon}

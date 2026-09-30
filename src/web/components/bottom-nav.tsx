@@ -31,7 +31,7 @@ export function BottomNav<TValue extends string = string>({
   return (
     <nav
       className={cn(
-        'w-[90%] max-w-[21.25rem] rounded-full bg-card/60 shadow-lg backdrop-blur-xl',
+        'w-[90%] max-w-[21.25rem] rounded-full bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-popover ring-1 ring-inset ring-secondary/25',
         position === 'fixed'
           ? 'fixed bottom-6 left-1/2 z-[var(--z-nav)] -translate-x-1/2'
           : 'relative',
@@ -50,8 +50,8 @@ export function BottomNav<TValue extends string = string>({
               className={cn(
                 'relative flex h-[3.25rem] w-[4rem] flex-col items-center justify-center rounded-full transition-all duration-300',
                 isActive
-                  ? 'bg-white/10 text-primary'
-                  : 'text-muted-foreground hover:text-white/75 active:scale-95'
+                  ? 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
+                  : 'text-muted-foreground hover:bg-secondary/10 hover:text-secondary-content active:scale-95'
               )}
             >
               {iconName ? (

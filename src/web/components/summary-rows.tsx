@@ -92,7 +92,12 @@ export function SummaryRows({ rows, as = 'dl', className }: SummaryRowsProps) {
         const rowProps = {
           'data-slot': 'summary-row',
           'data-emphasis': row.emphasis ? 'true' : undefined,
-          className: rowClass,
+          className: cn(
+            rowClass,
+            // The deciding figure's row is ringed in violet with a soft glow; its
+            // fill stays the canonical bg-muted/40 nested layer.
+            row.emphasis && 'ring-1 ring-inset ring-secondary/40 shadow-glow-violet-soft',
+          ),
         }
         // A `div` may group each dt/dd pair inside a dl; in a list the row is the li.
         return isDl ? (

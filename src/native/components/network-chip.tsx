@@ -3,12 +3,14 @@
  *
  * Fixes the inconsistent selected-state colors (blue Spark / amber Lightning):
  * the network glyph keeps its brand color via `network.*` tokens, while the
- * SELECTED state is a single, consistent violet ring/wash (brand: violet =
- * active/protocol). Unselected chips are neutral themed surfaces.
+ * SELECTED state is a single, consistent violet ring/wash with a soft violet
+ * glow (brand: violet = active/protocol). Unselected chips are neutral themed
+ * surfaces that pick up a faint violet wash while pressed.
  */
 import React from 'react'
 import { Pressable, View } from 'react-native'
 import { useKaleidoTheme } from '../theme-context'
+import { kaleidoShadow } from '../theme'
 import { KText } from './k-text'
 
 export type NetworkKey = 'bitcoin' | 'lightning' | 'spark' | 'rgb' | 'arkade' | 'liquid'
@@ -51,10 +53,10 @@ export function NetworkChip({
         paddingVertical: 10,
         paddingHorizontal: 12,
         borderRadius: 14,
-        backgroundColor: selected ? theme.violetSurface : theme.surface.base,
+        backgroundColor: selected ? theme.violetSurface : pressed ? theme.violetWash : theme.surface.base,
         borderWidth: 1.5,
-        borderColor: selected ? theme.violet : theme.border.subtle,
-        opacity: pressed ? 0.9 : 1,
+        borderColor: selected ? theme.violet : pressed ? theme.violetBorder : theme.border.subtle,
+        ...(selected ? kaleidoShadow(theme, 'glowViolet') : null),
       })}
     >
       {icon && (
@@ -72,7 +74,7 @@ export function NetworkChip({
         </View>
       )}
       <View style={{ gap: 1 }}>
-        <KText variant="caption" weight="bold" color={selected ? theme.violet : theme.text.primary}>
+        <KText variant="caption" weight="bold" color={selected ? theme.violetText : theme.text.primary}>
           {title}
         </KText>
         {!!subtitle && (

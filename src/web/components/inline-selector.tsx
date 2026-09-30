@@ -123,7 +123,7 @@ export function InlineSelector<TOption extends InlineSelectorOption>({
         <div
           ref={panelRef}
           className={cn(
-            'absolute left-0 top-full z-[var(--z-popover)] mt-2 w-full rounded-2xl bg-popover/95 p-1.5 shadow-2xl backdrop-blur-xl duration-200 animate-in fade-in slide-in-from-top-1',
+            'absolute left-0 top-full z-[var(--z-popover)] mt-2 w-full rounded-2xl bg-popover/95 bg-gradient-card p-1.5 shadow-popover ring-1 ring-inset ring-secondary/20 backdrop-blur-xl duration-200 animate-in fade-in slide-in-from-top-1',
             panelClassName,
           )}
         >
@@ -154,7 +154,9 @@ export function InlineSelector<TOption extends InlineSelectorOption>({
                     }}
                     className={cn(
                       'w-full rounded-xl text-left outline-none transition-all disabled:cursor-not-allowed disabled:opacity-50',
-                      selectedOption ? 'bg-white/15 shadow-sm' : 'hover:bg-accent',
+                      selectedOption
+                        ? 'bg-primary/10 bg-gradient-active shadow-glow-primary-soft ring-1 ring-inset ring-primary/40'
+                        : 'hover:bg-secondary/15',
                       optionClassName,
                     )}
                   >

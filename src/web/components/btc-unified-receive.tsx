@@ -155,7 +155,7 @@ export function BtcUnifiedReceive({
       )}
 
       <div className="space-y-1.5">
-        <p className="text-mini font-bold uppercase tracking-eyebrow text-white/30">
+        <p className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
           Available Addresses
         </p>
         {accountReceiveResult.addresses.map((address) => {
@@ -164,8 +164,8 @@ export function BtcUnifiedReceive({
             <div
               key={address.network}
               className={cn(
-                'group flex cursor-pointer items-center gap-2 rounded-xl bg-white/3 px-2.5 py-1.5',
-                'transition-all hover:bg-white/6 active:scale-[0.98]'
+                'group flex cursor-pointer items-center gap-2 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-2.5 py-1.5 shadow-raised',
+                'transition-all hover:bg-secondary/10 hover:shadow-card-hover active:scale-[0.98]'
               )}
               style={{ borderLeftWidth: 3, borderLeftColor: network.color }}
               onClick={() => void copyToClipboard(address.value)}
@@ -181,7 +181,7 @@ export function BtcUnifiedReceive({
                   {(() => {
                     const amountLabel = formatSatsForRow(address.amountSats)
                     return amountLabel ? (
-                      <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-tiny font-bold tabular-nums text-white/70">
+                      <span className="rounded-full bg-secondary/15 px-1.5 py-0.5 text-tiny font-bold tabular-nums text-secondary-content">
                         {amountLabel}
                       </span>
                     ) : null
@@ -207,7 +207,7 @@ export function BtcUnifiedReceive({
       >
         <div className="space-y-4">
           <div className="space-y-1.5">
-            <label className="text-mini font-bold uppercase tracking-eyebrow text-white/40">
+            <label className="text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
               Amount (optional)
             </label>
             <input
@@ -215,7 +215,7 @@ export function BtcUnifiedReceive({
               value={amount}
               onChange={handleAmountChange}
               placeholder="Any amount"
-              className="w-full rounded-xl bg-white/5 px-3 py-2.5 font-mono text-caption font-bold text-white shadow-inner transition-all placeholder:text-white/25 focus:outline focus:outline-2 focus:outline-primary/40"
+              className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-2.5 font-mono text-caption font-bold text-white shadow-inner transition-all placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
               inputMode="decimal"
             />
             {amount && loading && (
@@ -228,7 +228,7 @@ export function BtcUnifiedReceive({
 
           {onDescriptionChange && (
             <div className="space-y-1.5">
-              <label className="text-mini font-bold uppercase tracking-eyebrow text-white/40">
+              <label className="text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
                 Description (optional)
               </label>
               <input
@@ -236,7 +236,7 @@ export function BtcUnifiedReceive({
                 value={description ?? ''}
                 onChange={(event) => onDescriptionChange(event.target.value)}
                 placeholder="What's this for?"
-                className="w-full rounded-xl bg-white/5 px-3 py-2.5 text-caption text-white shadow-inner transition-all placeholder:text-white/25 focus:outline focus:outline-2 focus:outline-primary/40"
+                className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-2.5 text-caption text-white shadow-inner transition-all placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
               />
             </div>
           )}

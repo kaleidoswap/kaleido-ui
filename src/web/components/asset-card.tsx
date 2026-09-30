@@ -57,9 +57,9 @@ export function AssetCard({
   return (
     <div
       className={cn(
-        'p-4 rounded-card backdrop-blur-xl transition-all shadow-sm relative overflow-hidden group',
-        !accentColor && 'bg-card',
-        onClick && 'cursor-pointer hover:brightness-110 active:scale-[0.98]',
+        'p-4 rounded-card transition-all duration-200 shadow-card relative overflow-hidden group',
+        !accentColor && 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card',
+        onClick && 'cursor-pointer hover:shadow-card-hover hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
         className
       )}
       style={gradientStyle}
@@ -67,7 +67,7 @@ export function AssetCard({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-br from-secondary/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
       <div className="relative z-10 flex min-w-0 items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
           <AssetIcon

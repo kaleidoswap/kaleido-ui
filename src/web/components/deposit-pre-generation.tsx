@@ -106,8 +106,8 @@ export function DepositPreGeneration({
   return (
     <div className="space-y-3">
       {showReceiveSummary && (
-        <div className="rounded-2xl bg-card/70 p-3">
-          <p className="text-mini font-bold uppercase tracking-eyebrow text-white/35">
+        <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-3 shadow-card">
+          <p className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
             Receive Summary
           </p>
           <div className="mt-2 grid grid-cols-1 gap-2 text-caption">
@@ -131,8 +131,8 @@ export function DepositPreGeneration({
       )}
 
       {channelsLoading && selectedAccount === 'RGB' && currentMethod === 'lightning' && !isBtc && (
-        <div className="flex items-center gap-2.5 rounded-xl bg-card/70 p-3">
-          <Icon name="progress_activity" className="animate-spin text-icon-lg text-primary" />
+        <div className="flex items-center gap-2.5 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-3 shadow-card">
+          <Icon name="progress_activity" className="animate-spin text-icon-lg text-secondary-content" />
           <span className="text-caption font-medium text-white/60">Checking channel availability...</span>
         </div>
       )}
@@ -155,7 +155,7 @@ export function DepositPreGeneration({
 
       {isAutoGenerate && loading && (
         <div className="flex flex-col items-center gap-4 py-10">
-          <div className={cn('flex size-16 items-center justify-center rounded-2xl', net.bg)}>
+          <div className={cn('flex size-16 items-center justify-center rounded-2xl shadow-raised', net.bg)}>
             <Icon name="progress_activity" className={cn('animate-spin text-icon-4xl', net.text)} />
           </div>
           <div className="space-y-1 text-center">
@@ -170,7 +170,7 @@ export function DepositPreGeneration({
       {/* RGB asset-id: receive a specific asset, or any asset when left empty. */}
       {isRgbOnchain && isNewRgbAsset && setNewAssetId && (
         <div className="space-y-1.5">
-          <label className="text-mini font-bold uppercase tracking-eyebrow text-white/40">
+          <label className="text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
             RGB Asset ID - Optional
           </label>
           <input
@@ -180,7 +180,7 @@ export function DepositPreGeneration({
             placeholder="rgb:... (leave empty for any asset)"
             spellCheck={false}
             autoCapitalize="off"
-            className="w-full rounded-xl border bg-white/5 px-3 py-2.5 font-mono text-caption text-white transition-all placeholder:text-white/20 focus:border-primary/50 focus:outline-none"
+            className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-2.5 font-mono text-caption text-white shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
           />
           <p className="text-xxs text-white/35">
             Enter a specific asset ID to receive it, or leave empty to accept any RGB asset to this
@@ -190,7 +190,7 @@ export function DepositPreGeneration({
       )}
 
       {isRgbOnchain && (
-        <div className="space-y-2.5 rounded-xl bg-card/70 p-3">
+        <div className="space-y-2.5 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-3 shadow-card">
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0 flex-1">
               <h4 className="text-caption font-bold text-white">
@@ -205,7 +205,7 @@ export function DepositPreGeneration({
               aria-label="Toggle blinded (private) receive"
               className={cn(
                 'relative inline-flex h-5 w-9 flex-shrink-0 items-center rounded-full shadow-inner transition-colors',
-                usePrivacy ? 'bg-primary' : 'bg-white/10'
+                usePrivacy ? 'bg-primary bg-gradient-primary shadow-glow-primary-soft' : 'bg-white/10'
               )}
               onClick={() => setUsePrivacy(!usePrivacy)}
             >
@@ -251,7 +251,7 @@ export function DepositPreGeneration({
       {network === 'onchain' && !isBtc && (
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label className="text-mini font-bold uppercase tracking-eyebrow text-white/40">
+            <label className="text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
               Amount ({getUnitLabel()}) - Optional
             </label>
             {selectedAsset && (
@@ -265,7 +265,7 @@ export function DepositPreGeneration({
             value={amount}
             onChange={handleAmountChange}
             placeholder={`e.g. 10.00 ${selectedAsset?.ticker ?? ''}`}
-            className="w-full rounded-xl border bg-white/5 px-3 py-2.5 font-mono text-caption font-bold text-white transition-all placeholder:text-white/20 focus:border-primary/50 focus:outline-none"
+            className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-2.5 font-mono text-caption font-bold text-white shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
             inputMode="decimal"
           />
         </div>

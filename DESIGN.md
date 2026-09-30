@@ -1,6 +1,6 @@
 ---
 name: KaleidoSwap
-description: KaleidoSwap shared design system — brand-green, Bitcoin-native wallet UI.
+description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
 version: 0.1.129   # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
@@ -14,17 +14,19 @@ colors:
   brand.mark-violet: "#6F32FF"      # logo paint only
   brand.mark-green: "#17B581"       # logo paint only
   brand.mark-mint: "#15E99A"        # logo paint only
-  surface.bg: "#12131C"             # surface-base
-  surface.raised: "#181924"         # muted
-  surface.card: "#242638"           # surface-overlay, card + popover
-  surface.elevated: "#323448"       # accent
-  surface.high: "rgb(66 68 90)"
-  border.default: "rgba(255, 255, 255, 0.10)"
-  border.subtle: "rgba(255, 255, 255, 0.04)"
-  border.strong: "rgba(255, 255, 255, 0.15)"
+  brand.violet: "#6F32FF"           # supporting accent — secondary actions, icon tiles, hover
+  brand.violet-content: "#A48AFF"   # violet text/icons on dark (secondary-content)
+  surface.bg: "#0E0D16"             # surface-base
+  surface.raised: "#14131E"         # muted
+  surface.card: "#1C1A2A"           # surface-overlay, card
+  surface.elevated: "#282638"       # accent
+  surface.high: "rgb(54 51 74)"
+  border.default: "rgba(200, 192, 240, 0.11)"
+  border.subtle: "rgba(200, 192, 240, 0.05)"
+  border.strong: "rgba(200, 192, 240, 0.18)"
   border.primary-ghost: "rgba(43, 238, 121, 0.22)"
   text.primary: "#FFFFFF"
-  text.muted: "rgba(255, 255, 255, 0.55)"
+  text.muted: "rgba(232, 230, 245, 0.58)"
   text.on-primary: "#051B10"
   destructive: "hsl(0 62% 50%)"
   success: "#15E99A"                # identical to brand.primary
@@ -72,16 +74,24 @@ components:
   button.primary:
     bg: "{colors.brand.primary}"
     fg: "{colors.brand.primary-contrast}"
+    fill: "gradient.primary"
+    shadow: "shadow.button-primary"
+    hover.shadow: "shadow.glow-primary"
     radius: "{rounded.button}"
     height: 44
     weight: 800
+  button.secondary:
+    bg: "{colors.brand.violet}"
+    fill: "gradient.violet"
+    fg: "#FFFFFF"
+    shadow: "shadow.button-violet"
+    hover.shadow: "shadow.glow-violet"
   button.surface:
-    bg: "{colors.surface.card}"
-    fg: "{colors.text.primary}"
-    border: "{colors.border.subtle}"
+    bg: "violet/15"
+    fg: "{colors.brand.violet-content}"
+    ring: "violet/30"
     radius: "{rounded.button}"
-    hover.bg: "{colors.brand.primary}"
-    hover.fg: "{colors.brand.primary-contrast}"
+    hover.shadow: "shadow.glow-violet-soft"
   card.asset:
     bg: "{colors.surface.card}"
     border: "{colors.border.subtle}"
@@ -120,13 +130,16 @@ components:
 
 ## Overview
 
-KaleidoSwap is a Bitcoin-native wallet that lives across multiple layers: on-chain BTC, Lightning (RLN), RGB assets, Spark, and Arkade. A single user action — "send," "swap," "receive" — can route through any of those rails, and the interface has to make that feel coherent rather than like five different wallets glued together. The design language is **near-black and brand-green**: a cool, almost neutral
-dark ramp for every surface, and a single punchy brand green (`#15E99A`) that
-signals "this is the action, this is alive, this worked." It began as a
-*dark-forest* palette — green-tinted surfaces in the same hue family as the
-accent — and moved off that: at 70% alpha over an animated background the
-mid-green cards read muddy against white text. The green is now carried by the
-accents alone, which is why the ramp below is blue-slate rather than forest.
+KaleidoSwap is a Bitcoin-native wallet that lives across multiple layers: on-chain BTC, Lightning (RLN), RGB assets, Spark, and Arkade. A single user action — "send," "swap," "receive" — can route through any of those rails, and the interface has to make that feel coherent rather than like five different wallets glued together. The design language is **brand green first, violet in support** — a kaleidoscope,
+not a terminal. Every surface sits on a near-black ramp with a violet cast; the
+brand green (`#15E99A`) is the primary colour: the action, the selected and active
+state, the focus ring, success. The brand violet (`#6F32FF`) is the supporting
+accent: secondary actions, icon tiles, hover light, the card light and the shadow ink. Depth is
+real: cards cast soft violet-black shadows and catch a faint violet light from
+the top-left, CTAs are lit gradients with a coloured drop, and brand moments
+use the 135° green→violet gradient. (History: the ramp was dark-forest, then
+blue-slate and deliberately flat; it moved to violet because the flat slate UI
+read as lifeless and under-branded.)
 
 This document is the **single source of truth** for the `kaleido-ui` package and every consumer downstream — most visibly the `rate-extension` browser wallet. It exists because the package ships neutral-gray defaults (`primary: #e5e5e5`, `bg: #0a0a0a` in `src/tokens/colors.ts`) that silently produce unstyled, off-brand output on any component a consumer forgets to re-theme. DESIGN.md replaces those defaults as the normative spec: the tokens below are what the library should render, what the Tailwind preset should expose, and what every PR is measured against.
 
@@ -139,6 +152,7 @@ The palette is organised into six groups. Each group has a specific job; mixing 
 ### Brand
 
 - **`brand.primary` `#15E99A`** (light theme: `#17B581`) — *the* KaleidoSwap signal. Reserve it for three things only: primary CTAs (the single most important action on a screen), active states (selected tab, active nav slot, focused input ring), and success confirmations (completed swap, settled payment). Using it on borders of passive surfaces or as a decorative accent dilutes the signal and makes real CTAs disappear.
+- **`brand.violet` `#6F32FF`** — the supporting brand accent: the `secondary` button (violet gradient) and the `surface` button (violet tint), icon tiles, row hover, field hairlines and form `Label`s, the card light and the shadow ink. **Selection, active and focus are green, not violet** — the selected tab / pill / chip / option, the current page, the focused field. Utilities: `bg-secondary`, `bg-secondary/15`, `ring-secondary/30`. On dark, violet *text and icons* use **`brand.violet-content` `#A48AFF`** (`text-secondary-content`) — `#6F32FF` is a fill, it is too dark to read as text.
 - **`brand.primary-contrast` `#051B10`** — the near-black green that sits on top of `brand.primary`. Use it for button label text, icons inside primary-filled tiles, and any glyph that needs to punch through the green. Never use it as a surface fill.
 
 > **`#2BEE79` is not the brand primary.** It was, and it is still in the tokens —
@@ -191,17 +205,15 @@ opt-in import.
 
 ### Surface ramp
 
-Five layers, near-black and stepping up in lightness. Under the glass system
-(`bg-card/70` over animated backgrounds) the old mid-green surfaces read muddy and
-low-contrast against white text, so the ramp moved off the forest hue entirely:
-it now sits in a cool blue-slate band (~235°), and the green identity is carried
-by the brand accents alone rather than by the surfaces.
+Five layers, near-black and stepping up in lightness, with a low-saturation
+violet cast (~245°): enough to belong with the violet accent, not so much that
+the surfaces compete with the green.
 
-- **`surface.bg` `#12131C`** — the page background. Every full-screen view starts here.
-- **`surface.raised` `#181924`** — the `muted` token: rows nested inside a card, quiet fills.
-- **`surface.card` `#242638`** — the default card / panel / action-tile fill, and `popover`.
-- **`surface.elevated` `#323448`** — the `accent` token: nested panels, dropdowns, hover states on cards.
-- **`surface.high` `rgb(66 68 90)`** — the topmost step, for a control raised above an elevated surface.
+- **`surface.bg` `#0E0D16`** — the page background. Every full-screen view starts here, washed by `bg-page-radial`.
+- **`surface.raised` `#14131E`** — the `muted` token: rows nested inside a card, quiet fills.
+- **`surface.card` `#1C1A2A`** — the default card / panel / action-tile fill (`popover` is one step lighter, `#211F31`).
+- **`surface.elevated` `#282638`** — the `accent` token: nested panels, dropdowns, hover states on cards.
+- **`surface.high` `rgb(54 51 74)`** — the topmost step, for a control raised above an elevated surface.
 
 Do not collapse these to a single value, and do not use raw `#0a0a0a` or `#000`:
 the ramp is near-black but never black, and its neutrality is what lets the
@@ -214,18 +226,18 @@ replacements for it. Different job, same word; check which one you want.
 
 ### Borders
 
-Borders are translucent white, not opaque hues — they composite over whatever
+Borders are translucent lavender, not opaque hues — they composite over whatever
 surface they sit on, so one value works at every step of the ramp:
 
-- **`border.default` `rgba(255,255,255,0.10)`** — the default hairline. Cards, inputs, filter pills at rest.
-- **`border.subtle` `rgba(255,255,255,0.04)`** — the quietest edge, for a divider that should barely register.
-- **`border.strong` `rgba(255,255,255,0.15)`** — an edge that has to be seen: a focused input, a selected pill.
+- **`border.default` `rgba(200,192,240,0.11)`** — the default hairline. Cards, inputs, filter pills at rest.
+- **`border.subtle` `rgba(200,192,240,0.05)`** — the quietest edge, for a divider that should barely register.
+- **`border.strong` `rgba(200,192,240,0.18)`** — an edge that has to be seen: a focused input, a selected pill.
 - **`border.primary-ghost` `rgba(43, 238, 121, 0.22)`** — brand green at 22% alpha. Used only when a surface is in an active / selected / "this is the section you are in" state.
 
 ### Text
 
 - **`text.primary` `#FFFFFF`** — body copy, titles, numeric readouts.
-- **`text.muted` `rgba(255,255,255,0.55)`** — secondary labels, helper text, timestamps. Do not go lower than 55% alpha for anything the user is meant to read.
+- **`text.muted` `rgba(232,230,245,0.58)`** — secondary labels, helper text, timestamps, section eyebrows. Do not go lower than 55% alpha for anything the user is meant to read.
 - **`text.on-primary` `#051B10`** — text that sits on top of `brand.primary` fills.
 
 ### Destructive & Success
@@ -309,18 +321,40 @@ KaleidoSwap targets a **420 px max content width**: the browser-extension popup 
 
 ## Elevation & Depth
 
-Three layers, no more. Elevation is communicated by **surface color**, not by drop shadow.
+Elevation is carried by **surface colour, shadow and light together** — the UI is
+not flat. Shadows are cast in a near-black violet (`--app-shadow`) scaled per theme
+(`--app-shadow-strength`: 1 on dark, 0.28 on light), so one token reads right in
+both modes.
 
-1. **Base** — `surface.bg`. Page background.
-2. **Card** — `surface.card`. Asset rows, action tiles, filter pills, nav.
-3. **Elevated** — `surface.elevated`. Dropdowns, hovered cards, nested panels.
+| Token (utility) | Use |
+| --- | --- |
+| `shadow-card` | every resting card / panel / tile — a top rim light plus a soft drop |
+| `shadow-card-hover` | an interactive card on hover — deeper drop with a violet under-glow |
+| `shadow-raised` | a small control that pops off a card: tab lists, chips that are controls, switch thumbs |
+| `shadow-button-primary` / `shadow-button-violet` | green / violet button: a coloured drop shadow only — no edge line |
+| `shadow-glow-primary(-soft/-strong)` | green halo — hover of green CTAs, checked switch, focused fields, selected cards |
+| `shadow-glow-violet(-soft)` | violet halo — hover of violet controls and icon tiles |
+| `shadow-glow-brand` | green-left + violet-right halo — brand moments only (hero CTA, success icon) |
+| `shadow-popover` / `shadow-toast` | floating layers, with a violet hairline and bloom |
 
-Two shadows exist in the entire system:
+### Gradients
 
-- **Inner shadow** (`shadow-sm`): a subtle inset on cards to sharpen the edge against `surface.bg`. Always inner, never outer.
-- **Primary glow** (`shadow-[0_0_30px_rgba(43,238,121,0.5)]`): **only** on the hover state of a primary button or ActionTile. It is how the brand announces itself. No other component may glow.
+Brand gradients are always **135° linear**. They are plain classes in
+`kaleido-ui/css` that set only `background-image`, so each is paired with a
+`bg-*` colour fallback (`bg-primary bg-gradient-primary`).
 
-Do not add new drop shadows, do not add blur-behind surfaces, do not fake depth with gradients.
+- `bg-gradient-primary` — the green button fill, lit from the top-left.
+- `bg-gradient-violet` — violet fills: `secondary` button, the swap flip button, emphasised icon tiles.
+- `bg-gradient-brand` / `bg-gradient-brand-dark` — green→violet: progress, active steps, brand accents; `-dark` under white text.
+- `bg-gradient-card` — faint violet light on every card (`bg-card bg-gradient-card`).
+- `bg-gradient-card-hero` — stronger violet→green wash for hero surfaces: balance, swap input, dialogs, success.
+- `bg-gradient-active` — green wash for a selected row / card / option / nav item (paired with `ring-primary/40`). Radix triggers styled by `data-state` use `active-gradient-primary`.
+- `text-gradient-brand` — gradient text for headlines and hero figures only.
+- `border-gradient-brand` — a 1 px green→violet ring for a featured or selected card.
+- `bg-page-radial` — the page ambience: a violet bloom top-right and a green one bottom-left. The one radial gradient: it is light on the page, not a brand mark.
+
+Do not hand-write shadows or gradients (`shadow-[…]`, raw colours are lint
+errors) — add a token here and in `src/tokens/` instead.
 
 The one sanctioned exception is the **brand depth** set from the Brand layer
 above: `shadow-glow-send`, `shadow-glow-recv` and `shadow-glow-card` on the
@@ -442,7 +476,7 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 
 **It is the desktop app's sidebar.** `surface.base`, a `divider/30` rule on the right edge, `shadow-2xl` at 30% black, a `px-4 py-5` header row with the logo slot and the chevron. Expanded `w-72`; the rail `w-20`, which hides the logo and the group eyebrows, splits groups with a rule, centres the icons and turns labels into tooltips (they stay in the accessibility tree). The mobile form is always expanded, caps at `85vw` so a strip of the page stays visible to tap away, over the `BottomSheet` scrim.
 
-**Items.** `rounded-xl`, `px-4 py-3`, label `body` semibold. Inactive `content.secondary`, hovering to `surface.overlay/80`. The current page is `status.success` on a 10% fill with a 2 px left rule, and carries `aria-current="page"`. Group labels are the shared eyebrow (`label` token) in `content.tertiary`.
+**Items.** `rounded-xl`, `px-4 py-3`, label `body` semibold. Inactive `content.secondary`, hovering to `surface.overlay/80`. The current page is green — `bg-gradient-active` with a 2 px green left rule and a soft green glow — and carries `aria-current="page"`. Group labels are the shared eyebrow (`label` token) in `content.tertiary`.
 
 **Submenus.** `DrawerNavGroup icon label active` is a row with a submenu — the desktop app's Trade and Liquidity. The row (a button with `aria-expanded`) shows and hides its `DrawerNavItem`s under it, and a chevron on its right turns 90° when open. It opens by itself when one of its pages is current, and is then marked like a current item. Its items become the submenu's rows: indented `pl-4`, `rounded-lg`, `px-4 py-2.5`, label `caption` medium with a 16 px icon, sliding right on hover; the current one is `status.success` on a 10% fill with a 2 px left rule. On the icon rail a submenu cannot open, so the row is a link to `railHref` (usually the group's first page).
 
@@ -593,7 +627,8 @@ A `Toast` cannot do either: its viewport position is fixed, only one shows at a 
 - **DO** use `surface.bg` (`#12131C`) as the page background on every full-screen view.
 - **DON'T** use raw `#0a0a0a` or `#000` as a background. The ramp is near-black but never black, and that is what keeps the network colours legible on it.
 - **DO** keep filter cluster icons at `cluster-icon-size: 11` px and `cluster-opacity: 0.6`. The constraint is what makes the cluster legible.
-- **DON'T** introduce new drop shadows. The only shadows in the system are the card inner shadow and the primary-button glow on hover.
+- **DO** give every card `shadow-card` and every interactive card a `shadow-card-hover`; give colour fills their matching `shadow-button-*`. **DON'T** hand-write a shadow — use the tokens in Elevation & Depth.
+- **DO** keep green the primary colour: CTA, selection, active, focus, success. Use violet in support — secondary actions, icon tiles, hover — so a screen reads green first, violet second.
 - **DO** use the `label` type token (Satoshi 700 / 9 / uppercase / `tracking-eyebrow` 0.18em) for structural labels — filter headers, section titles, pill captions. It is the typographic fingerprint of the brand.
 - **DON'T** invent new radii, spacing steps, or surface colors. If you need something the tokens don't provide, extend DESIGN.md first, then propagate to `kaleido-ui/tokens` — `kaleido-ui/css` (Tailwind v4 `@theme`) and `kaleido-ui/tailwind` (the Tailwind v3 preset) are both generated from it. Both Tailwind versions are supported; see README.
 
@@ -626,7 +661,8 @@ These rules exist because generated UIs kept drifting: ad-hoc borders, wrong but
 Layered translucency lets the animated background glow breathe through the UI without hurting readability. Every translucent surface maps to exactly one of these roles — don't invent new alpha values.
 
 - `glass.nav` — floating chrome (bottom nav, sticky headers): `bg-card/60 backdrop-blur-xl`
-- `glass.card` — in-flow content cards over animated/haloed backgrounds: `bg-card/70`, NO blur (per-element blur on scrolling lists is a perf trap)
+- `glass.card` — every card, panel and tile: `bg-card/55 backdrop-blur-xl backdrop-saturate-150`, paired with `bg-gradient-card` (or `-hero`) and `shadow-card`, whose inset hairline is the glass edge (`--app-glass-edge`). The page ambience (`bg-page-radial`) is what the glass picks up, so a full-screen view should carry it.
+- `glass.field` — text fields: `fieldSurface` in `src/web/utils/field-styles.ts` (`Input`, `NumberInput`, the full `SelectTrigger`) — the glass card with an inner shadow and a `secondary/15` hairline that brightens on hover and turns green (the ring) on focus. A hand-rolled field nested in a card uses the same classes minus the blur. Its `Label` is the eyebrow in `text-secondary-content`.
 - `glass.row` — rows nested inside a card: `bg-muted/40`, no blur
 - `glass.pill` — chips, filter pills, selector triggers: `bg-white/8`
 - `glass.overlay` — sheets, dialogs, scrims: `bg-background/80 backdrop-blur-lg`
@@ -636,7 +672,7 @@ Rules:
 - **DON'T** drop text-bearing glass below 60% surface alpha — readability beats atmosphere.
 - **DON'T** nest blur inside blur. Inner layers are alpha-only; the outer surface owns the blur.
 - **DO** keep security surfaces (sign/confirm prompts, seed reveal) fully opaque `bg-card`. A decision surface never lets the background bleed through.
-- **DO** reserve `backdrop-blur` for floating chrome and overlays only — never on in-flow cards or rows.
+- **DO** keep `backdrop-blur` to glass cards, floating chrome and overlays — never on rows nested inside a card (`glass.row` stays alpha-only). Blur has a cost on long scrolling lists: watch it on low-end devices.
 
 ## Keeping this file honest
 

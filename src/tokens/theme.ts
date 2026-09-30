@@ -45,6 +45,17 @@ export interface KaleidoTheme {
   violet: string
   /** Translucent violet wash for selected chips/surfaces. */
   violetSurface: string
+  /** Readable violet for text/icons on the mode's surfaces (web `secondary-content`). */
+  violetText: string
+  /** Violet ring for selected states and icon tiles. */
+  violetBorder: string
+  /**
+   * Faint violet light laid over card surfaces (native stand-in for the web
+   * `bg-gradient-card`, since no LinearGradient dependency is assumed).
+   */
+  violetWash: string
+  /** Glossy top-edge rim light for cards and filled buttons. */
+  highlight: string
   /** Semantic intents. */
   success: string
   warning: string
@@ -100,8 +111,19 @@ export interface KaleidoTheme {
   }
   /** Transaction direction. */
   tx: { sent: string; receive: string; swap: string }
+  /** Drop-shadow colours (RN `shadowColor`) — mirror the web shadow tokens. */
+  shadow: {
+    /** Resting card drop (violet-black on dark, violet-grey on light). */
+    card: string
+    /** Violet under-glow (selected cards, violet buttons, icon tiles). */
+    violet: string
+    /** Green drop for primary CTAs. */
+    primary: string
+  }
   /** Brand gradient as [start, end] for native LinearGradient (135°). */
   gradientBrand: readonly [string, string]
+  /** Violet fill gradient as [start, end] for native LinearGradient (135°). */
+  gradientViolet: readonly [string, string]
 }
 
 const NETWORK_GLYPH = {
@@ -115,16 +137,20 @@ const NETWORK_GLYPH = {
 
 const dark: KaleidoTheme = {
   mode: 'dark',
-  // Dark-blue surface family (navy derived from the brand info blue #4290FF).
-  background: '#0A1326',
-  card: '#0F1C33',
-  cardElevated: '#16273F',
+  // Violet-black surface ramp — identical to the web app surfaces.
+  background: '#0E0D16',
+  card: '#1C1A2A',
+  cardElevated: '#282638',
   // Brand primary CTA green — per DESIGN.md `brand.primary`, identical to web.
   // (#15E99A is the decorative logo brandmark, kept only in gradientBrand / QR.)
   primary: '#2BEE79',
   primaryFg: '#051B10',
   violet: '#6F32FF',
   violetSurface: 'rgba(111, 50, 255, 0.18)',
+  violetText: '#A48AFF',
+  violetBorder: 'rgba(164, 138, 255, 0.35)',
+  violetWash: 'rgba(111, 50, 255, 0.07)',
+  highlight: 'rgba(255, 255, 255, 0.08)',
   success: '#2BEE79',
   warning: '#FACC15',
   danger: '#F94040',
@@ -134,24 +160,24 @@ const dark: KaleidoTheme = {
   dangerSurface: 'rgba(249, 64, 64, 0.14)',
   infoSurface: 'rgba(66, 144, 255, 0.14)',
   text: {
-    primary: '#FFFFFF',
-    secondary: 'rgba(255, 255, 255, 0.64)',
-    muted: 'rgba(255, 255, 255, 0.42)',
-    disabled: 'rgba(255, 255, 255, 0.26)',
+    primary: '#EDEAF8',
+    secondary: 'rgba(226, 220, 255, 0.66)',
+    muted: 'rgba(226, 220, 255, 0.44)',
+    disabled: 'rgba(226, 220, 255, 0.26)',
     onAccent: '#051B10', // text on brand green — DESIGN.md `text.on-primary`
     onFill: '#FFFFFF',
   },
   border: {
-    subtle: 'rgba(255, 255, 255, 0.06)',
-    default: 'rgba(255, 255, 255, 0.10)',
-    strong: 'rgba(255, 255, 255, 0.16)',
+    subtle: 'rgba(200, 192, 240, 0.06)',
+    default: 'rgba(200, 192, 240, 0.10)',
+    strong: 'rgba(200, 192, 240, 0.18)',
   },
   surface: {
-    base: 'rgba(255, 255, 255, 0.03)',
-    raised: 'rgba(255, 255, 255, 0.06)',
-    sunken: 'rgba(0, 0, 0, 0.22)',
-    overlay: 'rgba(0, 0, 0, 0.55)',
-    scrim: 'rgba(0, 0, 0, 0.70)',
+    base: 'rgba(200, 192, 240, 0.03)',
+    raised: 'rgba(200, 192, 240, 0.06)',
+    sunken: 'rgba(7, 5, 18, 0.30)',
+    overlay: 'rgba(7, 5, 18, 0.60)',
+    scrim: 'rgba(7, 5, 18, 0.75)',
   },
   network: NETWORK_GLYPH,
   networkSurface: {
@@ -163,18 +189,24 @@ const dark: KaleidoTheme = {
     liquid: '#0E2A2C',
   },
   tx: { sent: '#F94040', receive: '#2BEE79', swap: '#4290FF' },
+  shadow: { card: '#05030F', violet: '#6F32FF', primary: '#15E99A' },
   gradientBrand: ['#15E99A', '#6F32FF'] as const,
+  gradientViolet: ['#8A5CFF', '#5420CC'] as const,
 }
 
 const light: KaleidoTheme = {
   mode: 'light',
-  background: '#F4F5F2',
+  background: '#F1EEFC', // lavender page, as on web
   card: '#FFFFFF',
   cardElevated: '#FFFFFF',
   primary: '#13D88E',
   primaryFg: '#04231A',
   violet: '#6F32FF',
   violetSurface: 'rgba(111, 50, 255, 0.12)',
+  violetText: '#5420CC',
+  violetBorder: 'rgba(111, 50, 255, 0.30)',
+  violetWash: 'rgba(111, 50, 255, 0.04)',
+  highlight: 'rgba(255, 255, 255, 0.85)',
   success: '#0FB67C',
   warning: '#C8881A',
   danger: '#E2403B',
@@ -184,24 +216,24 @@ const light: KaleidoTheme = {
   dangerSurface: 'rgba(226, 64, 59, 0.12)',
   infoSurface: 'rgba(47, 115, 224, 0.12)',
   text: {
-    primary: '#0D1813',
-    secondary: 'rgba(13, 24, 19, 0.62)',
-    muted: 'rgba(13, 24, 19, 0.44)',
-    disabled: 'rgba(13, 24, 19, 0.26)',
+    primary: '#15122A',
+    secondary: 'rgba(21, 18, 42, 0.64)',
+    muted: 'rgba(21, 18, 42, 0.46)',
+    disabled: 'rgba(21, 18, 42, 0.26)',
     onAccent: '#04231A',
     onFill: '#FFFFFF',
   },
   border: {
-    subtle: 'rgba(13, 24, 19, 0.06)',
-    default: 'rgba(13, 24, 19, 0.10)',
-    strong: 'rgba(13, 24, 19, 0.16)',
+    subtle: 'rgba(111, 50, 255, 0.10)',
+    default: 'rgba(111, 50, 255, 0.16)',
+    strong: 'rgba(111, 50, 255, 0.26)',
   },
   surface: {
-    base: 'rgba(13, 24, 19, 0.02)',
-    raised: 'rgba(13, 24, 19, 0.04)',
-    sunken: 'rgba(13, 24, 19, 0.04)',
-    overlay: 'rgba(13, 24, 19, 0.40)',
-    scrim: 'rgba(13, 24, 19, 0.55)',
+    base: 'rgba(111, 50, 255, 0.03)',
+    raised: 'rgba(111, 50, 255, 0.06)',
+    sunken: 'rgba(21, 18, 42, 0.05)',
+    overlay: 'rgba(21, 18, 42, 0.40)',
+    scrim: 'rgba(21, 18, 42, 0.55)',
   },
   network: NETWORK_GLYPH,
   networkSurface: {
@@ -213,7 +245,9 @@ const light: KaleidoTheme = {
     liquid: '#D8F5F1',
   },
   tx: { sent: '#E2403B', receive: '#0FB67C', swap: '#2F73E0' },
+  shadow: { card: '#3B2A80', violet: '#6F32FF', primary: '#17B581' },
   gradientBrand: ['#15E99A', '#6F32FF'] as const,
+  gradientViolet: ['#8A5CFF', '#5420CC'] as const,
 }
 
 export const themes: Record<ThemeMode, KaleidoTheme> = { light, dark }

@@ -54,8 +54,8 @@ export function WithdrawInvoiceInfo({
 }: WithdrawInvoiceInfoProps) {
   if (decodedLnInvoice && addressType === 'lightning') {
     return (
-      <div className="space-y-3 rounded-2xl bg-card p-5 shadow-inner">
-        <p className="text-mini font-bold uppercase tracking-eyebrow text-primary">
+      <div className="space-y-3 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-5 shadow-card">
+        <p className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
           Lightning Invoice
         </p>
         {decodedLnInvoice.amount != null && decodedLnInvoice.amount > 0 && (
@@ -104,8 +104,8 @@ export function WithdrawInvoiceInfo({
 
   if (decodedRgbInvoice && addressType === 'rgb') {
     return (
-      <div className="space-y-3 rounded-2xl bg-card p-5 shadow-inner">
-        <p className="text-mini font-bold uppercase tracking-eyebrow text-primary">RGB Invoice</p>
+      <div className="space-y-3 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-5 shadow-card">
+        <p className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">RGB Invoice</p>
         {decodedRgbInvoice.asset_id && (
           <div className="flex justify-between text-body">
             <span className="text-muted-foreground">Asset</span>
@@ -146,7 +146,7 @@ export function WithdrawInvoiceInfo({
 
   if (addressType === 'bitcoin' || addressType === 'arkade' || addressType === 'liquid') {
     return (
-      <div className="rounded-2xl bg-card p-5 shadow-inner">
+      <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-5 shadow-card">
         <div className="flex justify-between text-body">
           <span className="text-muted-foreground">
             {addressType === 'arkade'

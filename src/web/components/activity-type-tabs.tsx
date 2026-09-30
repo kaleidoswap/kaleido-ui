@@ -24,19 +24,19 @@ export function ActivityTypeTabs({ counts = {} }: { counts?: ActivityTypeTabCoun
   ]
 
   return (
-    <TabsList className="grid h-12 w-full grid-cols-4 gap-1 rounded-2xl bg-surface-card p-1 backdrop-blur-xl">
+    <TabsList className="grid h-12 w-full grid-cols-4 gap-1 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-1 shadow-card">
       {actions.map((action) => (
         <TabsTrigger
           key={action.value}
           value={action.value}
           data-action-icon={action.actionIcon}
-          className="group h-full rounded-xl px-1.5 text-caption font-bold tracking-wide text-muted-foreground transition-all hover:text-primary data-[state=active]:bg-primary/15 data-[state=active]:text-primary data-[state=active]:hover:bg-primary/20 data-[state=active]:hover:text-primary"
+          className="group h-full rounded-xl px-1.5 text-caption font-bold tracking-wide text-muted-foreground transition-all hover:bg-secondary/10 hover:text-secondary-content data-[state=active]:bg-primary active-gradient-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-button-primary data-[state=active]:hover:bg-primary data-[state=active]:hover:text-primary-foreground"
         >
           {action.icon && (
             <AppIcon
               name={action.icon}
               size="sm"
-              className="mr-1 shrink-0 leading-none text-muted-foreground transition-colors group-hover:text-primary group-data-[state=active]:text-primary"
+              className="mr-1 shrink-0 leading-none text-muted-foreground transition-colors group-hover:text-secondary-content group-data-[state=active]:text-primary-foreground"
             />
           )}
           <span>{action.label}</span>

@@ -19,11 +19,11 @@ export function SettingsSelectorRow({
   iconClassName,
 }: SettingsSelectorRowProps) {
   return (
-    <div className={cn('flex items-start justify-between gap-3 rounded-2xl bg-card p-5', className)}>
+    <div className={cn('flex items-start justify-between gap-3 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-5 shadow-card', className)}>
       <div className="flex min-w-0 flex-1 items-start gap-3">
         <div
           className={cn(
-            'flex size-10 shrink-0 items-center justify-center rounded-xl bg-muted',
+            'flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25',
             iconClassName,
           )}
         >

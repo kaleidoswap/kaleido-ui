@@ -49,21 +49,21 @@ const leadingToneClass: Record<InfoChipStatus, string> = {
   success: 'bg-success/10 text-success',
   warning: 'bg-warning/10 text-warning',
   danger: 'bg-danger/10 text-danger',
-  info: 'bg-info/10 text-info',
+  info: 'bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25',
 }
 
 const statusToneClass: Record<InfoChipStatus, string> = {
   success: 'border-success/25 bg-success/10 text-success',
   warning: 'border-warning/25 bg-warning/10 text-warning',
   danger: 'border-danger/25 bg-danger/10 text-danger',
-  info: 'border-info/25 bg-info/10 text-info',
+  info: 'border-secondary/30 bg-secondary/15 text-secondary-content',
 }
 
 const statusDotClass: Record<InfoChipStatus, string> = {
   success: 'bg-success',
   warning: 'bg-warning',
   danger: 'bg-danger',
-  info: 'bg-info',
+  info: 'bg-secondary-content',
 }
 
 export function InfoChip({
@@ -89,7 +89,7 @@ export function InfoChip({
       data-info-kind={dataInfoKind}
       data-testid={dataTestId}
       className={cn(
-        'flex w-full max-w-full items-center gap-3 rounded-xl border border-border bg-surface-card px-3 py-2.5',
+        'flex w-full max-w-full items-center gap-3 rounded-xl border border-border bg-surface-card bg-gradient-card px-3 py-2.5 shadow-raised',
         className,
       )}
     >
@@ -97,7 +97,7 @@ export function InfoChip({
         <span
           aria-hidden="true"
           className={cn(
-            'flex size-9 shrink-0 items-center justify-center rounded-full bg-accent text-muted-foreground [&_svg]:size-icon-lg',
+            'flex size-9 shrink-0 items-center justify-center rounded-full bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25 [&_svg]:size-icon-lg',
             status && leadingToneClass[status],
           )}
         >

@@ -52,7 +52,7 @@ export function RecoveryPhraseCard({
             variant="ghost"
             size="sm"
             onClick={() => onRevealChange(!revealed)}
-            className="h-auto rounded-lg px-2 py-1 text-caption text-muted-foreground hover:text-white"
+            className="h-auto rounded-lg px-2 py-1 text-caption text-muted-foreground hover:bg-secondary/10 hover:text-secondary-content"
           >
             <Icon name="visibility_off" className="text-icon-md" />
             Hide
@@ -69,8 +69,8 @@ export function RecoveryPhraseCard({
             )}
           >
             {words.map((word, index) => (
-              <div key={`${index}-${word}`} className="flex items-center gap-2 rounded-xl bg-card px-3 py-2.5">
-                <span className="w-4 shrink-0 text-caption font-bold text-muted-foreground">
+              <div key={`${index}-${word}`} className="flex items-center gap-2 rounded-xl bg-card bg-gradient-card px-3 py-2.5 shadow-raised">
+                <span className="w-4 shrink-0 text-caption font-bold text-secondary-content">
                   {index + 1}
                 </span>
                 <span className="font-mono text-body text-white">{word}</span>

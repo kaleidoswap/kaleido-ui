@@ -12,8 +12,8 @@ export interface DotPaginationProps extends Omit<React.HTMLAttributes<HTMLDivEle
 }
 
 const toneClasses: Record<DotTone, string> = {
-  primary: 'bg-primary',
-  warning: 'bg-warning',
+  primary: 'bg-primary bg-gradient-brand shadow-glow-primary-soft',
+  warning: 'bg-warning shadow-raised',
 }
 
 const DotPagination = React.forwardRef<HTMLDivElement, DotPaginationProps>(
@@ -33,8 +33,9 @@ const DotPagination = React.forwardRef<HTMLDivElement, DotPaginationProps>(
           const active = i === index
           const dotClass = cn(
             'rounded-full transition-all duration-200',
-            active ? cn('h-2 w-5 shadow-sm', toneClasses[tone]) : 'h-2 w-2 bg-white/25',
-            interactive && 'cursor-pointer hover:bg-white/40',
+            active ? cn('h-2 w-5', toneClasses[tone]) : 'h-2 w-2 bg-secondary/35',
+            interactive && !active && 'cursor-pointer hover:bg-secondary-content/70',
+            interactive && active && 'cursor-pointer',
           )
           const Tag = interactive ? 'button' : 'span'
           return (

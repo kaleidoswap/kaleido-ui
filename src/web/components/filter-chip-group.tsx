@@ -98,14 +98,14 @@ export function FilterChipGroup<TValue extends string = string>({
                     'flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring',
                     iconOnly ? 'size-8' : 'h-8 px-3 text-caption',
                     active
-                      ? 'bg-card text-foreground shadow-sm'
+                      ? 'bg-card text-foreground shadow-raised'
                       : 'text-muted-foreground hover:text-foreground',
                   )
                 : cn(
                     'flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-1 text-tiny font-bold transition-all',
                     active
-                      ? 'border-white/20 bg-white/12 text-white'
-                      : 'border-white/8 bg-white/5 text-muted-foreground hover:border-white/20 hover:text-white/80',
+                      ? 'border-transparent bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
+                      : 'border-white/8 bg-white/5 text-muted-foreground hover:border-secondary/40 hover:bg-secondary/10 hover:text-secondary-content',
                   ),
               option.disabled && 'cursor-not-allowed opacity-40',
             )}
@@ -116,7 +116,7 @@ export function FilterChipGroup<TValue extends string = string>({
               <span
                 className={cn(
                   'rounded-full px-1.5 py-0.5 text-xxs',
-                  segmented ? 'bg-foreground/10' : active ? 'bg-white/20' : 'bg-white/8',
+                  segmented ? 'bg-foreground/10' : active ? 'bg-white/20' : 'bg-secondary/15 text-secondary-content',
                 )}
               >
                 {option.count}

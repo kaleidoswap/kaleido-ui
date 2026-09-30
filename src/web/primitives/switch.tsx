@@ -45,14 +45,14 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         onClick={() => onCheckedChange?.(!checked)}
         className={cn(
           'relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
-          checked ? 'bg-primary' : 'bg-white/10',
+          checked ? 'bg-primary bg-gradient-primary shadow-glow-primary-soft' : 'bg-white/10 shadow-inner',
           className
         )}
       >
         <span
           className={cn(
             'pointer-events-none block h-4 w-4 rounded-full shadow-sm transition-all duration-200',
-            checked ? 'translate-x-6 bg-white' : 'translate-x-1 bg-primary'
+            checked ? 'translate-x-6 bg-white shadow-raised' : 'translate-x-1 bg-secondary-content shadow-raised'
           )}
         />
       </button>

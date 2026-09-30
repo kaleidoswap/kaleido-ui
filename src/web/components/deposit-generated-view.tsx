@@ -113,9 +113,9 @@ export function DepositGeneratedView({
   return (
     <div className="space-y-3 animate-in fade-in zoom-in-95 duration-300">
       {(network === 'lightning' || (network === 'arkade' && arkSubMode === 'ark')) && isBtc && (
-        <div className="flex flex-col gap-1.5 rounded-xl bg-card/70 p-2.5">
+        <div className="flex flex-col gap-1.5 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-2.5 shadow-card">
           <div className="flex items-center justify-between px-1">
-            <label className="text-mini font-bold uppercase tracking-eyebrow text-white/40">
+            <label className="text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
               Specify amount (optional)
             </label>
           </div>
@@ -124,7 +124,7 @@ export function DepositGeneratedView({
             value={amount}
             onChange={handleAmountChange}
             placeholder="Any amount"
-            className="w-full rounded-lg border bg-white/5 px-3 py-1.5 font-mono text-caption font-bold text-white transition-all placeholder:text-white/25 focus:border-warning/40 focus:outline-none"
+            className="w-full rounded-lg bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-1.5 font-mono text-caption font-bold text-white shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
             inputMode="decimal"
           />
           {amount && (
@@ -145,9 +145,9 @@ export function DepositGeneratedView({
       )}
 
       {network === 'lightning' && !isBtc && (
-        <div className="flex flex-col gap-1.5 rounded-xl bg-card/70 p-2.5">
+        <div className="flex flex-col gap-1.5 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-2.5 shadow-card">
           <div className="flex items-center justify-between px-1">
-            <label className="text-mini font-bold uppercase tracking-eyebrow text-white/40">
+            <label className="text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
               Specify amount (optional)
             </label>
           </div>
@@ -156,7 +156,7 @@ export function DepositGeneratedView({
             value={amount}
             onChange={handleAmountChange}
             placeholder={selectedAsset?.ticker ? `Any amount (${selectedAsset.ticker})` : 'Any amount'}
-            className="w-full rounded-lg border bg-white/5 px-3 py-1.5 font-mono text-caption font-bold text-white transition-all placeholder:text-white/25 focus:border-warning/40 focus:outline-none"
+            className="w-full rounded-lg bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-1.5 font-mono text-caption font-bold text-white shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
             inputMode="decimal"
           />
           {amount && (
@@ -215,8 +215,8 @@ export function DepositGeneratedView({
               className={cn(
                 'flex items-center gap-1 rounded-full border px-2.5 py-1 text-mini font-bold uppercase tracking-eyebrow transition-all',
                 isAddressCopied
-                  ? 'border-primary/30 bg-primary/10 text-primary'
-                  : 'border-border bg-white/5 text-muted-foreground hover:border-white/20 hover:bg-accent hover:text-white'
+                  ? 'border-primary/30 bg-primary/10 text-primary shadow-glow-primary-soft'
+                  : 'border-secondary/30 bg-secondary/15 text-secondary-content shadow-raised hover:border-secondary/50 hover:bg-secondary/25 hover:text-foreground'
               )}
               onClick={(event) => {
                 event.stopPropagation()
@@ -247,8 +247,8 @@ export function DepositGeneratedView({
         data-testid="deposit-generated-address"
         data-address={address}
         className={cn(
-          'group flex cursor-pointer items-center gap-2 rounded-xl bg-card/70 px-2.5 py-1.5',
-          'transition-all hover:bg-card active:scale-[0.98]'
+          'group flex cursor-pointer items-center gap-2 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-2.5 py-1.5 shadow-card',
+          'transition-all hover:bg-secondary/10 hover:shadow-card-hover active:scale-[0.98]'
         )}
         onClick={() => void copyToClipboard(address)}
       >
@@ -269,7 +269,7 @@ export function DepositGeneratedView({
       {recipientId && (
         <div
           className={cn(
-            'group flex cursor-pointer items-center gap-2 rounded-xl bg-primary/10 px-2.5 py-1.5',
+            'group flex cursor-pointer items-center gap-2 rounded-xl bg-primary/10 px-2.5 py-1.5 shadow-raised',
             'transition-all hover:bg-primary/15 active:scale-[0.98]'
           )}
           onClick={() => void copyToClipboard(recipientId)}
@@ -313,7 +313,7 @@ export function DepositGeneratedView({
               setAmount('')
               setInvoiceStatus(null)
             }}
-            className="flex size-10 items-center justify-center rounded-full bg-primary/15 text-primary transition-all hover:bg-primary/25 active:scale-[0.98] disabled:opacity-50"
+            className="flex size-10 items-center justify-center rounded-full bg-secondary bg-gradient-violet text-white shadow-button-violet transition-all hover:shadow-glow-violet active:scale-[0.98] disabled:opacity-50"
           >
             <Icon name="refresh" className={cn('text-icon-md', loading && 'animate-spin')} />
           </button>

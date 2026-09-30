@@ -33,13 +33,13 @@ export function StepperNumberInput({
   return (
     <div
       className={cn(
-        'flex items-center gap-1.5 overflow-hidden rounded-lg border border-border bg-black/25',
+        'flex items-center gap-1.5 overflow-hidden rounded-lg border border-border bg-black/25 shadow-inner transition-shadow focus-within:ring-1 focus-within:ring-primary/50 focus-within:shadow-glow-primary-soft',
         className,
       )}
     >
       <button
         type="button"
-        className="px-3 py-1.5 text-white/70 transition-colors hover:bg-white/8 hover:text-white disabled:opacity-30"
+        className="px-3 py-1.5 text-secondary-content transition-colors hover:bg-secondary/15 hover:text-foreground disabled:opacity-30"
         disabled={disabled || (min !== undefined && value <= min)}
         onClick={() => clamp(value - step)}
         aria-label="Decrease"
@@ -62,7 +62,7 @@ export function StepperNumberInput({
       />
       <button
         type="button"
-        className="px-3 py-1.5 text-white/70 transition-colors hover:bg-white/8 hover:text-white disabled:opacity-30"
+        className="px-3 py-1.5 text-secondary-content transition-colors hover:bg-secondary/15 hover:text-foreground disabled:opacity-30"
         disabled={disabled || (max !== undefined && value >= max)}
         onClick={() => clamp(value + step)}
         aria-label="Increase"

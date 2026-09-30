@@ -30,7 +30,7 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         this.props.fallback ?? (
-          <div className="min-h-screen bg-background text-foreground font-display flex flex-col items-center justify-center p-6 gap-4">
+          <div className="min-h-screen bg-background bg-page-radial text-foreground font-display flex flex-col items-center justify-center p-6 gap-4">
             <Icon name="error" className="text-danger text-icon-5xl" />
             <h2 className="text-subhead font-bold">Something went wrong</h2>
             <p className="text-caption text-muted-foreground text-center">
@@ -41,7 +41,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 this.setState({ hasError: false, error: null })
                 this.props.onReset?.()
               }}
-              className="px-6 py-3 rounded-xl bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-all"
+              className="px-6 py-3 rounded-xl bg-primary bg-gradient-primary text-primary-foreground font-bold shadow-button-primary hover:shadow-glow-primary transition-all"
             >
               Try Again
             </button>

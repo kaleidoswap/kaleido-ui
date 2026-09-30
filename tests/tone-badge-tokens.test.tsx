@@ -24,12 +24,12 @@ test('the muted badge is drawn from tokens that differ per theme', () => {
   assert.match(markup, /border-border/)
   assert.match(markup, /bg-foreground\/5/)
   assert.match(markup, /text-muted-foreground/)
-  // On dark these are the old values: 10% white hairline, 55% white text.
-  assert.equal(colors.border, 'rgba(255, 255, 255, 0.10)')
-  assert.equal(colors.mutedFg, 'rgba(255, 255, 255, 0.55)')
+  // On dark: an 11% lavender hairline and 58% cool-white text.
+  assert.equal(colors.border, 'rgba(200, 192, 240, 0.11)')
+  assert.equal(colors.mutedFg, 'rgba(232, 230, 245, 0.58)')
   // On light they are dark ink on the white card, so the badge stays legible.
-  assert.equal(lightSemanticColors.mutedFg, '#464A69')
-  assert.equal(lightSemanticColors.foreground, '#12131E')
+  assert.equal(lightSemanticColors.mutedFg, '#4F4A75')
+  assert.equal(lightSemanticColors.foreground, '#15122A')
 })
 
 test('a status is the eyebrow; case="none" sets a value in caption with nothing added', () => {

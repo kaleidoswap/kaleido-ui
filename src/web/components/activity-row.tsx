@@ -22,7 +22,7 @@ const directionUi = {
   inbound: { icon: 'south_west', iconClass: 'bg-primary/20 text-primary', amountClass: 'text-primary', sign: '+' },
   outbound: { icon: 'north_east', iconClass: 'bg-white/10 text-muted-foreground', amountClass: 'text-foreground', sign: '-' },
   swap: { icon: 'swap_horiz', iconClass: 'bg-white/10 text-foreground', amountClass: 'text-foreground', sign: '' },
-  neutral: { icon: 'receipt_long', iconClass: 'bg-white/10 text-muted-foreground', amountClass: 'text-foreground', sign: '' },
+  neutral: { icon: 'receipt_long', iconClass: 'bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25', amountClass: 'text-foreground', sign: '' },
 } as const
 
 export function ActivityRow({
@@ -82,8 +82,8 @@ export function ActivityRow({
   )
 
   const rowClassName = cn(
-    'flex w-full items-center justify-between gap-3 rounded-2xl bg-card p-4 shadow-inner transition-colors',
-    onClick && 'hover:bg-accent',
+    'flex w-full items-center justify-between gap-3 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-4 shadow-card transition-all duration-200',
+    onClick && 'hover:bg-accent hover:shadow-card-hover',
     className,
   )
 

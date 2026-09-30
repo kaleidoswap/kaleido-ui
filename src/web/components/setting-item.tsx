@@ -27,15 +27,15 @@ export function SettingItem({
   onClick,
   showChevron = true,
   className,
-  iconColor = 'text-primary',
+  iconColor = 'text-secondary-content',
 }: SettingItemProps) {
   const isClickable = !!onClick
 
   return (
     <div
       className={cn(
-        'p-5 rounded-2xl bg-card/70 transition-all duration-200 group',
-        isClickable && 'cursor-pointer active:scale-[0.98]',
+        'p-5 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-card transition-all duration-200 group',
+        isClickable && 'cursor-pointer hover:shadow-card-hover hover:-translate-y-0.5 active:scale-[0.98]',
         className
       )}
       onClick={onClick}
@@ -45,7 +45,7 @@ export function SettingItem({
           {(icon || iconSrc) && (
             <div
               className={cn(
-                'flex-shrink-0 size-10 rounded-xl flex items-center justify-center bg-primary/15 group-hover:bg-primary/25 group-hover:scale-105 transition-all',
+                'flex-shrink-0 size-10 rounded-xl flex items-center justify-center bg-secondary/15 ring-1 ring-inset ring-secondary/25 group-hover:bg-secondary/25 group-hover:shadow-glow-violet-soft group-hover:scale-105 transition-all',
                 iconColor
               )}
             >
@@ -70,7 +70,7 @@ export function SettingItem({
         <div className="flex items-center gap-2 flex-shrink-0">
           {value && <span className="text-caption text-muted-foreground font-mono">{value}</span>}
           {showChevron && isClickable && (
-            <Icon name="chevron_right" className="text-icon-md text-muted-foreground group-hover:scale-110 group-hover:text-white transition-all" />
+            <Icon name="chevron_right" className="text-icon-md text-muted-foreground group-hover:scale-110 group-hover:text-secondary-content transition-all" />
           )}
         </div>
       </div>

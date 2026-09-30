@@ -61,7 +61,7 @@ export function WithdrawConfirmation({
   locale,
 }: WithdrawConfirmationProps) {
   return (
-    <div className="relative flex h-screen flex-col overflow-hidden bg-background font-display text-foreground">
+    <div className="relative flex h-screen flex-col overflow-hidden bg-background bg-page-radial font-display text-foreground">
       <div className="absolute left-4 top-4 z-30">
         <Button
           type="button"
@@ -85,13 +85,13 @@ export function WithdrawConfirmation({
           <p className="mb-1 text-caption uppercase tracking-eyebrow text-muted-foreground">
             {reviewLabels?.recipientReceives ?? 'Recipient receives'}
           </p>
-          <h1 className="mb-2 text-display font-bold">{formatAmount(displayAmount, { locale })}</h1>
+          <h1 className="mb-2 text-display font-bold text-gradient-brand">{formatAmount(displayAmount, { locale })}</h1>
           <p className="text-body text-muted-foreground">
             {selectedAssetId === 'BTC' ? 'sats' : (selectedAsset?.ticker ?? 'units')}
           </p>
         </div>
 
-        <div className="overflow-hidden rounded-2xl bg-card/90 py-1 shadow-inner backdrop-blur-2xl">
+        <div className="overflow-hidden rounded-2xl bg-card bg-gradient-card py-1 shadow-card">
           <div className="flex items-center justify-between px-5 py-4">
             <span className="text-caption text-muted-foreground">To</span>
             <span className="max-w-[200px] truncate font-mono text-body text-white" title={destination}>
@@ -103,7 +103,7 @@ export function WithdrawConfirmation({
           <div className="flex items-center justify-between px-5 py-4">
             <span className="text-caption text-muted-foreground">Network</span>
             <div className="flex items-center gap-1.5">
-              <div className="size-1.5 rounded-full bg-primary" />
+              <div className="size-1.5 rounded-full bg-primary shadow-glow-primary-soft" />
               <span className="text-body font-bold text-white">{networkLabel}</span>
             </div>
           </div>
@@ -137,7 +137,7 @@ export function WithdrawConfirmation({
                 <span className="text-body text-white">
                   {`${feeIsExact ? '' : '~'}${formatAmount(estimatedFee, { locale })} sats`}
                 </span>
-                <span className="mt-0.5 text-xxs font-bold capitalize tracking-wider text-primary">
+                <span className="mt-0.5 text-xxs font-bold capitalize tracking-wider text-secondary-content">
                   {feeRate}
                 </span>
               </div>
@@ -154,7 +154,7 @@ export function WithdrawConfirmation({
         {selectedAssetId === 'BTC' && estimatedFee > 0 && (
           <div
             data-testid="payment-review-total"
-            className="flex items-center justify-between rounded-2xl bg-primary/10 p-5 shadow-inner"
+            className="flex items-center justify-between rounded-2xl bg-card bg-gradient-card-hero p-5 shadow-card"
           >
             <span className="text-body font-bold uppercase tracking-eyebrow text-primary">
               {reviewLabels?.totalDeducted ?? 'Total deducted'}
@@ -167,8 +167,8 @@ export function WithdrawConfirmation({
         )}
 
         {isPollingStatus && (
-          <div className="flex items-center gap-3 rounded-xl bg-primary/10 p-4">
-            <Icon name="progress_activity" className="animate-spin text-icon-2xl text-primary" />
+          <div className="flex items-center gap-3 rounded-xl bg-gradient-active p-4 shadow-glow-violet-soft ring-1 ring-inset ring-secondary/40">
+            <Icon name="progress_activity" className="animate-spin text-icon-2xl text-secondary-content" />
             <div>
               <p className="text-body font-medium text-white">Processing payment...</p>
               <p className="text-caption text-muted-foreground">Waiting for confirmation</p>

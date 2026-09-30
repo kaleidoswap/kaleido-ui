@@ -60,7 +60,7 @@ export function ExtensionPageFrame({
   return (
     <div
       className={cn(
-        'relative flex h-screen flex-col overflow-hidden bg-background font-display text-foreground',
+        'relative flex h-screen flex-col overflow-hidden bg-background bg-page-radial font-display text-foreground',
         className,
       )}
     >

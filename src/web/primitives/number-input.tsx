@@ -1,6 +1,7 @@
 import { Icon } from './icon'
 import * as React from 'react'
 import { cn } from '../utils/cn'
+import { fieldSurface } from '../utils/field-styles'
 
 export interface NumberInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {}
 
@@ -36,7 +37,8 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           step={step}
           disabled={disabled}
           className={cn(
-            'flex h-12 w-full rounded-xl bg-white/8 px-4 py-3 pr-10 text-body transition-all border border-transparent placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-primary/25 disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-white/4',
+            'flex h-12 w-full px-4 py-3 pr-10 text-body',
+            fieldSurface,
             '[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]',
             className
           )}
@@ -48,7 +50,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
               type="button"
               tabIndex={-1}
               onClick={() => nudge(1)}
-              className="flex items-center justify-center h-4 w-5 rounded text-muted-foreground hover:text-primary transition-colors"
+              className="flex items-center justify-center h-4 w-5 rounded text-muted-foreground hover:bg-secondary/15 hover:text-secondary-content transition-colors"
             >
               <Icon name="keyboard_arrow_up" className="text-icon-sm" />
             </button>
@@ -56,7 +58,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
               type="button"
               tabIndex={-1}
               onClick={() => nudge(-1)}
-              className="flex items-center justify-center h-4 w-5 rounded text-muted-foreground hover:text-primary transition-colors"
+              className="flex items-center justify-center h-4 w-5 rounded text-muted-foreground hover:bg-secondary/15 hover:text-secondary-content transition-colors"
             >
               <Icon name="keyboard_arrow_down" className="text-icon-sm" />
             </button>

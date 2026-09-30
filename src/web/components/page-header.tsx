@@ -104,7 +104,7 @@ export function PageHeader({
 
   return (
     <header className={cn(
-      'sticky top-0 z-[var(--z-header)] flex min-h-14 shrink-0 items-center bg-background px-4 py-2 shadow-header backdrop-blur-xl',
+      'sticky top-0 z-[var(--z-header)] flex min-h-14 shrink-0 items-center bg-background bg-gradient-card px-4 py-2 shadow-header backdrop-blur-xl',
       borderClassName && 'border-b',
       borderClassName,
       className,

@@ -47,7 +47,7 @@ export function SecretRevealCard({
   return (
     <div className={cn('space-y-3', className)}>
       <div className="relative">
-        <div className="rounded-xl bg-card px-3 py-3">
+        <div className="rounded-xl bg-card bg-gradient-card px-3 py-3 shadow-card">
           <p
             className={cn(
               'break-all font-mono text-body text-foreground transition-all duration-300',
@@ -63,7 +63,7 @@ export function SecretRevealCard({
             <button
               type="button"
               onClick={() => onRevealChange(true)}
-              className="flex items-center gap-2 rounded-xl bg-card px-4 py-2 text-body font-bold text-foreground shadow-lg transition-all hover:bg-accent"
+              className="flex items-center gap-2 rounded-xl bg-secondary bg-gradient-violet px-4 py-2 text-body font-bold text-secondary-foreground shadow-button-violet transition-all duration-200 hover:-translate-y-0.5 hover:shadow-glow-violet"
             >
               <Icon name="visibility" className="text-icon-lg" />
               {revealLabel}
@@ -75,7 +75,7 @@ export function SecretRevealCard({
         <button
           type="button"
           onClick={() => onRevealChange(!revealed)}
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-white/5 py-3 text-caption font-semibold text-muted-foreground transition-all hover:bg-accent hover:text-foreground"
+          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-secondary/15 py-3 text-caption font-semibold text-secondary-content shadow-raised ring-1 ring-inset ring-secondary/25 transition-all duration-200 hover:bg-secondary/25 hover:text-foreground"
         >
           <Icon name={revealed ? 'visibility_off' : 'visibility'} className="text-icon-lg" />
           {revealed ? hideLabel : revealLabel}
@@ -84,7 +84,7 @@ export function SecretRevealCard({
           <button
             type="button"
             onClick={handleCopy}
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-white/5 py-3 text-caption font-semibold text-muted-foreground transition-all hover:bg-accent hover:text-foreground"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-secondary/15 py-3 text-caption font-semibold text-secondary-content shadow-raised ring-1 ring-inset ring-secondary/25 transition-all duration-200 hover:bg-secondary/25 hover:text-foreground"
           >
             <Icon name={copied ? 'check' : 'content_copy'} className="text-icon-lg" />
             {copied ? copiedLabel : copyLabel}

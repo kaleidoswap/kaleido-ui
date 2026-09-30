@@ -31,10 +31,12 @@ export function SelectableCard({
           <div
             className={cn(
               'mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors',
-              selected ? 'border-primary bg-primary' : 'border-white/20',
+              selected
+                ? 'border-primary bg-primary bg-gradient-primary shadow-glow-primary-soft'
+                : 'border-secondary/40',
             )}
           >
-            {selected && <div className="size-2 rounded-full bg-background" />}
+            {selected && <div className="size-2 rounded-full bg-white" />}
           </div>
         )}
         <div className="min-w-0 flex-1">
@@ -53,8 +55,10 @@ export function SelectableCard({
   )
 
   const cardClassName = cn(
-    'w-full rounded-2xl border p-4 text-left transition-all duration-200',
-    selected ? 'border-transparent bg-primary/[0.14] shadow-sm' : 'border-transparent bg-card/70 hover:bg-card',
+    'w-full rounded-2xl border border-transparent bg-card p-4 text-left transition-all duration-200',
+    selected
+      ? 'bg-gradient-active ring-1 ring-inset ring-primary/40 shadow-glow-primary-soft'
+      : cn('bg-gradient-card shadow-card', onClick && 'hover:-translate-y-0.5 hover:shadow-card-hover'),
     className,
   )
 

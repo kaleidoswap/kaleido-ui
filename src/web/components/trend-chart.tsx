@@ -305,7 +305,7 @@ export function TrendChart({
         aria-label={`${label}: ${count} periods. Arrow keys move between them.`}
         onKeyDown={moveActive}
         onBlur={() => setActive(null)}
-        className="w-full min-w-0 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="w-full min-w-0 rounded-xl outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft"
       >
         <svg
           width="100%"
@@ -357,8 +357,9 @@ export function TrendChart({
               y={plotTop}
               width={band}
               height={plotHeight}
-              fill="var(--foreground)"
-              opacity={0.06}
+              // Violet wash (the chart ramp's brand purple) marks the read period.
+              fill="var(--chart-4)"
+              opacity={0.14}
             />
           )}
 

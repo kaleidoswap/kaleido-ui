@@ -175,9 +175,10 @@ export function BalanceBreakdown({
     <div className={`flex flex-col ${compact ? 'gap-2' : 'gap-3'}`}>
       <div
         data-testid="balance-breakdown-card"
-        className={`relative overflow-hidden rounded-2xl bg-card ${compact ? 'p-3.5' : 'p-5'}`}
+        className={`relative overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-card ${compact ? 'p-3.5' : 'p-5'}`}
       >
-        <div className="pointer-events-none absolute right-0 top-0 h-48 w-48 -translate-y-1/4 translate-x-1/4 rounded-full bg-white/[0.04] blur-[60px]" />
+        <div className="pointer-events-none absolute right-0 top-0 h-48 w-48 -translate-y-1/4 translate-x-1/4 rounded-full bg-secondary/25 blur-[60px]" />
+        <div className="pointer-events-none absolute bottom-0 left-0 h-40 w-40 -translate-x-1/3 translate-y-1/3 rounded-full bg-primary/10 blur-[60px]" />
 
         <div className="relative z-10 flex items-start justify-between gap-3">
           <button
@@ -185,7 +186,7 @@ export function BalanceBreakdown({
             className="group flex min-w-0 flex-1 flex-col items-start text-left"
             title={`Tap to switch unit (current: ${label})`}
           >
-            <p className="mb-1 text-mini font-bold uppercase tracking-eyebrow text-white/40">
+            <p className="mb-1 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
               Total Balance
             </p>
             {isLoading ? (
@@ -196,17 +197,17 @@ export function BalanceBreakdown({
             ) : (
               <>
                 <div className="flex min-w-0 max-w-full flex-wrap items-baseline gap-x-1.5 gap-y-1">
-                  <span className="text-display font-black leading-[1.1] tracking-tighter tabular-nums text-white drop-shadow-sm transition-all duration-300 group-active:scale-95 group-active:text-primary">
+                  <span className="text-display font-black leading-[1.1] tracking-tighter tabular-nums text-gradient-brand drop-shadow-sm transition-all duration-300 group-active:scale-95">
                     {balanceVisible ? numberOnly(format(totalBTC)) : '••••••'}
                   </span>
                   {unit !== 'fiat' && (
-                    <span className="inline-block rounded-md bg-white/8 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-white/45">
+                    <span className="inline-block rounded-md bg-secondary/15 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground ring-1 ring-inset ring-secondary/25">
                       {label}
                     </span>
                   )}
                   {isPartial && (
                     <span
-                      className="inline-flex size-4 items-center justify-center rounded-full bg-white/[0.06]"
+                      className="inline-flex size-4 items-center justify-center rounded-full bg-secondary/15"
                       title="Loading remaining balances"
                     >
                       <span className="size-2 animate-spin rounded-full border border-primary/30 border-t-primary" />
@@ -232,7 +233,7 @@ export function BalanceBreakdown({
               <button
                 onClick={onRefresh}
                 disabled={isRefreshing}
-                className="flex size-7 items-center justify-center rounded-full bg-white/[0.08] transition-all hover:bg-white/[0.12] disabled:opacity-40"
+                className="flex size-7 items-center justify-center rounded-full bg-secondary/15 shadow-raised ring-1 ring-inset ring-secondary/25 transition-all hover:bg-secondary/25 hover:shadow-glow-violet-soft disabled:opacity-40"
                 title="Refresh balances"
               >
                 <Icon
@@ -245,7 +246,7 @@ export function BalanceBreakdown({
               onClick={() => setExpanded(!expanded)}
               aria-label={expanded ? 'Collapse balance breakdown' : 'Expand balance breakdown'}
               aria-expanded={expanded}
-              className="flex size-7 items-center justify-center rounded-full bg-white/[0.08] transition-all hover:bg-white/[0.12]"
+              className="flex size-7 items-center justify-center rounded-full bg-secondary/15 shadow-raised ring-1 ring-inset ring-secondary/25 transition-all hover:bg-secondary/25 hover:shadow-glow-violet-soft"
             >
               <Icon
                 name={expanded ? 'expand_less' : 'expand_more'}
@@ -261,7 +262,7 @@ export function BalanceBreakdown({
             aria-label="Bitcoin balance breakdown"
             className={`space-y-1 duration-300 animate-in fade-in slide-in-from-top-2 ${compact ? 'mt-3 pt-3' : 'mt-4 pt-4'}`}
           >
-            <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-white/30">
+            <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
               Bitcoin
             </p>
             <NetworkRow
@@ -356,13 +357,13 @@ export function BalanceBreakdown({
 
             {tokenValueSats !== undefined && tokenValueSats > 0 && (
               <div className="mt-4 pt-1">
-                <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-white/30">
+                <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
                   Token Holdings
                 </p>
-                <div className="flex items-center justify-between rounded-xl bg-white/[0.03] px-3 py-2">
+                <div className="flex items-center justify-between rounded-xl bg-muted/40 px-3 py-2 shadow-raised">
                   <div className="flex items-center gap-3">
                     <div className="h-7 w-0.5 rounded-full bg-success opacity-80" />
-                    <div className="flex size-7 items-center justify-center rounded-lg bg-white/5 text-icon-sm">
+                    <div className="flex size-7 items-center justify-center rounded-lg bg-secondary/15 text-icon-sm text-secondary-content ring-1 ring-inset ring-secondary/25">
                       <Icon name="payments" />
                     </div>
                     <div className="flex flex-col">
@@ -388,7 +389,7 @@ export function BalanceBreakdown({
 
             {accounts.RGB?.connected && nodeInfo?.pubkey && (
               <div className="mt-4 pt-1">
-                <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-white/30">
+                <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
                   RLN Details
                 </p>
                 <div className="grid grid-cols-3 gap-2">
@@ -442,7 +443,7 @@ function RgbAssetsBreakdown({
 }) {
   return (
     <div className="mt-4 pt-1">
-      <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-white/30">
+      <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
         RGB Assets
       </p>
       <div className="space-y-2">
@@ -499,7 +500,7 @@ function RgbAssetsBreakdown({
 function StatusChip({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl bg-muted/40 px-3 py-2">
-      <div className="text-mini font-bold uppercase tracking-eyebrow text-white/30">{label}</div>
+      <div className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">{label}</div>
       <div className="mt-1 truncate text-caption font-semibold text-white/80">{value}</div>
     </div>
   )
@@ -537,12 +538,12 @@ function NetworkRow({
   return (
     <div
       data-testid={testId}
-      className={`flex items-center justify-between rounded-xl px-3 py-2 transition-colors ${isEmpty ? 'opacity-35' : 'bg-white/[0.03] hover:bg-accent'}`}
+      className={`flex items-center justify-between rounded-xl px-3 py-2 transition-colors ${isEmpty ? 'opacity-35' : 'bg-muted/40 shadow-raised hover:bg-secondary/10'}`}
     >
       <div className="flex items-center gap-3">
         <div className={`h-7 w-0.5 rounded-full ${dotColor} opacity-80`} />
         <div
-          className={`flex size-7 items-center justify-center rounded-lg bg-white/5 text-icon-sm ${iconColor}`}
+          className={`flex size-7 items-center justify-center rounded-lg bg-secondary/15 text-icon-sm ring-1 ring-inset ring-secondary/25 ${iconColor}`}
         >
           {icon}
         </div>
@@ -557,7 +558,7 @@ function NetworkRow({
         {isPending ? (
           <div className="flex items-center gap-1.5">
             <div className="h-3.5 w-12 animate-pulse rounded bg-white/10" />
-            <span className="inline-flex size-3 items-center justify-center rounded-full bg-white/[0.06]">
+            <span className="inline-flex size-3 items-center justify-center rounded-full bg-secondary/15">
               <span className="size-1.5 animate-spin rounded-full border border-primary/30 border-t-primary" />
             </span>
           </div>

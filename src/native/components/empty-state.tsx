@@ -1,9 +1,12 @@
 /**
  * EmptyState — themed empty placeholder (e.g. "No assets yet").
+ *
+ * The glyph sits in a violet icon tile (tint + ring + soft violet glow).
  */
 import React from 'react'
 import { View, type ViewProps } from 'react-native'
 import { useKaleidoTheme } from '../theme-context'
+import { kaleidoShadow } from '../theme'
 import { KText } from './k-text'
 
 export interface EmptyStateProps extends ViewProps {
@@ -24,12 +27,15 @@ export function EmptyState({ title, description, icon, action, style, ...rest }:
             width: 64,
             height: 64,
             borderRadius: 32,
-            backgroundColor: theme.surface.raised,
+            backgroundColor: theme.violetSurface,
+            borderWidth: 1,
+            borderColor: theme.violetBorder,
             alignItems: 'center',
             justifyContent: 'center',
+            ...kaleidoShadow(theme, 'glowViolet'),
           }}
         >
-          {icon(theme.text.muted, 28)}
+          {icon(theme.violetText, 28)}
         </View>
       )}
       <View style={{ alignItems: 'center', gap: 4 }}>

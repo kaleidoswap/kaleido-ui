@@ -33,14 +33,14 @@ export function WithdrawDestinationInput({
 }: WithdrawDestinationInputProps) {
   return (
     <div className="space-y-2">
-      <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+      <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
         Destination
       </label>
       <div className="relative">
         <input
           type="text"
           data-testid="withdraw-destination-input"
-          className="w-full rounded-2xl bg-card px-5 py-4 pr-20 font-mono text-caption text-white shadow-inner transition-all placeholder:text-white/20 focus:outline focus:outline-2 focus:outline-primary/50"
+          className="w-full rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-5 py-4 pr-20 font-mono text-caption text-white shadow-inner transition-all placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
           placeholder="Address, Invoice, or RGB Invoice"
           value={destination}
           onChange={(event) => setDestination(event.target.value)}
@@ -54,7 +54,7 @@ export function WithdrawDestinationInput({
                 setDestination('')
                 handleReset()
               }}
-              className="rounded-lg p-2 text-muted-foreground transition-colors hover:text-white"
+              className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-secondary/10 hover:text-white"
             >
               <Icon name="close" className="text-icon-md" />
             </button>
@@ -63,7 +63,7 @@ export function WithdrawDestinationInput({
             type="button"
             aria-label="Paste"
             onClick={handlePaste}
-            className="rounded-lg bg-white/5 p-2 text-muted-foreground transition-colors hover:text-primary"
+            className="rounded-lg bg-secondary/15 p-2 text-secondary-content shadow-raised ring-1 ring-inset ring-secondary/25 transition-all hover:bg-secondary hover:text-white hover:shadow-button-violet"
           >
             <Icon name="content_paste" className="text-icon-md" />
           </button>
@@ -96,5 +96,6 @@ export function WithdrawDestinationInput({
       )}
     </div>
   )
-}import { Icon } from '../primitives/icon'
+}
+import { Icon } from '../primitives/icon'
 

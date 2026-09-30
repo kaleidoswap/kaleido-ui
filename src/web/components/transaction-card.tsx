@@ -47,7 +47,7 @@ export function TransactionCard({
     pending:   { base: 'bg-warning/10', hover: 'hover:bg-warning/15' },
     failed:    { base: 'bg-danger/10',  hover: 'hover:bg-danger/15' },
     error:     { base: 'bg-danger/10',  hover: 'hover:bg-danger/15' },
-  }[status] ?? { base: 'bg-surface-card', hover: 'hover:bg-surface-elevated' }
+  }[status] ?? { base: 'bg-card', hover: 'hover:bg-accent' }
 
   const iconStyle = {
     success:   'bg-primary/20 text-primary',
@@ -55,7 +55,7 @@ export function TransactionCard({
     pending:   'bg-warning/20 text-warning',
     failed:    'bg-danger/20 text-danger',
     error:     'bg-danger/20 text-danger',
-  }[status] ?? 'bg-accent text-muted-foreground'
+  }[status] ?? 'bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25'
 
   const textColor = {
     success:   'text-primary',
@@ -68,14 +68,14 @@ export function TransactionCard({
   return (
     <div
       className={cn(
-        'rounded-2xl p-4 backdrop-blur-xl flex items-center justify-between transition-all shadow-sm relative overflow-hidden group',
+        'rounded-2xl p-4 bg-gradient-card flex items-center justify-between transition-all duration-200 shadow-card relative overflow-hidden group',
         statusStyle.base,
-        onClick && `cursor-pointer active:scale-[0.98] ${statusStyle.hover}`,
+        onClick && `cursor-pointer hover:shadow-card-hover active:scale-[0.98] ${statusStyle.hover}`,
         className
       )}
       onClick={onClick}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-card opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
       <div className="flex items-center gap-3 relative z-10">
         {/* Status lives on the icon (small badge bottom-right) instead of a
             full-width chip — the row keeps title + date on one line. */}

@@ -15,7 +15,7 @@ const DialogOverlay = React.forwardRef<
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      'fixed inset-0 z-50 bg-background/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+      'fixed inset-0 z-50 bg-background/80 bg-page-radial backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
       className
     )}
     {...props}
@@ -53,7 +53,7 @@ const DialogContent = React.forwardRef<
         // fast fade + 0.98↔1 zoom (150ms ease-out) around the dialog's own
         // center. No slide-in/out utilities may ever be added back here.
         // (BottomSheet owns its own slide-up; it does not use this.)
-        'fixed left-1/2 top-1/2 z-50 grid w-full max-w-sm [translate:-50%_-50%] gap-4 rounded-2xl bg-card p-6 shadow-lg duration-150 ease-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-[0.98] data-[state=closed]:zoom-out-[0.98]',
+        'fixed left-1/2 top-1/2 z-50 grid w-full max-w-sm [translate:-50%_-50%] gap-4 rounded-2xl bg-card bg-gradient-card-hero p-6 shadow-popover duration-150 ease-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-[0.98] data-[state=closed]:zoom-out-[0.98]',
         className
       )}
       {...props}

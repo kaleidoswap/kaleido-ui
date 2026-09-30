@@ -83,9 +83,10 @@ export interface AssetSelectorNetworkOption {
 }
 
 const chipBaseClass =
-  'shrink-0 rounded-full text-mini font-bold uppercase tracking-eyebrow shadow-inner transition-colors'
-const chipActiveClass = 'bg-primary/[0.14] text-primary'
-const chipIdleClass = 'bg-surface-card text-text-dimmed hover:text-white/75'
+  'shrink-0 rounded-full text-mini font-bold uppercase tracking-eyebrow transition-all duration-200'
+const chipActiveClass = 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
+const chipIdleClass =
+  'bg-surface-card text-text-dimmed shadow-raised hover:bg-secondary/10 hover:text-secondary-content'
 
 function AssetSelectorNetworkMark({ network }: { network: AssetSelectorNetworkOption }) {
   return network.iconUrl ? (
@@ -302,14 +303,14 @@ export function AssetSelector({
               className={cn(
                 'flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-caption font-semibold transition-colors',
                 activeNetwork === null
-                  ? 'bg-primary/[0.14] text-primary'
-                  : 'text-white/75 hover:bg-accent hover:text-white',
+                  ? 'bg-secondary/15 text-secondary-content'
+                  : 'text-white/75 hover:bg-secondary/15 hover:text-white',
               )}
             >
               <Icon name="hub" size="xs" className="shrink-0" />
               <span className="min-w-0 flex-1 truncate text-left">All networks</span>
               {activeNetwork === null && (
-                <Icon name="check" size="xs" className="shrink-0 text-primary" />
+                <Icon name="check" size="xs" className="shrink-0 text-secondary-content" />
               )}
             </button>
             {networks.map((network) => {
@@ -325,13 +326,13 @@ export function AssetSelector({
                   className={cn(
                     'flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-caption font-semibold transition-colors',
                     isActive
-                      ? 'bg-primary/[0.14] text-primary'
-                      : 'text-white/75 hover:bg-accent hover:text-white',
+                      ? 'bg-secondary/15 text-secondary-content'
+                      : 'text-white/75 hover:bg-secondary/15 hover:text-white',
                   )}
                 >
                   <AssetSelectorNetworkMark network={network} />
                   <span className="min-w-0 flex-1 truncate text-left">{network.label}</span>
-                  {isActive && <Icon name="check" size="xs" className="shrink-0 text-primary" />}
+                  {isActive && <Icon name="check" size="xs" className="shrink-0 text-secondary-content" />}
                 </button>
               )
             })}
@@ -453,14 +454,14 @@ export function AssetSelector({
           </span>
           <span className="flex shrink-0 flex-col items-end gap-0.5">
             {optionSelected ? (
-              <span className="rounded-full bg-primary/[0.14] px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-primary">
+              <span className="rounded-full bg-primary bg-gradient-primary px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-primary-foreground shadow-button-primary">
                 Current
               </span>
             ) : option.networkTag ? (
               <span
                 className={cn(
                   'rounded-full px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow',
-                  !option.networkTag.color && 'bg-white/[0.08] text-muted-foreground',
+                  !option.networkTag.color && 'bg-secondary/15 text-secondary-content',
                 )}
                 style={
                   option.networkTag.color
@@ -475,7 +476,7 @@ export function AssetSelector({
               </span>
             ) : (
               optionCategoryLabel && (
-                <span className="rounded-full bg-surface-card px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-text-dimmed shadow-inner">
+                <span className="rounded-full bg-secondary/15 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
                   {optionCategoryLabel}
                 </span>
               )
@@ -512,7 +513,9 @@ export function AssetSelector({
           onClick={() => !disabled && setOpen((value) => !value)}
           className={cn(
             'group flex w-full items-center gap-3 rounded-full px-3 py-2 text-left transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50',
-            open ? 'bg-primary/[0.12] shadow-md' : 'bg-black/20 hover:bg-black/35',
+            open
+              ? 'bg-gradient-active ring-1 ring-inset ring-primary/40 shadow-glow-primary-soft'
+              : 'bg-black/20 shadow-raised hover:bg-secondary/10',
           )}
         >
           {selected ? (
@@ -553,13 +556,13 @@ export function AssetSelector({
               onClick={closePanel}
             >
               <div
-                className="flex max-h-[85vh] w-full max-w-[26rem] flex-col overflow-hidden rounded-t-2xl bg-popover/95 shadow-popover backdrop-blur-2xl duration-300 animate-in slide-in-from-bottom-8 sm:max-h-[80vh] sm:rounded-2xl sm:slide-in-from-bottom-0 sm:zoom-in-95"
+                className="flex max-h-[85vh] w-full max-w-[26rem] flex-col overflow-hidden rounded-t-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-popover duration-300 animate-in slide-in-from-bottom-8 sm:max-h-[80vh] sm:rounded-2xl sm:slide-in-from-bottom-0 sm:zoom-in-95"
                 onClick={(event) => event.stopPropagation()}
               >
-                <div className="flex-shrink-0 bg-white/[0.03] px-4 py-3.5">
+                <div className="flex-shrink-0 bg-secondary/5 px-4 py-3.5">
                   <div className="flex items-center justify-between gap-3">
                     <div className="min-w-0">
-                      <p className="text-mini font-bold uppercase tracking-eyebrow-wide text-text-dimmed">
+                      <p className="text-mini font-bold uppercase tracking-eyebrow-wide text-muted-foreground">
                         {label} Asset
                       </p>
                       <p className="mt-1 text-body font-semibold text-white/90">
@@ -568,7 +571,7 @@ export function AssetSelector({
                     </div>
                     {networkFilterButton ||
                       (selected && (
-                        <div className="flex items-center gap-2 rounded-full bg-white/5 px-2.5 py-1">
+                        <div className="flex items-center gap-2 rounded-full bg-secondary/15 px-2.5 py-1 shadow-raised">
                           <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={18} />
                           <span className="text-tiny font-semibold text-white">
                             {selected.ticker}
@@ -591,7 +594,7 @@ export function AssetSelector({
                       value={search}
                       onChange={(event) => setSearch(event.target.value)}
                       placeholder="Search..."
-                      className="h-11 w-full rounded-2xl border border-transparent bg-black/20 pl-10 pr-3 text-caption text-white placeholder:text-white/25 focus:border-primary/25 focus:outline-none"
+                      className="h-11 w-full rounded-2xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 pl-10 pr-3 text-caption text-white shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
                     />
                   </div>
                   {filterControls}
@@ -625,10 +628,10 @@ export function AssetSelector({
                           className={cn(
                             'group flex w-full items-center gap-3 rounded-2xl border px-3 py-3 text-body transition-all duration-200',
                             optionSelected
-                              ? 'border-transparent bg-primary/[0.14]'
+                              ? 'border-transparent bg-gradient-active ring-1 ring-inset ring-primary/40 shadow-glow-primary-soft'
                               : optionDisabled
                                 ? 'cursor-not-allowed border-transparent bg-white/[0.015] opacity-45'
-                                : 'border-transparent bg-transparent hover:bg-accent',
+                                : 'border-transparent bg-transparent hover:bg-secondary/10',
                           )}
                         >
                           {renderAssetOption(option, optionSelected, optionDisabled)}
@@ -656,15 +659,15 @@ export function AssetSelector({
       }}
       disabled={disabled}
       className="space-y-1.5"
-      panelClassName="bg-popover/95 p-0 shadow-popover"
+      panelClassName="bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero p-0 shadow-popover"
       optionClassName="mx-1.5 px-3 py-3"
       onOpenPanelHeightChange={onOpenPanelHeightChange}
       renderTrigger={({ open }) =>
         <span className="block">
-          <span className="mb-1.5 ml-1 block text-mini font-bold uppercase tracking-eyebrow text-white/40">
+          <span className="mb-1.5 ml-1 block text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
             {label}
           </span>
-          <span className="flex w-full items-center justify-between rounded-2xl bg-card/70 px-4 py-3 text-left transition-all duration-200 hover:bg-card/90">
+          <span className="flex w-full items-center justify-between rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-4 py-3 text-left shadow-card transition-all duration-200 hover:shadow-card-hover">
             <span className="flex items-center gap-3">
               {selected ? (
                 <>
@@ -693,10 +696,10 @@ export function AssetSelector({
       }
       renderPanelHeader={() => (
         <>
-          <div className="bg-white/[0.03] px-4 py-3.5">
+          <div className="bg-secondary/5 px-4 py-3.5">
             <div className="flex items-center justify-between gap-3">
               <div className="min-w-0">
-                <p className="text-mini font-bold uppercase tracking-eyebrow-wide text-text-dimmed">
+                <p className="text-mini font-bold uppercase tracking-eyebrow-wide text-muted-foreground">
                   {label} Asset
                 </p>
                 <p className="mt-1 text-body font-semibold text-white/90">
@@ -705,7 +708,7 @@ export function AssetSelector({
               </div>
               {networkFilterButton ||
                 (selected && (
-                  <div className="flex items-center gap-2 rounded-full bg-white/5 px-2.5 py-1">
+                  <div className="flex items-center gap-2 rounded-full bg-secondary/15 px-2.5 py-1 shadow-raised">
                     <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={18} />
                     <span className="text-tiny font-semibold text-white">{selected.ticker}</span>
                   </div>
@@ -726,7 +729,7 @@ export function AssetSelector({
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search..."
-                className="h-11 w-full rounded-2xl border border-transparent bg-black/20 pl-10 pr-3 text-caption text-white placeholder:text-white/25 focus:border-primary/25 focus:outline-none"
+                className="h-11 w-full rounded-2xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 pl-10 pr-3 text-caption text-white shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
               />
             </div>
             {filterControls}

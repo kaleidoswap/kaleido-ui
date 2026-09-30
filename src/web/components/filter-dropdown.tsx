@@ -62,8 +62,9 @@ export function FilterDropdown({
             'flex w-full items-center justify-between rounded-2xl leading-none outline-none transition-all',
             compact ? 'gap-1 px-2 py-1.5' : 'gap-1.5 px-2.5 py-2',
             isFiltered
-              ? 'bg-white/[0.13] shadow-inner'
-              : 'bg-white/[0.09] backdrop-blur-md hover:bg-white/[0.13]',
+              ? 'bg-secondary/20 shadow-glow-violet-soft ring-1 ring-inset ring-secondary/40'
+              : 'bg-white/[0.09] shadow-raised backdrop-blur-md hover:bg-secondary/15',
+            open && !isFiltered && 'bg-secondary/15 ring-1 ring-inset ring-secondary/30',
           )}
         >
           {!hideLabel && (
@@ -71,7 +72,7 @@ export function FilterDropdown({
               className={cn(
                 'shrink-0 font-bold uppercase tracking-eyebrow',
                 compact ? 'text-xxs' : 'text-mini',
-                isFiltered ? 'text-muted-foreground' : 'text-white/45',
+                isFiltered ? 'text-primary' : 'text-white/45',
               )}
             >
               {label}
@@ -108,6 +109,7 @@ export function FilterDropdown({
             name="expand_more"
             className={cn(
               'shrink-0 text-icon-xs text-white/40 transition-transform',
+              (open || isFiltered) && 'text-secondary-content',
               open && 'rotate-180',
             )}
           />

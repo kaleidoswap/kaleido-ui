@@ -59,7 +59,8 @@ export function AssetIcon({ ticker, logoUri, cdnBaseUrl, size = 40, className }:
           ? fallbackUrl || null
           : cdnUrl || fallbackUrl || null
 
-  const bgColor = ASSET_COLORS[normTicker] || 'bg-secondary'
+  // Unknown assets fall back to a brand-violet disc (gradient + white glyph).
+  const bgColor = ASSET_COLORS[normTicker] || 'bg-secondary bg-gradient-violet'
 
   if (iconUrl) {
     return (
@@ -98,8 +99,9 @@ export function AssetIcon({ ticker, logoUri, cdnBaseUrl, size = 40, className }:
   return (
     <div
       className={cn(
-        'rounded-full flex items-center justify-center font-bold text-foreground shadow-inner',
+        'rounded-full flex items-center justify-center font-bold shadow-inner',
         bgColor,
+        ASSET_COLORS[normTicker] ? 'text-foreground' : 'text-secondary-foreground',
         className
       )}
       style={{ width: size, height: size, fontSize: size * 0.4 }}

@@ -20,7 +20,7 @@ export function SettingsSectionCard({
   bodyClassName,
 }: SettingsSectionCardProps) {
   return (
-    <section className={cn('space-y-4 rounded-xl bg-card/70 p-4', className)}>
+    <section className={cn('space-y-4 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-4 shadow-card', className)}>
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <h2 className="text-body font-bold text-foreground">{title}</h2>
@@ -52,7 +52,7 @@ export interface ToneBadgeProps {
 
 const badgeToneClass: Record<NonNullable<ToneBadgeProps['tone']>, string> = {
   primary: 'border-primary/30 bg-primary/10 text-primary',
-  info: 'border-info/30 bg-info/10 text-info',
+  info: 'border-secondary/30 bg-secondary/15 text-secondary-content',
   warning: 'border-warning/30 bg-warning/10 text-warning',
   danger: 'border-danger/30 bg-danger/10 text-danger',
   success: 'border-success/30 bg-success/10 text-success',

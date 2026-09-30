@@ -51,12 +51,12 @@ export function BottomSheet({
     >
       <div
         className={cn(
-          'max-h-[90vh] w-full overflow-y-auto rounded-t-2xl bg-card px-4 pb-6 pt-5 shadow-xl animate-in slide-in-from-bottom-4 duration-200',
+          'max-h-[90vh] w-full overflow-y-auto rounded-t-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero px-4 pb-6 pt-5 shadow-popover ring-1 ring-inset ring-secondary/20 animate-in slide-in-from-bottom-4 duration-200',
           contentClassName,
         )}
       >
         <div className="-mt-1 flex justify-center">
-          <div className="h-1 w-10 rounded-full bg-white/15" />
+          <div className="h-1 w-10 rounded-full bg-secondary/40" />
         </div>
         {(title || icon) && (
           <div className="mt-4 flex items-center gap-2">

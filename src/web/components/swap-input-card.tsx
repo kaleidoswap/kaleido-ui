@@ -128,10 +128,10 @@ export function SwapInputCard({
 
   return (
     <>
-      <div className="relative mb-3 flex flex-col rounded-2xl bg-white/[0.03] shadow-2xl shadow-black/40 backdrop-blur-2xl transition-all duration-300">
+      <div className="relative mb-3 flex flex-col rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-card transition-all duration-300">
         <div className="p-3.5 pb-4">
           <div className="mb-2 flex items-center justify-between gap-2">
-            <p className="text-mini font-bold uppercase tracking-eyebrow text-white/60">You Pay</p>
+            <p className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">You Pay</p>
             {/* Percentage shortcuts now sit above the amount row per spec —
                 they read more naturally as inputs that drive the amount. */}
             {!hidePercentages && (
@@ -145,8 +145,8 @@ export function SwapInputCard({
                   className={cn(
                     'rounded px-1.5 py-0.5 text-xxs font-bold transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-40',
                     selectedPercentage === percent
-                      ? 'border-primary/50 bg-primary/20 text-primary shadow-sm'
-                      : 'bg-white/[0.03] text-muted-foreground hover:text-white',
+                      ? 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
+                      : 'bg-secondary/10 text-secondary-content shadow-raised hover:bg-secondary/20 hover:text-foreground',
                   )}
                 >
                   {percent}%
@@ -183,7 +183,7 @@ export function SwapInputCard({
                 <button
                   type="button"
                   onClick={onToggleFromUnit}
-                  className="mt-0.5 text-right text-caption text-muted-foreground transition-colors hover:text-primary"
+                  className="mt-0.5 text-right text-caption text-muted-foreground transition-colors hover:text-secondary-content"
                   title="Tap to switch unit"
                 >
                   {fromUnitLabel}
@@ -205,24 +205,24 @@ export function SwapInputCard({
           </div>
         </div>
 
-        <div className="relative mx-6 flex h-px items-center justify-center bg-white/[0.08]">
+        <div className="relative mx-6 flex h-px items-center justify-center bg-secondary/25">
           {/* The flip button rotates 180° on hover; previously it carried a
               directional `shadow-lg shadow-black/35` that visibly slid as the
               button rotated. Wrap the button in a non-rotating shadow host
               and rotate only the inner glyph so the shadow stays put. */}
-          <span className="absolute flex h-11 w-11 items-center justify-center rounded-full bg-card shadow-lg shadow-black/35">
+          <span className="absolute flex h-11 w-11 items-center justify-center rounded-full bg-secondary shadow-button-violet transition-shadow duration-300 hover:shadow-glow-violet">
             <button
               type="button"
               onClick={onFlip}
               title="Flip assets"
-              className="flex h-11 w-11 items-center justify-center rounded-full bg-card text-primary transition-transform duration-500 hover:rotate-180 hover:bg-accent active:scale-95"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-secondary bg-gradient-violet text-white ring-4 ring-card transition-transform duration-500 hover:rotate-180 active:scale-95"
             >
               <Icon name="swap_vert" size="md" />
             </button>
           </span>
         </div>
 
-        <div className="rounded-b-2xl bg-gradient-to-br from-white/[0.01] to-primary/[0.04] p-3.5 pt-4 transition-all duration-300">
+        <div className="rounded-b-2xl bg-gradient-to-br from-secondary/[0.06] to-primary/[0.08] p-3.5 pt-4 transition-all duration-300">
           <p className="mb-2 text-mini font-bold uppercase tracking-eyebrow text-primary/70">
             You Receive
           </p>
@@ -240,7 +240,7 @@ export function SwapInputCard({
             />
             <div className="min-w-0 flex-1 text-right">
               {isLoadingQuote ? (
-                <div className="ml-auto h-8 w-28 animate-pulse rounded-lg bg-white/10" />
+                <div className="ml-auto h-8 w-28 animate-pulse rounded-lg bg-secondary/15" />
               ) : receiveAmount ? (
                 <span
                   className="block max-w-full truncate text-headline font-bold tabular-nums text-primary"
@@ -260,7 +260,7 @@ export function SwapInputCard({
       </div>
 
       {(quoteError || quoteRateText || quoteVenueText || quoteFeeText || quoteExpiresText) && (
-        <div className="rounded-xl bg-card/60 p-3">
+        <div className="rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-3 shadow-card">
           {quoteError ? (
             <p className="text-center text-caption text-danger">{quoteError}</p>
           ) : (

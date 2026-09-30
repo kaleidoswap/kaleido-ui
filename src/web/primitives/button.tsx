@@ -8,22 +8,22 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:brightness-115',
-        destructive: 'bg-destructive text-destructive-foreground hover:brightness-115',
-        outline: 'border border-primary/50 bg-transparent text-primary hover:bg-primary/5 hover:border-primary hover:brightness-115',
-        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+        default: 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary hover:brightness-110 hover:shadow-glow-primary disabled:shadow-none',
+        destructive: 'bg-destructive text-destructive-foreground shadow-raised hover:brightness-115',
+        outline: 'border border-primary/50 bg-transparent text-primary hover:bg-primary/5 hover:border-primary hover:shadow-glow-primary-soft hover:brightness-115',
+        secondary: 'bg-secondary bg-gradient-violet text-secondary-foreground shadow-button-violet hover:brightness-110 hover:shadow-glow-violet disabled:shadow-none',
         ghost: 'text-primary hover:bg-primary/10 hover:brightness-115 hover:[&_span]:brightness-115 active:bg-primary/15 active:brightness-100',
         link: 'text-primary underline-offset-4 hover:underline',
-        glow: 'bg-primary text-primary-foreground shadow-md',
-        surface: 'bg-primary/15 text-primary hover:bg-primary/25',
-        cta: 'w-full bg-primary text-primary-foreground font-bold rounded-2xl shadow-md hover:brightness-115 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none',
-        'cta-gradient': 'w-full bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-extrabold rounded-2xl shadow-lg hover:opacity-90 hover:-translate-y-0.5 active:translate-y-0 active:opacity-100 disabled:opacity-40 disabled:shadow-none disabled:cursor-not-allowed disabled:bg-accent disabled:text-muted-foreground',
+        glow: 'bg-primary bg-gradient-primary text-primary-foreground shadow-glow-primary hover:shadow-glow-primary-strong',
+        surface: 'bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/30 hover:bg-secondary/25 hover:ring-secondary/50 hover:shadow-glow-violet-soft',
+        cta: 'w-full bg-primary bg-gradient-primary text-primary-foreground font-bold rounded-2xl shadow-button-primary hover:brightness-110 hover:shadow-glow-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none',
+        'cta-gradient': 'w-full bg-secondary bg-gradient-brand-dark text-white font-extrabold rounded-2xl shadow-glow-brand hover:brightness-115 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-40 disabled:shadow-none disabled:cursor-not-allowed',
         'danger-subtle': 'bg-danger/10 text-danger font-bold rounded-xl hover:bg-danger/15 hover:brightness-115',
         hyperlink: 'group text-muted-foreground underline underline-offset-2 hover:text-white hover:decoration-primary hover:[&_.icon]:text-primary bg-transparent font-normal',
         // Hierarchy variants — primary/secondary/tertiary action emphasis.
         // Pair with size="lg" or size="cta" for full-bleed buttons.
-        h1: 'w-full bg-primary text-primary-foreground font-bold rounded-2xl shadow-md hover:brightness-115 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none',
-        h2: 'w-full bg-primary/15 text-primary font-semibold rounded-xl hover:bg-primary/25',
+        h1: 'w-full bg-primary bg-gradient-primary text-primary-foreground font-bold rounded-2xl shadow-button-primary hover:brightness-110 hover:shadow-glow-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none',
+        h2: 'w-full bg-secondary/15 text-secondary-content font-semibold rounded-xl ring-1 ring-inset ring-secondary/30 hover:bg-secondary/25 hover:ring-secondary/50',
         h3: 'text-primary font-semibold rounded-lg hover:bg-primary/10 active:bg-primary/15',
       },
       size: {

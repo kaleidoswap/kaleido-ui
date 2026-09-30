@@ -224,10 +224,22 @@ ${seriesVars(chartSeries.dark)}
 :root,
 .dark {
 ${appDarkVars}
+  /* Elevation ink — shadows are cast in a near-black violet. */
+  --app-shadow: 7 4 22;
+  --app-shadow-strength: 1;
+  --app-rim-alpha: 0.06;
+  /* Glass edge — the hairline a glass card catches light on. */
+  --app-glass-edge: 220 216 240;
+  --app-glass-edge-alpha: 0.09;
 }
 
 .light {
 ${appLightVars}
+  --app-shadow: 55 20 136;
+  --app-shadow-strength: 0.28;
+  --app-rim-alpha: 0.7;
+  --app-glass-edge: 255 255 255;
+  --app-glass-edge-alpha: 0.7;
 }
 
 /* ── Brand layer — from src/tokens/brand.ts ─────────────────────────────
@@ -286,6 +298,12 @@ ${appStatusSubtle}
 
   /* Brand layer — per-theme foregrounds and glows (see the blocks above) */
 ${brandThemeInline}
+
+  /* Themeable elevation — cast in --app-shadow, scaled per theme. Inline so
+     the utility resolves the ink on the element, not once on :root. */
+  --shadow-card:       ${shadow.card};
+  --shadow-card-hover: ${shadow.cardHover};
+  --shadow-raised:     ${shadow.raised};
 }
 
 @theme {
@@ -400,17 +418,31 @@ ${iconBoxSizeTheme}
   --shadow-glow-primary-soft:    ${shadow.glowPrimarySoft};
   --shadow-glow-primary:         ${shadow.glowPrimary};
   --shadow-glow-primary-strong:  ${shadow.glowPrimaryStrong};
+  --shadow-glow-violet-soft:     ${shadow.glowVioletSoft};
+  --shadow-glow-violet:          ${shadow.glowViolet};
+  --shadow-glow-brand:           ${shadow.glowBrand};
+  --shadow-button-primary:       ${shadow.buttonPrimary};
+  --shadow-button-violet:        ${shadow.buttonViolet};
   --shadow-popover:              ${shadow.popover};
   --shadow-toast:                ${shadow.toast};
 
   /* Drop-shadows (Tailwind v4 emits drop-shadow-* utilities from --drop-shadow-*) */
   --drop-shadow-glow-primary-soft: ${shadow.glowPrimarySoft};
   --drop-shadow-glow-primary:      ${shadow.glowPrimary};
+  --drop-shadow-glow-violet:       ${shadow.glowViolet};
 
   /* Gradients (use as background-image: var(--gradient-page)) */
   --gradient-page:        ${gradient.pageRadial};
   --gradient-card-sheen:  ${gradient.cardSheen};
   --gradient-headline:    ${gradient.headline};
+  --gradient-brand:       ${gradient.brand};
+  --gradient-brand-dark:  ${gradient.brandDark};
+  --gradient-brand-text:  ${gradient.brandText};
+  --gradient-primary:     ${gradient.primary};
+  --gradient-violet:      ${gradient.violet};
+  --gradient-card:        ${gradient.card};
+  --gradient-card-hero:   ${gradient.cardHero};
+  --gradient-active:      ${gradient.active};
 
   /* Transitions */
   --transition-fast:    ${transition.fast};
@@ -510,6 +542,59 @@ ${keyframesCss}
   from { transform: translate3d(0, 18%, 0) scale(1); }
   50% { transform: translate3d(-5%, -5%, 0) scale(1.08); }
   to { transform: translate3d(7%, -26%, 0) scale(0.95); }
+}
+/* Brand gradients — 135° linear, from src/tokens/gradients.ts. They set only
+   background-image, so they layer over a bg-* colour utility. */
+.bg-gradient-brand {
+  background-image: var(--gradient-brand);
+}
+.bg-gradient-brand-dark {
+  background-image: var(--gradient-brand-dark);
+}
+.bg-gradient-primary {
+  background-image: var(--gradient-primary);
+}
+.bg-gradient-violet {
+  background-image: var(--gradient-violet);
+}
+.bg-gradient-card {
+  background-image: var(--gradient-card);
+}
+.bg-gradient-card-hero {
+  background-image: var(--gradient-card-hero);
+}
+.bg-gradient-active {
+  background-image: var(--gradient-active);
+}
+/* State-driven gradients — the gradient classes above take no Tailwind
+   variants, so a Radix trigger that is styled by its own data-state uses
+   these: the gradient appears only while the element is active/selected. */
+.active-gradient-violet:is([data-state='active'], [data-state='on'], [aria-selected='true'], [aria-current='page']) {
+  background-image: var(--gradient-violet);
+}
+.active-gradient-primary:is([data-state='active'], [data-state='on'], [aria-selected='true'], [aria-current='page']) {
+  background-image: var(--gradient-primary);
+}
+.active-gradient-active:is([data-state='active'], [data-state='on'], [aria-selected='true'], [aria-current='page']) {
+  background-image: var(--gradient-active);
+}
+/* A 1px brand-gradient border drawn outside the element's own background.
+   Needs a positioned element; the ring sits in ::before so content and
+   radius are untouched. */
+.border-gradient-brand {
+  position: relative;
+}
+.border-gradient-brand::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: var(--gradient-brand);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
 }
 /* Legacy app scroll region. Prefer the ScrollArea component for visible overlay scrollbars. */
 .app-scrollbar {

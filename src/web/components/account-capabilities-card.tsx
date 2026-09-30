@@ -36,7 +36,7 @@ export function AccountCapabilitiesCard({
         : 'bg-network-arkade/5 text-network-arkade'
 
   return (
-    <div className="rounded-2xl bg-card/70 p-4 shadow-inner transition-all duration-300">
+    <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-4 shadow-card transition-all duration-300">
       <div
         className={cn(
           'group flex items-start justify-between gap-3',
@@ -47,7 +47,7 @@ export function AccountCapabilitiesCard({
         <div className="flex min-w-0 flex-1 items-start gap-3">
           <AccountHeaderIcons accountId={accountId} />
           <div className="min-w-0 flex-1">
-            <h3 className="text-body font-bold text-white group-hover:text-white/90">{title}</h3>
+            <h3 className="text-body font-bold text-foreground transition-colors group-hover:text-secondary-content">{title}</h3>
             <p className="mt-1 text-caption text-muted-foreground">{description}</p>
           </div>
         </div>
@@ -61,7 +61,7 @@ export function AccountCapabilitiesCard({
             {status}
           </span>
           {collapsible && (
-            <div className="mt-1 text-white/30 transition-colors group-hover:text-white/60">
+            <div className="mt-1 text-muted-foreground transition-colors group-hover:text-secondary-content">
               <Icon name={isExpanded ? 'expand_less' : 'expand_more'} size="md" />
             </div>
           )}
@@ -76,7 +76,7 @@ export function AccountCapabilitiesCard({
             </h4>
             {capabilities.map((capability) => (
               <div key={capability} className="flex items-center gap-2 text-caption text-muted-foreground">
-                <span className="inline-block size-1.5 rounded-full bg-current opacity-80" />
+                <span className="inline-block size-1.5 rounded-full bg-secondary-content" />
                 <span>{capability}</span>
               </div>
             ))}

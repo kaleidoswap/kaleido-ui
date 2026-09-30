@@ -36,7 +36,7 @@ export function SwapBadge({ from, to, size = 'md', className }: SwapBadgeProps) 
     >
       <NetworkBadge network={from} size={size === 'sm' ? 'sm' : 'md'} />
       <svg
-        className={cn(arrowSize, 'shrink-0 text-muted-foreground')}
+        className={cn(arrowSize, 'shrink-0 text-secondary-content')}
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"

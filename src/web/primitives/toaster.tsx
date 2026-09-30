@@ -86,7 +86,7 @@ function ToastWithProgress({ id, title, description, action, duration = 4000, va
             onClick={copyText}
             aria-label={copyLabel}
             title={copyLabel}
-            className="rounded-md p-1 text-foreground/60 hover:text-foreground hover:bg-white/10 transition-colors"
+            className="rounded-md p-1 text-foreground/60 hover:text-secondary-content hover:bg-secondary/15 transition-colors"
           >
             <Icon name={copied ? 'check' : copyFailed ? 'error' : 'content_copy'} size="sm" />
           </button>
@@ -101,7 +101,7 @@ function ToastWithProgress({ id, title, description, action, duration = 4000, va
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10 overflow-hidden">
         <div
           className={`h-full transition-all ease-linear ${
-            variant === 'destructive' ? 'bg-danger' : 'bg-primary'
+            variant === 'destructive' ? 'bg-danger' : 'bg-primary bg-gradient-brand'
           }`}
           style={{ width: `${progress}%` }}
         />

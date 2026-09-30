@@ -38,14 +38,14 @@ const DrawerOpenContext = React.createContext<(() => void) | undefined>(undefine
 export const useDrawerCollapsed = () => React.useContext(DrawerContext).collapsed
 
 // The panel itself: surface-base, the rule on its right edge, the heavy shadow.
-const panel = 'flex h-full flex-col border-r border-divider/30 bg-surface-base text-foreground shadow-2xl shadow-black/30'
+const panel = 'flex h-full flex-col border-r border-divider/30 bg-surface-base bg-gradient-card text-foreground shadow-popover'
 
 // The sidebar's collapse button, which is also the mobile drawer's close.
 const edgeButton =
-  'shrink-0 rounded-lg p-3 text-content-secondary ring-1 ring-divider/10 transition-all duration-300 hover:scale-110 hover:bg-surface-overlay/50 hover:text-primary hover:ring-primary/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95 motion-reduce:transition-none motion-reduce:hover:scale-100'
+  'shrink-0 rounded-lg p-3 text-content-secondary ring-1 ring-divider/10 transition-all duration-300 hover:scale-110 hover:bg-secondary/15 hover:text-secondary-content hover:ring-secondary/40 hover:shadow-glow-violet-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95 motion-reduce:transition-none motion-reduce:hover:scale-100'
 
 // The group label: the library's eyebrow, in the desktop sidebar's colour.
-const sectionLabel = cn(eyebrow, 'text-content-tertiary')
+const sectionLabel = cn(eyebrow, 'text-muted-foreground')
 
 // ── Desktop ────────────────────────────────────────────────────────────────
 
@@ -268,6 +268,16 @@ export interface DrawerNavItemProps extends React.AnchorHTMLAttributes<HTMLAncho
   asChild?: boolean
 }
 
+// The current destination: a violet wash, the violet rule on its left edge,
+// the label in white and the icon in the brand green -- the one "you are here"
+// cue of the list. The icon is the row's aria-hidden span.
+const activeIcon = '[&>span[aria-hidden=true]]:text-status-success'
+const activeRow = cn(
+  'border-l-2 border-primary bg-primary/10 bg-gradient-active font-semibold text-foreground ring-1 ring-inset ring-primary/40 shadow-glow-primary-soft',
+  activeIcon
+)
+const idleRow = 'text-content-secondary hover:bg-secondary/10 hover:text-foreground hover:shadow-raised'
+
 // Inside a `DrawerNavGroup`: its items are the submenu's rows.
 const DrawerGroupContext = React.createContext(false)
 
@@ -295,8 +305,8 @@ const DrawerNavItem = React.forwardRef<HTMLAnchorElement, DrawerNavItemProps>(
         className: cn(
           'flex min-w-0 items-center gap-3 rounded-lg px-4 py-2.5 text-caption transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none',
           active
-            ? 'border-l-2 border-status-success/50 bg-status-success/10 font-semibold text-status-success'
-            : 'text-content-secondary hover:translate-x-1 hover:bg-surface-overlay/80 hover:text-foreground motion-reduce:hover:translate-x-0',
+            ? cn('border-l-2 border-primary bg-primary/10 bg-gradient-active font-semibold text-primary', activeIcon)
+            : 'text-content-secondary hover:translate-x-1 hover:bg-secondary/10 hover:text-foreground motion-reduce:hover:translate-x-0',
           className
         ),
         onClick: (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -333,8 +343,8 @@ const DrawerNavItem = React.forwardRef<HTMLAnchorElement, DrawerNavItemProps>(
         'group flex min-w-0 items-center rounded-xl px-4 py-3 transition-all duration-300 hover:scale-[1.02] focus:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95 motion-reduce:transition-none motion-reduce:hover:scale-100',
         collapsed ? 'justify-center' : 'gap-4',
         active
-          ? 'border-l-2 border-status-success/60 bg-status-success/10 font-semibold text-status-success shadow-lg shadow-status-success/5'
-          : 'text-content-secondary hover:bg-surface-overlay/80 hover:text-foreground hover:shadow-md',
+          ? activeRow
+          : idleRow,
         className
       ),
       // In the mobile drawer, choosing a destination is the end of the errand
@@ -416,8 +426,8 @@ const DrawerNavGroup = ({
     'group flex w-full min-w-0 items-center rounded-xl px-4 py-3 text-left transition-all duration-300 hover:scale-[1.02] focus:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95 motion-reduce:transition-none motion-reduce:hover:scale-100',
     collapsed ? 'justify-center' : 'gap-4',
     active
-      ? 'border-l-2 border-status-success/60 bg-status-success/10 font-semibold text-status-success shadow-lg shadow-status-success/5'
-      : 'text-content-secondary hover:bg-surface-overlay/80 hover:text-foreground hover:shadow-md'
+      ? activeRow
+      : idleRow
   )
   const iconNode = icon && (
     <span

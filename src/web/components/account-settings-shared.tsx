@@ -55,7 +55,7 @@ export function getAccountNetworkUi(network: AccountSettingsNetwork) {
 export function AccountHeaderIcons({ accountId }: { accountId: AccountSettingsProtocol }) {
   if (accountId === 'RGB') {
     return (
-      <span className="flex size-10 items-center justify-center rounded-full bg-primary/15 shadow-inner">
+      <span className="flex size-10 items-center justify-center rounded-full bg-primary/15 shadow-raised">
         <RgbNetworkIcon className="size-5" />
       </span>
     )
@@ -63,7 +63,7 @@ export function AccountHeaderIcons({ accountId }: { accountId: AccountSettingsPr
 
   if (accountId === 'SPARK') {
     return (
-      <span className="flex size-10 items-center justify-center rounded-full bg-info/10 shadow-inner">
+      <span className="flex size-10 items-center justify-center rounded-full bg-info/10 shadow-raised">
         <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" alt="Spark" className="size-5 object-contain" />
       </span>
     )
@@ -71,14 +71,14 @@ export function AccountHeaderIcons({ accountId }: { accountId: AccountSettingsPr
 
   if (accountId === 'NOSTR') {
     return (
-      <span className="flex size-10 items-center justify-center rounded-full bg-network-arkade/10 shadow-inner">
+      <span className="flex size-10 items-center justify-center rounded-full bg-network-arkade/10 shadow-raised">
         <NostrNetworkIcon className="size-5" />
       </span>
     )
   }
 
   return (
-    <span className="flex size-10 items-center justify-center rounded-full bg-network-arkade/10 shadow-inner">
+    <span className="flex size-10 items-center justify-center rounded-full bg-network-arkade/10 shadow-raised">
       <img src="/icons/arkade/arkade-icon.svg" alt="Arkade" className="size-5 rounded-sm object-contain" />
     </span>
   )
@@ -99,7 +99,7 @@ export function getAccountStatusUi(status: 'ready' | 'offline' | 'optional' | st
     default:
       return {
         label: 'Optional',
-        className: 'bg-white/[0.05] text-white/55',
+        className: 'bg-secondary/15 text-secondary-content',
       }
   }
 }
@@ -122,7 +122,7 @@ export function AccountNetworkSelector({
       role="radiogroup"
       aria-label="Network"
       className={cn(
-        'grid auto-cols-fr grid-flow-col gap-1 rounded-2xl bg-black/30 p-1 shadow-inner',
+        'grid auto-cols-fr grid-flow-col gap-1 rounded-2xl bg-muted p-1 shadow-inner',
         disabled && 'opacity-60'
       )}
     >
@@ -140,8 +140,8 @@ export function AccountNetworkSelector({
             className={cn(
               'rounded-xl px-3 py-2.5 text-mini font-bold uppercase tracking-eyebrow transition-all',
               selected
-                ? `${ui.badgeClassName} shadow-inner`
-                : 'text-white/55 hover:bg-white/[0.04] hover:text-white'
+                ? `${ui.badgeClassName} shadow-raised`
+                : 'text-muted-foreground hover:bg-secondary/10 hover:text-secondary-content'
             )}
           >
             {ui.label}
@@ -245,9 +245,9 @@ export function AccountInfoGrid({ items }: { items: Array<{ label: string; value
   return (
     <div className="grid gap-3 sm:grid-cols-2">
       {items.map((item) => (
-        <div key={item.label} className="rounded-xl bg-black/20 p-3 text-caption">
+        <div key={item.label} className="rounded-xl bg-muted/40 p-3 text-caption">
           <p className="text-muted-foreground">{item.label}</p>
-          <div className="mt-1 break-all text-white/90">{item.value}</div>
+          <div className="mt-1 break-all text-foreground/90">{item.value}</div>
         </div>
       ))}
     </div>
@@ -267,7 +267,7 @@ export function AccountNotice({
         'rounded-xl px-3 py-3 text-caption',
         tone === 'warning'
           ? 'bg-warning/10 text-warning'
-          : 'bg-black/20 text-white/80'
+          : 'bg-secondary/10 text-foreground/80 ring-1 ring-inset ring-secondary/20'
       )}
     >
       {children}
@@ -359,12 +359,12 @@ export function InlineAction({
       type="button"
       onClick={onClick}
       className={cn(
-        'flex w-full items-center justify-between rounded-xl px-3 py-3 text-left transition-colors',
+        'flex w-full items-center justify-between rounded-xl px-3 py-3 text-left shadow-raised transition-all',
         className
       )}
     >
       <div>
-        <p className="text-body font-semibold text-white">{title}</p>
+        <p className="text-body font-semibold text-foreground">{title}</p>
         <p className="mt-1 text-caption text-muted-foreground">{description}</p>
       </div>
       <Icon name="chevron_right" className="text-icon-lg" />
@@ -384,14 +384,14 @@ export function TransferRouteCard({
   feeHint: string
 }) {
   return (
-    <div className="rounded-2xl bg-card/60 p-4 shadow-inner">
+    <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-4 shadow-card">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-body font-bold text-white">{label}</p>
+          <p className="text-body font-bold text-foreground">{label}</p>
           <p className="mt-1 text-caption text-muted-foreground">{summary}</p>
         </div>
         <div className="text-right">
-          <p className="text-mini font-bold uppercase tracking-eyebrow text-white/60">{eta}</p>
+          <p className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">{eta}</p>
           <p className="mt-1 text-tiny text-primary">{feeHint}</p>
         </div>
       </div>
@@ -447,8 +447,8 @@ export function AccountSettingsRow({
       type="button"
       onClick={onClick}
       className={cn(
-        'w-full rounded-2xl p-4 text-left shadow-inner transition-colors hover:brightness-110',
-        accent ? ACCOUNT_ACCENT_BG[accountId] : 'bg-white/[0.03] hover:bg-white/[0.05]'
+        'group w-full rounded-2xl p-4 text-left shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover',
+        accent ? ACCOUNT_ACCENT_BG[accountId] : 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card'
       )}
     >
       <div className="flex items-start gap-3">
@@ -457,7 +457,7 @@ export function AccountSettingsRow({
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <p className="text-body font-bold text-white">{title}</p>
+                <p className="text-body font-bold text-foreground">{title}</p>
                 {beta && (
                   <span className="rounded-full bg-warning/15 px-1.5 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-warning">
                     Beta
@@ -466,7 +466,7 @@ export function AccountSettingsRow({
               </div>
               <p className="mt-1 text-caption text-muted-foreground">{description}</p>
             </div>
-            <Icon name="chevron_right" size="sm" className="text-white/40" />
+            <Icon name="chevron_right" size="sm" className="text-muted-foreground transition-colors group-hover:text-secondary-content" />
           </div>
           <div className="mt-3">
             <AccountStatusPills

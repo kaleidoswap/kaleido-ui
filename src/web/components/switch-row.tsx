@@ -25,7 +25,7 @@ export function SwitchRow({
   className,
 }: SwitchRowProps) {
   return (
-    <div className={cn('flex items-start justify-between gap-3 rounded-xl bg-muted/40 p-3', className)}>
+    <div className={cn('flex items-start justify-between gap-3 rounded-xl bg-muted/40 p-3 shadow-raised transition-colors hover:bg-secondary/10', className)}>
       <div className="min-w-0">
         <p className="text-body font-medium text-foreground">{label}</p>
         {description && (

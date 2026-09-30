@@ -65,7 +65,7 @@ export function AccountStatusDetails<TId extends string = string>({
           <div
             data-testid={`account-status-protocol-logo-${account.id}`}
             className={cn(
-              'flex size-16 shrink-0 items-center justify-center rounded-2xl',
+              'flex size-16 shrink-0 items-center justify-center rounded-2xl shadow-raised',
               account.accentBg,
             )}
           >
@@ -78,10 +78,10 @@ export function AccountStatusDetails<TId extends string = string>({
               </span>
               <span className={cn('size-2 rounded-full', account.dotTone)} />
             </div>
-            <DialogTitle className="mt-1 text-title font-bold text-white">
+            <DialogTitle className="mt-1 text-title font-bold text-foreground">
               {account.title}
             </DialogTitle>
-            <DialogDescription className="mt-2 text-caption leading-relaxed text-white/60">
+            <DialogDescription className="mt-2 text-caption leading-relaxed text-muted-foreground">
               {account.description}
             </DialogDescription>
           </div>
@@ -89,15 +89,15 @@ export function AccountStatusDetails<TId extends string = string>({
       </DialogHeader>
 
       <div className="mt-5 grid grid-cols-2 gap-3">
-        <div className={cn('rounded-2xl px-4 py-3', account.networkBannerClassName)}>
+        <div className={cn('rounded-2xl px-4 py-3 shadow-raised', account.networkBannerClassName)}>
           <div className="text-mini font-bold uppercase tracking-eyebrow">Network</div>
           <div className="mt-1 break-words text-body font-semibold">{account.networkLabel}</div>
         </div>
-        <div className="rounded-2xl bg-muted/40 px-4 py-3">
-          <div className="text-mini font-bold uppercase tracking-eyebrow text-white/45">
+        <div className="rounded-2xl bg-muted/40 px-4 py-3 shadow-raised">
+          <div className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
             Status
           </div>
-          <div className="mt-1 break-words text-body font-semibold text-white/90">
+          <div className="mt-1 break-words text-body font-semibold text-foreground/90">
             {account.state}
           </div>
         </div>
@@ -106,11 +106,11 @@ export function AccountStatusDetails<TId extends string = string>({
       <p className="mt-5 text-caption leading-relaxed text-muted-foreground">{account.detail}</p>
 
       {account.details && account.details.length > 0 && (
-        <dl className="mt-5 space-y-2 rounded-2xl bg-muted/25 px-4 py-3">
+        <dl className="mt-5 space-y-2 rounded-2xl bg-muted/40 px-4 py-3 shadow-inner">
           {account.details.map((item) => (
             <div key={item.label} className="grid grid-cols-[max-content_minmax(0,1fr)] gap-3 text-caption">
               <dt className="text-muted-foreground">{item.label}</dt>
-              <dd className="min-w-0 break-words text-right font-medium text-white/90">
+              <dd className="min-w-0 break-words text-right font-medium text-foreground/90">
                 {item.value}
               </dd>
             </div>
@@ -119,16 +119,16 @@ export function AccountStatusDetails<TId extends string = string>({
       )}
 
       <div className="mt-5">
-        <div className="text-mini font-bold uppercase tracking-eyebrow text-white/45">
+        <div className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
           Capabilities
         </div>
         <div className="mt-3 flex flex-wrap gap-2">
           {account.capabilityBullets.map((capability) => (
             <span
               key={capability}
-              className="inline-flex items-center gap-1.5 rounded-full bg-white/8 px-2.5 py-1 text-xxs font-medium text-white/70"
+              className="inline-flex items-center gap-1.5 rounded-full bg-secondary/15 px-2.5 py-1 text-xxs font-medium text-secondary-content ring-1 ring-inset ring-secondary/25"
             >
-              <span className="size-1.5 rounded-full bg-primary/70" />
+              <span className="size-1.5 rounded-full bg-primary" />
               {capability}
             </span>
           ))}
@@ -140,7 +140,7 @@ export function AccountStatusDetails<TId extends string = string>({
           type="button"
           data-testid={`account-status-edit-${account.id}`}
           onClick={() => onEdit(account.id)}
-          className="mt-6 w-full bg-primary text-primary-foreground hover:bg-primary/90"
+          className="mt-6 w-full bg-gradient-primary bg-primary text-primary-foreground shadow-button-primary hover:bg-primary/90"
         >
           <Icon name="settings" size="sm" />
           Edit Settings
@@ -179,31 +179,31 @@ export function AccountStatusTabs<TId extends string = string>({
 
               <div
                 className={cn(
-                  'pointer-events-none absolute bottom-[calc(100%+12px)] right-0 z-20 hidden w-64 rounded-2xl bg-popover/95 p-3.5 opacity-0 shadow-2xl backdrop-blur-xl transition-all duration-150 group-hover:opacity-100 md:block'
+                  'pointer-events-none absolute bottom-[calc(100%+12px)] right-0 z-20 hidden w-64 rounded-2xl bg-popover/95 bg-gradient-card p-3.5 opacity-0 shadow-popover backdrop-blur-xl transition-all duration-150 group-hover:opacity-100 md:block'
                 )}
               >
                 <div className="flex items-start gap-3">
                   <span className="shrink-0">{account.icon}</span>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <div className="text-mini font-bold uppercase tracking-eyebrow text-white/55">
+                      <div className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
                         {account.label}
                       </div>
                       <span className={cn('size-2 rounded-full', account.dotTone)} />
                     </div>
-                    <div className="mt-1 text-body font-semibold text-white/90">{account.title}</div>
-                    <div className="mt-1 text-caption font-medium text-white/45">{account.state}</div>
+                    <div className="mt-1 text-body font-semibold text-foreground/90">{account.title}</div>
+                    <div className="mt-1 text-caption font-medium text-muted-foreground">{account.state}</div>
                   </div>
                 </div>
-                <p className="mt-3 text-caption leading-relaxed text-white/60">{account.detail}</p>
-                <p className="mt-2 text-caption leading-relaxed text-white/45">
+                <p className="mt-3 text-caption leading-relaxed text-foreground/70">{account.detail}</p>
+                <p className="mt-2 text-caption leading-relaxed text-muted-foreground">
                   {account.description}
                 </p>
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   {account.capabilityBullets.map((capability) => (
                     <span
                       key={capability}
-                      className="rounded-full bg-white/8 px-2 py-1 text-xxs font-medium text-white/60"
+                      className="rounded-full bg-secondary/15 px-2 py-1 text-xxs font-medium text-secondary-content"
                     >
                       {capability}
                     </span>
@@ -220,7 +220,7 @@ export function AccountStatusTabs<TId extends string = string>({
         onOpenChange={(open) => !open && setSelectedAccountId(null)}
       >
         {selectedAccount && (
-          <DialogContent className="bg-popover p-0 text-white">
+          <DialogContent className="bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero p-0 text-foreground shadow-popover">
             <AccountStatusDetails
               account={selectedAccount}
               onEdit={

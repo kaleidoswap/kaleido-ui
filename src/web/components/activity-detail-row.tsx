@@ -34,7 +34,7 @@ export function ActivityDetailRow({
       {/* Dotted leader tying each label to its value across the row gap. */}
       <span aria-hidden className="min-w-4 flex-1 self-center border-b border-dotted border-white/15" />
       <div className="flex max-w-[65%] items-center gap-2">
-        <span className="truncate font-mono text-caption font-medium text-white/90">{value}</span>
+        <span className="truncate font-mono text-caption font-medium text-foreground/90">{value}</span>
         {onCopy && (
           <button
             type="button"
@@ -42,7 +42,7 @@ export function ActivityDetailRow({
               event.stopPropagation()
               onCopy()
             }}
-            className="-my-1 rounded-md p-1 text-white/30 transition-colors hover:bg-accent hover:text-primary active:scale-95"
+            className="-my-1 rounded-md p-1 text-muted-foreground transition-colors hover:bg-secondary/15 hover:text-secondary-content active:scale-95"
             title={fullValue ? `Copy: ${fullValue}` : 'Copy'}
           >
             {/* Inline SVG rather than a Material Symbols ligature -- see

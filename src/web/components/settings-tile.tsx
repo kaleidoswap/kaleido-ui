@@ -14,11 +14,11 @@ export function SettingsTile({ icon, title, description, value, onClick }: Setti
     <button
       type="button"
       onClick={onClick}
-      className="w-full rounded-2xl bg-card/70 p-5 text-left transition-all duration-200 hover:bg-accent active:scale-[0.98]"
+      className="group w-full rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-5 text-left shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover active:scale-[0.98]"
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 flex-1 items-center gap-3">
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-muted">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25 transition-all group-hover:bg-secondary/25 group-hover:shadow-glow-violet-soft">
             {icon}
           </div>
           <div className="flex min-w-0 flex-1 flex-col">
@@ -32,7 +32,7 @@ export function SettingsTile({ icon, title, description, value, onClick }: Setti
         </div>
         <div className="flex shrink-0 items-center gap-2">
           {value && <span className="font-mono text-caption text-muted-foreground">{value}</span>}
-          <AppIcon name="chevronRight" className="size-4 text-muted-foreground" />
+          <AppIcon name="chevronRight" className="size-4 text-muted-foreground transition-colors group-hover:text-secondary-content" />
         </div>
       </div>
     </button>
@@ -41,8 +41,8 @@ export function SettingsTile({ icon, title, description, value, onClick }: Setti
 
 export function SettingsStatusPanel({ label, value }: { label: string; value: ReactNode }) {
   return (
-    <div className="rounded-xl bg-white/[0.03] px-4 py-3 text-caption text-muted-foreground">
-      {label}: <span className="font-semibold text-white">{value}</span>
+    <div className="rounded-xl bg-secondary/10 px-4 py-3 text-caption text-muted-foreground ring-1 ring-inset ring-secondary/20">
+      {label}: <span className="font-semibold text-foreground">{value}</span>
     </div>
   )
 }
@@ -60,7 +60,7 @@ export function SettingsActionButton({
     <button
       type="button"
       onClick={onClick}
-      className="flex w-full items-center justify-center gap-2 rounded-xl bg-white/5 py-3 font-bold text-muted-foreground transition-all hover:bg-accent"
+      className="flex w-full items-center justify-center gap-2 rounded-xl bg-secondary/15 py-3 font-bold text-secondary-content shadow-raised transition-all hover:bg-secondary/25 hover:shadow-glow-violet-soft"
     >
       {icon}
       {children}
