@@ -103,6 +103,9 @@ import {
   NETWORK_CONFIG,
   SwapStepList,
   SummaryRows,
+  KaleidoswapLogo,
+  KaleidoswapMark,
+  HaloBackdrop,
 } from '@kaleido-ui/index'
 import type { StatusType, NetworkType, IconName } from '@kaleido-ui/index'
 
@@ -170,6 +173,7 @@ const NAV_CATEGORIES: { label: string; icon: IconName; pages: NavPage[] }[] = [
     label: 'Foundations',
     icon: 'layers',
     pages: [
+      { id: 'brand', label: 'Brand', icon: 'bolt' },
       { id: 'buttons', label: 'Buttons', icon: 'touch_app' },
       { id: 'icons', label: 'Icons', icon: 'palette' },
       { id: 'inputs', label: 'Inputs', icon: 'edit' },
@@ -448,6 +452,45 @@ export function App() {
         {/* The current page */}
         <CurrentPage.Provider value={page}>
         <main className="mx-auto w-full max-w-5xl min-w-0 flex-1 px-6 py-8">
+
+          {/* ── Brand ───────────────────────────────────────────────────── */}
+          <Section id="brand" title="Brand" description="Logo, per-theme foregrounds, brand gradient, glows and the halo backdrop.">
+            <Row label="KaleidoswapLogo / KaleidoswapMark">
+              <KaleidoswapLogo className="h-8 w-auto text-foreground" />
+              <KaleidoswapLogo orientation="vertical" className="h-16 w-auto text-foreground" />
+              <KaleidoswapMark className="size-8" />
+              <KaleidoswapMark className="size-14" />
+            </Row>
+            <Row label="Per-theme foregrounds (text-*-fg)">
+              <span className="text-brand font-bold">text-brand</span>
+              <span className="text-accent-send-fg font-bold">text-accent-send-fg</span>
+              <span className="text-accent-recv-fg font-bold">text-accent-recv-fg</span>
+              <span className="text-success-fg">success</span>
+              <span className="text-warning-fg">warning</span>
+              <span className="text-danger-fg">danger</span>
+              <span className="text-info-fg">info</span>
+              <span className="text-network-bitcoin-fg">bitcoin</span>
+              <span className="text-network-lightning-fg">lightning</span>
+              <span className="text-network-liquid-fg">liquid</span>
+              <span className="text-network-arkade-fg">arkade</span>
+              <span className="text-network-spark-fg">spark</span>
+              <span className="text-network-rgb-fg">rgb</span>
+            </Row>
+            <Row label="text-gradient-brand">
+              <span className="text-gradient-brand text-display font-bold">Swap across layers</span>
+            </Row>
+            <Row label="shadow-glow-send / shadow-glow-recv / shadow-glow-card">
+              <div className="rounded-2xl bg-card px-5 py-4 shadow-glow-send">Send</div>
+              <div className="rounded-2xl bg-card px-5 py-4 shadow-glow-recv">Receive</div>
+              <div className="rounded-2xl bg-card px-5 py-4 shadow-glow-card">Card</div>
+            </Row>
+            <Row label="bg-page-brand + HaloBackdrop">
+              <div className="bg-page-brand h-40 w-64 rounded-2xl bg-background" />
+              <div className="relative isolate h-40 w-64 overflow-hidden rounded-2xl bg-background">
+                <HaloBackdrop />
+              </div>
+            </Row>
+          </Section>
 
           {/* ── Buttons ─────────────────────────────────────────────────── */}
           <Section id="buttons" title="Buttons" description="12 variants, 9 sizes.">

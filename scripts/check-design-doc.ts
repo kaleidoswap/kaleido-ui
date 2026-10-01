@@ -23,7 +23,9 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import {
+  brandMark,
   colors,
+  themedForeground,
   fontWeight,
   letterSpacing,
   lightSemanticColors,
@@ -114,6 +116,11 @@ expect('version', packageVersion, front.get('version'))
 // ── Colours ────────────────────────────────────────────────────────────────
 expect('brand.primary', colors.primary, front.get('brand.primary'))
 expect('brand.primary-light', lightSemanticColors.primary, front.get('brand.primary-light'))
+expect('brand.foreground', themedForeground.dark.brand, front.get('brand.foreground'))
+expect('brand.foreground-light', themedForeground.light.brand, front.get('brand.foreground-light'))
+expect('brand.mark-violet', brandMark.violet, front.get('brand.mark-violet'))
+expect('brand.mark-green', brandMark.green, front.get('brand.mark-green'))
+expect('brand.mark-mint', brandMark.mint, front.get('brand.mark-mint'))
 expect('surface.bg', colors.background, front.get('surface.bg'))
 expect('surface.raised', colors.muted, front.get('surface.raised'))
 expect('surface.card', colors.card, front.get('surface.card'))

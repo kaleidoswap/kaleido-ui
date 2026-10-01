@@ -9,6 +9,11 @@ colors:
   brand.primary: "#15E99A"          # dark theme
   brand.primary-light: "#17B581"    # light theme
   brand.primary-contrast: "#051B10"
+  brand.foreground: "#15E99A"       # text-brand, dark theme
+  brand.foreground-light: "#086E46" # text-brand, light theme (AA on the light ramp)
+  brand.mark-violet: "#6F32FF"      # logo paint only
+  brand.mark-green: "#17B581"       # logo paint only
+  brand.mark-mint: "#15E99A"        # logo paint only
   surface.bg: "#12131C"             # surface-base
   surface.raised: "#181924"         # muted
   surface.card: "#242638"           # surface-overlay, card + popover
@@ -140,6 +145,49 @@ The palette is organised into six groups. Each group has a specific job; mixing 
 > as `tx.receive`, as `chart1`, and inside `border.primary-ghost`
 > (`rgba(43, 238, 121, 0.22)`) and the scrollbar hover. But the CTA/active/success
 > green is `#15E99A`. Do not "correct" one to the other; they are different jobs.
+
+### Brand layer: readable foregrounds, logo, depth
+
+The tokens above are dark-theme values. As **text** on the light ramp several
+of them fail WCAG AA: lightning `#F6C343` is 1.6:1 on white, and the light
+primary `#17B581` is 2.1 to 2.6:1. So `kaleido-ui/css` also ships a per-theme
+**foreground** for every hue that carries text (source: `src/tokens/brand.ts`,
+measured by `tests/brand-tokens.test.tsx`). Each clears 4.5:1 on every surface
+of its theme, and the status and network ones also on a 14% tint of their own
+hue (a status pill):
+
+- `text-brand` (`#086E46` light / `#15E99A` dark), `text-accent-send-fg`
+  (`#6428F0` / `#AD94FB`), `text-accent-recv-fg`.
+- `text-success-fg`, `text-warning-fg`, `text-danger-fg`, `text-info-fg`.
+- `text-network-{bitcoin,lightning,liquid,arkade,spark,rgb,taproot}-fg`.
+
+Light values are Tailwind -800 shades (-700 measured only 3.7 to 4.3:1); dark
+danger and info are lifted to `#FF9999` / `#8BBDFF`. **Rule:** use the `-fg`
+utility for text and glyphs, the plain token (`bg-network-lightning/14`,
+`border-warning/22`) for fills and borders. Light is the `:root` default,
+`.dark` switches, exactly like `--primary`.
+
+Never use the mint `#15E99A` as a foreground on a light surface; it is 1.6:1.
+
+**Logo.** `KaleidoswapLogo` (horizontal or vertical lockup) and
+`KaleidoswapMark` (the pictogram) render the mark in its three fixed fills
+(`brand.mark-*`) and the wordmark in `currentColor`. The same artwork ships as
+files under `kaleido-ui/brand/`. Do not redraw the mark: the older
+14-triangle grid version is retired.
+
+**Depth (opt-in utilities).** `bg-page-brand` is the coloured page wash (mint
+from the top, violet lower left, a little sky; soft tints in light).
+`text-gradient-brand` is the brand gradient for display-size headings only.
+`shadow-glow-send` / `shadow-glow-recv` / `shadow-glow-card` are the accent
+glows for the send and receive panels and the swap hero card. `HaloBackdrop`
+draws the slowly drifting mint and violet blobs behind a screen (motion stops
+under reduced motion).
+
+**Brand theme stylesheet.** `@import "kaleido-ui/css/brand";` after
+`kaleido-ui/css` makes the light primary the AA green `#086E46`, lifts dark
+`danger` / `info` to their `-fg` values and points `bg-page-radial` at the
+coloured wash. It changes existing tokens, which is why it is a separate,
+opt-in import.
 
 ### Surface ramp
 
@@ -273,6 +321,12 @@ Two shadows exist in the entire system:
 - **Primary glow** (`shadow-[0_0_30px_rgba(43,238,121,0.5)]`): **only** on the hover state of a primary button or ActionTile. It is how the brand announces itself. No other component may glow.
 
 Do not add new drop shadows, do not add blur-behind surfaces, do not fake depth with gradients.
+
+The one sanctioned exception is the **brand depth** set from the Brand layer
+above: `shadow-glow-send`, `shadow-glow-recv` and `shadow-glow-card` on the
+swap hero's send / receive panels and card, plus `bg-page-brand` or
+`HaloBackdrop` behind a full screen. They are named tokens, per theme, and
+nothing else may invent a glow.
 
 ## Shapes
 

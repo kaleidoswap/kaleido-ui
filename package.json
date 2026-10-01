@@ -33,12 +33,15 @@
       "import": "./dist/tailwind/index.js",
       "require": "./dist/tailwind/index.cjs"
     },
-    "./css": "./dist/css/kaleido-ui.css"
+    "./css": "./dist/css/kaleido-ui.css",
+    "./css/brand": "./dist/css/brand.css",
+    "./brand/*": "./brand/*"
   },
   "files": [
     "dist",
     "native",
-    "tokens"
+    "tokens",
+    "brand"
   ],
   "scripts": {
     "generate:css": "node node_modules/tsx/dist/cli.mjs scripts/generate-css.ts",
@@ -73,7 +76,7 @@
     "react-dom": "^18.0.0 || ^19.0.0",
     "react-native": ">=0.73.0",
     "react-native-svg": ">=13.0.0",
-    "tailwind-merge": "^2.0.0"
+    "tailwind-merge": "^2.0.0 || ^3.0.0"
   },
   "peerDependenciesMeta": {
     "react-dom": {

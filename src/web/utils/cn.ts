@@ -1,32 +1,66 @@
 import { type ClassValue, clsx } from 'clsx'
 import { extendTailwindMerge } from 'tailwind-merge'
 
+import { brandGlowShadows } from '../../tokens/brand'
+import { radius } from '../../tokens/radius'
+import { shadow } from '../../tokens/shadows'
 import { iconSize, letterSpacing, typeScale } from '../../tokens/typography'
 
+const camelToKebab = (value: string): string =>
+  value.replace(/([A-Z])/g, (m) => `-${m.toLowerCase()}`)
+
 /**
- * tailwind-merge, taught the token scales.
+ * kaleido-ui's custom scales, as tailwind-merge needs to see them.
  *
- * Out of the box it only knows Tailwind's own sizes, so it read `text-caption`
- * or `text-icon-sm` as a text COLOUR — and `cn('text-caption',
- * 'text-muted-foreground')` dropped the size, keeping whichever "colour" came
- * last. Every component that set a scale size and a colour through `cn` lost
- * one of the two.
+ * A stock tailwind-merge only knows Tailwind's default scales, so it reads a
+ * kaleido-ui size such as `text-title` or `text-icon-md` as a text COLOUR and
+ * drops it whenever a real colour (`text-danger`) comes later in the same
+ * merge. Components that combine a size with a colour silently lost their size.
+ * Registering the scales puts each class in its proper group.
+ *
+ * Built from src/tokens so a new token is picked up without touching this
+ * file. Uses `classGroups`, which works with tailwind-merge 2 and 3 alike.
  */
+const fontSizes = [
+  ...Object.keys(typeScale),
+  ...Object.keys(iconSize).map((key) => `icon-${key}`),
+]
+
+/** Semantic radius aliases. The numeric steps (xl, 2xl, …) are Tailwind's own. */
+const radii = Object.keys(radius).filter((key) =>
+  ['card', 'panel', 'nav', 'pill'].includes(key),
+)
+
+/** Every `--shadow-*` token, plus the per-theme brand glows. */
+const shadows = [...Object.keys(shadow).map(camelToKebab), ...brandGlowShadows]
+
+const roundedGroups = [
+  'rounded',
+  'rounded-s',
+  'rounded-e',
+  'rounded-t',
+  'rounded-r',
+  'rounded-b',
+  'rounded-l',
+  'rounded-ss',
+  'rounded-se',
+  'rounded-ee',
+  'rounded-es',
+  'rounded-tl',
+  'rounded-tr',
+  'rounded-br',
+  'rounded-bl',
+] as const
+
 const twMerge = extendTailwindMerge({
   extend: {
     classGroups: {
-      'font-size': [
-        {
-          text: [
-            ...Object.keys(typeScale),
-            ...Object.keys(iconSize).map((key) => `icon-${key}`),
-          ],
-        },
-      ],
-      // `eyebrowWide` is emitted as `tracking-eyebrow-wide`.
-      tracking: [
-        { tracking: Object.keys(letterSpacing).map((key) => key.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)) },
-      ],
+      'font-size': [{ text: fontSizes }],
+      tracking: [{ tracking: Object.keys(letterSpacing).map(camelToKebab) }],
+      shadow: [{ shadow: shadows }],
+      ...Object.fromEntries(
+        roundedGroups.map((group) => [group, [{ [group]: radii }]]),
+      ),
     },
   },
 })

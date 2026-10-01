@@ -16,7 +16,9 @@ npm install kaleido-ui
 | `kaleido-ui/tokens` | Platform-agnostic design tokens (zero deps) |
 | `kaleido-ui/native` | React Native components (WDK + custom) |
 | `kaleido-ui/css` | CSS variables (light + dark), keyframes, utilities, and the Tailwind v4 `@theme` tokens |
+| `kaleido-ui/css/brand` | Opt-in brand theme: AA-safe light primary, lifted dark danger/info, coloured page wash (import after `kaleido-ui/css`) |
 | `kaleido-ui/tailwind` | Tailwind **v3** preset built from the tokens |
+| `kaleido-ui/brand/*.svg` | Logo files: `kaleidoswap-pictogram.svg`, `kaleidoswap-fullogo-{horizontal,vertical}.svg` (white wordmark) and `-on-light.svg` variants |
 
 > **Tailwind v4 and v3 are both supported.** The library is built with v4.
 > On v4, `kaleido-ui/css` carries the whole theme as `@theme` blocks — no
@@ -168,6 +170,9 @@ console.log(typeScale.body)         // ['15px', '22px']
 | `SectionLabel` | Uppercase section heading |
 | `AlertBanner` | Alert box (error, warning, info, success variants) |
 | `ErrorBoundary` | React error boundary with retry UI |
+| `KaleidoswapLogo` | Full logo, `orientation="horizontal" \| "vertical"`. Wordmark uses `currentColor`; size with `h-* w-auto` |
+| `KaleidoswapMark` | The K pictogram on its own; size with `size-*` |
+| `HaloBackdrop` | Decorative drifting brand-colour blobs behind a screen (parent needs `relative isolate`) |
 
 ### Hooks
 
@@ -180,7 +185,20 @@ console.log(typeScale.body)         // ['15px', '22px']
 
 | Export | Description |
 |--------|-------------|
-| `cn()` | `clsx` + `tailwind-merge` utility |
+| `cn()` | `clsx` + `tailwind-merge`, configured with kaleido-ui's custom scales (`text-title`, `text-icon-md`, `rounded-card`, `shadow-glow-*`, `tracking-eyebrow`) so they are not mistaken for colours and dropped. Use it instead of a local `twMerge`. |
+
+### Brand utilities (from `kaleido-ui/css`)
+
+Additive, per-theme (light by default, `.dark` switches):
+
+| Utility | Use |
+|---------|-----|
+| `text-brand`, `text-accent-send-fg`, `text-accent-recv-fg` | Brand / send / receive foregrounds that clear WCAG AA in both themes |
+| `text-{success,warning,danger,info}-fg` | Status text (the plain `text-warning` etc. are dark-theme values) |
+| `text-network-{bitcoin,lightning,liquid,arkade,spark,rgb,taproot}-fg` | Network-hued text |
+| `bg-page-brand` | Coloured page wash (mint, violet, sky) |
+| `text-gradient-brand` | Brand gradient text, display sizes only |
+| `shadow-glow-send`, `shadow-glow-recv`, `shadow-glow-card` | Accent glows for send / receive panels and the hero card |
 
 ## Native Components
 
@@ -203,6 +221,9 @@ StatusBadge, NetworkBadge, AlertBanner, SectionLabel
 | `radius` | sm (8px) through full (9999px) |
 | `shadow` | glow, glowStrong, glowSubtle, glowAccent |
 | `transition` | fast (150ms), default (200ms), slow (300ms) |
+| `brandMark` | The logo's three fills (violet, green, mint): paint, never text |
+| `themedForeground` | Per-theme AA foregrounds (`brand`, `accent-*-fg`, status and network `-fg`) |
+| `brandDepth` | Per-theme page wash, brand gradient and glows |
 
 ## Development
 
