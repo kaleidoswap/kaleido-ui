@@ -135,6 +135,56 @@
   --app-divider: 200 203 224;
 }
 
+/* ── Brand layer — from src/tokens/brand.ts ─────────────────────────────
+   Per-theme foregrounds that clear WCAG AA (text-brand, text-danger-fg,
+   text-network-lightning-fg, …), the coloured page wash, the brand gradient
+   and the accent glows. Purely additive: no existing token changes.
+   Light is the default (like --primary / --card above); .dark switches. ── */
+:root,
+.light {
+  --brand: #086E46;
+  --accent-send-fg: #6428F0;
+  --accent-recv-fg: #086E46;
+  --success-fg: #076A43;
+  --warning-fg: #92400E;
+  --danger-fg: #991B1B;
+  --info-fg: #1E40AF;
+  --network-bitcoin-fg: #92400E;
+  --network-lightning-fg: #854D0E;
+  --network-liquid-fg: #115E59;
+  --network-arkade-fg: #5B21B6;
+  --network-spark-fg: #9A3412;
+  --network-rgb-fg: #991B1B;
+  --network-taproot-fg: #464A69;
+  --gradient-page-brand: radial-gradient(ellipse 70% 45% at 50% -5%, rgba(21, 233, 154, 0.16) 0%, transparent 70%), radial-gradient(ellipse 50% 32% at 0% 68%, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
+  --brand-gradient: linear-gradient(90deg, #086E46 0%, #0369A1 55%, #6D28D9 100%);
+  --glow-send: 0 0 0 1px rgba(100, 40, 240, 0.22), 0 12px 32px -14px rgba(100, 40, 240, 0.4);
+  --glow-recv: 0 0 0 1px rgba(8, 110, 70, 0.2), 0 12px 32px -14px rgba(8, 110, 70, 0.35);
+  --glow-card: 0 0 0 1px rgba(20, 20, 60, 0.06), 0 30px 80px -40px rgba(100, 40, 240, 0.28);
+}
+
+.dark {
+  --brand: #15E99A;
+  --accent-send-fg: #AD94FB;
+  --accent-recv-fg: #15E99A;
+  --success-fg: #15E99A;
+  --warning-fg: #FACC15;
+  --danger-fg: #FF9999;
+  --info-fg: #8BBDFF;
+  --network-bitcoin-fg: #F2B063;
+  --network-lightning-fg: #E4D56F;
+  --network-liquid-fg: #5DE5D6;
+  --network-arkade-fg: #B49CF5;
+  --network-spark-fg: #F2A163;
+  --network-rgb-fg: #F09490;
+  --network-taproot-fg: #C4CACD;
+  --gradient-page-brand: radial-gradient(ellipse 70% 45% at 50% -5%, rgba(21, 233, 154, 0.13) 0%, transparent 70%), radial-gradient(ellipse 50% 32% at 0% 68%, rgba(124, 58, 237, 0.16) 0%, transparent 70%), radial-gradient(ellipse 45% 40% at 100% 50%, rgba(56, 189, 248, 0.07) 0%, transparent 70%);
+  --brand-gradient: linear-gradient(90deg, #15E99A 0%, #38BDF8 55%, #A78BFA 100%);
+  --glow-send: 0 0 0 1px rgba(167, 139, 250, 0.28), 0 12px 40px -12px rgba(124, 58, 237, 0.55);
+  --glow-recv: 0 0 0 1px rgba(21, 233, 154, 0.22), 0 12px 40px -12px rgba(21, 233, 154, 0.35);
+  --glow-card: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 40px 100px -40px rgba(124, 58, 237, 0.35), 0 -20px 80px -50px rgba(21, 233, 154, 0.3);
+}
+
 /* ─────────────────────────────────────────────────────────────────────────
    Tailwind v4 @theme
    @theme inline  — semantic colors: utilities reference CSS vars so dark mode works at runtime.
@@ -198,6 +248,25 @@
   --color-status-danger-subtle: rgb(var(--app-status-danger) / 0.15);
   --color-status-warning-subtle: rgb(var(--app-status-warning) / 0.15);
   --color-status-info-subtle: rgb(var(--app-status-info) / 0.15);
+
+  /* Brand layer — per-theme foregrounds and glows (see the blocks above) */
+  --color-brand: var(--brand);
+  --color-accent-send-fg: var(--accent-send-fg);
+  --color-accent-recv-fg: var(--accent-recv-fg);
+  --color-success-fg: var(--success-fg);
+  --color-warning-fg: var(--warning-fg);
+  --color-danger-fg: var(--danger-fg);
+  --color-info-fg: var(--info-fg);
+  --color-network-bitcoin-fg: var(--network-bitcoin-fg);
+  --color-network-lightning-fg: var(--network-lightning-fg);
+  --color-network-liquid-fg: var(--network-liquid-fg);
+  --color-network-arkade-fg: var(--network-arkade-fg);
+  --color-network-spark-fg: var(--network-spark-fg);
+  --color-network-rgb-fg: var(--network-rgb-fg);
+  --color-network-taproot-fg: var(--network-taproot-fg);
+  --shadow-glow-send: var(--glow-send);
+  --shadow-glow-recv: var(--glow-recv);
+  --shadow-glow-card: var(--glow-card);
 }
 
 @theme {
@@ -474,6 +543,79 @@
    on the consuming element (the HeadlineGradient component does this). */
 .bg-gradient-headline {
   background-image: var(--gradient-headline);
+}
+/* Coloured, per-theme page wash (mint, violet, sky). The static
+   bg-page-radial above is the older neutral haze and is unchanged. */
+.bg-page-brand {
+  background-image: var(--gradient-page-brand);
+}
+/* Brand gradient text, for large display type only (the dark stops clear
+   3:1, not 4.5:1). */
+.text-gradient-brand {
+  background-image: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* Halo backdrop, rendered by <HaloBackdrop />: three heavily blurred blobs
+   drifting slowly behind a screen. Colours: --halo-primary / --halo-secondary. */
+.kui-halo {
+  --halo-primary: #2BEE79;
+  --halo-secondary: #6F32FF;
+}
+.kui-halo-blob {
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  filter: blur(110px);
+  will-change: transform;
+}
+.kui-halo-blob-a {
+  width: 55%;
+  top: -8%;
+  left: -12%;
+  background: var(--halo-primary);
+  opacity: 0.14;
+  animation: kui-halo-drift-a 26s ease-in-out infinite alternate;
+}
+.kui-halo-blob-b {
+  width: 60%;
+  top: 28%;
+  right: -18%;
+  background: var(--halo-secondary);
+  opacity: 0.16;
+  animation: kui-halo-drift-b 34s ease-in-out infinite alternate;
+}
+.kui-halo-blob-c {
+  width: 45%;
+  bottom: -12%;
+  left: 12%;
+  background: var(--halo-primary);
+  opacity: 0.12;
+  animation: kui-halo-drift-c 22s ease-in-out infinite alternate;
+}
+.kui-halo[data-animated='false'] .kui-halo-blob {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .kui-halo-blob {
+    animation: none;
+  }
+}
+@keyframes kui-halo-drift-a {
+  from { transform: translate3d(0, 22%, 0) scale(0.92); }
+  50% { transform: translate3d(9%, -6%, 0) scale(1.05); }
+  to { transform: translate3d(-5%, -30%, 0) scale(1.14); }
+}
+@keyframes kui-halo-drift-b {
+  from { transform: translate3d(0, -28%, 0) scale(1.12); }
+  50% { transform: translate3d(-7%, -2%, 0) scale(1); }
+  to { transform: translate3d(6%, 20%, 0) scale(0.92); }
+}
+@keyframes kui-halo-drift-c {
+  from { transform: translate3d(0, 18%, 0) scale(1); }
+  50% { transform: translate3d(-5%, -5%, 0) scale(1.08); }
+  to { transform: translate3d(7%, -26%, 0) scale(0.95); }
 }
 /* Legacy app scroll region. Prefer the ScrollArea component for visible overlay scrollbars. */
 .app-scrollbar {

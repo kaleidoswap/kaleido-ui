@@ -23,12 +23,21 @@ import { sizing } from '../src/tokens/sizing.ts'
 import { layer } from '../src/tokens/layers.ts'
 import { shadow } from '../src/tokens/shadows.ts'
 import { gradient } from '../src/tokens/gradients.ts'
+import {
+  brandDepth,
+  brandGlowShadows,
+  brandTheme,
+  halo,
+  themedForeground,
+  themedForegroundOrder,
+} from '../src/tokens/brand.ts'
 import { transition } from '../src/tokens/transitions.ts'
 import { fontFamily, typeScale, letterSpacing, iconSize, iconBoxSize } from '../src/tokens/typography.ts'
 import { keyframes, animation } from '../src/tokens/animations.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const OUTPUT = join(__dirname, '../src/css/kaleido-ui.css')
+const BRAND_OUTPUT = join(__dirname, '../src/css/brand.css')
 
 function camelToKebab(str: string): string {
   return str.replace(/([A-Z])/g, (m) => `-${m.toLowerCase()}`)
@@ -90,6 +99,30 @@ const appStatusSubtle = ['success', 'danger', 'warning', 'info']
       `  --color-status-${s}-subtle: rgb(var(--app-status-${s}) / ${appStatusSubtleAlpha});`
   )
   .join('\n')
+
+// ── Brand layer (src/tokens/brand.ts) ─────────────────────────────────────
+// Per-theme foregrounds and depth. Light is the :root default (and forced by
+// .light), dark applies under .dark, like the shadcn-style tokens above.
+type Theme = 'light' | 'dark'
+const brandVars = (theme: Theme): string =>
+  [
+    ...themedForegroundOrder.map((k) => `  --${k}: ${themedForeground[theme][k]};`),
+    `  --gradient-page-brand: ${brandDepth[theme].pageWash};`,
+    `  --brand-gradient: ${brandDepth[theme].gradient};`,
+    `  --glow-send: ${brandDepth[theme].glowSend};`,
+    `  --glow-recv: ${brandDepth[theme].glowRecv};`,
+    `  --glow-card: ${brandDepth[theme].glowCard};`,
+  ].join('\n')
+
+const brandThemeInline = [
+  ...themedForegroundOrder.map((k) => `  --color-${k}: var(--${k});`),
+  ...brandGlowShadows.map((k) => `  --shadow-${k}: var(--${k});`),
+].join('\n')
+
+const hexToChannels = (hex: string): string => {
+  const h = hex.replace('#', '')
+  return [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16)).join(' ')
+}
 
 const css = `/* AUTO-GENERATED — do not edit by hand.
  * Source: scripts/generate-css.ts  ←  src/tokens/
@@ -184,6 +217,20 @@ ${appDarkVars}
 ${appLightVars}
 }
 
+/* ── Brand layer — from src/tokens/brand.ts ─────────────────────────────
+   Per-theme foregrounds that clear WCAG AA (text-brand, text-danger-fg,
+   text-network-lightning-fg, …), the coloured page wash, the brand gradient
+   and the accent glows. Purely additive: no existing token changes.
+   Light is the default (like --primary / --card above); .dark switches. ── */
+:root,
+.light {
+${brandVars('light')}
+}
+
+.dark {
+${brandVars('dark')}
+}
+
 /* ─────────────────────────────────────────────────────────────────────────
    Tailwind v4 @theme
    @theme inline  — semantic colors: utilities reference CSS vars so dark mode works at runtime.
@@ -222,6 +269,9 @@ ${appLightVars}
      border-border-x, bg-status-x with opacity) resolve to the canonical slate palette. */
 ${appThemeInline}
 ${appStatusSubtle}
+
+  /* Brand layer — per-theme foregrounds and glows (see the blocks above) */
+${brandThemeInline}
 }
 
 @theme {
@@ -374,6 +424,79 @@ ${keyframesCss}
 .bg-gradient-headline {
   background-image: var(--gradient-headline);
 }
+/* Coloured, per-theme page wash (mint, violet, sky). The static
+   bg-page-radial above is the older neutral haze and is unchanged. */
+.bg-page-brand {
+  background-image: var(--gradient-page-brand);
+}
+/* Brand gradient text, for large display type only (the dark stops clear
+   3:1, not 4.5:1). */
+.text-gradient-brand {
+  background-image: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* Halo backdrop, rendered by <HaloBackdrop />: three heavily blurred blobs
+   drifting slowly behind a screen. Colours: --halo-primary / --halo-secondary. */
+.kui-halo {
+  --halo-primary: ${halo.primary};
+  --halo-secondary: ${halo.secondary};
+}
+.kui-halo-blob {
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  filter: blur(${halo.blur});
+  will-change: transform;
+}
+.kui-halo-blob-a {
+  width: 55%;
+  top: -8%;
+  left: -12%;
+  background: var(--halo-primary);
+  opacity: 0.14;
+  animation: kui-halo-drift-a 26s ease-in-out infinite alternate;
+}
+.kui-halo-blob-b {
+  width: 60%;
+  top: 28%;
+  right: -18%;
+  background: var(--halo-secondary);
+  opacity: 0.16;
+  animation: kui-halo-drift-b 34s ease-in-out infinite alternate;
+}
+.kui-halo-blob-c {
+  width: 45%;
+  bottom: -12%;
+  left: 12%;
+  background: var(--halo-primary);
+  opacity: 0.12;
+  animation: kui-halo-drift-c 22s ease-in-out infinite alternate;
+}
+.kui-halo[data-animated='false'] .kui-halo-blob {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .kui-halo-blob {
+    animation: none;
+  }
+}
+@keyframes kui-halo-drift-a {
+  from { transform: translate3d(0, 22%, 0) scale(0.92); }
+  50% { transform: translate3d(9%, -6%, 0) scale(1.05); }
+  to { transform: translate3d(-5%, -30%, 0) scale(1.14); }
+}
+@keyframes kui-halo-drift-b {
+  from { transform: translate3d(0, -28%, 0) scale(1.12); }
+  50% { transform: translate3d(-7%, -2%, 0) scale(1); }
+  to { transform: translate3d(6%, 20%, 0) scale(0.92); }
+}
+@keyframes kui-halo-drift-c {
+  from { transform: translate3d(0, 18%, 0) scale(1); }
+  50% { transform: translate3d(-5%, -5%, 0) scale(1.08); }
+  to { transform: translate3d(7%, -26%, 0) scale(0.95); }
+}
 /* Legacy app scroll region. Prefer the ScrollArea component for visible overlay scrollbars. */
 .app-scrollbar {
   -ms-overflow-style: none;
@@ -394,3 +517,43 @@ ${keyframesCss}
 
 writeFileSync(OUTPUT, css)
 console.log(`✓ Generated ${OUTPUT}`)
+
+// ── Opt-in brand theme — kaleido-ui/css/brand ─────────────────────────────
+// Import AFTER kaleido-ui/css. Unlike the brand layer above, these CHANGE
+// existing tokens, which is why they live in their own stylesheet.
+const brandCss = `/* AUTO-GENERATED — do not edit by hand.
+ * Source: scripts/generate-css.ts  ←  src/tokens/brand.ts
+ * Regenerate: npm run generate:css
+ *
+ * kaleido-ui brand theme (opt-in). Import after kaleido-ui/css:
+ *   @import "kaleido-ui/css";
+ *   @import "kaleido-ui/css/brand";
+ *
+ * - Light: the primary (#17B581, 2.1 to 2.6:1 on the light ramp) becomes the
+ *   AA-safe brand green, so text-primary, links, ghost buttons and rings read.
+ * - Dark: danger and info are lifted to clear 4.5:1 on every dark surface.
+ * - Both: bg-page-radial draws the coloured brand wash instead of the haze.
+ */
+:root:not(.dark),
+.light {
+  --primary: ${brandTheme.lightPrimary};
+  --ring: ${brandTheme.lightPrimary};
+}
+
+.light {
+  --app-primary: ${hexToChannels(brandTheme.lightPrimary)};
+  --app-border-strong: ${hexToChannels(brandTheme.lightPrimary)};
+}
+
+.dark {
+  --color-danger: ${brandTheme.darkDanger};
+  --color-info: ${brandTheme.darkInfo};
+}
+
+:root {
+  --gradient-page: var(--gradient-page-brand);
+}
+`
+
+writeFileSync(BRAND_OUTPUT, brandCss)
+console.log(`✓ Generated ${BRAND_OUTPUT}`)

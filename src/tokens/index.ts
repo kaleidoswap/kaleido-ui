@@ -18,6 +18,16 @@ export { sizing } from './sizing'
 export { layer } from './layers'
 export { shadow } from './shadows'
 export { gradient } from './gradients'
+export {
+  brandMark,
+  themedForeground,
+  themedForegroundOrder,
+  brandDepth,
+  brandGlowShadows,
+  halo,
+  brandTheme,
+  type ThemedForegroundToken,
+} from './brand'
 export { transition } from './transitions'
 export { keyframes, animation } from './animations'
 export {
