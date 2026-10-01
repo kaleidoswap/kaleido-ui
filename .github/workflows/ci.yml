@@ -26,7 +26,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # 22, not 20: `npm test` passes the glob quoted, and node --test only
+          # expands globs itself from 21. cmd.exe, npm's shell on Windows, never does.
+          node-version: 22
           cache: npm
 
       # `npm ci`, not `npm install`: it fails when package.json and the

@@ -53,7 +53,7 @@
     "showcase": "vite --config showcase/vite.config.ts",
     "showcase:build": "npm run generate:css && vite build --config showcase/vite.config.ts",
     "type-check": "tsc --noEmit",
-    "test": "node --import tsx --test tests/*.test.tsx",
+    "test": "node --import tsx --test \"tests/*.test.tsx\"",
     "clean": "rm -rf dist"
   },
   "dependencies": {
