@@ -191,7 +191,7 @@ export function ChartTooltip({
     <div
       data-slot="chart-tooltip"
       role="presentation"
-      className="pointer-events-none absolute z-10 min-w-32 rounded-xl bg-popover px-3 py-2 text-caption text-popover-foreground shadow-popover"
+      className="pointer-events-none absolute z-10 min-w-32 rounded-xl bg-popover bg-gradient-card-hero px-3 py-2 text-caption text-popover-foreground shadow-popover ring-1 ring-inset ring-secondary/15"
       style={{
         left: flip ? undefined : x + 12,
         right: flip ? width - x + 12 : undefined,
@@ -300,7 +300,7 @@ export function ChartFrame({
           data-slot="chart-view-toggle"
           aria-pressed={view === 'table'}
           onClick={() => setView(view === 'chart' ? 'table' : 'chart')}
-          className="shrink-0 rounded-lg px-2 py-1 text-caption font-semibold text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="shrink-0 rounded-lg px-2 py-1 text-caption font-semibold text-muted-foreground transition-all duration-200 hover:bg-secondary/15 hover:text-secondary-content focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft aria-pressed:bg-primary/10 aria-pressed:text-primary aria-pressed:ring-1 aria-pressed:ring-inset aria-pressed:ring-primary/40"
         >
           {view === 'chart' ? 'Show table' : 'Show chart'}
         </button>
@@ -341,4 +341,4 @@ export function ChartFrame({
 
 /** Shared plot container classes: focusable, ringed on keyboard focus. */
 export const plotClass =
-  'relative w-full min-w-0 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring'
+  'relative w-full min-w-0 rounded-xl outline-none transition-shadow duration-200 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft'

@@ -78,6 +78,7 @@ export function DateRangeFilter({
           disabled={isRefreshing}
           aria-busy={isRefreshing || undefined}
           onClick={onRefresh}
+          className="text-secondary-content hover:bg-secondary/15 hover:shadow-glow-violet-soft focus-visible:ring-primary/50 focus-visible:ring-offset-0 focus-visible:shadow-glow-primary-soft"
         >
           <Icon name="refresh" className={cn('text-icon-lg', isRefreshing && 'animate-spin motion-reduce:animate-none')} />
         </Button>

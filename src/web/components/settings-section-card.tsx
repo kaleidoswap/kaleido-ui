@@ -59,7 +59,7 @@ const badgeToneClass: Record<NonNullable<ToneBadgeProps['tone']>, string> = {
   // Theme tokens, not white alphas: on the light theme a white-on-white badge
   // disappears. On dark these resolve to the same 10% / 5% / 55% white.
   muted: 'border-border bg-foreground/5 text-muted-foreground',
-  secondary: 'border-secondary/30 bg-secondary/10 text-secondary',
+  secondary: 'border-secondary/30 bg-secondary/10 text-secondary-content',
   outline: 'border-border bg-transparent text-foreground',
 }
 

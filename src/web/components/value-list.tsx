@@ -33,7 +33,7 @@ export function ValueList({ values, singular, plural, emptyLabel = 'None', defau
     <Collapsible defaultOpen={defaultOpen} data-slot="value-list" className={cn('min-w-0', className)}>
       <CollapsibleTrigger
         type="button"
-        className="inline-flex items-center gap-1 rounded-md text-caption font-semibold text-foreground hover:text-primary"
+        className="inline-flex items-center gap-1 rounded-lg text-caption font-semibold text-foreground transition-colors hover:text-secondary-content data-[state=open]:text-secondary-content"
       >
         {summary}
         <CollapsibleChevron />
@@ -41,7 +41,7 @@ export function ValueList({ values, singular, plural, emptyLabel = 'None', defau
       <CollapsibleContent>
         <ul className="m-0 mt-2 list-none space-y-1 p-0">
           {values.map((value, index) => (
-            <li key={`${index}-${value}`} className="flex items-center gap-1">
+            <li key={`${index}-${value}`} className="flex items-center gap-1 rounded-xl bg-muted/40 px-3 py-1.5">
               <span className="min-w-0 select-all break-all font-mono text-caption text-foreground">{value}</span>
               <CopyButton value={value} label={singular} />
             </li>

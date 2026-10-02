@@ -34,7 +34,7 @@ export function Meter({
 }: MeterProps) {
   const ratio = max > 0 ? Math.min(1, Math.max(0, value / max)) : 0
   const state = ratio >= dangerAt ? 'danger' : ratio >= warnAt ? 'warning' : 'normal'
-  const fill = { normal: 'bg-primary', warning: 'bg-warning', danger: 'bg-danger' }[state]
+  const fill = { normal: 'bg-primary bg-gradient-primary', warning: 'bg-warning', danger: 'bg-danger' }[state]
   const track = { normal: 'bg-primary/15', warning: 'bg-warning/15', danger: 'bg-danger/15' }[state]
   const percent = Math.round(ratio * 100)
 
@@ -53,7 +53,7 @@ export function Meter({
         aria-valuenow={value}
         aria-valuetext={`${formatValue(value)} of ${formatValue(max)}, ${percent}%`}
         aria-label={typeof label === 'string' ? label : undefined}
-        className={cn('h-2 overflow-hidden rounded-full', track)}
+        className={cn('h-2 overflow-hidden rounded-full shadow-inner', track)}
       >
         <div className={cn('h-full rounded-full transition-[width] duration-300 motion-reduce:transition-none', fill)} style={{ width: `${ratio * 100}%` }} />
       </div>

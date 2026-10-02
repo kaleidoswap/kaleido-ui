@@ -85,7 +85,7 @@ export function ActivityList<TData = unknown>({
         title={hasActiveFilters ? filteredEmptyTitle : emptyTitle}
         description={hasActiveFilters ? filteredEmptyDescription : emptyDescription}
         // The activity feed has always set its description a step brighter.
-        descriptionClassName="text-white/70"
+        descriptionClassName="text-foreground/70"
         action={
           hasActiveFilters && onClearFilters ? (
             <Button variant="surface" size="sm" onClick={onClearFilters}>

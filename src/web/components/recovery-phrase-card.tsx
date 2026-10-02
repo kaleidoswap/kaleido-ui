@@ -104,7 +104,7 @@ export function RecoveryPhraseCard({
           variant="h3"
           size="lg"
           onClick={handleCopy}
-          className="w-full"
+          className={cn('w-full', copied && 'bg-primary/10 shadow-glow-primary-soft')}
         >
           <Icon name={copied ? 'check' : 'content_copy'} className="text-icon-lg" />
           {copied ? copiedLabel : copyLabel}

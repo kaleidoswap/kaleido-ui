@@ -51,7 +51,9 @@ const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
         aria-hidden={meaningful ? undefined : true}
         className={cn(
           avatarVariants({ size }),
-          !showImage && 'bg-gradient-to-br from-secondary to-info',
+          showImage
+            ? 'shadow-raised ring-1 ring-secondary/25'
+            : 'bg-secondary bg-gradient-to-br from-secondary to-info shadow-button-violet',
           className,
         )}
         {...props}

@@ -38,7 +38,7 @@ export function FloatingNotice({
       data-slot="floating-notice"
       role={role}
       className={cn(
-        'fixed bottom-4 left-1/2 z-[var(--z-modal)] w-[min(32rem,calc(100vw-2rem))] -translate-x-1/2 rounded-xl bg-card shadow-popover',
+        'fixed bottom-4 left-1/2 z-[var(--z-modal)] w-[min(32rem,calc(100vw-2rem))] -translate-x-1/2 rounded-2xl bg-card bg-gradient-card-hero shadow-toast',
         className,
       )}
     >
@@ -51,7 +51,7 @@ export function FloatingNotice({
             size="icon"
             aria-label={dismissLabel}
             onClick={onDismiss}
-            className="absolute right-2 top-2 rounded-md text-muted-foreground hover:text-foreground"
+            className="absolute right-2 top-2 text-muted-foreground hover:bg-secondary/15 hover:text-secondary-content focus-visible:ring-primary/50 focus-visible:ring-offset-0 focus-visible:shadow-glow-primary-soft"
           >
             <Icon name="close" className="text-icon-md" />
           </Button>

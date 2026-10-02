@@ -26,7 +26,7 @@ export function EmptyState({ title, description, action, icon, className, descri
       {icon && (
         <div
           aria-hidden="true"
-          className="mb-4 flex size-16 items-center justify-center rounded-full bg-foreground/5"
+          className="mb-4 flex size-16 items-center justify-center rounded-full bg-secondary/15 text-secondary-content shadow-glow-violet-soft ring-1 ring-inset ring-secondary/25"
         >
           {icon}
         </div>

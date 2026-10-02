@@ -84,7 +84,10 @@ export function SecretRevealCard({
           <button
             type="button"
             onClick={handleCopy}
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-secondary/15 py-3 text-caption font-semibold text-secondary-content shadow-raised ring-1 ring-inset ring-secondary/25 transition-all duration-200 hover:bg-secondary/25 hover:text-foreground"
+            className={cn(
+              'flex flex-1 items-center justify-center gap-2 rounded-xl bg-secondary/15 py-3 text-caption font-semibold text-secondary-content shadow-raised ring-1 ring-inset ring-secondary/25 transition-all duration-200 hover:bg-secondary/25 hover:text-foreground',
+              copied && 'bg-primary/10 bg-gradient-active text-primary ring-primary/40 shadow-glow-primary-soft hover:bg-primary/15 hover:text-primary',
+            )}
           >
             <Icon name={copied ? 'check' : 'content_copy'} className="text-icon-lg" />
             {copied ? copiedLabel : copyLabel}

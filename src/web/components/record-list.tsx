@@ -13,12 +13,12 @@ export interface RecordListProps extends React.HTMLAttributes<HTMLUListElement> 
   'aria-label': string
 }
 
-/** A `<ul>` of records, divided by hairlines. */
+/** A `<ul>` of records, each a soft row of its own. */
 const RecordList = React.forwardRef<HTMLUListElement, RecordListProps>(({ className, ...props }, ref) => (
   <ul
     ref={ref}
     data-slot="record-list"
-    className={cn('m-0 list-none divide-y divide-border p-0', className)}
+    className={cn('m-0 list-none space-y-2 p-0', className)}
     {...props}
   />
 ))
@@ -56,16 +56,16 @@ const RecordItem = React.forwardRef<HTMLLIElement, RecordItemProps>(
         aria-current={selected ? 'true' : undefined}
         onClick={onOpen}
         className={cn(
-          'space-y-3 px-4 py-3 transition-colors',
-          onOpen && 'cursor-pointer hover:bg-muted/50',
-          selected && 'bg-muted',
+          'space-y-3 rounded-xl bg-muted/40 px-4 py-3 transition-all duration-200',
+          onOpen && 'cursor-pointer shadow-raised hover:bg-secondary/10',
+          selected && 'bg-primary/10 bg-gradient-active shadow-glow-primary-soft ring-1 ring-inset ring-primary/40 hover:bg-primary/10',
           className,
         )}
         {...props}
       >
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
-            <div className="truncate text-body font-semibold text-foreground">{identifier}</div>
+            <div className={cn('truncate text-body font-semibold', selected ? 'text-primary' : 'text-foreground')}>{identifier}</div>
             {summary && <div className="mt-0.5 text-caption text-muted-foreground">{summary}</div>}
           </div>
           <div className="flex shrink-0 items-center gap-2">
@@ -80,7 +80,7 @@ const RecordItem = React.forwardRef<HTMLLIElement, RecordItemProps>(
                   stop(event)
                   onOpen()
                 }}
-                className="rounded-md text-muted-foreground"
+                className="text-muted-foreground hover:bg-secondary/15 hover:text-secondary-content focus-visible:ring-primary/50 focus-visible:ring-offset-0 focus-visible:shadow-glow-primary-soft"
               >
                 <Icon name="chevron_right" className="text-icon-md" />
               </Button>

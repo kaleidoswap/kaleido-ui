@@ -63,7 +63,13 @@ export function CopyButton({
         aria-label={copyLabel ?? `Copy ${label}`}
         disabled={disabled}
         onClick={onClick}
-        className={cn('rounded-md text-muted-foreground hover:text-primary', className)}
+        className={cn(
+          'focus-visible:ring-primary/50 focus-visible:ring-offset-0 focus-visible:shadow-glow-primary-soft',
+          state === 'copied'
+            ? 'bg-primary/10 text-primary hover:bg-primary/15'
+            : 'text-muted-foreground hover:bg-secondary/15 hover:text-secondary-content',
+          className,
+        )}
         {...props}
       >
         <CopyIcon copied={state === 'copied'} variant="bare" />

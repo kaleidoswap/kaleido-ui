@@ -49,7 +49,7 @@ export function Pager({
       <div className="flex gap-2">
         <Button
           type="button"
-          variant="ghost"
+          variant="surface"
           size="sm"
           disabled={!hasPrevious}
           onClick={() => onOffsetChange(Math.max(0, offset - limit))}
@@ -57,7 +57,7 @@ export function Pager({
           <Icon name="chevron_left" className="text-icon-md" />
           {previousLabel}
         </Button>
-        <Button type="button" variant="ghost" size="sm" disabled={!hasNext} onClick={() => onOffsetChange(offset + limit)}>
+        <Button type="button" variant="surface" size="sm" disabled={!hasNext} onClick={() => onOffsetChange(offset + limit)}>
           {nextLabel}
           <Icon name="chevron_right" className="text-icon-md" />
         </Button>

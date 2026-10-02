@@ -70,12 +70,12 @@ export function FilterBar({
           <CollapsibleTrigger
             type="button"
             aria-label={`${filtersLabel}, ${countLabel(activeCount)}`}
-            className="inline-flex h-9 items-center gap-2 rounded-lg bg-muted px-3 text-caption font-semibold text-foreground"
+            className="inline-flex h-9 items-center gap-2 rounded-xl bg-muted/40 px-3 text-caption font-semibold text-foreground shadow-raised ring-1 ring-inset ring-secondary/15 hover:bg-secondary/10 hover:ring-secondary/35 data-[state=open]:bg-secondary/15 data-[state=open]:text-secondary-content data-[state=open]:ring-secondary/35"
           >
             <Icon name="tune" className="text-icon-md" />
             {filtersLabel}
             {activeCount > 0 && (
-              <span aria-hidden="true" className="rounded-full bg-primary/15 px-1.5 text-xxs font-bold text-primary">
+              <span aria-hidden="true" className="rounded-full bg-primary/15 px-1.5 text-xxs font-bold text-primary ring-1 ring-inset ring-primary/30">
                 {activeCount}
               </span>
             )}

@@ -48,7 +48,7 @@ const dotClass: Record<SwapStepStatus, string> = {
   active: 'bg-secondary bg-gradient-brand text-white shadow-glow-violet',
   pending: 'bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25',
   failed: 'bg-danger/20 text-danger',
-  unknown: 'bg-muted/40 text-muted-foreground',
+  unknown: 'bg-foreground/8 text-muted-foreground ring-1 ring-inset ring-foreground/10',
 }
 
 const labelClass: Record<SwapStepStatus, string> = {

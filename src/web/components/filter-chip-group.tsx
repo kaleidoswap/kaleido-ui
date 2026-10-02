@@ -69,7 +69,7 @@ export function FilterChipGroup<TValue extends string = string>({
       onKeyDown={onKeyDown}
       className={cn(
         segmented
-          ? 'inline-flex gap-0.5 rounded-xl bg-muted p-0.5'
+          ? 'inline-flex gap-0.5 rounded-xl bg-card p-0.5 shadow-raised ring-1 ring-inset ring-secondary/15'
           : 'flex gap-1.5 overflow-x-auto no-scrollbar',
         className,
       )}
@@ -95,11 +95,11 @@ export function FilterChipGroup<TValue extends string = string>({
             className={cn(
               segmented
                 ? cn(
-                    'flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                    'flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft',
                     iconOnly ? 'size-8' : 'h-8 px-3 text-caption',
                     active
-                      ? 'bg-card text-foreground shadow-raised'
-                      : 'text-muted-foreground hover:text-foreground',
+                      ? 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
+                      : 'text-muted-foreground hover:bg-secondary/15 hover:text-secondary-content',
                   )
                 : cn(
                     'flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-1 text-tiny font-bold transition-all',
@@ -116,7 +116,7 @@ export function FilterChipGroup<TValue extends string = string>({
               <span
                 className={cn(
                   'rounded-full px-1.5 py-0.5 text-xxs',
-                  segmented ? 'bg-foreground/10' : active ? 'bg-white/20' : 'bg-secondary/15 text-secondary-content',
+                  segmented ? (active ? 'bg-primary-foreground/15' : 'bg-secondary/15 text-secondary-content') : active ? 'bg-white/20' : 'bg-secondary/15 text-secondary-content',
                 )}
               >
                 {option.count}

@@ -49,10 +49,10 @@ const DropdownMenuItem = React.forwardRef<React.ElementRef<typeof MenuPrimitive.
       data-slot="dropdown-menu-item"
       data-destructive={destructive || undefined}
       className={cn(
-        'flex cursor-default select-none items-center gap-2 rounded-lg px-3 py-2 text-caption font-medium outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+        'flex cursor-default select-none items-center gap-2 rounded-xl px-3 py-2 text-caption font-medium outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
         destructive
           ? 'text-danger data-[highlighted]:bg-danger/10'
-          : 'text-foreground data-[highlighted]:bg-muted',
+          : 'text-foreground data-[highlighted]:bg-secondary/15',
         className,
       )}
       {...props}
@@ -84,7 +84,7 @@ const DropdownMenuSeparator = React.forwardRef<
   React.ElementRef<typeof MenuPrimitive.Separator>,
   React.ComponentPropsWithoutRef<typeof MenuPrimitive.Separator>
 >(({ className, ...props }, ref) => (
-  <MenuPrimitive.Separator ref={ref} className={cn('-mx-1.5 my-1.5 h-px bg-border', className)} {...props} />
+  <MenuPrimitive.Separator ref={ref} className={cn('-mx-1.5 my-1.5 h-px bg-secondary/15', className)} {...props} />
 ))
 DropdownMenuSeparator.displayName = MenuPrimitive.Separator.displayName
 

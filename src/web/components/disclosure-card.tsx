@@ -38,7 +38,7 @@ export function DisclosureCard({
       <CollapsibleTrigger
         type="button"
         className={cn(
-          'flex w-full items-center justify-between rounded-xl bg-muted/40 px-3 py-2 text-left shadow-raised transition-all hover:bg-secondary/10',
+          'flex w-full items-center justify-between rounded-xl bg-muted/40 px-3 py-2 text-left shadow-raised transition-all hover:bg-secondary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft',
           open && 'bg-secondary/10 ring-1 ring-inset ring-secondary/30',
           triggerClassName,
         )}

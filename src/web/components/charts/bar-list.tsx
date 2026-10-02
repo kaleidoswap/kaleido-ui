@@ -63,7 +63,7 @@ export function BarList({
             className="grid grid-cols-[minmax(4.5rem,auto)_1fr_auto] items-center gap-3 text-caption"
           >
             <span className="truncate text-muted-foreground">{item.label}</span>
-            <span className="h-2 overflow-hidden rounded-full bg-muted" aria-hidden="true">
+            <span className="h-2 overflow-hidden rounded-full bg-secondary/15 shadow-inner" aria-hidden="true">
               <span
                 className="block h-full rounded-full"
                 style={{
