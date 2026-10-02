@@ -248,11 +248,15 @@ ${networkChipDark}
 .light {
 ${appLightVars}
 ${networkChipLight}
-  --app-shadow: 55 20 136;
-  --app-shadow-strength: 0.28;
+  --app-shadow: 28 27 46;
+  --app-shadow-strength: 0.18;
   --app-rim-alpha: 0.7;
   --app-glass-edge: 255 255 255;
   --app-glass-edge-alpha: 0.7;
+  /* On white the violet light reads pink: a trace of it, no more. */
+  --gradient-card: linear-gradient(135deg, rgba(111, 50, 255, 0.025) 0%, rgba(111, 50, 255, 0) 55%);
+  --gradient-card-hero: linear-gradient(135deg, rgba(111, 50, 255, 0.05) 0%, rgba(111, 50, 255, 0) 50%, rgba(21, 233, 154, 0.06) 100%);
+  --gradient-page: radial-gradient(ellipse 80% 55% at 85% -5%, rgba(111, 50, 255, 0.05) 0%, transparent 60%), radial-gradient(ellipse 70% 50% at 0% 105%, rgba(21, 233, 154, 0.05) 0%, transparent 60%);
 }
 
 /* ── Brand layer — from src/tokens/brand.ts ─────────────────────────────

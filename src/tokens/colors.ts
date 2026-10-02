@@ -30,7 +30,7 @@ export const brand = {
 } as const
 
 export const lightSemanticColors = {
-  background: '#F1EEFC', // surface-raised (light page body, lavender)
+  background: '#F8F8FB', // surface-raised (light page body, near-white)
   foreground: '#15122A', // content-primary
   card: '#FFFFFF', //       surface-overlay
   cardFg: '#15122A',
@@ -38,15 +38,15 @@ export const lightSemanticColors = {
   popoverFg: '#15122A',
   primary: '#17B581', //    brand green (light)
   primaryFg: '#0E0D16', // dark ink on the green, as on the dark theme (white was 2.6:1)
-  secondary: '#EAE5FC', //  neutral surface (bg-secondary utility is brand violet via app token)
+  secondary: '#EFEFF4', //  neutral surface (bg-secondary utility is brand violet via app token)
   secondaryFg: '#15122A',
-  muted: '#F8F6FF', //      surface-elevated
+  muted: '#FAFAFC', //      surface-elevated
   mutedFg: '#4F4A75', //    content-secondary
-  accent: '#EAE5FC', //     surface-high
+  accent: '#EFEFF4', //     surface-high
   accentFg: '#15122A',
   destructive: '#e7000b',
-  border: '#D6CFF2', //     border-default (violet-tinted)
-  input: '#CEC7EC',
+  border: '#E3E3EA', //     border-default
+  input: '#DCDCE4',
   ring: '#17B581',
   chart1: '#2BEE79',
   chart2: '#F6C343',

@@ -30,7 +30,7 @@
 
 /* ── Semantic colors (light mode) — from src/tokens/colors.ts ───────────── */
 :root {
-  --background:           #F1EEFC;
+  --background:           #F8F8FB;
   --foreground:           #15122A;
   --card:                 #FFFFFF;
   --card-foreground:      #15122A;
@@ -38,15 +38,15 @@
   --popover-foreground:   #15122A;
   --primary:              #17B581;
   --primary-foreground:   #0E0D16;
-  --secondary:            #EAE5FC;
+  --secondary:            #EFEFF4;
   --secondary-foreground: #15122A;
-  --muted:                #F8F6FF;
+  --muted:                #FAFAFC;
   --muted-foreground:     #4F4A75;
-  --accent:               #EAE5FC;
+  --accent:               #EFEFF4;
   --accent-foreground:    #15122A;
   --destructive:          #e7000b;
-  --border:               #D6CFF2;
-  --input:                #CEC7EC;
+  --border:               #E3E3EA;
+  --input:                #DCDCE4;
   --ring:                 #17B581;
   --chart-1:              #2BEE79;
   --chart-2:              #F6C343;
@@ -151,11 +151,11 @@
 }
 
 .light {
-  --app-surface-base: 226 222 244;
-  --app-surface-raised: 241 238 252;
+  --app-surface-base: 243 243 247;
+  --app-surface-raised: 248 248 251;
   --app-surface-overlay: 255 255 255;
-  --app-surface-elevated: 248 246 255;
-  --app-surface-high: 234 229 252;
+  --app-surface-elevated: 250 250 252;
+  --app-surface-high: 239 239 244;
   --app-primary: 23 181 129;
   --app-primary-emphasis: 19 138 100;
   --app-primary-foreground: 14 13 22;
@@ -167,14 +167,14 @@
   --app-content-secondary: 79 74 117;
   --app-content-tertiary: 122 116 160;
   --app-content-inverse: 255 255 255;
-  --app-border-subtle: 226 221 246;
-  --app-border-default: 206 199 236;
+  --app-border-subtle: 236 236 241;
+  --app-border-default: 222 222 230;
   --app-border-strong: 23 181 129;
   --app-status-success: 22 163 74;
   --app-status-danger: 220 38 38;
   --app-status-warning: 217 119 6;
   --app-status-info: 2 132 199;
-  --app-divider: 206 199 236;
+  --app-divider: 222 222 230;
   --app-network-spark: 13 12 20;
   --network-bitcoin-chip: #FBEFD9;
   --network-bitcoin-text: #92400E;
@@ -190,11 +190,15 @@
   --network-liquid-text: #115E59;
   --network-taproot-chip: #E9ECEE;
   --network-taproot-text: #464A69;
-  --app-shadow: 55 20 136;
-  --app-shadow-strength: 0.28;
+  --app-shadow: 28 27 46;
+  --app-shadow-strength: 0.18;
   --app-rim-alpha: 0.7;
   --app-glass-edge: 255 255 255;
   --app-glass-edge-alpha: 0.7;
+  /* On white the violet light reads pink: a trace of it, no more. */
+  --gradient-card: linear-gradient(135deg, rgba(111, 50, 255, 0.025) 0%, rgba(111, 50, 255, 0) 55%);
+  --gradient-card-hero: linear-gradient(135deg, rgba(111, 50, 255, 0.05) 0%, rgba(111, 50, 255, 0) 50%, rgba(21, 233, 154, 0.06) 100%);
+  --gradient-page: radial-gradient(ellipse 80% 55% at 85% -5%, rgba(111, 50, 255, 0.05) 0%, transparent 60%), radial-gradient(ellipse 70% 50% at 0% 105%, rgba(21, 233, 154, 0.05) 0%, transparent 60%);
 }
 
 /* ── Brand layer — from src/tokens/brand.ts ─────────────────────────────

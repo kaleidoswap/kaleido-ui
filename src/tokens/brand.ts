@@ -106,7 +106,7 @@ export const themedForegroundOrder = Object.keys(themedForeground.light) as Them
  */
 export const brandDepth = {
   light: {
-    /** The same wash as the dark one, as soft tints on the lavender page. */
+    /** The same wash as the dark one, as soft tints on the near-white page. */
     pageWash:
       'radial-gradient(ellipse 70% 45% at 50% -5%, rgba(21, 233, 154, 0.16) 0%, transparent 70%), radial-gradient(ellipse 50% 32% at 0% 68%, rgba(124, 58, 237, 0.12) 0%, transparent 70%)',
     /** Darker stops, each 4.5:1 or better on the light page. */

@@ -171,85 +171,104 @@ interface NavPage {
   icon: IconName
 }
 
-// One page per component group, grouped by what the components are for.
-const NAV_CATEGORIES: { label: string; icon: IconName; pages: NavPage[] }[] = [
+interface NavCategory {
+  label: string
+  icon: IconName
+  pages: NavPage[]
+}
+
+// One page per component group, grouped by what the components are for:
+// the generic building blocks first, then the wallet's own surfaces and flows.
+const NAV_SECTIONS: { label: string; categories: NavCategory[] }[] = [
   {
-    label: 'Foundations',
-    icon: 'layers',
-    pages: [
-      { id: 'brand', label: 'Brand', icon: 'bolt' },
-      { id: 'buttons', label: 'Buttons', icon: 'touch_app' },
-      { id: 'icons', label: 'Icons', icon: 'palette' },
-      { id: 'inputs', label: 'Inputs', icon: 'edit' },
-      { id: 'tabs', label: 'Tabs', icon: 'tune' },
-      { id: 'forms', label: 'Forms', icon: 'radio_button_unchecked' },
-    ],
-  },
-  {
-    label: 'Display',
-    icon: 'visibility',
-    pages: [
-      { id: 'status-badges', label: 'Status Badges', icon: 'verified' },
-      { id: 'network-badges', label: 'Network Badges', icon: 'hub' },
-      { id: 'info-chips', label: 'Info Chips', icon: 'info' },
-      { id: 'cards', label: 'Cards', icon: 'grid_view' },
-      { id: 'alert-banners', label: 'Alert Banners', icon: 'warning' },
-      { id: 'tone-badges', label: 'Tone Badges', icon: 'toll' },
-      { id: 'avatar', label: 'Avatar', icon: 'person' },
-      { id: 'collapsible', label: 'Collapsible', icon: 'expand_more' },
-    ],
-  },
-  {
-    label: 'Overlays',
-    icon: 'apps',
-    pages: [
-      { id: 'dialog', label: 'Dialog', icon: 'chat_bubble' },
-      { id: 'drawer', label: 'Drawer', icon: 'menu' },
-      { id: 'toast', label: 'Toast', icon: 'description' },
-      { id: 'popover-menu', label: 'Popover & Menu', icon: 'open_in_new' },
-      { id: 'notices', label: 'Notices', icon: 'error' },
+    label: 'Basic Components',
+    categories: [
+      {
+        label: 'Foundations',
+        icon: 'layers',
+        pages: [
+          { id: 'brand', label: 'Brand', icon: 'bolt' },
+          { id: 'buttons', label: 'Buttons', icon: 'touch_app' },
+          { id: 'icons', label: 'Icons', icon: 'palette' },
+          { id: 'inputs', label: 'Inputs', icon: 'edit' },
+          { id: 'tabs', label: 'Tabs', icon: 'tune' },
+          { id: 'forms', label: 'Forms', icon: 'radio_button_unchecked' },
+        ],
+      },
+      {
+        label: 'Display',
+        icon: 'visibility',
+        pages: [
+          { id: 'status-badges', label: 'Status Badges', icon: 'verified' },
+          { id: 'network-badges', label: 'Network Badges', icon: 'hub' },
+          { id: 'info-chips', label: 'Info Chips', icon: 'info' },
+          { id: 'cards', label: 'Cards', icon: 'grid_view' },
+          { id: 'alert-banners', label: 'Alert Banners', icon: 'warning' },
+          { id: 'tone-badges', label: 'Tone Badges', icon: 'toll' },
+          { id: 'avatar', label: 'Avatar', icon: 'person' },
+          { id: 'collapsible', label: 'Collapsible', icon: 'expand_more' },
+        ],
+      },
+      {
+        label: 'Overlays',
+        icon: 'apps',
+        pages: [
+          { id: 'dialog', label: 'Dialog', icon: 'chat_bubble' },
+          { id: 'drawer', label: 'Drawer', icon: 'menu' },
+          { id: 'toast', label: 'Toast', icon: 'description' },
+          { id: 'popover-menu', label: 'Popover & Menu', icon: 'open_in_new' },
+          { id: 'notices', label: 'Notices', icon: 'error' },
+        ],
+      },
+      {
+        label: 'Patterns',
+        icon: 'hexagon',
+        pages: [
+          { id: 'copy', label: 'Copy', icon: 'content_copy' },
+          { id: 'lists', label: 'Lists & filters', icon: 'search' },
+          { id: 'page-layout', label: 'Page layout', icon: 'code' },
+        ],
+      },
+      {
+        label: 'Data',
+        icon: 'trending_up',
+        pages: [
+          { id: 'table', label: 'Table', icon: 'table_rows' },
+          { id: 'scrollbars', label: 'Scrollbars', icon: 'swap_vert' },
+          { id: 'charts', label: 'Charts', icon: 'bar_chart' },
+        ],
+      },
     ],
   },
   {
     label: 'Wallet',
-    icon: 'account_balance_wallet',
-    pages: [
-      { id: 'asset-cards', label: 'Asset Cards', icon: 'token' },
-      { id: 'transaction-cards', label: 'Transaction Cards', icon: 'receipt_long' },
-      { id: 'feature-components', label: 'Feature Components', icon: 'inventory_2' },
-      { id: 'account-components', label: 'Account Components', icon: 'fingerprint' },
-      { id: 'setting-items', label: 'Setting Items', icon: 'settings' },
-    ],
-  },
-  {
-    label: 'Flows',
-    icon: 'sync_alt',
-    pages: [
-      { id: 'activity-components', label: 'Activity', icon: 'history' },
-      { id: 'deposit-components', label: 'Deposit', icon: 'arrow_downward' },
-      { id: 'withdraw-components', label: 'Withdraw', icon: 'arrow_outward' },
-      { id: 'swap-flow', label: 'Swap Flow', icon: 'swap_horiz' },
-    ],
-  },
-  {
-    label: 'Patterns',
-    icon: 'hexagon',
-    pages: [
-      { id: 'copy', label: 'Copy', icon: 'content_copy' },
-      { id: 'lists', label: 'Lists & filters', icon: 'search' },
-      { id: 'page-layout', label: 'Page layout', icon: 'code' },
-    ],
-  },
-  {
-    label: 'Data',
-    icon: 'trending_up',
-    pages: [
-      { id: 'table', label: 'Table', icon: 'table_rows' },
-      { id: 'scrollbars', label: 'Scrollbars', icon: 'swap_vert' },
-      { id: 'charts', label: 'Charts', icon: 'bar_chart' },
+    categories: [
+      {
+        label: 'Surfaces',
+        icon: 'account_balance_wallet',
+        pages: [
+          { id: 'asset-cards', label: 'Asset Cards', icon: 'token' },
+          { id: 'transaction-cards', label: 'Transaction Cards', icon: 'receipt_long' },
+          { id: 'feature-components', label: 'Feature Components', icon: 'inventory_2' },
+          { id: 'account-components', label: 'Account Components', icon: 'fingerprint' },
+          { id: 'setting-items', label: 'Setting Items', icon: 'settings' },
+        ],
+      },
+      {
+        label: 'Flows',
+        icon: 'sync_alt',
+        pages: [
+          { id: 'activity-components', label: 'Activity', icon: 'history' },
+          { id: 'deposit-components', label: 'Deposit', icon: 'arrow_downward' },
+          { id: 'withdraw-components', label: 'Withdraw', icon: 'arrow_outward' },
+          { id: 'swap-flow', label: 'Swap Flow', icon: 'swap_horiz' },
+        ],
+      },
     ],
   },
 ]
+
+const NAV_CATEGORIES = NAV_SECTIONS.flatMap((section) => section.categories)
 
 // Every glyph in the set, read from the set itself, so the Icons page cannot
 // list a name that draws nothing.
@@ -379,9 +398,9 @@ export function App() {
   // The showcase's own navigation, rendered by the desktop sidebar and the
   // mobile drawer alike: each category is a submenu, as Trade and Liquidity
   // are in the desktop app, and its pages show when it is opened.
-  const pageNav = (
-    <DrawerSection label="Components">
-      {NAV_CATEGORIES.map((category) => (
+  const pageNav = NAV_SECTIONS.map((section) => (
+    <DrawerSection key={section.label} label={section.label}>
+      {section.categories.map((category) => (
         <DrawerNavGroup
           key={category.label}
           label={category.label}
@@ -401,7 +420,7 @@ export function App() {
         </DrawerNavGroup>
       ))}
     </DrawerSection>
-  )
+  ))
 
   // The drawer's header and version line, the same in the showcase's own
   // navigation and in the Drawer page's demo.
@@ -411,18 +430,17 @@ export function App() {
 
   const navFooter = (
     <DrawerFooter className="space-y-3">
-      <DrawerSection label="Quick actions">
-        <DrawerNavItem
-          href="#/products"
-          label="Product previews"
-          icon={<Icon name="grid_view" className="text-icon-xl" />}
-        />
-        <DrawerNavItem
-          href="#/state-snapshot"
-          label="State Snapshot"
-          icon={<Icon name="science" className="text-icon-xl" />}
-        />
-      </DrawerSection>
+      <DrawerNavItem
+        href="#/products"
+        label="Product previews"
+        icon={<Icon name="grid_view" className="text-icon-xl" />}
+      />
+      <DrawerNavItem
+        href="#/state-snapshot"
+        label="State Snapshot"
+        icon={<Icon name="science" className="text-icon-xl" />}
+      />
+      <div role="separator" className="mx-4 border-t border-divider/15" />
       {drawerVersion}
     </DrawerFooter>
   )
@@ -470,7 +488,7 @@ export function App() {
         header={lockup}
       >
         <DrawerBody>
-          <nav aria-label="Components">{pageNav}</nav>
+          <nav aria-label="Showcase">{pageNav}</nav>
         </DrawerBody>
         {navFooter}
       </DrawerSidebar>
@@ -493,7 +511,7 @@ export function App() {
               <DrawerTitle className="sr-only">Showcase navigation</DrawerTitle>
               <DrawerDescription>Component pages, by category</DrawerDescription>
               <DrawerBody>
-                <nav aria-label="Components">{pageNav}</nav>
+                <nav aria-label="Showcase">{pageNav}</nav>
               </DrawerBody>
               {navFooter}
             </DrawerContent>

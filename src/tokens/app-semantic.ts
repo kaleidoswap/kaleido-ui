@@ -82,12 +82,12 @@ export const appSemanticDark: AppSemanticChannels = {
 
 /** Light mode — emitted under `.light`. */
 export const appSemanticLight: AppSemanticChannels = {
-  // Cards = white on a lavender page for clear depth.
-  'surface-base': '226 222 244', // #E2DEF4 — sidebar/deep backgrounds
-  'surface-raised': '241 238 252', // #F1EEFC — page body bg
+  // Cards = white on a near-white, faintly cool page: depth from shadow, not tint.
+  'surface-base': '243 243 247', // #F3F3F7 — sidebar/deep backgrounds
+  'surface-raised': '248 248 251', // #F8F8FB — page body bg
   'surface-overlay': '255 255 255', // #FFFFFF — card bg (white)
-  'surface-elevated': '248 246 255', // #F8F6FF — sections inside cards
-  'surface-high': '234 229 252', // #EAE5FC — hover/active highlights
+  'surface-elevated': '250 250 252', // #FAFAFC — sections inside cards
+  'surface-high': '239 239 244', // #EFEFF4 — hover/active highlights
   primary: '23 181 129', //         #17B581
   'primary-emphasis': '19 138 100', // #138A64
   'primary-foreground': '14 13 22', // #0E0D16 — dark ink on green (white was 2.6:1)
@@ -99,14 +99,14 @@ export const appSemanticLight: AppSemanticChannels = {
   'content-secondary': '79 74 117', // #4F4A75
   'content-tertiary': '122 116 160', // #7A74A0
   'content-inverse': '255 255 255',
-  'border-subtle': '226 221 246', // #E2DDF6
-  'border-default': '206 199 236', // #CEC7EC
+  'border-subtle': '236 236 241', // #ECECF1
+  'border-default': '222 222 230', // #DEDEE6
   'border-strong': '23 181 129',
   'status-success': '22 163 74',
   'status-danger': '220 38 38',
   'status-warning': '217 119 6',
   'status-info': '2 132 199',
-  divider: '206 199 236', //         #CEC7EC
+  divider: '222 222 230', //         #DEDEE6
   'network-spark': '13 12 20', //   #0D0C14
 }
 

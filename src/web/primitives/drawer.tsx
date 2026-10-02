@@ -40,8 +40,8 @@ const DrawerOpenContext = React.createContext<(() => void) | undefined>(undefine
 /** Whether the surrounding drawer is folded to its icon rail. */
 export const useDrawerCollapsed = () => React.useContext(DrawerContext).collapsed
 
-// The panel itself: surface-base, the rule on its right edge, the heavy shadow.
-const panel = 'flex h-full flex-col border-r border-divider/30 bg-surface-base bg-gradient-card text-foreground shadow-popover'
+// The panel itself: surface-base, the rule on its right edge, a soft shadow.
+const panel = 'flex h-full flex-col border-r border-divider/30 bg-surface-base bg-gradient-card text-foreground shadow-raised'
 
 // The sidebar's collapse button, which is also the mobile drawer's close.
 const edgeButton =
@@ -240,7 +240,7 @@ DrawerDescription.displayName = 'DrawerDescription'
  * styles the list itself, as it did when the body was the scroller.
  */
 const DrawerBody = ({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <ScrollArea className="min-h-0 flex-1" viewportClassName={cn('px-4 pt-4', className)} {...props}>
+  <ScrollArea className="min-h-0 flex-1" viewportClassName={cn('px-4 py-4', className)} {...props}>
     {children}
   </ScrollArea>
 )
@@ -521,9 +521,15 @@ const DrawerNavGroup = ({
 }
 DrawerNavGroup.displayName = 'DrawerNavGroup'
 
-/** Below the list, kept on screen while it scrolls: quick actions, the version. */
-const DrawerFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('px-4 pb-4 pt-6', className)} {...props} />
+/**
+ * Below the list, kept on screen while it scrolls: quick actions, the version.
+ * A rule on its top edge marks where the scrolling list ends.
+ */
+const DrawerFooter = ({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn('px-4 pb-4', className)} {...props}>
+    <div role="separator" className="mb-4 border-t border-divider/20" />
+    {children}
+  </div>
 )
 DrawerFooter.displayName = 'DrawerFooter'
 

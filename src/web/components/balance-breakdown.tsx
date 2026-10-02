@@ -177,7 +177,7 @@ export function BalanceBreakdown({
         data-testid="balance-breakdown-card"
         className={`relative overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-card ${compact ? 'p-3.5' : 'p-5'}`}
       >
-        <div className="pointer-events-none absolute right-0 top-0 h-48 w-48 -translate-y-1/4 translate-x-1/4 rounded-full bg-secondary/25 blur-[60px]" />
+        <div className="pointer-events-none absolute right-0 top-0 h-48 w-48 -translate-y-1/4 translate-x-1/4 rounded-full bg-secondary/25 blur-[60px] [.light_&]:bg-secondary/8" />
         <div className="pointer-events-none absolute bottom-0 left-0 h-40 w-40 -translate-x-1/3 translate-y-1/3 rounded-full bg-primary/10 blur-[60px]" />
 
         <div className="relative z-10 flex items-start justify-between gap-3">

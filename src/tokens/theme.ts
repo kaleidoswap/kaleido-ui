@@ -196,7 +196,7 @@ const dark: KaleidoTheme = {
 
 const light: KaleidoTheme = {
   mode: 'light',
-  background: '#F1EEFC', // lavender page, as on web
+  background: '#F8F8FB', // near-white page, as on web
   card: '#FFFFFF',
   cardElevated: '#FFFFFF',
   primary: '#13D88E',
@@ -245,7 +245,7 @@ const light: KaleidoTheme = {
     liquid: '#D8F5F1',
   },
   tx: { sent: '#E2403B', receive: '#0FB67C', swap: '#2F73E0' },
-  shadow: { card: '#3B2A80', violet: '#6F32FF', primary: '#17B581' },
+  shadow: { card: '#1C1B2E', violet: '#6F32FF', primary: '#17B581' },
   gradientBrand: ['#15E99A', '#6F32FF'] as const,
   gradientViolet: ['#8A5CFF', '#5420CC'] as const,
 }
