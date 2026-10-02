@@ -37,7 +37,7 @@ export const lightSemanticColors = {
   popover: '#FFFFFF',
   popoverFg: '#15122A',
   primary: '#17B581', //    brand green (light)
-  primaryFg: '#FFFFFF',
+  primaryFg: '#0E0D16', // dark ink on the green, as on the dark theme (white was 2.6:1)
   secondary: '#EAE5FC', //  neutral surface (bg-secondary utility is brand violet via app token)
   secondaryFg: '#15122A',
   muted: '#F8F6FF', //      surface-elevated
@@ -181,6 +181,27 @@ export const colors = {
     lightning: '#E4D56F',
     liquid: '#5DE5D6',
     taproot: '#C4CACD',
+  },
+
+  /** Light-theme network chips: a pale tint of each hue (`networkChip` is the dark one). */
+  networkChipLight: {
+    bitcoin: '#FBEFD9',
+    rgb: '#FBE3E1',
+    arkade: '#ECE4FF',
+    spark: '#E6E5EE',
+    lightning: '#FCF6D6',
+    liquid: '#D8F5F1',
+    taproot: '#E9ECEE',
+  },
+  /** Light-theme chip text: each hue darkened until it clears 4.5:1 on its chip. */
+  networkTextLight: {
+    bitcoin: '#92400E',
+    rgb: '#991B1B',
+    arkade: '#5B21B6',
+    spark: '#0D0C14',
+    lightning: '#854D0E',
+    liquid: '#115E59',
+    taproot: '#464A69',
   },
 
   /** Asset icon brand colors — used as solid backgrounds behind glyphs */

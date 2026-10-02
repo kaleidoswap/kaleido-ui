@@ -35,7 +35,7 @@ export function DepositSuccessScreen({
         <div className="relative mb-8">
           <div className="absolute inset-0 scale-150 animate-pulse rounded-full bg-secondary/25 blur-2xl" />
           <div className="relative flex size-20 items-center justify-center rounded-full bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-glow-brand">
-            <Icon name="check_circle" className="size-12 text-primary animate-in zoom-in-50 duration-500" />
+            <Icon name="check_circle" className="size-12 text-brand animate-in zoom-in-50 duration-500" />
           </div>
         </div>
 
@@ -47,8 +47,8 @@ export function DepositSuccessScreen({
         <div className="mb-10 flex items-center gap-3 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero px-4 py-3 shadow-card">
           <AssetIcon ticker={displayTicker} size={36} />
           <div className="text-left">
-            <p className="text-body font-bold text-white">{displayTicker}</p>
-            <p className="text-caption text-white/40">{selectedAsset?.name ?? displayTicker}</p>
+            <p className="text-body font-bold text-foreground">{displayTicker}</p>
+            <p className="text-caption text-foreground/55">{selectedAsset?.name ?? displayTicker}</p>
           </div>
           <div
             className={cn(

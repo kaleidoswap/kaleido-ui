@@ -43,7 +43,7 @@ export const NETWORK_CONFIG: Record<DepositNetworkKey, DepositNetworkConfigEntry
     label: 'On-chain',
     color: colors.network.bitcoin,
     bg: 'bg-network-bitcoin/15',
-    text: 'text-network-bitcoin',
+    text: 'text-network-bitcoin-fg',
     border: 'border-network-bitcoin/40',
     qrBorder: 'border-network-bitcoin/30',
     qrGlow: qrGlowStyle(colors.network.bitcoin),
@@ -56,7 +56,7 @@ export const NETWORK_CONFIG: Record<DepositNetworkKey, DepositNetworkConfigEntry
     label: 'Lightning',
     color: colors.network.lightning,
     bg: 'bg-network-lightning/15',
-    text: 'text-network-lightning',
+    text: 'text-network-lightning-fg',
     border: 'border-network-lightning/40',
     qrBorder: 'border-network-lightning/30',
     qrGlow: qrGlowStyle(colors.network.lightning),
@@ -66,17 +66,17 @@ export const NETWORK_CONFIG: Record<DepositNetworkKey, DepositNetworkConfigEntry
     label: 'Spark',
     color: colors.info,
     bg: 'bg-info/15',
-    text: 'text-info',
+    text: 'text-info-fg',
     border: 'border-info/40',
     qrBorder: 'border-info/30',
     qrGlow: qrGlowStyle(colors.info),
-    icon: <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" className="h-3 w-3" alt="" />,
+    icon: <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" className="kui-mono-icon h-3 w-3" alt="" />,
   },
   arkade: {
     label: 'Arkade',
     color: colors.network.arkade,
     bg: 'bg-network-arkade/15',
-    text: 'text-network-arkade',
+    text: 'text-network-arkade-fg',
     border: 'border-network-arkade/40',
     qrBorder: 'border-network-arkade/30',
     qrGlow: qrGlowStyle(colors.network.arkade),
@@ -86,7 +86,7 @@ export const NETWORK_CONFIG: Record<DepositNetworkKey, DepositNetworkConfigEntry
     label: 'Liquid',
     color: colors.network.liquid,
     bg: 'bg-network-liquid/15',
-    text: 'text-network-liquid',
+    text: 'text-network-liquid-fg',
     border: 'border-network-liquid/40',
     qrBorder: 'border-network-liquid/30',
     qrGlow: qrGlowStyle(colors.network.liquid),
@@ -107,7 +107,7 @@ const ACCOUNT_META: Record<
   RGB: {
     shortLabel: 'RGB',
     accentBg: 'bg-primary/10',
-    accentText: 'text-primary',
+    accentText: 'text-brand',
     accentBorder: 'border-primary/30',
     // Bundled RGB mark (protocolIcons) — a host-served /icons/rgb/... path
     // renders as a broken box in consumers that don't ship that asset.
@@ -115,28 +115,28 @@ const ACCOUNT_META: Record<
   },
   SPARK: {
     shortLabel: 'Spark',
-    accentBg: 'bg-info/10',
-    accentText: 'text-info',
-    accentBorder: 'border-info/30',
+    accentBg: 'bg-network-spark/10',
+    accentText: 'text-network-spark-fg',
+    accentBorder: 'border-network-spark/30',
     icon: (
       <img
         src="/icons/spark/Asterisk/Spark Asterisk White.svg"
         alt=""
-        className="h-2.5 w-2.5 object-contain"
+        className="kui-mono-icon h-2.5 w-2.5 object-contain"
       />
     ),
   },
   ARKADE: {
     shortLabel: 'Arkade',
     accentBg: 'bg-network-arkade/10',
-    accentText: 'text-network-arkade',
+    accentText: 'text-network-arkade-fg',
     accentBorder: 'border-network-arkade/30',
     icon: <img src="/icons/arkade/arkade-icon.svg" alt="" className="h-2.5 w-2.5 rounded-[1px] object-contain" />,
   },
   LIQUID: {
     shortLabel: 'Liquid',
     accentBg: 'bg-network-liquid/10',
-    accentText: 'text-network-liquid',
+    accentText: 'text-network-liquid-fg',
     accentBorder: 'border-network-liquid/30',
     icon: <LiquidNetworkIcon className="h-2.5 w-2.5" />,
   },
@@ -167,10 +167,10 @@ export function InvoiceStatusBanner({
       className={cn(
         'flex items-center justify-center gap-2 rounded-xl px-3 py-1.5 text-caption font-bold',
         isInvoicePaid
-          ? 'bg-primary/10 text-primary shadow-glow-primary-soft'
+          ? 'bg-primary/10 text-brand shadow-glow-primary-soft'
           : isInvoiceFailedOrExpired
-            ? 'bg-danger/10 text-danger'
-            : 'bg-warning/10 text-warning'
+            ? 'bg-danger/10 text-danger-fg'
+            : 'bg-warning/10 text-warning-fg'
       )}
     >
       {isInvoicePending && (
@@ -225,7 +225,7 @@ export function CopyIcon({ copied, variant = 'tile', className }: CopyIconProps)
       <Icon
         name={copied ? 'check' : 'content_copy'}
         aria-hidden="true"
-        className={cn('text-icon-sm', copied && 'text-primary', className)}
+        className={cn('text-icon-sm', copied && 'text-brand', className)}
       />
     )
   }
@@ -234,7 +234,7 @@ export function CopyIcon({ copied, variant = 'tile', className }: CopyIconProps)
       className={cn(
         'flex-shrink-0 rounded-lg p-2 transition-all',
         copied
-          ? 'bg-primary/15 text-primary shadow-glow-primary-soft'
+          ? 'bg-primary/15 text-brand shadow-glow-primary-soft'
           : 'bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25 group-hover:bg-secondary group-hover:bg-gradient-violet group-hover:text-white'
       )}
     >
@@ -266,7 +266,7 @@ export function AccountChoiceChip({
         'flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-1.5 text-icon-xxs font-bold transition-all',
         active
           ? cn(meta.accentBg, meta.accentText, meta.accentBorder, 'shadow-raised')
-          : 'border-white/8 bg-white/5 text-muted-foreground hover:border-secondary/40 hover:bg-secondary/10 hover:text-white/80'
+          : 'border-foreground/8 bg-foreground/5 text-muted-foreground hover:border-secondary/40 hover:bg-secondary/10 hover:text-foreground/80'
       )}
     >
       {meta.icon}
@@ -352,7 +352,7 @@ export function NetworkInfoDisclosure({
         <span className="flex-1 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
           What are these networks?
         </span>
-        <Icon name={open ? 'expand_less' : 'expand_more'} size="xs" className="text-white/40" />
+        <Icon name={open ? 'expand_less' : 'expand_more'} size="xs" className="text-foreground/55" />
       </button>
       {open && (
         <div className="space-y-2 px-2.5 pb-2.5 pt-0.5 animate-in fade-in slide-in-from-top-1 duration-200">
@@ -372,8 +372,8 @@ export function NetworkInfoDisclosure({
                 <p className="pl-5 text-tiny leading-snug text-muted-foreground">{info.detail}</p>
                 <ul className="space-y-0.5 pl-5">
                   {info.bullets.map((bullet) => (
-                    <li key={bullet} className="flex items-start gap-1.5 text-xxs leading-snug text-white/50">
-                      <span className="mt-[1px] text-white/30">-</span>
+                    <li key={bullet} className="flex items-start gap-1.5 text-xxs leading-snug text-foreground/50">
+                      <span className="mt-[1px] text-foreground/55">-</span>
                       <span>{bullet}</span>
                     </li>
                   ))}
@@ -413,8 +413,8 @@ export function MethodChoiceChip({
         active
           ? 'border-transparent bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
           : enabled
-            ? 'border-white/8 bg-white/5 text-muted-foreground hover:border-secondary/40 hover:bg-secondary/10 hover:text-white/80'
-            : 'cursor-not-allowed border-border bg-white/3 text-white/20'
+            ? 'border-foreground/8 bg-foreground/5 text-muted-foreground hover:border-secondary/40 hover:bg-secondary/10 hover:text-foreground/80'
+            : 'cursor-not-allowed border-border bg-foreground/3 text-foreground/20'
       )}
     >
       {meta.label}

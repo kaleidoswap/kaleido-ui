@@ -61,7 +61,7 @@ export function WithdrawInvoiceInfo({
         {decodedLnInvoice.amount != null && decodedLnInvoice.amount > 0 && (
           <div className="flex justify-between text-body">
             <span className="text-muted-foreground">Amount</span>
-            <span className="font-bold text-white">
+            <span className="font-bold text-foreground">
               {formatAmount(decodedLnInvoice.amount)}{' '}
               {decodedLnInvoice.asset_id ? 'units' : 'sats'}
             </span>
@@ -70,7 +70,7 @@ export function WithdrawInvoiceInfo({
         {decodedLnInvoice.asset_id && (
           <div className="flex justify-between text-body">
             <span className="text-muted-foreground">Asset</span>
-            <span className="font-mono text-caption text-white">
+            <span className="font-mono text-caption text-foreground">
               {allAssets.find((asset) => asset.asset_id === decodedLnInvoice.asset_id)?.ticker ??
                 `${decodedLnInvoice.asset_id.substring(0, 12)}...`}
             </span>
@@ -79,7 +79,7 @@ export function WithdrawInvoiceInfo({
         {decodedLnInvoice.asset_amount != null && decodedLnInvoice.asset_amount > 0 && (
           <div className="flex justify-between text-body">
             <span className="text-muted-foreground">Asset Amount</span>
-            <span className="font-bold text-white">
+            <span className="font-bold text-foreground">
               {formatAmount(decodedLnInvoice.asset_amount)}
             </span>
           </div>
@@ -87,14 +87,14 @@ export function WithdrawInvoiceInfo({
         {decodedLnInvoice.description && (
           <div className="flex justify-between text-body">
             <span className="text-muted-foreground">Description</span>
-            <span className="max-w-[180px] truncate text-right text-white">
+            <span className="max-w-[180px] truncate text-right text-foreground">
               {decodedLnInvoice.description}
             </span>
           </div>
         )}
         <div className="flex justify-between text-body">
           <span className="text-muted-foreground">Channel Capacity</span>
-          <span className="text-white">
+          <span className="text-foreground">
             {formatAmount(Math.floor(maxLightningCapacity / 1000))} sats
           </span>
         </div>
@@ -109,7 +109,7 @@ export function WithdrawInvoiceInfo({
         {decodedRgbInvoice.asset_id && (
           <div className="flex justify-between text-body">
             <span className="text-muted-foreground">Asset</span>
-            <span className="font-mono text-caption text-white">
+            <span className="font-mono text-caption text-foreground">
               {allAssets.find((asset) => asset.asset_id === decodedRgbInvoice.asset_id)?.ticker ??
                 `${decodedRgbInvoice.asset_id.substring(0, 8)}...${decodedRgbInvoice.asset_id.slice(-8)}`}
             </span>
@@ -119,7 +119,7 @@ export function WithdrawInvoiceInfo({
           decodedRgbInvoice.assignment.value > 0 && (
             <div className="flex justify-between text-body">
               <span className="text-muted-foreground">Requested Amount</span>
-              <span className="font-bold text-white">
+              <span className="font-bold text-foreground">
                 {formatRawAmount(
                   decodedRgbInvoice.assignment.value,
                   getAssetPrecisionForId(allAssets, decodedRgbInvoice.asset_id ?? selectedAssetId)
@@ -130,12 +130,12 @@ export function WithdrawInvoiceInfo({
         {decodedRgbInvoice.recipient_type && (
           <div className="flex justify-between text-body">
             <span className="text-muted-foreground">Recipient Type</span>
-            <span className="text-white">{decodedRgbInvoice.recipient_type}</span>
+            <span className="text-foreground">{decodedRgbInvoice.recipient_type}</span>
           </div>
         )}
         <div className="flex justify-between text-body">
           <span className="text-muted-foreground">Your Balance</span>
-          <span className="text-white">
+          <span className="text-foreground">
             {formatRawAmount(assetBalance, getAssetPrecisionForId(allAssets, selectedAssetId))}{' '}
             {selectedAssetTicker ?? 'units'}
           </span>
@@ -155,7 +155,7 @@ export function WithdrawInvoiceInfo({
                 ? 'Available Liquid Balance'
                 : 'Available Balance'}
           </span>
-          <span className="font-bold text-white">
+          <span className="font-bold text-foreground">
             {formatRawAmount(assetBalance, getAssetPrecisionForId(allAssets, selectedAssetId))}{' '}
             {selectedAssetTicker ?? 'sats'}
           </span>

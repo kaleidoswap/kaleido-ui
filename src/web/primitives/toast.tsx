@@ -27,7 +27,7 @@ const toastVariants = cva(
     variants: {
       variant: {
         default: 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero text-foreground ring-1 ring-inset ring-secondary/25',
-        destructive: 'bg-danger/20 text-danger ring-1 ring-inset ring-danger/30',
+        destructive: 'bg-danger/20 text-danger-fg ring-1 ring-inset ring-danger/30',
       },
     },
     defaultVariants: {
@@ -58,7 +58,7 @@ const ToastAction = React.forwardRef<
   <ToastPrimitives.Action
     ref={ref}
     className={cn(
-      'inline-flex h-8 shrink-0 items-center justify-center rounded-lg border border-secondary/50 bg-secondary/10 px-3 text-caption font-semibold text-secondary-content shadow-raised transition-all hover:border-secondary hover:bg-secondary/20 hover:shadow-glow-violet-soft focus:outline-none disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-danger/30 group-[.destructive]:text-danger group-[.destructive]:hover:border-danger group-[.destructive]:hover:bg-danger/10',
+      'inline-flex h-8 shrink-0 items-center justify-center rounded-lg border border-secondary/50 bg-secondary/10 px-3 text-caption font-semibold text-secondary-content shadow-raised transition-all hover:border-secondary hover:bg-secondary/20 hover:shadow-glow-violet-soft focus:outline-none disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-danger/30 group-[.destructive]:text-danger-fg group-[.destructive]:hover:border-danger group-[.destructive]:hover:bg-danger/10',
       className
     )}
     {...props}
@@ -73,7 +73,7 @@ const ToastClose = React.forwardRef<
   <ToastPrimitives.Close
     ref={ref}
     className={cn(
-      'p-1.5 text-muted-foreground opacity-100 transition-all hover:text-secondary-content focus:opacity-100 focus:outline-none group-[.destructive]:text-danger/80 group-[.destructive]:hover:text-danger',
+      'p-1.5 text-muted-foreground opacity-100 transition-all hover:text-secondary-content focus:opacity-100 focus:outline-none group-[.destructive]:text-danger-fg/80 group-[.destructive]:hover:text-danger-fg',
       className
     )}
     toast-close=""

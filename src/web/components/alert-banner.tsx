@@ -4,10 +4,10 @@ import type { IconName } from '../primitives/icon'
 import type { ReactNode } from 'react'
 
 const variantStyles = {
-  error:   { container: 'bg-danger/40',    icon: 'text-danger',    iconName: 'error' },
-  warning: { container: 'bg-warning/40', icon: 'text-warning', iconName: 'warning' },
-  info:    { container: 'bg-info/40 bg-gradient-card', icon: 'text-info',   iconName: 'info' },
-  success: { container: 'bg-primary/10',    icon: 'text-primary/90', iconName: 'check_circle' },
+  error:   { container: 'bg-danger/40',    icon: 'text-danger-fg',    iconName: 'error' },
+  warning: { container: 'bg-warning/40', icon: 'text-warning-fg', iconName: 'warning' },
+  info:    { container: 'bg-info/40 bg-gradient-card', icon: 'text-info-fg',   iconName: 'info' },
+  success: { container: 'bg-primary/10',    icon: 'text-brand/90', iconName: 'check_circle' },
 } as const
 
 interface AlertBannerProps {

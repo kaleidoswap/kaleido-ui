@@ -75,7 +75,7 @@ export function FilterBar({
             <Icon name="tune" className="text-icon-md" />
             {filtersLabel}
             {activeCount > 0 && (
-              <span aria-hidden="true" className="rounded-full bg-primary/15 px-1.5 text-xxs font-bold text-primary ring-1 ring-inset ring-primary/30">
+              <span aria-hidden="true" className="rounded-full bg-primary/15 px-1.5 text-xxs font-bold text-brand ring-1 ring-inset ring-primary/30">
                 {activeCount}
               </span>
             )}

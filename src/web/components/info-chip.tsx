@@ -46,16 +46,16 @@ const defaultStatusLabel: Record<InfoChipStatus, string> = {
 }
 
 const leadingToneClass: Record<InfoChipStatus, string> = {
-  success: 'bg-success/10 text-success',
-  warning: 'bg-warning/10 text-warning',
-  danger: 'bg-danger/10 text-danger',
+  success: 'bg-success/10 text-success-fg',
+  warning: 'bg-warning/10 text-warning-fg',
+  danger: 'bg-danger/10 text-danger-fg',
   info: 'bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25',
 }
 
 const statusToneClass: Record<InfoChipStatus, string> = {
-  success: 'border-success/25 bg-success/10 text-success',
-  warning: 'border-warning/25 bg-warning/10 text-warning',
-  danger: 'border-danger/25 bg-danger/10 text-danger',
+  success: 'border-success/25 bg-success/10 text-success-fg',
+  warning: 'border-warning/25 bg-warning/10 text-warning-fg',
+  danger: 'border-danger/25 bg-danger/10 text-danger-fg',
   info: 'border-secondary/30 bg-secondary/15 text-secondary-content',
 }
 

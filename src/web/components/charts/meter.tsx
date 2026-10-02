@@ -58,7 +58,7 @@ export function Meter({
         <div className={cn('h-full rounded-full transition-[width] duration-300 motion-reduce:transition-none', fill)} style={{ width: `${ratio * 100}%` }} />
       </div>
       {state !== 'normal' && (
-        <p className={cn('m-0 flex items-center gap-1 text-caption', state === 'danger' ? 'text-danger' : 'text-warning')}>
+        <p className={cn('m-0 flex items-center gap-1 text-caption', state === 'danger' ? 'text-danger-fg' : 'text-warning-fg')}>
           <Icon name={state === 'danger' ? 'error' : 'warning'} className="text-icon-sm" />
           {state === 'danger' ? `Almost full · ${percent}%` : `Getting full · ${percent}%`}
         </p>

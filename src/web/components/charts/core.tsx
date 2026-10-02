@@ -300,7 +300,7 @@ export function ChartFrame({
           data-slot="chart-view-toggle"
           aria-pressed={view === 'table'}
           onClick={() => setView(view === 'chart' ? 'table' : 'chart')}
-          className="shrink-0 rounded-lg px-2 py-1 text-caption font-semibold text-muted-foreground transition-all duration-200 hover:bg-secondary/15 hover:text-secondary-content focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft aria-pressed:bg-primary/10 aria-pressed:text-primary aria-pressed:ring-1 aria-pressed:ring-inset aria-pressed:ring-primary/40"
+          className="shrink-0 rounded-lg px-2 py-1 text-caption font-semibold text-muted-foreground transition-all duration-200 hover:bg-secondary/15 hover:text-secondary-content focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft aria-pressed:bg-primary/10 aria-pressed:text-brand aria-pressed:ring-1 aria-pressed:ring-inset aria-pressed:ring-primary/40"
         >
           {view === 'chart' ? 'Show table' : 'Show chart'}
         </button>

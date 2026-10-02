@@ -292,7 +292,7 @@ export function AssetSelector({
         onClick={() => setNetworkMenuOpen((value) => !value)}
       />
       {networkMenuOpen && (
-        <div className="absolute right-0 top-full z-10 mt-1.5 w-48 overflow-hidden rounded-xl border border-white/[0.08] bg-popover shadow-popover">
+        <div className="absolute right-0 top-full z-10 mt-1.5 w-48 overflow-hidden rounded-xl border border-foreground/[0.08] bg-popover shadow-popover">
           <div className="max-h-60 overflow-y-auto p-1">
             <button
               type="button"
@@ -304,7 +304,7 @@ export function AssetSelector({
                 'flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-caption font-semibold transition-colors',
                 activeNetwork === null
                   ? 'bg-secondary/15 text-secondary-content'
-                  : 'text-white/75 hover:bg-secondary/15 hover:text-white',
+                  : 'text-foreground/75 hover:bg-secondary/15 hover:text-foreground',
               )}
             >
               <Icon name="hub" size="xs" className="shrink-0" />
@@ -327,7 +327,7 @@ export function AssetSelector({
                     'flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-caption font-semibold transition-colors',
                     isActive
                       ? 'bg-secondary/15 text-secondary-content'
-                      : 'text-white/75 hover:bg-secondary/15 hover:text-white',
+                      : 'text-foreground/75 hover:bg-secondary/15 hover:text-foreground',
                   )}
                 >
                   <AssetSelectorNetworkMark network={network} />
@@ -446,7 +446,7 @@ export function AssetSelector({
         <span className="flex min-w-0 flex-1 items-center justify-between gap-3 text-left">
           <span className="min-w-0 flex flex-col leading-tight">
             <span
-              className="max-w-full truncate text-body font-bold tracking-wide text-white"
+              className="max-w-full truncate text-body font-bold tracking-wide text-foreground"
               title={option.name ?? option.ticker}
             >
               {option.name ?? option.ticker}
@@ -486,7 +486,7 @@ export function AssetSelector({
                 'max-w-24 truncate',
                 option.networkTag
                   ? 'text-caption text-muted-foreground'
-                  : 'text-mini font-bold uppercase tracking-eyebrow text-white/35',
+                  : 'text-mini font-bold uppercase tracking-eyebrow text-foreground/55',
               )}
               title={optionDisabled ? 'In use' : option.ticker}
             >
@@ -515,7 +515,7 @@ export function AssetSelector({
             'group flex w-full items-center gap-3 rounded-full px-3 py-2 text-left transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50',
             open
               ? 'bg-gradient-active ring-1 ring-inset ring-primary/40 shadow-glow-primary-soft'
-              : 'bg-black/20 shadow-raised hover:bg-secondary/10',
+              : 'bg-foreground/5 shadow-raised hover:bg-secondary/10',
           )}
         >
           {selected ? (
@@ -538,13 +538,13 @@ export function AssetSelector({
                 )}
               </span>
               <span className="min-w-0 flex-1 text-left">
-                <span className="block truncate text-title font-bold leading-tight text-white">
+                <span className="block truncate text-title font-bold leading-tight text-foreground">
                   {selected.ticker}
                 </span>
               </span>
             </>
           ) : (
-            <span className="px-1 py-1 text-caption font-semibold text-white/45">Select...</span>
+            <span className="px-1 py-1 text-caption font-semibold text-foreground/55">Select...</span>
           )}
         </button>
 
@@ -565,7 +565,7 @@ export function AssetSelector({
                       <p className="text-mini font-bold uppercase tracking-eyebrow-wide text-muted-foreground">
                         {label} Asset
                       </p>
-                      <p className="mt-1 text-body font-semibold text-white/90">
+                      <p className="mt-1 text-body font-semibold text-foreground/90">
                         {filtered.length} option{filtered.length === 1 ? '' : 's'} available
                       </p>
                     </div>
@@ -573,7 +573,7 @@ export function AssetSelector({
                       (selected && (
                         <div className="flex items-center gap-2 rounded-full bg-secondary/15 px-2.5 py-1 shadow-raised">
                           <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={18} />
-                          <span className="text-tiny font-semibold text-white">
+                          <span className="text-tiny font-semibold text-foreground">
                             {selected.ticker}
                           </span>
                         </div>
@@ -586,7 +586,7 @@ export function AssetSelector({
                     <Icon
                       name="search"
                       size="sm"
-                      className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/35"
+                      className="absolute left-3.5 top-1/2 -translate-y-1/2 text-foreground/55"
                     />
                     <input
                       autoFocus
@@ -594,16 +594,16 @@ export function AssetSelector({
                       value={search}
                       onChange={(event) => setSearch(event.target.value)}
                       placeholder="Search..."
-                      className="h-11 w-full rounded-2xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 pl-10 pr-3 text-caption text-white shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
+                      className="h-11 w-full rounded-2xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 pl-10 pr-3 text-caption text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
                     />
                   </div>
                   {filterControls}
                 </div>
 
-                <div className="mx-4 h-px bg-white/[0.06]" />
+                <div className="mx-4 h-px bg-foreground/[0.06]" />
                 <ScrollArea className="min-h-0 flex-1" viewportClassName="max-h-[56vh] px-2 py-2 pb-6">
                   {filtered.length === 0 ? (
-                    <div className="flex flex-col items-center gap-2 px-4 py-10 text-center text-caption text-white/30">
+                    <div className="flex flex-col items-center gap-2 px-4 py-10 text-center text-caption text-foreground/55">
                       <Icon name="search" size="md" className="opacity-40" />
                       <span>
                         No assets match {search ? `"${search}"` : 'the active filters'}
@@ -630,7 +630,7 @@ export function AssetSelector({
                             optionSelected
                               ? 'border-transparent bg-gradient-active ring-1 ring-inset ring-primary/40 shadow-glow-primary-soft'
                               : optionDisabled
-                                ? 'cursor-not-allowed border-transparent bg-white/[0.015] opacity-45'
+                                ? 'cursor-not-allowed border-transparent bg-foreground/[0.015] opacity-45'
                                 : 'border-transparent bg-transparent hover:bg-secondary/10',
                           )}
                         >
@@ -673,21 +673,21 @@ export function AssetSelector({
                 <>
                   <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={32} />
                   <span>
-                    <span className="text-body font-semibold text-white">
+                    <span className="text-body font-semibold text-foreground">
                       {selected.ticker}
                     </span>
-                    <span className="mt-0.5 block text-caption text-white/35">{selected.name}</span>
+                    <span className="mt-0.5 block text-caption text-foreground/55">{selected.name}</span>
                   </span>
                 </>
               ) : (
-                <span className="text-caption text-white/35">Select asset...</span>
+                <span className="text-caption text-foreground/55">Select asset...</span>
               )}
             </span>
             <Icon
               name="expand_more"
               size="sm"
               className={cn(
-                'ml-2 flex-shrink-0 text-white/35 transition-transform duration-200',
+                'ml-2 flex-shrink-0 text-foreground/55 transition-transform duration-200',
                 open && 'rotate-180',
               )}
             />
@@ -702,7 +702,7 @@ export function AssetSelector({
                 <p className="text-mini font-bold uppercase tracking-eyebrow-wide text-muted-foreground">
                   {label} Asset
                 </p>
-                <p className="mt-1 text-body font-semibold text-white/90">
+                <p className="mt-1 text-body font-semibold text-foreground/90">
                   {filtered.length} option{filtered.length === 1 ? '' : 's'} available
                 </p>
               </div>
@@ -710,7 +710,7 @@ export function AssetSelector({
                 (selected && (
                   <div className="flex items-center gap-2 rounded-full bg-secondary/15 px-2.5 py-1 shadow-raised">
                     <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={18} />
-                    <span className="text-tiny font-semibold text-white">{selected.ticker}</span>
+                    <span className="text-tiny font-semibold text-foreground">{selected.ticker}</span>
                   </div>
                 ))}
             </div>
@@ -721,7 +721,7 @@ export function AssetSelector({
               <Icon
                 name="search"
                 size="sm"
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/35"
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-foreground/55"
               />
               <input
                 autoFocus
@@ -729,7 +729,7 @@ export function AssetSelector({
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search..."
-                className="h-11 w-full rounded-2xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 pl-10 pr-3 text-caption text-white shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
+                className="h-11 w-full rounded-2xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 pl-10 pr-3 text-caption text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
               />
             </div>
             {filterControls}

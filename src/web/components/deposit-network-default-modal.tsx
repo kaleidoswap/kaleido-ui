@@ -25,17 +25,17 @@ const NETWORK_OPTIONS: Record<DepositAccountId, DepositNetworkOption> = {
     icon: <Icon name="link" className="text-icon-lg" />,
     accentBg: 'bg-network-bitcoin/10',
     accentBorder: 'border-network-bitcoin/30',
-    accentText: 'text-network-bitcoin',
+    accentText: 'text-network-bitcoin-fg',
   },
   SPARK: {
     network: 'spark',
     account: 'SPARK',
     label: 'Spark',
     description: 'Receive directly into your Spark account. Fast and free.',
-    icon: <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" alt="" className="h-[18px]" />,
+    icon: <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" alt="" className="kui-mono-icon h-[18px]" />,
     accentBg: 'bg-info/10',
     accentBorder: 'border-info/30',
-    accentText: 'text-info',
+    accentText: 'text-info-fg',
   },
   ARKADE: {
     network: 'arkade',
@@ -45,7 +45,7 @@ const NETWORK_OPTIONS: Record<DepositAccountId, DepositNetworkOption> = {
     icon: <img src="/icons/arkade/arkade-icon.svg" alt="" className="h-[18px]" />,
     accentBg: 'bg-network-arkade/10',
     accentBorder: 'border-network-arkade/30',
-    accentText: 'text-network-arkade',
+    accentText: 'text-network-arkade-fg',
   },
   LIQUID: {
     // Liquid is its own chain; reuse the "onchain" network key for the modal's
@@ -57,7 +57,7 @@ const NETWORK_OPTIONS: Record<DepositAccountId, DepositNetworkOption> = {
     icon: <LiquidNetworkIcon className="h-[18px] w-[18px]" />,
     accentBg: 'bg-network-liquid/10',
     accentBorder: 'border-network-liquid/30',
-    accentText: 'text-network-liquid',
+    accentText: 'text-network-liquid-fg',
   },
 }
 
@@ -88,8 +88,8 @@ export function DepositNetworkDefaultModal({
         </div>
 
         <div>
-          <p className="text-body font-bold text-white">Choose your default network</p>
-          <p className="mt-0.5 text-tiny text-white/45">
+          <p className="text-body font-bold text-foreground">Choose your default network</p>
+          <p className="mt-0.5 text-tiny text-foreground/55">
             Pick how you would like to receive{' '}
             <span className="font-semibold text-muted-foreground">{assetTicker}</span> by default.
             You can always switch in the deposit screen.
@@ -123,7 +123,7 @@ export function DepositNetworkDefaultModal({
 
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className={cn('text-caption font-bold', isSuggested ? option.accentText : 'text-white')}>
+                    <span className={cn('text-caption font-bold', isSuggested ? option.accentText : 'text-foreground')}>
                       {option.label}
                     </span>
                     {isSuggested && (
@@ -138,14 +138,14 @@ export function DepositNetworkDefaultModal({
                       </span>
                     )}
                   </div>
-                  <p className="mt-0.5 text-xxs leading-snug text-white/45">{option.description}</p>
+                  <p className="mt-0.5 text-xxs leading-snug text-foreground/55">{option.description}</p>
                 </div>
 
                 <Icon
                   name="chevron_right"
                   className={cn(
                     'flex-shrink-0 text-icon-lg',
-                    isSuggested ? option.accentText : 'text-white/25'
+                    isSuggested ? option.accentText : 'text-foreground/25'
                   )}
                 />
               </button>

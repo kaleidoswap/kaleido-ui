@@ -177,7 +177,7 @@ export function SwapInputCard({
                 maxLength={24}
                 onChange={(event) => onFromInputChange(event.target.value)}
                 placeholder="0"
-                className="w-full min-w-0 border-none bg-transparent text-right text-headline font-bold tabular-nums text-white placeholder:text-white/15 focus:outline-none"
+                className="w-full min-w-0 border-none bg-transparent text-right text-headline font-bold tabular-nums text-foreground placeholder:text-foreground/15 focus:outline-none"
               />
               {fromUnitIsToggle && onToggleFromUnit ? (
                 <button
@@ -195,7 +195,7 @@ export function SwapInputCard({
           </div>
           <div className="mt-2 flex items-center justify-between gap-2">
             <p
-              className="min-w-0 max-w-full truncate text-xxs font-medium tabular-nums text-white/60"
+              className="min-w-0 max-w-full truncate text-xxs font-medium tabular-nums text-foreground/60"
               title={showMaxText && maxText ? `Max: ${maxText}` : `Available: ${availableText}`}
             >
               {showMaxText && maxDisplayText
@@ -223,7 +223,7 @@ export function SwapInputCard({
         </div>
 
         <div className="rounded-b-2xl bg-gradient-to-br from-secondary/[0.06] to-primary/[0.08] p-3.5 pt-4 transition-all duration-300">
-          <p className="mb-2 text-mini font-bold uppercase tracking-eyebrow text-primary/70">
+          <p className="mb-2 text-mini font-bold uppercase tracking-eyebrow text-brand/70">
             You Receive
           </p>
           <div className="flex items-center gap-2">
@@ -243,13 +243,13 @@ export function SwapInputCard({
                 <div className="ml-auto h-8 w-28 animate-pulse rounded-lg bg-secondary/15" />
               ) : receiveAmount ? (
                 <span
-                  className="block max-w-full truncate text-headline font-bold tabular-nums text-primary"
+                  className="block max-w-full truncate text-headline font-bold tabular-nums text-brand"
                   title={receiveAmount}
                 >
                   {receiveDisplayText}
                 </span>
               ) : (
-                <span className="text-headline font-bold text-white/15">-</span>
+                <span className="text-headline font-bold text-foreground/15">-</span>
               )}
               <p className="mt-0.5 text-caption text-muted-foreground">
                 {receiveUnitLabel || toTicker || '-'}
@@ -262,13 +262,13 @@ export function SwapInputCard({
       {(quoteError || quoteRateText || quoteVenueText || quoteFeeText || quoteExpiresText) && (
         <div className="rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-3 shadow-card">
           {quoteError ? (
-            <p className="text-center text-caption text-danger">{quoteError}</p>
+            <p className="text-center text-caption text-danger-fg">{quoteError}</p>
           ) : (
             <div className="space-y-1.5">
               {quoteVenueText && (
                 <div className="flex items-center justify-between text-caption">
-                  <span className="text-white/40">Provider</span>
-                  <span className="inline-flex items-center gap-1.5 font-medium text-white/65">
+                  <span className="text-foreground/55">Provider</span>
+                  <span className="inline-flex items-center gap-1.5 font-medium text-foreground/65">
                     <span
                       className={cn(
                         'size-1.5 rounded-full',
@@ -284,23 +284,23 @@ export function SwapInputCard({
               )}
               {quoteRateText && (
                 <div className="flex items-center justify-between text-caption">
-                  <span className="text-white/40">Rate</span>
-                  <span className="font-medium text-white/65">{quoteRateText}</span>
+                  <span className="text-foreground/55">Rate</span>
+                  <span className="font-medium text-foreground/65">{quoteRateText}</span>
                 </div>
               )}
               {(quoteFeeText || quoteExpiresText) && (
                 <div className="flex items-center justify-between text-caption">
-                  <span className="text-white/40">Fee</span>
+                  <span className="text-foreground/55">Fee</span>
                   <div className="flex items-center gap-2">
-                    {quoteFeeText && <span className="text-white/65">{quoteFeeText}</span>}
+                    {quoteFeeText && <span className="text-foreground/65">{quoteFeeText}</span>}
                     {quoteFeeText && quoteExpiresText && (
-                      <span className="text-white/15">·</span>
+                      <span className="text-foreground/15">·</span>
                     )}
                     {quoteExpiresText && (
                       <span
                         className={cn(
                           'tabular-nums',
-                          quoteExpiresUrgent ? 'font-semibold text-warning' : 'text-white/40',
+                          quoteExpiresUrgent ? 'font-semibold text-warning-fg' : 'text-foreground/55',
                         )}
                       >
                         {quoteExpiresText}
@@ -316,8 +316,8 @@ export function SwapInputCard({
 
       {warning && (
         <div className="flex items-start gap-2 rounded-xl bg-danger/10 p-3">
-          <Icon name="warning" size="sm" className="mt-0.5 text-danger" />
-          <p className="text-caption leading-relaxed text-danger">{warning}</p>
+          <Icon name="warning" size="sm" className="mt-0.5 text-danger-fg" />
+          <p className="text-caption leading-relaxed text-danger-fg">{warning}</p>
         </div>
       )}
 

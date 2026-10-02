@@ -657,6 +657,17 @@ These rules exist because generated UIs kept drifting: ad-hoc borders, wrong but
 - Row-level actions inside cards are `ghost` `size="sm"`; destructive row actions (Block, Delete) are `destructive` `size="sm"` and always sit rightmost.
 - Never express an action as a styled `<div>`/`<button>` with utility classes — use `Button`.
 
+## Light theme
+
+Every component works on both themes from the same classes; nothing is dark-only.
+
+- **Neutral ink is `foreground`, never white.** `text-foreground/60`, `bg-foreground/5`, `border-foreground/8` — not `text-white/60` or `bg-white/5`, which vanish on the light ramp. `text-white` is only for text on a saturated fill (violet, gradients, destructive, network and asset discs).
+- **Coloured text uses the brand layer's per-theme foregrounds**: `text-brand` (not `text-primary`), `text-success-fg`, `text-warning-fg`, `text-danger-fg`, `text-info-fg`, `text-network-*-fg`. The plain tokens stay for fills, borders and rings. They clear 4.5:1 on both themes.
+- **Tertiary text floors at 55%** of the foreground (`text-foreground/55`); 30–45% reads under 3:1 on the light ramp.
+- **Text on green is dark ink on both themes** (`primary-foreground` `#0E0D16`; white on the light green was 2.6:1). The opt-in brand theme (`kaleido-ui/css/brand`) darkens the light green to `#086E46` and switches its text and button gradient back to white on deep green.
+- **Network chips follow the theme**: `bg-network-*-chip` / `text-network-*-text` are dark tints on dark, pale tints with dark text on light (`networkChipLight` / `networkTextLight`).
+- **Spark's white mark** takes `kui-mono-icon` and is drawn black on light.
+
 ## Transparency (glass) schema
 
 Layered translucency lets the animated background glow breathe through the UI without hurting readability. Every translucent surface maps to exactly one of these roles — don't invent new alpha values.

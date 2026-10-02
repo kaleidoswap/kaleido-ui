@@ -30,10 +30,10 @@ export function AccountCapabilitiesCard({
 }: AccountCapabilitiesCardProps) {
   const accentClasses =
     accent === 'primary'
-      ? 'bg-primary/5 text-primary'
+      ? 'bg-primary/5 text-brand'
       : accent === 'blue'
-        ? 'bg-info/5 text-info'
-        : 'bg-network-arkade/5 text-network-arkade'
+        ? 'bg-info/5 text-info-fg'
+        : 'bg-network-arkade/5 text-network-arkade-fg'
 
   return (
     <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-4 shadow-card transition-all duration-300">

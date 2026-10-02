@@ -13,31 +13,31 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   // (DESIGN.md coherence: surfaces layer by background, not ad-hoc borders).
   const config: Record<StatusType, { color: string; bg: string; icon: IconName; label: string }> = {
     success: {
-      color: 'text-primary',
+      color: 'text-brand',
       bg: 'bg-primary/10',
       icon: 'check_circle',
       label: 'Success',
     },
     completed: {
-      color: 'text-primary',
+      color: 'text-brand',
       bg: 'bg-primary/10',
       icon: 'check_circle',
       label: 'Completed',
     },
     pending: {
-      color: 'text-warning',
+      color: 'text-warning-fg',
       bg: 'bg-warning/10',
       icon: 'schedule',
       label: 'Pending',
     },
     failed: {
-      color: 'text-danger',
+      color: 'text-danger-fg',
       bg: 'bg-danger/10',
       icon: 'error',
       label: 'Failed',
     },
     error: {
-      color: 'text-danger',
+      color: 'text-danger-fg',
       bg: 'bg-danger/10',
       icon: 'error',
       label: 'Error',

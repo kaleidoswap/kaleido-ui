@@ -456,7 +456,7 @@ export function DepositInvoiceGeneration({
             </div>
             <div className="space-y-1 text-center">
               <p className="text-caption font-bold text-muted-foreground">Generating addresses...</p>
-              <p className="text-caption text-white/30">{ACCOUNT_TITLES[btcSelectedAccount]}</p>
+              <p className="text-caption text-foreground/55">{ACCOUNT_TITLES[btcSelectedAccount]}</p>
             </div>
           </div>
         ) : !address ? (

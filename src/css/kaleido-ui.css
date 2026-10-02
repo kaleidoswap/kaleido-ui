@@ -37,7 +37,7 @@
   --popover:              #FFFFFF;
   --popover-foreground:   #15122A;
   --primary:              #17B581;
-  --primary-foreground:   #FFFFFF;
+  --primary-foreground:   #0E0D16;
   --secondary:            #EAE5FC;
   --secondary-foreground: #15122A;
   --muted:                #F8F6FF;
@@ -127,8 +127,20 @@
   --app-status-info: 56 189 248;
   --app-divider: 86 83 110;
   --app-network-spark: 255 255 255;
-  --app-network-spark-chip: 43 42 53;
-  --app-network-spark-text: 232 231 240;
+  --network-bitcoin-chip: #44341F;
+  --network-bitcoin-text: #F2B063;
+  --network-rgb-chip: #44282B;
+  --network-rgb-text: #E87872;
+  --network-arkade-chip: #362B55;
+  --network-arkade-text: #A98CF2;
+  --network-spark-chip: #2B2A35;
+  --network-spark-text: #E8E7F0;
+  --network-lightning-chip: #3D421F;
+  --network-lightning-text: #E4D56F;
+  --network-liquid-chip: #0D2A2E;
+  --network-liquid-text: #5DE5D6;
+  --network-taproot-chip: #1E2328;
+  --network-taproot-text: #C4CACD;
   /* Elevation ink — shadows are cast in a near-black violet. */
   --app-shadow: 7 4 22;
   --app-shadow-strength: 1;
@@ -146,7 +158,7 @@
   --app-surface-high: 234 229 252;
   --app-primary: 23 181 129;
   --app-primary-emphasis: 19 138 100;
-  --app-primary-foreground: 255 255 255;
+  --app-primary-foreground: 14 13 22;
   --app-secondary: 111 50 255;
   --app-secondary-emphasis: 84 32 204;
   --app-secondary-foreground: 255 255 255;
@@ -164,8 +176,20 @@
   --app-status-info: 2 132 199;
   --app-divider: 206 199 236;
   --app-network-spark: 13 12 20;
-  --app-network-spark-chip: 230 229 238;
-  --app-network-spark-text: 26 25 34;
+  --network-bitcoin-chip: #FBEFD9;
+  --network-bitcoin-text: #92400E;
+  --network-rgb-chip: #FBE3E1;
+  --network-rgb-text: #991B1B;
+  --network-arkade-chip: #ECE4FF;
+  --network-arkade-text: #5B21B6;
+  --network-spark-chip: #E6E5EE;
+  --network-spark-text: #0D0C14;
+  --network-lightning-chip: #FCF6D6;
+  --network-lightning-text: #854D0E;
+  --network-liquid-chip: #D8F5F1;
+  --network-liquid-text: #115E59;
+  --network-taproot-chip: #E9ECEE;
+  --network-taproot-text: #464A69;
   --app-shadow: 55 20 136;
   --app-shadow-strength: 0.28;
   --app-rim-alpha: 0.7;
@@ -290,12 +314,24 @@
   --color-status-info: rgb(var(--app-status-info));
   --color-divider: rgb(var(--app-divider));
   --color-network-spark: rgb(var(--app-network-spark));
-  --color-network-spark-chip: rgb(var(--app-network-spark-chip));
-  --color-network-spark-text: rgb(var(--app-network-spark-text));
   --color-status-success-subtle: rgb(var(--app-status-success) / 0.15);
   --color-status-danger-subtle: rgb(var(--app-status-danger) / 0.15);
   --color-status-warning-subtle: rgb(var(--app-status-warning) / 0.15);
   --color-status-info-subtle: rgb(var(--app-status-info) / 0.15);
+  --color-network-bitcoin-chip: var(--network-bitcoin-chip);
+  --color-network-bitcoin-text: var(--network-bitcoin-text);
+  --color-network-rgb-chip: var(--network-rgb-chip);
+  --color-network-rgb-text: var(--network-rgb-text);
+  --color-network-arkade-chip: var(--network-arkade-chip);
+  --color-network-arkade-text: var(--network-arkade-text);
+  --color-network-spark-chip: var(--network-spark-chip);
+  --color-network-spark-text: var(--network-spark-text);
+  --color-network-lightning-chip: var(--network-lightning-chip);
+  --color-network-lightning-text: var(--network-lightning-text);
+  --color-network-liquid-chip: var(--network-liquid-chip);
+  --color-network-liquid-text: var(--network-liquid-text);
+  --color-network-taproot-chip: var(--network-taproot-chip);
+  --color-network-taproot-text: var(--network-taproot-text);
 
   /* Brand layer — per-theme foregrounds and glows (see the blocks above) */
   --color-brand: var(--brand);
@@ -331,18 +367,6 @@
   --color-network-lightning: #F6C343;
   --color-network-liquid:    #22e1c9;
   --color-network-taproot:   #D1D6D8;
-  --color-network-bitcoin-chip:   #44341F;
-  --color-network-rgb-chip:       #44282B;
-  --color-network-arkade-chip:    #362B55;
-  --color-network-lightning-chip: #3D421F;
-  --color-network-liquid-chip:    #0D2A2E;
-  --color-network-taproot-chip:   #1E2328;
-  --color-network-bitcoin-text:   #F2B063;
-  --color-network-rgb-text:       #E87872;
-  --color-network-arkade-text:    #A98CF2;
-  --color-network-lightning-text: #E4D56F;
-  --color-network-liquid-text:    #5DE5D6;
-  --color-network-taproot-text:   #C4CACD;
 
   /* Asset icon brand colors */
   --color-asset-eth:  #627EEA;

@@ -75,7 +75,7 @@ const networkConfig: Record<
   Spark: {
     chipVar: '--color-network-spark-chip',
     textVar: '--color-network-spark-text',
-    border: 'border-black/20 dark:border-white/20',
+    border: 'border-black/20 dark:border-foreground/20',
     label: 'Spark',
     iconSuffix: 'spark/Asterisk/Spark Asterisk White.svg',
   },
@@ -146,7 +146,7 @@ export function NetworkBadge({
       <img
         src={icon}
         alt={network}
-        className={cn(className, 'object-contain', defaultIconClassName, iconClassName)}
+        className={cn(className, 'object-contain', icon.includes('Spark Asterisk White') && 'kui-mono-icon', defaultIconClassName, iconClassName)}
       />
     )
 

@@ -73,12 +73,12 @@ export function RecoveryPhraseCard({
                 <span className="w-4 shrink-0 text-caption font-bold text-secondary-content">
                   {index + 1}
                 </span>
-                <span className="font-mono text-body text-white">{word}</span>
+                <span className="font-mono text-body text-foreground">{word}</span>
               </div>
             ))}
           </div>
         ) : (
-          <div className="rounded-xl bg-warning/10 px-4 py-3 text-body text-warning">
+          <div className="rounded-xl bg-warning/10 px-4 py-3 text-body text-warning-fg">
             {emptyMessage}
           </div>
         )}
@@ -111,7 +111,7 @@ export function RecoveryPhraseCard({
         </Button>
       )}
       {selfCopy && clipboard.state === 'failed' && (
-        <p role="alert" className="m-0 text-caption text-danger">
+        <p role="alert" className="m-0 text-caption text-danger-fg">
           {copyFailedMessage}
         </p>
       )}

@@ -58,24 +58,24 @@ function RouteChoiceCard<TAccount extends string>({
         {accountIcon && <div className="mt-0.5 shrink-0">{accountIcon}</div>}
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-body font-bold text-white">{route.accountTitle}</span>
+            <span className="text-body font-bold text-foreground">{route.accountTitle}</span>
             {recommended && !disabled && (
-              <span className="rounded-full bg-primary/15 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-primary shadow-glow-primary-soft">
+              <span className="rounded-full bg-primary/15 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-brand shadow-glow-primary-soft">
                 Recommended
               </span>
             )}
             {disabled && (
-              <span className="rounded-full bg-danger/10 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-danger">
+              <span className="rounded-full bg-danger/10 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-danger-fg">
                 Insufficient
               </span>
             )}
           </div>
           {balanceLabel && (
-            <p className="mt-0.5 text-caption tabular-nums text-white/55">{balanceLabel}</p>
+            <p className="mt-0.5 text-caption tabular-nums text-foreground/55">{balanceLabel}</p>
           )}
         </div>
       </div>
-      <span className="shrink-0 text-mini font-bold uppercase tracking-eyebrow text-white/40">
+      <span className="shrink-0 text-mini font-bold uppercase tracking-eyebrow text-foreground/55">
         {route.feeHint}
       </span>
     </div>
@@ -107,7 +107,7 @@ function RouteChoiceCard<TAccount extends string>({
     >
       {body}
       {disabled && disabledReason && (
-        <p className="mt-2 text-xxs leading-relaxed text-danger/80">{disabledReason}</p>
+        <p className="mt-2 text-xxs leading-relaxed text-danger-fg/80">{disabledReason}</p>
       )}
     </button>
   )

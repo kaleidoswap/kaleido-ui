@@ -29,10 +29,10 @@ export interface DepositSelectionAsset {
 }
 
 const PROTOCOL_BADGE: Record<DepositAccountId, { label: string; className: string }> = {
-  RGB: { label: 'RGB', className: 'bg-network-rgb-chip text-network-rgb-text' },
-  SPARK: { label: 'Spark', className: 'bg-network-spark-chip text-network-spark-text' },
-  ARKADE: { label: 'Arkade', className: 'bg-network-arkade-chip text-network-arkade-text' },
-  LIQUID: { label: 'Liquid', className: 'bg-network-liquid-chip text-network-liquid-text' },
+  RGB: { label: 'RGB', className: 'bg-network-rgb-chip text-network-rgb-fg' },
+  SPARK: { label: 'Spark', className: 'bg-network-spark-chip text-network-spark-fg' },
+  ARKADE: { label: 'Arkade', className: 'bg-network-arkade-chip text-network-arkade-fg' },
+  LIQUID: { label: 'Liquid', className: 'bg-network-liquid-chip text-network-liquid-fg' },
 }
 
 function formatAssetBalance(asset: DepositSelectionAsset): string {
@@ -107,7 +107,7 @@ export function DepositAssetSelection<TView extends string = string>({
       enabled: isRgbConnected,
       idleClass: 'bg-primary/10 hover:bg-primary/20',
       activeClass: 'bg-primary/25',
-      titleHoverClass: 'group-hover:text-primary',
+      titleHoverClass: 'group-hover:text-brand',
     },
     {
       account: 'SPARK' as const,
@@ -116,7 +116,7 @@ export function DepositAssetSelection<TView extends string = string>({
       enabled: isSparkConnected,
       idleClass: 'bg-info/10 hover:bg-info/20',
       activeClass: 'bg-info/25',
-      titleHoverClass: 'group-hover:text-info',
+      titleHoverClass: 'group-hover:text-info-fg',
     },
     {
       account: 'ARKADE' as const,
@@ -125,7 +125,7 @@ export function DepositAssetSelection<TView extends string = string>({
       enabled: isArkadeConnected,
       idleClass: 'bg-network-arkade/10 hover:bg-network-arkade/20',
       activeClass: 'bg-network-arkade/25',
-      titleHoverClass: 'group-hover:text-network-arkade',
+      titleHoverClass: 'group-hover:text-network-arkade-fg',
     },
     {
       account: 'LIQUID' as const,
@@ -134,7 +134,7 @@ export function DepositAssetSelection<TView extends string = string>({
       enabled: isLiquidConnected,
       idleClass: 'bg-network-liquid/10 hover:bg-network-liquid/20',
       activeClass: 'bg-network-liquid/25',
-      titleHoverClass: 'group-hover:text-network-liquid',
+      titleHoverClass: 'group-hover:text-network-liquid-fg',
     },
   ].filter((option) => option.enabled)
 
@@ -170,7 +170,7 @@ export function DepositAssetSelection<TView extends string = string>({
           <input
             autoFocus
             data-testid="deposit-asset-search"
-            className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 py-2.5 pl-10 pr-4 text-caption text-white shadow-inner outline-none transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:bg-white/8 focus:shadow-glow-primary-soft"
+            className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 py-2.5 pl-10 pr-4 text-caption text-foreground shadow-inner outline-none transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:bg-foreground/8 focus:shadow-glow-primary-soft"
             onChange={(event) => setSearchQuery(event.target.value)}
             placeholder="Search assets..."
             type="text"
@@ -189,10 +189,10 @@ export function DepositAssetSelection<TView extends string = string>({
           >
             <AssetIcon ticker="BTC" size={40} className="flex-shrink-0" />
             <div className="min-w-0 flex-1 text-left">
-              <div className="font-bold tracking-wide text-white transition-colors group-hover:text-secondary-content">
+              <div className="font-bold tracking-wide text-foreground transition-colors group-hover:text-secondary-content">
                 Bitcoin
               </div>
-              <div className="mt-0.5 text-caption text-white/40">Choose destination account next</div>
+              <div className="mt-0.5 text-caption text-foreground/55">Choose destination account next</div>
             </div>
             <div className="hidden min-w-0 max-w-[42%] flex-shrink flex-wrap justify-end gap-1 min-[380px]:flex">
               <NetworkBadge network="L1" size="sm" />
@@ -201,12 +201,12 @@ export function DepositAssetSelection<TView extends string = string>({
               {isArkadeConnected && <NetworkBadge network="Arkade" size="sm" />}
               {isLiquidConnected && <NetworkBadge network="Liquid" size="sm" />}
             </div>
-            <Icon name="arrow_forward" className="flex-shrink-0 text-icon-md text-white/20 transition-colors group-hover:text-secondary-content" />
+            <Icon name="arrow_forward" className="flex-shrink-0 text-icon-md text-foreground/20 transition-colors group-hover:text-secondary-content" />
           </button>
         )}
 
         {noResults ? (
-          <div className="py-8 text-center text-caption text-white/30">
+          <div className="py-8 text-center text-caption text-foreground/55">
             No assets match &quot;{searchQuery}&quot;
           </div>
         ) : ownedAssetsCount > 0 ? (
@@ -250,7 +250,7 @@ export function DepositAssetSelection<TView extends string = string>({
                       <AssetIcon ticker={asset.ticker} size={40} className="flex-shrink-0" />
                       <div className="min-w-0 flex-1 text-left">
                         <div className="flex min-w-0 items-center gap-1.5">
-                          <span className="truncate font-bold tracking-wide text-white transition-colors group-hover:text-secondary-content">
+                          <span className="truncate font-bold tracking-wide text-foreground transition-colors group-hover:text-secondary-content">
                             {asset.ticker}
                           </span>
                           {protocolBadge && (
@@ -264,21 +264,21 @@ export function DepositAssetSelection<TView extends string = string>({
                             </span>
                           )}
                         </div>
-                        <div className="mt-0.5 truncate text-caption text-white/40">
+                        <div className="mt-0.5 truncate text-caption text-foreground/55">
                           {asset.name ?? 'Asset'}
                         </div>
                       </div>
                       {balance > 0 && (
                         <div className="flex-shrink-0 text-right">
-                          <div className="text-caption font-bold tabular-nums text-white">
+                          <div className="text-caption font-bold tabular-nums text-foreground">
                             {formatAssetBalance(asset)}
                           </div>
-                          <div className="mt-0.5 text-mini font-bold uppercase tracking-eyebrow text-white/35">
+                          <div className="mt-0.5 text-mini font-bold uppercase tracking-eyebrow text-foreground/55">
                             {asset.ticker}
                           </div>
                         </div>
                       )}
-                      <Icon name="arrow_forward" className="flex-shrink-0 text-icon-sm text-white/20 transition-colors group-hover:text-secondary-content" />
+                      <Icon name="arrow_forward" className="flex-shrink-0 text-icon-sm text-foreground/20 transition-colors group-hover:text-secondary-content" />
                     </button>
                   )
                 })}
@@ -298,12 +298,12 @@ export function DepositAssetSelection<TView extends string = string>({
                 <Icon name="swap_calls" className="text-icon-lg" />
               </div>
               <div className="flex-1 text-left">
-                <p className="text-body font-semibold text-white transition-colors group-hover:text-secondary-content">
+                <p className="text-body font-semibold text-foreground transition-colors group-hover:text-secondary-content">
                   Bridge from another chain
                 </p>
-                <p className="text-xxs leading-tight text-white/40">USDC, USDT, ETH, SOL via Flashnet</p>
+                <p className="text-xxs leading-tight text-foreground/55">USDC, USDT, ETH, SOL via Flashnet</p>
               </div>
-              <Icon name="arrow_forward" className="text-icon-lg text-white/30 transition-colors group-hover:text-secondary-content" />
+              <Icon name="arrow_forward" className="text-icon-lg text-foreground/55 transition-colors group-hover:text-secondary-content" />
             </button>
           </div>
         )}
@@ -320,14 +320,14 @@ export function DepositAssetSelection<TView extends string = string>({
                 <Icon name="add" size="md" />
               </div>
               <div className="flex-1 text-left">
-                <p className="text-body font-semibold text-white transition-colors group-hover:text-secondary-content">
+                <p className="text-body font-semibold text-foreground transition-colors group-hover:text-secondary-content">
                   Add an asset
                 </p>
-                <p className="text-xxs leading-tight text-white/40">
+                <p className="text-xxs leading-tight text-foreground/55">
                   Receive a new {newAssetOptions.map((o) => o.ticker).join(', ')} asset
                 </p>
               </div>
-              <Icon name="arrow_forward" className="text-icon-lg text-white/30 transition-colors group-hover:text-secondary-content" />
+              <Icon name="arrow_forward" className="text-icon-lg text-foreground/55 transition-colors group-hover:text-secondary-content" />
             </button>
           </div>
         )}
@@ -361,14 +361,14 @@ export function DepositAssetSelection<TView extends string = string>({
                 <AssetIcon ticker={option.ticker} size={36} className="flex-shrink-0" />
               )}
               <div className="min-w-0 flex-1">
-                <div className={cn('text-body font-bold tracking-wide text-white', option.titleHoverClass)}>
+                <div className={cn('text-body font-bold tracking-wide text-foreground', option.titleHoverClass)}>
                   {option.title}
                 </div>
-                <div className="mt-0.5 text-xxs text-white/40">
+                <div className="mt-0.5 text-xxs text-foreground/55">
                   {ADD_ASSET_SUBTITLE[option.account]}
                 </div>
               </div>
-              <Icon name="add" size="sm" className="text-white/30 transition-colors group-hover:text-white/60" />
+              <Icon name="add" size="sm" className="text-foreground/55 transition-colors group-hover:text-foreground/60" />
             </button>
           ))}
         </div>

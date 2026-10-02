@@ -132,11 +132,11 @@ function Section({
   return (
     <section id={id} aria-labelledby={`${id}-title`}>
       <div className="mb-6">
-        <h1 id={`${id}-title`} className="text-xl font-bold text-white tracking-tight">{title}</h1>
+        <h1 id={`${id}-title`} className="text-xl font-bold text-foreground tracking-tight">{title}</h1>
         {description && (
-          <p className="text-sm text-slate-400 mt-1">{description}</p>
+          <p className="text-sm text-muted-foreground mt-1">{description}</p>
         )}
-        <div className="mt-3 h-px bg-gradient-to-r from-primary/40 via-white/10 to-transparent" />
+        <div className="mt-3 h-px bg-gradient-to-r from-primary/40 via-foreground/10 to-transparent" />
       </div>
       {children}
     </section>
@@ -154,7 +154,7 @@ function Row({
 }) {
   return (
     <div className="mb-6">
-      <p className="text-xs font-mono text-slate-500 uppercase tracking-widest mb-3">{label}</p>
+      <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-3">{label}</p>
       <div className={`flex items-center gap-3 ${wrap ? 'flex-wrap' : ''}`}>{children}</div>
     </div>
   )
@@ -389,7 +389,7 @@ export function App() {
   const lockup = (
     <div className="flex items-center gap-3">
       <img src="/brand/kaleidoswap-pictogram.svg" alt="" className="h-7" />
-      <span className="font-bold text-white tracking-tight">kaleido-ui</span>
+      <span className="font-bold text-foreground tracking-tight">kaleido-ui</span>
     </div>
   )
 
@@ -443,7 +443,7 @@ export function App() {
 
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Top bar — mobile: the same navigation, in a drawer over the page */}
-        <header className="sticky top-0 z-40 flex h-14 items-center gap-3 border-b border-white/5 bg-background/80 px-4 backdrop-blur-xl lg:hidden">
+        <header className="sticky top-0 z-40 flex h-14 items-center gap-3 border-b border-foreground/5 bg-background/80 px-4 backdrop-blur-xl lg:hidden">
           <Drawer open={navOpen} onOpenChange={setNavOpen}>
             <DrawerTrigger asChild>
               <Button
@@ -561,7 +561,7 @@ export function App() {
                     <div className="size-10 rounded-xl bg-primary/15 hover:bg-primary/25 hover:scale-105 transition-all flex items-center justify-center cursor-default">
                       <IconComp size="md" className="text-[#31ff8b]" />
                     </div>
-                    <span className="text-xxs text-slate-500 font-mono">{key}</span>
+                    <span className="text-xxs text-muted-foreground font-mono">{key}</span>
                   </div>
                 ))}
               </div>
@@ -577,7 +577,7 @@ export function App() {
                     <div className="size-10 rounded-xl bg-primary/15 hover:bg-primary/25 hover:scale-105 transition-all flex items-center justify-center cursor-default">
                       <Icon name={name} size="md" className="text-[#31ff8b]" />
                     </div>
-                    <span className="text-xxs text-slate-500 font-mono">{name}</span>
+                    <span className="text-xxs text-muted-foreground font-mono">{name}</span>
                   </div>
                 ))}
               </div>
@@ -645,7 +645,7 @@ export function App() {
                   <CardDescription>With header and content.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-slate-400">Card body content goes here. Cards can hold any child elements.</p>
+                  <p className="text-sm text-muted-foreground">Card body content goes here. Cards can hold any child elements.</p>
                 </CardContent>
               </Card>
               <Card>
@@ -654,7 +654,7 @@ export function App() {
                   <CardDescription>Actions in the footer slot.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-slate-400">Use CardFooter for action buttons or summary information.</p>
+                  <p className="text-sm text-muted-foreground">Use CardFooter for action buttons or summary information.</p>
                 </CardContent>
                 <CardFooter className="gap-2">
                   <Button size="sm">Confirm</Button>
@@ -845,7 +845,7 @@ export function App() {
                       description: 'RGB assets and Lightning channels.',
                       capabilityBullets: ['RGB assets', 'Lightning invoices', 'On-chain receive'],
                       networkLabel: 'Testnet',
-                      networkBannerClassName: 'border-primary/20 bg-primary/10 text-primary',
+                      networkBannerClassName: 'border-primary/20 bg-primary/10 text-brand',
                       accentBg: 'bg-primary/10',
                       accentBorder: 'border-primary/20',
                     },
@@ -1012,12 +1012,12 @@ export function App() {
                     <PaidOverlay />
                   </div>
                 </div>
-                <button className="flex items-center gap-2 rounded-xl bg-card px-3 py-2 text-xs font-bold text-white">
+                <button className="flex items-center gap-2 rounded-xl bg-card px-3 py-2 text-xs font-bold text-foreground">
                   <CopyIcon copied={false} />
                   Copy invoice
                 </button>
                 <div className="rounded-xl bg-card/70 p-3">
-                  <div className="mb-2 flex items-center gap-2 text-xs font-bold text-white">
+                  <div className="mb-2 flex items-center gap-2 text-xs font-bold text-foreground">
                     <span className={`flex size-5 items-center justify-center rounded-md ${NETWORK_CONFIG.lightning.bg}`}>
                       {NETWORK_CONFIG.lightning.icon}
                     </span>
@@ -1303,7 +1303,7 @@ export function App() {
                         <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                           Receive
                         </p>
-                        <p className="mt-1 text-sm font-semibold text-white">Lightning Invoice</p>
+                        <p className="mt-1 text-sm font-semibold text-foreground">Lightning Invoice</p>
                       </div>
                       <NetworkBadge network="LN" showLabel />
                     </div>
@@ -1319,7 +1319,7 @@ export function App() {
                       isInvoicePaid={false}
                       isInvoiceFailedOrExpired={false}
                     />
-                    <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-white/[0.05] px-3 py-3 text-xs font-bold text-white transition-colors hover:bg-white/[0.08]">
+                    <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-foreground/[0.05] px-3 py-3 text-xs font-bold text-foreground transition-colors hover:bg-foreground/[0.08]">
                       <CopyIcon copied={false} />
                       Copy invoice
                     </button>
@@ -1390,11 +1390,11 @@ export function App() {
                 <DialogHeader>
                   <DialogTitle>Confirm Transaction</DialogTitle>
                   <DialogDescription>
-                    You are about to send <span className="text-white font-semibold">21,000 sats</span> to the following address. This action cannot be undone.
+                    You are about to send <span className="text-foreground font-semibold">21,000 sats</span> to the following address. This action cannot be undone.
                   </DialogDescription>
                 </DialogHeader>
-                <div className="my-2 p-3 rounded-xl bg-white/8">
-                  <p className="text-xs font-mono text-slate-300 break-all">
+                <div className="my-2 p-3 rounded-xl bg-foreground/8">
+                  <p className="text-xs font-mono text-foreground/80 break-all">
                     bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
                   </p>
                 </div>
@@ -1410,7 +1410,7 @@ export function App() {
           {/* ── Drawer ──────────────────────────────────────────────────── */}
           <Section id="drawer" title="Drawer" description="The desktop app's left sidebar: on the desktop it folds to an icon rail, on a phone it opens over the page. One navigation list renders in both.">
             <Row label="Desktop · DrawerSidebar (chevron folds it to the rail)" wrap={false}>
-              <div className="flex h-[440px] w-full overflow-hidden rounded-2xl ring-1 ring-white/10">
+              <div className="flex h-[440px] w-full overflow-hidden rounded-2xl ring-1 ring-foreground/10">
                 <DrawerSidebar
                   className="static h-full"
                   collapsed={sidebarCollapsed}
@@ -1530,7 +1530,7 @@ export function App() {
           </Section>
 
           {/* Page to page, in nav order */}
-          <nav aria-label="Pages" className="mt-16 flex items-center justify-between gap-4 border-t border-white/5 pt-6">
+          <nav aria-label="Pages" className="mt-16 flex items-center justify-between gap-4 border-t border-foreground/5 pt-6">
             {previousPage ? (
               <a href={`#/${previousPage.id}`} className={buttonVariants({ variant: 'ghost' })}>
                 <Icon name="arrow_back" size="sm" /> {previousPage.label}

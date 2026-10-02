@@ -65,7 +65,7 @@ const RecordItem = React.forwardRef<HTMLLIElement, RecordItemProps>(
       >
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
-            <div className={cn('truncate text-body font-semibold', selected ? 'text-primary' : 'text-foreground')}>{identifier}</div>
+            <div className={cn('truncate text-body font-semibold', selected ? 'text-brand' : 'text-foreground')}>{identifier}</div>
             {summary && <div className="mt-0.5 text-caption text-muted-foreground">{summary}</div>}
           </div>
           <div className="flex shrink-0 items-center gap-2">

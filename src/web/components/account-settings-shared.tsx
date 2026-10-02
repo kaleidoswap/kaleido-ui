@@ -34,21 +34,21 @@ export function getAccountNetworkUi(network: AccountSettingsNetwork) {
   if (network === 'mainnet') {
     return {
       label,
-      badgeClassName: 'bg-success/12 text-success',
-      bannerClassName: 'bg-success/10 text-success',
+      badgeClassName: 'bg-success/12 text-success-fg',
+      bannerClassName: 'bg-success/10 text-success-fg',
     }
   }
   if (network === 'regtest') {
     return {
       label,
-      badgeClassName: 'bg-danger/12 text-danger',
-      bannerClassName: 'bg-danger/10 text-danger',
+      badgeClassName: 'bg-danger/12 text-danger-fg',
+      bannerClassName: 'bg-danger/10 text-danger-fg',
     }
   }
   return {
     label,
-    badgeClassName: 'bg-warning/12 text-warning',
-    bannerClassName: 'bg-warning/10 text-warning',
+    badgeClassName: 'bg-warning/12 text-warning-fg',
+    bannerClassName: 'bg-warning/10 text-warning-fg',
   }
 }
 
@@ -64,7 +64,7 @@ export function AccountHeaderIcons({ accountId }: { accountId: AccountSettingsPr
   if (accountId === 'SPARK') {
     return (
       <span className="flex size-10 items-center justify-center rounded-full bg-info/10 shadow-raised">
-        <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" alt="Spark" className="size-5 object-contain" />
+        <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" alt="Spark" className="kui-mono-icon size-5 object-contain" />
       </span>
     )
   }
@@ -89,12 +89,12 @@ export function getAccountStatusUi(status: 'ready' | 'offline' | 'optional' | st
     case 'ready':
       return {
         label: 'Ready',
-        className: 'bg-success/10 text-success',
+        className: 'bg-success/10 text-success-fg',
       }
     case 'offline':
       return {
         label: 'Offline',
-        className: 'bg-warning/10 text-warning',
+        className: 'bg-warning/10 text-warning-fg',
       }
     default:
       return {
@@ -266,7 +266,7 @@ export function AccountNotice({
       className={cn(
         'rounded-xl px-3 py-3 text-caption',
         tone === 'warning'
-          ? 'bg-warning/10 text-warning'
+          ? 'bg-warning/10 text-warning-fg'
           : 'bg-secondary/10 text-foreground/80 ring-1 ring-inset ring-secondary/20'
       )}
     >
@@ -349,10 +349,10 @@ export function InlineAction({
 }) {
   const className =
     accent === 'purple'
-      ? 'bg-network-arkade/10 text-network-arkade hover:bg-network-arkade/15'
+      ? 'bg-network-arkade/10 text-network-arkade-fg hover:bg-network-arkade/15'
       : accent === 'blue'
-        ? 'bg-info/10 text-info hover:bg-info/15'
-        : 'bg-primary/10 text-primary hover:bg-primary/15'
+        ? 'bg-info/10 text-info-fg hover:bg-info/15'
+        : 'bg-primary/10 text-brand hover:bg-primary/15'
 
   return (
     <button
@@ -392,7 +392,7 @@ export function TransferRouteCard({
         </div>
         <div className="text-right">
           <p className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">{eta}</p>
-          <p className="mt-1 text-tiny text-primary">{feeHint}</p>
+          <p className="mt-1 text-tiny text-brand">{feeHint}</p>
         </div>
       </div>
     </div>
@@ -459,7 +459,7 @@ export function AccountSettingsRow({
               <div className="flex items-center gap-2">
                 <p className="text-body font-bold text-foreground">{title}</p>
                 {beta && (
-                  <span className="rounded-full bg-warning/15 px-1.5 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-warning">
+                  <span className="rounded-full bg-warning/15 px-1.5 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-warning-fg">
                     Beta
                   </span>
                 )}

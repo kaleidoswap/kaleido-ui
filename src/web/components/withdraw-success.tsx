@@ -48,7 +48,7 @@ export function WithdrawSuccess({
             <span className="text-title font-bold">
               {formatAmount(displayAmount, { locale })}{' '}
               {selectedAssetId === 'BTC' ? (
-                <span className="text-body text-primary/70">sats</span>
+                <span className="text-body text-brand/70">sats</span>
               ) : (
                 (selectedAsset?.ticker ?? 'units')
               )}
@@ -86,7 +86,7 @@ export function WithdrawSuccess({
             handleReset()
             onDone()
           }}
-          className="w-full rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card py-4 text-subhead font-bold text-white shadow-card transition-all hover:bg-secondary/10 hover:shadow-card-hover active:scale-[0.98]"
+          className="w-full rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card py-4 text-subhead font-bold text-foreground shadow-card transition-all hover:bg-secondary/10 hover:shadow-card-hover active:scale-[0.98]"
         >
           Back to Dashboard
         </button>

@@ -50,9 +50,9 @@ function ToastWithProgress({ id, title, description, action, duration = 4000, va
 
   const getIcon = () => {
     if (variant === 'destructive') {
-      return <Icon name="error" size="md" className="text-danger" />
+      return <Icon name="error" size="md" className="text-danger-fg" />
     }
-    return <Icon name="check_circle" size="md" className="text-primary" />
+    return <Icon name="check_circle" size="md" className="text-brand" />
   }
 
   // Errors are often the thing you most need to paste into a bug report — let
@@ -98,7 +98,7 @@ function ToastWithProgress({ id, title, description, action, duration = 4000, va
         )}
         <ToastClose />
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10 overflow-hidden">
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-foreground/10 overflow-hidden">
         <div
           className={`h-full transition-all ease-linear ${
             variant === 'destructive' ? 'bg-danger' : 'bg-primary bg-gradient-brand'

@@ -112,20 +112,20 @@ export function DepositPreGeneration({
           </p>
           <div className="mt-2 grid grid-cols-1 gap-2 text-caption">
             <div className="flex items-center justify-between gap-3">
-              <span className="text-white/45">Asset</span>
-              <span className="font-bold text-white">
+              <span className="text-foreground/55">Asset</span>
+              <span className="font-bold text-foreground">
                 {selectedAsset?.ticker ?? (isBtc ? 'BTC' : 'Asset')}
               </span>
             </div>
             <div className="flex items-center justify-between gap-3">
-              <span className="text-white/45">Destination account</span>
-              <span className="font-bold text-white">{ACCOUNT_TITLES[selectedAccount]}</span>
+              <span className="text-foreground/55">Destination account</span>
+              <span className="font-bold text-foreground">{ACCOUNT_TITLES[selectedAccount]}</span>
             </div>
             <div className="flex items-center justify-between gap-3">
-              <span className="text-white/45">Transfer method</span>
-              <span className="font-bold text-white">{method.label}</span>
+              <span className="text-foreground/55">Transfer method</span>
+              <span className="font-bold text-foreground">{method.label}</span>
             </div>
-            <p className="text-tiny text-white/35">{method.summary}</p>
+            <p className="text-tiny text-foreground/55">{method.summary}</p>
           </div>
         </div>
       )}
@@ -133,21 +133,21 @@ export function DepositPreGeneration({
       {channelsLoading && selectedAccount === 'RGB' && currentMethod === 'lightning' && !isBtc && (
         <div className="flex items-center gap-2.5 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-3 shadow-card">
           <Icon name="progress_activity" className="animate-spin text-icon-lg text-secondary-content" />
-          <span className="text-caption font-medium text-white/60">Checking channel availability...</span>
+          <span className="text-caption font-medium text-foreground/60">Checking channel availability...</span>
         </div>
       )}
 
       {showChannelWarning && (
         <AlertBanner variant="warning">
-          <p className="mb-0.5 text-caption font-bold text-warning">No Lightning Channels</p>
-          <p className="text-tiny text-warning/70">Only on-chain deposits are available.</p>
+          <p className="mb-0.5 text-caption font-bold text-warning-fg">No Lightning Channels</p>
+          <p className="text-tiny text-warning-fg/70">Only on-chain deposits are available.</p>
         </AlertBanner>
       )}
 
       {showLiquidityWarning && (
         <AlertBanner variant="warning">
-          <p className="mb-0.5 text-caption font-bold text-warning">No Inbound Liquidity</p>
-          <p className="text-tiny text-warning/70">
+          <p className="mb-0.5 text-caption font-bold text-warning-fg">No Inbound Liquidity</p>
+          <p className="text-tiny text-warning-fg/70">
             No channels with inbound capacity for {selectedAsset?.ticker ?? 'this asset'}.
           </p>
         </AlertBanner>
@@ -162,7 +162,7 @@ export function DepositPreGeneration({
             <p className="text-caption font-bold text-muted-foreground">
               Generating {network === 'lightning' ? 'invoice' : 'address'}...
             </p>
-            <p className="text-caption text-white/30">{net.label} network</p>
+            <p className="text-caption text-foreground/55">{net.label} network</p>
           </div>
         </div>
       )}
@@ -180,9 +180,9 @@ export function DepositPreGeneration({
             placeholder="rgb:... (leave empty for any asset)"
             spellCheck={false}
             autoCapitalize="off"
-            className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-2.5 font-mono text-caption text-white shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
+            className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-2.5 font-mono text-caption text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
           />
-          <p className="text-xxs text-white/35">
+          <p className="text-xxs text-foreground/55">
             Enter a specific asset ID to receive it, or leave empty to accept any RGB asset to this
             invoice.
           </p>
@@ -193,7 +193,7 @@ export function DepositPreGeneration({
         <div className="space-y-2.5 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-3 shadow-card">
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0 flex-1">
-              <h4 className="text-caption font-bold text-white">
+              <h4 className="text-caption font-bold text-foreground">
                 {usePrivacy ? 'Blinded receive' : 'Witness receive'}
               </h4>
               <p className="mt-0.5 text-xxs text-muted-foreground">
@@ -205,21 +205,21 @@ export function DepositPreGeneration({
               aria-label="Toggle blinded (private) receive"
               className={cn(
                 'relative inline-flex h-5 w-9 flex-shrink-0 items-center rounded-full shadow-inner transition-colors',
-                usePrivacy ? 'bg-primary bg-gradient-primary shadow-glow-primary-soft' : 'bg-white/10'
+                usePrivacy ? 'bg-primary bg-gradient-primary shadow-glow-primary-soft' : 'bg-foreground/10'
               )}
               onClick={() => setUsePrivacy(!usePrivacy)}
             >
               <span
                 className={cn(
                   'inline-block h-3.5 w-3.5 rounded-full shadow-md transition-all',
-                  usePrivacy ? 'translate-x-5 bg-black' : 'translate-x-0.5 bg-white/80'
+                  usePrivacy ? 'translate-x-5 bg-black' : 'translate-x-0.5 bg-foreground/80'
                 )}
               />
             </button>
           </div>
 
           {/* Mode explainer */}
-          <p className="text-tiny leading-relaxed text-white/45">
+          <p className="text-tiny leading-relaxed text-foreground/55">
             {usePrivacy
               ? 'Blinded: the sender never sees which UTXO you receive into. Spends one of your colorable UTXOs as the receiving slot.'
               : 'Witness: the sender creates the receiving UTXO for you. No colorable UTXO needed, but the sender sees the receiving output.'}
@@ -231,8 +231,8 @@ export function DepositPreGeneration({
               className={cn(
                 'flex items-center justify-between rounded-lg px-2.5 py-1.5 text-xxs',
                 colorableUtxoCount > 0
-                  ? 'bg-success/10 text-success/80'
-                  : 'bg-warning/10 text-warning/80'
+                  ? 'bg-success/10 text-success-fg/80'
+                  : 'bg-warning/10 text-warning-fg/80'
               )}
             >
               <span className="font-medium">Available colorable UTXOs</span>
@@ -240,7 +240,7 @@ export function DepositPreGeneration({
             </div>
           )}
           {usePrivacy && colorableUtxoCount === 0 && (
-            <p className="text-tiny text-warning/70">
+            <p className="text-tiny text-warning-fg/70">
               None available — create a colorable UTXO below to receive privately, or switch off
               privacy to use a witness receive.
             </p>
@@ -255,7 +255,7 @@ export function DepositPreGeneration({
               Amount ({getUnitLabel()}) - Optional
             </label>
             {selectedAsset && (
-              <span className="text-xxs text-white/30">
+              <span className="text-xxs text-foreground/55">
                 {selectedAsset.precision ?? 0} decimals
               </span>
             )}
@@ -265,7 +265,7 @@ export function DepositPreGeneration({
             value={amount}
             onChange={handleAmountChange}
             placeholder={`e.g. 10.00 ${selectedAsset?.ticker ?? ''}`}
-            className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-2.5 font-mono text-caption font-bold text-white shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
+            className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-2.5 font-mono text-caption font-bold text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
             inputMode="decimal"
           />
         </div>
@@ -275,8 +275,8 @@ export function DepositPreGeneration({
           needs at least one uncolored UTXO to back the invoice. */}
       {needsColorableUtxos && (
         <AlertBanner variant="warning">
-          <p className="mb-0.5 text-caption font-bold text-warning">Colorable UTXOs Required</p>
-          <p className="text-tiny text-warning/70">
+          <p className="mb-0.5 text-caption font-bold text-warning-fg">Colorable UTXOs Required</p>
+          <p className="text-tiny text-warning-fg/70">
             To receive RGB assets on-chain you need at least one uncolored UTXO. Create some now
             and the invoice will be generated automatically.
           </p>

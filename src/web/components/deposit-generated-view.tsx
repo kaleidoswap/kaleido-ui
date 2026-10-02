@@ -124,11 +124,11 @@ export function DepositGeneratedView({
             value={amount}
             onChange={handleAmountChange}
             placeholder="Any amount"
-            className="w-full rounded-lg bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-1.5 font-mono text-caption font-bold text-white shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
+            className="w-full rounded-lg bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-1.5 font-mono text-caption font-bold text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
             inputMode="decimal"
           />
           {amount && (
-            <p className="text-xxs text-warning/70">
+            <p className="text-xxs text-warning-fg/70">
               {loading ? (
                 <span className="flex items-center gap-1">
                   <Icon name="progress_activity" className="animate-spin text-icon-xxs" />
@@ -156,11 +156,11 @@ export function DepositGeneratedView({
             value={amount}
             onChange={handleAmountChange}
             placeholder={selectedAsset?.ticker ? `Any amount (${selectedAsset.ticker})` : 'Any amount'}
-            className="w-full rounded-lg bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-1.5 font-mono text-caption font-bold text-white shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
+            className="w-full rounded-lg bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-1.5 font-mono text-caption font-bold text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
             inputMode="decimal"
           />
           {amount && (
-            <p className="text-xxs text-warning/70">
+            <p className="text-xxs text-warning-fg/70">
               {loading ? (
                 <span className="flex items-center gap-1">
                   <Icon name="progress_activity" className="animate-spin text-icon-xxs" />
@@ -172,7 +172,7 @@ export function DepositGeneratedView({
             </p>
           )}
           {amount && maxDepositAmount > 0 && parseAssetAmount(amount, selectedAsset) > maxDepositAmount && (
-            <p className="rounded-lg bg-danger/10 px-2.5 py-1.5 text-xxs text-danger">
+            <p className="rounded-lg bg-danger/10 px-2.5 py-1.5 text-xxs text-danger-fg">
               Exceeds max: {formatAssetAmount(maxDepositAmount, selectedAsset)} {getUnitLabel()}
             </p>
           )}
@@ -187,7 +187,7 @@ export function DepositGeneratedView({
           {showQrNetworkBadge && network !== 'spark' && network !== 'arkade' && (
             <div
               className={cn(
-                'absolute right-2.5 top-2.5 flex items-center gap-1 rounded-full border bg-white/90 px-1.5 py-0.5 text-xxs font-bold shadow-sm',
+                'absolute right-2.5 top-2.5 flex items-center gap-1 rounded-full border bg-foreground/90 px-1.5 py-0.5 text-xxs font-bold shadow-sm',
                 net.text,
                 net.border
               )}
@@ -201,8 +201,8 @@ export function DepositGeneratedView({
           {loading && !isInvoicePaid && (
             // Loading scrim — sits over the QR while a fresh address/invoice
             // is being fetched (e.g. after the New Address button).
-            <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-white/80 backdrop-blur-sm">
-              <Icon name="progress_activity" className="animate-spin text-icon-3xl text-network-bitcoin" />
+            <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-foreground/80 backdrop-blur-sm">
+              <Icon name="progress_activity" className="animate-spin text-icon-3xl text-network-bitcoin-fg" />
             </div>
           )}
         </div>
@@ -215,7 +215,7 @@ export function DepositGeneratedView({
               className={cn(
                 'flex items-center gap-1 rounded-full border px-2.5 py-1 text-mini font-bold uppercase tracking-eyebrow transition-all',
                 isAddressCopied
-                  ? 'border-primary/30 bg-primary/10 text-primary shadow-glow-primary-soft'
+                  ? 'border-primary/30 bg-primary/10 text-brand shadow-glow-primary-soft'
                   : 'border-secondary/30 bg-secondary/15 text-secondary-content shadow-raised hover:border-secondary/50 hover:bg-secondary/25 hover:text-foreground'
               )}
               onClick={(event) => {
@@ -275,10 +275,10 @@ export function DepositGeneratedView({
           onClick={() => void copyToClipboard(recipientId)}
         >
           <div className="flex size-5 flex-shrink-0 items-center justify-center rounded-md bg-primary/15">
-            <Icon name="person" size="xs" className="text-primary" />
+            <Icon name="person" size="xs" className="text-brand" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-mini font-bold uppercase tracking-eyebrow text-primary">
+            <p className="text-mini font-bold uppercase tracking-eyebrow text-brand">
               Recipient ID
             </p>
             <p className="mt-0.5 truncate font-mono text-tiny text-muted-foreground">

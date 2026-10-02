@@ -33,7 +33,7 @@ export function StepperNumberInput({
   return (
     <div
       className={cn(
-        'flex items-center gap-1.5 overflow-hidden rounded-lg border border-border bg-black/25 shadow-inner transition-shadow focus-within:ring-1 focus-within:ring-primary/50 focus-within:shadow-glow-primary-soft',
+        'flex items-center gap-1.5 overflow-hidden rounded-lg border border-border bg-foreground/5 shadow-inner transition-shadow focus-within:ring-1 focus-within:ring-primary/50 focus-within:shadow-glow-primary-soft',
         className,
       )}
     >

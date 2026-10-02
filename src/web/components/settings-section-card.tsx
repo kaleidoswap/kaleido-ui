@@ -51,11 +51,11 @@ export interface ToneBadgeProps {
 }
 
 const badgeToneClass: Record<NonNullable<ToneBadgeProps['tone']>, string> = {
-  primary: 'border-primary/30 bg-primary/10 text-primary',
+  primary: 'border-primary/30 bg-primary/10 text-brand',
   info: 'border-secondary/30 bg-secondary/15 text-secondary-content',
-  warning: 'border-warning/30 bg-warning/10 text-warning',
-  danger: 'border-danger/30 bg-danger/10 text-danger',
-  success: 'border-success/30 bg-success/10 text-success',
+  warning: 'border-warning/30 bg-warning/10 text-warning-fg',
+  danger: 'border-danger/30 bg-danger/10 text-danger-fg',
+  success: 'border-success/30 bg-success/10 text-success-fg',
   // Theme tokens, not white alphas: on the light theme a white-on-white badge
   // disappears. On dark these resolve to the same 10% / 5% / 55% white.
   muted: 'border-border bg-foreground/5 text-muted-foreground',

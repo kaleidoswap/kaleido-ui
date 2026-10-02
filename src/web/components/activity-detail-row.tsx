@@ -32,7 +32,7 @@ export function ActivityDetailRow({
         {label}
       </span>
       {/* Dotted leader tying each label to its value across the row gap. */}
-      <span aria-hidden className="min-w-4 flex-1 self-center border-b border-dotted border-white/15" />
+      <span aria-hidden className="min-w-4 flex-1 self-center border-b border-dotted border-foreground/15" />
       <div className="flex max-w-[65%] items-center gap-2">
         <span className="truncate font-mono text-caption font-medium text-foreground/90">{value}</span>
         {onCopy && (

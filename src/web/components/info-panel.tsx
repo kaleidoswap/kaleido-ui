@@ -15,28 +15,28 @@ const toneClass: Record<InfoPanelTone, { panel: string; icon: string; title: str
   },
   primary: {
     panel: 'bg-primary/10',
-    icon: 'text-primary',
-    title: 'text-primary',
+    icon: 'text-brand',
+    title: 'text-brand',
   },
   info: {
     panel: 'bg-info/10 bg-gradient-card shadow-raised',
-    icon: 'text-info',
-    title: 'text-info',
+    icon: 'text-info-fg',
+    title: 'text-info-fg',
   },
   warning: {
     panel: 'bg-warning/10',
-    icon: 'text-warning',
-    title: 'text-warning',
+    icon: 'text-warning-fg',
+    title: 'text-warning-fg',
   },
   danger: {
     panel: 'bg-danger/10',
-    icon: 'text-danger',
-    title: 'text-danger',
+    icon: 'text-danger-fg',
+    title: 'text-danger-fg',
   },
   success: {
     panel: 'bg-success/10',
-    icon: 'text-success',
-    title: 'text-success',
+    icon: 'text-success-fg',
+    title: 'text-success-fg',
   },
 }
 

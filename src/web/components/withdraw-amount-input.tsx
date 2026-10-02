@@ -110,7 +110,7 @@ export function WithdrawAmountInput({
                 <input
                   type="text"
                   inputMode="decimal"
-                  className="w-full bg-transparent text-headline font-bold tabular-nums text-white outline-none placeholder:text-white/15"
+                  className="w-full bg-transparent text-headline font-bold tabular-nums text-foreground outline-none placeholder:text-foreground/15"
                   placeholder="0"
                   value={amount}
                   onChange={handleAmountChange}
@@ -128,10 +128,10 @@ export function WithdrawAmountInput({
             <div className={cn(
               'flex items-center justify-between bg-muted/40 px-4 py-2',
             )}>
-              <span className="text-xxs text-white/40">Available</span>
+              <span className="text-xxs text-foreground/55">Available</span>
               <span className={cn(
                 'tabular-nums text-xxs font-medium',
-                isOverBalance ? 'text-danger' : 'text-white/55',
+                isOverBalance ? 'text-danger-fg' : 'text-foreground/55',
               )}>
                 {formattedBalance} {unitLabel}
               </span>
@@ -166,7 +166,7 @@ export function WithdrawAmountInput({
               const value = parseInt(event.target.value, 10)
               if (!Number.isNaN(value)) setWitnessAmountSat(value)
             }}
-            className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-4 py-3 text-body text-white shadow-inner transition-all focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
+            className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-4 py-3 text-body text-foreground shadow-inner transition-all focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
           />
           <p className="ml-1 text-caption text-muted-foreground">
             Bitcoin amount sent to create the witness UTXO for the recipient.
@@ -199,12 +199,12 @@ export function WithdrawAmountInput({
                       }`}
                     >
                       <span
-                        className={`block text-caption font-bold capitalize ${selected ? 'text-primary' : 'text-muted-foreground group-hover:text-secondary-content'}`}
+                        className={`block text-caption font-bold capitalize ${selected ? 'text-brand' : 'text-muted-foreground group-hover:text-secondary-content'}`}
                       >
                         {mode}
                       </span>
                       <span
-                        className={`mt-0.5 block text-xxs font-medium ${selected ? 'text-primary/70' : 'text-white/40 group-hover:text-white/70'}`}
+                        className={`mt-0.5 block text-xxs font-medium ${selected ? 'text-brand/70' : 'text-foreground/55 group-hover:text-foreground/70'}`}
                       >
                         {mode === 'custom' ? 'sat/vB' : `${feeRates[mode]} sat/vB`}
                       </span>
@@ -219,7 +219,7 @@ export function WithdrawAmountInput({
                   placeholder={`${feeRates[feeRate]} (${feeRate})`}
                   value={customFeeRate ?? ''}
                   onChange={(event) => setCustomFeeRate?.(event.target.value.replace(/[^\d.]/g, ''))}
-                  className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-4 py-3 text-body text-white shadow-inner transition-all focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
+                  className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-4 py-3 text-body text-foreground shadow-inner transition-all focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
                 />
               )}
               {typeof estimatedFee === 'number' && (
@@ -247,12 +247,12 @@ export function WithdrawAmountInput({
                   />
                   <div className="relative z-10 flex flex-col items-center">
                     <div
-                      className={`text-body font-bold capitalize transition-colors ${feeRate === rate ? 'text-primary' : 'text-muted-foreground group-hover:text-secondary-content'}`}
+                      className={`text-body font-bold capitalize transition-colors ${feeRate === rate ? 'text-brand' : 'text-muted-foreground group-hover:text-secondary-content'}`}
                     >
                       {rate}
                     </div>
                     <div
-                      className={`mt-0.5 text-xxs font-medium transition-colors ${feeRate === rate ? 'text-primary/70' : 'text-white/40 group-hover:text-white/70'}`}
+                      className={`mt-0.5 text-xxs font-medium transition-colors ${feeRate === rate ? 'text-brand/70' : 'text-foreground/55 group-hover:text-foreground/70'}`}
                     >
                       {feeRates[rate]} sat/vB
                     </div>
@@ -267,13 +267,13 @@ export function WithdrawAmountInput({
       {addressType === 'rgb' && (
         <div className="flex items-center justify-between rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-3 shadow-card">
           <div>
-            <p className="text-body font-medium text-white">Gift / Donation</p>
+            <p className="text-body font-medium text-foreground">Gift / Donation</p>
             <p className="text-caption text-muted-foreground">Skip amount checks for this transfer</p>
           </div>
           <button
             type="button"
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              donation ? 'bg-primary bg-gradient-primary shadow-glow-primary-soft' : 'bg-white/10 shadow-inner'
+              donation ? 'bg-primary bg-gradient-primary shadow-glow-primary-soft' : 'bg-foreground/10 shadow-inner'
             }`}
             onClick={() => setDonation(!donation)}
           >

@@ -86,7 +86,7 @@ export function SecretRevealCard({
             onClick={handleCopy}
             className={cn(
               'flex flex-1 items-center justify-center gap-2 rounded-xl bg-secondary/15 py-3 text-caption font-semibold text-secondary-content shadow-raised ring-1 ring-inset ring-secondary/25 transition-all duration-200 hover:bg-secondary/25 hover:text-foreground',
-              copied && 'bg-primary/10 bg-gradient-active text-primary ring-primary/40 shadow-glow-primary-soft hover:bg-primary/15 hover:text-primary',
+              copied && 'bg-primary/10 bg-gradient-active text-brand ring-primary/40 shadow-glow-primary-soft hover:bg-primary/15 hover:text-brand',
             )}
           >
             <Icon name={copied ? 'check' : 'content_copy'} className="text-icon-lg" />
@@ -95,7 +95,7 @@ export function SecretRevealCard({
         )}
       </div>
       {selfCopy && clipboard.state === 'failed' && (
-        <p role="alert" className="m-0 text-caption text-danger">
+        <p role="alert" className="m-0 text-caption text-danger-fg">
           {copyFailedMessage}
         </p>
       )}

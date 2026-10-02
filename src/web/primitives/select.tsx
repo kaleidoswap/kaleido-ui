@@ -23,7 +23,7 @@ const SelectTrigger = React.forwardRef<
       'group flex items-center justify-between transition-all outline-none',
       compact
         ? [
-            'w-auto gap-1 rounded-2xl bg-white/[0.09] px-2 py-1.5 text-caption leading-none shadow-raised backdrop-blur-md',
+            'w-auto gap-1 rounded-2xl bg-foreground/[0.09] px-2 py-1.5 text-caption leading-none shadow-raised backdrop-blur-md',
             'hover:bg-secondary/15 data-[state=open]:bg-secondary/20 data-[state=open]:text-secondary-content data-[state=open]:shadow-glow-primary-soft',
           ]
         : [
@@ -44,7 +44,7 @@ const SelectTrigger = React.forwardRef<
         className={cn(
           'shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180',
           compact
-            ? 'text-icon-xs text-white/40 group-data-[state=open]:text-secondary-content'
+            ? 'text-icon-xs text-foreground/55 group-data-[state=open]:text-secondary-content'
             : 'text-icon-lg text-muted-foreground group-hover:text-secondary-content group-data-[state=open]:text-secondary-content',
         )}
       />
@@ -101,7 +101,7 @@ const SelectItem = React.forwardRef<
     className={cn(
       'relative flex w-full cursor-pointer select-none items-center justify-between rounded-xl px-3 py-3 text-body outline-none transition-colors',
       'data-[highlighted]:bg-secondary/15',
-      'data-[state=checked]:bg-primary/10 data-[state=checked]:font-semibold data-[state=checked]:ring-1 data-[state=checked]:ring-inset data-[state=checked]:ring-primary/40 data-[state=checked]:text-primary',
+      'data-[state=checked]:bg-primary/10 data-[state=checked]:font-semibold data-[state=checked]:ring-1 data-[state=checked]:ring-inset data-[state=checked]:ring-primary/40 data-[state=checked]:text-brand',
       'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       className
     )}
@@ -114,7 +114,7 @@ const SelectItem = React.forwardRef<
       )}
     </div>
     <SelectPrimitive.ItemIndicator>
-      <Icon name="check" className="text-icon-md text-primary" />
+      <Icon name="check" className="text-icon-md text-brand" />
     </SelectPrimitive.ItemIndicator>
   </SelectPrimitive.Item>
 ))

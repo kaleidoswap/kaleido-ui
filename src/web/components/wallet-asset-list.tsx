@@ -49,13 +49,13 @@ function AssetSkeleton({ index }: { index: number }) {
           <div className="absolute -bottom-1 -right-1 size-icon-md rounded-full bg-secondary/15" />
         </div>
         <div className="flex flex-col gap-1.5">
-          <div className="h-3.5 w-20 rounded bg-white/10" />
-          <div className="h-2.5 w-10 rounded bg-white/5" />
+          <div className="h-3.5 w-20 rounded bg-foreground/10" />
+          <div className="h-2.5 w-10 rounded bg-foreground/5" />
         </div>
       </div>
       <div className="flex flex-col items-end gap-1.5">
-        <div className="h-3.5 w-16 rounded bg-white/10" />
-        <div className="h-2.5 w-8 rounded bg-white/5" />
+        <div className="h-3.5 w-16 rounded bg-foreground/10" />
+        <div className="h-2.5 w-8 rounded bg-foreground/5" />
       </div>
     </div>
   )

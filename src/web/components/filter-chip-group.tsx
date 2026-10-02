@@ -105,7 +105,7 @@ export function FilterChipGroup<TValue extends string = string>({
                     'flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-1 text-tiny font-bold transition-all',
                     active
                       ? 'border-transparent bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
-                      : 'border-white/8 bg-white/5 text-muted-foreground hover:border-secondary/40 hover:bg-secondary/10 hover:text-secondary-content',
+                      : 'border-foreground/8 bg-foreground/5 text-muted-foreground hover:border-secondary/40 hover:bg-secondary/10 hover:text-secondary-content',
                   ),
               option.disabled && 'cursor-not-allowed opacity-40',
             )}
@@ -116,7 +116,7 @@ export function FilterChipGroup<TValue extends string = string>({
               <span
                 className={cn(
                   'rounded-full px-1.5 py-0.5 text-xxs',
-                  segmented ? (active ? 'bg-primary-foreground/15' : 'bg-secondary/15 text-secondary-content') : active ? 'bg-white/20' : 'bg-secondary/15 text-secondary-content',
+                  segmented ? (active ? 'bg-primary-foreground/15' : 'bg-secondary/15 text-secondary-content') : active ? 'bg-foreground/20' : 'bg-secondary/15 text-secondary-content',
                 )}
               >
                 {option.count}

@@ -33,10 +33,10 @@ export interface SummaryRowsProps {
 
 const valueTone: Record<SummaryRowTone, string> = {
   default: 'text-foreground',
-  primary: 'text-primary',
-  warning: 'text-warning',
-  danger: 'text-danger',
-  success: 'text-success',
+  primary: 'text-brand',
+  warning: 'text-warning-fg',
+  danger: 'text-danger-fg',
+  success: 'text-success-fg',
   muted: 'text-muted-foreground',
 }
 

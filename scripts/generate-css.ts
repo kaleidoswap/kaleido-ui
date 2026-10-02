@@ -93,6 +93,17 @@ const appChannelVars = (vals: Record<string, string>): string =>
 const appDarkVars = appChannelVars(appSemanticDark)
 const appLightVars = appChannelVars(appSemanticLight)
 
+// Network chips and chip text follow the theme: dark tints by default,
+// pale chips with dark text under .light.
+const networkNames = Object.keys(colors.networkChip) as (keyof typeof colors.networkChip)[]
+const networkChipVars = (chip: Record<string, string>, text: Record<string, string>): string =>
+  networkNames.map((n) => `  --network-${n}-chip: ${chip[n]};\n  --network-${n}-text: ${text[n]};`).join('\n')
+const networkChipDark = networkChipVars(colors.networkChip, colors.networkText)
+const networkChipLight = networkChipVars(colors.networkChipLight, colors.networkTextLight)
+const networkChipInline = networkNames
+  .map((n) => `  --color-network-${n}-chip: var(--network-${n}-chip);\n  --color-network-${n}-text: var(--network-${n}-text);`)
+  .join('\n')
+
 const appThemeInline = appSemanticOrder
   .map((k) => `  --color-${k}: rgb(var(--app-${k}));`)
   .join('\n')
@@ -224,6 +235,7 @@ ${seriesVars(chartSeries.dark)}
 :root,
 .dark {
 ${appDarkVars}
+${networkChipDark}
   /* Elevation ink — shadows are cast in a near-black violet. */
   --app-shadow: 7 4 22;
   --app-shadow-strength: 1;
@@ -235,6 +247,7 @@ ${appDarkVars}
 
 .light {
 ${appLightVars}
+${networkChipLight}
   --app-shadow: 55 20 136;
   --app-shadow-strength: 0.28;
   --app-rim-alpha: 0.7;
@@ -295,6 +308,7 @@ ${chartSeries.dark.map((_, index) => `  --color-series-${index + 1}:            
      border-border-x, bg-status-x with opacity) resolve to the canonical slate palette. */
 ${appThemeInline}
 ${appStatusSubtle}
+${networkChipInline}
 
   /* Brand layer — per-theme foregrounds and glows (see the blocks above) */
 ${brandThemeInline}
@@ -314,18 +328,6 @@ ${brandThemeInline}
   --color-network-lightning: ${colors.network.lightning};
   --color-network-liquid:    ${colors.network.liquid};
   --color-network-taproot:   ${colors.network.taproot};
-  --color-network-bitcoin-chip:   ${colors.networkChip.bitcoin};
-  --color-network-rgb-chip:       ${colors.networkChip.rgb};
-  --color-network-arkade-chip:    ${colors.networkChip.arkade};
-  --color-network-lightning-chip: ${colors.networkChip.lightning};
-  --color-network-liquid-chip:    ${colors.networkChip.liquid};
-  --color-network-taproot-chip:   ${colors.networkChip.taproot};
-  --color-network-bitcoin-text:   ${colors.networkText.bitcoin};
-  --color-network-rgb-text:       ${colors.networkText.rgb};
-  --color-network-arkade-text:    ${colors.networkText.arkade};
-  --color-network-lightning-text: ${colors.networkText.lightning};
-  --color-network-liquid-text:    ${colors.networkText.liquid};
-  --color-network-taproot-text:   ${colors.networkText.taproot};
 
   /* Asset icon brand colors */
   --color-asset-eth:  ${colors.assetIcon.eth};
@@ -640,11 +642,16 @@ const brandCss = `/* AUTO-GENERATED — do not edit by hand.
 :root:not(.dark),
 .light {
   --primary: ${brandTheme.lightPrimary};
+  /* The deep brand green takes white text (6.3:1); the default light green takes dark ink. */
+  --primary-foreground: #FFFFFF;
+  /* …and its button gradient runs through the deep greens under that white text. */
+  --gradient-primary: linear-gradient(135deg, #0E8F5C 0%, ${brandTheme.lightPrimary} 55%, #065A39 100%);
   --ring: ${brandTheme.lightPrimary};
 }
 
 .light {
   --app-primary: ${hexToChannels(brandTheme.lightPrimary)};
+  --app-primary-foreground: 255 255 255;
   --app-border-strong: ${hexToChannels(brandTheme.lightPrimary)};
 }
 

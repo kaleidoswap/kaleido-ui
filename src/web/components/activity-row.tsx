@@ -19,9 +19,9 @@ export interface ActivityRowProps {
 }
 
 const directionUi = {
-  inbound: { icon: 'south_west', iconClass: 'bg-primary/20 text-primary', amountClass: 'text-primary', sign: '+' },
-  outbound: { icon: 'north_east', iconClass: 'bg-white/10 text-muted-foreground', amountClass: 'text-foreground', sign: '-' },
-  swap: { icon: 'swap_horiz', iconClass: 'bg-white/10 text-foreground', amountClass: 'text-foreground', sign: '' },
+  inbound: { icon: 'south_west', iconClass: 'bg-primary/20 text-brand', amountClass: 'text-brand', sign: '+' },
+  outbound: { icon: 'north_east', iconClass: 'bg-foreground/10 text-muted-foreground', amountClass: 'text-foreground', sign: '-' },
+  swap: { icon: 'swap_horiz', iconClass: 'bg-foreground/10 text-foreground', amountClass: 'text-foreground', sign: '' },
   neutral: { icon: 'receipt_long', iconClass: 'bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25', amountClass: 'text-foreground', sign: '' },
 } as const
 

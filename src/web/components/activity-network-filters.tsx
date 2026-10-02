@@ -65,7 +65,7 @@ export function ActivityNetworkFilters<TValue extends string = ActivityNetworkFi
               'flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1.5 text-mini font-bold uppercase tracking-eyebrow transition-all',
               isActive
                 ? 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
-                : 'bg-white/5 text-muted-foreground hover:bg-secondary/10 hover:text-secondary-content'
+                : 'bg-foreground/5 text-muted-foreground hover:bg-secondary/10 hover:text-secondary-content'
             )}
           >
             <span

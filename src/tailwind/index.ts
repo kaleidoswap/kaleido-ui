@@ -23,6 +23,7 @@
  */
 import { animation, keyframes } from '../tokens/animations'
 import { appSemanticOrder } from '../tokens/app-semantic'
+import { themedForegroundOrder } from '../tokens/brand'
 import { colors } from '../tokens/colors'
 import { layer } from '../tokens/layers'
 import { radius } from '../tokens/radius'
@@ -113,12 +114,13 @@ const preset = {
         danger: colors.danger,
         info: colors.info,
         ...prefixed('network', colors.network),
-        ...Object.fromEntries(Object.entries(colors.networkChip).map(([k, v]) => [`network-${k}-chip`, v])),
-        ...Object.fromEntries(Object.entries(colors.networkText).map(([k, v]) => [`network-${k}-text`, v])),
+        // Chips and chip text follow the theme (the --network-*-chip/-text vars).
+        ...Object.fromEntries(Object.keys(colors.networkChip).map((k) => [`network-${k}-chip`, cssVar(`network-${k}-chip`)])),
+        ...Object.fromEntries(Object.keys(colors.networkText).map((k) => [`network-${k}-text`, cssVar(`network-${k}-text`)])),
+        // The brand layer's per-theme AA foregrounds (text-brand, text-danger-fg, …).
+        ...Object.fromEntries(themedForegroundOrder.map((token) => [token, cssVar(token)])),
         // Spark is themed (white on dark, black on light): back to its app token.
         'network-spark': appVar('network-spark'),
-        'network-spark-chip': appVar('network-spark-chip'),
-        'network-spark-text': appVar('network-spark-text'),
         ...prefixed('asset', colors.assetIcon),
         ...prefixed('tx', colors.tx),
         ...prefixed('text', colors.text),

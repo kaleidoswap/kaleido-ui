@@ -36,12 +36,12 @@ function Panel({
   return (
     <section
       id={id}
-      className="mb-14 scroll-mt-20 rounded-2xl border border-white/10 bg-[#061F14] p-6"
+      className="mb-14 scroll-mt-20 rounded-2xl border border-foreground/10 bg-[#061F14] p-6"
     >
       <div className="mb-5">
-        <h2 className="text-lg font-bold text-white tracking-tight">{title}</h2>
-        <p className="mt-1 text-sm text-slate-400">{concern}</p>
-        <div className="mt-3 h-px bg-gradient-to-r from-primary/40 via-white/10 to-transparent" />
+        <h2 className="text-lg font-bold text-foreground tracking-tight">{title}</h2>
+        <p className="mt-1 text-sm text-muted-foreground">{concern}</p>
+        <div className="mt-3 h-px bg-gradient-to-r from-primary/40 via-foreground/10 to-transparent" />
       </div>
       {children}
     </section>
@@ -50,7 +50,7 @@ function Panel({
 
 function SubLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mt-5 mb-3 text-xxs font-mono uppercase tracking-widest text-slate-500">
+    <p className="mt-5 mb-3 text-xxs font-mono uppercase tracking-widest text-muted-foreground">
       {children}
     </p>
   )
@@ -89,7 +89,7 @@ function BitcoinIcon({ size = 32 }: { size?: number }) {
   // Stand-in for <AssetIcon ticker="BTC" size={32} />
   return (
     <div
-      className="flex items-center justify-center rounded-full font-bold text-white"
+      className="flex items-center justify-center rounded-full font-bold text-foreground"
       style={{
         width: size,
         height: size,
@@ -176,36 +176,36 @@ function Panel1Buttons() {
       </div>
 
       <SubLabel>rate-extension main-action trio (inlined — current)</SubLabel>
-      <p className="mb-3 text-xs text-slate-500">
+      <p className="mb-3 text-xs text-muted-foreground">
         Copied verbatim from{' '}
-        <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-slate-300">
+        <code className="rounded bg-foreground/5 px-1.5 py-0.5 font-mono text-foreground/80">
           rate-extension/src/components/AssetDetail.tsx:833-858
         </code>
       </p>
       <div className="grid grid-cols-3 gap-4 mt-4">
         <button className="flex flex-col items-center gap-3 group">
-          <div className="size-14 rounded-2xl bg-card flex items-center justify-center text-primary border border-primary/20 group-hover:bg-primary group-hover:text-black transition-all  group-hover:shadow-[0_0_30px_rgba(43,238,121,0.5)] active:scale-95">
+          <div className="size-14 rounded-2xl bg-card flex items-center justify-center text-brand border border-primary/20 group-hover:bg-primary group-hover:text-black transition-all  group-hover:shadow-[0_0_30px_rgba(43,238,121,0.5)] active:scale-95">
             <span className="material-symbols-outlined text-[28px]">arrow_downward</span>
           </div>
-          <span className="text-sm font-bold text-slate-300 group-hover:text-white tracking-wide">
+          <span className="text-sm font-bold text-foreground/80 group-hover:text-foreground tracking-wide">
             Deposit
           </span>
         </button>
 
         <button className="flex flex-col items-center gap-3 group">
-          <div className="size-14 rounded-2xl bg-card flex items-center justify-center text-white border border-border group-hover:bg-white group-hover:text-black transition-all shadow-inner active:scale-95 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]">
+          <div className="size-14 rounded-2xl bg-card flex items-center justify-center text-foreground border border-border group-hover:bg-white group-hover:text-black transition-all shadow-inner active:scale-95 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]">
             <span className="material-symbols-outlined text-[28px]">sync_alt</span>
           </div>
-          <span className="text-sm font-bold text-slate-300 group-hover:text-white tracking-wide">
+          <span className="text-sm font-bold text-foreground/80 group-hover:text-foreground tracking-wide">
             Swap
           </span>
         </button>
 
         <button className="flex flex-col items-center gap-3 group">
-          <div className="size-14 rounded-2xl bg-card flex items-center justify-center text-primary border border-primary/20 group-hover:bg-primary group-hover:text-black transition-all  group-hover:shadow-[0_0_30px_rgba(43,238,121,0.5)] active:scale-95">
+          <div className="size-14 rounded-2xl bg-card flex items-center justify-center text-brand border border-primary/20 group-hover:bg-primary group-hover:text-black transition-all  group-hover:shadow-[0_0_30px_rgba(43,238,121,0.5)] active:scale-95">
             <span className="material-symbols-outlined text-[28px]">arrow_upward</span>
           </div>
-          <span className="text-sm font-bold text-slate-300 group-hover:text-white tracking-wide">
+          <span className="text-sm font-bold text-foreground/80 group-hover:text-foreground tracking-wide">
             Withdraw
           </span>
         </button>
@@ -227,9 +227,9 @@ function Panel2AssetCard() {
       concern="This is the visual we want every other card/row in the app to harmonize with. Looking for feedback on icon/name/amount hierarchy, pill cluster density, and overall padding."
     >
       <SubLabel>rate-extension (inlined — current)</SubLabel>
-      <p className="mb-3 text-xs text-slate-500">
+      <p className="mb-3 text-xs text-muted-foreground">
         Copied from{' '}
-        <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-slate-300">
+        <code className="rounded bg-foreground/5 px-1.5 py-0.5 font-mono text-foreground/80">
           rate-extension/src/components/Dashboard.tsx:499-600
         </code>
         . AssetIcon replaced with inline stand-in.
@@ -244,14 +244,14 @@ function Panel2AssetCard() {
             <div className="flex items-center gap-3 min-w-0">
               <BitcoinIcon size={32} />
               <div className="flex flex-col items-start min-w-0">
-                <span className="text-sm font-bold text-white leading-tight">Bitcoin</span>
+                <span className="text-sm font-bold text-foreground leading-tight">Bitcoin</span>
                 <span className="text-xs font-medium text-muted-foreground leading-tight mt-0.5">
                   BTC
                 </span>
               </div>
             </div>
             <div className="flex min-w-0 flex-col items-end text-right">
-              <span className="max-w-[170px] break-words text-lg font-bold leading-tight tracking-tight text-white">
+              <span className="max-w-[170px] break-words text-lg font-bold leading-tight tracking-tight text-foreground">
                 {btcTotal}
               </span>
               <span className="mt-1 text-xxs font-mono text-muted-foreground">{fiatValue}</span>
@@ -307,9 +307,9 @@ function Panel3FilterPills() {
       concern="Icons in the filter cluster are too big — they overpower the text label and the overall pill feels heavy. Both collapsed and filtered states shown."
     >
       <SubLabel>rate-extension (inlined — current)</SubLabel>
-      <p className="mb-3 text-xs text-slate-500">
+      <p className="mb-3 text-xs text-muted-foreground">
         Inlined from FilterDropdown at{' '}
-        <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-slate-300">
+        <code className="rounded bg-foreground/5 px-1.5 py-0.5 font-mono text-foreground/80">
           rate-extension/src/components/Dashboard.tsx:34-129
         </code>
       </p>
@@ -317,8 +317,8 @@ function Panel3FilterPills() {
       <div className="flex max-w-md items-center gap-2">
         {/* NETWORK — "All" state (icon cluster) */}
         <div className="relative flex-1">
-          <button className="w-full flex items-center justify-between gap-1.5 px-3 py-2 rounded-xl border transition-all outline-none leading-none bg-white/[0.09] border-white/[0.15] hover:border-white/25 hover:bg-white/[0.13] backdrop-blur-md">
-            <span className="text-[9px] font-black uppercase tracking-widest shrink-0 text-white/45">
+          <button className="w-full flex items-center justify-between gap-1.5 px-3 py-2 rounded-xl border transition-all outline-none leading-none bg-foreground/[0.09] border-foreground/[0.15] hover:border-foreground/25 hover:bg-foreground/[0.13] backdrop-blur-md">
+            <span className="text-[9px] font-black uppercase tracking-widest shrink-0 text-foreground/55">
               NETWORK
             </span>
             <div className="flex items-center gap-1.5 flex-1 justify-center min-w-0">
@@ -330,13 +330,13 @@ function Panel3FilterPills() {
                 ))}
               </div>
             </div>
-            <Icon name="expand_more" className="text-[12px] text-white/40 shrink-0" />
+            <Icon name="expand_more" className="text-[12px] text-foreground/55 shrink-0" />
           </button>
         </div>
 
         {/* ASSET — "Bitcoin" selected */}
         <div className="relative flex-1">
-          <button className="w-full flex items-center justify-between gap-1.5 px-3 py-2 rounded-xl border transition-all outline-none leading-none bg-white/[0.13] border-white/25 shadow-inner">
+          <button className="w-full flex items-center justify-between gap-1.5 px-3 py-2 rounded-xl border transition-all outline-none leading-none bg-foreground/[0.13] border-foreground/25 shadow-inner">
             <span className="text-[9px] font-black uppercase tracking-widest shrink-0 text-muted-foreground">
               ASSET
             </span>
@@ -344,9 +344,9 @@ function Panel3FilterPills() {
               <div className="flex items-center justify-center size-4 shrink-0">
                 {assetOptions[0].icon}
               </div>
-              <span className="text-tiny font-bold text-white truncate">Bitcoin</span>
+              <span className="text-tiny font-bold text-foreground truncate">Bitcoin</span>
             </div>
-            <Icon name="expand_more" className="text-[12px] text-white/40 shrink-0" />
+            <Icon name="expand_more" className="text-[12px] text-foreground/55 shrink-0" />
           </button>
         </div>
       </div>
@@ -387,12 +387,12 @@ function Panel4StatusPills() {
           <span className="truncate mr-1 my-0.5">Arkade</span>
         </span>
       </div>
-      <p className="mt-4 text-xs text-slate-500">
+      <p className="mt-4 text-xs text-muted-foreground">
         Note: rate-extension currently uses{' '}
-        <code className="rounded bg-white/5 px-1 py-0.5 font-mono text-slate-300">
+        <code className="rounded bg-foreground/5 px-1 py-0.5 font-mono text-foreground/80">
           border-network-arkade/25
         </code>{' '}
-        / <code className="rounded bg-white/5 px-1 py-0.5 font-mono text-slate-300">bg-blue-400</code>{' '}
+        / <code className="rounded bg-foreground/5 px-1 py-0.5 font-mono text-foreground/80">bg-blue-400</code>{' '}
         for Spark — substituted with semantic Tailwind colors here so the pill renders without
         rate-extension's custom tokens.json.
       </p>
@@ -413,7 +413,7 @@ function Panel5BottomNav() {
       concern="Overall size/padding of the nav vs. the '14px' rounded-nav radius — does the pill shape still feel right? The active tab uses a subtle primary background tint."
     >
       <SubLabel>rate-extension (inlined — current) — BottomNav.tsx:16-29</SubLabel>
-      <p className="mb-4 text-xs text-slate-500">
+      <p className="mb-4 text-xs text-muted-foreground">
         Displayed inline here (rather than fixed-position) so it sits inside the showcase flow.
         AppIcon replaced with Material Symbols equivalents.
       </p>
@@ -426,8 +426,8 @@ function Panel5BottomNav() {
             <button
               className={`flex flex-col items-center justify-center h-[52px] w-[64px] rounded-nav transition-all duration-300 relative group ${
                 active === 'dashboard'
-                  ? 'text-primary'
-                  : 'text-muted-foreground hover:text-white/75 active:scale-95'
+                  ? 'text-brand'
+                  : 'text-muted-foreground hover:text-foreground/75 active:scale-95'
               }`}
             >
               {active === 'dashboard' && (
@@ -436,7 +436,7 @@ function Panel5BottomNav() {
               <div className="relative z-10">
                 <Icon name="account_balance_wallet" className="text-[22px]" />
                 <span
-                  className={`absolute -top-0.5 -right-0.5 size-[7px] rounded-full ${walletConnected ? 'bg-primary shadow-sm' : 'bg-white/20'}`}
+                  className={`absolute -top-0.5 -right-0.5 size-[7px] rounded-full ${walletConnected ? 'bg-primary shadow-sm' : 'bg-foreground/20'}`}
                 />
               </div>
               <span className="text-xxs font-semibold mt-0.5 z-10 transition-colors duration-300">
@@ -445,7 +445,7 @@ function Panel5BottomNav() {
             </button>
 
             {/* Swap */}
-            <button className="flex flex-col items-center justify-center h-[52px] w-[64px] rounded-nav transition-all duration-300 relative group text-muted-foreground hover:text-white/75 active:scale-95">
+            <button className="flex flex-col items-center justify-center h-[52px] w-[64px] rounded-nav transition-all duration-300 relative group text-muted-foreground hover:text-foreground/75 active:scale-95">
               <Icon name="swap_horiz" className="z-10 text-[22px]" />
               <span className="text-xxs font-semibold mt-0.5 z-10 transition-colors duration-300">
                 Swap
@@ -453,7 +453,7 @@ function Panel5BottomNav() {
             </button>
 
             {/* Activity */}
-            <button className="flex flex-col items-center justify-center h-[52px] w-[64px] rounded-nav transition-all duration-300 relative group text-muted-foreground hover:text-white/75 active:scale-95">
+            <button className="flex flex-col items-center justify-center h-[52px] w-[64px] rounded-nav transition-all duration-300 relative group text-muted-foreground hover:text-foreground/75 active:scale-95">
               <Icon name="list_alt" className="z-10 text-[22px]" />
               <span className="text-xxs font-semibold mt-0.5 z-10 transition-colors duration-300">
                 Activity
@@ -461,7 +461,7 @@ function Panel5BottomNav() {
             </button>
 
             {/* Settings */}
-            <button className="flex flex-col items-center justify-center h-[52px] w-[64px] rounded-nav transition-all duration-300 relative group text-muted-foreground hover:text-white/75 active:scale-95">
+            <button className="flex flex-col items-center justify-center h-[52px] w-[64px] rounded-nav transition-all duration-300 relative group text-muted-foreground hover:text-foreground/75 active:scale-95">
               <Icon name="settings" className="z-10 text-[22px]" />
               <span className="text-xxs font-semibold mt-0.5 z-10 transition-colors duration-300">
                 Settings
@@ -484,23 +484,23 @@ function Panel6SectionHeaders() {
       concern="The current 'you're in this section' signal is a simple uppercase tracking-wider label. It's subtle — maybe too subtle? Decide whether the redesign needs a stronger visual anchor per section."
     >
       <SubLabel>Settings.tsx — 'Security' group header (inlined — current)</SubLabel>
-      <p className="mb-3 text-xs text-slate-500">
+      <p className="mb-3 text-xs text-muted-foreground">
         From{' '}
-        <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-slate-300">
+        <code className="rounded bg-foreground/5 px-1.5 py-0.5 font-mono text-foreground/80">
           rate-extension/src/components/Settings.tsx:177-196
         </code>
       </p>
       <div className="max-w-lg space-y-3">
         <h2 className="text-xs font-bold text-muted-foreground uppercase tracking-wider px-1">
-          Security <span className="ml-2 text-xxs font-mono font-normal text-slate-500">(Current)</span>
+          Security <span className="ml-2 text-xxs font-mono font-normal text-muted-foreground">(Current)</span>
         </h2>
         {/* Tile stand-in to give the header context */}
-        <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3">
+        <div className="flex items-center gap-3 rounded-xl border border-foreground/10 bg-foreground/[0.03] p-3">
           <div className="flex size-9 items-center justify-center rounded-lg bg-blue-400/10">
             <MS className="text-blue-300">vpn_key</MS>
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold text-white">Change Password</p>
+            <p className="text-sm font-semibold text-foreground">Change Password</p>
             <p className="text-xs text-muted-foreground">Update your wallet password</p>
           </div>
           <MS className="text-muted-foreground">chevron_right</MS>
@@ -508,9 +508,9 @@ function Panel6SectionHeaders() {
       </div>
 
       <SubLabel>Activity.tsx — tab-bar 'you-are-here' (inlined — current)</SubLabel>
-      <p className="mb-3 text-xs text-slate-500">
+      <p className="mb-3 text-xs text-muted-foreground">
         From{' '}
-        <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-slate-300">
+        <code className="rounded bg-foreground/5 px-1.5 py-0.5 font-mono text-foreground/80">
           rate-extension/src/components/Activity.tsx:800-838
         </code>{' '}
         — "received" tab shown as the active "you're here" state.
@@ -525,7 +525,7 @@ function Panel6SectionHeaders() {
             aria-current="page"
           >
             <MS className="mr-1.5 text-[14px] text-[#2BEE79]">call_received</MS>
-            In <span className="ml-2 text-xxs font-mono font-normal text-white/60">(Current)</span>
+            In <span className="ml-2 text-xxs font-mono font-normal text-foreground/60">(Current)</span>
           </button>
           <button className="text-xxs px-1.5 py-2 rounded-lg transition-all font-bold tracking-wide text-muted-foreground flex items-center justify-center">
             <MS className="mr-1.5 text-[14px]">call_made</MS>Out
@@ -553,21 +553,21 @@ const TOC = [
 export function StateSnapshot({ onBack }: { onBack?: () => void }) {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-50 border-b border-white/5 bg-background/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-foreground/5 bg-background/80 backdrop-blur-xl">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {onBack && (
               <button
                 onClick={onBack}
-                className="text-xs font-mono text-slate-400 hover:text-white px-2 py-1 rounded-lg hover:bg-white/5 transition-colors"
+                className="text-xs font-mono text-muted-foreground hover:text-foreground px-2 py-1 rounded-lg hover:bg-foreground/5 transition-colors"
               >
                 ← showcase
               </button>
             )}
-            <span className="font-bold text-white tracking-tight">State Snapshot</span>
-            <span className="text-xs text-slate-500 font-mono">pre-redesign review</span>
+            <span className="font-bold text-foreground tracking-tight">State Snapshot</span>
+            <span className="text-xs text-muted-foreground font-mono">pre-redesign review</span>
           </div>
-          <span className="text-xs font-mono text-primary px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20">
+          <span className="text-xs font-mono text-brand px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20">
             rate-extension · current
           </span>
         </div>
@@ -580,7 +580,7 @@ export function StateSnapshot({ onBack }: { onBack?: () => void }) {
               <li key={item.id}>
                 <a
                   href={`#${item.id}`}
-                  className="block text-sm text-slate-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/5 transition-colors"
+                  className="block text-sm text-muted-foreground hover:text-foreground px-3 py-1.5 rounded-lg hover:bg-foreground/5 transition-colors"
                 >
                   {item.label}
                 </a>
@@ -590,11 +590,11 @@ export function StateSnapshot({ onBack }: { onBack?: () => void }) {
         </nav>
 
         <main className="flex-1 min-w-0">
-          <div className="mb-8 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
-            <h1 className="text-xl font-bold text-white tracking-tight">What you're looking at</h1>
-            <p className="mt-2 text-sm text-slate-400">
+          <div className="mb-8 rounded-2xl border border-foreground/10 bg-foreground/[0.02] p-5">
+            <h1 className="text-xl font-bold text-foreground tracking-tight">What you're looking at</h1>
+            <p className="mt-2 text-sm text-muted-foreground">
               Six panels below render the CURRENT visual state of components we plan to redesign
-              in the <span className="font-mono text-slate-300">rate-extension</span> browser
+              in the <span className="font-mono text-foreground/80">rate-extension</span> browser
               wallet. JSX is copy/pasted from the live wallet source (not imported), so this page
               stays independent. Some classes (<code className="font-mono text-xs">bg-card</code>,{' '}
               <code className="font-mono text-xs">rounded-nav</code>,{' '}

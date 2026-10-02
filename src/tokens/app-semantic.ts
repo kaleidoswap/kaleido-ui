@@ -45,8 +45,6 @@ export type AppSemanticToken =
   | 'status-info'
   | 'divider'
   | 'network-spark'
-  | 'network-spark-chip'
-  | 'network-spark-text'
 
 type AppSemanticChannels = Record<AppSemanticToken, string>
 
@@ -80,8 +78,6 @@ export const appSemanticDark: AppSemanticChannels = {
   divider: '86 83 110', //          #56536E
   // Spark's mark is white on dark, black on light.
   'network-spark': '255 255 255', // #FFFFFF
-  'network-spark-chip': '43 42 53', // #2B2A35
-  'network-spark-text': '232 231 240', // #E8E7F0
 }
 
 /** Light mode — emitted under `.light`. */
@@ -94,7 +90,7 @@ export const appSemanticLight: AppSemanticChannels = {
   'surface-high': '234 229 252', // #EAE5FC — hover/active highlights
   primary: '23 181 129', //         #17B581
   'primary-emphasis': '19 138 100', // #138A64
-  'primary-foreground': '255 255 255',
+  'primary-foreground': '14 13 22', // #0E0D16 — dark ink on green (white was 2.6:1)
   secondary: '111 50 255', //       #6F32FF
   'secondary-emphasis': '84 32 204', // #5420CC
   'secondary-foreground': '255 255 255',
@@ -112,8 +108,6 @@ export const appSemanticLight: AppSemanticChannels = {
   'status-info': '2 132 199',
   divider: '206 199 236', //         #CEC7EC
   'network-spark': '13 12 20', //   #0D0C14
-  'network-spark-chip': '230 229 238', // #E6E5EE
-  'network-spark-text': '26 25 34', // #1A1922
 }
 
 /** Fixed-alpha tinted intent surfaces (e.g. `bg-status-danger-subtle`). */

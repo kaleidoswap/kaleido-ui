@@ -51,7 +51,7 @@ const DropdownMenuItem = React.forwardRef<React.ElementRef<typeof MenuPrimitive.
       className={cn(
         'flex cursor-default select-none items-center gap-2 rounded-xl px-3 py-2 text-caption font-medium outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
         destructive
-          ? 'text-danger data-[highlighted]:bg-danger/10'
+          ? 'text-danger-fg data-[highlighted]:bg-danger/10'
           : 'text-foreground data-[highlighted]:bg-secondary/15',
         className,
       )}

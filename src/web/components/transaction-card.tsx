@@ -50,19 +50,19 @@ export function TransactionCard({
   }[status] ?? { base: 'bg-card', hover: 'hover:bg-accent' }
 
   const iconStyle = {
-    success:   'bg-primary/20 text-primary',
-    completed: 'bg-primary/20 text-primary',
-    pending:   'bg-warning/20 text-warning',
-    failed:    'bg-danger/20 text-danger',
-    error:     'bg-danger/20 text-danger',
+    success:   'bg-primary/20 text-brand',
+    completed: 'bg-primary/20 text-brand',
+    pending:   'bg-warning/20 text-warning-fg',
+    failed:    'bg-danger/20 text-danger-fg',
+    error:     'bg-danger/20 text-danger-fg',
   }[status] ?? 'bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25'
 
   const textColor = {
-    success:   'text-primary',
-    completed: 'text-primary',
-    pending:   'text-warning',
-    failed:    'text-danger',
-    error:     'text-danger',
+    success:   'text-brand',
+    completed: 'text-brand',
+    pending:   'text-warning-fg',
+    failed:    'text-danger-fg',
+    error:     'text-danger-fg',
   }[status] ?? 'text-foreground'
 
   return (

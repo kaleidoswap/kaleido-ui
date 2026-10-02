@@ -94,7 +94,7 @@ export function WithdrawConfirmation({
         <div className="overflow-hidden rounded-2xl bg-card bg-gradient-card py-1 shadow-card">
           <div className="flex items-center justify-between px-5 py-4">
             <span className="text-caption text-muted-foreground">To</span>
-            <span className="max-w-[200px] truncate font-mono text-body text-white" title={destination}>
+            <span className="max-w-[200px] truncate font-mono text-body text-foreground" title={destination}>
               {destination.length > 24
                 ? `${destination.substring(0, 12)}...${destination.slice(-12)}`
                 : destination}
@@ -104,24 +104,24 @@ export function WithdrawConfirmation({
             <span className="text-caption text-muted-foreground">Network</span>
             <div className="flex items-center gap-1.5">
               <div className="size-1.5 rounded-full bg-primary shadow-glow-primary-soft" />
-              <span className="text-body font-bold text-white">{networkLabel}</span>
+              <span className="text-body font-bold text-foreground">{networkLabel}</span>
             </div>
           </div>
           {routeAccount && (
             <div className="flex items-center justify-between px-5 py-4">
               <span className="text-caption text-muted-foreground">From Account</span>
-              <span className="text-body font-bold text-white">{routeAccount}</span>
+              <span className="text-body font-bold text-foreground">{routeAccount}</span>
             </div>
           )}
           {routeMethod && (
             <div className="flex items-center justify-between px-5 py-4">
               <span className="text-caption text-muted-foreground">Route Method</span>
-              <span className="text-body font-bold text-white">{routeMethod}</span>
+              <span className="text-body font-bold text-foreground">{routeMethod}</span>
             </div>
           )}
           <div className="flex items-center justify-between px-5 py-4">
             <span className="text-caption text-muted-foreground">Asset</span>
-            <span className="text-body font-bold text-white">
+            <span className="text-body font-bold text-foreground">
               {selectedAsset?.ticker ?? selectedAssetId}
             </span>
           </div>
@@ -134,7 +134,7 @@ export function WithdrawConfirmation({
                 {reviewLabels?.estimatedNetworkFee ?? 'Estimated network fee'}
               </span>
               <div className="flex flex-col items-end">
-                <span className="text-body text-white">
+                <span className="text-body text-foreground">
                   {`${feeIsExact ? '' : '~'}${formatAmount(estimatedFee, { locale })} sats`}
                 </span>
                 <span className="mt-0.5 text-xxs font-bold capitalize tracking-wider text-secondary-content">
@@ -146,7 +146,7 @@ export function WithdrawConfirmation({
           {addressType === 'rgb' && decodedRgbInvoice?.recipient_type === 'Witness' && (
             <div className="flex items-center justify-between px-5 py-4">
               <span className="text-caption text-muted-foreground">Witness Amount</span>
-              <span className="text-body text-white">{witnessAmountSat} sats</span>
+              <span className="text-body text-foreground">{witnessAmountSat} sats</span>
             </div>
           )}
         </div>
@@ -156,12 +156,12 @@ export function WithdrawConfirmation({
             data-testid="payment-review-total"
             className="flex items-center justify-between rounded-2xl bg-card bg-gradient-card-hero p-5 shadow-card"
           >
-            <span className="text-body font-bold uppercase tracking-eyebrow text-primary">
+            <span className="text-body font-bold uppercase tracking-eyebrow text-brand">
               {reviewLabels?.totalDeducted ?? 'Total deducted'}
             </span>
-            <span className="text-title font-bold text-white">
+            <span className="text-title font-bold text-foreground">
               {formatAmount(Math.round(parseFloat(amount) || 0) + estimatedFee, { locale })}{' '}
-              <span className="text-subhead text-primary/70">sats</span>
+              <span className="text-subhead text-brand/70">sats</span>
             </span>
           </div>
         )}
@@ -170,7 +170,7 @@ export function WithdrawConfirmation({
           <div className="flex items-center gap-3 rounded-xl bg-gradient-active p-4 shadow-glow-violet-soft ring-1 ring-inset ring-secondary/40">
             <Icon name="progress_activity" className="animate-spin text-icon-2xl text-secondary-content" />
             <div>
-              <p className="text-body font-medium text-white">Processing payment...</p>
+              <p className="text-body font-medium text-foreground">Processing payment...</p>
               <p className="text-caption text-muted-foreground">Waiting for confirmation</p>
             </div>
           </div>

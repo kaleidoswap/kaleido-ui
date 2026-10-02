@@ -63,7 +63,7 @@ export function FilterDropdown({
             compact ? 'gap-1 px-2 py-1.5' : 'gap-1.5 px-2.5 py-2',
             isFiltered
               ? 'bg-secondary/20 shadow-glow-violet-soft ring-1 ring-inset ring-secondary/40'
-              : 'bg-white/[0.09] shadow-raised backdrop-blur-md hover:bg-secondary/15',
+              : 'bg-foreground/[0.09] shadow-raised backdrop-blur-md hover:bg-secondary/15',
             open && !isFiltered && 'bg-secondary/15 ring-1 ring-inset ring-secondary/30',
           )}
         >
@@ -72,7 +72,7 @@ export function FilterDropdown({
               className={cn(
                 'shrink-0 font-bold uppercase tracking-eyebrow',
                 compact ? 'text-xxs' : 'text-mini',
-                isFiltered ? 'text-primary' : 'text-white/45',
+                isFiltered ? 'text-brand' : 'text-foreground/55',
               )}
             >
               {label}
@@ -100,7 +100,7 @@ export function FilterDropdown({
                 <span className="flex size-6 shrink-0 items-center justify-center">
                   {selected?.icon}
                 </span>
-                <span className="truncate text-tiny font-bold text-white">{selected?.label}</span>
+                <span className="truncate text-tiny font-bold text-foreground">{selected?.label}</span>
               </>
             )}
           </span>
@@ -108,7 +108,7 @@ export function FilterDropdown({
           <Icon
             name="expand_more"
             className={cn(
-              'shrink-0 text-icon-xs text-white/40 transition-transform',
+              'shrink-0 text-icon-xs text-foreground/55 transition-transform',
               (open || isFiltered) && 'text-secondary-content',
               open && 'rotate-180',
             )}
@@ -119,7 +119,7 @@ export function FilterDropdown({
         <span
           className={cn(
             'flex w-full items-center gap-2 leading-none transition-all',
-            optionSelected ? 'text-white' : 'text-white/60 hover:text-white/90',
+            optionSelected ? 'text-foreground' : 'text-foreground/60 hover:text-foreground/90',
           )}
         >
           <span className="flex size-6 shrink-0 items-center justify-center">{option.icon}</span>

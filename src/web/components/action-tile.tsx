@@ -29,7 +29,7 @@ export function ActionTile({
       data-testid={dataTestId}
       className={cn(
         'group relative inline-flex h-10 flex-1 items-center justify-center gap-1.5 overflow-hidden rounded-xl px-2.5',
-        'bg-foreground/8 text-foreground ring-1 ring-inset ring-foreground/10 shadow-raised transition-all duration-200 [&>span:nth-child(2)]:text-primary hover:[&>span:nth-child(2)]:text-primary-foreground',
+        'bg-foreground/8 text-foreground ring-1 ring-inset ring-foreground/10 shadow-raised transition-all duration-200 [&>span:nth-child(2)]:text-brand hover:[&>span:nth-child(2)]:text-primary-foreground',
         'hover:-translate-y-0.5 hover:text-primary-foreground hover:ring-transparent hover:shadow-glow-primary-soft',
         'active:translate-y-0 active:scale-95 disabled:pointer-events-none disabled:opacity-50',
         className

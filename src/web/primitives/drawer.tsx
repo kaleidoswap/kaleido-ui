@@ -305,7 +305,7 @@ const DrawerNavItem = React.forwardRef<HTMLAnchorElement, DrawerNavItemProps>(
         className: cn(
           'flex min-w-0 items-center gap-3 rounded-lg px-4 py-2.5 text-caption transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none',
           active
-            ? cn('border-l-2 border-primary bg-primary/10 bg-gradient-active font-semibold text-primary', activeIcon)
+            ? cn('border-l-2 border-primary bg-primary/10 bg-gradient-active font-semibold text-brand', activeIcon)
             : 'text-content-secondary hover:translate-x-1 hover:bg-secondary/10 hover:text-foreground motion-reduce:hover:translate-x-0',
           className
         ),

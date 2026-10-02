@@ -29,12 +29,12 @@ export interface MetricCardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'c
 }
 
 const toneClasses: Record<NonNullable<MetricCardProps['tone']>, string> = {
-  primary: 'bg-primary/10 text-primary',
-  purple: 'bg-network-arkade/10 text-network-arkade',
-  blue: 'bg-info/10 text-info',
-  info: 'bg-info/10 text-info',
-  warning: 'bg-warning/10 text-warning',
-  success: 'bg-success/10 text-success',
+  primary: 'bg-primary/10 text-brand',
+  purple: 'bg-network-arkade/10 text-network-arkade-fg',
+  blue: 'bg-info/10 text-info-fg',
+  info: 'bg-info/10 text-info-fg',
+  warning: 'bg-warning/10 text-warning-fg',
+  success: 'bg-success/10 text-success-fg',
   muted: 'bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25',
 }
 

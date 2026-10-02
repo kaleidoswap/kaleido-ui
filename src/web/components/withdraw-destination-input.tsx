@@ -40,7 +40,7 @@ export function WithdrawDestinationInput({
         <input
           type="text"
           data-testid="withdraw-destination-input"
-          className="w-full rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-5 py-4 pr-20 font-mono text-caption text-white shadow-inner transition-all placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
+          className="w-full rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-5 py-4 pr-20 font-mono text-caption text-foreground shadow-inner transition-all placeholder:text-foreground/20 focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
           placeholder="Address, Invoice, or RGB Invoice"
           value={destination}
           onChange={(event) => setDestination(event.target.value)}
@@ -54,7 +54,7 @@ export function WithdrawDestinationInput({
                 setDestination('')
                 handleReset()
               }}
-              className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-secondary/10 hover:text-white"
+              className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-secondary/10 hover:text-foreground"
             >
               <Icon name="close" className="text-icon-md" />
             </button>
@@ -79,15 +79,15 @@ export function WithdrawDestinationInput({
             </span>
           ) : addressType !== 'unknown' && addressType !== 'invalid' ? (
             <>
-              <span className="text-primary">&#10003;</span>
+              <span className="text-brand">&#10003;</span>
               <span data-testid="withdraw-detected-network" className="text-muted-foreground">
                 Detected: {detectedNetworkLabel ?? addressType}
               </span>
             </>
           ) : addressType === 'invalid' ? (
             <>
-              <span className="text-danger">&#10007;</span>
-              <span data-testid="withdraw-invalid-destination" className="text-danger">
+              <span className="text-danger-fg">&#10007;</span>
+              <span data-testid="withdraw-invalid-destination" className="text-danger-fg">
                 Invalid address format
               </span>
             </>

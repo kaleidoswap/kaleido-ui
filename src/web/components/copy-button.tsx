@@ -66,7 +66,7 @@ export function CopyButton({
         className={cn(
           'focus-visible:ring-primary/50 focus-visible:ring-offset-0 focus-visible:shadow-glow-primary-soft',
           state === 'copied'
-            ? 'bg-primary/10 text-primary hover:bg-primary/15'
+            ? 'bg-primary/10 text-brand hover:bg-primary/15'
             : 'text-muted-foreground hover:bg-secondary/15 hover:text-secondary-content',
           className,
         )}
@@ -75,7 +75,7 @@ export function CopyButton({
         <CopyIcon copied={state === 'copied'} variant="bare" />
       </Button>
       {state === 'failed' && (
-        <span data-slot="copy-button-error" role="alert" className="text-caption text-danger">
+        <span data-slot="copy-button-error" role="alert" className="text-caption text-danger-fg">
           {failedMessage}
         </span>
       )}
