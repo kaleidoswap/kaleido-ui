@@ -133,7 +133,7 @@ export function InlineSelector<TOption extends InlineSelectorOption>({
           <ScrollArea className="max-h-72" viewportClassName="max-h-72">
           <div className="space-y-1">
             {options.length === 0 ? (
-              <div className="flex flex-col items-center gap-2 px-4 py-8 text-center text-sm text-white/30">
+              <div className="flex flex-col items-center gap-2 px-4 py-8 text-center text-caption text-white/30">
                 <Icon name="search" size="md" className="opacity-40" />
                 <span>No results</span>
               </div>

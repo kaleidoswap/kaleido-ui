@@ -89,7 +89,7 @@ export function InfoChip({
       data-info-kind={dataInfoKind}
       data-testid={dataTestId}
       className={cn(
-        'flex w-full max-w-full items-center gap-3 rounded-xl border border-white/10 bg-surface-card px-3 py-2.5',
+        'flex w-full max-w-full items-center gap-3 rounded-xl border border-border bg-surface-card px-3 py-2.5',
         className,
       )}
     >
@@ -106,13 +106,13 @@ export function InfoChip({
       )}
 
       <dl className="min-w-0 flex-1">
-        <dt className="truncate text-xxs font-bold uppercase tracking-wider text-muted-foreground">
+        <dt className="truncate text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
           {label}
         </dt>
         <dd className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
           <span
             className={cn(
-              'min-w-0 max-w-full [overflow-wrap:anywhere] text-sm font-semibold leading-5 text-foreground',
+              'min-w-0 max-w-full [overflow-wrap:anywhere] text-body font-semibold leading-5 text-foreground',
               valueClassName,
             )}
           >

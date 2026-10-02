@@ -1,11 +1,22 @@
 import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
+import { useCopyToClipboard } from '../hooks/use-copy-to-clipboard'
+import { COPY_FAILED_MESSAGE } from './copy-button'
 
 export interface RecoveryPhraseCardProps {
   words: string[]
   revealed?: boolean
   onRevealChange?: (revealed: boolean) => void
+  /**
+   * The card copies this itself (usually `words.join(' ')`) and says when the
+   * copy failed. Prefer it to `onCopy`; when both are given, `onCopy` wins.
+   */
+  copyValue?: string
+  copyLabel?: string
+  copiedLabel?: string
+  copyFailedMessage?: string
+  /** Kept for compatibility: the consumer copies. */
   onCopy?: () => void
   title?: string
   emptyMessage?: string
@@ -16,24 +27,32 @@ export function RecoveryPhraseCard({
   words,
   revealed = false,
   onRevealChange,
+  copyValue,
+  copyLabel = 'Copy to clipboard',
+  copiedLabel = 'Copied',
+  copyFailedMessage = COPY_FAILED_MESSAGE,
   onCopy,
   title = 'Recovery Phrase',
   emptyMessage = 'Recovery phrase is not available yet.',
   className,
 }: RecoveryPhraseCardProps) {
   const hasWords = words.length > 0
+  const clipboard = useCopyToClipboard()
+  const selfCopy = !onCopy && copyValue !== undefined
+  const handleCopy = onCopy ?? (selfCopy ? () => void clipboard.copy(copyValue!) : undefined)
+  const copied = selfCopy && clipboard.state === 'copied'
 
   return (
     <section className={cn('space-y-2', className)}>
       <div className="flex items-center justify-between px-0.5">
-        <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{title}</p>
+        <p className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">{title}</p>
         {hasWords && revealed && onRevealChange && (
           <Button
             type="button"
             variant="ghost"
             size="sm"
             onClick={() => onRevealChange(!revealed)}
-            className="h-auto rounded-lg px-2 py-1 text-xs text-muted-foreground hover:text-white"
+            className="h-auto rounded-lg px-2 py-1 text-caption text-muted-foreground hover:text-white"
           >
             <Icon name="visibility_off" className="text-icon-md" />
             Hide
@@ -51,15 +70,15 @@ export function RecoveryPhraseCard({
           >
             {words.map((word, index) => (
               <div key={`${index}-${word}`} className="flex items-center gap-2 rounded-xl bg-card px-3 py-2.5">
-                <span className="w-4 shrink-0 text-xs font-bold text-muted-foreground">
+                <span className="w-4 shrink-0 text-caption font-bold text-muted-foreground">
                   {index + 1}
                 </span>
-                <span className="font-mono text-sm text-white">{word}</span>
+                <span className="font-mono text-body text-white">{word}</span>
               </div>
             ))}
           </div>
         ) : (
-          <div className="rounded-xl bg-warning/10 px-4 py-3 text-sm text-warning">
+          <div className="rounded-xl bg-warning/10 px-4 py-3 text-body text-warning">
             {emptyMessage}
           </div>
         )}
@@ -79,17 +98,27 @@ export function RecoveryPhraseCard({
         )}
       </div>
 
-      {hasWords && revealed && onCopy && (
+      {hasWords && revealed && handleCopy && (
         <Button
           type="button"
           variant="h3"
           size="lg"
-          onClick={onCopy}
+          onClick={handleCopy}
           className="w-full"
         >
-          <Icon name="content_copy" className="text-icon-lg" />
-          Copy to clipboard
+          <Icon name={copied ? 'check' : 'content_copy'} className="text-icon-lg" />
+          {copied ? copiedLabel : copyLabel}
         </Button>
+      )}
+      {selfCopy && clipboard.state === 'failed' && (
+        <p role="alert" className="m-0 text-caption text-danger">
+          {copyFailedMessage}
+        </p>
+      )}
+      {selfCopy && (
+        <span aria-live="polite" className="sr-only">
+          {copied ? copiedLabel : ''}
+        </span>
       )}
     </section>
   )

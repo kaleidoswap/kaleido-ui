@@ -22,11 +22,11 @@ const SelectTrigger = React.forwardRef<
       'group flex items-center justify-between transition-all outline-none',
       compact
         ? [
-            'w-auto gap-1 rounded-2xl bg-white/[0.09] px-2 py-1.5 text-xs leading-none backdrop-blur-md',
+            'w-auto gap-1 rounded-2xl bg-white/[0.09] px-2 py-1.5 text-caption leading-none backdrop-blur-md',
             'hover:bg-white/[0.13] data-[state=open]:bg-white/[0.13]',
           ]
         : [
-            'w-full gap-3 rounded-xl border border-transparent bg-white/[0.04] px-4 py-3 text-left text-sm',
+            'w-full gap-3 rounded-xl border border-transparent bg-white/[0.04] px-4 py-3 text-left text-body',
             'hover:border-primary/30 hover:bg-white/[0.06] data-[state=open]:border-primary/30',
           ],
       'focus:ring-1 focus:ring-primary/50',
@@ -78,7 +78,7 @@ const SelectLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Label
     ref={ref}
-    className={cn('px-3 py-1.5 text-xs font-semibold text-muted-foreground', className)}
+    className={cn('px-3 py-1.5 text-caption font-semibold text-muted-foreground', className)}
     {...props}
   />
 ))
@@ -95,7 +95,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex w-full cursor-pointer select-none items-center justify-between rounded-xl px-3 py-3 text-sm outline-none transition-colors',
+      'relative flex w-full cursor-pointer select-none items-center justify-between rounded-xl px-3 py-3 text-body outline-none transition-colors',
       'data-[highlighted]:bg-white/[0.06]',
       'data-[state=checked]:bg-primary/20 data-[state=checked]:text-primary',
       'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',

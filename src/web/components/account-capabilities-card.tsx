@@ -47,14 +47,14 @@ export function AccountCapabilitiesCard({
         <div className="flex min-w-0 flex-1 items-start gap-3">
           <AccountHeaderIcons accountId={accountId} />
           <div className="min-w-0 flex-1">
-            <h3 className="text-sm font-bold text-white group-hover:text-white/90">{title}</h3>
-            <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+            <h3 className="text-body font-bold text-white group-hover:text-white/90">{title}</h3>
+            <p className="mt-1 text-caption text-muted-foreground">{description}</p>
           </div>
         </div>
         <div className="flex flex-col items-end gap-2">
           <span
             className={cn(
-              'rounded-full px-2 py-1 text-xxs font-bold uppercase tracking-wider',
+              'rounded-full px-2 py-1 text-mini font-bold uppercase tracking-eyebrow',
               accentClasses
             )}
           >
@@ -71,11 +71,11 @@ export function AccountCapabilitiesCard({
       {isExpanded && (
         <div className="mt-5 duration-200 animate-in fade-in slide-in-from-top-2">
           <div className="mb-6 space-y-2">
-            <h4 className="mb-2 text-xxs font-bold uppercase tracking-wider text-muted-foreground">
+            <h4 className="mb-2 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
               Capabilities
             </h4>
             {capabilities.map((capability) => (
-              <div key={capability} className="flex items-center gap-2 text-xs text-muted-foreground">
+              <div key={capability} className="flex items-center gap-2 text-caption text-muted-foreground">
                 <span className="inline-block size-1.5 rounded-full bg-current opacity-80" />
                 <span>{capability}</span>
               </div>

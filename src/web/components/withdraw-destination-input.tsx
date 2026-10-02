@@ -33,14 +33,14 @@ export function WithdrawDestinationInput({
 }: WithdrawDestinationInputProps) {
   return (
     <div className="space-y-2">
-      <label className="ml-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+      <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
         Destination
       </label>
       <div className="relative">
         <input
           type="text"
           data-testid="withdraw-destination-input"
-          className="w-full rounded-2xl bg-card px-5 py-4 pr-20 font-mono text-sm text-white shadow-inner transition-all placeholder:text-white/20 focus:outline focus:outline-2 focus:outline-primary/50"
+          className="w-full rounded-2xl bg-card px-5 py-4 pr-20 font-mono text-caption text-white shadow-inner transition-all placeholder:text-white/20 focus:outline focus:outline-2 focus:outline-primary/50"
           placeholder="Address, Invoice, or RGB Invoice"
           value={destination}
           onChange={(event) => setDestination(event.target.value)}
@@ -56,7 +56,7 @@ export function WithdrawDestinationInput({
               }}
               className="rounded-lg p-2 text-muted-foreground transition-colors hover:text-white"
             >
-              <span className="material-symbols-outlined text-icon-md">close</span>
+              <Icon name="close" className="text-icon-md" />
             </button>
           )}
           <button
@@ -65,18 +65,16 @@ export function WithdrawDestinationInput({
             onClick={handlePaste}
             className="rounded-lg bg-white/5 p-2 text-muted-foreground transition-colors hover:text-primary"
           >
-            <span className="material-symbols-outlined text-icon-md">content_paste</span>
+            <Icon name="content_paste" className="text-icon-md" />
           </button>
         </div>
       </div>
 
       {destination && (
-        <div className="ml-1 flex items-center gap-2 text-xs">
+        <div className="ml-1 flex items-center gap-2 text-caption">
           {isDecoding || isResolvingLnurl ? (
             <span className="flex items-center gap-1 text-muted-foreground">
-              <span className="material-symbols-outlined animate-spin text-icon-sm">
-                progress_activity
-              </span>
+              <Icon name="progress_activity" className="animate-spin text-icon-sm" />
               {isResolvingLnurl ? 'Resolving...' : 'Decoding...'}
             </span>
           ) : addressType !== 'unknown' && addressType !== 'invalid' ? (
@@ -98,4 +96,5 @@ export function WithdrawDestinationInput({
       )}
     </div>
   )
-}
+}import { Icon } from '../primitives/icon'
+

@@ -155,7 +155,7 @@ export function BtcUnifiedReceive({
       )}
 
       <div className="space-y-1.5">
-        <p className="text-xxs font-bold uppercase tracking-widest text-white/30">
+        <p className="text-mini font-bold uppercase tracking-eyebrow text-white/30">
           Available Addresses
         </p>
         {accountReceiveResult.addresses.map((address) => {
@@ -175,7 +175,7 @@ export function BtcUnifiedReceive({
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
-                  <p className={cn('text-xxs font-bold uppercase tracking-widest', network.text)}>
+                  <p className={cn('text-mini font-bold uppercase tracking-eyebrow', network.text)}>
                     {address.label}
                   </p>
                   {(() => {
@@ -207,7 +207,7 @@ export function BtcUnifiedReceive({
       >
         <div className="space-y-4">
           <div className="space-y-1.5">
-            <label className="text-xxs font-bold uppercase tracking-widest text-white/40">
+            <label className="text-mini font-bold uppercase tracking-eyebrow text-white/40">
               Amount (optional)
             </label>
             <input
@@ -215,14 +215,12 @@ export function BtcUnifiedReceive({
               value={amount}
               onChange={handleAmountChange}
               placeholder="Any amount"
-              className="w-full rounded-xl bg-white/5 px-3 py-2.5 font-mono text-sm font-bold text-white shadow-inner transition-all placeholder:text-white/25 focus:outline focus:outline-2 focus:outline-primary/40"
+              className="w-full rounded-xl bg-white/5 px-3 py-2.5 font-mono text-caption font-bold text-white shadow-inner transition-all placeholder:text-white/25 focus:outline focus:outline-2 focus:outline-primary/40"
               inputMode="decimal"
             />
             {amount && loading && (
               <p className="flex items-center gap-1 text-xxs text-warning/70">
-                <span className="material-symbols-outlined animate-spin text-icon-xxs">
-                  progress_activity
-                </span>
+                <Icon name="progress_activity" className="animate-spin text-icon-xxs" />
                 Updating invoice...
               </p>
             )}
@@ -230,7 +228,7 @@ export function BtcUnifiedReceive({
 
           {onDescriptionChange && (
             <div className="space-y-1.5">
-              <label className="text-xxs font-bold uppercase tracking-widest text-white/40">
+              <label className="text-mini font-bold uppercase tracking-eyebrow text-white/40">
                 Description (optional)
               </label>
               <input
@@ -238,7 +236,7 @@ export function BtcUnifiedReceive({
                 value={description ?? ''}
                 onChange={(event) => onDescriptionChange(event.target.value)}
                 placeholder="What's this for?"
-                className="w-full rounded-xl bg-white/5 px-3 py-2.5 text-sm text-white shadow-inner transition-all placeholder:text-white/25 focus:outline focus:outline-2 focus:outline-primary/40"
+                className="w-full rounded-xl bg-white/5 px-3 py-2.5 text-caption text-white shadow-inner transition-all placeholder:text-white/25 focus:outline focus:outline-2 focus:outline-primary/40"
               />
             </div>
           )}

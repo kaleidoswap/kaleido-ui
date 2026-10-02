@@ -56,7 +56,7 @@ export function StepperNumberInput({
         aria-label={ariaLabel}
         onChange={(event) => clamp(Number(event.target.value))}
         className={cn(
-          'min-w-0 flex-1 bg-transparent text-center text-sm font-bold text-foreground focus:outline-none',
+          'min-w-0 flex-1 bg-transparent text-center text-body font-bold text-foreground focus:outline-none',
           inputClassName,
         )}
       />

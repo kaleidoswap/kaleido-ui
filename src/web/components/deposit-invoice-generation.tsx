@@ -353,7 +353,7 @@ export function DepositInvoiceGeneration({
           <div className="flex-shrink-0 bg-background px-4 py-2">
             <div className="space-y-2">
               <div>
-                <p className="text-xxs font-bold uppercase tracking-widest text-white/35">
+                <p className="text-mini font-bold uppercase tracking-eyebrow text-white/35">
                   Destination Account
                 </p>
                 <div className="mt-1.5 flex gap-1.5 overflow-x-auto no-scrollbar">
@@ -384,7 +384,7 @@ export function DepositInvoiceGeneration({
               </div>
           {!isBtc && !(isNewAsset && (network === 'spark' || network === 'arkade')) && (
             <div>
-              <p className="text-xxs font-bold uppercase tracking-widest text-white/35">
+              <p className="text-mini font-bold uppercase tracking-eyebrow text-white/35">
                 Transfer Method
               </p>
               <div className="mt-1.5 flex gap-1.5 overflow-x-auto no-scrollbar">
@@ -440,9 +440,10 @@ export function DepositInvoiceGeneration({
                 ].bg
               )}
             >
-              <span
+              <Icon
+                name="progress_activity"
                 className={cn(
-                  'material-symbols-outlined animate-spin text-icon-4xl',
+                  'animate-spin text-icon-4xl',
                   NETWORK_CONFIG[
                     btcSelectedAccount === 'SPARK'
                       ? 'spark'
@@ -451,13 +452,11 @@ export function DepositInvoiceGeneration({
                         : 'onchain'
                   ].text
                 )}
-              >
-                progress_activity
-              </span>
+              />
             </div>
             <div className="space-y-1 text-center">
-              <p className="text-sm font-bold text-muted-foreground">Generating addresses...</p>
-              <p className="text-xs text-white/30">{ACCOUNT_TITLES[btcSelectedAccount]}</p>
+              <p className="text-caption font-bold text-muted-foreground">Generating addresses...</p>
+              <p className="text-caption text-white/30">{ACCOUNT_TITLES[btcSelectedAccount]}</p>
             </div>
           </div>
         ) : !address ? (

@@ -2,7 +2,12 @@ import type { ReactNode } from 'react'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 
-export type SwapStepStatus = 'done' | 'active' | 'pending' | 'failed'
+/**
+ * `done`, `active`, `pending` and `failed` are a flow's steps. `unknown` is a
+ * step that cannot be verified from here — a checklist item whose state the
+ * app has no way to read — and is never drawn as done or as to-do.
+ */
+export type SwapStepStatus = 'done' | 'active' | 'pending' | 'failed' | 'unknown'
 
 export interface SwapStepItem {
   id: string
@@ -10,11 +15,30 @@ export interface SwapStepItem {
   /** One line on what is happening, or the evidence that settled the step. */
   description?: ReactNode
   status: SwapStepStatus
+  /** Small labels beside the title: "Required", "Admin only". */
+  badges?: ReactNode
+  /** What the reader can do about this step: a button, a link. */
+  action?: ReactNode
 }
 
 export interface SwapStepListProps {
   steps: SwapStepItem[]
+  /**
+   * The rail between steps. On (default) for a flow whose steps follow one
+   * another; off for a checklist, whose items stand alone.
+   */
+  connector?: boolean
+  /** What each status is called for screen readers; the dot is decorative. */
+  statusLabels?: Partial<Record<SwapStepStatus, string>>
   className?: string
+}
+
+const defaultStatusLabels: Record<SwapStepStatus, string> = {
+  done: 'Done',
+  active: 'In progress',
+  pending: 'To do',
+  failed: 'Failed',
+  unknown: 'Cannot be checked',
 }
 
 // Status is carried by the dot's fill alone — no rings, per DESIGN.md's
@@ -24,6 +48,7 @@ const dotClass: Record<SwapStepStatus, string> = {
   active: 'bg-warning/20 text-warning',
   pending: 'bg-muted/40 text-muted-foreground',
   failed: 'bg-danger/20 text-danger',
+  unknown: 'bg-muted/40 text-muted-foreground',
 }
 
 const labelClass: Record<SwapStepStatus, string> = {
@@ -31,11 +56,14 @@ const labelClass: Record<SwapStepStatus, string> = {
   active: 'text-foreground',
   pending: 'text-muted-foreground',
   failed: 'text-danger',
+  unknown: 'text-foreground',
 }
 
 /**
  * A vertical, self-describing progress list for multi-step protocol flows —
- * swap legs, recovery runs, onboarding chains.
+ * swap legs, recovery runs, onboarding chains — and, with `connector={false}`,
+ * a checklist (done / to do / cannot be checked), each item with optional
+ * badges and an action.
  *
  * Use this (not the horizontal dot stepper) when each step needs a line of
  * evidence next to it: a txid, "waiting for the counterparty", the reason a
@@ -43,12 +71,15 @@ const labelClass: Record<SwapStepStatus, string> = {
  * state to the list rather than the list inferring an index — a flow whose
  * third step fails while the second is still open renders correctly.
  *
+ * The status never rests on colour alone: each has its own glyph (a check, a
+ * cross, a question mark, or the step number) and a word for screen readers.
  * The connector under each step reads "done" only when that step is done, so
  * the filled rail always stops at the real frontier of the flow.
  */
-export function SwapStepList({ steps, className }: SwapStepListProps) {
+export function SwapStepList({ steps, connector = true, statusLabels, className }: SwapStepListProps) {
+  const labels = { ...defaultStatusLabels, ...statusLabels }
   return (
-    <div data-slot="swap-step-list" className={cn('flex flex-col', className)}>
+    <div data-slot="swap-step-list" className={cn('flex flex-col', !connector && 'gap-3', className)}>
       {steps.map((step, index) => {
         const isLast = index === steps.length - 1
         return (
@@ -71,11 +102,13 @@ export function SwapStepList({ steps, className }: SwapStepListProps) {
                   <Icon name="check" className="text-icon-sm" />
                 ) : step.status === 'failed' ? (
                   <Icon name="close" className="text-icon-sm" />
+                ) : step.status === 'unknown' ? (
+                  <Icon name="help" className="text-icon-sm" />
                 ) : (
                   index + 1
                 )}
               </span>
-              {!isLast && (
+              {connector && !isLast && (
                 <span
                   aria-hidden
                   className={cn(
@@ -85,13 +118,20 @@ export function SwapStepList({ steps, className }: SwapStepListProps) {
                 />
               )}
             </div>
-            <div className={cn('min-w-0 flex-1', isLast ? 'pb-0' : 'pb-4')}>
-              <p className={cn('text-sm font-medium', labelClass[step.status])}>{step.label}</p>
+            <div className={cn('min-w-0 flex-1', connector && !isLast ? 'pb-4' : 'pb-0')}>
+              <div className="flex flex-wrap items-center gap-2">
+                <p className={cn('text-body font-medium', labelClass[step.status])}>
+                  <span className="sr-only">{labels[step.status]}: </span>
+                  {step.label}
+                </p>
+                {step.badges}
+              </div>
               {step.description && (
-                <p className="mt-0.5 text-xs leading-snug text-muted-foreground">
+                <p className="mt-0.5 text-caption leading-snug text-muted-foreground">
                   {step.description}
                 </p>
               )}
+              {step.action && <div className="mt-2">{step.action}</div>}
             </div>
           </div>
         )

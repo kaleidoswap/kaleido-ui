@@ -46,7 +46,7 @@ export function OptionSelector({
       renderTrigger={({ open }) => (
         <span
           className={cn(
-            'flex h-9 min-w-[4.5rem] items-center gap-1.5 rounded-full bg-white/8 px-3.5 text-sm font-semibold leading-none text-foreground transition-colors hover:bg-white/12',
+            'flex h-9 min-w-[4.5rem] items-center gap-1.5 rounded-full bg-white/8 px-3.5 text-body font-semibold leading-none text-foreground transition-colors hover:bg-white/12',
             triggerAlign === 'center' ? 'justify-center' : 'justify-between',
             open && 'bg-primary/15 text-primary hover:bg-primary/15',
             !compact && 'w-full',
@@ -71,7 +71,7 @@ export function OptionSelector({
             <span className="min-w-0">
               <span
                 className={cn(
-                  'block truncate text-sm',
+                  'block truncate text-body',
                   optionSelected ? 'font-semibold text-primary' : 'font-medium text-foreground',
                 )}
               >

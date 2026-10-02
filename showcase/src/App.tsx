@@ -1,5 +1,19 @@
-import { useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { StateSnapshot } from './pages/StateSnapshot'
+import { ChartsGallery } from './pages/ChartsGallery'
+import {
+  AvatarGallery,
+  BadgesGallery,
+  CollapsibleGallery,
+  CopyGallery,
+  DialogShowCloseDemo,
+  FormsGallery,
+  ListsGallery,
+  NoticesGallery,
+  PageLayoutGallery,
+  PopoverMenuGallery,
+  TableGallery,
+} from './pages/ComponentGalleries'
 import { Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput } from '@kaleido-ui/index'
 import {
   Button,
@@ -23,6 +37,17 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerSidebar,
+  DrawerBody,
+  DrawerSection,
+  DrawerNavItem,
+  DrawerNavGroup,
+  DrawerFooter,
   Icon,
   Icons,
   Toaster,
@@ -82,9 +107,14 @@ import {
   KaleidoswapMark,
   HaloBackdrop,
 } from '@kaleido-ui/index'
-import type { StatusType, NetworkType } from '@kaleido-ui/index'
+import type { StatusType, NetworkType, IconName } from '@kaleido-ui/index'
 
 // ─── Section wrapper ────────────────────────────────────────────────────────
+
+// The page on screen. Every section is written in one tree, as before, and
+// renders only when it is the current page — so each component group is its
+// own page without splitting this file into a module per page.
+const CurrentPage = createContext<string>('')
 
 function Section({
   id,
@@ -97,10 +127,11 @@ function Section({
   description?: string
   children: React.ReactNode
 }) {
+  if (useContext(CurrentPage) !== id) return null
   return (
-    <section id={id} className="mb-16 scroll-mt-20">
+    <section id={id} aria-labelledby={`${id}-title`}>
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-white tracking-tight">{title}</h2>
+        <h1 id={`${id}-title`} className="text-xl font-bold text-white tracking-tight">{title}</h1>
         {description && (
           <p className="text-sm text-slate-400 mt-1">{description}</p>
         )}
@@ -130,35 +161,124 @@ function Row({
 
 // ─── Nav ────────────────────────────────────────────────────────────────────
 
-const NAV_ITEMS = [
-  { id: 'brand', label: 'Brand' },
-  { id: 'buttons', label: 'Buttons' },
-  { id: 'icons', label: 'Icons' },
-  { id: 'status-badges', label: 'Status Badges' },
-  { id: 'network-badges', label: 'Network Badges' },
-  { id: 'info-chips', label: 'Info Chips' },
-  { id: 'cards', label: 'Cards' },
-  { id: 'asset-cards', label: 'Asset Cards' },
-  { id: 'transaction-cards', label: 'Transaction Cards' },
-  { id: 'feature-components', label: 'Feature Components' },
-  { id: 'activity-components', label: 'Activity Components' },
-  { id: 'deposit-components', label: 'Deposit Components' },
-  { id: 'withdraw-components', label: 'Withdraw Components' },
-  { id: 'account-components', label: 'Account Components' },
-  { id: 'alert-banners', label: 'Alert Banners' },
-  { id: 'setting-items', label: 'Setting Items' },
-  { id: 'swap-flow', label: 'Swap Flow' },
-  { id: 'inputs', label: 'Inputs' },
-  { id: 'tabs', label: 'Tabs' },
-  { id: 'dialog', label: 'Dialog' },
-  { id: 'toast', label: 'Toast' },
+interface NavPage {
+  id: string
+  label: string
+  icon: IconName
+}
+
+// One page per component group, grouped by what the components are for.
+const NAV_CATEGORIES: { label: string; icon: IconName; pages: NavPage[] }[] = [
+  {
+    label: 'Foundations',
+    icon: 'layers',
+    pages: [
+      { id: 'brand', label: 'Brand', icon: 'bolt' },
+      { id: 'buttons', label: 'Buttons', icon: 'touch_app' },
+      { id: 'icons', label: 'Icons', icon: 'palette' },
+      { id: 'inputs', label: 'Inputs', icon: 'edit' },
+      { id: 'tabs', label: 'Tabs', icon: 'tune' },
+      { id: 'forms', label: 'Forms', icon: 'edit' },
+      { id: 'table', label: 'Table', icon: 'grid_view' },
+    ],
+  },
+  {
+    label: 'Display',
+    icon: 'visibility',
+    pages: [
+      { id: 'status-badges', label: 'Status Badges', icon: 'verified' },
+      { id: 'network-badges', label: 'Network Badges', icon: 'hub' },
+      { id: 'info-chips', label: 'Info Chips', icon: 'info' },
+      { id: 'cards', label: 'Cards', icon: 'grid_view' },
+      { id: 'alert-banners', label: 'Alert Banners', icon: 'warning' },
+      { id: 'tone-badges', label: 'Tone Badges', icon: 'verified' },
+      { id: 'avatar', label: 'Avatar', icon: 'person' },
+      { id: 'collapsible', label: 'Collapsible', icon: 'expand_more' },
+    ],
+  },
+  {
+    label: 'Overlays',
+    icon: 'apps',
+    pages: [
+      { id: 'dialog', label: 'Dialog', icon: 'chat_bubble' },
+      { id: 'drawer', label: 'Drawer', icon: 'menu' },
+      { id: 'toast', label: 'Toast', icon: 'description' },
+      { id: 'popover-menu', label: 'Popover & Menu', icon: 'apps' },
+      { id: 'notices', label: 'Notices', icon: 'info' },
+    ],
+  },
+  {
+    label: 'Wallet',
+    icon: 'account_balance_wallet',
+    pages: [
+      { id: 'asset-cards', label: 'Asset Cards', icon: 'token' },
+      { id: 'transaction-cards', label: 'Transaction Cards', icon: 'receipt_long' },
+      { id: 'feature-components', label: 'Feature Components', icon: 'account_balance_wallet' },
+      { id: 'account-components', label: 'Account Components', icon: 'person' },
+      { id: 'setting-items', label: 'Setting Items', icon: 'settings' },
+    ],
+  },
+  {
+    label: 'Flows',
+    icon: 'sync_alt',
+    pages: [
+      { id: 'activity-components', label: 'Activity', icon: 'history' },
+      { id: 'deposit-components', label: 'Deposit', icon: 'arrow_downward' },
+      { id: 'withdraw-components', label: 'Withdraw', icon: 'arrow_outward' },
+      { id: 'swap-flow', label: 'Swap Flow', icon: 'swap_horiz' },
+    ],
+  },
+  {
+    label: 'Patterns',
+    icon: 'receipt_long',
+    pages: [
+      { id: 'copy', label: 'Copy', icon: 'content_copy' },
+      { id: 'lists', label: 'Lists & filters', icon: 'tune' },
+      { id: 'page-layout', label: 'Page layout', icon: 'description' },
+    ],
+  },
+  {
+    label: 'Data',
+    icon: 'trending_up',
+    pages: [{ id: 'charts', label: 'Charts', icon: 'trending_up' }],
+  },
 ]
+
+const NAV_PAGES = NAV_CATEGORIES.flatMap((category) => category.pages)
+
+/**
+ * The page a hash names. `#/buttons` is the page address; a bare `#buttons`
+ * (the old in-page anchors) still lands on the same page. Anything else opens
+ * the first page.
+ */
+const pageFromHash = (hash: string): string => {
+  const id = hash.replace(/^#\/?/, '')
+  return NAV_PAGES.some((page) => page.id === id) ? id : NAV_PAGES[0].id
+}
+
+const readCollapsed = () => {
+  try {
+    return window.localStorage.getItem('showcase:nav-collapsed') === '1'
+  } catch {
+    return false
+  }
+}
+
+const writeCollapsed = (collapsed: boolean) => {
+  try {
+    window.localStorage.setItem('showcase:nav-collapsed', collapsed ? '1' : '0')
+  } catch {
+    // Private mode or blocked storage: the rail just does not persist.
+  }
+}
 
 // ─── App ────────────────────────────────────────────────────────────────────
 
 export function App() {
   const { toast } = useToast()
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [showcaseNavActive, setShowcaseNavActive] = useState('Dashboard')
   const [darkMode, setDarkMode] = useState(true)
   const [language, setLanguage] = useState('en')
   const [activeView, setActiveView] = useState('dashboard')
@@ -188,6 +308,20 @@ export function App() {
     return () => window.removeEventListener('hashchange', onChange)
   }, [])
 
+  const [navCollapsed, setNavCollapsed] = useState(readCollapsed)
+  const [navOpen, setNavOpen] = useState(false)
+  const page = pageFromHash(route)
+  const pageIndex = NAV_PAGES.findIndex((item) => item.id === page)
+  const previousPage = NAV_PAGES[pageIndex - 1]
+  const nextPage = NAV_PAGES[pageIndex + 1]
+
+  // A page change is a navigation: start at the top, and name the tab.
+  useEffect(() => {
+    if (route.startsWith('#/state-snapshot')) return
+    window.scrollTo({ top: 0 })
+    document.title = `${NAV_PAGES[pageIndex].label} · kaleido-ui showcase`
+  }, [route, pageIndex])
+
   if (route.startsWith('#/state-snapshot')) {
     return (
       <StateSnapshot
@@ -198,52 +332,126 @@ export function App() {
     )
   }
 
+  // The showcase's own navigation, rendered by the desktop sidebar and the
+  // mobile drawer alike: each category is a submenu, as Trade and Liquidity
+  // are in the desktop app, and its pages show when it is opened.
+  const pageNav = (
+    <DrawerSection>
+      {NAV_CATEGORIES.map((category) => (
+        <DrawerNavGroup
+          key={category.label}
+          label={category.label}
+          icon={<Icon name={category.icon} className="text-icon-xl" />}
+          active={category.pages.some((item) => item.id === page)}
+          railHref={`#/${category.pages[0].id}`}
+        >
+          {category.pages.map((item) => (
+            <DrawerNavItem
+              key={item.id}
+              href={`#/${item.id}`}
+              label={item.label}
+              icon={<Icon name={item.icon} className="text-icon-md" />}
+              active={item.id === page}
+            />
+          ))}
+        </DrawerNavGroup>
+      ))}
+    </DrawerSection>
+  )
+
+  const navFooter = (
+    <DrawerFooter className="space-y-3">
+      <DrawerNavItem
+        href="#/state-snapshot"
+        label="State Snapshot"
+        icon={<Icon name="science" className="text-icon-xl" />}
+      />
+      {!navCollapsed && <p className="truncate px-4 text-tiny text-content-tertiary">kaleido-ui showcase</p>}
+    </DrawerFooter>
+  )
+
+  const lockup = (
+    <div className="flex items-center gap-3">
+      <img src="/brand/kaleidoswap-pictogram.svg" alt="" className="h-7" />
+      <span className="font-bold text-white tracking-tight">kaleido-ui</span>
+    </div>
+  )
+
+  // One navigation list, rendered by both drawer demos.
+  const showcaseNav = [
+    { label: 'Wallet',
+    icon: 'account_balance_wallet', items: [
+      { label: 'Dashboard', icon: 'account_balance_wallet' as const },
+      { label: 'Swaps', icon: 'swap_horiz' as const },
+      { label: 'Activity', icon: 'history' as const },
+    ] },
+    { label: 'Account', items: [{ label: 'Settings', icon: 'settings' as const }] },
+  ].map((section) => (
+    <DrawerSection key={section.label} label={section.label}>
+      {section.items.map((item) => (
+        <DrawerNavItem
+          key={item.label}
+          href="#/drawer"
+          label={item.label}
+          icon={<Icon name={item.icon} className="text-icon-xl" />}
+          active={showcaseNavActive === item.label}
+          onClick={(event) => {
+            event.preventDefault()
+            setShowcaseNavActive(item.label)
+          }}
+        />
+      ))}
+    </DrawerSection>
+  ))
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="flex min-h-screen bg-background text-foreground">
       <Toaster />
 
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-white/5 bg-background/80 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src="/brand/kaleidoswap-pictogram.svg" alt="KaleidoSwap" className="h-7" />
-            <span className="font-bold text-white tracking-tight">kaleido-ui</span>
-            <span className="text-xs text-slate-500 font-mono">showcase</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <a
-              href="#/state-snapshot"
-              className="text-xs font-bold text-white/90 px-3 py-1 rounded-full bg-white/10 border border-white/20 hover:bg-white/15 hover:border-white/30 transition-colors"
-            >
-              State Snapshot →
-            </a>
-            <span className="text-xs font-mono text-primary px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20">
-              v0.1.0
-            </span>
-          </div>
-        </div>
-      </header>
+      {/* Left bar — desktop: the sidebar, folding to an icon rail */}
+      <DrawerSidebar
+        aria-label="Showcase navigation"
+        className="hidden lg:flex"
+        collapsed={navCollapsed}
+        onCollapsedChange={(collapsed) => {
+          setNavCollapsed(collapsed)
+          writeCollapsed(collapsed)
+        }}
+        header={lockup}
+      >
+        <DrawerBody>
+          <nav aria-label="Components">{pageNav}</nav>
+        </DrawerBody>
+        {navFooter}
+      </DrawerSidebar>
 
-      <div className="max-w-7xl mx-auto px-6 flex gap-8 py-8">
+      <div className="flex min-w-0 flex-1 flex-col">
+        {/* Top bar — mobile: the same navigation, in a drawer over the page */}
+        <header className="sticky top-0 z-40 flex h-14 items-center gap-3 border-b border-white/5 bg-background/80 px-4 backdrop-blur-xl lg:hidden">
+          <Drawer open={navOpen} onOpenChange={setNavOpen}>
+            <DrawerTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon-lg"
+                aria-label={`Open navigation, current page: ${NAV_PAGES[pageIndex].label}`}
+              >
+                <Icon name="menu" size="md" />
+              </Button>
+            </DrawerTrigger>
+            <DrawerContent header={lockup}>
+              <DrawerTitle className="sr-only">Showcase navigation</DrawerTitle>
+              <DrawerDescription>Component pages, by category</DrawerDescription>
+              <DrawerBody>
+                <nav aria-label="Components">{pageNav}</nav>
+              </DrawerBody>
+              {navFooter}
+            </DrawerContent>
+          </Drawer>
+        </header>
 
-        {/* Sidebar nav */}
-        <nav className="hidden lg:block w-48 shrink-0">
-          <ul className="sticky top-24 space-y-1">
-            {NAV_ITEMS.map((item) => (
-              <li key={item.id}>
-                <a
-                  href={`#${item.id}`}
-                  className="block text-sm text-slate-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/5 transition-colors"
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        {/* Main content */}
-        <main className="flex-1 min-w-0">
+        {/* The current page */}
+        <CurrentPage.Provider value={page}>
+        <main className="mx-auto w-full max-w-5xl min-w-0 flex-1 px-6 py-8">
 
           {/* ── Brand ───────────────────────────────────────────────────── */}
           <Section id="brand" title="Brand" description="Logo, per-theme foregrounds, brand gradient, glows and the halo backdrop.">
@@ -538,7 +746,8 @@ export function App() {
                     position="inline"
                     className="mx-auto"
                     items={[
-                      { id: 'dashboard', label: 'Wallet', iconName: 'account_balance_wallet' },
+                      { id: 'dashboard', label: 'Wallet',
+    icon: 'account_balance_wallet', iconName: 'account_balance_wallet' },
                       { id: 'swap', label: 'Swap', iconName: 'swap_horiz' },
                       { id: 'activity-list', label: 'Activity', iconName: 'history' },
                       { id: 'settings', label: 'Settings', iconName: 'settings' },
@@ -1179,6 +1388,51 @@ export function App() {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
+            <DialogShowCloseDemo />
+          </Section>
+
+          {/* ── Drawer ──────────────────────────────────────────────────── */}
+          <Section id="drawer" title="Drawer" description="The desktop app's left sidebar: on the desktop it folds to an icon rail, on a phone it opens over the page. One navigation list renders in both.">
+            <Row label="Desktop · DrawerSidebar (chevron folds it to the rail)" wrap={false}>
+              <div className="flex h-[440px] w-full overflow-hidden rounded-2xl ring-1 ring-white/10">
+                <DrawerSidebar
+                  className="static h-full"
+                  collapsed={sidebarCollapsed}
+                  onCollapsedChange={setSidebarCollapsed}
+                  header={<img src="/brand/kaleidoswap-pictogram.svg" alt="KaleidoSwap" className="h-8" />}
+                >
+                  <DrawerBody>{showcaseNav}</DrawerBody>
+                  <DrawerFooter>
+                    <p className="truncate text-center text-tiny text-content-tertiary">v0.1</p>
+                  </DrawerFooter>
+                </DrawerSidebar>
+                <div className="flex-1 bg-surface-raised p-6">
+                  <p className="text-caption text-content-secondary">
+                    Current page: <span className="font-semibold text-foreground">{showcaseNavActive}</span>
+                  </p>
+                </div>
+              </div>
+            </Row>
+            <Row label="Mobile · Drawer (the same list, over the page)">
+              <Drawer>
+                <DrawerTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon-lg"
+                    aria-label={`Open navigation, current page: ${showcaseNavActive}`}
+                  >
+                    <Icon name="menu" size="md" />
+                  </Button>
+                </DrawerTrigger>
+                <DrawerContent
+                  header={<img src="/brand/kaleidoswap-pictogram.svg" alt="KaleidoSwap" className="h-8" />}
+                >
+                  <DrawerTitle className="sr-only">Navigation</DrawerTitle>
+                  <DrawerDescription>Main navigation</DrawerDescription>
+                  <DrawerBody>{showcaseNav}</DrawerBody>
+                </DrawerContent>
+              </Drawer>
+            </Row>
           </Section>
 
           {/* ── Toast ───────────────────────────────────────────────────── */}
@@ -1219,7 +1473,63 @@ export function App() {
             </Row>
           </Section>
 
+          <Section id="forms" title="Forms" description="FormField and the segmented control.">
+            <FormsGallery />
+          </Section>
+          <Section id="table" title="Table" description="The dense data grid for desk surfaces.">
+            <TableGallery />
+          </Section>
+          <Section id="tone-badges" title="Tone Badges" description="ToneBadge tones, including secondary and outline, and case=&quot;none&quot; for values.">
+            <BadgesGallery />
+          </Section>
+          <Section id="avatar" title="Avatar" description="Image, initials or the person glyph.">
+            <AvatarGallery />
+          </Section>
+          <Section id="collapsible" title="Collapsible" description="The open/close primitive, and DisclosureCard built on it.">
+            <CollapsibleGallery />
+          </Section>
+          <Section id="popover-menu" title="Popover & Menu" description="An anchored panel, and a real menu.">
+            <PopoverMenuGallery />
+          </Section>
+          <Section id="notices" title="Notices" description="Notices that stay until closed: the top bar and the floating notice.">
+            <NoticesGallery />
+          </Section>
+          <Section id="copy" title="Copy" description="Copying that says whether it worked.">
+            <CopyGallery />
+          </Section>
+          <Section id="lists" title="Lists & filters" description="QueryState, EmptyState, RecordList, FilterBar, Pager, ValueList, EventTimeline and checklists.">
+            <ListsGallery />
+          </Section>
+          <Section id="page-layout" title="Page layout" description="The desk page header, MetricCard sizes and an ordered log.">
+            <PageLayoutGallery />
+          </Section>
+
+          {/* ── Charts ──────────────────────────────────────────────────── */}
+          <Section
+            id="charts"
+            title="Charts"
+            description="The common chart forms, one per job: trend, comparison, part-to-whole, relation, a single figure. Plain SVG, theme colours, a table view on every chart."
+          >
+            <ChartsGallery />
+          </Section>
+
+          {/* Page to page, in nav order */}
+          <nav aria-label="Pages" className="mt-16 flex items-center justify-between gap-4 border-t border-white/5 pt-6">
+            {previousPage ? (
+              <a href={`#/${previousPage.id}`} className={buttonVariants({ variant: 'ghost' })}>
+                <Icon name="arrow_back" size="sm" /> {previousPage.label}
+              </a>
+            ) : (
+              <span />
+            )}
+            {nextPage && (
+              <a href={`#/${nextPage.id}`} className={buttonVariants({ variant: 'ghost' })}>
+                {nextPage.label} <Icon name="arrow_forward" size="sm" />
+              </a>
+            )}
+          </nav>
         </main>
+        </CurrentPage.Provider>
       </div>
     </div>
   )

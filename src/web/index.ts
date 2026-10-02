@@ -10,9 +10,12 @@
 // Utilities
 export { cn } from './utils/cn'
 export {
+  DEFAULT_AMOUNT_LOCALE,
+  formatAmount,
   formatDisplayAmountText,
   type AmountDisplayOptions,
   type AmountDisplayUnit,
+  type FormatAmountOptions,
 } from './utils/amount-display'
 
 // Primitives
@@ -49,7 +52,71 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
+  type DialogContentProps,
 } from './primitives/dialog'
+export {
+  Drawer,
+  DrawerPortal,
+  DrawerOverlay,
+  DrawerClose,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerSidebar,
+  DrawerBody,
+  DrawerSection,
+  DrawerNavItem,
+  DrawerNavGroup,
+  DrawerFooter,
+  useDrawerCollapsed,
+  type DrawerContentProps,
+  type DrawerSidebarProps,
+  type DrawerSectionProps,
+  type DrawerNavItemProps,
+  type DrawerNavGroupProps,
+} from './primitives/drawer'
+export {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCaption,
+} from './primitives/table'
+export {
+  Popover,
+  PopoverTrigger,
+  PopoverAnchor,
+  PopoverClose,
+  PopoverContent,
+  type PopoverContentProps,
+} from './primitives/popover'
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuGroup,
+  DropdownMenuPortal,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  type DropdownMenuContentProps,
+  type DropdownMenuItemProps,
+} from './primitives/dropdown-menu'
+export {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+  CollapsibleChevron,
+  type CollapsibleTriggerProps,
+  type CollapsibleContentProps,
+} from './primitives/collapsible'
+export { Avatar, avatarVariants, type AvatarProps } from './primitives/avatar'
+export { FormField, type FormFieldProps } from './components/form-field'
+export { useMediaQuery, useIsNarrow } from './hooks/use-media-query'
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './primitives/tabs'
 export { Label } from './primitives/label'
 export {
@@ -65,6 +132,7 @@ export {
 } from './primitives/toast'
 export { Toaster } from './primitives/toaster'
 export { Icon, Icons, type IconProps, type IconName } from './primitives/icon'
+export { isIconName } from './icons'
 export {
   DotPagination,
   type DotPaginationProps,
@@ -246,6 +314,28 @@ export {
   type SwapStepListProps,
   type SwapStepStatus,
 } from './components/swap-step-list'
+export { EmptyState, type EmptyStateProps } from './components/empty-state'
+export {
+  QueryState,
+  defaultClassifyError,
+  type QueryStateProps,
+  type QueryErrorView,
+} from './components/query-state'
+export {
+  RecordList,
+  RecordItem,
+  RecordField,
+  type RecordListProps,
+  type RecordItemProps,
+  type RecordFieldProps,
+} from './components/record-list'
+export { FilterBar, activeFiltersLabel, type FilterBarProps } from './components/filter-bar'
+export { Pager, type PagerProps } from './components/pager'
+export { DateRangeFilter, type DateRange, type DateRangeFilterProps } from './components/date-range-filter'
+export { ValueList, type ValueListProps } from './components/value-list'
+export { EventTimeline, type EventTimelineProps, type TimelineEvent } from './components/event-timeline'
+export { NoticeBar, type NoticeBarProps } from './components/notice-bar'
+export { FloatingNotice, type FloatingNoticeProps } from './components/floating-notice'
 export {
   SummaryRows,
   type SummaryRowItem,
@@ -279,7 +369,63 @@ export {
   StepperNumberInput,
   type StepperNumberInputProps,
 } from './components/stepper-number-input'
-export { MetricCard, type MetricCardProps } from './components/metric-card'
+export { MetricCard, type MetricCardProps, type MetricCardSize } from './components/metric-card'
+export {
+  CopyButton,
+  COPY_FAILED_MESSAGE,
+  type CopyButtonProps,
+  type CopyButtonStatus,
+} from './components/copy-button'
+export { Copyable, type CopyableProps } from './components/copyable'
+export { CodeBlock, type CodeBlockProps } from './components/code-block'
+export {
+  useCopyToClipboard,
+  type CopyState,
+  type CopyCallbacks,
+  type UseCopyToClipboard,
+} from './hooks/use-copy-to-clipboard'
+export {
+  TrendChart,
+  trendChartTicks,
+  trendChartLabelIndices,
+  type TrendChartProps,
+  type TrendChartPoint,
+  type TrendChartSeries,
+  type TrendChartTone,
+  type TrendChartTexture,
+} from './components/trend-chart'
+export {
+  ChartFrame,
+  ChartLegend,
+  ChartTooltip,
+  chartLabelIndices,
+  chartValueTicks,
+  seriesColor,
+  LineChart,
+  AreaChart,
+  BarChart,
+  BarList,
+  DonutChart,
+  foldSegments,
+  ScatterChart,
+  Sparkline,
+  Meter,
+  type ChartDatum,
+  type ChartFrameProps,
+  type ChartSeries,
+  type ChartTable,
+  type LineChartProps,
+  type BarChartProps,
+  type BarListItem,
+  type BarListProps,
+  type DonutChartProps,
+  type DonutSegment,
+  type ScatterChartProps,
+  type ScatterPoint,
+  type ScatterSeries,
+  type SparklineProps,
+  type MeterProps,
+} from './components/charts'
 export {
   FilterChipGroup,
   type FilterChipGroupProps,
@@ -308,6 +454,7 @@ export {
   InvoiceStatusBanner,
   PaidOverlay,
   CopyIcon,
+  type CopyIconProps,
   AccountChoiceChip,
   NetworkInfoDisclosure,
   MethodChoiceChip,

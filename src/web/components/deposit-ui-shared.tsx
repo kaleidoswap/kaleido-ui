@@ -50,7 +50,7 @@ export const NETWORK_CONFIG: Record<DepositNetworkKey, DepositNetworkConfigEntry
     // On-chain uses a chain-link glyph rather than the ₿ coin — the coin reads
     // as "the BTC asset", whereas this row is specifically the *on-chain* (L1)
     // receive rail alongside Lightning/Spark/Arkade, so a chain mark disambiguates.
-    icon: <span className="material-symbols-outlined text-icon-xs leading-none">link</span>,
+    icon: <Icon name="link" className="text-icon-xs" />,
   },
   lightning: {
     label: 'Lightning',
@@ -165,7 +165,7 @@ export function InvoiceStatusBanner({
   return (
     <div
       className={cn(
-        'flex items-center justify-center gap-2 rounded-xl px-3 py-1.5 text-xs font-bold',
+        'flex items-center justify-center gap-2 rounded-xl px-3 py-1.5 text-caption font-bold',
         isInvoicePaid
           ? 'bg-primary/10 text-primary'
           : isInvoiceFailedOrExpired
@@ -175,21 +175,19 @@ export function InvoiceStatusBanner({
     >
       {isInvoicePending && (
         <>
-          <span className="material-symbols-outlined animate-spin text-icon-sm">
-            progress_activity
-          </span>
+          <Icon name="progress_activity" className="animate-spin text-icon-sm" />
           <span>Waiting for payment...</span>
         </>
       )}
       {isInvoicePaid && (
         <>
-          <span className="material-symbols-outlined text-icon-sm">check_circle</span>
+          <Icon name="check_circle" className="text-icon-sm" />
           <span>Payment received!</span>
         </>
       )}
       {isInvoiceFailedOrExpired && (
         <>
-          <span className="material-symbols-outlined text-icon-sm">cancel</span>
+          <Icon name="cancel" className="text-icon-sm" />
           <span>Invoice {invoiceStatus?.toLowerCase() === 'expired' ? 'expired' : 'failed'}</span>
         </>
       )}
@@ -202,15 +200,35 @@ export function PaidOverlay() {
     <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-background/80">
       <div className="flex flex-col items-center gap-2">
         <div className="flex size-14 items-center justify-center rounded-full bg-primary">
-          <span className="material-symbols-outlined text-icon-4xl text-background">check</span>
+          <Icon name="check" className="text-icon-4xl text-background" />
         </div>
-        <span className="text-sm font-bold text-primary">Received!</span>
+        <span className="text-body font-bold text-primary">Received!</span>
       </div>
     </div>
   )
 }
 
-export function CopyIcon({ copied }: { copied: boolean }) {
+export interface CopyIconProps {
+  copied: boolean
+  /**
+   * `tile` (default) is the padded, tinted tile for a row that is itself the
+   * button. `bare` is the glyph alone — copy, or the check once copied — for a
+   * control that draws its own surface, such as `CopyButton`.
+   */
+  variant?: 'tile' | 'bare'
+  className?: string
+}
+
+export function CopyIcon({ copied, variant = 'tile', className }: CopyIconProps) {
+  if (variant === 'bare') {
+    return (
+      <Icon
+        name={copied ? 'check' : 'content_copy'}
+        aria-hidden="true"
+        className={cn('text-icon-sm', copied && 'text-primary', className)}
+      />
+    )
+  }
   return (
     <div
       className={cn(
@@ -331,7 +349,7 @@ export function NetworkInfoDisclosure({
         className="flex w-full items-center gap-2 px-2.5 py-1.5 text-left transition-colors hover:bg-white/4"
       >
         <Icon name="info" size="xs" className="text-white/40" />
-        <span className="flex-1 text-xxs font-bold uppercase tracking-widest text-white/50">
+        <span className="flex-1 text-mini font-bold uppercase tracking-eyebrow text-white/50">
           What are these networks?
         </span>
         <Icon name={open ? 'expand_less' : 'expand_more'} size="xs" className="text-white/40" />
@@ -347,7 +365,7 @@ export function NetworkInfoDisclosure({
                   <div className={cn('flex size-4 flex-shrink-0 items-center justify-center rounded-md', cfg.bg)}>
                     {cfg.icon}
                   </div>
-                  <span className={cn('text-xxs font-bold uppercase tracking-widest', cfg.text)}>
+                  <span className={cn('text-mini font-bold uppercase tracking-eyebrow', cfg.text)}>
                     {info.title}
                   </span>
                 </div>

@@ -20,6 +20,7 @@ export type IconName =
   | 'cancel'
   | 'check'
   | 'check_circle'
+  | 'chevron_left'
   | 'chevron_right'
   | 'close'
   | 'cloud_upload'
@@ -98,6 +99,10 @@ export type IconName =
   | 'touch_app'
   | 'dark_mode'
   | 'palette'
+  | 'keyboard_arrow_up'
+  | 'keyboard_arrow_down'
+  | 'swap_calls'
+  | 'progress_activity'
 
 export const outlinedMap: Record<IconName, React.FC<SVGProps<SVGSVGElement>>> = {
   'account_balance_wallet': Outlined.AccountBalanceWallet,
@@ -117,6 +122,7 @@ export const outlinedMap: Record<IconName, React.FC<SVGProps<SVGSVGElement>>> = 
   'cancel': Outlined.Cancel,
   'check': Outlined.Check,
   'check_circle': Outlined.CheckCircle,
+  'chevron_left': Outlined.ChevronLeft,
   'chevron_right': Outlined.ChevronRight,
   'close': Outlined.Close,
   'cloud_upload': Outlined.CloudUpload,
@@ -195,7 +201,20 @@ export const outlinedMap: Record<IconName, React.FC<SVGProps<SVGSVGElement>>> = 
   'touch_app': Outlined.TouchApp,
   'dark_mode': Outlined.DarkMode,
   'palette': Outlined.Palette,
+  'keyboard_arrow_up': Outlined.KeyboardArrowUp,
+  'keyboard_arrow_down': Outlined.KeyboardArrowDown,
+  'swap_calls': Outlined.SwapCalls,
+  'progress_activity': Outlined.ProgressActivity,
 }
+
+/**
+ * Whether a string names a glyph in the set. Components that take an icon as a
+ * string use this to draw it, and draw nothing for an unknown name: printing
+ * the name, as a font ligature does without its font, is the one outcome that
+ * is always wrong.
+ */
+export const isIconName = (value: unknown): value is IconName =>
+  typeof value === 'string' && Object.prototype.hasOwnProperty.call(outlinedMap, value)
 
 export const filledMap: Partial<Record<IconName, React.FC<SVGProps<SVGSVGElement>>>> = {
   'account_balance_wallet': Filled.AccountBalanceWalletFilled,

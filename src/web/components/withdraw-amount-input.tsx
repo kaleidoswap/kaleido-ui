@@ -1,3 +1,4 @@
+import { formatAmount } from '../utils/amount-display'
 import type { ChangeEvent } from 'react'
 import { cn } from '../utils/cn'
 
@@ -100,7 +101,7 @@ export function WithdrawAmountInput({
     <>
       {showAmountInput && (
         <div className="space-y-3">
-          <label className="ml-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+          <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
             Amount
           </label>
           <div className="overflow-hidden rounded-2xl bg-card/70">
@@ -109,16 +110,16 @@ export function WithdrawAmountInput({
                 <input
                   type="text"
                   inputMode="decimal"
-                  className="w-full bg-transparent text-2xl font-bold tabular-nums text-white outline-none placeholder:text-white/15"
+                  className="w-full bg-transparent text-headline font-bold tabular-nums text-white outline-none placeholder:text-white/15"
                   placeholder="0"
                   value={amount}
                   onChange={handleAmountChange}
                 />
-                <p className="mt-0.5 text-xs text-muted-foreground">{unitLabel}</p>
+                <p className="mt-0.5 text-caption text-muted-foreground">{unitLabel}</p>
               </div>
               <button
                 type="button"
-                className="shrink-0 rounded-lg bg-primary/15 px-3 py-1.5 text-xxs font-bold uppercase tracking-wider text-primary transition-colors hover:bg-primary/25"
+                className="shrink-0 rounded-lg bg-primary/15 px-3 py-1.5 text-mini font-bold uppercase tracking-eyebrow text-primary transition-colors hover:bg-primary/25"
                 onClick={handleSetMax}
               >
                 Max
@@ -138,12 +139,12 @@ export function WithdrawAmountInput({
           </div>
           {lnurlPayData && (
             <div className="space-y-1 px-1">
-              <p className="text-xs text-muted-foreground">
-                {Math.ceil(lnurlPayData.params.min).toLocaleString()} &ndash;{' '}
-                {Math.floor(lnurlPayData.params.max).toLocaleString()} sats
+              <p className="text-caption text-muted-foreground">
+                {formatAmount(Math.ceil(lnurlPayData.params.min))} &ndash;{' '}
+                {formatAmount(Math.floor(lnurlPayData.params.max))} sats
               </p>
               {lnurlPayData.params.description && (
-                <p className="text-xs italic text-muted-foreground">
+                <p className="text-caption italic text-muted-foreground">
                   {lnurlPayData.params.description}
                 </p>
               )}
@@ -154,7 +155,7 @@ export function WithdrawAmountInput({
 
       {addressType === 'rgb' && decodedRgbInvoice?.recipient_type === 'Witness' && (
         <div className="space-y-2">
-          <label className="ml-1 text-xs font-medium text-muted-foreground">
+          <label className="ml-1 text-caption font-medium text-muted-foreground">
             Witness Amount (sats) - min 512
           </label>
           <input
@@ -165,9 +166,9 @@ export function WithdrawAmountInput({
               const value = parseInt(event.target.value, 10)
               if (!Number.isNaN(value)) setWitnessAmountSat(value)
             }}
-            className="w-full rounded-xl bg-card px-4 py-3 text-sm text-white shadow-inner transition-all focus:outline focus:outline-2 focus:outline-primary/50"
+            className="w-full rounded-xl bg-card px-4 py-3 text-body text-white shadow-inner transition-all focus:outline focus:outline-2 focus:outline-primary/50"
           />
-          <p className="ml-1 text-xs text-muted-foreground">
+          <p className="ml-1 text-caption text-muted-foreground">
             Bitcoin amount sent to create the witness UTXO for the recipient.
           </p>
         </div>
@@ -175,7 +176,7 @@ export function WithdrawAmountInput({
 
       {(addressType === 'bitcoin' || addressType === 'rgb') && (
         <div className="space-y-2">
-          <label className="ml-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+          <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
             Fee Rate
           </label>
           {customFeeEnabled ? (
@@ -198,7 +199,7 @@ export function WithdrawAmountInput({
                       }`}
                     >
                       <span
-                        className={`block text-xs font-bold capitalize ${selected ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'}`}
+                        className={`block text-caption font-bold capitalize ${selected ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'}`}
                       >
                         {mode}
                       </span>
@@ -218,12 +219,12 @@ export function WithdrawAmountInput({
                   placeholder={`${feeRates[feeRate]} (${feeRate})`}
                   value={customFeeRate ?? ''}
                   onChange={(event) => setCustomFeeRate?.(event.target.value.replace(/[^\d.]/g, ''))}
-                  className="w-full rounded-xl bg-card px-4 py-3 text-sm text-white shadow-inner transition-all focus:outline focus:outline-2 focus:outline-primary/50"
+                  className="w-full rounded-xl bg-card px-4 py-3 text-body text-white shadow-inner transition-all focus:outline focus:outline-2 focus:outline-primary/50"
                 />
               )}
               {typeof estimatedFee === 'number' && (
-                <p className="ml-1 text-xs text-muted-foreground">
-                  Using {effectiveFeeRateSatPerVb} sat/vB &middot; ~{estimatedFee.toLocaleString()}{' '}
+                <p className="ml-1 text-caption text-muted-foreground">
+                  Using {effectiveFeeRateSatPerVb} sat/vB &middot; ~{formatAmount(estimatedFee)}{' '}
                   sats est. fee
                 </p>
               )}
@@ -246,7 +247,7 @@ export function WithdrawAmountInput({
                   />
                   <div className="relative z-10 flex flex-col items-center">
                     <div
-                      className={`text-sm font-bold capitalize transition-colors ${feeRate === rate ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'}`}
+                      className={`text-body font-bold capitalize transition-colors ${feeRate === rate ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'}`}
                     >
                       {rate}
                     </div>
@@ -266,8 +267,8 @@ export function WithdrawAmountInput({
       {addressType === 'rgb' && (
         <div className="flex items-center justify-between rounded-xl bg-card p-3">
           <div>
-            <p className="text-sm font-medium text-white">Gift / Donation</p>
-            <p className="text-xs text-muted-foreground">Skip amount checks for this transfer</p>
+            <p className="text-body font-medium text-white">Gift / Donation</p>
+            <p className="text-caption text-muted-foreground">Skip amount checks for this transfer</p>
           </div>
           <button
             type="button"

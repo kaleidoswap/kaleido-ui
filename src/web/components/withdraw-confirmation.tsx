@@ -1,6 +1,7 @@
 import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
 import { ScrollArea } from './scroll-area'
+import { formatAmount } from '../utils/amount-display'
 import type { WithdrawAddressType } from './withdraw-destination-input'
 
 export interface WithdrawConfirmationRgbInvoice {
@@ -33,6 +34,8 @@ export interface WithdrawConfirmationProps {
     totalDeducted: string
   }
   handleConfirmSend: () => void
+  /** Locale the amounts are grouped in. Defaults to DEFAULT_AMOUNT_LOCALE (en-US), never the host's. */
+  locale?: string
 }
 
 export function WithdrawConfirmation({
@@ -55,6 +58,7 @@ export function WithdrawConfirmation({
   amount,
   reviewLabels,
   handleConfirmSend,
+  locale,
 }: WithdrawConfirmationProps) {
   return (
     <div className="relative flex h-screen flex-col overflow-hidden bg-background font-display text-foreground">
@@ -78,46 +82,46 @@ export function WithdrawConfirmation({
       <ScrollArea className="flex-1" viewportClassName="px-5 pt-16 pb-6">
       <main className="space-y-6">
         <div className="flex flex-col items-center py-6">
-          <p className="mb-1 text-sm uppercase tracking-wide text-muted-foreground">
+          <p className="mb-1 text-caption uppercase tracking-eyebrow text-muted-foreground">
             {reviewLabels?.recipientReceives ?? 'Recipient receives'}
           </p>
-          <h1 className="mb-2 text-4xl font-bold">{displayAmount.toLocaleString()}</h1>
-          <p className="text-base text-muted-foreground">
+          <h1 className="mb-2 text-display font-bold">{formatAmount(displayAmount, { locale })}</h1>
+          <p className="text-body text-muted-foreground">
             {selectedAssetId === 'BTC' ? 'sats' : (selectedAsset?.ticker ?? 'units')}
           </p>
         </div>
 
         <div className="overflow-hidden rounded-2xl bg-card/90 py-1 shadow-inner backdrop-blur-2xl">
           <div className="flex items-center justify-between px-5 py-4">
-            <span className="text-sm text-muted-foreground">To</span>
-            <span className="max-w-[200px] truncate font-mono text-sm text-white" title={destination}>
+            <span className="text-caption text-muted-foreground">To</span>
+            <span className="max-w-[200px] truncate font-mono text-body text-white" title={destination}>
               {destination.length > 24
                 ? `${destination.substring(0, 12)}...${destination.slice(-12)}`
                 : destination}
             </span>
           </div>
           <div className="flex items-center justify-between px-5 py-4">
-            <span className="text-sm text-muted-foreground">Network</span>
+            <span className="text-caption text-muted-foreground">Network</span>
             <div className="flex items-center gap-1.5">
               <div className="size-1.5 rounded-full bg-primary" />
-              <span className="text-sm font-bold text-white">{networkLabel}</span>
+              <span className="text-body font-bold text-white">{networkLabel}</span>
             </div>
           </div>
           {routeAccount && (
             <div className="flex items-center justify-between px-5 py-4">
-              <span className="text-sm text-muted-foreground">From Account</span>
-              <span className="text-sm font-bold text-white">{routeAccount}</span>
+              <span className="text-caption text-muted-foreground">From Account</span>
+              <span className="text-body font-bold text-white">{routeAccount}</span>
             </div>
           )}
           {routeMethod && (
             <div className="flex items-center justify-between px-5 py-4">
-              <span className="text-sm text-muted-foreground">Route Method</span>
-              <span className="text-sm font-bold text-white">{routeMethod}</span>
+              <span className="text-caption text-muted-foreground">Route Method</span>
+              <span className="text-body font-bold text-white">{routeMethod}</span>
             </div>
           )}
           <div className="flex items-center justify-between px-5 py-4">
-            <span className="text-sm text-muted-foreground">Asset</span>
-            <span className="text-sm font-bold text-white">
+            <span className="text-caption text-muted-foreground">Asset</span>
+            <span className="text-body font-bold text-white">
               {selectedAsset?.ticker ?? selectedAssetId}
             </span>
           </div>
@@ -126,12 +130,12 @@ export function WithdrawConfirmation({
               data-testid="payment-review-fee"
               className="flex items-center justify-between px-5 py-4"
             >
-              <span className="text-sm text-muted-foreground">
+              <span className="text-caption text-muted-foreground">
                 {reviewLabels?.estimatedNetworkFee ?? 'Estimated network fee'}
               </span>
               <div className="flex flex-col items-end">
-                <span className="text-sm text-white">
-                  {`${feeIsExact ? '' : '~'}${estimatedFee.toLocaleString()} sats`}
+                <span className="text-body text-white">
+                  {`${feeIsExact ? '' : '~'}${formatAmount(estimatedFee, { locale })} sats`}
                 </span>
                 <span className="mt-0.5 text-xxs font-bold capitalize tracking-wider text-primary">
                   {feeRate}
@@ -141,8 +145,8 @@ export function WithdrawConfirmation({
           )}
           {addressType === 'rgb' && decodedRgbInvoice?.recipient_type === 'Witness' && (
             <div className="flex items-center justify-between px-5 py-4">
-              <span className="text-sm text-muted-foreground">Witness Amount</span>
-              <span className="text-sm text-white">{witnessAmountSat} sats</span>
+              <span className="text-caption text-muted-foreground">Witness Amount</span>
+              <span className="text-body text-white">{witnessAmountSat} sats</span>
             </div>
           )}
         </div>
@@ -152,24 +156,22 @@ export function WithdrawConfirmation({
             data-testid="payment-review-total"
             className="flex items-center justify-between rounded-2xl bg-primary/10 p-5 shadow-inner"
           >
-            <span className="text-sm font-bold uppercase tracking-wider text-primary">
+            <span className="text-body font-bold uppercase tracking-eyebrow text-primary">
               {reviewLabels?.totalDeducted ?? 'Total deducted'}
             </span>
-            <span className="text-xl font-bold text-white">
-              {(Math.round(parseFloat(amount) || 0) + estimatedFee).toLocaleString()}{' '}
-              <span className="text-lg text-primary/70">sats</span>
+            <span className="text-title font-bold text-white">
+              {formatAmount(Math.round(parseFloat(amount) || 0) + estimatedFee, { locale })}{' '}
+              <span className="text-subhead text-primary/70">sats</span>
             </span>
           </div>
         )}
 
         {isPollingStatus && (
           <div className="flex items-center gap-3 rounded-xl bg-primary/10 p-4">
-            <span className="material-symbols-outlined animate-spin text-primary">
-              progress_activity
-            </span>
+            <Icon name="progress_activity" className="animate-spin text-icon-2xl text-primary" />
             <div>
-              <p className="text-sm font-medium text-white">Processing payment...</p>
-              <p className="text-xs text-muted-foreground">Waiting for confirmation</p>
+              <p className="text-body font-medium text-white">Processing payment...</p>
+              <p className="text-caption text-muted-foreground">Waiting for confirmation</p>
             </div>
           </div>
         )}
@@ -183,14 +185,12 @@ export function WithdrawConfirmation({
         >
           {isConfirming || isPollingStatus ? (
             <>
-              <span className="material-symbols-outlined animate-spin text-icon-2xl">
-                progress_activity
-              </span>
+              <Icon name="progress_activity" className="animate-spin text-icon-2xl" />
               {isPollingStatus ? 'Waiting for confirmation...' : 'Sending...'}
             </>
           ) : (
             <>
-              <span className="material-symbols-outlined text-icon-2xl font-bold">fingerprint</span>
+              <Icon name="fingerprint" className="text-icon-2xl" />
               Confirm & Send
             </>
           )}

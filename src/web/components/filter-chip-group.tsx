@@ -1,18 +1,33 @@
-import type { ReactNode } from 'react'
+import { useRef, type KeyboardEvent, type ReactNode } from 'react'
 import { cn } from '../utils/cn'
 
 export interface FilterChipOption<TValue extends string = string> {
   value: TValue
-  label: ReactNode
+  /** Visible text. Optional when `icon` is set; then `ariaLabel` names the option. */
+  label?: ReactNode
   count?: number
   icon?: ReactNode
   disabled?: boolean
+  /**
+   * The option's accessible name, and its tooltip. Required for an icon-only
+   * option ("Chart view"); otherwise the visible label is the name.
+   */
+  ariaLabel?: string
 }
 
 export interface FilterChipGroupProps<TValue extends string = string> {
   options: readonly FilterChipOption<TValue>[]
   value: TValue
   onChange: (value: TValue) => void
+  /**
+   * `chips` (default) is the filter strip: a row of pill buttons, each a Tab
+   * stop, as it always was. `segmented` is a segmented control — mutually
+   * exclusive options such as a chart/list view toggle — exposed as a radio
+   * group: one Tab stop, arrow keys move and select.
+   */
+  variant?: 'chips' | 'segmented'
+  /** The group's accessible name. Recommended for `segmented`. */
+  ariaLabel?: string
   className?: string
 }
 
@@ -20,23 +35,78 @@ export function FilterChipGroup<TValue extends string = string>({
   options,
   value,
   onChange,
+  variant = 'chips',
+  ariaLabel,
   className,
 }: FilterChipGroupProps<TValue>) {
+  const refs = useRef<(HTMLButtonElement | null)[]>([])
+  const segmented = variant === 'segmented'
+
+  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!segmented) return
+    const enabled = options
+      .map((option, index) => ({ option, index }))
+      .filter(({ option }) => !option.disabled)
+    if (enabled.length === 0) return
+    const at = Math.max(0, enabled.findIndex(({ option }) => option.value === value))
+    let next: number | undefined
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (at + 1) % enabled.length
+    else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (at - 1 + enabled.length) % enabled.length
+    else if (event.key === 'Home') next = 0
+    else if (event.key === 'End') next = enabled.length - 1
+    if (next === undefined) return
+    event.preventDefault()
+    const target = enabled[next]
+    onChange(target.option.value)
+    refs.current[target.index]?.focus()
+  }
+
   return (
-    <div className={cn('flex gap-1.5 overflow-x-auto no-scrollbar', className)}>
-      {options.map((option) => {
+    <div
+      role={segmented ? 'radiogroup' : undefined}
+      aria-label={ariaLabel}
+      data-variant={variant}
+      onKeyDown={onKeyDown}
+      className={cn(
+        segmented
+          ? 'inline-flex gap-0.5 rounded-xl bg-muted p-0.5'
+          : 'flex gap-1.5 overflow-x-auto no-scrollbar',
+        className,
+      )}
+    >
+      {options.map((option, index) => {
         const active = option.value === value
+        const iconOnly = option.label === undefined || option.label === null
         return (
           <button
             key={option.value}
+            ref={(node) => {
+              refs.current[index] = node
+            }}
             type="button"
+            role={segmented ? 'radio' : undefined}
+            aria-checked={segmented ? active : undefined}
+            // A radio group is one Tab stop: the checked option.
+            tabIndex={segmented ? (active ? 0 : -1) : undefined}
+            aria-label={option.ariaLabel}
+            title={iconOnly ? option.ariaLabel : undefined}
             disabled={option.disabled}
             onClick={() => onChange(option.value)}
             className={cn(
-              'flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-1 text-tiny font-bold transition-all',
-              active
-                ? 'border-white/20 bg-white/12 text-white'
-                : 'border-white/8 bg-white/5 text-muted-foreground hover:border-white/20 hover:text-white/80',
+              segmented
+                ? cn(
+                    'flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                    iconOnly ? 'size-8' : 'h-8 px-3 text-caption',
+                    active
+                      ? 'bg-card text-foreground shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground',
+                  )
+                : cn(
+                    'flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-1 text-tiny font-bold transition-all',
+                    active
+                      ? 'border-white/20 bg-white/12 text-white'
+                      : 'border-white/8 bg-white/5 text-muted-foreground hover:border-white/20 hover:text-white/80',
+                  ),
               option.disabled && 'cursor-not-allowed opacity-40',
             )}
           >
@@ -46,7 +116,7 @@ export function FilterChipGroup<TValue extends string = string>({
               <span
                 className={cn(
                   'rounded-full px-1.5 py-0.5 text-xxs',
-                  active ? 'bg-white/20' : 'bg-white/8',
+                  segmented ? 'bg-foreground/10' : active ? 'bg-white/20' : 'bg-white/8',
                 )}
               >
                 {option.count}

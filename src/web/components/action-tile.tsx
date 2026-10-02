@@ -37,12 +37,12 @@ export function ActionTile({
     >
       {/* Icon and label are both leading-none so they center on the same
           axis — no baseline wobble between the glyph box and the text. */}
-      <span className="flex shrink-0 items-center justify-center text-current leading-none [&_.material-symbols-outlined]:text-icon-sm [&_.material-symbols-outlined]:leading-none [&_svg]:size-icon-sm">
+      <span className="flex shrink-0 items-center justify-center text-current leading-none [&_svg]:size-icon-sm">
         {icon}
       </span>
       {/* rem-based size (not the px `text-tiny` token) so the side-panel root
           font-size ladder scales the action labels with everything else. */}
-      <span className="truncate text-xs font-bold leading-none tracking-wide">{label}</span>
+      <span className="truncate text-caption font-bold leading-none tracking-wide">{label}</span>
     </button>
   )
 }

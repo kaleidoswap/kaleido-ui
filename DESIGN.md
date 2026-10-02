@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand-green, Bitcoin-native wallet UI.
-version: 0.1.123
+version: 0.1.129   # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -278,6 +278,26 @@ emit — `text-display`, `text-body`, `text-mini` and so on:
 
 Numeric amounts (balances, prices) render in `display` or `body` weight 700, not `mono` — mono is reserved for identifiers that the user copy-pastes.
 
+### Which step carries which role
+
+Components set text **only** with these steps — never Tailwind's default sizes (`text-xs`, `text-sm`, `text-base`, `text-lg`, `text-xl` …), which are not on the scale: they render 12 and 14 px beside a consumer's 13 and 15, and a consumer whose Tailwind config uses `typeScale` in place of the defaults gets no CSS for them. `tests/type-scale.test.tsx` fails on one.
+
+| Role | Step | Examples |
+| --- | --- | --- |
+| Hero figure | `display` 36 | the amount on a confirmation screen |
+| Big figure | `headline` 28 | a comfortable `MetricCard` value, amount inputs, success titles |
+| Screen / page title | `title` 20 | `PageHeader variant="page"`, dialog titles, `CardTitle` |
+| Heading in a card, large button label | `subhead` 17 | CTA buttons |
+| Primary text, card and section titles, values | `body` 15 | `SettingsSectionCard` and `InfoPanel` titles, `Button` |
+| Secondary text, descriptions, data cells | `caption` 13 | `InfoPanel` body, `SettingsSectionCard` description, `Table` cells |
+| Meta rows, timestamps | `tiny` 11 | `TransactionCard` meta |
+| Dense chip text | `xxs` 10 | hints, compact tile descriptions |
+| **Eyebrow** — every structural uppercase label | `mini` 9 | section titles, column heads, filter headers, tile labels, status badges |
+
+**The eyebrow is written once**, as `eyebrow` in `src/web/utils/type-roles.ts`: `text-mini font-bold uppercase tracking-eyebrow` — Satoshi 700 / 9 px / 0.18em, the `label` token above. The tokens are authoritative (weight tops out at 700; tracking is 0.18em), and this document matches them. Any uppercase letter-spaced label uses `tracking-eyebrow` (or `tracking-eyebrow-wide`); hand-written `tracking-[…]` values are not allowed.
+
+There are no spacing tokens yet; components use Tailwind's 4 px spacing scale (`p-4` card, `p-3` inner row, `p-2.5` compact tile). Follow those values rather than inventing new ones.
+
 ## Layout
 
 KaleidoSwap targets a **420 px max content width**: the browser-extension popup is the canonical viewport and everything else (webapp, mobile shell) adopts the same column so layouts translate 1:1.
@@ -408,6 +428,162 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 - Wrong: full `brand.primary` border on the section container — now the section frame competes with the CTA inside it for attention.
 - Right: 22% ghost border + 10% fill — just enough tint to say "you are here," quiet enough that a primary button still wins the eye.
 
+### Dialog
+
+**Intended use.** A modal decision or a short form over the current screen. `DialogContent` draws a corner X by default, because for an ordinary dialog it is the expected exit.
+
+**`showClose={false}`** — turn the X off where dismissing is not a neutral act. The case it exists for: a secret shown exactly once (a newly created API key). A control that reads as "close" must not sit beside something the user cannot see again; the dialog closes only through an explicit action ("I have stored this key"). Do not turn it off to tidy a layout — a dialog with no visible exit and no explicit action traps the user. Escape and the overlay still close the dialog unless the consumer prevents them (`onEscapeKeyDown`, `onPointerDownOutside`), which a once-only secret should also do.
+
+### Drawer
+
+**Intended use.** The app's left navigation, and nothing else: the desktop app's sidebar, in the form the width calls for. On the desktop it is `DrawerSidebar`, always on screen and folded by its own chevron to an icon rail. Below the desktop breakpoint it is `Drawer` + `DrawerContent`, the same panel over the page, opened from a `DrawerTrigger` in the top bar: a hamburger icon with no visible text while the drawer is closed, whose accessible name says what it opens and the current page ("Open navigation, current page: Activity"). A record opened from a list is a `Dialog`, not a drawer; a phone flow's step is `BottomSheet`.
+
+**Anatomy.** Both forms hold the same parts, so one list is written once and rendered in both: `DrawerBody` (scrolls) → `DrawerSection label` (a group) → `DrawerNavItem icon label active` (a destination; `asChild` for a router link), then `DrawerFooter` (quick actions, the version) held below. The mobile form also needs a `DrawerTitle` (its `header`) and a `DrawerDescription` (visually hidden); Radix Dialog underneath traps focus, and Escape, the overlay and choosing a destination close it.
+
+**It is the desktop app's sidebar.** `surface.base`, a `divider/30` rule on the right edge, `shadow-2xl` at 30% black, a `px-4 py-5` header row with the logo slot and the chevron. Expanded `w-72`; the rail `w-20`, which hides the logo and the group eyebrows, splits groups with a rule, centres the icons and turns labels into tooltips (they stay in the accessibility tree). The mobile form is always expanded, caps at `85vw` so a strip of the page stays visible to tap away, over the `BottomSheet` scrim.
+
+**Items.** `rounded-xl`, `px-4 py-3`, label `body` semibold. Inactive `content.secondary`, hovering to `surface.overlay/80`. The current page is `status.success` on a 10% fill with a 2 px left rule, and carries `aria-current="page"`. Group labels are the shared eyebrow (`label` token) in `content.tertiary`.
+
+**Submenus.** `DrawerNavGroup icon label active` is a row with a submenu — the desktop app's Trade and Liquidity. The row (a button with `aria-expanded`) shows and hides its `DrawerNavItem`s under it, and a chevron on its right turns 90° when open. It opens by itself when one of its pages is current, and is then marked like a current item. Its items become the submenu's rows: indented `pl-4`, `rounded-lg`, `px-4 py-2.5`, label `caption` medium with a 16 px icon, sliding right on hover; the current one is `status.success` on a 10% fill with a 2 px left rule. On the icon rail a submenu cannot open, so the row is a link to `railHref` (usually the group's first page).
+
+**No scrollbar.** `DrawerBody` scrolls by wheel, touch and keyboard but draws no native scrollbar, which on the 80 px rail took the width the icons are centred in.
+
+**Chevron.** `p-3`, `rounded-lg`, a `divider/10` ring that turns `primary/30` on hover, 18 px. On the sidebar it points the way the panel will move (left to fold, right to unfold) and reports `aria-expanded`; on the mobile drawer it points left and closes it.
+
+**Motion.** The sidebar's width changes in 300 ms ease-in-out. The mobile drawer travels in from the left in 300 ms and leaves in 200 ms; the overlay fades. Reduced motion turns all of it off.
+
+**The edge rule.** The single hairline on the panel's right edge is a component-spec border (Coherence Rules below): the panel sits on the page's own surface, so without it the edge is only the shadow. The header has no divider under it; the rail's group rules are the one other line, standing in for the eyebrows it hides.
+
+### Table
+
+**Intended use.** Dense data grids on desk surfaces — the partner and admin panels' swaps, keys and installs tables. Nine columns, many rows, read across. A transaction *feed* on a phone is `ActivityList`, not a table.
+
+**Key tokens.** Cells `caption` (13 px) at `px-4 py-3`: a grid is scanned, not read, and at `body` (15 px) a swaps-width grid scrolls sideways where 13 px still fits. The 16 px inset lines the first column up with a card title padded `p-4` above the table. Column heads are the eyebrow (`label` token) in `muted-foreground`. Row hover is `bg-muted/50`. Every part takes `className`.
+
+**Scrolling.** The table scrolls horizontally inside its own `min-w-0` wrapper and never widens the page or holds a grid column open.
+
+**The divider exception.** Rows divide with a `border` hairline. This is the **one** exception to "separate stacked rows with spacing, not divider lines" (Coherence Rules below): across nine columns an eye cannot follow a row on whitespace alone. It applies to `Table` rows only. It is not a licence for dividers in lists, cards or settings rows.
+
+### TrendChart
+
+**Intended use.** A count over time, readable at a glance: completed and failed swaps per bucket on the partner dashboard. Stacked bars, one per period, one segment per series. Built for up to ~120 periods (a year weekly, ninety days daily) at card width with no horizontal scroll.
+
+**Rules it enforces.**
+- **Value axis** — linear from zero, and every label names a value the data reaches. The top label *is* the tallest bar; the axis is never rounded up to a value no bar touches. The scale is stated on the chart: `scaleLabel` + "· linear, from 0" ("Swaps per day · linear, from 0").
+- **Time axis** — the first and last periods are always labelled; the rest are spaced to the width.
+- **Colour** — from theme custom properties only (`--primary`, `--destructive`, `--chart-2`, `--chart-4`, `--muted-foreground`), so it follows light and dark.
+- **Greyscale** — the first series is solid and the others hatched, so the chart is legible with colour removed.
+- **Empty** — no points renders the consumer's `empty` node, never an empty frame.
+- **No pointer needed** — hovering a period shows its figures; the plot is focusable, ←/→/Home/End move between periods and Escape clears, and the readout is a polite live region.
+- **Width** — the SVG is `width="100%"` with a `viewBox` measured from its container; a fixed pixel width would become the column's min-content and force a sideways scroll.
+
+### Charts
+
+**Pick the form by the data's job, before any colour.** A single figure is a `MetricCard` (with a `Sparkline` for its recent trend), not a chart. Then:
+
+| Job | Component |
+| --- | --- |
+| Change over time, several series | `LineChart` |
+| One series over time, where the level matters | `AreaChart` |
+| A count per period, split in parts (up to ~120 periods) | `TrendChart` |
+| Compare a few series across a few categories | `BarChart` (grouped) |
+| Part-to-whole per category | `BarChart layout="stacked"` |
+| Many or long-named categories, one series | `BarChart orientation="horizontal"` |
+| A ranked or dated list with every value printed | `BarList` |
+| Part-to-whole at a glance, ≤ 6 parts | `DonutChart` (close values belong in a bar chart) |
+| How two measures relate, ≤ 3 series | `ScatterChart` |
+| One ratio against a limit | `Meter` |
+
+**Colour.** **Green, violet and azzurro** are series 1–3; a chart that needs more takes **yellow, magenta, orange** for series 4–6. They are `--series-1…6` from `chartSeries`, a step per theme. The brand colours themselves sit above the lightness band a series colour must stay inside on the dark surface, so these are the hues placed inside it (on dark the yellow is a gold). Violet and azzurro collapse into each other under deuteranopia at equal lightness, so violet is kept darker; yellow and orange are never neighbours, so magenta sits between them. The order is the colour-blind-safety mechanism: every adjacent pair passes CVD separation (worst ΔE 12.2 dark, 19.2 light) and the normal-vision floor. Never cycle past six: fold the tail into "Other" (`DonutChart` does it for you). Scatter charts are capped at three series (the slots that also pass for every pair) and throw on a fourth. One series means one colour for every bar — never a value ramp on nominal categories.
+
+**Marks.** Lines 2 px, round joins; end markers r 4 with a 2 px ring in the card colour; area fills a 10 % wash; bars at most 24 px thick with a 4 px rounded data end and a square baseline end; a 2 px surface gap between touching bars and stacked segments; gridlines solid hairlines on `border` — never dashed. Text never wears a series colour: values, labels and legends stay in text tokens beside a coloured key.
+
+**Every chart has** a value axis linear from zero whose top label is the largest value; a legend for two or more series (none for one — the label names it); a hover layer (a crosshair and every series at that x on line and area charts, the whole category band as the target on bars, the nearest point on a scatter) with the same readout on keyboard focus through ←/→, Home/End and Escape and a polite live region; a **table view** one toggle away, which is also the relief channel for the two light-theme slots below 3:1 on white; and an `empty` node instead of an empty frame.
+
+### MetricCard
+
+**Intended use.** One figure and its label: a balance, a count, a rate. Two sizes, one per surface:
+
+- **`compact`** (default) — the phone tile in the wallet's dense metric rows: `p-2.5`, `rounded-xl`, eyebrow label, value in `body`, icon beside the label.
+- **`comfortable`** — the desk tile on panel dashboards: `p-4`, `rounded-2xl` `bg-card`, eyebrow label, value in `headline` (28 px) with `tabular-nums`, `description` in `caption` under it, and the icon at the end of the tile, right of the figure. The figure is the point of the tile, so it is the largest text on it. Do not build a second stat tile from `Card`.
+
+The tile is a `role="group"` named by its label (or `aria-label`), so a failure that replaces the value is announced as belonging to that metric.
+
+### PageHeader
+
+- **`variant="bar"`** (default) — the mobile app bar: sticky, back button, small title, `right` slot.
+- **`variant="page"`** — a desk page's header: the page's only `h1` (`title`), a one-line `description` in `caption`, and one `action` at the end of the title row, centred on the title's line and wrapping under it on a phone. No back button unless `onBack` is passed.
+
+### SummaryRows
+
+Label/value rows on `bg-muted/40`, separated by spacing. The markup follows the content: `as="dl"` (default) is a label/value list, a `dt`/`dd` per row; `as="ol"` is an ordered log (a status history); `as="ul"` an unordered one. The visual does not change with `as`. `tone: 'muted'` sets a value quieter than its label (`caption`, normal weight, `muted-foreground`), for the timestamp beside a log event.
+
+### CopyButton
+
+Copying reports what actually happened, everywhere. `useCopyToClipboard()` returns `{ state: 'idle' | 'copied' | 'failed', copy(value), reset() }`: a missing clipboard (an insecure context) or a rejected write is `failed`, never `copied`, and there is no timer — the state changes only on the next copy or `reset()`.
+
+- **`CopyButton value label`** — a 24×24 ghost icon button named "Copy {label}" with `CopyIcon`'s glyph (`variant="bare"`): the copy glyph, the check once copied. A success is announced ("{label} copied to the clipboard"); a failure shows "Copy failed — select it and copy by hand." beside it as an alert. It stops the click's propagation, since it usually sits in a clickable row.
+- **`Copyable value label`** — the value (or a shortened `children`) plus its `CopyButton`; the text stays `select-all` and its `title` is the full value, which is also what is copied.
+- **`CodeBlock code label language`** — a monospaced `<pre>` that scrolls sideways, with a `CopyButton` top right; `language` is a label, not highlighting.
+
+`ActivityDetailRow`, `SecretRevealCard` and `RecoveryPhraseCard` take `copyValue` to copy themselves this way; `onCopy` still works for existing callers. The destructive toast's copy control uses the hook and no longer shows "Copied" after a failed write. `CopyIcon` alone (`variant="tile"`) is the glyph for a row that is itself the control.
+
+### ToneBadge
+
+A small pill in a semantic tone, drawn from theme tokens only (the `muted` tone is `border-border bg-foreground/5 text-muted-foreground`, which is the old 10 % / 5 % / 55 % white on dark and stays visible on the light theme). `case="upper"` (default) is a status set as the eyebrow; `case="none"` is a value (a payout total) in `caption`, with no uppercase or tracking.
+
+### Popover and DropdownMenu
+
+Two floating surfaces on one look — `bg-popover`, a `border` hairline, `shadow-popover`, the same fade and 0.98 zoom as `Dialog` and `Select` — and two jobs:
+
+- **`Popover`** is a panel anchored to a trigger for content that is *not* a menu: a note, a few buttons, a copy control. Tab walks everything inside in order.
+- **`DropdownMenu`** is a real menu (`role="menu"`): `DropdownMenuItem`s (with `destructive` for Revoke / Delete, kept last), `DropdownMenuSeparator`, `DropdownMenuLabel`. The arrow keys move between items.
+
+Both are Radix: Escape and a click outside close them and focus returns to the trigger. Never hand-roll either — `InlineSelector`'s panel predates them and handles neither Escape nor focus return.
+
+### Collapsible
+
+A button that opens and closes a section: `Collapsible` → `CollapsibleTrigger` (with `CollapsibleChevron`, which turns) → `CollapsibleContent`. Controlled or not (`open` / `defaultOpen` / `onOpenChange`); the trigger carries `aria-expanded` and `aria-controls`. It is the base of submenus, expandable lists and filter panels, and `DisclosureCard` is a card-styled Collapsible.
+
+### Avatar
+
+A circle, `sm` 32 px or `lg` 40 px: an image, or a fallback on the violet-to-info gradient (`from-secondary to-info`) with initials or the person glyph. Decorative (`aria-hidden`) unless `alt` is passed with an image that is itself the information.
+
+### FormField
+
+`<FormField label hint error>{control}</FormField>` wires a `Label` to its control (`htmlFor` / `id`, generated when absent), attaches the hint and the error with `aria-describedby`, marks the control `aria-invalid` on error and announces the error as an alert. Do not wire these by hand.
+
+### Segmented control
+
+Mutually exclusive options — a chart / list view toggle — are `FilterChipGroup variant="segmented"`: a radio group with one Tab stop, the arrow keys moving and selecting. An option may be icon-only; it then needs `ariaLabel`, which is also its tooltip. The default `chips` variant (the filter strip) is unchanged.
+
+### Breakpoints
+
+`breakpoint` in the tokens names the widths the `sm:` / `md:` … classes switch at (Tailwind's defaults: `sm` 40rem). `useMediaQuery(query)` is safe on the server and in jsdom (false without `matchMedia`); `useIsNarrow()` is true below `sm`.
+
+### Lists and data
+
+The pieces a data-dense page is assembled from. None of them carries product text; every visible label and accessible name has an English default and a prop to override it.
+
+- **`QueryState`** keeps loading, error and empty apart, so a failed read never looks like an empty list. Loading: skeleton rows inside `role="status"`, named by `loadingLabel`, no visible text. Error: an `InfoPanel` inside `role="alert"`, worded by `classifyError(error) → { title, message, tone, retryable }` (a minimal default is provided), with `errorConsequence` above the message and "Try again" only when `retryable` and `onRetry`. Empty: `EmptyState`.
+- **`EmptyState`** — title (required), description, one action, optional glyph; centred. `ActivityList`'s empty state renders through it.
+- **`RecordList` / `RecordItem` / `RecordField`** — the stacked form of a table row for narrow screens: the same data, another layout. `identifier` and `status` on the first line, `summary` under the identifier, `RecordField`s (`<dt>`/`<dd>`, `wide` for two columns) in a two-column grid, `actions` bottom right. With `onOpen` the whole item opens it *and* an explicit chevron button does, since a clickable `<li>` is not reachable by keyboard; the button and the actions stop propagation. `selected` sets `aria-current`. Items divide with a `border` hairline — the `Table` divider exception, because this is a table row laid out differently.
+- **`FilterBar activeCount onClear`** — the filters of a list. Wide: the controls in a row, "N filters applied" and "Clear all" when any is set. Narrow (`useIsNarrow`): one "Filters" toggle whose name carries the count ("Filters, 2 active"), opening the controls stacked under it (a `Collapsible`), "Clear all" still beside it.
+- **`Pager offset limit returned`** — offset paging for an API with no total: a next page only after a full page, "{noun} 51–100" and never "of N", nothing at all when there is one page. `DotPagination` is for carousel steps, not data pages.
+- **`DateRangeFilter`** — labelled From / To date inputs, "Clear" (disabled when empty), an optional refresh that spins while `isRefreshing`.
+- **`ValueList values singular plural`** — strings in a cell, never truncated: "3 addresses" closed; one monospaced, selectable, copyable value per line open.
+- **`EventTimeline`** — an ordered log (`<ol>`): the event, then its duration and timestamp, quieter. Values arrive formatted; the component never picks a locale or a time zone.
+- **Checklists** are `SwapStepList connector={false}`: steps are `done`, `pending` (to do) or `unknown` (cannot be checked), each with its own glyph and a spoken status, optional `badges` and an `action`.
+
+### Notices that stay
+
+Two containers for notices that are not toasts; neither has text of its own — put an `InfoPanel` in them.
+
+- **`NoticeBar`** — fixed to the top, full width, above the page, for a notice about everything below it (an outage, a read-only mode). It measures its height and publishes it as `--kui-notice-height` (configurable) on the document root, so the page pads itself with `var(--kui-notice-height, 0px)`; the variable is removed when the bar hides or unmounts.
+- **`FloatingNotice`** — bottom centre, above dialogs and overlays, until closed: it neither times out nor queues like a toast. It sits on an opaque card so a translucent `InfoPanel` stays legible, is `role="status"` by default, and has a named close button (`onDismiss`, `dismissible`); where the dismissal is remembered is the consumer's decision.
+
+A `Toast` cannot do either: its viewport position is fixed, only one shows at a time, and a `duration` of `Infinity` overflows `setTimeout` and closes it at once.
+
 ## Do's and Don'ts
 
 - **DO** use `brand.primary` only for CTAs, active states, and success. It is a signal, not a decoration.
@@ -419,7 +595,7 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 - **DO** keep filter cluster icons at `cluster-icon-size: 11` px and `cluster-opacity: 0.6`. The constraint is what makes the cluster legible.
 - **DON'T** introduce new drop shadows. The only shadows in the system are the card inner shadow and the primary-button glow on hover.
 - **DO** use the `label` type token (Satoshi 700 / 9 / uppercase / `tracking-eyebrow` 0.18em) for structural labels — filter headers, section titles, pill captions. It is the typographic fingerprint of the brand.
-- **DON'T** invent new radii, spacing steps, or surface colors. If you need something the tokens don't provide, extend DESIGN.md first, then propagate to `kaleido-ui/tailwind` and `kaleido-ui/tokens`.
+- **DON'T** invent new radii, spacing steps, or surface colors. If you need something the tokens don't provide, extend DESIGN.md first, then propagate to `kaleido-ui/tokens` — `kaleido-ui/css` (Tailwind v4 `@theme`) and `kaleido-ui/tailwind` (the Tailwind v3 preset) are both generated from it. Both Tailwind versions are supported; see README.
 
 ## Coherence Rules (for agents & new components)
 
@@ -429,8 +605,8 @@ These rules exist because generated UIs kept drifting: ad-hoc borders, wrong but
 
 - The layering ladder is `surface.bg` (page) → `bg-card` (card) → `bg-muted/40` (row inside a card). Depth comes from the fill, not an outline.
 - **DON'T** add arbitrary border utilities (`border-white/10`, `border-primary/20`, `border-warning/30`, `border-t` dividers…) to new markup. If a surface looks like it needs an edge, it needs a different background layer instead.
-- Borders are allowed only where a component spec above explicitly calls for one: inputs, filter pills, status pills, and the `border.primary-ghost` active state. Nothing else.
-- Separate stacked rows with `space-y-*` spacing, not divider lines.
+- Borders are allowed only where a component spec above explicitly calls for one: inputs, filter pills, status pills, the `border.primary-ghost` active state, `Table` row hairlines, and the `Drawer` edge rule and current-page rule. Nothing else.
+- Separate stacked rows with `space-y-*` spacing, not divider lines. The single exception is `Table` (see its section): a dense grid, not a list.
 
 ### Rows and toggles use the shipped primitives
 

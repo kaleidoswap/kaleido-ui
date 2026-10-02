@@ -1,3 +1,4 @@
+import { Icon } from '../primitives/icon'
 import { Button } from '../primitives/button'
 import { AssetIcon } from './asset-icon'
 import { NETWORK_CONFIG, type DepositNetworkKey } from './deposit-ui-shared'
@@ -34,22 +35,20 @@ export function DepositSuccessScreen({
         <div className="relative mb-8">
           <div className="absolute inset-0 scale-150 animate-pulse rounded-full bg-primary/20 blur-2xl" />
           <div className="relative flex size-20 items-center justify-center rounded-full bg-primary/15 shadow-sm">
-            <span className="material-symbols-outlined text-5xl text-primary animate-in zoom-in-50 duration-500">
-              check_circle
-            </span>
+            <Icon name="check_circle" className="size-12 text-primary animate-in zoom-in-50 duration-500" />
           </div>
         </div>
 
-        <h1 className="mb-2 text-2xl font-bold text-white">{title}</h1>
-        <p className="mb-8 max-w-[260px] text-sm leading-relaxed text-muted-foreground">
+        <h1 className="mb-2 text-headline font-bold text-white">{title}</h1>
+        <p className="mb-8 max-w-[260px] text-caption leading-relaxed text-muted-foreground">
           {subtitle}
         </p>
 
         <div className="mb-10 flex items-center gap-3 rounded-2xl bg-card/70 px-4 py-3">
           <AssetIcon ticker={displayTicker} size={36} />
           <div className="text-left">
-            <p className="text-sm font-bold text-white">{displayTicker}</p>
-            <p className="text-xs text-white/40">{selectedAsset?.name ?? displayTicker}</p>
+            <p className="text-body font-bold text-white">{displayTicker}</p>
+            <p className="text-caption text-white/40">{selectedAsset?.name ?? displayTicker}</p>
           </div>
           <div
             className={cn(
@@ -65,7 +64,7 @@ export function DepositSuccessScreen({
         </div>
 
         <Button variant="cta" size="cta" onClick={handleDone}>
-          <span className="material-symbols-outlined text-icon-lg">account_balance_wallet</span>
+          <Icon name="account_balance_wallet" className="text-icon-lg" />
           Back to Wallet
         </Button>
       </div>

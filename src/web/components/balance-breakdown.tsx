@@ -106,12 +106,7 @@ export interface BalanceBreakdownProps {
 
 function OnchainIcon({ className = '' }: { className?: string }) {
   return (
-    <span
-      className={`material-symbols-outlined leading-none ${className}`}
-      style={{ fontSize: 'inherit' }}
-    >
-      link
-    </span>
+    <Icon name="link" className={className} />
   )
 }
 
@@ -190,7 +185,7 @@ export function BalanceBreakdown({
             className="group flex min-w-0 flex-1 flex-col items-start text-left"
             title={`Tap to switch unit (current: ${label})`}
           >
-            <p className="mb-1 text-xxs font-bold uppercase tracking-widest text-white/40">
+            <p className="mb-1 text-mini font-bold uppercase tracking-eyebrow text-white/40">
               Total Balance
             </p>
             {isLoading ? (
@@ -205,7 +200,7 @@ export function BalanceBreakdown({
                     {balanceVisible ? numberOnly(format(totalBTC)) : '••••••'}
                   </span>
                   {unit !== 'fiat' && (
-                    <span className="inline-block rounded-md bg-white/8 px-2 py-0.5 text-tiny font-bold uppercase tracking-widest text-white/45">
+                    <span className="inline-block rounded-md bg-white/8 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-white/45">
                       {label}
                     </span>
                   )}
@@ -219,12 +214,12 @@ export function BalanceBreakdown({
                   )}
                 </div>
                 {balanceVisible && unit !== 'fiat' && fiatTotal && (
-                  <span className="mt-1 text-xs font-medium tabular-nums text-white/45">
+                  <span className="mt-1 text-caption font-medium tabular-nums text-white/45">
                     {fiatTotal}
                   </span>
                 )}
                 {balanceVisible && unit === 'fiat' && totalBTC > 0 && (
-                  <span className="mt-1 text-xs font-medium tabular-nums text-white/45">
+                  <span className="mt-1 text-caption font-medium tabular-nums text-white/45">
                     {(totalBTC / 1e8).toFixed(8).replace(/\.?0+$/, '')}&nbsp;BTC
                   </span>
                 )}
@@ -240,11 +235,10 @@ export function BalanceBreakdown({
                 className="flex size-7 items-center justify-center rounded-full bg-white/[0.08] transition-all hover:bg-white/[0.12] disabled:opacity-40"
                 title="Refresh balances"
               >
-                <span
-                  className={`material-symbols-outlined text-icon-sm leading-none text-white/60${isRefreshing ? ' animate-spin' : ''}`}
-                >
-                  refresh
-                </span>
+                <Icon
+                  name="refresh"
+                  className={`text-icon-sm text-white/60${isRefreshing ? ' animate-spin' : ''}`}
+                />
               </button>
             )}
             <button
@@ -267,7 +261,7 @@ export function BalanceBreakdown({
             aria-label="Bitcoin balance breakdown"
             className={`space-y-1 duration-300 animate-in fade-in slide-in-from-top-2 ${compact ? 'mt-3 pt-3' : 'mt-4 pt-4'}`}
           >
-            <p className="mb-3 text-xxs font-bold uppercase tracking-widest text-white/30">
+            <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-white/30">
               Bitcoin
             </p>
             <NetworkRow
@@ -362,26 +356,24 @@ export function BalanceBreakdown({
 
             {tokenValueSats !== undefined && tokenValueSats > 0 && (
               <div className="mt-4 pt-1">
-                <p className="mb-3 text-xxs font-bold uppercase tracking-widest text-white/30">
+                <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-white/30">
                   Token Holdings
                 </p>
                 <div className="flex items-center justify-between rounded-xl bg-white/[0.03] px-3 py-2">
                   <div className="flex items-center gap-3">
                     <div className="h-7 w-0.5 rounded-full bg-success opacity-80" />
                     <div className="flex size-7 items-center justify-center rounded-lg bg-white/5 text-icon-sm">
-                      <span className="material-symbols-outlined leading-none" style={{ fontSize: 'inherit' }}>
-                        payments
-                      </span>
+                      <Icon name="payments" />
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-xs font-semibold leading-tight text-white/80">Stablecoins &amp; Tokens</span>
+                      <span className="text-caption font-semibold leading-tight text-white/80">Stablecoins &amp; Tokens</span>
                       <span className="mt-0.5 text-xxs font-medium leading-tight text-white/30">
                         Converted value in BTC
                       </span>
                     </div>
                   </div>
                   <div className="flex flex-col items-end">
-                    <span className="tabular-nums text-xs font-bold text-white">
+                    <span className="tabular-nums text-caption font-bold text-white">
                       {balanceVisible ? format(tokenValueSats) : '••••••'}
                     </span>
                     {balanceVisible && (
@@ -396,7 +388,7 @@ export function BalanceBreakdown({
 
             {accounts.RGB?.connected && nodeInfo?.pubkey && (
               <div className="mt-4 pt-1">
-                <p className="mb-3 text-xxs font-bold uppercase tracking-widest text-white/30">
+                <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-white/30">
                   RLN Details
                 </p>
                 <div className="grid grid-cols-3 gap-2">
@@ -416,22 +408,20 @@ export function BalanceBreakdown({
           className={`relative z-10 flex gap-2.5 ${compact ? 'mt-2 pt-2' : 'mt-3 pt-3'}`}
         >
           <ActionTile
-            icon={<span className="material-symbols-outlined text-icon-sm leading-none">call_received</span>}
+            icon={<Icon name="call_received" className="text-icon-sm" />}
             label={actionLabels?.receive ?? 'Deposit'}
             onClick={() => onNavigate?.('deposit')}
             data-testid="dashboard-action-deposit"
           />
           <ActionTile
-            icon={<span className="material-symbols-outlined text-icon-sm leading-none">swap_horiz</span>}
+            icon={<Icon name="swap_horiz" className="text-icon-sm" />}
             label="Swap"
             onClick={() => onNavigate?.('swap')}
             data-testid="dashboard-action-swap"
           />
           <ActionTile
             icon={
-              <span className="material-symbols-outlined text-icon-sm leading-none">
-                arrow_outward
-              </span>
+              <Icon name="arrow_outward" className="text-icon-sm" />
             }
             label={actionLabels?.send ?? 'Withdraw'}
             onClick={() => onNavigate?.('withdraw')}
@@ -452,7 +442,7 @@ function RgbAssetsBreakdown({
 }) {
   return (
     <div className="mt-4 pt-1">
-      <p className="mb-3 text-xxs font-bold uppercase tracking-widest text-white/30">
+      <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-white/30">
         RGB Assets
       </p>
       <div className="space-y-2">
@@ -471,12 +461,12 @@ function RgbAssetsBreakdown({
                   <img src="/icons/rgb/rgb-logo.svg" alt="RGB" className="size-3.5 object-contain" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-xs font-semibold text-white/90">{asset.ticker}</span>
+                  <span className="text-caption font-semibold text-white/90">{asset.ticker}</span>
                   <span className="max-w-[90px] truncate text-xxs text-white/40">{asset.name}</span>
                 </div>
               </div>
               <div className="flex flex-col items-end text-right">
-                <span className="tabular-nums text-sm font-bold text-white">
+                <span className="tabular-nums text-body font-bold text-white">
                   {balanceVisible ? formatRgb(total) : '••••••'}
                 </span>
                 {balanceVisible && (onChain > 0 || offChain > 0) && (
@@ -509,8 +499,8 @@ function RgbAssetsBreakdown({
 function StatusChip({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl bg-muted/40 px-3 py-2">
-      <div className="text-xxs font-bold uppercase tracking-widest text-white/30">{label}</div>
-      <div className="mt-1 truncate text-xs font-semibold text-white/80">{value}</div>
+      <div className="text-mini font-bold uppercase tracking-eyebrow text-white/30">{label}</div>
+      <div className="mt-1 truncate text-caption font-semibold text-white/80">{value}</div>
     </div>
   )
 }
@@ -557,7 +547,7 @@ function NetworkRow({
           {icon}
         </div>
         <div className="flex flex-col">
-          <span className="text-xs font-semibold leading-tight text-white/80">{label}</span>
+          <span className="text-caption font-semibold leading-tight text-white/80">{label}</span>
           <span className="mt-0.5 text-xxs font-medium leading-tight text-white/30">
             {sublabel}
           </span>
@@ -573,7 +563,7 @@ function NetworkRow({
           </div>
         ) : (
           <>
-            <span className="tabular-nums text-xs font-bold text-white">
+            <span className="tabular-nums text-caption font-bold text-white">
               {visible ? format(amount) : '••••••'}
             </span>
             {fiat && visible && !isEmpty && (

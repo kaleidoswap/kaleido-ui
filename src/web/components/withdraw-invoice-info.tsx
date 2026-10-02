@@ -1,3 +1,4 @@
+import { formatAmount } from '../utils/amount-display'
 import type { WithdrawAddressType } from './withdraw-destination-input'
 
 export interface WithdrawInvoiceAsset {
@@ -54,47 +55,47 @@ export function WithdrawInvoiceInfo({
   if (decodedLnInvoice && addressType === 'lightning') {
     return (
       <div className="space-y-3 rounded-2xl bg-card p-5 shadow-inner">
-        <p className="text-xs font-medium uppercase tracking-wide text-primary">
+        <p className="text-mini font-bold uppercase tracking-eyebrow text-primary">
           Lightning Invoice
         </p>
         {decodedLnInvoice.amount != null && decodedLnInvoice.amount > 0 && (
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-between text-body">
             <span className="text-muted-foreground">Amount</span>
             <span className="font-bold text-white">
-              {decodedLnInvoice.amount.toLocaleString()}{' '}
+              {formatAmount(decodedLnInvoice.amount)}{' '}
               {decodedLnInvoice.asset_id ? 'units' : 'sats'}
             </span>
           </div>
         )}
         {decodedLnInvoice.asset_id && (
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-between text-body">
             <span className="text-muted-foreground">Asset</span>
-            <span className="font-mono text-xs text-white">
+            <span className="font-mono text-caption text-white">
               {allAssets.find((asset) => asset.asset_id === decodedLnInvoice.asset_id)?.ticker ??
                 `${decodedLnInvoice.asset_id.substring(0, 12)}...`}
             </span>
           </div>
         )}
         {decodedLnInvoice.asset_amount != null && decodedLnInvoice.asset_amount > 0 && (
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-between text-body">
             <span className="text-muted-foreground">Asset Amount</span>
             <span className="font-bold text-white">
-              {decodedLnInvoice.asset_amount.toLocaleString()}
+              {formatAmount(decodedLnInvoice.asset_amount)}
             </span>
           </div>
         )}
         {decodedLnInvoice.description && (
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-between text-body">
             <span className="text-muted-foreground">Description</span>
             <span className="max-w-[180px] truncate text-right text-white">
               {decodedLnInvoice.description}
             </span>
           </div>
         )}
-        <div className="flex justify-between text-sm">
+        <div className="flex justify-between text-body">
           <span className="text-muted-foreground">Channel Capacity</span>
           <span className="text-white">
-            {Math.floor(maxLightningCapacity / 1000).toLocaleString()} sats
+            {formatAmount(Math.floor(maxLightningCapacity / 1000))} sats
           </span>
         </div>
       </div>
@@ -104,11 +105,11 @@ export function WithdrawInvoiceInfo({
   if (decodedRgbInvoice && addressType === 'rgb') {
     return (
       <div className="space-y-3 rounded-2xl bg-card p-5 shadow-inner">
-        <p className="text-xs font-medium uppercase tracking-wide text-primary">RGB Invoice</p>
+        <p className="text-mini font-bold uppercase tracking-eyebrow text-primary">RGB Invoice</p>
         {decodedRgbInvoice.asset_id && (
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-between text-body">
             <span className="text-muted-foreground">Asset</span>
-            <span className="font-mono text-xs text-white">
+            <span className="font-mono text-caption text-white">
               {allAssets.find((asset) => asset.asset_id === decodedRgbInvoice.asset_id)?.ticker ??
                 `${decodedRgbInvoice.asset_id.substring(0, 8)}...${decodedRgbInvoice.asset_id.slice(-8)}`}
             </span>
@@ -116,7 +117,7 @@ export function WithdrawInvoiceInfo({
         )}
         {decodedRgbInvoice.assignment?.value != null &&
           decodedRgbInvoice.assignment.value > 0 && (
-            <div className="flex justify-between text-sm">
+            <div className="flex justify-between text-body">
               <span className="text-muted-foreground">Requested Amount</span>
               <span className="font-bold text-white">
                 {formatRawAmount(
@@ -127,12 +128,12 @@ export function WithdrawInvoiceInfo({
             </div>
           )}
         {decodedRgbInvoice.recipient_type && (
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-between text-body">
             <span className="text-muted-foreground">Recipient Type</span>
             <span className="text-white">{decodedRgbInvoice.recipient_type}</span>
           </div>
         )}
-        <div className="flex justify-between text-sm">
+        <div className="flex justify-between text-body">
           <span className="text-muted-foreground">Your Balance</span>
           <span className="text-white">
             {formatRawAmount(assetBalance, getAssetPrecisionForId(allAssets, selectedAssetId))}{' '}
@@ -146,7 +147,7 @@ export function WithdrawInvoiceInfo({
   if (addressType === 'bitcoin' || addressType === 'arkade' || addressType === 'liquid') {
     return (
       <div className="rounded-2xl bg-card p-5 shadow-inner">
-        <div className="flex justify-between text-sm">
+        <div className="flex justify-between text-body">
           <span className="text-muted-foreground">
             {addressType === 'arkade'
               ? 'Available Arkade Balance'

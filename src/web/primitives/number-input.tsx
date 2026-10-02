@@ -1,3 +1,4 @@
+import { Icon } from './icon'
 import * as React from 'react'
 import { cn } from '../utils/cn'
 
@@ -35,7 +36,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           step={step}
           disabled={disabled}
           className={cn(
-            'flex h-12 w-full rounded-xl bg-white/8 px-4 py-3 pr-10 text-base transition-all border border-transparent placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-primary/25 disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-white/4',
+            'flex h-12 w-full rounded-xl bg-white/8 px-4 py-3 pr-10 text-body transition-all border border-transparent placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-primary/25 disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-white/4',
             '[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]',
             className
           )}
@@ -49,7 +50,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
               onClick={() => nudge(1)}
               className="flex items-center justify-center h-4 w-5 rounded text-muted-foreground hover:text-primary transition-colors"
             >
-              <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>keyboard_arrow_up</span>
+              <Icon name="keyboard_arrow_up" className="text-icon-sm" />
             </button>
             <button
               type="button"
@@ -57,7 +58,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
               onClick={() => nudge(-1)}
               className="flex items-center justify-center h-4 w-5 rounded text-muted-foreground hover:text-primary transition-colors"
             >
-              <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>keyboard_arrow_down</span>
+              <Icon name="keyboard_arrow_down" className="text-icon-sm" />
             </button>
           </div>
         )}

@@ -138,7 +138,7 @@ export function AccountNetworkSelector({
             disabled={disabled}
             onClick={() => onChange(network)}
             className={cn(
-              'rounded-xl px-3 py-2.5 text-xs font-bold uppercase tracking-wider transition-all',
+              'rounded-xl px-3 py-2.5 text-mini font-bold uppercase tracking-eyebrow transition-all',
               selected
                 ? `${ui.badgeClassName} shadow-inner`
                 : 'text-white/55 hover:bg-white/[0.04] hover:text-white'
@@ -230,11 +230,11 @@ export function AccountSettingsShell({
           </Button>
         )}
         <AccountHeaderIcons accountId={accountId} />
-        <h1 className="text-lg font-bold text-foreground">{title}</h1>
+        <h1 className="text-subhead font-bold text-foreground">{title}</h1>
       </header>
 
       <main className="flex-1 space-y-6 overflow-y-auto px-5 pb-28 pt-2">
-        {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
+        {subtitle && <p className="text-caption text-muted-foreground">{subtitle}</p>}
         {children}
       </main>
     </div>
@@ -245,7 +245,7 @@ export function AccountInfoGrid({ items }: { items: Array<{ label: string; value
   return (
     <div className="grid gap-3 sm:grid-cols-2">
       {items.map((item) => (
-        <div key={item.label} className="rounded-xl bg-black/20 p-3 text-xs">
+        <div key={item.label} className="rounded-xl bg-black/20 p-3 text-caption">
           <p className="text-muted-foreground">{item.label}</p>
           <div className="mt-1 break-all text-white/90">{item.value}</div>
         </div>
@@ -264,7 +264,7 @@ export function AccountNotice({
   return (
     <div
       className={cn(
-        'rounded-xl px-3 py-3 text-xs',
+        'rounded-xl px-3 py-3 text-caption',
         tone === 'warning'
           ? 'bg-warning/10 text-warning'
           : 'bg-black/20 text-white/80'
@@ -283,7 +283,7 @@ export function AccountNetworkNotice({
   children: ReactNode
 }) {
   return (
-    <div className={cn('rounded-xl px-3 py-3 text-xs', getAccountNetworkUi(network).bannerClassName)}>
+    <div className={cn('rounded-xl px-3 py-3 text-caption', getAccountNetworkUi(network).bannerClassName)}>
       {children}
     </div>
   )
@@ -310,7 +310,7 @@ export function AccountStatusPills({
     <div className="flex flex-wrap items-center gap-2">
       <span
         className={cn(
-          'rounded-full px-2.5 py-1 text-xxs font-bold uppercase tracking-wider',
+          'rounded-full px-2.5 py-1 text-mini font-bold uppercase tracking-eyebrow',
           statusUi.className
         )}
       >
@@ -319,7 +319,7 @@ export function AccountStatusPills({
       {!hideNetworkChip && (
         <span
           className={cn(
-            'rounded-full px-2.5 py-1 text-xxs font-bold uppercase tracking-wider',
+            'rounded-full px-2.5 py-1 text-mini font-bold uppercase tracking-eyebrow',
             networkUi.badgeClassName
           )}
         >
@@ -332,7 +332,7 @@ export function AccountStatusPills({
 
 export function SectionTitle({ children }: { children: ReactNode }) {
   return (
-    <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{children}</h3>
+    <h3 className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">{children}</h3>
   )
 }
 
@@ -364,10 +364,10 @@ export function InlineAction({
       )}
     >
       <div>
-        <p className="text-sm font-semibold text-white">{title}</p>
-        <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+        <p className="text-body font-semibold text-white">{title}</p>
+        <p className="mt-1 text-caption text-muted-foreground">{description}</p>
       </div>
-      <span className="material-symbols-outlined text-icon-lg">chevron_right</span>
+      <Icon name="chevron_right" className="text-icon-lg" />
     </button>
   )
 }
@@ -387,11 +387,11 @@ export function TransferRouteCard({
     <div className="rounded-2xl bg-card/60 p-4 shadow-inner">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-sm font-bold text-white">{label}</p>
-          <p className="mt-1 text-xs text-muted-foreground">{summary}</p>
+          <p className="text-body font-bold text-white">{label}</p>
+          <p className="mt-1 text-caption text-muted-foreground">{summary}</p>
         </div>
         <div className="text-right">
-          <p className="text-xxs font-bold uppercase tracking-wider text-white/60">{eta}</p>
+          <p className="text-mini font-bold uppercase tracking-eyebrow text-white/60">{eta}</p>
           <p className="mt-1 text-tiny text-primary">{feeHint}</p>
         </div>
       </div>
@@ -457,14 +457,14 @@ export function AccountSettingsRow({
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <p className="text-sm font-bold text-white">{title}</p>
+                <p className="text-body font-bold text-white">{title}</p>
                 {beta && (
-                  <span className="rounded-full bg-warning/15 px-1.5 py-0.5 text-tiny font-bold uppercase tracking-wider text-warning">
+                  <span className="rounded-full bg-warning/15 px-1.5 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-warning">
                     Beta
                   </span>
                 )}
               </div>
-              <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+              <p className="mt-1 text-caption text-muted-foreground">{description}</p>
             </div>
             <Icon name="chevron_right" size="sm" className="text-white/40" />
           </div>

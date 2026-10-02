@@ -1,3 +1,4 @@
+import { Icon } from '../primitives/icon'
 import type { ChangeEvent } from 'react'
 import { AlertBanner } from './alert-banner'
 import { Button } from '../primitives/button'
@@ -106,10 +107,10 @@ export function DepositPreGeneration({
     <div className="space-y-3">
       {showReceiveSummary && (
         <div className="rounded-2xl bg-card/70 p-3">
-          <p className="text-xxs font-bold uppercase tracking-widest text-white/35">
+          <p className="text-mini font-bold uppercase tracking-eyebrow text-white/35">
             Receive Summary
           </p>
-          <div className="mt-2 grid grid-cols-1 gap-2 text-xs">
+          <div className="mt-2 grid grid-cols-1 gap-2 text-caption">
             <div className="flex items-center justify-between gap-3">
               <span className="text-white/45">Asset</span>
               <span className="font-bold text-white">
@@ -131,23 +132,21 @@ export function DepositPreGeneration({
 
       {channelsLoading && selectedAccount === 'RGB' && currentMethod === 'lightning' && !isBtc && (
         <div className="flex items-center gap-2.5 rounded-xl bg-card/70 p-3">
-          <span className="material-symbols-outlined animate-spin text-icon-lg text-primary">
-            progress_activity
-          </span>
-          <span className="text-xs font-medium text-white/60">Checking channel availability...</span>
+          <Icon name="progress_activity" className="animate-spin text-icon-lg text-primary" />
+          <span className="text-caption font-medium text-white/60">Checking channel availability...</span>
         </div>
       )}
 
       {showChannelWarning && (
         <AlertBanner variant="warning">
-          <p className="mb-0.5 text-xs font-bold text-warning">No Lightning Channels</p>
+          <p className="mb-0.5 text-caption font-bold text-warning">No Lightning Channels</p>
           <p className="text-tiny text-warning/70">Only on-chain deposits are available.</p>
         </AlertBanner>
       )}
 
       {showLiquidityWarning && (
         <AlertBanner variant="warning">
-          <p className="mb-0.5 text-xs font-bold text-warning">No Inbound Liquidity</p>
+          <p className="mb-0.5 text-caption font-bold text-warning">No Inbound Liquidity</p>
           <p className="text-tiny text-warning/70">
             No channels with inbound capacity for {selectedAsset?.ticker ?? 'this asset'}.
           </p>
@@ -157,15 +156,13 @@ export function DepositPreGeneration({
       {isAutoGenerate && loading && (
         <div className="flex flex-col items-center gap-4 py-10">
           <div className={cn('flex size-16 items-center justify-center rounded-2xl', net.bg)}>
-            <span className={cn('material-symbols-outlined animate-spin text-icon-4xl', net.text)}>
-              progress_activity
-            </span>
+            <Icon name="progress_activity" className={cn('animate-spin text-icon-4xl', net.text)} />
           </div>
           <div className="space-y-1 text-center">
-            <p className="text-sm font-bold text-muted-foreground">
+            <p className="text-caption font-bold text-muted-foreground">
               Generating {network === 'lightning' ? 'invoice' : 'address'}...
             </p>
-            <p className="text-xs text-white/30">{net.label} network</p>
+            <p className="text-caption text-white/30">{net.label} network</p>
           </div>
         </div>
       )}
@@ -173,7 +170,7 @@ export function DepositPreGeneration({
       {/* RGB asset-id: receive a specific asset, or any asset when left empty. */}
       {isRgbOnchain && isNewRgbAsset && setNewAssetId && (
         <div className="space-y-1.5">
-          <label className="text-xxs font-bold uppercase tracking-widest text-white/40">
+          <label className="text-mini font-bold uppercase tracking-eyebrow text-white/40">
             RGB Asset ID - Optional
           </label>
           <input
@@ -183,7 +180,7 @@ export function DepositPreGeneration({
             placeholder="rgb:... (leave empty for any asset)"
             spellCheck={false}
             autoCapitalize="off"
-            className="w-full rounded-xl border bg-white/5 px-3 py-2.5 font-mono text-sm text-white transition-all placeholder:text-white/20 focus:border-primary/50 focus:outline-none"
+            className="w-full rounded-xl border bg-white/5 px-3 py-2.5 font-mono text-caption text-white transition-all placeholder:text-white/20 focus:border-primary/50 focus:outline-none"
           />
           <p className="text-xxs text-white/35">
             Enter a specific asset ID to receive it, or leave empty to accept any RGB asset to this
@@ -196,7 +193,7 @@ export function DepositPreGeneration({
         <div className="space-y-2.5 rounded-xl bg-card/70 p-3">
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0 flex-1">
-              <h4 className="text-xs font-bold text-white">
+              <h4 className="text-caption font-bold text-white">
                 {usePrivacy ? 'Blinded receive' : 'Witness receive'}
               </h4>
               <p className="mt-0.5 text-xxs text-muted-foreground">
@@ -254,7 +251,7 @@ export function DepositPreGeneration({
       {network === 'onchain' && !isBtc && (
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label className="text-xxs font-bold uppercase tracking-widest text-white/40">
+            <label className="text-mini font-bold uppercase tracking-eyebrow text-white/40">
               Amount ({getUnitLabel()}) - Optional
             </label>
             {selectedAsset && (
@@ -268,7 +265,7 @@ export function DepositPreGeneration({
             value={amount}
             onChange={handleAmountChange}
             placeholder={`e.g. 10.00 ${selectedAsset?.ticker ?? ''}`}
-            className="w-full rounded-xl border bg-white/5 px-3 py-2.5 font-mono text-sm font-bold text-white transition-all placeholder:text-white/20 focus:border-primary/50 focus:outline-none"
+            className="w-full rounded-xl border bg-white/5 px-3 py-2.5 font-mono text-caption font-bold text-white transition-all placeholder:text-white/20 focus:border-primary/50 focus:outline-none"
             inputMode="decimal"
           />
         </div>
@@ -278,7 +275,7 @@ export function DepositPreGeneration({
           needs at least one uncolored UTXO to back the invoice. */}
       {needsColorableUtxos && (
         <AlertBanner variant="warning">
-          <p className="mb-0.5 text-xs font-bold text-warning">Colorable UTXOs Required</p>
+          <p className="mb-0.5 text-caption font-bold text-warning">Colorable UTXOs Required</p>
           <p className="text-tiny text-warning/70">
             To receive RGB assets on-chain you need at least one uncolored UTXO. Create some now
             and the invoice will be generated automatically.
@@ -291,7 +288,7 @@ export function DepositPreGeneration({
         onOpenCreateUtxos ? (
           <Button variant="cta" size="cta" onClick={onOpenCreateUtxos} disabled={loading}>
             <span className="flex items-center justify-center gap-2">
-              <span className="material-symbols-outlined text-icon-md">add_circle</span>
+              <Icon name="add_circle" className="text-icon-md" />
               Create Colorable UTXOs
             </span>
           </Button>
@@ -299,14 +296,12 @@ export function DepositPreGeneration({
           <Button variant="cta" size="cta" onClick={generateInvoice} disabled={loading}>
             {loading ? (
               <span className="flex items-center justify-center gap-2">
-                <span className="material-symbols-outlined animate-spin text-icon-md">
-                  progress_activity
-                </span>
+                <Icon name="progress_activity" className="animate-spin text-icon-md" />
                 Generating...
               </span>
             ) : (
               <span className="flex items-center justify-center gap-2">
-                <span className="material-symbols-outlined text-icon-md">qr_code_2</span>
+                <Icon name="qr_code_2" className="text-icon-md" />
                 Generate Address
               </span>
             )}

@@ -16,7 +16,7 @@ export function SectionHeader({
 }: SectionHeaderProps) {
   return (
     <div className={cn('flex items-center justify-between gap-3 px-1', className)}>
-      <Tag className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+      <Tag className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
         {children}
       </Tag>
       {right}

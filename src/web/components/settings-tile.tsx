@@ -24,14 +24,14 @@ export function SettingsTile({ icon, title, description, value, onClick }: Setti
           <div className="flex min-w-0 flex-1 flex-col">
             <span className="font-bold text-body tracking-wide text-foreground">{title}</span>
             {description && (
-              <span className="mt-0.5 text-sm font-medium text-muted-foreground">
+              <span className="mt-0.5 text-caption font-medium text-muted-foreground">
                 {description}
               </span>
             )}
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-2">
-          {value && <span className="font-mono text-xs text-muted-foreground">{value}</span>}
+          {value && <span className="font-mono text-caption text-muted-foreground">{value}</span>}
           <AppIcon name="chevronRight" className="size-4 text-muted-foreground" />
         </div>
       </div>
@@ -41,7 +41,7 @@ export function SettingsTile({ icon, title, description, value, onClick }: Setti
 
 export function SettingsStatusPanel({ label, value }: { label: string; value: ReactNode }) {
   return (
-    <div className="rounded-xl bg-white/[0.03] px-4 py-3 text-xs text-muted-foreground">
+    <div className="rounded-xl bg-white/[0.03] px-4 py-3 text-caption text-muted-foreground">
       {label}: <span className="font-semibold text-white">{value}</span>
     </div>
   )

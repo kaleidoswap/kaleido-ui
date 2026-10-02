@@ -19,7 +19,7 @@ export interface ActivityNetworkFiltersProps<TValue extends string = ActivityNet
 }
 
 export function getActivityNetworkFilterIcon(filter: ActivityNetworkFilterValue) {
-  // size="xs" → text-icon-sm (14px) so the Material-Symbols glyph's
+  // size="xs" → text-icon-sm (14px) so the SVG glyph's
   // font-size matches the size-icon-sm box and the visible glyph lines up
   // with the 14px <img> network icons (Lightning / Spark / Arkade).
   // Without this, AppIcon defaults to size="lg" (24px) and the glyph
@@ -62,7 +62,7 @@ export function ActivityNetworkFilters<TValue extends string = ActivityNetworkFi
             aria-pressed={isActive}
             onClick={() => onChange(filter.value)}
             className={cn(
-              'flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1.5 text-xxs font-bold uppercase tracking-wider transition-all',
+              'flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1.5 text-mini font-bold uppercase tracking-eyebrow transition-all',
               isActive
                 ? 'bg-primary/15 text-primary ring-1 ring-primary/20'
                 : 'bg-white/5 text-muted-foreground hover:bg-white/8 hover:text-white'

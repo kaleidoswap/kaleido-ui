@@ -22,7 +22,7 @@ export function AlertBanner({ variant = 'info', icon, children, className }: Ale
   return (
     <div className={cn('rounded-xl p-3 flex items-center gap-2', styles.container, className)}>
       <Icon name={icon ?? styles.iconName} size="md" className={cn('shrink-0', styles.icon)} />
-      <div className={cn('text-sm', styles.icon)}>{children}</div>
+      <div className={cn('text-body', styles.icon)}>{children}</div>
     </div>
   )
 }

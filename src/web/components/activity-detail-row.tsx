@@ -1,10 +1,17 @@
 import type { ReactNode } from 'react'
 import { Icon } from '../primitives/icon'
+import { CopyButton } from './copy-button'
 
 export interface ActivityDetailRowProps {
   label: string
   value: ReactNode
   fullValue?: string
+  /**
+   * The row copies this itself, with a `CopyButton` that reports failure.
+   * Prefer it to `onCopy`; when both are given, `onCopy` wins.
+   */
+  copyValue?: string
+  /** Kept for compatibility: the consumer copies and drives `isCopied` itself. */
   onCopy?: () => void
   isCopied?: boolean
 }
@@ -13,6 +20,7 @@ export function ActivityDetailRow({
   label,
   value,
   fullValue,
+  copyValue,
   onCopy,
   isCopied,
 }: ActivityDetailRowProps) {
@@ -20,13 +28,13 @@ export function ActivityDetailRow({
     // min-h-8 equalizes text-only rows with taller value content (badges,
     // pills) so the label-to-label rhythm stays uniform down the list.
     <div className="flex min-h-8 items-center gap-3 py-1 last:pb-0">
-      <span className="shrink-0 text-xxs font-bold uppercase tracking-wider text-muted-foreground">
+      <span className="shrink-0 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
         {label}
       </span>
       {/* Dotted leader tying each label to its value across the row gap. */}
       <span aria-hidden className="min-w-4 flex-1 self-center border-b border-dotted border-white/15" />
       <div className="flex max-w-[65%] items-center gap-2">
-        <span className="truncate font-mono text-xs font-medium text-white/90">{value}</span>
+        <span className="truncate font-mono text-caption font-medium text-white/90">{value}</span>
         {onCopy && (
           <button
             type="button"
@@ -42,6 +50,7 @@ export function ActivityDetailRow({
             <Icon name={isCopied ? 'check' : 'content_copy'} style={{ fontSize: '14px' }} />
           </button>
         )}
+        {!onCopy && copyValue !== undefined && <CopyButton value={copyValue} label={label.toLowerCase()} />}
       </div>
     </div>
   )

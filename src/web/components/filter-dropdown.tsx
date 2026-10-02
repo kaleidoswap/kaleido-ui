@@ -69,7 +69,7 @@ export function FilterDropdown({
           {!hideLabel && (
             <span
               className={cn(
-                'shrink-0 font-bold uppercase tracking-wider',
+                'shrink-0 font-bold uppercase tracking-eyebrow',
                 compact ? 'text-xxs' : 'text-mini',
                 isFiltered ? 'text-muted-foreground' : 'text-white/45',
               )}
@@ -121,7 +121,7 @@ export function FilterDropdown({
           )}
         >
           <span className="flex size-6 shrink-0 items-center justify-center">{option.icon}</span>
-          <span className={cn('text-xs', optionSelected ? 'font-bold' : 'font-medium')}>
+          <span className={cn('text-caption', optionSelected ? 'font-bold' : 'font-medium')}>
             {option.label}
           </span>
         </span>

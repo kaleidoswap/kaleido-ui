@@ -1,6 +1,11 @@
 import type { ReactNode } from 'react'
 import { cn } from '../utils/cn'
-import { Icon } from '../primitives/icon'
+import {
+  Collapsible,
+  CollapsibleChevron,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '../primitives/collapsible'
 
 export interface DisclosureCardProps {
   title: ReactNode
@@ -13,6 +18,11 @@ export interface DisclosureCardProps {
   contentClassName?: string
 }
 
+/**
+ * A card-styled `Collapsible`: a muted trigger row and a muted body. Its open
+ * state stays controlled, as it always was; the trigger now also reports
+ * `aria-expanded` and points at the body with `aria-controls`.
+ */
 export function DisclosureCard({
   title,
   children,
@@ -24,10 +34,9 @@ export function DisclosureCard({
   contentClassName,
 }: DisclosureCardProps) {
   return (
-    <div className={className}>
-      <button
+    <Collapsible open={open} onOpenChange={onOpenChange} className={className}>
+      <CollapsibleTrigger
         type="button"
-        onClick={() => onOpenChange(!open)}
         className={cn(
           'flex w-full items-center justify-between rounded-xl bg-muted/40 px-3 py-2 text-left transition-colors hover:bg-muted/60',
           triggerClassName,
@@ -35,23 +44,13 @@ export function DisclosureCard({
       >
         <span className="flex min-w-0 items-center gap-1.5">
           {icon}
-          <span className="truncate text-xs font-bold text-foreground">{title}</span>
+          <span className="truncate text-caption font-bold text-foreground">{title}</span>
         </span>
-        <Icon
-          name={open ? 'expand_less' : 'expand_more'}
-          className="text-icon-md text-muted-foreground"
-        />
-      </button>
-      {open && (
-        <div
-          className={cn(
-            'mt-3 rounded-xl bg-muted/40 px-3 py-3',
-            contentClassName,
-          )}
-        >
-          {children}
-        </div>
-      )}
-    </div>
+        <CollapsibleChevron />
+      </CollapsibleTrigger>
+      <CollapsibleContent className={cn('mt-3 rounded-xl bg-muted/40 px-3 py-3', contentClassName)}>
+        {children}
+      </CollapsibleContent>
+    </Collapsible>
   )
 }

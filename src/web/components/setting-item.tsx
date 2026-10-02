@@ -1,8 +1,11 @@
+import { Icon } from '../primitives/icon'
+import { isIconName, type IconName } from '../icons'
 import { cn } from '../utils/cn'
 import type { ReactNode } from 'react'
 
 interface SettingItemProps {
-  icon?: string
+  /** A glyph name from the Icon set, or your own node. An unknown name draws nothing. */
+  icon?: IconName | ReactNode
   iconSrc?: string
   iconAlt?: string
   title: string
@@ -49,21 +52,25 @@ export function SettingItem({
               {iconSrc ? (
                 <img src={iconSrc} alt={iconAlt ?? title} className="size-5 object-contain" />
               ) : (
-                <span className="material-symbols-outlined text-icon-xl">{icon}</span>
+                isIconName(icon) ? (
+                  <Icon name={icon} className="text-icon-xl" />
+                ) : typeof icon === 'string' ? null : (
+                  icon
+                )
               )}
             </div>
           )}
           <div className="flex flex-col flex-1 min-w-0">
             <span className="font-bold text-body text-foreground tracking-wide">{title}</span>
             {description && (
-              <span className="text-sm text-muted-foreground mt-0.5 font-medium">{description}</span>
+              <span className="text-caption text-muted-foreground mt-0.5 font-medium">{description}</span>
             )}
           </div>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
-          {value && <span className="text-xs text-muted-foreground font-mono">{value}</span>}
+          {value && <span className="text-caption text-muted-foreground font-mono">{value}</span>}
           {showChevron && isClickable && (
-            <span className="material-symbols-outlined text-icon-md text-muted-foreground group-hover:scale-110 group-hover:text-white transition-all">chevron_right</span>
+            <Icon name="chevron_right" className="text-icon-md text-muted-foreground group-hover:scale-110 group-hover:text-white transition-all" />
           )}
         </div>
       </div>

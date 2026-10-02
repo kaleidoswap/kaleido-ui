@@ -32,7 +32,7 @@ export function SettingsSelectorRow({
         <div className="flex min-w-0 flex-1 flex-col">
           <span className="text-body font-bold tracking-wide text-foreground">{title}</span>
           {description && (
-            <span className="mt-0.5 text-sm font-medium text-muted-foreground">
+            <span className="mt-0.5 text-caption font-medium text-muted-foreground">
               {description}
             </span>
           )}
