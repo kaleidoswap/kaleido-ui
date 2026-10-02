@@ -4,6 +4,7 @@ import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 import { AssetIcon } from './asset-icon'
 import { NetworkBadge, type NetworkType } from './network-badge'
+import { eyebrow } from '../utils/type-roles'
 
 export type InfoChipStatus = 'success' | 'warning' | 'danger' | 'info'
 
@@ -106,7 +107,7 @@ export function InfoChip({
       )}
 
       <dl className="min-w-0 flex-1">
-        <dt className="truncate text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+        <dt className={cn('truncate text-muted-foreground', eyebrow)}>
           {label}
         </dt>
         <dd className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">

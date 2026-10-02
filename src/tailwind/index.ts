@@ -147,7 +147,8 @@ const preset = {
         'scrollbar-hover': sizing.scrollbarHover,
         'scrollbar-thumb-min': sizing.scrollbarThumbMin,
       },
-      boxShadow: Object.fromEntries(Object.entries(shadow).map(([key, value]) => [kebab(key), value])),
+      // Per-theme: the --kui-shadow-* vars kaleido-ui/css declares for dark and light.
+      boxShadow: Object.fromEntries(Object.keys(shadow).map((key) => [kebab(key), `var(--kui-shadow-${kebab(key)})`])),
       zIndex: { ...layer },
       opacity,
       brightness,

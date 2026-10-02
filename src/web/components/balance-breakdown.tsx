@@ -2,6 +2,8 @@ import { useState, type ReactNode } from 'react'
 import { ActionTile } from './action-tile'
 import { Icon } from '../primitives/icon'
 import { LiquidNetworkIcon } from './network-icon'
+import { eyebrow } from '../utils/type-roles'
+import { cn } from '../utils/cn'
 
 export interface BalanceBreakdownAsset {
   asset_id: string
@@ -186,7 +188,7 @@ export function BalanceBreakdown({
             className="group flex min-w-0 flex-1 flex-col items-start text-left"
             title={`Tap to switch unit (current: ${label})`}
           >
-            <p className="mb-1 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+            <p className={cn('mb-1 text-muted-foreground', eyebrow)}>
               Total Balance
             </p>
             {isLoading ? (
@@ -201,7 +203,7 @@ export function BalanceBreakdown({
                     {balanceVisible ? numberOnly(format(totalBTC)) : '••••••'}
                   </span>
                   {unit !== 'fiat' && (
-                    <span className="inline-block rounded-md bg-secondary/15 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground ring-1 ring-inset ring-secondary/25">
+                    <span className={cn('inline-block rounded-md bg-secondary/15 px-2 py-0.5 text-muted-foreground ring-1 ring-inset ring-secondary/25', eyebrow)}>
                       {label}
                     </span>
                   )}
@@ -262,7 +264,7 @@ export function BalanceBreakdown({
             aria-label="Bitcoin balance breakdown"
             className={`space-y-1 duration-300 animate-in fade-in slide-in-from-top-2 ${compact ? 'mt-3 pt-3' : 'mt-4 pt-4'}`}
           >
-            <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+            <p className={cn('mb-3 text-muted-foreground', eyebrow)}>
               Bitcoin
             </p>
             <NetworkRow
@@ -357,7 +359,7 @@ export function BalanceBreakdown({
 
             {tokenValueSats !== undefined && tokenValueSats > 0 && (
               <div className="mt-4 pt-1">
-                <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+                <p className={cn('mb-3 text-muted-foreground', eyebrow)}>
                   Token Holdings
                 </p>
                 <div className="flex items-center justify-between rounded-xl bg-muted/40 px-3 py-2 shadow-raised">
@@ -389,7 +391,7 @@ export function BalanceBreakdown({
 
             {accounts.RGB?.connected && nodeInfo?.pubkey && (
               <div className="mt-4 pt-1">
-                <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+                <p className={cn('mb-3 text-muted-foreground', eyebrow)}>
                   RLN Details
                 </p>
                 <div className="grid grid-cols-3 gap-2">
@@ -443,7 +445,7 @@ function RgbAssetsBreakdown({
 }) {
   return (
     <div className="mt-4 pt-1">
-      <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+      <p className={cn('mb-3 text-muted-foreground', eyebrow)}>
         RGB Assets
       </p>
       <div className="space-y-2">
@@ -500,7 +502,7 @@ function RgbAssetsBreakdown({
 function StatusChip({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl bg-muted/40 px-3 py-2">
-      <div className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">{label}</div>
+      <div className={cn('text-muted-foreground', eyebrow)}>{label}</div>
       <div className="mt-1 truncate text-caption font-semibold text-foreground/80">{value}</div>
     </div>
   )

@@ -207,6 +207,7 @@ const NAV_SECTIONS: { label: string; categories: NavCategory[] }[] = [
           { id: 'tone-badges', label: 'Tone Badges', icon: 'toll' },
           { id: 'avatar', label: 'Avatar', icon: 'person' },
           { id: 'collapsible', label: 'Collapsible', icon: 'expand_more' },
+          { id: 'theme-toggle', label: 'Theme Toggle', icon: 'dark_mode' },
         ],
       },
       {
@@ -430,6 +431,7 @@ export function App() {
 
   const navFooter = (
     <DrawerFooter className="space-y-3">
+      {/* A nav item, so it still folds to its icon on the rail, styled as an outlined button. */}
       <DrawerNavItem
         href="#/products"
         label="Product previews"
@@ -438,6 +440,7 @@ export function App() {
       <DrawerNavItem
         href="#/state-snapshot"
         label="State Snapshot"
+        className={`${buttonVariants({ variant: 'outline' })} flex w-full hover:text-brand`}
         icon={<Icon name="science" className="text-icon-xl" />}
       />
       <div role="separator" className="mx-4 border-t border-divider/15" />
@@ -531,10 +534,6 @@ export function App() {
               <KaleidoswapLogo orientation="vertical" className="h-16 w-auto text-foreground" />
               <KaleidoswapMark className="size-8" />
               <KaleidoswapMark className="size-14" />
-            </Row>
-            <Row label="ThemeToggle — light / dark (the one in the top bar drives the page)">
-              <ThemeToggle mode="light" onModeChange={() => {}} />
-              <ThemeToggle mode="dark" onModeChange={() => {}} />
             </Row>
             <Row label="Per-theme foregrounds (text-*-fg)">
               <span className="text-brand font-bold">text-brand</span>
@@ -1558,6 +1557,12 @@ export function App() {
           </Section>
           <Section id="collapsible" title="Collapsible" description="The open/close primitive, and DisclosureCard built on it.">
             <CollapsibleGallery />
+          </Section>
+          <Section id="theme-toggle" title="Theme Toggle" description="The light / dark switch. The one in the top bar drives the page.">
+            <Row label="ThemeToggle — light / dark">
+              <ThemeToggle mode="light" onModeChange={() => {}} />
+              <ThemeToggle mode="dark" onModeChange={() => {}} />
+            </Row>
           </Section>
           <Section id="popover-menu" title="Popover & Menu" description="An anchored panel, and a real menu.">
             <PopoverMenuGallery />

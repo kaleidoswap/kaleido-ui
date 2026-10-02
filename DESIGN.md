@@ -329,6 +329,8 @@ not flat. Shadows are cast in a near-black violet (`--app-shadow`) scaled per th
 (`--app-shadow-strength`: 1 on dark, 0.28 on light), so one token reads right in
 both modes.
 
+**Each theme has its own set.** Every `shadow-*` token is `--kui-shadow-*`, declared once for dark (`shadow` in `src/tokens/shadows.ts`) and once for light (`shadowLight`). Dark shadows are deep drops and coloured glows that read on near-black; on white those either vanish or smudge, so the light set is a crisp contact shadow plus a soft ambient one in a cool near-black (≤ 20%), with a hairline ring for the edge, and glows that are a 3 px tinted ring rather than a bloom.
+
 | Token (utility) | Use |
 | --- | --- |
 | `shadow-card` | every resting card / panel / tile — a top rim light plus a soft drop |

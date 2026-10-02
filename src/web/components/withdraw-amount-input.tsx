@@ -125,7 +125,7 @@ export function WithdrawAmountInput({
               </div>
               <button
                 type="button"
-                className="shrink-0 rounded-lg bg-secondary bg-gradient-violet px-3 py-1.5 text-mini font-bold uppercase tracking-eyebrow text-white shadow-button-violet transition-shadow hover:shadow-glow-violet"
+                className={cn('shrink-0 rounded-lg bg-secondary bg-gradient-violet px-3 py-1.5 text-white shadow-button-violet transition-shadow hover:shadow-glow-violet', eyebrow)}
                 onClick={handleSetMax}
               >
                 Max

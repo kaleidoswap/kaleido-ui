@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { cn } from '../utils/cn'
 import { LiquidNetworkIcon } from './network-icon'
 import type { DepositAccountId, DepositNetworkKey } from './deposit-ui-shared'
+import { eyebrow } from '../utils/type-roles'
 
 export interface DepositNetworkOption {
   network: DepositNetworkKey
@@ -129,7 +130,7 @@ export function DepositNetworkDefaultModal({
                     {isSuggested && (
                       <span
                         className={cn(
-                          'rounded-full px-1.5 py-0.5 text-mini font-bold uppercase tracking-eyebrow',
+                          'rounded-full px-1.5 py-0.5', eyebrow,
                           option.accentBg,
                           option.accentText
                         )}

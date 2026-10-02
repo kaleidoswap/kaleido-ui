@@ -141,6 +141,24 @@
   --network-liquid-text: #5DE5D6;
   --network-taproot-chip: #1E2328;
   --network-taproot-text: #C4CACD;
+  --kui-shadow-glow: 0 0 20px rgba(10, 10, 10, 0.15);
+  --kui-shadow-glow-strong: 0 0 30px rgba(10, 10, 10, 0.25);
+  --kui-shadow-glow-subtle: 0 0 15px rgba(10, 10, 10, 0.12);
+  --kui-shadow-glow-accent: 0 4px 30px rgba(10, 10, 10, 0.18);
+  --kui-shadow-header: 0 10px 24px rgba(7, 4, 22, 0.35), 0 1px 0 rgba(164, 138, 255, 0.08);
+  --kui-shadow-glow-primary-soft: 0 0 8px rgba(21, 233, 154, 0.5);
+  --kui-shadow-glow-primary: 0 0 30px rgba(21, 233, 154, 0.45);
+  --kui-shadow-glow-primary-strong: 0 0 40px rgba(21, 233, 154, 0.55);
+  --kui-shadow-glow-violet-soft: 0 0 12px rgba(111, 50, 255, 0.45);
+  --kui-shadow-glow-violet: 0 0 30px rgba(111, 50, 255, 0.5);
+  --kui-shadow-glow-brand: -10px 0 32px -8px rgba(21, 233, 154, 0.45), 10px 0 32px -8px rgba(111, 50, 255, 0.55);
+  --kui-shadow-card: inset 0 1px 0 0 rgb(255 255 255 / var(--app-rim-alpha)), inset 0 0 0 1px rgb(var(--app-glass-edge) / var(--app-glass-edge-alpha)), 0 2px 6px -1px rgb(var(--app-shadow) / calc(0.45 * var(--app-shadow-strength))), 0 12px 32px -12px rgb(var(--app-shadow) / calc(0.7 * var(--app-shadow-strength)));
+  --kui-shadow-card-hover: inset 0 1px 0 0 rgb(255 255 255 / var(--app-rim-alpha)), inset 0 0 0 1px rgb(var(--app-glass-edge) / var(--app-glass-edge-alpha)), 0 4px 12px -2px rgb(var(--app-shadow) / calc(0.5 * var(--app-shadow-strength))), 0 20px 44px -14px rgba(111, 50, 255, 0.26);
+  --kui-shadow-raised: inset 0 1px 0 0 rgb(255 255 255 / var(--app-rim-alpha)), 0 2px 4px -1px rgb(var(--app-shadow) / calc(0.4 * var(--app-shadow-strength))), 0 6px 14px -6px rgb(var(--app-shadow) / calc(0.55 * var(--app-shadow-strength)));
+  --kui-shadow-button-primary: 0 8px 22px -8px rgba(21, 233, 154, 0.65);
+  --kui-shadow-button-violet: 0 8px 22px -8px rgba(111, 50, 255, 0.75);
+  --kui-shadow-popover: 0 0 0 1px rgba(164, 138, 255, 0.10), 0 24px 60px -12px rgba(7, 4, 22, 0.8), 0 0 48px -16px rgba(111, 50, 255, 0.35);
+  --kui-shadow-toast: 0 0 0 1px rgba(164, 138, 255, 0.10), 0 12px 36px -8px rgba(7, 4, 22, 0.6);
   /* Elevation ink — shadows are cast in a near-black violet. */
   --app-shadow: 7 4 22;
   --app-shadow-strength: 1;
@@ -190,6 +208,24 @@
   --network-liquid-text: #115E59;
   --network-taproot-chip: #E9ECEE;
   --network-taproot-text: #464A69;
+  --kui-shadow-glow: 0 0 20px rgba(20, 20, 43, 0.08);
+  --kui-shadow-glow-strong: 0 0 30px rgba(20, 20, 43, 0.12);
+  --kui-shadow-glow-subtle: 0 0 15px rgba(20, 20, 43, 0.06);
+  --kui-shadow-glow-accent: 0 4px 30px rgba(20, 20, 43, 0.1);
+  --kui-shadow-header: 0 1px 0 rgba(20, 20, 43, 0.06), 0 6px 16px -10px rgba(20, 20, 43, 0.14);
+  --kui-shadow-glow-primary-soft: 0 0 0 3px rgba(23, 181, 129, 0.16), 0 2px 8px -2px rgba(23, 181, 129, 0.25);
+  --kui-shadow-glow-primary: 0 6px 20px -6px rgba(23, 181, 129, 0.4);
+  --kui-shadow-glow-primary-strong: 0 10px 28px -8px rgba(23, 181, 129, 0.5);
+  --kui-shadow-glow-violet-soft: 0 0 0 3px rgba(111, 50, 255, 0.12), 0 2px 8px -2px rgba(111, 50, 255, 0.2);
+  --kui-shadow-glow-violet: 0 6px 20px -6px rgba(111, 50, 255, 0.32);
+  --kui-shadow-glow-brand: -8px 6px 24px -10px rgba(23, 181, 129, 0.4), 8px 6px 24px -10px rgba(111, 50, 255, 0.36);
+  --kui-shadow-card: 0 0 0 1px rgba(20, 20, 43, 0.05), 0 1px 2px rgba(20, 20, 43, 0.05), 0 4px 12px -4px rgba(20, 20, 43, 0.08), 0 14px 32px -16px rgba(20, 20, 43, 0.14);
+  --kui-shadow-card-hover: 0 0 0 1px rgba(20, 20, 43, 0.06), 0 2px 4px rgba(20, 20, 43, 0.05), 0 10px 24px -8px rgba(20, 20, 43, 0.12), 0 22px 44px -18px rgba(111, 50, 255, 0.18);
+  --kui-shadow-raised: 0 0 0 1px rgba(20, 20, 43, 0.06), 0 1px 2px rgba(20, 20, 43, 0.07), 0 3px 8px -3px rgba(20, 20, 43, 0.1);
+  --kui-shadow-button-primary: 0 1px 2px rgba(13, 122, 88, 0.22), 0 6px 14px -6px rgba(23, 181, 129, 0.5);
+  --kui-shadow-button-violet: 0 1px 2px rgba(55, 20, 136, 0.22), 0 6px 14px -6px rgba(111, 50, 255, 0.45);
+  --kui-shadow-popover: 0 0 0 1px rgba(20, 20, 43, 0.06), 0 4px 10px -4px rgba(20, 20, 43, 0.08), 0 18px 40px -14px rgba(20, 20, 43, 0.2);
+  --kui-shadow-toast: 0 0 0 1px rgba(20, 20, 43, 0.06), 0 10px 28px -10px rgba(20, 20, 43, 0.2);
   --app-shadow: 28 27 46;
   --app-shadow-strength: 0.18;
   --app-rim-alpha: 0.7;
@@ -356,11 +392,26 @@
   --shadow-glow-recv: var(--glow-recv);
   --shadow-glow-card: var(--glow-card);
 
-  /* Themeable elevation — cast in --app-shadow, scaled per theme. Inline so
-     the utility resolves the ink on the element, not once on :root. */
-  --shadow-card:       inset 0 1px 0 0 rgb(255 255 255 / var(--app-rim-alpha)), inset 0 0 0 1px rgb(var(--app-glass-edge) / var(--app-glass-edge-alpha)), 0 2px 6px -1px rgb(var(--app-shadow) / calc(0.45 * var(--app-shadow-strength))), 0 12px 32px -12px rgb(var(--app-shadow) / calc(0.7 * var(--app-shadow-strength)));
-  --shadow-card-hover: inset 0 1px 0 0 rgb(255 255 255 / var(--app-rim-alpha)), inset 0 0 0 1px rgb(var(--app-glass-edge) / var(--app-glass-edge-alpha)), 0 4px 12px -2px rgb(var(--app-shadow) / calc(0.5 * var(--app-shadow-strength))), 0 20px 44px -14px rgba(111, 50, 255, 0.26);
-  --shadow-raised:     inset 0 1px 0 0 rgb(255 255 255 / var(--app-rim-alpha)), 0 2px 4px -1px rgb(var(--app-shadow) / calc(0.4 * var(--app-shadow-strength))), 0 6px 14px -6px rgb(var(--app-shadow) / calc(0.55 * var(--app-shadow-strength)));
+  /* Shadows, per theme: --kui-shadow-* is declared for dark (:root, .dark) and
+     light (.light). Inline so each utility resolves it on the element. */
+  --shadow-glow: var(--kui-shadow-glow);
+  --shadow-glow-strong: var(--kui-shadow-glow-strong);
+  --shadow-glow-subtle: var(--kui-shadow-glow-subtle);
+  --shadow-glow-accent: var(--kui-shadow-glow-accent);
+  --shadow-header: var(--kui-shadow-header);
+  --shadow-glow-primary-soft: var(--kui-shadow-glow-primary-soft);
+  --shadow-glow-primary: var(--kui-shadow-glow-primary);
+  --shadow-glow-primary-strong: var(--kui-shadow-glow-primary-strong);
+  --shadow-glow-violet-soft: var(--kui-shadow-glow-violet-soft);
+  --shadow-glow-violet: var(--kui-shadow-glow-violet);
+  --shadow-glow-brand: var(--kui-shadow-glow-brand);
+  --shadow-card: var(--kui-shadow-card);
+  --shadow-card-hover: var(--kui-shadow-card-hover);
+  --shadow-raised: var(--kui-shadow-raised);
+  --shadow-button-primary: var(--kui-shadow-button-primary);
+  --shadow-button-violet: var(--kui-shadow-button-violet);
+  --shadow-popover: var(--kui-shadow-popover);
+  --shadow-toast: var(--kui-shadow-toast);
 }
 
 @theme {
@@ -497,21 +548,7 @@
   --radius-pill:  9999px;
 
   /* Shadows */
-  --shadow-glow:                 0 0 20px rgba(10, 10, 10, 0.15);
-  --shadow-glow-strong:          0 0 30px rgba(10, 10, 10, 0.25);
-  --shadow-glow-subtle:          0 0 15px rgba(10, 10, 10, 0.12);
-  --shadow-glow-accent:          0 4px 30px rgba(10, 10, 10, 0.18);
-  --shadow-header:               0 10px 24px rgba(7, 4, 22, 0.35), 0 1px 0 rgba(164, 138, 255, 0.08);
-  --shadow-glow-primary-soft:    0 0 8px rgba(21, 233, 154, 0.5);
-  --shadow-glow-primary:         0 0 30px rgba(21, 233, 154, 0.45);
-  --shadow-glow-primary-strong:  0 0 40px rgba(21, 233, 154, 0.55);
-  --shadow-glow-violet-soft:     0 0 12px rgba(111, 50, 255, 0.45);
-  --shadow-glow-violet:          0 0 30px rgba(111, 50, 255, 0.5);
-  --shadow-glow-brand:           -10px 0 32px -8px rgba(21, 233, 154, 0.45), 10px 0 32px -8px rgba(111, 50, 255, 0.55);
-  --shadow-button-primary:       0 8px 22px -8px rgba(21, 233, 154, 0.65);
-  --shadow-button-violet:        0 8px 22px -8px rgba(111, 50, 255, 0.75);
-  --shadow-popover:              0 0 0 1px rgba(164, 138, 255, 0.10), 0 24px 60px -12px rgba(7, 4, 22, 0.8), 0 0 48px -16px rgba(111, 50, 255, 0.35);
-  --shadow-toast:                0 0 0 1px rgba(164, 138, 255, 0.10), 0 12px 36px -8px rgba(7, 4, 22, 0.6);
+  /* Shadows: every --shadow-* is themed — see the @theme inline block. */
 
   /* Drop-shadows (Tailwind v4 emits drop-shadow-* utilities from --drop-shadow-*) */
   --drop-shadow-glow-primary-soft: 0 0 8px rgba(21, 233, 154, 0.5);

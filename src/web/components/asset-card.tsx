@@ -4,6 +4,7 @@ import { NetworkBadge, type NetworkType } from './network-badge'
 import { AssetIcon } from './asset-icon'
 import { formatDisplayAmountText } from '../utils/amount-display'
 import { StatusBadge, type StatusType } from './status-badge'
+import { eyebrow } from '../utils/type-roles'
 
 export interface AssetCardProps {
   /** Asset ticker symbol (e.g. "BTC", "USDT") */
@@ -120,7 +121,7 @@ export function AssetCard({
                 </svg>
               </div>
             )}
-            <p className="truncate text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+            <p className={cn('truncate text-muted-foreground', eyebrow)}>
               {ticker}
             </p>
           </div>

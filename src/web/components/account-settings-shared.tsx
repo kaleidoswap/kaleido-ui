@@ -4,6 +4,7 @@ import { Icon } from '../primitives/icon'
 import { ScrollArea } from '../primitives/scroll-area'
 import { cn } from '../utils/cn'
 import { NostrNetworkIcon, RgbNetworkIcon } from './network-icon'
+import { eyebrow } from '../utils/type-roles'
 
 export type AccountSettingsProtocol = 'RGB' | 'SPARK' | 'ARKADE' | 'NOSTR'
 export type AccountSettingsNetwork = 'mainnet' | 'testnet' | 'regtest' | 'signet'
@@ -139,7 +140,7 @@ export function AccountNetworkSelector({
             disabled={disabled}
             onClick={() => onChange(network)}
             className={cn(
-              'rounded-xl px-3 py-2.5 text-mini font-bold uppercase tracking-eyebrow transition-all',
+              'rounded-xl px-3 py-2.5 transition-all', eyebrow,
               selected
                 ? `${ui.badgeClassName} shadow-raised`
                 : 'text-muted-foreground hover:bg-secondary/10 hover:text-secondary-content'
@@ -311,7 +312,7 @@ export function AccountStatusPills({
     <div className="flex flex-wrap items-center gap-2">
       <span
         className={cn(
-          'rounded-full px-2.5 py-1 text-mini font-bold uppercase tracking-eyebrow',
+          'rounded-full px-2.5 py-1', eyebrow,
           statusUi.className
         )}
       >
@@ -320,7 +321,7 @@ export function AccountStatusPills({
       {!hideNetworkChip && (
         <span
           className={cn(
-            'rounded-full px-2.5 py-1 text-mini font-bold uppercase tracking-eyebrow',
+            'rounded-full px-2.5 py-1', eyebrow,
             networkUi.badgeClassName
           )}
         >
@@ -333,7 +334,7 @@ export function AccountStatusPills({
 
 export function SectionTitle({ children }: { children: ReactNode }) {
   return (
-    <h3 className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">{children}</h3>
+    <h3 className={cn('text-muted-foreground', eyebrow)}>{children}</h3>
   )
 }
 
@@ -392,7 +393,7 @@ export function TransferRouteCard({
           <p className="mt-1 text-caption text-muted-foreground">{summary}</p>
         </div>
         <div className="text-right">
-          <p className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">{eta}</p>
+          <p className={cn('text-muted-foreground', eyebrow)}>{eta}</p>
           <p className="mt-1 text-tiny text-brand">{feeHint}</p>
         </div>
       </div>
@@ -460,7 +461,7 @@ export function AccountSettingsRow({
               <div className="flex items-center gap-2">
                 <p className="text-body font-bold text-foreground">{title}</p>
                 {beta && (
-                  <span className="rounded-full bg-warning/15 px-1.5 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-warning-fg">
+                  <span className={cn('rounded-full bg-warning/15 px-1.5 py-0.5 text-warning-fg', eyebrow)}>
                     Beta
                   </span>
                 )}

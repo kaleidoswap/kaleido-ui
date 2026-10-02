@@ -3,6 +3,7 @@ import { AssetCard } from './asset-card'
 import type { NetworkType } from './network-badge'
 import type { StatusType } from './status-badge'
 import { cn } from '../utils/cn'
+import { eyebrow } from '../utils/type-roles'
 
 export interface WalletAssetListItem {
   id: string
@@ -94,10 +95,10 @@ export function WalletAssetList({
     <div className={cn('flex flex-col gap-3', className)}>
       {!hideHeader && (
         <div className="mb-1 mt-3 flex items-center justify-between px-2">
-          <span className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+          <span className={cn('text-muted-foreground', eyebrow)}>
             {title}
           </span>
-          <span className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+          <span className={cn('text-muted-foreground', eyebrow)}>
             {amountLabel}
           </span>
         </div>

@@ -1,5 +1,7 @@
 import { formatAmount } from '../utils/amount-display'
 import { Icon } from '../primitives/icon'
+import { eyebrow } from '../utils/type-roles'
+import { cn } from '../utils/cn'
 
 export interface WithdrawSuccessProps {
   displayAmount: number
@@ -57,7 +59,7 @@ export function WithdrawSuccess({
 
           {(txResult?.paymentHash || txResult?.payment_hash) && (
             <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-5 shadow-card">
-              <p className="mb-2 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+              <p className={cn('mb-2 text-muted-foreground', eyebrow)}>
                 Payment Hash
               </p>
               <p className="break-all font-mono text-caption leading-relaxed text-muted-foreground">
@@ -68,7 +70,7 @@ export function WithdrawSuccess({
 
           {txResult?.txid && (
             <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-5 shadow-card">
-              <p className="mb-2 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+              <p className={cn('mb-2 text-muted-foreground', eyebrow)}>
                 Transaction ID
               </p>
               <p className="break-all font-mono text-caption leading-relaxed text-muted-foreground">

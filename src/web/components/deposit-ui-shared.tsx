@@ -3,6 +3,7 @@ import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 import { colors } from '../../tokens/colors'
 import { LiquidNetworkIcon, RgbNetworkIcon } from './network-icon'
+import { eyebrow } from '../utils/type-roles'
 
 /**
  * 15%-alpha brand-tinted QR glow. Tailwind cannot statically generate
@@ -349,7 +350,7 @@ export function NetworkInfoDisclosure({
         className="flex w-full items-center gap-2 px-2.5 py-1.5 text-left transition-colors hover:bg-secondary/10"
       >
         <Icon name="info" size="xs" className="text-secondary-content" />
-        <span className="flex-1 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+        <span className={cn('flex-1 text-muted-foreground', eyebrow)}>
           What are these networks?
         </span>
         <Icon name={open ? 'expand_less' : 'expand_more'} size="xs" className="text-foreground/55" />
@@ -365,7 +366,7 @@ export function NetworkInfoDisclosure({
                   <div className={cn('flex size-4 flex-shrink-0 items-center justify-center rounded-md', cfg.bg)}>
                     {cfg.icon}
                   </div>
-                  <span className={cn('text-mini font-bold uppercase tracking-eyebrow', cfg.text)}>
+                  <span className={cn(eyebrow, cfg.text)}>
                     {info.title}
                   </span>
                 </div>

@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { AccountHeaderIcons, type AccountSettingsProtocol } from './account-settings-shared'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
+import { eyebrow } from '../utils/type-roles'
 
 export interface AccountCapabilitiesCardProps {
   accountId: AccountSettingsProtocol
@@ -54,7 +55,7 @@ export function AccountCapabilitiesCard({
         <div className="flex flex-col items-end gap-2">
           <span
             className={cn(
-              'rounded-full px-2 py-1 text-mini font-bold uppercase tracking-eyebrow',
+              'rounded-full px-2 py-1', eyebrow,
               accentClasses
             )}
           >
@@ -71,7 +72,7 @@ export function AccountCapabilitiesCard({
       {isExpanded && (
         <div className="mt-5 duration-200 animate-in fade-in slide-in-from-top-2">
           <div className="mb-6 space-y-2">
-            <h4 className="mb-2 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+            <h4 className={cn('mb-2 text-muted-foreground', eyebrow)}>
               Capabilities
             </h4>
             {capabilities.map((capability) => (

@@ -3,6 +3,7 @@ import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 import { useCopyToClipboard } from '../hooks/use-copy-to-clipboard'
 import { COPY_FAILED_MESSAGE } from './copy-button'
+import { eyebrow } from '../utils/type-roles'
 
 export interface RecoveryPhraseCardProps {
   words: string[]
@@ -45,7 +46,7 @@ export function RecoveryPhraseCard({
   return (
     <section className={cn('space-y-2', className)}>
       <div className="flex items-center justify-between px-0.5">
-        <p className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">{title}</p>
+        <p className={cn('text-muted-foreground', eyebrow)}>{title}</p>
         {hasWords && revealed && onRevealChange && (
           <Button
             type="button"

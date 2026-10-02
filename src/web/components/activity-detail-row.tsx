@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react'
 import { Icon } from '../primitives/icon'
 import { CopyButton } from './copy-button'
+import { eyebrow } from '../utils/type-roles'
+import { cn } from '../utils/cn'
 
 export interface ActivityDetailRowProps {
   label: string
@@ -28,7 +30,7 @@ export function ActivityDetailRow({
     // min-h-8 equalizes text-only rows with taller value content (badges,
     // pills) so the label-to-label rhythm stays uniform down the list.
     <div className="flex min-h-8 items-center gap-3 py-1 last:pb-0">
-      <span className="shrink-0 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+      <span className={cn('shrink-0 text-muted-foreground', eyebrow)}>
         {label}
       </span>
       {/* Dotted leader tying each label to its value across the row gap. */}

@@ -10,6 +10,7 @@ import {
   type DepositNetworkConfigEntry,
   type DepositNetworkKey,
 } from './deposit-ui-shared'
+import { eyebrow } from '../utils/type-roles'
 
 export interface DepositGeneratedAsset {
   ticker?: string
@@ -218,7 +219,7 @@ export function DepositGeneratedView({
             <button
               type="button"
               className={cn(
-                'flex items-center gap-1 rounded-full border px-2.5 py-1 text-mini font-bold uppercase tracking-eyebrow transition-all',
+                'flex items-center gap-1 rounded-full border px-2.5 py-1 transition-all', eyebrow,
                 isAddressCopied
                   ? 'border-primary/30 bg-primary/10 text-brand shadow-glow-primary-soft'
                   : 'border-secondary/30 bg-secondary/15 text-secondary-content shadow-raised hover:border-secondary/50 hover:bg-secondary/25 hover:text-foreground'
@@ -261,7 +262,7 @@ export function DepositGeneratedView({
           {net.icon}
         </div>
         <div className="min-w-0 flex-1">
-          <p className={cn('text-mini font-bold uppercase tracking-eyebrow', net.text)}>
+          <p className={cn(eyebrow, net.text)}>
             <span data-testid="deposit-address-label">{addressLabel}</span>
           </p>
           <p className="mt-0.5 truncate font-mono text-tiny text-muted-foreground">
@@ -283,7 +284,7 @@ export function DepositGeneratedView({
             <Icon name="person" size="xs" className="text-brand" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-mini font-bold uppercase tracking-eyebrow text-brand">
+            <p className={cn('text-brand', eyebrow)}>
               Recipient ID
             </p>
             <p className="mt-0.5 truncate font-mono text-tiny text-muted-foreground">

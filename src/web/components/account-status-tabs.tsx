@@ -10,6 +10,7 @@ import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
 import { NetworkStatusChip } from './network-status-chip'
 import { cn } from '../utils/cn'
+import { eyebrow } from '../utils/type-roles'
 
 export interface AccountStatusDetail {
   label: string
@@ -73,7 +74,7 @@ export function AccountStatusDetails<TId extends string = string>({
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+              <span className={cn('text-muted-foreground', eyebrow)}>
                 {account.label}
               </span>
               <span className={cn('size-2 rounded-full', account.dotTone)} />
@@ -90,11 +91,11 @@ export function AccountStatusDetails<TId extends string = string>({
 
       <div className="mt-5 grid grid-cols-2 gap-3">
         <div className={cn('rounded-2xl px-4 py-3 shadow-raised', account.networkBannerClassName)}>
-          <div className="text-mini font-bold uppercase tracking-eyebrow">Network</div>
+          <div className={eyebrow}>Network</div>
           <div className="mt-1 break-words text-body font-semibold">{account.networkLabel}</div>
         </div>
         <div className="rounded-2xl bg-muted/40 px-4 py-3 shadow-raised">
-          <div className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+          <div className={cn('text-muted-foreground', eyebrow)}>
             Status
           </div>
           <div className="mt-1 break-words text-body font-semibold text-foreground/90">
@@ -119,7 +120,7 @@ export function AccountStatusDetails<TId extends string = string>({
       )}
 
       <div className="mt-5">
-        <div className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+        <div className={cn('text-muted-foreground', eyebrow)}>
           Capabilities
         </div>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -186,7 +187,7 @@ export function AccountStatusTabs<TId extends string = string>({
                   <span className="shrink-0">{account.icon}</span>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <div className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+                      <div className={cn('text-muted-foreground', eyebrow)}>
                         {account.label}
                       </div>
                       <span className={cn('size-2 rounded-full', account.dotTone)} />

@@ -10,6 +10,7 @@ import type {
   DepositNetworkKey,
   DepositTransferMethod,
 } from './deposit-ui-shared'
+import { eyebrow } from '../utils/type-roles'
 
 export interface DepositPreGenerationAsset {
   ticker?: string
@@ -110,7 +111,7 @@ export function DepositPreGeneration({
     <div className="space-y-3">
       {showReceiveSummary && (
         <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-3 shadow-card">
-          <p className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+          <p className={cn('text-muted-foreground', eyebrow)}>
             Receive Summary
           </p>
           <div className="mt-2 grid grid-cols-1 gap-2 text-caption">

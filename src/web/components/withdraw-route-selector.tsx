@@ -61,12 +61,12 @@ function RouteChoiceCard<TAccount extends string>({
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-body font-bold text-foreground">{route.accountTitle}</span>
             {recommended && !disabled && (
-              <span className="rounded-full bg-primary/15 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-brand shadow-glow-primary-soft">
+              <span className={cn('rounded-full bg-primary/15 px-2 py-0.5 text-brand shadow-glow-primary-soft', eyebrow)}>
                 Recommended
               </span>
             )}
             {disabled && (
-              <span className="rounded-full bg-danger/10 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-danger-fg">
+              <span className={cn('rounded-full bg-danger/10 px-2 py-0.5 text-danger-fg', eyebrow)}>
                 Insufficient
               </span>
             )}
@@ -76,7 +76,7 @@ function RouteChoiceCard<TAccount extends string>({
           )}
         </div>
       </div>
-      <span className="shrink-0 text-mini font-bold uppercase tracking-eyebrow text-foreground/55">
+      <span className={cn('shrink-0 text-foreground/55', eyebrow)}>
         {route.feeHint}
       </span>
     </div>

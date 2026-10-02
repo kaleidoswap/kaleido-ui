@@ -9,6 +9,7 @@ import { LiquidNetworkIcon } from './network-icon'
 import { ScrollArea } from '../primitives/scroll-area'
 import { cn } from '../utils/cn'
 import type { DepositAccountId } from './deposit-ui-shared'
+import { eyebrow } from '../utils/type-roles'
 
 const ADD_ASSET_SUBTITLE: Record<DepositAccountId, string> = {
   RGB: 'RGB asset on Bitcoin',
@@ -222,7 +223,7 @@ export function DepositAssetSelection<TView extends string = string>({
                 isSearching && 'cursor-default',
               )}
             >
-              <span className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+              <span className={cn('text-muted-foreground', eyebrow)}>
                 Your assets
               </span>
               <span className="inline-flex size-5 items-center justify-center rounded-full bg-secondary bg-gradient-violet text-tiny font-bold text-white shadow-button-violet">
@@ -256,7 +257,7 @@ export function DepositAssetSelection<TView extends string = string>({
                           {protocolBadge && (
                             <span
                               className={cn(
-                                'shrink-0 rounded-full px-1.5 py-0.5 text-mini font-bold uppercase tracking-eyebrow',
+                                'shrink-0 rounded-full px-1.5 py-0.5', eyebrow,
                                 protocolBadge.className,
                               )}
                             >
@@ -273,7 +274,7 @@ export function DepositAssetSelection<TView extends string = string>({
                           <div className="text-caption font-bold tabular-nums text-foreground">
                             {formatAssetBalance(asset)}
                           </div>
-                          <div className="mt-0.5 text-mini font-bold uppercase tracking-eyebrow text-foreground/55">
+                          <div className={cn('mt-0.5 text-foreground/55', eyebrow)}>
                             {asset.ticker}
                           </div>
                         </div>

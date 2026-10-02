@@ -44,3 +44,35 @@ export const shadow = {
   /** Toast / inline-notification elevation. */
   toast: '0 0 0 1px rgba(164, 138, 255, 0.10), 0 12px 36px -8px rgba(7, 4, 22, 0.6)',
 } as const
+
+/**
+ * The light theme's shadows. The dark values are tuned for a near-black page
+ * (a deep drop that reads as depth, glows that light up the dark); on white
+ * the same values are either lost (the scaled ink) or turn into a smudge (the
+ * 0.6–0.8 black of popovers, the 0.5–0.75 colour of glows). These are cast in
+ * a cool near-black, layered as a crisp contact shadow plus a soft ambient
+ * one, with a hairline ring standing in for the glass edge white can't show.
+ * Emitted by kaleido-ui/css under `.light`; every `shadow-*` utility follows it.
+ */
+const lightInk = (alpha: number) => `rgba(20, 20, 43, ${alpha})`
+
+export const shadowLight: Record<keyof typeof shadow, string> = {
+  glow: `0 0 20px ${lightInk(0.08)}`,
+  glowStrong: `0 0 30px ${lightInk(0.12)}`,
+  glowSubtle: `0 0 15px ${lightInk(0.06)}`,
+  glowAccent: `0 4px 30px ${lightInk(0.1)}`,
+  header: `0 1px 0 ${lightInk(0.06)}, 0 6px 16px -10px ${lightInk(0.14)}`,
+  glowPrimarySoft: '0 0 0 3px rgba(23, 181, 129, 0.16), 0 2px 8px -2px rgba(23, 181, 129, 0.25)',
+  glowPrimary: '0 6px 20px -6px rgba(23, 181, 129, 0.4)',
+  glowPrimaryStrong: '0 10px 28px -8px rgba(23, 181, 129, 0.5)',
+  glowVioletSoft: '0 0 0 3px rgba(111, 50, 255, 0.12), 0 2px 8px -2px rgba(111, 50, 255, 0.2)',
+  glowViolet: '0 6px 20px -6px rgba(111, 50, 255, 0.32)',
+  glowBrand: '-8px 6px 24px -10px rgba(23, 181, 129, 0.4), 8px 6px 24px -10px rgba(111, 50, 255, 0.36)',
+  card: `0 0 0 1px ${lightInk(0.05)}, 0 1px 2px ${lightInk(0.05)}, 0 4px 12px -4px ${lightInk(0.08)}, 0 14px 32px -16px ${lightInk(0.14)}`,
+  cardHover: `0 0 0 1px ${lightInk(0.06)}, 0 2px 4px ${lightInk(0.05)}, 0 10px 24px -8px ${lightInk(0.12)}, 0 22px 44px -18px rgba(111, 50, 255, 0.18)`,
+  raised: `0 0 0 1px ${lightInk(0.06)}, 0 1px 2px ${lightInk(0.07)}, 0 3px 8px -3px ${lightInk(0.1)}`,
+  buttonPrimary: '0 1px 2px rgba(13, 122, 88, 0.22), 0 6px 14px -6px rgba(23, 181, 129, 0.5)',
+  buttonViolet: '0 1px 2px rgba(55, 20, 136, 0.22), 0 6px 14px -6px rgba(111, 50, 255, 0.45)',
+  popover: `0 0 0 1px ${lightInk(0.06)}, 0 4px 10px -4px ${lightInk(0.08)}, 0 18px 40px -14px ${lightInk(0.2)}`,
+  toast: `0 0 0 1px ${lightInk(0.06)}, 0 10px 28px -10px ${lightInk(0.2)}`,
+}

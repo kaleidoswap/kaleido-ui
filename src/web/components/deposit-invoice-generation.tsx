@@ -15,6 +15,7 @@ import { DepositGeneratedView } from './deposit-generated-view'
 import { ScrollArea } from '../primitives/scroll-area'
 import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
+import { eyebrow } from '../utils/type-roles'
 
 export interface DepositInvoiceAsset {
   asset_id?: string
@@ -353,7 +354,7 @@ export function DepositInvoiceGeneration({
           <div className="flex-shrink-0 px-4 py-2">
             <div className="space-y-2">
               <div>
-                <p className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+                <p className={cn('text-muted-foreground', eyebrow)}>
                   Destination Account
                 </p>
                 <div className="mt-1.5 flex gap-1.5 overflow-x-auto no-scrollbar">
@@ -384,7 +385,7 @@ export function DepositInvoiceGeneration({
               </div>
           {!isBtc && !(isNewAsset && (network === 'spark' || network === 'arkade')) && (
             <div>
-              <p className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+              <p className={cn('text-muted-foreground', eyebrow)}>
                 Transfer Method
               </p>
               <div className="mt-1.5 flex gap-1.5 overflow-x-auto no-scrollbar">

@@ -13,6 +13,7 @@ import {
   type DepositAccountId,
   type DepositNetworkKey,
 } from './deposit-ui-shared'
+import { eyebrow } from '../utils/type-roles'
 
 export interface BtcUnifiedReceiveAddress {
   network: DepositNetworkKey
@@ -158,7 +159,7 @@ export function BtcUnifiedReceive({
       )}
 
       <div className="space-y-1.5">
-        <p className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+        <p className={cn('text-muted-foreground', eyebrow)}>
           Available Addresses
         </p>
         {accountReceiveResult.addresses.map((address) => {
@@ -178,7 +179,7 @@ export function BtcUnifiedReceive({
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
-                  <p className={cn('text-mini font-bold uppercase tracking-eyebrow', network.text)}>
+                  <p className={cn(eyebrow, network.text)}>
                     {address.label}
                   </p>
                   {(() => {

@@ -21,7 +21,7 @@ import {
 import { radius } from '../src/tokens/radius.ts'
 import { sizing, spacingUnit } from '../src/tokens/sizing.ts'
 import { layer } from '../src/tokens/layers.ts'
-import { shadow } from '../src/tokens/shadows.ts'
+import { shadow, shadowLight } from '../src/tokens/shadows.ts'
 import { gradient } from '../src/tokens/gradients.ts'
 import {
   brandDepth,
@@ -102,6 +102,17 @@ const networkChipDark = networkChipVars(colors.networkChip, colors.networkText)
 const networkChipLight = networkChipVars(colors.networkChipLight, colors.networkTextLight)
 const networkChipInline = networkNames
   .map((n) => `  --color-network-${n}-chip: var(--network-${n}-chip);\n  --color-network-${n}-text: var(--network-${n}-text);`)
+  .join('\n')
+
+// Shadows per theme: the dark set (src/tokens/shadows.ts `shadow`) and the
+// light one (`shadowLight`), as --kui-shadow-* behind every --shadow-* token.
+const shadowKeys = Object.keys(shadow) as (keyof typeof shadow)[]
+const shadowVars = (set: Record<string, string>): string =>
+  shadowKeys.map((k) => `  --kui-shadow-${camelToKebab(k)}: ${set[k]};`).join('\n')
+const shadowDark = shadowVars(shadow)
+const shadowLightVars = shadowVars(shadowLight)
+const shadowInline = shadowKeys
+  .map((k) => `  --shadow-${camelToKebab(k)}: var(--kui-shadow-${camelToKebab(k)});`)
   .join('\n')
 
 const appThemeInline = appSemanticOrder
@@ -236,6 +247,7 @@ ${seriesVars(chartSeries.dark)}
 .dark {
 ${appDarkVars}
 ${networkChipDark}
+${shadowDark}
   /* Elevation ink — shadows are cast in a near-black violet. */
   --app-shadow: 7 4 22;
   --app-shadow-strength: 1;
@@ -248,6 +260,7 @@ ${networkChipDark}
 .light {
 ${appLightVars}
 ${networkChipLight}
+${shadowLightVars}
   --app-shadow: 28 27 46;
   --app-shadow-strength: 0.18;
   --app-rim-alpha: 0.7;
@@ -317,11 +330,9 @@ ${networkChipInline}
   /* Brand layer — per-theme foregrounds and glows (see the blocks above) */
 ${brandThemeInline}
 
-  /* Themeable elevation — cast in --app-shadow, scaled per theme. Inline so
-     the utility resolves the ink on the element, not once on :root. */
-  --shadow-card:       ${shadow.card};
-  --shadow-card-hover: ${shadow.cardHover};
-  --shadow-raised:     ${shadow.raised};
+  /* Shadows, per theme: --kui-shadow-* is declared for dark (:root, .dark) and
+     light (.light). Inline so each utility resolves it on the element. */
+${shadowInline}
 }
 
 @theme {
@@ -416,21 +427,7 @@ ${iconBoxSizeTheme}
   --radius-pill:  ${radius.pill};
 
   /* Shadows */
-  --shadow-glow:                 ${shadow.glow};
-  --shadow-glow-strong:          ${shadow.glowStrong};
-  --shadow-glow-subtle:          ${shadow.glowSubtle};
-  --shadow-glow-accent:          ${shadow.glowAccent};
-  --shadow-header:               ${shadow.header};
-  --shadow-glow-primary-soft:    ${shadow.glowPrimarySoft};
-  --shadow-glow-primary:         ${shadow.glowPrimary};
-  --shadow-glow-primary-strong:  ${shadow.glowPrimaryStrong};
-  --shadow-glow-violet-soft:     ${shadow.glowVioletSoft};
-  --shadow-glow-violet:          ${shadow.glowViolet};
-  --shadow-glow-brand:           ${shadow.glowBrand};
-  --shadow-button-primary:       ${shadow.buttonPrimary};
-  --shadow-button-violet:        ${shadow.buttonViolet};
-  --shadow-popover:              ${shadow.popover};
-  --shadow-toast:                ${shadow.toast};
+  /* Shadows: every --shadow-* is themed — see the @theme inline block. */
 
   /* Drop-shadows (Tailwind v4 emits drop-shadow-* utilities from --drop-shadow-*) */
   --drop-shadow-glow-primary-soft: ${shadow.glowPrimarySoft};

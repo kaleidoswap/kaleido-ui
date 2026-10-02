@@ -1,6 +1,7 @@
 import { AppIcon } from './app-icon'
 import { ArkadeNetworkIcon, LightningNetworkIcon, SparkNetworkIcon } from './network-icon'
 import { cn } from '../utils/cn'
+import { eyebrow } from '../utils/type-roles'
 
 export type ActivityNetworkFilterValue = 'all' | 'onchain' | 'lightning' | 'spark' | 'arkade'
 
@@ -62,7 +63,7 @@ export function ActivityNetworkFilters<TValue extends string = ActivityNetworkFi
             aria-pressed={isActive}
             onClick={() => onChange(filter.value)}
             className={cn(
-              'flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1.5 text-mini font-bold uppercase tracking-eyebrow transition-all',
+              'flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1.5 transition-all', eyebrow,
               isActive
                 ? 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
                 : 'bg-foreground/5 text-muted-foreground hover:bg-secondary/10 hover:text-secondary-content'

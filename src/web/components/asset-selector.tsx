@@ -7,6 +7,7 @@ import { iconBadgeOverlayClass } from './status-icon-badge'
 import { ScrollArea } from '../primitives/scroll-area'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
+import { eyebrow } from '../utils/type-roles'
 
 export interface AssetSelectorOption {
   id: string
@@ -38,7 +39,7 @@ function NetworkMiniBadge({ iconUrl, label }: { iconUrl?: string; label?: string
       {iconUrl ? (
         <img src={iconUrl} alt={label ?? ''} className="h-full w-full object-cover" />
       ) : (
-        <span className="flex h-full w-full items-center justify-center bg-muted text-mini font-bold uppercase tracking-eyebrow leading-none text-muted-foreground">
+        <span className={cn('flex h-full w-full items-center justify-center bg-muted leading-none text-muted-foreground', eyebrow)}>
           {label?.charAt(0)}
         </span>
       )}
@@ -92,7 +93,7 @@ function AssetSelectorNetworkMark({ network }: { network: AssetSelectorNetworkOp
   return network.iconUrl ? (
     <img src={network.iconUrl} alt="" className="size-4 shrink-0 rounded-full" />
   ) : (
-    <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-muted text-mini font-bold uppercase tracking-eyebrow leading-none text-muted-foreground">
+    <span className={cn('flex size-4 shrink-0 items-center justify-center rounded-full bg-muted leading-none text-muted-foreground', eyebrow)}>
       {network.label.charAt(0)}
     </span>
   )
@@ -454,13 +455,13 @@ export function AssetSelector({
           </span>
           <span className="flex shrink-0 flex-col items-end gap-0.5">
             {optionSelected ? (
-              <span className="rounded-full bg-primary bg-gradient-primary px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-primary-foreground shadow-button-primary">
+              <span className={cn('rounded-full bg-primary bg-gradient-primary px-2 py-0.5 text-primary-foreground shadow-button-primary', eyebrow)}>
                 Current
               </span>
             ) : option.networkTag ? (
               <span
                 className={cn(
-                  'rounded-full px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow',
+                  'rounded-full px-2 py-0.5', eyebrow,
                   !option.networkTag.color && 'bg-secondary/15 text-secondary-content',
                 )}
                 style={
@@ -476,7 +477,7 @@ export function AssetSelector({
               </span>
             ) : (
               optionCategoryLabel && (
-                <span className="rounded-full bg-secondary/15 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+                <span className={cn('rounded-full bg-secondary/15 px-2 py-0.5 text-muted-foreground', eyebrow)}>
                   {optionCategoryLabel}
                 </span>
               )
@@ -664,7 +665,7 @@ export function AssetSelector({
       onOpenPanelHeightChange={onOpenPanelHeightChange}
       renderTrigger={({ open }) =>
         <span className="block">
-          <span className="mb-1.5 ml-1 block text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+          <span className={cn('mb-1.5 ml-1 block text-muted-foreground', eyebrow)}>
             {label}
           </span>
           <span className="flex w-full items-center justify-between rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-4 py-3 text-left shadow-card transition-all duration-200 hover:shadow-card-hover">

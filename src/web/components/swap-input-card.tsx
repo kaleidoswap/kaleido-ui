@@ -10,6 +10,7 @@ import {
 } from './asset-selector'
 import { cn } from '../utils/cn'
 import { formatDisplayAmountText, type AmountDisplayUnit } from '../utils/amount-display'
+import { eyebrow } from '../utils/type-roles'
 
 export interface SwapInputCardProps {
   fromTicker: string
@@ -131,7 +132,7 @@ export function SwapInputCard({
       <div className="relative mb-3 flex flex-col rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-card transition-all duration-300">
         <div className="p-3.5 pb-4">
           <div className="mb-2 flex items-center justify-between gap-2">
-            <p className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">You Pay</p>
+            <p className={cn('text-muted-foreground', eyebrow)}>You Pay</p>
             {/* Percentage shortcuts now sit above the amount row per spec —
                 they read more naturally as inputs that drive the amount. */}
             {!hidePercentages && (
@@ -223,7 +224,7 @@ export function SwapInputCard({
         </div>
 
         <div className="rounded-b-2xl bg-gradient-to-br from-secondary/[0.06] to-primary/[0.08] p-3.5 pt-4 transition-all duration-300">
-          <p className="mb-2 text-mini font-bold uppercase tracking-eyebrow text-brand/70">
+          <p className={cn('mb-2 text-brand/70', eyebrow)}>
             You Receive
           </p>
           <div className="flex items-center gap-2">

@@ -4,6 +4,7 @@ import type { IconName } from '../primitives/icon'
 import type { StatusType } from './status-badge'
 import { StatusIconBadge } from './status-icon-badge'
 import { cn } from '../utils/cn'
+import { eyebrow } from '../utils/type-roles'
 
 export interface ActivityRowProps {
   title: ReactNode
@@ -73,7 +74,7 @@ export function ActivityRow({
           {amount}
         </p>
         {unit && (
-          <p className="mt-0.5 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+          <p className={cn('mt-0.5 text-muted-foreground', eyebrow)}>
             {unit}
           </p>
         )}
