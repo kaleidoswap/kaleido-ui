@@ -97,6 +97,7 @@ export type IconName =
   | 'trending_up'
   | 'touch_app'
   | 'dark_mode'
+  | 'light_mode'
   | 'palette'
   | 'keyboard_arrow_up'
   | 'keyboard_arrow_down'
@@ -202,6 +203,7 @@ export const outlinedMap: Record<IconName, React.FC<SVGProps<SVGSVGElement>>> = 
   'trending_up': Outlined.TrendingUp,
   'touch_app': Outlined.TouchApp,
   'dark_mode': Outlined.DarkMode,
+  'light_mode': Outlined.LightMode,
   'palette': Outlined.Palette,
   'keyboard_arrow_up': Outlined.KeyboardArrowUp,
   'keyboard_arrow_down': Outlined.KeyboardArrowDown,

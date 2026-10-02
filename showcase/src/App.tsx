@@ -17,7 +17,7 @@ import {
   TableGallery,
   ScrollbarsGallery,
 } from './pages/ComponentGalleries'
-import { Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput } from '@kaleido-ui/index'
+import { ThemeToggle, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput } from '@kaleido-ui/index'
 import {
   Button,
   buttonVariants,
@@ -405,7 +405,8 @@ export function App() {
 
   // The drawer's header and version line, the same in the showcase's own
   // navigation and in the Drawer page's demo.
-  const lockup = <img src="/brand/kaleidoswap-fullogo-horizontal.svg" alt="KaleidoSwap" className="h-8" />
+  // The logo component: its wordmark is currentColor, so it reads on both themes.
+  const lockup = <KaleidoswapLogo className="h-8 w-auto text-foreground" />
   const drawerVersion = <p className="truncate text-center text-tiny text-content-tertiary">v{version}</p>
 
   const navFooter = (
@@ -475,8 +476,9 @@ export function App() {
       </DrawerSidebar>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        {/* Top bar — mobile: the same navigation, in a drawer over the page */}
-        <header className="sticky top-0 z-40 flex h-14 items-center gap-3 border-b border-foreground/5 bg-background/80 px-4 backdrop-blur-xl lg:hidden">
+        {/* Top bar — the theme switch on the right; on mobile also the navigation drawer */}
+        <header className="sticky top-0 z-40 flex h-14 items-center gap-3 border-b border-foreground/5 bg-background/80 px-4 backdrop-blur-xl">
+          <div className="lg:hidden">
           <Drawer open={navOpen} onOpenChange={setNavOpen}>
             <DrawerTrigger asChild>
               <Button
@@ -496,6 +498,8 @@ export function App() {
               {navFooter}
             </DrawerContent>
           </Drawer>
+          </div>
+          <ThemeToggle className="ml-auto" />
         </header>
 
         {/* The current page */}
@@ -509,6 +513,10 @@ export function App() {
               <KaleidoswapLogo orientation="vertical" className="h-16 w-auto text-foreground" />
               <KaleidoswapMark className="size-8" />
               <KaleidoswapMark className="size-14" />
+            </Row>
+            <Row label="ThemeToggle — light / dark (the one in the top bar drives the page)">
+              <ThemeToggle mode="light" onModeChange={() => {}} />
+              <ThemeToggle mode="dark" onModeChange={() => {}} />
             </Row>
             <Row label="Per-theme foregrounds (text-*-fg)">
               <span className="text-brand font-bold">text-brand</span>

@@ -117,6 +117,8 @@ export {
 export { Avatar, avatarVariants, type AvatarProps } from './primitives/avatar'
 export { FormField, type FormFieldProps } from './components/form-field'
 export { useMediaQuery, useIsNarrow } from './hooks/use-media-query'
+export { useThemeMode, applyThemeMode, type ThemeMode, type UseThemeModeOptions } from './hooks/use-theme-mode'
+export { ThemeToggle, type ThemeToggleProps } from './components/theme-toggle'
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './primitives/tabs'
 export { Label } from './primitives/label'
 export {

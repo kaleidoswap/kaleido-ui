@@ -676,6 +676,10 @@ Every component works on both themes from the same classes; nothing is dark-only
 - **Network chips follow the theme**: `bg-network-*-chip` / `text-network-*-text` are dark tints on dark, pale tints with dark text on light (`networkChipLight` / `networkTextLight`).
 - **Spark's white mark** takes `kui-mono-icon` and is drawn black on light.
 
+### ThemeToggle
+
+`<ThemeToggle />` — the light/dark switch, top right of an app's top bar. A `role="switch"` pill named "Dark mode" (checked = dark) with a sun and a moon; a raised thumb slides under the current mode and its glyph is `text-brand`. Uncontrolled by default: it puts `.dark` or `.light` on the document root and remembers the choice in localStorage (`useThemeMode`, `storageKey` `kaleido-ui:theme`). Pass `mode` + `onModeChange` when the app owns the theme.
+
 ## Transparency (glass) schema
 
 Layered translucency lets the animated background glow breathe through the UI without hurting readability. Every translucent surface maps to exactly one of these roles — don't invent new alpha values.
