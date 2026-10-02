@@ -129,7 +129,7 @@ export interface KaleidoTheme {
 const NETWORK_GLYPH = {
   bitcoin: '#F7931A',
   lightning: '#F6C343',
-  spark: '#FF6D00',
+  spark: '#FFFFFF', // white on dark; light overrides it to black
   rgb: '#DD352E',
   arkade: '#7C3AED',
   liquid: '#22E1C9',
@@ -183,7 +183,7 @@ const dark: KaleidoTheme = {
   networkSurface: {
     bitcoin: '#3A2D18',
     lightning: '#39351A',
-    spark: '#3A2A1C',
+    spark: '#2B2A35',
     rgb: '#3C2422',
     arkade: '#2E2548',
     liquid: '#0E2A2C',
@@ -235,11 +235,11 @@ const light: KaleidoTheme = {
     overlay: 'rgba(21, 18, 42, 0.40)',
     scrim: 'rgba(21, 18, 42, 0.55)',
   },
-  network: NETWORK_GLYPH,
+  network: { ...NETWORK_GLYPH, spark: '#0D0C14' },
   networkSurface: {
     bitcoin: '#FBEFD9',
     lightning: '#FCF6D6',
-    spark: '#FFE7D6',
+    spark: '#E6E5EE',
     rgb: '#FBE3E1',
     arkade: '#ECE4FF',
     liquid: '#D8F5F1',

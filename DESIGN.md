@@ -36,7 +36,7 @@ colors:
   network.bitcoin: "#F7931A"
   network.lightning: "#F6C343"
   network.rgb: "#DD352E"
-  network.spark: "#FF6D00"
+  network.spark: "#FFFFFF"           # dark theme; black #0D0C14 on light
   network.arkade: "#7C3AED"
   network.liquid: "#22e1c9"
   network.taproot: "#D1D6D8"
@@ -256,7 +256,7 @@ Each supported layer has a fixed, non-negotiable brand color that users recognis
 - **`network.bitcoin` `#F7931A`** — on-chain BTC, the canonical Bitcoin orange.
 - **`network.lightning` `#F6C343`** — Lightning / RLN.
 - **`network.rgb` `#DD352E`** — RGB protocol red.
-- **`network.spark` `#FF6D00`** — Spark L2.
+- **`network.spark` `#FFFFFF`** — Spark L2. White on dark, **black (`#0D0C14`) on light**: the only network colour that follows the theme (the `network-spark` app token; `-chip` and `-text` follow it too). Its white asterisk mark takes `kui-mono-icon`, which inverts it on the light theme.
 - **`network.arkade` `#7C3AED`** — Arkade.
 - **`network.liquid` `#22e1c9`** — Liquid.
 - **`network.taproot` `#D1D6D8`** — Taproot Assets.

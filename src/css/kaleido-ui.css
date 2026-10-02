@@ -126,6 +126,9 @@
   --app-status-warning: 245 158 11;
   --app-status-info: 56 189 248;
   --app-divider: 86 83 110;
+  --app-network-spark: 255 255 255;
+  --app-network-spark-chip: 43 42 53;
+  --app-network-spark-text: 232 231 240;
   /* Elevation ink — shadows are cast in a near-black violet. */
   --app-shadow: 7 4 22;
   --app-shadow-strength: 1;
@@ -160,6 +163,9 @@
   --app-status-warning: 217 119 6;
   --app-status-info: 2 132 199;
   --app-divider: 206 199 236;
+  --app-network-spark: 13 12 20;
+  --app-network-spark-chip: 230 229 238;
+  --app-network-spark-text: 26 25 34;
   --app-shadow: 55 20 136;
   --app-shadow-strength: 0.28;
   --app-rim-alpha: 0.7;
@@ -185,7 +191,7 @@
   --network-lightning-fg: #854D0E;
   --network-liquid-fg: #115E59;
   --network-arkade-fg: #5B21B6;
-  --network-spark-fg: #9A3412;
+  --network-spark-fg: #0D0C14;
   --network-rgb-fg: #991B1B;
   --network-taproot-fg: #464A69;
   --gradient-page-brand: radial-gradient(ellipse 70% 45% at 50% -5%, rgba(21, 233, 154, 0.16) 0%, transparent 70%), radial-gradient(ellipse 50% 32% at 0% 68%, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
@@ -207,7 +213,7 @@
   --network-lightning-fg: #E4D56F;
   --network-liquid-fg: #5DE5D6;
   --network-arkade-fg: #B49CF5;
-  --network-spark-fg: #F2A163;
+  --network-spark-fg: #FFFFFF;
   --network-rgb-fg: #F09490;
   --network-taproot-fg: #C4CACD;
   --gradient-page-brand: radial-gradient(ellipse 70% 45% at 50% -5%, rgba(21, 233, 154, 0.13) 0%, transparent 70%), radial-gradient(ellipse 50% 32% at 0% 68%, rgba(124, 58, 237, 0.16) 0%, transparent 70%), radial-gradient(ellipse 45% 40% at 100% 50%, rgba(56, 189, 248, 0.07) 0%, transparent 70%);
@@ -283,6 +289,9 @@
   --color-status-warning: rgb(var(--app-status-warning));
   --color-status-info: rgb(var(--app-status-info));
   --color-divider: rgb(var(--app-divider));
+  --color-network-spark: rgb(var(--app-network-spark));
+  --color-network-spark-chip: rgb(var(--app-network-spark-chip));
+  --color-network-spark-text: rgb(var(--app-network-spark-text));
   --color-status-success-subtle: rgb(var(--app-status-success) / 0.15);
   --color-status-danger-subtle: rgb(var(--app-status-danger) / 0.15);
   --color-status-warning-subtle: rgb(var(--app-status-warning) / 0.15);
@@ -319,21 +328,18 @@
   --color-network-bitcoin:   #F7931A;
   --color-network-rgb:       #DD352E;
   --color-network-arkade:    #7C3AED;
-  --color-network-spark:     #FF6D00;
   --color-network-lightning: #F6C343;
   --color-network-liquid:    #22e1c9;
   --color-network-taproot:   #D1D6D8;
   --color-network-bitcoin-chip:   #44341F;
   --color-network-rgb-chip:       #44282B;
   --color-network-arkade-chip:    #362B55;
-  --color-network-spark-chip:     #463020;
   --color-network-lightning-chip: #3D421F;
   --color-network-liquid-chip:    #0D2A2E;
   --color-network-taproot-chip:   #1E2328;
   --color-network-bitcoin-text:   #F2B063;
   --color-network-rgb-text:       #E87872;
   --color-network-arkade-text:    #A98CF2;
-  --color-network-spark-text:     #F2A163;
   --color-network-lightning-text: #E4D56F;
   --color-network-liquid-text:    #5DE5D6;
   --color-network-taproot-text:   #C4CACD;
@@ -761,6 +767,10 @@
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
   pointer-events: none;
+}
+/* A white monochrome mark (Spark's asterisk) drawn black on the light theme. */
+.light .kui-mono-icon {
+  filter: invert(1);
 }
 /* Legacy app scroll region. Prefer the ScrollArea component for visible overlay scrollbars. */
 .app-scrollbar {

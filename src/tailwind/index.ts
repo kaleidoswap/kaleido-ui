@@ -115,6 +115,10 @@ const preset = {
         ...prefixed('network', colors.network),
         ...Object.fromEntries(Object.entries(colors.networkChip).map(([k, v]) => [`network-${k}-chip`, v])),
         ...Object.fromEntries(Object.entries(colors.networkText).map(([k, v]) => [`network-${k}-text`, v])),
+        // Spark is themed (white on dark, black on light): back to its app token.
+        'network-spark': appVar('network-spark'),
+        'network-spark-chip': appVar('network-spark-chip'),
+        'network-spark-text': appVar('network-spark-text'),
         ...prefixed('asset', colors.assetIcon),
         ...prefixed('tx', colors.tx),
         ...prefixed('text', colors.text),

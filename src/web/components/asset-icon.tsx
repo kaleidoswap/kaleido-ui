@@ -77,7 +77,7 @@ export function AssetIcon({ ticker, logoUri, cdnBaseUrl, size = 40, className }:
           alt={`${ticker} icon`}
           width={size}
           height={size}
-          className="object-cover w-full h-full"
+          className={cn('object-cover w-full h-full', normTicker === 'SPARK' && localIcon && 'kui-mono-icon')}
           onError={() => {
             if (logoUri) {
               setFailed(false)

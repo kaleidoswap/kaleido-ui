@@ -44,6 +44,9 @@ export type AppSemanticToken =
   | 'status-warning'
   | 'status-info'
   | 'divider'
+  | 'network-spark'
+  | 'network-spark-chip'
+  | 'network-spark-text'
 
 type AppSemanticChannels = Record<AppSemanticToken, string>
 
@@ -75,6 +78,10 @@ export const appSemanticDark: AppSemanticChannels = {
   'status-warning': '245 158 11',
   'status-info': '56 189 248',
   divider: '86 83 110', //          #56536E
+  // Spark's mark is white on dark, black on light.
+  'network-spark': '255 255 255', // #FFFFFF
+  'network-spark-chip': '43 42 53', // #2B2A35
+  'network-spark-text': '232 231 240', // #E8E7F0
 }
 
 /** Light mode — emitted under `.light`. */
@@ -104,6 +111,9 @@ export const appSemanticLight: AppSemanticChannels = {
   'status-warning': '217 119 6',
   'status-info': '2 132 199',
   divider: '206 199 236', //         #CEC7EC
+  'network-spark': '13 12 20', //   #0D0C14
+  'network-spark-chip': '230 229 238', // #E6E5EE
+  'network-spark-text': '26 25 34', // #1A1922
 }
 
 /** Fixed-alpha tinted intent surfaces (e.g. `bg-status-danger-subtle`). */

@@ -311,21 +311,18 @@ ${brandThemeInline}
   --color-network-bitcoin:   ${colors.network.bitcoin};
   --color-network-rgb:       ${colors.network.rgb};
   --color-network-arkade:    ${colors.network.arkade};
-  --color-network-spark:     ${colors.network.spark};
   --color-network-lightning: ${colors.network.lightning};
   --color-network-liquid:    ${colors.network.liquid};
   --color-network-taproot:   ${colors.network.taproot};
   --color-network-bitcoin-chip:   ${colors.networkChip.bitcoin};
   --color-network-rgb-chip:       ${colors.networkChip.rgb};
   --color-network-arkade-chip:    ${colors.networkChip.arkade};
-  --color-network-spark-chip:     ${colors.networkChip.spark};
   --color-network-lightning-chip: ${colors.networkChip.lightning};
   --color-network-liquid-chip:    ${colors.networkChip.liquid};
   --color-network-taproot-chip:   ${colors.networkChip.taproot};
   --color-network-bitcoin-text:   ${colors.networkText.bitcoin};
   --color-network-rgb-text:       ${colors.networkText.rgb};
   --color-network-arkade-text:    ${colors.networkText.arkade};
-  --color-network-spark-text:     ${colors.networkText.spark};
   --color-network-lightning-text: ${colors.networkText.lightning};
   --color-network-liquid-text:    ${colors.networkText.liquid};
   --color-network-taproot-text:   ${colors.networkText.taproot};
@@ -598,6 +595,10 @@ ${keyframesCss}
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
   pointer-events: none;
+}
+/* A white monochrome mark (Spark's asterisk) drawn black on the light theme. */
+.light .kui-mono-icon {
+  filter: invert(1);
 }
 /* Legacy app scroll region. Prefer the ScrollArea component for visible overlay scrollbars. */
 .app-scrollbar {

@@ -24,7 +24,7 @@ export function SparkNetworkIcon({ className = 'size-3.5', alt = 'Spark' }: Netw
     <img
       src="/icons/spark/Asterisk/Spark Asterisk White.svg"
       alt={alt}
-      className={cn('object-contain', className)}
+      className={cn('kui-mono-icon object-contain', className)}
     />
   )
 }

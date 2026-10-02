@@ -67,7 +67,7 @@ export const themedForeground: { light: ThemedForegrounds; dark: ThemedForegroun
     'network-lightning-fg': '#854D0E',
     'network-liquid-fg': '#115E59',
     'network-arkade-fg': '#5B21B6',
-    'network-spark-fg': '#9A3412',
+    'network-spark-fg': '#0D0C14', // Spark is black on light
     'network-rgb-fg': '#991B1B',
     'network-taproot-fg': '#464A69',
   },
@@ -87,7 +87,7 @@ export const themedForeground: { light: ThemedForegrounds; dark: ThemedForegroun
     // The rgb and arkade *-text tokens dip under 4.5:1 on the elevated
     // surface (3.9 and 4.1), so their -fg twins are lifted a step.
     'network-arkade-fg': '#B49CF5',
-    'network-spark-fg': colors.networkText.spark,
+    'network-spark-fg': colors.network.spark, // and white on dark
     'network-rgb-fg': '#F09490',
     'network-taproot-fg': colors.networkText.taproot,
   },

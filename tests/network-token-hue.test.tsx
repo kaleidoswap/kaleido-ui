@@ -38,8 +38,9 @@ function hueDistance(a: number, b: number): number {
   return raw > 180 ? 360 - raw : raw
 }
 
-// Greys have no meaningful hue, so taproot is excluded from the hue check.
-const HUED_NETWORKS = Object.keys(colors.network).filter((name) => name !== 'taproot')
+// Greys have no meaningful hue, so taproot and spark (white on dark, black on
+// light) are excluded from the hue and lightness checks.
+const HUED_NETWORKS = Object.keys(colors.network).filter((name) => name !== 'taproot' && name !== 'spark')
 
 test('every network chip and text tint keeps its base hue', () => {
   for (const name of HUED_NETWORKS) {
