@@ -1,5 +1,6 @@
-import type { ChangeEvent } from 'react'
+import { useId, type ChangeEvent } from 'react'
 import { Icon } from '../primitives/icon'
+import { Label } from '../primitives/label'
 import { QrCode } from './qr-code'
 import { cn } from '../utils/cn'
 import {
@@ -110,16 +111,19 @@ export function DepositGeneratedView({
   showRegenerate = true,
   onRegenerate,
 }: DepositGeneratedViewProps) {
+  const btcAmountId = useId()
+  const assetAmountId = useId()
   return (
     <div className="space-y-3 animate-in fade-in zoom-in-95 duration-300">
       {(network === 'lightning' || (network === 'arkade' && arkSubMode === 'ark')) && isBtc && (
         <div className="flex flex-col gap-1.5 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-2.5 shadow-card">
           <div className="flex items-center justify-between px-1">
-            <label className="block pb-1 leading-none text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
+            <Label htmlFor={btcAmountId}>
               Specify amount (optional)
-            </label>
+            </Label>
           </div>
           <input
+            id={btcAmountId}
             type="text"
             value={amount}
             onChange={handleAmountChange}
@@ -147,11 +151,12 @@ export function DepositGeneratedView({
       {network === 'lightning' && !isBtc && (
         <div className="flex flex-col gap-1.5 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-2.5 shadow-card">
           <div className="flex items-center justify-between px-1">
-            <label className="block pb-1 leading-none text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
+            <Label htmlFor={assetAmountId}>
               Specify amount (optional)
-            </label>
+            </Label>
           </div>
           <input
+            id={assetAmountId}
             type="text"
             value={amount}
             onChange={handleAmountChange}

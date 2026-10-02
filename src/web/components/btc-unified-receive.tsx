@@ -1,6 +1,7 @@
-import { useState, type ChangeEvent } from 'react'
+import { useId, useState, type ChangeEvent } from 'react'
 import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
+import { Label } from '../primitives/label'
 import { cn } from '../utils/cn'
 import { QrCode } from './qr-code'
 import { BottomSheet } from './bottom-sheet'
@@ -95,6 +96,8 @@ export function BtcUnifiedReceive({
   description,
   onDescriptionChange,
 }: BtcUnifiedReceiveProps) {
+  const amountId = useId()
+  const descriptionId = useId()
   const [showEdit, setShowEdit] = useState(false)
   const isQrCopied = copied === accountReceiveResult.qrValue
 
@@ -207,10 +210,11 @@ export function BtcUnifiedReceive({
       >
         <div className="space-y-4">
           <div className="space-y-1.5">
-            <label className="block pb-1 leading-none text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
+            <Label htmlFor={amountId}>
               Amount (optional)
-            </label>
+            </Label>
             <input
+              id={amountId}
               type="text"
               value={amount}
               onChange={handleAmountChange}
@@ -228,10 +232,11 @@ export function BtcUnifiedReceive({
 
           {onDescriptionChange && (
             <div className="space-y-1.5">
-              <label className="block pb-1 leading-none text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
+              <Label htmlFor={descriptionId}>
                 Description (optional)
-              </label>
+              </Label>
               <input
+                id={descriptionId}
                 type="text"
                 value={description ?? ''}
                 onChange={(event) => onDescriptionChange(event.target.value)}

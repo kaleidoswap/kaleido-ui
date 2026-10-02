@@ -8,6 +8,8 @@ import {
 import { chartSeriesLimit } from '../../../tokens/chart'
 import { cn } from '../../utils/cn'
 import { formatAmount } from '../../utils/amount-display'
+import { Icon } from '../../primitives/icon'
+import { FilterChipGroup, type FilterChipOption } from '../filter-chip-group'
 import {
   Table,
   TableBody,
@@ -270,9 +272,16 @@ export interface ChartFrameProps {
   className?: string
 }
 
+type ChartView = 'chart' | 'table'
+
+const viewOptions: readonly FilterChipOption<ChartView>[] = [
+  { value: 'chart', ariaLabel: 'Chart', icon: <Icon name="bar_chart" size="sm" /> },
+  { value: 'table', ariaLabel: 'Table', icon: <Icon name="table_rows" size="sm" /> },
+]
+
 /**
  * A chart's frame: its name, scale line and legend above; the plot or, one
- * toggle away, the same numbers as a table.
+ * segment away, the same numbers as a table.
  */
 export function ChartFrame({
   label,
@@ -283,7 +292,7 @@ export function ChartFrame({
   children,
   className,
 }: ChartFrameProps) {
-  const [view, setView] = useState<'chart' | 'table'>('chart')
+  const [view, setView] = useState<ChartView>('chart')
   return (
     <figure data-slot="chart" aria-label={label} className={cn('m-0 min-w-0 space-y-3', className)}>
       <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
@@ -295,15 +304,15 @@ export function ChartFrame({
           )}
           {legend}
         </div>
-        <button
-          type="button"
-          data-slot="chart-view-toggle"
-          aria-pressed={view === 'table'}
-          onClick={() => setView(view === 'chart' ? 'table' : 'chart')}
-          className="shrink-0 rounded-lg px-2 py-1 text-caption font-semibold text-muted-foreground transition-all duration-200 hover:bg-secondary/15 hover:text-secondary-content focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft aria-pressed:bg-primary/10 aria-pressed:text-brand aria-pressed:ring-1 aria-pressed:ring-inset aria-pressed:ring-primary/40"
-        >
-          {view === 'chart' ? 'Show table' : 'Show chart'}
-        </button>
+        <div data-slot="chart-view-toggle" className="shrink-0">
+          <FilterChipGroup
+            variant="segmented"
+            ariaLabel="View"
+            options={viewOptions}
+            value={view}
+            onChange={setView}
+          />
+        </div>
       </div>
       {view === 'chart' ? (
         children

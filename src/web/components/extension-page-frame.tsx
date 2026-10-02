@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { PageHeader, type PageHeaderProps } from './page-header'
-import { ScrollArea } from './scroll-area'
+import { ScrollArea } from '../primitives/scroll-area'
 import { FadeOverlay } from './page-shell'
 import { cn } from '../utils/cn'
 

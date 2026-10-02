@@ -88,7 +88,7 @@ export function TransactionCard({
                 iconStyle
               )}
             >
-              <Icon name={isInbound ? 'arrow_downward' : 'arrow_outward'} className="text-icon-xl" />
+              <Icon name={isInbound ? 'south_west' : 'arrow_outward'} className="text-icon-xl" />
             </div>
           }
         />

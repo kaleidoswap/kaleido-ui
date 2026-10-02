@@ -66,6 +66,7 @@ const net = ui.NETWORK_CONFIG.lightning
  */
 const FIXTURES: Record<string, () => ReactElement[]> = {
   ActivityList: () => [createElement(ui.ActivityList, { items: [] })],
+  Avatar: () => [createElement(ui.Avatar, { src: '/me.png', initials: 'EJ' })],
   BalanceBreakdown: () => [
     createElement(ui.BalanceBreakdown, {
       btcOnchain: 1_000,

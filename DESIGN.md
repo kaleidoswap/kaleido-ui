@@ -305,9 +305,11 @@ Components set text **only** with these steps — never Tailwind's default sizes
 | Secondary text, descriptions, data cells | `caption` 14 | `InfoPanel` body, `SettingsSectionCard` description, `Table` cells |
 | Meta rows, timestamps | `tiny` 12 | `TransactionCard` meta |
 | Dense chip text | `xxs` 11 | hints, compact tile descriptions |
-| **Eyebrow** — every structural uppercase label | `mini` 10 | section titles, column heads, filter headers, tile labels, status badges |
+| **Eyebrow** — every structural uppercase label | `mini` 10 | section titles, field labels, column heads, filter headers, tile labels, status badges |
 
 **The eyebrow is written once**, as `eyebrow` in `src/web/utils/type-roles.ts`: `text-mini font-bold uppercase tracking-eyebrow` — Satoshi 700 / 10 px / 0.18em, the `label` token above. The tokens are authoritative (weight tops out at 700; tracking is 0.18em), and this document matches them. Any uppercase letter-spaced label uses `tracking-eyebrow` (or `tracking-eyebrow-wide`); hand-written `tracking-[…]` values are not allowed.
+
+**Every field label is the eyebrow, and it is `Label`.** A form's field (settings, the desk's app and webhook forms, `FormField`) and a wallet flow's (send, receive, swap, deposit) wear the same label: `Label`, the eyebrow in `secondary-content` (violet). It is tied to its control with `htmlFor` / `id`; a hand-written `<label>` with no `htmlFor` names nothing. A heading over a group of buttons (a fee-rate picker, a route list) is not a `<label>`: it is an eyebrow `<p>` with an `id` that the group's `role="group"` points at with `aria-labelledby`.
 
 Spacing is one token, `spacingUnit` (0.28125rem = **4.5 px**, `--spacing` in `kaleido-ui/css`, restated for the v3 preset): every `p-*`, `m-*`, `gap-*`, `space-*`, `w-*`/`h-*` step is a multiple of it, so `p-4` is 18 px. It was Tailwind's 4 px; the UI read cramped (a field label sat on its box). Keep using the step names (`p-4` card, `p-3` inner row, `p-2.5` compact tile) — never px arbitraries.
 
@@ -479,9 +481,9 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 
 **Items.** `rounded-xl`, `px-4 py-3`, label `body` semibold. Inactive `content.secondary`, hovering to `surface.overlay/80`. The current page is green — `bg-gradient-active` with a 2 px green left rule and a soft green glow — and carries `aria-current="page"`. Group labels are the shared eyebrow (`label` token) in `content.tertiary`.
 
-**Submenus.** `DrawerNavGroup icon label active` is a row with a submenu — the desktop app's Trade and Liquidity. The row (a button with `aria-expanded`) shows and hides its `DrawerNavItem`s under it, and a chevron on its right turns 90° when open. It opens by itself when one of its pages is current, and is then marked like a current item. Its items become the submenu's rows: indented `pl-4`, `rounded-lg`, `px-4 py-2.5`, label `caption` medium with a 16 px icon, sliding right on hover; the current one is `status.success` on a 10% fill with a 2 px left rule. On the icon rail a submenu cannot open, so the row is a link to `railHref` (usually the group's first page).
+**Submenus.** `DrawerNavGroup icon label active` is a row with a submenu — the desktop app's Trade and Liquidity. The row (a button with `aria-expanded`) shows and hides its `DrawerNavItem`s under it, and a chevron on its right turns 90° when open. It opens by itself when one of its pages is current, and is then marked like a current item. Its items become the submenu's rows: indented `pl-4`, `rounded-lg`, `px-4 py-2.5`, label `caption` medium with a 16 px icon, sliding right on hover; the current one is `status.success` on a 10% fill with a 2 px left rule. With `href` (the group's first page), opening the group also goes there, so choosing it lands on its first page with the submenu open; while closed the row is then a link with `aria-expanded`. On the icon rail a submenu cannot open, so the row is a link to `href` that also unfolds the sidebar, where the group opens on that page. `railHref` is the old name of `href`.
 
-**No scrollbar.** `DrawerBody` scrolls by wheel, touch and keyboard but draws no native scrollbar, which on the 80 px rail took the width the icons are centred in.
+**Scrollbar.** `DrawerBody` is a `ScrollArea`: the library's overlay thumb, which takes no width. A native bar took the width the icons are centred in on the 80 px rail.
 
 **Chevron.** `p-3`, `rounded-lg`, a `divider/10` ring that turns `primary/30` on hover, 18 px. On the sidebar it points the way the panel will move (left to fold, right to unfold) and reports `aria-expanded`; on the mobile drawer it points left and closes it.
 
@@ -582,7 +584,7 @@ A button that opens and closes a section: `Collapsible` → `CollapsibleTrigger`
 
 ### Avatar
 
-A circle, `sm` 32 px or `lg` 40 px: an image, or a fallback on the violet-to-info gradient (`from-secondary to-info`) with initials or the person glyph. Decorative (`aria-hidden`) unless `alt` is passed with an image that is itself the information.
+A circle, `sm` 32 px or `lg` 40 px: a custom image, or the name's initials (required, and the fallback when the image fails to load) on the violet-to-info gradient (`from-secondary to-info`). Never a stock person glyph. Decorative (`aria-hidden`) unless `alt` is passed with an image that is itself the information.
 
 ### FormField
 
@@ -591,6 +593,12 @@ A circle, `sm` 32 px or `lg` 40 px: an image, or a fallback on the violet-to-inf
 ### Segmented control
 
 Mutually exclusive options — a chart / list view toggle — are `FilterChipGroup variant="segmented"`: a radio group with one Tab stop, the arrow keys moving and selecting. An option may be icon-only; it then needs `ariaLabel`, which is also its tooltip. The default `chips` variant (the filter strip) is unchanged.
+
+### Scrollbars
+
+**Two components, one look.** `ScrollArea` (also `VerticalScrollArea`) scrolls up and down, `HorizontalScrollArea` sideways. Both hide the native bar and draw an overlay thumb on `scrollbar.thumb`: `scrollbar` (2 px) thick at rest, `scrollbarHover` (6 px) under the pointer, never shorter than `scrollbarThumbMin` (24 px), on the right edge or the bottom edge. It takes no room from the content, and it can be dragged, or the track clicked to jump. `viewportClassName` styles the element that scrolls, `viewportAs` makes it a `main` or a `pre`, `viewportProps` gives it attributes.
+
+**Every scroller is one of them.** `CodeBlock`, `Table`, `BottomSheet`, `DrawerBody`, the `AssetSelector` lists, `InlineSelector` and the page frames scroll on these two, so a scrollbar looks the same everywhere. A new component that scrolls uses one of them, never `overflow-auto` with the browser's bar. Rows of chips that scroll sideways (`FilterChipGroup` chips, the network filters) stay without a bar: they are swiped, and a thumb under a 28 px row reads as a divider.
 
 ### Breakpoints
 

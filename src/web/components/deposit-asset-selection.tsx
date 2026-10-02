@@ -6,7 +6,7 @@ import { AssetIcon } from './asset-icon'
 import { BottomSheet } from './bottom-sheet'
 import { NetworkBadge } from './network-badge'
 import { LiquidNetworkIcon } from './network-icon'
-import { ScrollArea } from './scroll-area'
+import { ScrollArea } from '../primitives/scroll-area'
 import { cn } from '../utils/cn'
 import type { DepositAccountId } from './deposit-ui-shared'
 

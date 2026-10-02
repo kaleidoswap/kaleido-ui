@@ -93,7 +93,7 @@ test('bars are at most 24px thick and round only their data end', () => {
 
 test('a stacked bar chart adds a total column to its table', async () => {
   const view = mount(h(BarChart, { data: months, series: two, layout: 'stacked', label: 'Swaps', scaleLabel: 'n' }))
-  await interact(() => (view.container.querySelector('[data-slot="chart-view-toggle"]') as HTMLButtonElement).click())
+  await interact(() => (view.container.querySelector('[data-slot="chart-view-toggle"] [aria-label="Table"]') as HTMLButtonElement).click())
   const head = [...view.container.querySelectorAll('thead th')].map((th) => th.textContent)
   assert.deepEqual(head, ['Period', 'Lightning', 'On-chain', 'Total'])
   assert.equal(view.container.querySelectorAll('tbody tr').length, months.length)

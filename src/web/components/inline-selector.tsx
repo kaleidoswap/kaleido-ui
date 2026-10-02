@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
-import { ScrollArea } from './scroll-area'
+import { ScrollArea } from '../primitives/scroll-area'
 
 export interface InlineSelectorOption {
   id: string

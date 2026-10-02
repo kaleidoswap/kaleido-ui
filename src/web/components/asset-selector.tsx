@@ -4,7 +4,7 @@ import { AssetIcon } from './asset-icon'
 import { InlineSelector, type InlineSelectorOption } from './inline-selector'
 import { NetworkBadge, type NetworkType } from './network-badge'
 import { iconBadgeOverlayClass } from './status-icon-badge'
-import { ScrollArea } from './scroll-area'
+import { ScrollArea } from '../primitives/scroll-area'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 
@@ -293,7 +293,7 @@ export function AssetSelector({
       />
       {networkMenuOpen && (
         <div className="absolute right-0 top-full z-10 mt-1.5 w-48 overflow-hidden rounded-xl border border-foreground/[0.08] bg-popover shadow-popover">
-          <div className="max-h-60 overflow-y-auto p-1">
+          <ScrollArea viewportClassName="max-h-60 p-1">
             <button
               type="button"
               onClick={() => {
@@ -336,7 +336,7 @@ export function AssetSelector({
                 </button>
               )
             })}
-          </div>
+          </ScrollArea>
         </div>
       )}
     </div>

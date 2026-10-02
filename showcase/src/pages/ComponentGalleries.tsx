@@ -67,6 +67,8 @@ import {
   ValueList,
   useIsNarrow,
   type DateRange,
+  ScrollArea,
+  HorizontalScrollArea,
 } from '@kaleido-ui/index'
 
 // Showcase demos for the components that had none: one card per component or
@@ -157,10 +159,47 @@ export function TableGallery() {
   )
 }
 
+const SCROLL_ROWS = Array.from({ length: 16 }, (_, index) => ({
+  id: `sw_${(0x81f2 + index * 97).toString(16)}`,
+  amount: `${((index + 1) * 12_500).toLocaleString('en-US')} sats`,
+}))
+
+export function ScrollbarsGallery() {
+  return (
+    <Grid>
+      <Demo title="ScrollArea (vertical)" use="Up and down, the thumb on the right edge: 2px at rest, 6px under the pointer, never shorter than 24px. Drag it, or click the track to jump. It takes no width from the rows.">
+        <ScrollArea className="h-56 rounded-xl bg-muted" viewportClassName="space-y-1 p-2">
+          {SCROLL_ROWS.map((row) => (
+            <div key={row.id} className="flex items-center justify-between rounded-lg px-3 py-2 text-caption hover:bg-foreground/5">
+              <span className="font-mono text-foreground">{row.id}</span>
+              <span className="tabular-nums text-muted-foreground">{row.amount}</span>
+            </div>
+          ))}
+        </ScrollArea>
+      </Demo>
+      <Demo title="HorizontalScrollArea" use="Sideways, the same thumb on the bottom edge. CodeBlock and Table scroll on it; content that fits draws no thumb.">
+        <div className="space-y-4">
+          <HorizontalScrollArea className="rounded-xl bg-muted" viewportClassName="p-3 pb-4">
+            <div className="flex w-max gap-2">
+              {SCROLL_ROWS.map((row) => (
+                <div key={row.id} className="w-32 shrink-0 rounded-lg bg-card px-3 py-2 text-caption">
+                  <div className="font-mono text-foreground">{row.id}</div>
+                  <div className="tabular-nums text-muted-foreground">{row.amount}</div>
+                </div>
+              ))}
+            </div>
+          </HorizontalScrollArea>
+          <HorizontalScrollArea className="rounded-xl bg-muted" viewportClassName="p-3 text-caption text-muted-foreground">
+            Fits: no thumb.
+          </HorizontalScrollArea>
+        </div>
+      </Demo>
+    </Grid>
+  )
+}
+
 export function FormsGallery() {
   const [url, setUrl] = useState('http://example.com/hook')
-  const [view, setView] = useState<'chart' | 'list'>('chart')
-  const [period, setPeriod] = useState<'7d' | '30d' | '90d'>('30d')
   const invalid = !url.startsWith('https://')
   return (
     <Grid>
@@ -172,34 +211,6 @@ export function FormsGallery() {
           <FormField label="App name" hint="Shown to your users in the wallet.">
             <Input defaultValue="Checkout" />
           </FormField>
-        </div>
-      </Demo>
-      <Demo title="Segmented control" use='FilterChipGroup variant="segmented": mutually exclusive options, one Tab stop, the arrow keys move and select. Options can be icon-only (named by ariaLabel, also their tooltip).'>
-        <div className="flex flex-col items-start gap-4">
-          <FilterChipGroup<'chart' | 'list'>
-            variant="segmented"
-            ariaLabel="Trend view"
-            value={view}
-            onChange={setView}
-            options={[
-              { value: 'chart', ariaLabel: 'Chart view', icon: <Icon name="trending_up" className="text-icon-md" /> },
-              { value: 'list', ariaLabel: 'List view', icon: <Icon name="menu" className="text-icon-md" /> },
-            ]}
-          />
-          <FilterChipGroup<'7d' | '30d' | '90d'>
-            variant="segmented"
-            ariaLabel="Period"
-            value={period}
-            onChange={setPeriod}
-            options={[
-              { value: '7d', label: '7 days' },
-              { value: '30d', label: '30 days' },
-              { value: '90d', label: '90 days' },
-            ]}
-          />
-          <p className="m-0 text-caption text-muted-foreground">
-            View: {view} · Period: {period}
-          </p>
         </div>
       </Demo>
     </Grid>
@@ -234,13 +245,11 @@ export function BadgesGallery() {
 export function AvatarGallery() {
   return (
     <Grid>
-      <Demo title="Avatar" use="sm 32px, lg 40px. An image, or initials / the person glyph on the violet-to-info gradient. Decorative unless alt is set with an image.">
+      <Demo title="Avatar" use="sm 32px, lg 40px. A custom image, or the initials on the violet-to-info gradient. Decorative unless alt is set with an image.">
         <div className="flex flex-wrap items-center gap-4">
           <Avatar initials="EJ" />
           <Avatar initials="EJ" size="lg" />
-          <Avatar />
-          <Avatar size="lg" />
-          <Avatar src="/brand/kaleidoswap-pictogram.svg" alt="KaleidoSwap" size="lg" className="bg-card" />
+          <Avatar src="/brand/kaleidoswap-pictogram.svg" alt="KaleidoSwap" initials="KS" size="lg" className="bg-card" />
           <Avatar src="/missing-image.png" initials="MW" size="lg" />
         </div>
         <p className="mt-3 text-caption text-muted-foreground">The last one points at a missing image and falls back to its initials.</p>
@@ -443,6 +452,43 @@ export function CopyGallery() {
   )
 }
 
+// The segmented form of FilterChipGroup: a choice between exclusive options,
+// shown in Lists & filters beside the chips, the same component.
+function SegmentedControlDemo() {
+  const [view, setView] = useState<'chart' | 'list'>('chart')
+  const [period, setPeriod] = useState<'7d' | '30d' | '90d'>('30d')
+  return (
+    <Demo title="Segmented control" use='FilterChipGroup variant="segmented": mutually exclusive options, one Tab stop, the arrow keys move and select. Options can be icon-only (named by ariaLabel, also their tooltip).'>
+      <div className="flex flex-col items-start gap-4">
+        <FilterChipGroup<'chart' | 'list'>
+          variant="segmented"
+          ariaLabel="Trend view"
+          value={view}
+          onChange={setView}
+          options={[
+            { value: 'chart', ariaLabel: 'Chart view', icon: <Icon name="trending_up" className="text-icon-md" /> },
+            { value: 'list', ariaLabel: 'List view', icon: <Icon name="menu" className="text-icon-md" /> },
+          ]}
+        />
+        <FilterChipGroup<'7d' | '30d' | '90d'>
+          variant="segmented"
+          ariaLabel="Period"
+          value={period}
+          onChange={setPeriod}
+          options={[
+            { value: '7d', label: '7 days' },
+            { value: '30d', label: '30 days' },
+            { value: '90d', label: '90 days' },
+          ]}
+        />
+        <p className="m-0 text-caption text-muted-foreground">
+          View: {view} · Period: {period}
+        </p>
+      </div>
+    </Demo>
+  )
+}
+
 export function ListsGallery() {
   const narrow = useIsNarrow()
   const [mode, setMode] = useState<'loading' | 'error' | 'forbidden' | 'empty' | 'data'>('data')
@@ -539,6 +585,10 @@ export function ListsGallery() {
         </FilterBar>
         <p className="mt-3 text-caption text-muted-foreground">useIsNarrow() is {String(narrow)} at this width.</p>
       </Demo>
+
+      <Grid>
+        <SegmentedControlDemo />
+      </Grid>
 
       <Grid>
         <Demo title="RecordList" use="The stacked form of a table row, for narrow screens. Tap an item or its chevron to open it; the actions do not open it.">

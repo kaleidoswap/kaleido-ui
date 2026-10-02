@@ -1,6 +1,7 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, Fragment, useContext, useEffect, useState } from 'react'
 import { StateSnapshot } from './pages/StateSnapshot'
 import { ProductPreviews } from './pages/ProductPreviews'
+import { version } from '../../package.json'
 import { ChartsGallery } from './pages/ChartsGallery'
 import {
   AvatarGallery,
@@ -14,6 +15,7 @@ import {
   PageLayoutGallery,
   PopoverMenuGallery,
   TableGallery,
+  ScrollbarsGallery,
 } from './pages/ComponentGalleries'
 import { Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput } from '@kaleido-ui/index'
 import {
@@ -109,6 +111,7 @@ import {
   HaloBackdrop,
 } from '@kaleido-ui/index'
 import type { StatusType, NetworkType, IconName } from '@kaleido-ui/index'
+import { outlinedMap } from '@kaleido-ui/icons'
 
 // ─── Section wrapper ────────────────────────────────────────────────────────
 
@@ -179,8 +182,7 @@ const NAV_CATEGORIES: { label: string; icon: IconName; pages: NavPage[] }[] = [
       { id: 'icons', label: 'Icons', icon: 'palette' },
       { id: 'inputs', label: 'Inputs', icon: 'edit' },
       { id: 'tabs', label: 'Tabs', icon: 'tune' },
-      { id: 'forms', label: 'Forms', icon: 'edit' },
-      { id: 'table', label: 'Table', icon: 'grid_view' },
+      { id: 'forms', label: 'Forms', icon: 'radio_button_unchecked' },
     ],
   },
   {
@@ -192,7 +194,7 @@ const NAV_CATEGORIES: { label: string; icon: IconName; pages: NavPage[] }[] = [
       { id: 'info-chips', label: 'Info Chips', icon: 'info' },
       { id: 'cards', label: 'Cards', icon: 'grid_view' },
       { id: 'alert-banners', label: 'Alert Banners', icon: 'warning' },
-      { id: 'tone-badges', label: 'Tone Badges', icon: 'verified' },
+      { id: 'tone-badges', label: 'Tone Badges', icon: 'toll' },
       { id: 'avatar', label: 'Avatar', icon: 'person' },
       { id: 'collapsible', label: 'Collapsible', icon: 'expand_more' },
     ],
@@ -204,8 +206,8 @@ const NAV_CATEGORIES: { label: string; icon: IconName; pages: NavPage[] }[] = [
       { id: 'dialog', label: 'Dialog', icon: 'chat_bubble' },
       { id: 'drawer', label: 'Drawer', icon: 'menu' },
       { id: 'toast', label: 'Toast', icon: 'description' },
-      { id: 'popover-menu', label: 'Popover & Menu', icon: 'apps' },
-      { id: 'notices', label: 'Notices', icon: 'info' },
+      { id: 'popover-menu', label: 'Popover & Menu', icon: 'open_in_new' },
+      { id: 'notices', label: 'Notices', icon: 'error' },
     ],
   },
   {
@@ -214,8 +216,8 @@ const NAV_CATEGORIES: { label: string; icon: IconName; pages: NavPage[] }[] = [
     pages: [
       { id: 'asset-cards', label: 'Asset Cards', icon: 'token' },
       { id: 'transaction-cards', label: 'Transaction Cards', icon: 'receipt_long' },
-      { id: 'feature-components', label: 'Feature Components', icon: 'account_balance_wallet' },
-      { id: 'account-components', label: 'Account Components', icon: 'person' },
+      { id: 'feature-components', label: 'Feature Components', icon: 'inventory_2' },
+      { id: 'account-components', label: 'Account Components', icon: 'fingerprint' },
       { id: 'setting-items', label: 'Setting Items', icon: 'settings' },
     ],
   },
@@ -231,19 +233,50 @@ const NAV_CATEGORIES: { label: string; icon: IconName; pages: NavPage[] }[] = [
   },
   {
     label: 'Patterns',
-    icon: 'receipt_long',
+    icon: 'hexagon',
     pages: [
       { id: 'copy', label: 'Copy', icon: 'content_copy' },
-      { id: 'lists', label: 'Lists & filters', icon: 'tune' },
-      { id: 'page-layout', label: 'Page layout', icon: 'description' },
+      { id: 'lists', label: 'Lists & filters', icon: 'search' },
+      { id: 'page-layout', label: 'Page layout', icon: 'code' },
     ],
   },
   {
     label: 'Data',
     icon: 'trending_up',
-    pages: [{ id: 'charts', label: 'Charts', icon: 'trending_up' }],
+    pages: [
+      { id: 'table', label: 'Table', icon: 'table_rows' },
+      { id: 'scrollbars', label: 'Scrollbars', icon: 'swap_vert' },
+      { id: 'charts', label: 'Charts', icon: 'bar_chart' },
+    ],
   },
 ]
+
+// Every glyph in the set, read from the set itself, so the Icons page cannot
+// list a name that draws nothing.
+const ALL_ICON_NAMES = (Object.keys(outlinedMap) as IconName[]).sort()
+
+// The Icons page's grid: fixed, narrow columns, so the space between icons
+// is the same whatever the length of their names; a long name wraps under
+// its own icon.
+const ICON_GRID = 'grid w-full grid-cols-[repeat(auto-fill,4.5rem)] gap-x-3 gap-y-4'
+const ICON_CELL = 'flex min-w-0 flex-col items-center gap-1'
+const ICON_LABEL = 'w-full text-center font-mono text-xxs leading-tight text-slate-500 [overflow-wrap:anywhere]'
+
+/**
+ * An icon's name, allowed to wrap between its words — after an underscore
+ * (`arrow_outward`) or before a capital (`VisibilityOff`) — rather than
+ * mid-word.
+ */
+const IconLabel = ({ name }: { name: string }) => (
+  <span className={ICON_LABEL}>
+    {name.split(/(?<=_)|(?=[A-Z])/).map((part, index) => (
+      <Fragment key={index}>
+        {index > 0 && <wbr />}
+        {part}
+      </Fragment>
+    ))}
+  </span>
+)
 
 const NAV_PAGES = NAV_CATEGORIES.flatMap((category) => category.pages)
 
@@ -347,14 +380,14 @@ export function App() {
   // mobile drawer alike: each category is a submenu, as Trade and Liquidity
   // are in the desktop app, and its pages show when it is opened.
   const pageNav = (
-    <DrawerSection>
+    <DrawerSection label="Components">
       {NAV_CATEGORIES.map((category) => (
         <DrawerNavGroup
           key={category.label}
           label={category.label}
           icon={<Icon name={category.icon} className="text-icon-xl" />}
           active={category.pages.some((item) => item.id === page)}
-          railHref={`#/${category.pages[0].id}`}
+          href={`#/${category.pages[0].id}`}
         >
           {category.pages.map((item) => (
             <DrawerNavItem
@@ -370,27 +403,27 @@ export function App() {
     </DrawerSection>
   )
 
+  // The drawer's header and version line, the same in the showcase's own
+  // navigation and in the Drawer page's demo.
+  const lockup = <img src="/brand/kaleidoswap-fullogo-horizontal.svg" alt="KaleidoSwap" className="h-8" />
+  const drawerVersion = <p className="truncate text-center text-tiny text-content-tertiary">v{version}</p>
+
   const navFooter = (
     <DrawerFooter className="space-y-3">
-      <DrawerNavItem
-        href="#/products"
-        label="Product previews"
-        icon={<Icon name="grid_view" className="text-icon-xl" />}
-      />
-      <DrawerNavItem
-        href="#/state-snapshot"
-        label="State Snapshot"
-        icon={<Icon name="science" className="text-icon-xl" />}
-      />
-      {!navCollapsed && <p className="truncate px-4 text-tiny text-content-tertiary">kaleido-ui showcase</p>}
+      <DrawerSection label="Quick actions">
+        <DrawerNavItem
+          href="#/products"
+          label="Product previews"
+          icon={<Icon name="grid_view" className="text-icon-xl" />}
+        />
+        <DrawerNavItem
+          href="#/state-snapshot"
+          label="State Snapshot"
+          icon={<Icon name="science" className="text-icon-xl" />}
+        />
+      </DrawerSection>
+      {drawerVersion}
     </DrawerFooter>
-  )
-
-  const lockup = (
-    <div className="flex items-center gap-3">
-      <img src="/brand/kaleidoswap-pictogram.svg" alt="" className="h-7" />
-      <span className="font-bold text-foreground tracking-tight">kaleido-ui</span>
-    </div>
   )
 
   // One navigation list, rendered by both drawer demos.
@@ -541,12 +574,12 @@ export function App() {
               <Button size="lg">Large</Button>
               <Button size="xl">X-Large</Button>
               <Button size="icon"><Icon name="add" /></Button>
-              <Button size="icon-lg"><Icon name="send" /></Button>
+              <Button size="icon-lg"><Icon name="arrow_outward" /></Button>
               <Button size="icon-xl"><Icon name="swap_horiz" /></Button>
             </Row>
             <Row label="With icons">
-              <Button><Icon name="send" size="sm" />Send</Button>
-              <Button variant="outline"><Icon name="qr_code" size="sm" />Receive</Button>
+              <Button><Icon name="arrow_outward" size="sm" />Send</Button>
+              <Button variant="outline"><Icon name="south_west" size="sm" />Receive</Button>
               <Button variant="ghost"><Icon name="swap_horiz" size="sm" />Swap</Button>
               <Button variant="hyperlink" className="no-underline"><Icon name="open_in_new" size="xs" className="!text-[15px] leading-none translate-y-[1.5px] icon" /><span className="underline underline-offset-2 group-hover:decoration-[#31ff8b]">Learn more</span></Button>
             </Row>
@@ -555,29 +588,25 @@ export function App() {
           {/* ── Icons ───────────────────────────────────────────────────── */}
           <Section id="icons" title="Icons" description="Material Symbols wrapper with size variants.">
             <Row label="Named shortcuts (Icons.*)">
-              <div className="flex flex-wrap gap-4">
+              <div className={ICON_GRID}>
                 {Object.entries(Icons).map(([key, IconComp]) => (
-                  <div key={key} className="flex flex-col items-center gap-1">
+                  <div key={key} className={ICON_CELL}>
                     <div className="size-10 rounded-xl bg-primary/15 hover:bg-primary/25 hover:scale-105 transition-all flex items-center justify-center cursor-default">
                       <IconComp size="md" className="text-[#31ff8b]" />
                     </div>
-                    <span className="text-xxs text-muted-foreground font-mono">{key}</span>
+                    <IconLabel name={key} />
                   </div>
                 ))}
               </div>
             </Row>
-            <Row label="Common icons">
-              <div className="flex flex-wrap gap-4">
-                {[
-                  'home', 'settings', 'person', 'notifications', 'search',
-                  'arrow_back', 'close', 'check', 'add', 'remove',
-                  'visibility', 'visibility_off', 'copy_all', 'download', 'upload',
-                ].map((name) => (
-                  <div key={name} className="flex flex-col items-center gap-1">
+            <Row label={`The whole set (${ALL_ICON_NAMES.length})`}>
+              <div className={ICON_GRID}>
+                {ALL_ICON_NAMES.map((name) => (
+                  <div key={name} className={ICON_CELL}>
                     <div className="size-10 rounded-xl bg-primary/15 hover:bg-primary/25 hover:scale-105 transition-all flex items-center justify-center cursor-default">
                       <Icon name={name} size="md" className="text-[#31ff8b]" />
                     </div>
-                    <span className="text-xxs text-muted-foreground font-mono">{name}</span>
+                    <IconLabel name={name} />
                   </div>
                 ))}
               </div>
@@ -811,7 +840,7 @@ export function App() {
                 <div className="flex gap-2.5">
                   <ActionTile icon={<Icon name="call_received" size="sm" />} label="Deposit" onClick={() => {}} />
                   <ActionTile icon={<Icon name="swap_horiz" size="sm" />} label="Swap" onClick={() => {}} />
-                  <ActionTile icon={<Icon name="send" size="sm" />} label="Withdraw" onClick={() => {}} />
+                  <ActionTile icon={<Icon name="arrow_outward" size="sm" />} label="Withdraw" onClick={() => {}} />
                 </div>
                 <AssetSelector
                   label="From"
@@ -1415,12 +1444,10 @@ export function App() {
                   className="static h-full"
                   collapsed={sidebarCollapsed}
                   onCollapsedChange={setSidebarCollapsed}
-                  header={<img src="/brand/kaleidoswap-pictogram.svg" alt="KaleidoSwap" className="h-8" />}
+                  header={lockup}
                 >
                   <DrawerBody>{showcaseNav}</DrawerBody>
-                  <DrawerFooter>
-                    <p className="truncate text-center text-tiny text-content-tertiary">v0.1</p>
-                  </DrawerFooter>
+                  <DrawerFooter>{drawerVersion}</DrawerFooter>
                 </DrawerSidebar>
                 <div className="flex-1 bg-surface-raised p-6">
                   <p className="text-caption text-content-secondary">
@@ -1440,12 +1467,11 @@ export function App() {
                     <Icon name="menu" size="md" />
                   </Button>
                 </DrawerTrigger>
-                <DrawerContent
-                  header={<img src="/brand/kaleidoswap-pictogram.svg" alt="KaleidoSwap" className="h-8" />}
-                >
+                <DrawerContent header={lockup}>
                   <DrawerTitle className="sr-only">Navigation</DrawerTitle>
                   <DrawerDescription>Main navigation</DrawerDescription>
                   <DrawerBody>{showcaseNav}</DrawerBody>
+                  <DrawerFooter>{drawerVersion}</DrawerFooter>
                 </DrawerContent>
               </Drawer>
             </Row>
@@ -1489,11 +1515,14 @@ export function App() {
             </Row>
           </Section>
 
-          <Section id="forms" title="Forms" description="FormField and the segmented control.">
+          <Section id="forms" title="Forms" description="FormField: a label, its control, a hint and an error.">
             <FormsGallery />
           </Section>
           <Section id="table" title="Table" description="The dense data grid for desk surfaces.">
             <TableGallery />
+          </Section>
+          <Section id="scrollbars" title="Scrollbars" description="ScrollArea and HorizontalScrollArea: the one overlay thumb every scroller in the library uses.">
+            <ScrollbarsGallery />
           </Section>
           <Section id="tone-badges" title="Tone Badges" description="ToneBadge tones, including secondary and outline, and case=&quot;none&quot; for values.">
             <BadgesGallery />
@@ -1513,7 +1542,7 @@ export function App() {
           <Section id="copy" title="Copy" description="Copying that says whether it worked.">
             <CopyGallery />
           </Section>
-          <Section id="lists" title="Lists & filters" description="QueryState, EmptyState, RecordList, FilterBar, Pager, ValueList, EventTimeline and checklists.">
+          <Section id="lists" title="Lists & filters" description="QueryState, EmptyState, RecordList, FilterBar, the segmented control, Pager, ValueList, EventTimeline and checklists.">
             <ListsGallery />
           </Section>
           <Section id="page-layout" title="Page layout" description="The desk page header, MetricCard sizes and an ordered log.">

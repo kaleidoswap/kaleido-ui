@@ -1,5 +1,6 @@
 import { Icon } from '../primitives/icon'
-import type { ChangeEvent } from 'react'
+import { Label } from '../primitives/label'
+import { useId, type ChangeEvent } from 'react'
 import { AlertBanner } from './alert-banner'
 import { Button } from '../primitives/button'
 import { cn } from '../utils/cn'
@@ -100,6 +101,8 @@ export function DepositPreGeneration({
   setNewAssetId,
   colorableUtxoCount,
 }: DepositPreGenerationProps) {
+  const assetIdInputId = useId()
+  const amountId = useId()
   const method = METHOD_META[currentMethod]
   const isRgbOnchain = network === 'onchain' && !isBtc
 
@@ -170,10 +173,11 @@ export function DepositPreGeneration({
       {/* RGB asset-id: receive a specific asset, or any asset when left empty. */}
       {isRgbOnchain && isNewRgbAsset && setNewAssetId && (
         <div className="space-y-1.5">
-          <label className="block pb-1 leading-none text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
+          <Label htmlFor={assetIdInputId}>
             RGB Asset ID - Optional
-          </label>
+          </Label>
           <input
+            id={assetIdInputId}
             type="text"
             value={newAssetId}
             onChange={(event) => setNewAssetId(event.target.value)}
@@ -251,9 +255,9 @@ export function DepositPreGeneration({
       {network === 'onchain' && !isBtc && (
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label className="block pb-1 leading-none text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
+            <Label htmlFor={amountId}>
               Amount ({getUnitLabel()}) - Optional
-            </label>
+            </Label>
             {selectedAsset && (
               <span className="text-xxs text-foreground/55">
                 {selectedAsset.precision ?? 0} decimals
@@ -261,6 +265,7 @@ export function DepositPreGeneration({
             )}
           </div>
           <input
+            id={amountId}
             type="text"
             value={amount}
             onChange={handleAmountChange}

@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react'
+import { useId, type ReactNode } from 'react'
 import { cn } from '../utils/cn'
+import { eyebrow } from '../utils/type-roles'
 
 export interface WithdrawRouteOption<TAccount extends string = string> {
   account: TAccount
@@ -120,14 +121,15 @@ export function WithdrawRouteSelector<TAccount extends string = string>({
   onRouteChange,
 }: WithdrawRouteSelectorProps<TAccount>) {
   const isDisplayOnly = routes.length === 1 && !routes[0].disabled
+  const headingId = useId()
 
   return (
     <div className="space-y-2">
-      <label className="ml-1 block pb-1 leading-none text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
+      <p id={headingId} className={cn('m-0 ml-1 block pb-1 leading-none', eyebrow, 'text-secondary-content')}>
         Route
-      </label>
+      </p>
 
-      <div className="space-y-2">
+      <div role="group" aria-labelledby={headingId} className="space-y-2">
         {routes.map((route) => (
           <RouteChoiceCard
             key={route.account}

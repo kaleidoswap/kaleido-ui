@@ -1,6 +1,8 @@
 import { formatAmount } from '../utils/amount-display'
-import type { ChangeEvent } from 'react'
+import { useId, type ChangeEvent } from 'react'
+import { Label } from '../primitives/label'
 import { cn } from '../utils/cn'
+import { eyebrow } from '../utils/type-roles'
 
 export interface WithdrawDecodedLnInvoice {
   amount?: number | null
@@ -80,6 +82,9 @@ export function WithdrawAmountInput({
   setDonation,
 }: WithdrawAmountInputProps) {
   // Custom mode is opt-in: callers wanting the sat/vB input pass setFeeRateMode.
+  const amountId = useId()
+  const witnessId = useId()
+  const feeRateId = useId()
   const customFeeEnabled = typeof setFeeRateMode === 'function'
   const activeFeeMode = feeRateMode ?? feeRate
   const unitLabel = selectedAssetId === 'BTC' ? 'sats' : (selectedAssetTicker ?? 'units')
@@ -101,13 +106,14 @@ export function WithdrawAmountInput({
     <>
       {showAmountInput && (
         <div className="space-y-3">
-          <label className="ml-1 block pb-1 leading-none text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
+          <Label htmlFor={amountId} className="ml-1">
             Amount
-          </label>
+          </Label>
           <div className="overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-card transition-shadow focus-within:ring-1 focus-within:ring-primary/50 focus-within:shadow-glow-primary-soft">
             <div className="flex items-center gap-3 px-4 pt-3.5 pb-2.5">
               <div className="min-w-0 flex-1">
                 <input
+                  id={amountId}
                   type="text"
                   inputMode="decimal"
                   className="w-full bg-transparent text-headline font-bold tabular-nums text-foreground outline-none placeholder:text-foreground/15"
@@ -155,10 +161,11 @@ export function WithdrawAmountInput({
 
       {addressType === 'rgb' && decodedRgbInvoice?.recipient_type === 'Witness' && (
         <div className="space-y-2">
-          <label className="ml-1 text-caption font-medium text-muted-foreground">
-            Witness Amount (sats) - min 512
-          </label>
+          <Label htmlFor={witnessId} className="ml-1">
+            Witness amount (sats) - min 512
+          </Label>
           <input
+            id={witnessId}
             type="number"
             min={512}
             value={witnessAmountSat}
@@ -176,18 +183,19 @@ export function WithdrawAmountInput({
 
       {(addressType === 'bitcoin' || addressType === 'rgb') && (
         <div className="space-y-2">
-          <label className="ml-1 block pb-1 leading-none text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
+          <p id={feeRateId} className={cn('m-0 ml-1 block pb-1 leading-none', eyebrow, 'text-secondary-content')}>
             Fee Rate
-          </label>
+          </p>
           {customFeeEnabled ? (
             <>
-              <div className="grid grid-cols-4 gap-2">
+              <div role="group" aria-labelledby={feeRateId} className="grid grid-cols-4 gap-2">
                 {(['slow', 'normal', 'fast', 'custom'] as const).map((mode) => {
                   const selected = activeFeeMode === mode
                   return (
                     <button
                       key={mode}
                       type="button"
+                      aria-pressed={selected}
                       onClick={() => {
                         setFeeRateMode?.(mode)
                         if (mode !== 'custom') setFeeRate(mode)
@@ -216,6 +224,7 @@ export function WithdrawAmountInput({
                 <input
                   type="text"
                   inputMode="decimal"
+                  aria-label="Custom fee rate (sat/vB)"
                   placeholder={`${feeRates[feeRate]} (${feeRate})`}
                   value={customFeeRate ?? ''}
                   onChange={(event) => setCustomFeeRate?.(event.target.value.replace(/[^\d.]/g, ''))}
@@ -230,11 +239,12 @@ export function WithdrawAmountInput({
               )}
             </>
           ) : (
-            <div className="grid grid-cols-3 gap-3">
+            <div role="group" aria-labelledby={feeRateId} className="grid grid-cols-3 gap-3">
               {(['slow', 'normal', 'fast'] as const).map((rate) => (
                 <button
                   key={rate}
                   type="button"
+                  aria-pressed={feeRate === rate}
                   onClick={() => setFeeRate(rate)}
                   className={`group relative overflow-hidden rounded-[16px] px-3 py-3 transition-all active:scale-[0.98] ${
                     feeRate === rate

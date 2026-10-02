@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { cn } from '../utils/cn'
+import { HorizontalScrollArea } from './scroll-area'
 import { eyebrow } from '../utils/type-roles'
 
 /**
@@ -24,14 +25,14 @@ import { eyebrow } from '../utils/type-roles'
  */
 const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
   ({ className, ...props }, ref) => (
-    <div data-slot="table-scroll" className="relative w-full min-w-0 overflow-x-auto">
+    <HorizontalScrollArea className="w-full" viewportProps={{ 'data-slot': 'table-scroll' }}>
       <table
         ref={ref}
         data-slot="table"
         className={cn('w-full caption-bottom border-collapse text-caption', className)}
         {...props}
       />
-    </div>
+    </HorizontalScrollArea>
   ),
 )
 Table.displayName = 'Table'

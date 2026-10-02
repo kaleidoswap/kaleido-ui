@@ -1,3 +1,7 @@
+import { useId } from 'react'
+import { Icon } from '../primitives/icon'
+import { Label } from '../primitives/label'
+
 export type WithdrawAddressType =
   | 'unknown'
   | 'bitcoin'
@@ -31,13 +35,15 @@ export function WithdrawDestinationInput({
   handlePaste,
   handleReset,
 }: WithdrawDestinationInputProps) {
+  const inputId = useId()
   return (
     <div className="space-y-2">
-      <label className="ml-1 block pb-1 leading-none text-mini font-bold uppercase tracking-eyebrow text-secondary-content">
+      <Label htmlFor={inputId} className="ml-1">
         Destination
-      </label>
+      </Label>
       <div className="relative">
         <input
+          id={inputId}
           type="text"
           data-testid="withdraw-destination-input"
           className="w-full rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-5 py-4 pr-20 font-mono text-caption text-foreground shadow-inner transition-all placeholder:text-foreground/20 focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
@@ -97,5 +103,3 @@ export function WithdrawDestinationInput({
     </div>
   )
 }
-import { Icon } from '../primitives/icon'
-

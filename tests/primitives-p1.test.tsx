@@ -129,15 +129,16 @@ test('a collapsible works controlled, and DisclosureCard is built on it', async 
 
 // ── Avatar ──────────────────────────────────────────────────────────────────
 
-test('an avatar is decorative by default and falls back to initials or the person glyph', () => {
+test('an avatar is decorative by default: a custom image, or the initials', () => {
   const initials = renderToStaticMarkup(h(Avatar, { initials: 'ej' }))
   assert.match(initials, /aria-hidden="true"/)
   assert.match(initials, /from-secondary to-info/)
   assert.match(initials, />ej</)
   assert.match(initials, /size-8/)
-  assert.match(renderToStaticMarkup(h(Avatar, { size: 'lg' })), /size-10/)
-  assert.match(renderToStaticMarkup(h(Avatar)), /<svg/)
-  const photo = renderToStaticMarkup(h(Avatar, { src: '/me.png', alt: 'Emile' }))
+  assert.match(renderToStaticMarkup(h(Avatar, { initials: 'ej', size: 'lg' })), /size-10/)
+  // No stock glyph: the fallback is always letters.
+  assert.doesNotMatch(initials, /<svg/)
+  const photo = renderToStaticMarkup(h(Avatar, { src: '/me.png', alt: 'Emile', initials: 'EJ' }))
   assert.doesNotMatch(photo, /aria-hidden/)
   assert.match(photo, /<img src="\/me.png" alt="Emile"/)
   assert.doesNotMatch(photo, /from-secondary/)

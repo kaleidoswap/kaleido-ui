@@ -1,6 +1,6 @@
 import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
-import { ScrollArea } from './scroll-area'
+import { ScrollArea } from '../primitives/scroll-area'
 import { formatAmount } from '../utils/amount-display'
 import type { WithdrawAddressType } from './withdraw-destination-input'
 

@@ -12,7 +12,7 @@ import { DepositSuccessScreen } from './deposit-success-screen'
 import { BtcUnifiedReceive, type BtcUnifiedReceiveResult } from './btc-unified-receive'
 import { DepositPreGeneration } from './deposit-pre-generation'
 import { DepositGeneratedView } from './deposit-generated-view'
-import { ScrollArea } from './scroll-area'
+import { ScrollArea } from '../primitives/scroll-area'
 import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
 

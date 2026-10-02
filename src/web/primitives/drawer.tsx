@@ -2,6 +2,7 @@ import * as React from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { Slot } from '@radix-ui/react-slot'
 import { Icon } from './icon'
+import { ScrollArea } from './scroll-area'
 import { cn } from '../utils/cn'
 import { eyebrow } from '../utils/type-roles'
 
@@ -24,6 +25,8 @@ import { eyebrow } from '../utils/type-roles'
 interface DrawerContextValue {
   /** The icon rail: labels hidden, items centred. Desktop only. */
   collapsed: boolean
+  /** Unfolds the rail back to the full sidebar, when the sidebar can fold. */
+  expand?: () => void
   /** Inside the mobile overlay, the way to close it: choosing a destination does. */
   close?: () => void
 }
@@ -42,7 +45,7 @@ const panel = 'flex h-full flex-col border-r border-divider/30 bg-surface-base b
 
 // The sidebar's collapse button, which is also the mobile drawer's close.
 const edgeButton =
-  'shrink-0 rounded-lg p-3 text-content-secondary ring-1 ring-divider/10 transition-all duration-300 hover:scale-110 hover:bg-secondary/15 hover:text-secondary-content hover:ring-secondary/40 hover:shadow-glow-violet-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95 motion-reduce:transition-none motion-reduce:hover:scale-100'
+  'inline-flex shrink-0 items-center justify-center rounded-lg p-3 text-content-secondary ring-1 ring-divider/10 transition-all duration-300 hover:scale-110 hover:bg-secondary/15 hover:text-secondary-content hover:ring-secondary/40 hover:shadow-glow-violet-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95 motion-reduce:transition-none motion-reduce:hover:scale-100'
 
 // The group label: the library's eyebrow, in the desktop sidebar's colour.
 const sectionLabel = cn(eyebrow, 'text-muted-foreground')
@@ -104,7 +107,11 @@ const DrawerSidebar = React.forwardRef<HTMLElement, DrawerSidebarProps>(
           )}
         </div>
       )}
-      <DrawerContext.Provider value={{ collapsed }}>{children}</DrawerContext.Provider>
+      <DrawerContext.Provider
+        value={{ collapsed, expand: onCollapsedChange ? () => onCollapsedChange(false) : undefined }}
+      >
+        {children}
+      </DrawerContext.Provider>
     </aside>
   )
 )
@@ -227,12 +234,15 @@ DrawerDescription.displayName = 'DrawerDescription'
 // ── Shared parts ───────────────────────────────────────────────────────────
 
 /**
- * The scrolling list between the header and the footer. It still scrolls by
- * wheel, touch and keyboard, but draws no native scrollbar: on the 80px rail a
- * classic 15px bar took the width the icons are centred in.
+ * The scrolling list between the header and the footer, on the library's
+ * vertical scrollbar: an overlay thumb that takes no width, where on the 80px
+ * rail a classic 15px bar took the width the icons are centred in. `className`
+ * styles the list itself, as it did when the body was the scroller.
  */
-const DrawerBody = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('app-scrollbar min-h-0 flex-1 overflow-y-auto px-4 pt-4', className)} {...props} />
+const DrawerBody = ({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <ScrollArea className="min-h-0 flex-1" viewportClassName={cn('px-4 pt-4', className)} {...props}>
+    {children}
+  </ScrollArea>
 )
 DrawerBody.displayName = 'DrawerBody'
 
@@ -380,10 +390,13 @@ export interface DrawerNavGroupProps {
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void
   /**
-   * On the icon rail there is no room for a submenu, so the row is a link to
-   * this destination — usually the group's first page. Without it, the rail
-   * row does nothing.
+   * The group's first page. Opening the group goes there, so choosing
+   * "Display" lands on its first page with the submenu open. On the icon rail
+   * the row is a link to it that also unfolds the sidebar. Without it, the row
+   * only shows and hides the submenu, and the rail row does nothing.
    */
+  href?: string
+  /** @deprecated The old name of `href`. */
   railHref?: string
   /** Its `DrawerNavItem`s, which render as the submenu's rows. */
   children: React.ReactNode
@@ -394,9 +407,11 @@ export interface DrawerNavGroupProps {
  * A navigation row with a submenu — the desktop app's Trade and Liquidity.
  *
  * The row names a group of pages; activating it (the row or its chevron)
- * shows or hides the pages under it. It opens by itself when one of them is
- * the current page, and is marked as active while it is. On the icon rail the
- * submenu cannot open: the row becomes a link to `railHref` instead.
+ * shows or hides the pages under it, and opening it goes to `href`, its first
+ * page. It opens by itself when one of them is the current page, and is
+ * marked as active while it is. On the icon rail the submenu cannot open: the
+ * row is a link to `href` that unfolds the sidebar, where the group is then
+ * open on that page.
  */
 const DrawerNavGroup = ({
   icon,
@@ -405,11 +420,13 @@ const DrawerNavGroup = ({
   open: openProp,
   defaultOpen,
   onOpenChange,
+  href: hrefProp,
   railHref,
   children,
   className,
 }: DrawerNavGroupProps) => {
-  const { collapsed, close } = React.useContext(DrawerContext)
+  const href = hrefProp ?? railHref
+  const { collapsed, close, expand } = React.useContext(DrawerContext)
   const [uncontrolled, setUncontrolled] = React.useState(defaultOpen ?? active)
   const open = openProp ?? uncontrolled
   const setOpen = (next: boolean) => {
@@ -438,10 +455,35 @@ const DrawerNavGroup = ({
     </span>
   )
 
+  const rowContent = (
+    <>
+      {iconNode}
+      <span className="min-w-0 flex-1 truncate text-body font-semibold">{label}</span>
+      <Icon
+        name="chevron_right"
+        className={cn(
+          'shrink-0 text-icon-md transition-all duration-300 motion-reduce:transition-none',
+          open && 'rotate-90'
+        )}
+      />
+    </>
+  )
+
   if (collapsed) {
     const railTitle = typeof label === 'string' ? label : undefined
-    return railHref ? (
-      <a href={railHref} title={railTitle} className={cn(rowClass, className)} onClick={() => close?.()}>
+    return href ? (
+      <a
+        href={href}
+        title={railTitle}
+        className={cn(rowClass, className)}
+        onClick={() => {
+          // The rail unfolds, and the page is one of the group's: the
+          // submenu opens on it by itself.
+          setOpen(true)
+          expand?.()
+          close?.()
+        }}
+      >
         {iconNode}
         <span className="sr-only">{label}</span>
       </a>
@@ -455,23 +497,16 @@ const DrawerNavGroup = ({
 
   return (
     <div className={cn('relative', className)}>
-      <button
-        type="button"
-        aria-expanded={open}
-        aria-controls={panelId}
-        className={rowClass}
-        onClick={() => setOpen(!open)}
-      >
-        {iconNode}
-        <span className="min-w-0 flex-1 truncate text-body font-semibold">{label}</span>
-        <Icon
-          name="chevron_right"
-          className={cn(
-            'shrink-0 text-icon-md transition-all duration-300 motion-reduce:transition-none',
-            open && 'rotate-90'
-          )}
-        />
-      </button>
+      {!open && href ? (
+        // Closed, with a first page: the row is a link there, and opens.
+        <a href={href} aria-expanded={false} aria-controls={panelId} className={rowClass} onClick={() => setOpen(true)}>
+          {rowContent}
+        </a>
+      ) : (
+        <button type="button" aria-expanded={open} aria-controls={panelId} className={rowClass} onClick={() => setOpen(!open)}>
+          {rowContent}
+        </button>
+      )}
       {open && (
         <div
           id={panelId}

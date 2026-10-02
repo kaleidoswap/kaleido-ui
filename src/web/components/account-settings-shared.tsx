@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
+import { ScrollArea } from '../primitives/scroll-area'
 import { cn } from '../utils/cn'
 import { NostrNetworkIcon, RgbNetworkIcon } from './network-icon'
 
@@ -233,10 +234,10 @@ export function AccountSettingsShell({
         <h1 className="text-subhead font-bold text-foreground">{title}</h1>
       </header>
 
-      <main className="flex-1 space-y-6 overflow-y-auto px-5 pb-28 pt-2">
+      <ScrollArea className="flex-1" viewportAs="main" viewportClassName="space-y-6 px-5 pb-28 pt-2">
         {subtitle && <p className="text-caption text-muted-foreground">{subtitle}</p>}
         {children}
-      </main>
+      </ScrollArea>
     </div>
   )
 }

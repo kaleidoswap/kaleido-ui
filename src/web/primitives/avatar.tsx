@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { Icon } from './icon'
 import { cn } from '../utils/cn'
 
 const avatarVariants = cva(
@@ -19,20 +18,23 @@ const avatarVariants = cva(
 export interface AvatarProps
   extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'>,
     VariantProps<typeof avatarVariants> {
-  /** A photo or logo. Falls back to `initials`, then the person glyph, if it fails to load. */
+  /** A custom image: a photo or a logo. Falls back to `initials` if it fails to load. */
   src?: string
   /**
    * Set it when the image says something the text beside it does not; the
    * avatar is then announced. Left out, the avatar is decorative.
    */
   alt?: string
-  /** One or two letters, shown when there is no image. */
-  initials?: string
+  /**
+   * One or two letters, shown when there is no image or it fails to load.
+   * Required: an avatar is initials or a custom image, never a stock glyph.
+   */
+  initials: string
 }
 
 /**
- * A circle with a picture, or a fallback — initials, else a person glyph — on
- * the brand's violet-to-info gradient. `sm` is 32px, `lg` 40px.
+ * A circle with a custom image, or the name's initials on the brand's
+ * violet-to-info gradient. `sm` is 32px, `lg` 40px.
  *
  * Decorative by default (`aria-hidden`), because a name almost always sits
  * beside it. Pass `alt` when the image itself is the information.
@@ -65,10 +67,8 @@ const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
             className="size-full object-cover"
             onError={() => setFailed(true)}
           />
-        ) : initials ? (
-          <span className="uppercase">{initials.slice(0, 2)}</span>
         ) : (
-          <Icon name="person" className={size === 'lg' ? 'text-icon-xl' : 'text-icon-md'} />
+          <span className="uppercase">{initials.slice(0, 2)}</span>
         )}
       </span>
     )
