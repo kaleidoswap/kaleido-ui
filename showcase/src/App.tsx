@@ -441,14 +441,21 @@ const GitHubMark = ({ className }: { className?: string }) => (
 )
 
 /**
- * The footer's actions, side by side. On the rail there is no room for
- * their labels, so they stack as icon-only tiles.
+ * The footer's actions: product previews on top, two side by side below.
+ * On the rail there is no room for their labels, so they stack as icon-only
+ * tiles.
  */
 function NavFooterActions() {
   const collapsed = useDrawerCollapsed()
   return (
-    <div className={collapsed ? 'flex flex-col items-center gap-2' : 'flex gap-2'}>
-      <ActionTile icon={<Icon name="grid_view" />} label="Products" href="#/products" hideLabel={collapsed} />
+    <div className={collapsed ? 'flex flex-col items-center gap-2' : 'grid grid-cols-2 gap-2'}>
+      <ActionTile
+        icon={<Icon name="grid_view" />}
+        label="Product previews"
+        href="#/products"
+        hideLabel={collapsed}
+        className={collapsed ? undefined : 'col-span-2'}
+      />
       <ActionTile icon={<Icon name="science" />} label="Snapshot" href="#/state-snapshot" hideLabel={collapsed} />
       <ActionTile
         icon={<GitHubMark />}
