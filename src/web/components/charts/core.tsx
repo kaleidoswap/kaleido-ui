@@ -1,6 +1,7 @@
 import {
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
   type ReactNode,
@@ -208,9 +209,16 @@ export function useSeriesVisibility(ids: readonly string[]) {
       else if (ids.filter((other) => !next.has(other)).length > 1) next.add(id)
       return next
     })
+  // Only ids still in the series count: one that left while switched off must
+  // not stay hidden, or a series set narrowed to it would draw nothing.
+  const hiddenNow = useMemo(() => {
+    const kept = new Set(ids.filter((id) => hidden.has(id)))
+    // At least one series stays on, as the legend's own toggle guarantees.
+    return ids.length > 0 && kept.size >= ids.length ? new Set<string>() : kept
+  }, [ids, hidden])
   return {
-    isVisible: (id: string) => !hidden.has(id),
-    legend: { hidden, onToggle },
+    isVisible: (id: string) => !hiddenNow.has(id),
+    legend: { hidden: hiddenNow as ReadonlySet<string>, onToggle },
   }
 }
 

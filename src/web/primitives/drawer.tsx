@@ -393,6 +393,11 @@ export interface DrawerNavGroupProps {
   href?: string
   /** @deprecated The old name of `href`. */
   railHref?: string
+  /**
+   * Goes to `href` in place of the browser: a single-page app passes its
+   * router's navigate here, so following the row does not reload the page.
+   */
+  onNavigate?: (href: string) => void
   /** Its `DrawerNavItem`s, which render as the submenu's rows. */
   children: React.ReactNode
   className?: string
@@ -417,6 +422,7 @@ const DrawerNavGroup = ({
   onOpenChange,
   href: hrefProp,
   railHref,
+  onNavigate,
   children,
   className,
 }: DrawerNavGroupProps) => {
@@ -432,6 +438,13 @@ const DrawerNavGroup = ({
   React.useEffect(() => {
     if (active && openProp === undefined) setUncontrolled(true)
   }, [active, openProp])
+
+  // Following the row: the app's router when it has one, the browser otherwise.
+  const follow = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!href || !onNavigate) return
+    event.preventDefault()
+    onNavigate(href)
+  }
 
   const panelId = React.useId()
   const rowClass = cn(
@@ -471,7 +484,8 @@ const DrawerNavGroup = ({
         href={href}
         title={railTitle}
         className={cn(rowClass, className)}
-        onClick={() => {
+        onClick={(event) => {
+          follow(event)
           // The rail unfolds, and the page is one of the group's: the
           // submenu opens on it by itself.
           setOpen(true)
@@ -494,7 +508,18 @@ const DrawerNavGroup = ({
     <div className={cn('relative', className)}>
       {!open && href ? (
         // Closed, with a first page: the row is a link there, and opens.
-        <a href={href} aria-expanded={false} aria-controls={panelId} className={rowClass} onClick={() => setOpen(true)}>
+        <a
+          href={href}
+          aria-expanded={false}
+          aria-controls={panelId}
+          className={rowClass}
+          onClick={(event) => {
+            follow(event)
+            setOpen(true)
+            // Like any row that leaves for a page, it closes the mobile drawer.
+            close?.()
+          }}
+        >
           {rowContent}
         </a>
       ) : (

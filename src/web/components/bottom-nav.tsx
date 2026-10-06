@@ -53,6 +53,8 @@ export function BottomNav<TValue extends string = string>({
     placed.current = to
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
     if (!from || reduce || (from.x === to.x && from.w === to.w)) return
+    // Without the Web Animations API (older webviews, jsdom) the blob just jumps.
+    if (typeof blob.animate !== 'function') return
     // Mid-flight the sphere pinches in and sinks lower, then swells back over the new item.
     const frame = (center: number, width: number, scaleY = 1) =>
       `translateX(${center - width / 2}px) scaleY(${scaleY})`
