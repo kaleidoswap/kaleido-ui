@@ -27,6 +27,7 @@ import {
   DisclosureCard,
   FilterChipGroup,
   Icon,
+  IconButton,
   InfoPanel,
   Input,
   KaleidoswapLogo,
@@ -53,27 +54,6 @@ import {
   type AssetSelectorOption,
   type IconName,
 } from '@kaleido-ui/index'
-
-/** An icon-only button: a square Button with an accessible name. */
-function IconAction({
-  icon,
-  label,
-  variant = 'ghost',
-  round = false,
-  className,
-}: {
-  icon: IconName
-  label: string
-  variant?: 'ghost' | 'secondary'
-  round?: boolean
-  className?: string
-}) {
-  return (
-    <Button variant={variant} size="icon" aria-label={label} title={label} className={round ? `rounded-full ${className ?? ''}` : className}>
-      <Icon name={icon} size="sm" />
-    </Button>
-  )
-}
 
 // ─── rate-extension ──────────────────────────────────────────────────────────
 
@@ -173,8 +153,8 @@ function ExtensionDashboard({ onNavigate }: { onNavigate: (view: ExtensionView) 
         <div className="flex items-center justify-between pt-1">
           <SectionTitle>Your assets</SectionTitle>
           <div className="flex gap-1">
-            <IconAction icon="tune" label="Filter assets" />
-            <IconAction icon="edit" label="Manage assets" />
+            <IconButton icon="tune" label="Filter assets" size="sm" />
+            <IconButton icon="edit" label="Manage assets" size="sm" />
           </div>
         </div>
         <WalletAssetList
@@ -193,7 +173,7 @@ function ExtensionSwap({ onNavigate }: { onNavigate: (view: ExtensionView) => vo
     <ExtensionScreen
       view="swap"
       onNavigate={onNavigate}
-      header={<PageHeader title="Swap" right={<IconAction icon="refresh" label="Refresh quotes" />} />}
+      header={<PageHeader title="Swap" right={<IconButton icon="refresh" label="Refresh quotes" variant="surface" />} />}
     >
       <div className="space-y-4">
         <FilterChipGroup
@@ -221,7 +201,7 @@ function ExtensionActivity({ onNavigate }: { onNavigate: (view: ExtensionView) =
     <ExtensionScreen
       view="activity-list"
       onNavigate={onNavigate}
-      header={<PageHeader title="Activity" right={<IconAction icon="refresh" label="Refresh" />} />}
+      header={<PageHeader title="Activity" right={<IconButton icon="refresh" label="Refresh" variant="surface" />} />}
     >
       <div className="space-y-3">
         <ActivityFilterBar
@@ -398,7 +378,7 @@ function WebNavBar({ route, onRoute }: { route: WebRoute; onRoute: (route: WebRo
           {link('Community')}
         </nav>
         <div className="ml-auto flex items-center gap-2">
-          <IconAction icon="tune" label="Options" />
+          <IconButton icon="tune" label="Options" />
           <Button variant="surface" size="sm"><Icon name="download" size="sm" />Download</Button>
           <Button size="sm"><Icon name="account_balance_wallet" size="sm" />Connect wallet</Button>
         </div>
@@ -445,11 +425,11 @@ function WebHome({ onRoute }: { onRoute: (route: WebRoute) => void }) {
         <CardContent className="space-y-4 p-6">
           <div className="relative flex gap-3">
             <AmountPanel side="You send" ticker="BTC" venue="Lightning" amount="0.0021" />
-            <IconAction
+            <IconButton
               icon="swap_horiz"
               label="Switch direction"
               variant="secondary"
-              round
+              shape="circle"
               className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
             />
             <AmountPanel side="You receive" ticker="L-USDT" venue="Liquid" amount="208.21" />
@@ -529,7 +509,7 @@ function WebSwaps({ onRoute }: { onRoute: (route: WebRoute) => void }) {
               </span>
               <ToneBadge tone={swap.tone}>{swap.status}</ToneBadge>
             </button>
-            <IconAction icon="delete" label={`Delete ${swap.id}`} />
+            <IconButton icon="delete" label={`Delete ${swap.id}`} variant="danger-quiet" size="sm" />
           </div>
         ))}
       </div>
