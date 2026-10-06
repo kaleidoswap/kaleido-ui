@@ -741,8 +741,9 @@ const brandCss = `/* AUTO-GENERATED — do not edit by hand.
   --primary: ${brandTheme.lightPrimary};
   /* The deep brand green takes white text (5.3:1); the default light green takes dark ink. */
   --primary-foreground: #FFFFFF;
-  /* …and its button gradient runs through the deep greens under that white text. */
-  --gradient-primary: linear-gradient(135deg, #0E8F5C 0%, ${brandTheme.lightPrimary} 55%, #065A39 100%);
+  /* …and its button gradient runs through the deep greens under that white text,
+     lightening toward the bottom-right like the default light fills. */
+  --gradient-primary: linear-gradient(135deg, #076A43 0%, ${brandTheme.lightPrimary} 50%, #0E8F5C 100%);
   --ring: ${brandTheme.lightPrimary};
 }
 
