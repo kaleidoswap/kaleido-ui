@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { StateSnapshot } from './pages/StateSnapshot'
+import { ProductPreviews } from './pages/ProductPreviews'
 import { ChartsGallery } from './pages/ChartsGallery'
 import {
   AvatarGallery,
@@ -298,7 +299,7 @@ export function App() {
   const [donation, setDonation] = useState(true)
 
   // Hash-based route: `#/state-snapshot` renders the State Snapshot page,
-  // anything else renders the normal component showcase.
+  // `#/products` the product previews, anything else the component showcase.
   const [route, setRoute] = useState(() =>
     typeof window === 'undefined' ? '' : window.location.hash,
   )
@@ -317,10 +318,20 @@ export function App() {
 
   // A page change is a navigation: start at the top, and name the tab.
   useEffect(() => {
-    if (route.startsWith('#/state-snapshot')) return
+    if (route.startsWith('#/state-snapshot') || route.startsWith('#/products')) return
     window.scrollTo({ top: 0 })
     document.title = `${NAV_PAGES[pageIndex].label} · kaleido-ui showcase`
   }, [route, pageIndex])
+
+  if (route.startsWith('#/products')) {
+    return (
+      <ProductPreviews
+        onBack={() => {
+          window.location.hash = ''
+        }}
+      />
+    )
+  }
 
   if (route.startsWith('#/state-snapshot')) {
     return (
@@ -361,6 +372,11 @@ export function App() {
 
   const navFooter = (
     <DrawerFooter className="space-y-3">
+      <DrawerNavItem
+        href="#/products"
+        label="Product previews"
+        icon={<Icon name="grid_view" className="text-icon-xl" />}
+      />
       <DrawerNavItem
         href="#/state-snapshot"
         label="State Snapshot"
