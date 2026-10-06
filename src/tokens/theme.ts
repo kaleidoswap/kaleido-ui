@@ -153,11 +153,11 @@ const dark: KaleidoTheme = {
   highlight: 'rgba(255, 255, 255, 0.08)',
   success: '#2BEE79',
   warning: '#FACC15',
-  danger: '#F94040',
+  danger: '#E53535',
   info: '#4290FF',
   successSurface: 'rgba(43, 238, 121, 0.14)',
   warningSurface: 'rgba(250, 204, 21, 0.14)',
-  dangerSurface: 'rgba(249, 64, 64, 0.14)',
+  dangerSurface: 'rgba(229, 53, 53, 0.14)',
   infoSurface: 'rgba(66, 144, 255, 0.14)',
   text: {
     primary: '#EDEAF8',

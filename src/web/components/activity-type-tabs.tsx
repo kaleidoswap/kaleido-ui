@@ -30,7 +30,7 @@ export function ActivityTypeTabs({ counts = {} }: { counts?: ActivityTypeTabCoun
           key={action.value}
           value={action.value}
           data-action-icon={action.actionIcon}
-          className="group h-full rounded-xl px-1.5 text-caption font-bold tracking-wide text-muted-foreground transition-all hover:bg-secondary/10 hover:text-secondary-content data-[state=active]:bg-primary active-gradient-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-button-primary data-[state=active]:hover:bg-primary data-[state=active]:hover:text-primary-foreground"
+          className="group h-full rounded-xl px-1.5 text-caption font-bold tracking-wide text-muted-foreground transition-all hover-gradient-violet hover:text-secondary-content data-[state=active]:bg-primary active-gradient-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-button-primary data-[state=active]:hover:bg-primary data-[state=active]:hover:text-primary-foreground"
         >
           {action.icon && (
             <AppIcon

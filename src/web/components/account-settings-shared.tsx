@@ -3,8 +3,10 @@ import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
 import { ScrollArea } from '../primitives/scroll-area'
 import { cn } from '../utils/cn'
+import { AlertBanner } from './alert-banner'
 import { NostrNetworkIcon, RgbNetworkIcon } from './network-icon'
 import { eyebrow } from '../utils/type-roles'
+import { IconButton } from '../primitives/icon-button'
 
 export type AccountSettingsProtocol = 'RGB' | 'SPARK' | 'ARKADE' | 'NOSTR'
 export type AccountSettingsNetwork = 'mainnet' | 'testnet' | 'regtest' | 'signet'
@@ -57,7 +59,7 @@ export function getAccountNetworkUi(network: AccountSettingsNetwork) {
 export function AccountHeaderIcons({ accountId }: { accountId: AccountSettingsProtocol }) {
   if (accountId === 'RGB') {
     return (
-      <span className="flex size-10 items-center justify-center rounded-full bg-primary/15 shadow-raised">
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/15 shadow-raised">
         <RgbNetworkIcon className="size-5" />
       </span>
     )
@@ -65,7 +67,7 @@ export function AccountHeaderIcons({ accountId }: { accountId: AccountSettingsPr
 
   if (accountId === 'SPARK') {
     return (
-      <span className="flex size-10 items-center justify-center rounded-full bg-info/10 shadow-raised">
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-info/10 shadow-raised">
         <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" alt="Spark" className="kui-mono-icon size-5 object-contain" />
       </span>
     )
@@ -73,14 +75,14 @@ export function AccountHeaderIcons({ accountId }: { accountId: AccountSettingsPr
 
   if (accountId === 'NOSTR') {
     return (
-      <span className="flex size-10 items-center justify-center rounded-full bg-network-arkade/10 shadow-raised">
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-network-arkade/10 shadow-raised">
         <NostrNetworkIcon className="size-5" />
       </span>
     )
   }
 
   return (
-    <span className="flex size-10 items-center justify-center rounded-full bg-network-arkade/10 shadow-raised">
+    <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-network-arkade/10 shadow-raised">
       <img src="/icons/arkade/arkade-icon.svg" alt="Arkade" className="size-5 rounded-sm object-contain" />
     </span>
   )
@@ -143,7 +145,7 @@ export function AccountNetworkSelector({
               'rounded-xl px-3 py-2.5 transition-all', eyebrow,
               selected
                 ? `${ui.badgeClassName} shadow-raised`
-                : 'text-muted-foreground hover:bg-secondary/10 hover:text-secondary-content'
+                : 'text-muted-foreground hover-gradient-violet hover:text-secondary-content'
             )}
           >
             {ui.label}
@@ -227,9 +229,7 @@ export function AccountSettingsShell({
           every other settings page uses). */}
       <header className="flex h-14 shrink-0 items-center gap-2 px-2">
         {onBack && (
-          <Button type="button" variant="ghost" size="icon-xl" onClick={onBack} aria-label="Go back">
-            <Icon name="arrow_back" size="xl" />
-          </Button>
+          <IconButton icon="arrow_back" label="Go back" size="lg" onClick={onBack} />
         )}
         <AccountHeaderIcons accountId={accountId} />
         <h1 className="text-subhead font-bold text-foreground">{title}</h1>
@@ -247,15 +247,16 @@ export function AccountInfoGrid({ items }: { items: Array<{ label: string; value
   return (
     <div className="grid gap-3 sm:grid-cols-2">
       {items.map((item) => (
-        <div key={item.label} className="rounded-xl bg-muted/40 p-3 text-caption">
+        <div key={item.label} className="rounded-xl kui-well p-3 text-caption">
           <p className="text-muted-foreground">{item.label}</p>
-          <div className="mt-1 break-all text-foreground/90">{item.value}</div>
+          <div className="mt-1 break-words text-foreground/90">{item.value}</div>
         </div>
       ))}
     </div>
   )
 }
 
+/** An account's notice: the Alert Banner, `info` by default and `warning` for a caution. */
 export function AccountNotice({
   tone = 'default',
   children,
@@ -263,20 +264,10 @@ export function AccountNotice({
   tone?: 'default' | 'warning'
   children: ReactNode
 }) {
-  return (
-    <div
-      className={cn(
-        'rounded-xl px-3 py-3 text-caption',
-        tone === 'warning'
-          ? 'bg-warning/10 text-warning-fg'
-          : 'bg-secondary/10 text-foreground/80 ring-1 ring-inset ring-secondary/20'
-      )}
-    >
-      {children}
-    </div>
-  )
+  return <AlertBanner variant={tone === 'warning' ? 'warning' : 'info'}>{children}</AlertBanner>
 }
 
+/** A network's notice: the Alert Banner in the tone of that network — success on mainnet, error on regtest, warning on the other test networks. */
 export function AccountNetworkNotice({
   network,
   children,
@@ -284,11 +275,8 @@ export function AccountNetworkNotice({
   network: AccountSettingsNetwork
   children: ReactNode
 }) {
-  return (
-    <div className={cn('rounded-xl px-3 py-3 text-caption', getAccountNetworkUi(network).bannerClassName)}>
-      {children}
-    </div>
-  )
+  const variant = network === 'mainnet' ? 'success' : network === 'regtest' ? 'error' : 'warning'
+  return <AlertBanner variant={variant}>{children}</AlertBanner>
 }
 
 export function AccountStatusPills({
@@ -379,18 +367,30 @@ export function TransferRouteCard({
   summary,
   eta,
   feeHint,
+  account,
 }: {
   label: string
   summary: string
   eta: string
   feeHint: string
+  /** The account the route goes through — its logo leads the card. Without it, a generic transfer glyph. */
+  account?: AccountSettingsProtocol
 }) {
   return (
-    <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-4 shadow-card">
+    <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-4 shadow-card-secondary">
       <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="text-body font-bold text-foreground">{label}</p>
-          <p className="mt-1 text-caption text-muted-foreground">{summary}</p>
+        <div className="flex min-w-0 flex-1 items-start gap-3">
+          {account ? (
+            <AccountHeaderIcons accountId={account} />
+          ) : (
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25">
+              <Icon name="swap_horiz" size="sm" />
+            </div>
+          )}
+          <div className="min-w-0">
+            <p className="text-body font-bold text-foreground">{label}</p>
+            <p className="mt-1 text-caption text-muted-foreground">{summary}</p>
+          </div>
         </div>
         <div className="text-right">
           <p className={cn('text-muted-foreground', eyebrow)}>{eta}</p>
@@ -449,7 +449,7 @@ export function AccountSettingsRow({
       type="button"
       onClick={onClick}
       className={cn(
-        'group w-full rounded-2xl p-4 text-left shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover',
+        'group w-full rounded-2xl p-4 text-left shadow-card-secondary transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover-soft',
         accent ? ACCOUNT_ACCENT_BG[accountId] : 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card'
       )}
     >

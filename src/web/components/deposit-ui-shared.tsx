@@ -1,8 +1,9 @@
-import { useState, type CSSProperties, type ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 import { colors } from '../../tokens/colors'
-import { LiquidNetworkIcon, RgbNetworkIcon } from './network-icon'
+import { LiquidNetworkIcon, OnchainNetworkIcon, RgbNetworkIcon } from './network-icon'
+import { DisclosureCard } from './disclosure-card'
 import { eyebrow } from '../utils/type-roles'
 
 /**
@@ -48,10 +49,10 @@ export const NETWORK_CONFIG: Record<DepositNetworkKey, DepositNetworkConfigEntry
     border: 'border-network-bitcoin/40',
     qrBorder: 'border-network-bitcoin/30',
     qrGlow: qrGlowStyle(colors.network.bitcoin),
-    // On-chain uses a chain-link glyph rather than the ₿ coin — the coin reads
+    // On-chain uses the chain mark (as in NetworkBadge) rather than the ₿ coin — the coin reads
     // as "the BTC asset", whereas this row is specifically the *on-chain* (L1)
     // receive rail alongside Lightning/Spark/Arkade, so a chain mark disambiguates.
-    icon: <Icon name="link" className="text-icon-xs" />,
+    icon: <OnchainNetworkIcon className="size-3" />,
   },
   lightning: {
     label: 'Lightning',
@@ -143,13 +144,17 @@ const ACCOUNT_META: Record<
   },
 }
 
-const METHOD_META: Record<DepositTransferMethod, { label: string }> = {
-  bitcoin_l1: { label: 'On-chain' },
-  lightning: { label: 'Lightning' },
-  spark: { label: 'Spark' },
-  arkade: { label: 'Arkade' },
-  boarding: { label: 'Boarding' },
-  submarine_swap: { label: 'Submarine Swap' },
+const METHOD_META: Record<DepositTransferMethod, { label: string; icon: ReactNode }> = {
+  bitcoin_l1: { label: 'On-chain', icon: <OnchainNetworkIcon className="size-3" /> },
+  lightning: { label: 'Lightning', icon: <img src="/icons/lightning/lightning.svg" className="size-3" alt="" /> },
+  spark: {
+    label: 'Spark',
+    icon: <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" className="kui-mono-icon size-3 object-contain" alt="" />,
+  },
+  arkade: { label: 'Arkade', icon: <img src="/icons/arkade/arkade-icon.svg" className="size-3 rounded-sm object-contain" alt="" /> },
+  // Boarding is on-chain BTC joining Arkade; a submarine swap is a swap between rails.
+  boarding: { label: 'Boarding', icon: <OnchainNetworkIcon className="size-3" /> },
+  submarine_swap: { label: 'Submarine Swap', icon: <Icon name="swap_horiz" className="text-icon-xs" /> },
 }
 
 export function InvoiceStatusBanner({
@@ -198,7 +203,10 @@ export function InvoiceStatusBanner({
 
 export function PaidOverlay() {
   return (
-    <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-background/85 bg-gradient-card-hero">
+    // Reaches 3px past the QR card, its radius concentric with the card's
+    // rounded-2xl, so neither the card's anti-aliased white edge nor a frame
+    // of up to 3px shows at the corners.
+    <div className="absolute -inset-[3px] flex items-center justify-center rounded-[calc(var(--radius-2xl)+3px)] bg-background/95 bg-gradient-card-hero">
       <div className="flex flex-col items-center gap-2">
         <div className="flex size-14 items-center justify-center rounded-full bg-primary bg-gradient-primary shadow-glow-brand">
           <Icon name="check" className="text-icon-4xl text-background" />
@@ -267,7 +275,7 @@ export function AccountChoiceChip({
         'flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-1.5 text-icon-xxs font-bold transition-all',
         active
           ? cn(meta.accentBg, meta.accentText, meta.accentBorder, 'shadow-raised')
-          : 'border-foreground/8 bg-foreground/5 text-muted-foreground hover:border-secondary/40 hover:bg-secondary/10 hover:text-foreground/80'
+          : 'border-foreground/8 bg-foreground/5 text-muted-foreground hover:border-secondary/40 hover-gradient-violet hover:text-foreground/80'
       )}
     >
       {meta.icon}
@@ -331,6 +339,17 @@ const NETWORK_INFO: Record<DepositNetworkKey, NetworkInfoEntry> = {
   },
 }
 
+// The protocol marks (the same files as the showcase's External logos, served
+// from /logos/protocols) and each network's per-theme foreground from Brand.
+// Spark's asterisk is white; kui-mono-icon draws it black on the light theme.
+const NETWORK_INFO_MARK: Record<DepositNetworkKey, { src: string; text: string; mono?: boolean }> = {
+  onchain: { src: '/logos/protocols/bitcoin.svg', text: 'text-network-bitcoin-fg' },
+  lightning: { src: '/logos/protocols/lightning.svg', text: 'text-network-lightning-fg' },
+  spark: { src: '/logos/protocols/spark-asterisk-white.svg', text: 'text-network-spark-fg', mono: true },
+  arkade: { src: '/logos/protocols/arkade.svg', text: 'text-network-arkade-fg' },
+  liquid: { src: '/logos/protocols/liquid.svg', text: 'text-network-liquid-fg' },
+}
+
 export function NetworkInfoDisclosure({
   networks,
   className,
@@ -338,53 +357,48 @@ export function NetworkInfoDisclosure({
   networks: DepositNetworkKey[]
   className?: string
 }) {
-  const [open, setOpen] = useState(false)
   if (networks.length === 0) return null
 
   return (
-    <div className={cn('overflow-hidden rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-raised transition-all', className)}>
-      <button
-        type="button"
-        onClick={() => setOpen((value) => !value)}
-        aria-expanded={open}
-        className="flex w-full items-center gap-2 px-2.5 py-1.5 text-left transition-colors hover:bg-secondary/10"
-      >
-        <Icon name="info" size="xs" className="text-secondary-content" />
-        <span className={cn('flex-1 text-muted-foreground', eyebrow)}>
-          What are these networks?
-        </span>
-        <Icon name={open ? 'expand_less' : 'expand_more'} size="xs" className="text-foreground/55" />
-      </button>
-      {open && (
-        <div className="space-y-2 px-2.5 pb-2.5 pt-0.5 animate-in fade-in slide-in-from-top-1 duration-200">
-          {networks.map((network) => {
-            const info = NETWORK_INFO[network]
-            const cfg = NETWORK_CONFIG[network]
-            return (
-              <div key={network} className="space-y-1">
-                <div className="flex items-center gap-1.5">
-                  <div className={cn('flex size-4 flex-shrink-0 items-center justify-center rounded-md', cfg.bg)}>
-                    {cfg.icon}
-                  </div>
-                  <span className={cn(eyebrow, cfg.text)}>
-                    {info.title}
-                  </span>
-                </div>
-                <p className="pl-5 text-tiny leading-snug text-muted-foreground">{info.detail}</p>
-                <ul className="space-y-0.5 pl-5">
-                  {info.bullets.map((bullet) => (
-                    <li key={bullet} className="flex items-start gap-1.5 text-xxs leading-snug text-foreground/50">
-                      <span className="mt-[1px] text-foreground/55">-</span>
-                      <span>{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )
-          })}
-        </div>
-      )}
-    </div>
+    <DisclosureCard
+      className={className}
+      triggerClassName="px-2.5 py-1.5"
+      contentClassName="space-y-2 px-2.5 pb-2.5 pt-1"
+      icon={<Icon name="info" size="xs" className="text-secondary-content" />}
+      title={<span className={cn('text-muted-foreground', eyebrow)}>What are these networks?</span>}
+    >
+      {networks.map((network) => {
+        const info = NETWORK_INFO[network]
+        const mark = NETWORK_INFO_MARK[network]
+        return (
+          <div key={network} className="space-y-1">
+            <div className="flex items-center gap-1.5">
+              {network === 'onchain' ? (
+                <OnchainNetworkIcon />
+              ) : (
+                <img
+                  src={mark.src}
+                  alt=""
+                  className={cn('size-3.5 flex-shrink-0 object-contain', mark.mono && 'kui-mono-icon')}
+                />
+              )}
+              <span className={cn(eyebrow, mark.text)}>
+                {info.title}
+              </span>
+            </div>
+            <p className="pl-5 text-tiny leading-snug text-muted-foreground">{info.detail}</p>
+            <ul className="space-y-0.5 pl-5">
+              {info.bullets.map((bullet) => (
+                <li key={bullet} className="flex items-start gap-1.5 text-xxs leading-snug text-foreground/50">
+                  <span className="mt-[1px] text-foreground/55">-</span>
+                  <span>{bullet}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      })}
+    </DisclosureCard>
   )
 }
 
@@ -414,10 +428,11 @@ export function MethodChoiceChip({
         active
           ? 'border-transparent bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
           : enabled
-            ? 'border-foreground/8 bg-foreground/5 text-muted-foreground hover:border-secondary/40 hover:bg-secondary/10 hover:text-foreground/80'
+            ? 'border-foreground/8 bg-foreground/5 text-muted-foreground hover:border-secondary/40 hover-gradient-violet hover:text-foreground/80'
             : 'cursor-not-allowed border-border bg-foreground/3 text-foreground/20'
       )}
     >
+      <span className={cn('flex shrink-0 items-center', !enabled && 'opacity-40 grayscale')}>{meta.icon}</span>
       {meta.label}
       {!enabled && disabledReason && (
         <span className="text-xxs font-normal opacity-60">{disabledReason}</span>

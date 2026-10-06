@@ -14,6 +14,7 @@ import {
   type DepositNetworkKey,
 } from './deposit-ui-shared'
 import { eyebrow } from '../utils/type-roles'
+import { IconButton } from '../primitives/icon-button'
 
 export interface BtcUnifiedReceiveAddress {
   network: DepositNetworkKey
@@ -120,32 +121,23 @@ export function BtcUnifiedReceive({
 
         {/* Icon-only Surface actions: Copy, New Address, Edit (amount/description). */}
         <div className="flex items-center justify-center gap-2.5">
-          <Button
+          <IconButton
+            label={`Copy ${accountReceiveResult.qrLabel}`}
             variant="surface"
-            size="icon-xl"
-            aria-label={`Copy ${accountReceiveResult.qrLabel}`}
+            size="lg"
+            icon={isQrCopied ? 'check' : 'content_copy'}
             onClick={() => void copyToClipboard(accountReceiveResult.qrValue)}
-          >
-            <Icon name={isQrCopied ? 'check' : 'content_copy'} size="lg" />
-          </Button>
+          />
           {showRegenerate && (
-            <Button
-              variant="surface"
-              size="icon-xl"
-              aria-label="New address"
-              onClick={handleNewAddress}
-            >
-              <Icon name="refresh" size="lg" />
-            </Button>
+            <IconButton label="New address" variant="surface" size="lg" icon="refresh" onClick={handleNewAddress} />
           )}
-          <Button
+          <IconButton
+            label="Edit amount and description"
             variant="surface"
-            size="icon-xl"
-            aria-label="Edit amount and description"
+            size="lg"
+            icon="edit"
             onClick={() => setShowEdit(true)}
-          >
-            <Icon name="edit" size="lg" />
-          </Button>
+          />
         </div>
       </div>
 
@@ -169,7 +161,7 @@ export function BtcUnifiedReceive({
               key={address.network}
               className={cn(
                 'group flex cursor-pointer items-center gap-2 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-2.5 py-1.5 shadow-raised',
-                'transition-all hover:bg-secondary/10 hover:shadow-card-hover active:scale-[0.98]'
+                'transition-all hover-gradient-violet hover:shadow-card-hover active:scale-[0.98]'
               )}
               style={{ borderLeftWidth: 3, borderLeftColor: network.color }}
               onClick={() => void copyToClipboard(address.value)}
@@ -210,7 +202,7 @@ export function BtcUnifiedReceive({
         onClose={() => setShowEdit(false)}
       >
         <div className="space-y-4">
-          <div className="space-y-1.5">
+          <div className="flex flex-col gap-2">
             <Label htmlFor={amountId}>
               Amount (optional)
             </Label>
@@ -232,7 +224,7 @@ export function BtcUnifiedReceive({
           </div>
 
           {onDescriptionChange && (
-            <div className="space-y-1.5">
+            <div className="flex flex-col gap-2">
               <Label htmlFor={descriptionId}>
                 Description (optional)
               </Label>

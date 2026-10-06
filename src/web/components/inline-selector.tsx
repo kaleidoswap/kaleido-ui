@@ -155,8 +155,8 @@ export function InlineSelector<TOption extends InlineSelectorOption>({
                     className={cn(
                       'w-full rounded-xl text-left outline-none transition-all disabled:cursor-not-allowed disabled:opacity-50',
                       selectedOption
-                        ? 'bg-primary/10 bg-gradient-active shadow-glow-primary-soft ring-1 ring-inset ring-primary/40'
-                        : 'hover:bg-secondary/15',
+                        ? 'bg-primary/10 bg-gradient-active ring-1 ring-inset ring-primary/40'
+                        : 'hover-gradient-violet',
                       optionClassName,
                     )}
                   >

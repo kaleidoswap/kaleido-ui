@@ -16,13 +16,28 @@
  * another under deuteranopia at equal lightness. What keeps them apart is
  * LIGHTNESS: violet is darker than azzurro in both themes. The order is the
  * colour-blind-safety mechanism — series take slots in order and never cycle.
+ *
+ * The violet is the chart's own step, between the brand violets: lighter than
+ * a deep violet, calmer than `accent-send-fg` (OKLCH C ≈ 0.15–0.17 against
+ * its 0.26 on light). It keeps the rule above — L 0.62 vs azzurro 0.66 on
+ * dark, 0.52 vs 0.65 on light — but the checks below were run on the earlier
+ * violets (#7061db, #4e40a0) and have not been re-run for it.
+ *
+ * The green is one value in both themes, #17B581 (the light theme's
+ * `primary`), and every chart draws it — the TrendChart's primary tone reads
+ * `--series-1` too. On dark it sits at L 0.69, just over the band; the dark
+ * checks below were run on the earlier #098356.
+ *
  * Found by searching OKLCH lightness for these hues and validated with the
  * dataviz palette checks (OKLab ΔE ×100):
  *
  *   dark  on card #242638 — band 0.48–0.67 ✓, chroma ✓, worst adjacent CVD 12.2,
  *                           normal-vision 17.0, every slot ≥ 3:1 contrast
  *   light on card #FFFFFF — band 0.43–0.77 ✓, chroma ✓, worst adjacent CVD 19.2,
- *                           normal-vision 23.9; yellow and orange below 3:1
+ *                           normal-vision 23.9; yellow and orange below 3:1.
+ *                           The green is the light theme's `primary`
+ *                           (#17B581), so every chart shares the TrendChart's
+ *                           green; it too sits under 3:1 on white
  *                           (a yellow that reads as yellow cannot reach 3:1 on
  *                           white) → every chart ships a table view as the
  *                           relief channel
@@ -38,8 +53,8 @@
  */
 export const chartSeries = {
   /** green, violet, azzurro, then yellow, magenta, orange */
-  dark: ['#098356', '#7061db', '#179fd4', '#b3880f', '#db589e', '#de6907'],
-  light: ['#0b764d', '#4e40a0', '#0f9cd0', '#dea805', '#c34189', '#fe904d'],
+  dark: ['#17b581', '#8374da', '#179fd4', '#b3880f', '#db589e', '#de6907'],
+  light: ['#17b581', '#6851c3', '#0f9cd0', '#dea805', '#c34189', '#fe904d'],
 } as const
 
 /** How many series a chart may colour before the tail folds into "Other". */

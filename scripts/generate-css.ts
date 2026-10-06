@@ -25,7 +25,6 @@ import { shadow, shadowLight } from '../src/tokens/shadows.ts'
 import { gradient } from '../src/tokens/gradients.ts'
 import {
   brandDepth,
-  brandGlowShadows,
   brandTheme,
   halo,
   themedForeground,
@@ -136,14 +135,10 @@ const brandVars = (theme: Theme): string =>
     ...themedForegroundOrder.map((k) => `  --${k}: ${themedForeground[theme][k]};`),
     `  --gradient-page-brand: ${brandDepth[theme].pageWash};`,
     `  --brand-gradient: ${brandDepth[theme].gradient};`,
-    `  --glow-send: ${brandDepth[theme].glowSend};`,
-    `  --glow-recv: ${brandDepth[theme].glowRecv};`,
-    `  --glow-card: ${brandDepth[theme].glowCard};`,
   ].join('\n')
 
 const brandThemeInline = [
   ...themedForegroundOrder.map((k) => `  --color-${k}: var(--${k});`),
-  ...brandGlowShadows.map((k) => `  --shadow-${k}: var(--${k});`),
 ].join('\n')
 
 const hexToChannels = (hex: string): string => {
@@ -252,9 +247,13 @@ ${shadowDark}
   --app-shadow: 7 4 22;
   --app-shadow-strength: 1;
   --app-rim-alpha: 0.06;
-  /* Glass edge — the hairline a glass card catches light on. */
-  --app-glass-edge: 220 216 240;
-  --app-glass-edge-alpha: 0.09;
+  /* The rule on the left of the current drawer sub-item. */
+  --app-nav-rule: 2px;
+  /* How much of a hidden (blurred) secret still shows. */
+  --app-hidden-opacity: 0.6;
+  /* Card glass edge: a faint 1px ring, violet light along the top and left,
+     green along the bottom and right — the card fill's own direction. See .shadow-card::before. */
+  --card-edge: inset 0 0 0 1px rgba(255, 255, 255, 0.12), inset 1px 1px 0 0 rgba(164, 138, 255, 0.5), inset -1px -1px 0 0 rgba(110, 237, 192, 0.5);
 }
 
 .light {
@@ -264,11 +263,21 @@ ${shadowLightVars}
   --app-shadow: 28 27 46;
   --app-shadow-strength: 0.18;
   --app-rim-alpha: 0.7;
-  --app-glass-edge: 255 255 255;
-  --app-glass-edge-alpha: 0.7;
   /* On white the violet light reads pink: a trace of it, no more. */
   --gradient-card: linear-gradient(135deg, rgba(111, 50, 255, 0.025) 0%, rgba(111, 50, 255, 0) 55%);
+  --card-edge: inset 0 0 0 1px rgba(20, 20, 43, 0.12), inset 1px 1px 0 0 rgba(111, 50, 255, 0.34), inset -1px -1px 0 0 rgba(23, 181, 129, 0.4);
   --gradient-card-hero: linear-gradient(135deg, rgba(111, 50, 255, 0.05) 0%, rgba(111, 50, 255, 0) 50%, rgba(21, 233, 154, 0.06) 100%);
+  --gradient-hover: linear-gradient(135deg, rgba(111, 50, 255, 0.12) 0%, rgba(111, 50, 255, 0.03) 100%);
+  /* A selected card is only this tint: on light it needs a white floor, or it
+     takes the grey of whatever it sits on. */
+  --gradient-active: linear-gradient(135deg, rgba(21, 233, 154, 0.14) 0%, rgba(21, 233, 154, 0.04) 100%), linear-gradient(#FFFFFF, #FFFFFF);
+  /* On white the full green rule is heavy: half of it. */
+  --app-nav-rule: 1px;
+  /* Blurred ink fades into white faster: keep more of it. */
+  --app-hidden-opacity: 0.8;
+  /* The scrollbar thumb is a white wash on dark; on white it needs ink. */
+  --color-scrollbar-thumb: rgba(20, 20, 43, 0.22);
+  --color-scrollbar-thumb-hover: rgba(23, 181, 129, 0.7);
   --gradient-page: radial-gradient(ellipse 80% 55% at 85% -5%, rgba(111, 50, 255, 0.05) 0%, transparent 60%), radial-gradient(ellipse 70% 50% at 0% 105%, rgba(21, 233, 154, 0.05) 0%, transparent 60%);
 }
 
@@ -382,6 +391,8 @@ ${shadowInline}
   --color-scrollbar-track:       ${colors.scrollbar.track};
   --spacing-scrollbar:           ${sizing.scrollbar};
   --spacing-scrollbar-hover:     ${sizing.scrollbarHover};
+  --spacing-scrollbar-thick:     ${sizing.scrollbarThick};
+  --spacing-scrollbar-thick-hover: ${sizing.scrollbarThickHover};
   --spacing-scrollbar-thumb-min: ${sizing.scrollbarThumbMin};
 
   /* Spacing unit — every padding, margin, gap and size step is a multiple of it */
@@ -442,10 +453,13 @@ ${iconBoxSizeTheme}
   --gradient-brand-dark:  ${gradient.brandDark};
   --gradient-brand-text:  ${gradient.brandText};
   --gradient-primary:     ${gradient.primary};
-  --gradient-violet:      ${gradient.violet};
+  --gradient-warning:     ${gradient.warning};
+  --gradient-danger:      ${gradient.danger};
+  --gradient-violet:     ${gradient.violet};
   --gradient-card:        ${gradient.card};
   --gradient-card-hero:   ${gradient.cardHero};
   --gradient-active:      ${gradient.active};
+  --gradient-hover:       ${gradient.hover};
 
   /* Transitions */
   --transition-fast:    ${transition.fast};
@@ -557,6 +571,12 @@ ${keyframesCss}
 .bg-gradient-primary {
   background-image: var(--gradient-primary);
 }
+.bg-gradient-warning {
+  background-image: var(--gradient-warning);
+}
+.bg-gradient-danger {
+  background-image: var(--gradient-danger);
+}
 .bg-gradient-violet {
   background-image: var(--gradient-violet);
 }
@@ -581,6 +601,13 @@ ${keyframesCss}
 .active-gradient-active:is([data-state='active'], [data-state='on'], [aria-selected='true'], [aria-current='page']) {
   background-image: var(--gradient-active);
 }
+/* The violet hover — every hover that turns a surface violet. It sets only
+   background-image, over whatever fill the element has, so a card lightens
+   rather than losing its colour. group-hover-* follows a .group parent. */
+.hover-gradient-violet:hover:not(:disabled),
+.group:hover .group-hover-gradient-violet {
+  background-image: var(--gradient-hover);
+}
 /* A 1px brand-gradient border drawn outside the element's own background.
    Needs a positioned element; the ring sits in ::before so content and
    radius are untouched. */
@@ -598,6 +625,59 @@ ${keyframesCss}
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
   pointer-events: none;
+}
+/* The card's glass edge — the 1px --card-edge ring on every shadow-card,
+   drawn in ::before. It is inset box-shadows, not a masked gradient: a
+   masked 1px ring is anti-aliased twice on its curves and thins out in the
+   corners, a shadow ring keeps its width all round. The alpha mask fades it
+   at 135° — bright top-left and bottom-right, near-clear in between. A
+   static card becomes the ring's containing block; a positioned one keeps
+   its position. */
+.shadow-card:not(.absolute, .fixed, .sticky),
+.shadow-card-hover:not(.absolute, .fixed, .sticky) {
+  position: relative;
+}
+.shadow-card::before,
+.shadow-card-hover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--card-edge);
+  -webkit-mask-image: linear-gradient(135deg, #000 0%, rgba(0, 0, 0, 0.3) 35%, rgba(0, 0, 0, 0.3) 65%, #000 100%);
+  mask-image: linear-gradient(135deg, #000 0%, rgba(0, 0, 0, 0.3) 35%, rgba(0, 0, 0, 0.3) 65%, #000 100%);
+  pointer-events: none;
+}
+/* A chip that stands for a network (NetworkStatusChip): the network badge's
+   fill at rest; on hover the network's own colour, stronger — a deeper fill,
+   and a ring in that colour. --kui-network-chip / --kui-network-accent
+   are set inline by networkChipVars(). */
+.kui-network-chip {
+  background-color: var(--kui-network-chip);
+  color: var(--kui-network-text);
+}
+.kui-network-chip:hover {
+  background-color: color-mix(in srgb, var(--kui-network-accent) 24%, var(--kui-network-chip));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--kui-network-accent) 60%, transparent);
+}
+/* The well: the one surface of every read-only text box — an info cell, a summary
+   row, a record, a PageHeader's page. Borderless. In dark it sits a step under
+   --muted, with violet catching its top-left corner and green fading in at the
+   bottom-right; in light it is --muted with the same two tints, fainter. */
+.kui-well {
+  background-color: color-mix(in srgb, var(--muted) 50%, var(--background));
+  background-image: linear-gradient(135deg, rgba(139, 92, 246, 0.16) 0%, rgba(139, 92, 246, 0.04) 38%, rgba(21, 233, 154, 0.07) 100%);
+}
+.light .kui-well {
+  background-color: var(--muted);
+  background-image: linear-gradient(135deg, rgba(111, 50, 255, 0.05) 0%, rgba(111, 50, 255, 0.01) 40%, rgba(21, 233, 154, 0.05) 100%);
+}
+/* Danger red: the brighter #FF3333 is for dark; light keeps the original #F94040
+   (and its gradient), which already reads on white. Last in the file, so it wins
+   over the @theme value on the same element. */
+.light {
+  --color-danger: #F94040;
+  --gradient-danger: linear-gradient(135deg, #FB7070 0%, #F94040 45%, #B91C1C 100%);
 }
 /* A white monochrome mark (Spark's asterisk) drawn black on the light theme. */
 .light .kui-mono-icon {
@@ -643,7 +723,7 @@ const brandCss = `/* AUTO-GENERATED — do not edit by hand.
 :root:not(.dark),
 .light {
   --primary: ${brandTheme.lightPrimary};
-  /* The deep brand green takes white text (6.3:1); the default light green takes dark ink. */
+  /* The deep brand green takes white text (5.3:1); the default light green takes dark ink. */
   --primary-foreground: #FFFFFF;
   /* …and its button gradient runs through the deep greens under that white text. */
   --gradient-primary: linear-gradient(135deg, #0E8F5C 0%, ${brandTheme.lightPrimary} 55%, #065A39 100%);

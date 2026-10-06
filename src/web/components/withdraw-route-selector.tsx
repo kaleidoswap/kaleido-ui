@@ -54,14 +54,14 @@ function RouteChoiceCard<TAccount extends string>({
 
   // Card body: protocol name, current amount below it, and the fee hint.
   const body = (
-    <div className="flex items-start justify-between gap-3">
+    <div className="flex items-center justify-between gap-3">
       <div className="flex min-w-0 items-start gap-3">
         {accountIcon && <div className="mt-0.5 shrink-0">{accountIcon}</div>}
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-body font-bold text-foreground">{route.accountTitle}</span>
             {recommended && !disabled && (
-              <span className={cn('rounded-full bg-primary/15 px-2 py-0.5 text-brand shadow-glow-primary-soft', eyebrow)}>
+              <span className={cn('rounded-full bg-primary/15 px-2 py-0.5 text-brand', eyebrow)}>
                 Recommended
               </span>
             )}
@@ -83,7 +83,7 @@ function RouteChoiceCard<TAccount extends string>({
   )
 
   if (displayOnly) {
-    return <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-4 py-3.5 shadow-card">{body}</div>
+    return <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-4 py-3.5 shadow-card-secondary">{body}</div>
   }
 
   return (
@@ -100,10 +100,10 @@ function RouteChoiceCard<TAccount extends string>({
           ? 'cursor-not-allowed bg-danger/5 opacity-60'
           : selected
             ? cn(
-                'bg-gradient-active shadow-glow-primary-soft ring-1 ring-inset ring-primary/40',
+                'bg-gradient-active shadow-glow-primary-faint ring-1 ring-inset ring-primary/40',
                 accentClassName ?? 'bg-secondary/10',
               )
-            : 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-card hover:bg-secondary/10 hover:shadow-card-hover'
+            : 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-card-secondary hover-gradient-violet hover:shadow-card-hover-soft'
       )}
     >
       {body}
@@ -124,8 +124,8 @@ export function WithdrawRouteSelector<TAccount extends string = string>({
   const headingId = useId()
 
   return (
-    <div className="space-y-2">
-      <p id={headingId} className={cn('m-0 ml-1 block pb-1 leading-none', eyebrow, 'text-secondary-content')}>
+    <div className="flex flex-col gap-2">
+      <p id={headingId} className={cn('mb-1 ml-1 block leading-none', eyebrow, 'text-secondary-content')}>
         Route
       </p>
 

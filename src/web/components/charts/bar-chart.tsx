@@ -1,6 +1,8 @@
 import { useState, type KeyboardEvent, type ReactNode } from 'react'
 import {
   ChartFrame,
+  useSeriesVisibility,
+  type ChartTitleProps,
   ChartLegend,
   ChartTooltip,
   TICK_FONT,
@@ -18,7 +20,7 @@ import {
   type TooltipRow,
 } from './core'
 
-export interface BarChartProps {
+export interface BarChartProps extends ChartTitleProps {
   /** One datum per category (or period), in display order. */
   data: readonly ChartDatum[]
   /** At most six, in slot order. One series needs no legend: the label names it. */
@@ -64,7 +66,7 @@ function barPath(x: number, y: number, w: number, h: number, end: 'top' | 'right
  */
 export function BarChart({
   data,
-  series,
+  series: allSeries,
   label,
   scaleLabel,
   layout = 'grouped',
@@ -74,9 +76,13 @@ export function BarChart({
   height = 240,
   empty,
   className,
+  ...head
 }: BarChartProps) {
   const [containerRef, width] = useChartWidth()
   const [active, setActive] = useState<number | null>(null)
+  const visibility = useSeriesVisibility(allSeries.map((s) => s.id))
+  const series = allSeries.filter((s) => visibility.isVisible(s.id))
+  const slotOf = (id: string) => allSeries.findIndex((s) => s.id === id)
   const count = data.length
   if (count === 0 || series.length === 0) return <>{empty ?? null}</>
 
@@ -117,7 +123,7 @@ export function BarChart({
       id: s.id,
       label: s.label,
       value: formatValue(data[index].values[s.id] ?? 0),
-      color: seriesColor(slot),
+      color: seriesColor(slotOf(s.id)),
     }))
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -148,7 +154,7 @@ export function BarChart({
       const path = horizontal
         ? barPath(plotLeft + offset + seam, across, Math.max(0.5, length - seam), barThickness, isLastInStack ? 'right' : 'none')
         : barPath(across, plotBottom - offset - length, barThickness, Math.max(0.5, length - seam), isLastInStack ? 'top' : 'none')
-      marks.push(<path key={s.id} data-series={s.id} d={path} fill={seriesColor(slot)} />)
+      marks.push(<path key={s.id} data-series={s.id} d={path} fill={seriesColor(slotOf(s.id))} />)
     })
     return (
       <g key={d.key} data-category={d.key} opacity={active !== null && active !== index ? 0.55 : 1}>
@@ -177,12 +183,16 @@ export function BarChart({
 
   return (
     <ChartFrame
+      {...head}
       label={label}
       className={className}
       scale={`${scaleLabel} · linear, from 0`}
       legend={
-        series.length > 1 ? (
-          <ChartLegend items={series.map((s, slot) => ({ id: s.id, label: s.label, color: seriesColor(slot) }))} />
+        allSeries.length > 1 ? (
+          <ChartLegend
+            items={allSeries.map((s, slot) => ({ id: s.id, label: s.label, color: seriesColor(slot) }))}
+            {...visibility.legend}
+          />
         ) : undefined
       }
       table={{

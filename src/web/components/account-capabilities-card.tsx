@@ -8,9 +8,11 @@ export interface AccountCapabilitiesCardProps {
   accountId: AccountSettingsProtocol
   title: string
   description: string
-  status: string
+  /** @deprecated The card no longer shows a status chip. */
+  status?: string
   capabilities: string[]
-  accent: 'primary' | 'blue' | 'purple'
+  /** @deprecated The status chip takes its colour from `status` (ready is green). */
+  accent?: 'primary' | 'blue' | 'purple'
   isExpanded: boolean
   onToggle: () => void
   collapsible?: boolean
@@ -21,23 +23,14 @@ export function AccountCapabilitiesCard({
   accountId,
   title,
   description,
-  status,
   capabilities,
-  accent,
   isExpanded,
   onToggle,
   collapsible = true,
   children,
 }: AccountCapabilitiesCardProps) {
-  const accentClasses =
-    accent === 'primary'
-      ? 'bg-primary/5 text-brand'
-      : accent === 'blue'
-        ? 'bg-info/5 text-info-fg'
-        : 'bg-network-arkade/5 text-network-arkade-fg'
-
   return (
-    <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-4 shadow-card transition-all duration-300">
+    <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-4 shadow-card-secondary transition-all duration-300">
       <div
         className={cn(
           'group flex items-start justify-between gap-3',
@@ -53,14 +46,6 @@ export function AccountCapabilitiesCard({
           </div>
         </div>
         <div className="flex flex-col items-end gap-2">
-          <span
-            className={cn(
-              'rounded-full px-2 py-1', eyebrow,
-              accentClasses
-            )}
-          >
-            {status}
-          </span>
           {collapsible && (
             <div className="mt-1 text-muted-foreground transition-colors group-hover:text-secondary-content">
               <Icon name={isExpanded ? 'expand_less' : 'expand_more'} size="md" />

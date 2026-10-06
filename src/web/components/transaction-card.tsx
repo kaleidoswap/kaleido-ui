@@ -68,14 +68,13 @@ export function TransactionCard({
   return (
     <div
       className={cn(
-        'rounded-2xl p-4 bg-gradient-card flex items-center justify-between transition-all duration-200 shadow-card relative overflow-hidden group',
+        'rounded-2xl p-4 bg-gradient-card flex items-center justify-between transition-all duration-200 shadow-card-secondary relative overflow-hidden group',
         statusStyle.base,
-        onClick && `cursor-pointer hover:shadow-card-hover active:scale-[0.98] ${statusStyle.hover}`,
+        onClick && `cursor-pointer hover:shadow-card-secondary active:scale-[0.98] ${statusStyle.hover}`,
         className
       )}
       onClick={onClick}
     >
-      <div className="absolute inset-0 bg-gradient-card opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
       <div className="flex items-center gap-3 relative z-10">
         {/* Status lives on the icon (small badge bottom-right) instead of a
             full-width chip — the row keeps title + date on one line. */}

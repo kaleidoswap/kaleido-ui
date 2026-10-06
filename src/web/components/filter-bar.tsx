@@ -30,6 +30,8 @@ export interface FilterBarProps {
   countLabel?: (count: number) => string
   /** Start the narrow panel open. */
   defaultOpen?: boolean
+  /** Wide layout: the controls and the count line from the left (default) or the right. */
+  align?: 'start' | 'end'
   className?: string
 }
 
@@ -52,6 +54,7 @@ export function FilterBar({
   filtersLabel = 'Filters',
   countLabel = defaultCountLabel,
   defaultOpen = false,
+  align = 'start',
   className,
 }: FilterBarProps) {
   const narrow = useIsNarrow()
@@ -70,7 +73,7 @@ export function FilterBar({
           <CollapsibleTrigger
             type="button"
             aria-label={`${filtersLabel}, ${countLabel(activeCount)}`}
-            className="inline-flex h-9 items-center gap-2 rounded-xl bg-muted/40 px-3 text-caption font-semibold text-foreground shadow-raised ring-1 ring-inset ring-secondary/15 hover:bg-secondary/10 hover:ring-secondary/35 data-[state=open]:bg-secondary/15 data-[state=open]:text-secondary-content data-[state=open]:ring-secondary/35"
+            className="inline-flex h-9 items-center gap-2 rounded-xl bg-muted/40 px-3 text-caption font-semibold text-foreground shadow-raised ring-1 ring-inset ring-secondary/15 hover-gradient-violet hover:ring-secondary/35 data-[state=open]:bg-secondary/15 data-[state=open]:text-secondary-content data-[state=open]:ring-secondary/35"
           >
             <Icon name="tune" className="text-icon-md" />
             {filtersLabel}
@@ -89,10 +92,16 @@ export function FilterBar({
   }
 
   return (
-    <div data-slot="filter-bar" data-layout="wide" className={cn('flex flex-wrap items-end gap-3', className)}>
+    <div
+      data-slot="filter-bar"
+      data-layout="wide"
+      className={cn('flex flex-wrap items-end gap-3', align === 'end' && 'justify-end', className)}
+    >
       {children}
       {activeCount > 0 && (
-        <div className="flex items-center gap-2">
+        // Its own line under the filters, never squeezed in beside them.
+        // The count belongs to the controls above it: a tighter gap than theirs.
+        <div className={cn('-mt-1.5 flex basis-full items-center gap-2', align === 'end' && 'justify-end')}>
           <span className="text-caption text-muted-foreground">{activeLabel(activeCount)}</span>
           {clear}
         </div>

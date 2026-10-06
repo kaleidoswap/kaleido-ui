@@ -16,7 +16,8 @@ export interface CodeBlockProps {
 /**
  * Monospaced code in a `<pre>` that scrolls sideways rather than wrapping, on
  * the library's horizontal scrollbar, with a copy button in its top-right
- * corner.
+ * corner. The scroller sits inside the box's padding, so a long line is cut
+ * at the same margin as everything else in it, not at the box's edge.
  */
 export function CodeBlock({ code, label = 'code', language, className }: CodeBlockProps) {
   return (
@@ -32,8 +33,9 @@ export function CodeBlock({ code, label = 'code', language, className }: CodeBlo
         <CopyButton value={code} label={label} />
       </div>
       <HorizontalScrollArea
+        className="my-4 ml-4 mr-12"
         viewportAs="pre"
-        viewportClassName="m-0 p-4 pr-12 font-mono text-caption text-foreground"
+        viewportClassName="m-0 pb-3 font-mono text-caption text-foreground"
       >
         <code>{code}</code>
       </HorizontalScrollArea>

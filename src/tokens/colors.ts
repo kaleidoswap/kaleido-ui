@@ -93,7 +93,7 @@ export const colors = {
   /** Semantic intent colors (use as text-success, bg-warning/15, etc.) */
   success: darkSemanticColors.primary,
   warning: '#FACC15',
-  danger: '#F94040',
+  danger: '#E53535',
   info: '#4290FF',
   /** @deprecated alias for `danger` — kept for back-compat. */
   error: darkSemanticColors.destructive,

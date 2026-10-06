@@ -173,7 +173,7 @@ export function DepositPreGeneration({
 
       {/* RGB asset-id: receive a specific asset, or any asset when left empty. */}
       {isRgbOnchain && isNewRgbAsset && setNewAssetId && (
-        <div className="space-y-1.5">
+        <div className="flex flex-col gap-2">
           <Label htmlFor={assetIdInputId}>
             RGB Asset ID - Optional
           </Label>
@@ -254,7 +254,7 @@ export function DepositPreGeneration({
       )}
 
       {network === 'onchain' && !isBtc && (
-        <div className="space-y-1.5">
+        <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <Label htmlFor={amountId}>
               Amount ({getUnitLabel()}) - Optional

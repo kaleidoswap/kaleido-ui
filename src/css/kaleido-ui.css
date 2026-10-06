@@ -54,8 +54,8 @@
   --chart-4:              #6F32FF;
   --chart-5:              #DD352E;
   /* Chart series, in slot order — from src/tokens/chart.ts */
-  --series-1:             #0b764d;
-  --series-2:             #4e40a0;
+  --series-1:             #17b581;
+  --series-2:             #6851c3;
   --series-3:             #0f9cd0;
   --series-4:             #dea805;
   --series-5:             #c34189;
@@ -88,8 +88,8 @@
   --chart-4:              #8B5CF6;
   --chart-5:              #DD352E;
   /* Chart series, in slot order — from src/tokens/chart.ts */
-  --series-1:             #098356;
-  --series-2:             #7061db;
+  --series-1:             #17b581;
+  --series-2:             #8374da;
   --series-3:             #179fd4;
   --series-4:             #b3880f;
   --series-5:             #db589e;
@@ -107,6 +107,7 @@
   --app-surface-overlay: 28 26 42;
   --app-surface-elevated: 40 38 56;
   --app-surface-high: 54 51 74;
+  --app-surface-inset: 20 19 30;
   --app-primary: 21 233 154;
   --app-primary-emphasis: 18 201 126;
   --app-primary-foreground: 14 13 22;
@@ -147,25 +148,37 @@
   --kui-shadow-glow-accent: 0 4px 30px rgba(10, 10, 10, 0.18);
   --kui-shadow-header: 0 10px 24px rgba(7, 4, 22, 0.35), 0 1px 0 rgba(164, 138, 255, 0.08);
   --kui-shadow-glow-primary-soft: 0 0 8px rgba(21, 233, 154, 0.5);
+  --kui-shadow-glow-primary-faint: 0 0 6px rgba(21, 233, 154, 0.22);
   --kui-shadow-glow-primary: 0 0 30px rgba(21, 233, 154, 0.45);
   --kui-shadow-glow-primary-strong: 0 0 40px rgba(21, 233, 154, 0.55);
   --kui-shadow-glow-violet-soft: 0 0 12px rgba(111, 50, 255, 0.45);
+  --kui-shadow-glow-violet-faint: 0 0 8px rgba(111, 50, 255, 0.25);
   --kui-shadow-glow-violet: 0 0 30px rgba(111, 50, 255, 0.5);
   --kui-shadow-glow-brand: -10px 0 32px -8px rgba(21, 233, 154, 0.45), 10px 0 32px -8px rgba(111, 50, 255, 0.55);
-  --kui-shadow-card: inset 0 1px 0 0 rgb(255 255 255 / var(--app-rim-alpha)), inset 0 0 0 1px rgb(var(--app-glass-edge) / var(--app-glass-edge-alpha)), 0 2px 6px -1px rgb(var(--app-shadow) / calc(0.45 * var(--app-shadow-strength))), 0 12px 32px -12px rgb(var(--app-shadow) / calc(0.7 * var(--app-shadow-strength)));
-  --kui-shadow-card-hover: inset 0 1px 0 0 rgb(255 255 255 / var(--app-rim-alpha)), inset 0 0 0 1px rgb(var(--app-glass-edge) / var(--app-glass-edge-alpha)), 0 4px 12px -2px rgb(var(--app-shadow) / calc(0.5 * var(--app-shadow-strength))), 0 20px 44px -14px rgba(111, 50, 255, 0.26);
+  --kui-shadow-card: 0 2px 6px -1px rgb(var(--app-shadow) / calc(0.45 * var(--app-shadow-strength))), 0 12px 32px -12px rgb(var(--app-shadow) / calc(0.7 * var(--app-shadow-strength)));
+  --kui-shadow-card-secondary: 0 2px 6px -1px rgb(var(--app-shadow) / calc(0.45 * var(--app-shadow-strength))), 0 12px 32px -12px rgb(var(--app-shadow) / calc(0.7 * var(--app-shadow-strength)));
+  --kui-shadow-card-hover: 0 4px 12px -2px rgb(var(--app-shadow) / calc(0.5 * var(--app-shadow-strength))), 0 20px 44px -14px rgba(111, 50, 255, 0.26);
+  --kui-shadow-card-hover-soft: 0 6px 20px -10px rgba(111, 50, 255, 0.3);
   --kui-shadow-raised: inset 0 1px 0 0 rgb(255 255 255 / var(--app-rim-alpha)), 0 2px 4px -1px rgb(var(--app-shadow) / calc(0.4 * var(--app-shadow-strength))), 0 6px 14px -6px rgb(var(--app-shadow) / calc(0.55 * var(--app-shadow-strength)));
-  --kui-shadow-button-primary: 0 8px 22px -8px rgba(21, 233, 154, 0.65);
+  --kui-shadow-button-primary: 0 6px 14px -8px rgba(21, 233, 154, 0.4);
+  --kui-shadow-button-primary-hover: 0 6px 14px -8px rgba(21, 233, 154, 0.4), 0 0 14px rgba(21, 233, 154, 0.16);
   --kui-shadow-button-violet: 0 8px 22px -8px rgba(111, 50, 255, 0.75);
+  --kui-shadow-button-outline-hover: 0 0 8px rgba(21, 233, 154, 0.5);
+  --kui-shadow-button-surface-hover: 0 0 12px rgba(111, 50, 255, 0.45);
+  --kui-shadow-nav-active: 0 0 8px rgba(21, 233, 154, 0.5);
   --kui-shadow-popover: 0 0 0 1px rgba(164, 138, 255, 0.10), 0 24px 60px -12px rgba(7, 4, 22, 0.8), 0 0 48px -16px rgba(111, 50, 255, 0.35);
   --kui-shadow-toast: 0 0 0 1px rgba(164, 138, 255, 0.10), 0 12px 36px -8px rgba(7, 4, 22, 0.6);
   /* Elevation ink — shadows are cast in a near-black violet. */
   --app-shadow: 7 4 22;
   --app-shadow-strength: 1;
   --app-rim-alpha: 0.06;
-  /* Glass edge — the hairline a glass card catches light on. */
-  --app-glass-edge: 220 216 240;
-  --app-glass-edge-alpha: 0.09;
+  /* The rule on the left of the current drawer sub-item. */
+  --app-nav-rule: 2px;
+  /* How much of a hidden (blurred) secret still shows. */
+  --app-hidden-opacity: 0.6;
+  /* Card glass edge: a faint 1px ring, violet light along the top and left,
+     green along the bottom and right — the card fill's own direction. See .shadow-card::before. */
+  --card-edge: inset 0 0 0 1px rgba(255, 255, 255, 0.12), inset 1px 1px 0 0 rgba(164, 138, 255, 0.5), inset -1px -1px 0 0 rgba(110, 237, 192, 0.5);
 }
 
 .light {
@@ -174,6 +187,7 @@
   --app-surface-overlay: 255 255 255;
   --app-surface-elevated: 250 250 252;
   --app-surface-high: 239 239 244;
+  --app-surface-inset: 214 213 228;
   --app-primary: 23 181 129;
   --app-primary-emphasis: 19 138 100;
   --app-primary-foreground: 14 13 22;
@@ -192,7 +206,7 @@
   --app-status-danger: 220 38 38;
   --app-status-warning: 217 119 6;
   --app-status-info: 2 132 199;
-  --app-divider: 222 222 230;
+  --app-divider: 196 196 208;
   --app-network-spark: 13 12 20;
   --network-bitcoin-chip: #FBEFD9;
   --network-bitcoin-text: #92400E;
@@ -214,26 +228,44 @@
   --kui-shadow-glow-accent: 0 4px 30px rgba(20, 20, 43, 0.1);
   --kui-shadow-header: 0 1px 0 rgba(20, 20, 43, 0.06), 0 6px 16px -10px rgba(20, 20, 43, 0.14);
   --kui-shadow-glow-primary-soft: 0 0 0 3px rgba(23, 181, 129, 0.16), 0 2px 8px -2px rgba(23, 181, 129, 0.25);
+  --kui-shadow-glow-primary-faint: 0 0 0 2px rgba(23, 181, 129, 0.1), 0 2px 6px -2px rgba(23, 181, 129, 0.16);
   --kui-shadow-glow-primary: 0 6px 20px -6px rgba(23, 181, 129, 0.4);
   --kui-shadow-glow-primary-strong: 0 10px 28px -8px rgba(23, 181, 129, 0.5);
   --kui-shadow-glow-violet-soft: 0 0 0 3px rgba(111, 50, 255, 0.12), 0 2px 8px -2px rgba(111, 50, 255, 0.2);
+  --kui-shadow-glow-violet-faint: 0 0 0 2px rgba(111, 50, 255, 0.1), 0 2px 6px -2px rgba(111, 50, 255, 0.14);
   --kui-shadow-glow-violet: 0 6px 20px -6px rgba(111, 50, 255, 0.32);
   --kui-shadow-glow-brand: -8px 6px 24px -10px rgba(23, 181, 129, 0.4), 8px 6px 24px -10px rgba(111, 50, 255, 0.36);
-  --kui-shadow-card: 0 0 0 1px rgba(20, 20, 43, 0.05), 0 1px 2px rgba(20, 20, 43, 0.05), 0 4px 12px -4px rgba(20, 20, 43, 0.08), 0 14px 32px -16px rgba(20, 20, 43, 0.14);
-  --kui-shadow-card-hover: 0 0 0 1px rgba(20, 20, 43, 0.06), 0 2px 4px rgba(20, 20, 43, 0.05), 0 10px 24px -8px rgba(20, 20, 43, 0.12), 0 22px 44px -18px rgba(111, 50, 255, 0.18);
+  --kui-shadow-card: 0 1px 2px rgba(20, 20, 43, 0.05), 0 4px 12px -4px rgba(20, 20, 43, 0.08), 0 14px 32px -16px rgba(20, 20, 43, 0.14);
+  --kui-shadow-card-secondary: 0 1px 2px rgba(20, 20, 43, 0.05), 0 4px 12px -4px rgba(20, 20, 43, 0.08), 0 14px 32px -16px rgba(20, 20, 43, 0.14);
+  --kui-shadow-card-hover: 0 2px 4px rgba(20, 20, 43, 0.05), 0 10px 24px -8px rgba(20, 20, 43, 0.12), 0 22px 44px -18px rgba(111, 50, 255, 0.18);
+  --kui-shadow-card-hover-soft: 0 4px 14px -8px rgba(111, 50, 255, 0.16);
   --kui-shadow-raised: 0 0 0 1px rgba(20, 20, 43, 0.06), 0 1px 2px rgba(20, 20, 43, 0.07), 0 3px 8px -3px rgba(20, 20, 43, 0.1);
-  --kui-shadow-button-primary: 0 1px 2px rgba(13, 122, 88, 0.22), 0 6px 14px -6px rgba(23, 181, 129, 0.5);
+  --kui-shadow-button-primary: 0 1px 2px rgba(13, 122, 88, 0.18), 0 4px 10px -6px rgba(23, 181, 129, 0.32);
+  --kui-shadow-button-primary-hover: 0 1px 2px rgba(13, 122, 88, 0.18), 0 4px 10px -6px rgba(23, 181, 129, 0.32), 0 3px 10px -6px rgba(23, 181, 129, 0.2);
   --kui-shadow-button-violet: 0 1px 2px rgba(55, 20, 136, 0.22), 0 6px 14px -6px rgba(111, 50, 255, 0.45);
+  --kui-shadow-button-outline-hover: 0 0 0 1px rgba(23, 181, 129, 0.12), 0 2px 8px -3px rgba(23, 181, 129, 0.25);
+  --kui-shadow-button-surface-hover: 0 0 0 1px rgba(111, 50, 255, 0.14), 0 2px 8px -3px rgba(111, 50, 255, 0.22);
+  --kui-shadow-nav-active: 0 2px 8px -3px rgba(23, 181, 129, 0.3);
   --kui-shadow-popover: 0 0 0 1px rgba(20, 20, 43, 0.06), 0 4px 10px -4px rgba(20, 20, 43, 0.08), 0 18px 40px -14px rgba(20, 20, 43, 0.2);
   --kui-shadow-toast: 0 0 0 1px rgba(20, 20, 43, 0.06), 0 10px 28px -10px rgba(20, 20, 43, 0.2);
   --app-shadow: 28 27 46;
   --app-shadow-strength: 0.18;
   --app-rim-alpha: 0.7;
-  --app-glass-edge: 255 255 255;
-  --app-glass-edge-alpha: 0.7;
   /* On white the violet light reads pink: a trace of it, no more. */
   --gradient-card: linear-gradient(135deg, rgba(111, 50, 255, 0.025) 0%, rgba(111, 50, 255, 0) 55%);
+  --card-edge: inset 0 0 0 1px rgba(20, 20, 43, 0.12), inset 1px 1px 0 0 rgba(111, 50, 255, 0.34), inset -1px -1px 0 0 rgba(23, 181, 129, 0.4);
   --gradient-card-hero: linear-gradient(135deg, rgba(111, 50, 255, 0.05) 0%, rgba(111, 50, 255, 0) 50%, rgba(21, 233, 154, 0.06) 100%);
+  --gradient-hover: linear-gradient(135deg, rgba(111, 50, 255, 0.12) 0%, rgba(111, 50, 255, 0.03) 100%);
+  /* A selected card is only this tint: on light it needs a white floor, or it
+     takes the grey of whatever it sits on. */
+  --gradient-active: linear-gradient(135deg, rgba(21, 233, 154, 0.14) 0%, rgba(21, 233, 154, 0.04) 100%), linear-gradient(#FFFFFF, #FFFFFF);
+  /* On white the full green rule is heavy: half of it. */
+  --app-nav-rule: 1px;
+  /* Blurred ink fades into white faster: keep more of it. */
+  --app-hidden-opacity: 0.8;
+  /* The scrollbar thumb is a white wash on dark; on white it needs ink. */
+  --color-scrollbar-thumb: rgba(20, 20, 43, 0.22);
+  --color-scrollbar-thumb-hover: rgba(23, 181, 129, 0.7);
   --gradient-page: radial-gradient(ellipse 80% 55% at 85% -5%, rgba(111, 50, 255, 0.05) 0%, transparent 60%), radial-gradient(ellipse 70% 50% at 0% 105%, rgba(21, 233, 154, 0.05) 0%, transparent 60%);
 }
 
@@ -244,9 +276,9 @@
    Light is the default (like --primary / --card above); .dark switches. ── */
 :root,
 .light {
-  --brand: #086E46;
+  --brand: #097B4E;
   --accent-send-fg: #6428F0;
-  --accent-recv-fg: #086E46;
+  --accent-recv-fg: #097B4E;
   --success-fg: #076A43;
   --warning-fg: #92400E;
   --danger-fg: #991B1B;
@@ -259,10 +291,7 @@
   --network-rgb-fg: #991B1B;
   --network-taproot-fg: #464A69;
   --gradient-page-brand: radial-gradient(ellipse 70% 45% at 50% -5%, rgba(21, 233, 154, 0.16) 0%, transparent 70%), radial-gradient(ellipse 50% 32% at 0% 68%, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
-  --brand-gradient: linear-gradient(90deg, #086E46 0%, #0369A1 55%, #6D28D9 100%);
-  --glow-send: 0 0 0 1px rgba(100, 40, 240, 0.22), 0 12px 32px -14px rgba(100, 40, 240, 0.4);
-  --glow-recv: 0 0 0 1px rgba(8, 110, 70, 0.2), 0 12px 32px -14px rgba(8, 110, 70, 0.35);
-  --glow-card: 0 0 0 1px rgba(20, 20, 60, 0.06), 0 30px 80px -40px rgba(100, 40, 240, 0.28);
+  --brand-gradient: linear-gradient(90deg, #0B9B63 0%, #048EDA 55%, #9D6FE6 100%);
 }
 
 .dark {
@@ -282,9 +311,6 @@
   --network-taproot-fg: #C4CACD;
   --gradient-page-brand: radial-gradient(ellipse 70% 45% at 50% -5%, rgba(21, 233, 154, 0.13) 0%, transparent 70%), radial-gradient(ellipse 50% 32% at 0% 68%, rgba(124, 58, 237, 0.16) 0%, transparent 70%), radial-gradient(ellipse 45% 40% at 100% 50%, rgba(56, 189, 248, 0.07) 0%, transparent 70%);
   --brand-gradient: linear-gradient(90deg, #15E99A 0%, #38BDF8 55%, #A78BFA 100%);
-  --glow-send: 0 0 0 1px rgba(167, 139, 250, 0.28), 0 12px 40px -12px rgba(124, 58, 237, 0.55);
-  --glow-recv: 0 0 0 1px rgba(21, 233, 154, 0.22), 0 12px 40px -12px rgba(21, 233, 154, 0.35);
-  --glow-card: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 40px 100px -40px rgba(124, 58, 237, 0.35), 0 -20px 80px -50px rgba(21, 233, 154, 0.3);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -334,6 +360,7 @@
   --color-surface-overlay: rgb(var(--app-surface-overlay));
   --color-surface-elevated: rgb(var(--app-surface-elevated));
   --color-surface-high: rgb(var(--app-surface-high));
+  --color-surface-inset: rgb(var(--app-surface-inset));
   --color-primary: rgb(var(--app-primary));
   --color-primary-emphasis: rgb(var(--app-primary-emphasis));
   --color-primary-foreground: rgb(var(--app-primary-foreground));
@@ -388,9 +415,6 @@
   --color-network-spark-fg: var(--network-spark-fg);
   --color-network-rgb-fg: var(--network-rgb-fg);
   --color-network-taproot-fg: var(--network-taproot-fg);
-  --shadow-glow-send: var(--glow-send);
-  --shadow-glow-recv: var(--glow-recv);
-  --shadow-glow-card: var(--glow-card);
 
   /* Shadows, per theme: --kui-shadow-* is declared for dark (:root, .dark) and
      light (.light). Inline so each utility resolves it on the element. */
@@ -400,16 +424,24 @@
   --shadow-glow-accent: var(--kui-shadow-glow-accent);
   --shadow-header: var(--kui-shadow-header);
   --shadow-glow-primary-soft: var(--kui-shadow-glow-primary-soft);
+  --shadow-glow-primary-faint: var(--kui-shadow-glow-primary-faint);
   --shadow-glow-primary: var(--kui-shadow-glow-primary);
   --shadow-glow-primary-strong: var(--kui-shadow-glow-primary-strong);
   --shadow-glow-violet-soft: var(--kui-shadow-glow-violet-soft);
+  --shadow-glow-violet-faint: var(--kui-shadow-glow-violet-faint);
   --shadow-glow-violet: var(--kui-shadow-glow-violet);
   --shadow-glow-brand: var(--kui-shadow-glow-brand);
   --shadow-card: var(--kui-shadow-card);
+  --shadow-card-secondary: var(--kui-shadow-card-secondary);
   --shadow-card-hover: var(--kui-shadow-card-hover);
+  --shadow-card-hover-soft: var(--kui-shadow-card-hover-soft);
   --shadow-raised: var(--kui-shadow-raised);
   --shadow-button-primary: var(--kui-shadow-button-primary);
+  --shadow-button-primary-hover: var(--kui-shadow-button-primary-hover);
   --shadow-button-violet: var(--kui-shadow-button-violet);
+  --shadow-button-outline-hover: var(--kui-shadow-button-outline-hover);
+  --shadow-button-surface-hover: var(--kui-shadow-button-surface-hover);
+  --shadow-nav-active: var(--kui-shadow-nav-active);
   --shadow-popover: var(--kui-shadow-popover);
   --shadow-toast: var(--kui-shadow-toast);
 }
@@ -436,7 +468,7 @@
   /* Intent colors */
   --color-success: #15E99A;
   --color-warning: #FACC15;
-  --color-danger:  #F94040;
+  --color-danger:  #E53535;
   --color-info:    #4290FF;
 
   /* Surface elevation — extras with no slate-semantic equivalent.
@@ -461,6 +493,8 @@
   --color-scrollbar-track:       transparent;
   --spacing-scrollbar:           2px;
   --spacing-scrollbar-hover:     6px;
+  --spacing-scrollbar-thick:     6px;
+  --spacing-scrollbar-thick-hover: 10px;
   --spacing-scrollbar-thumb-min: 24px;
 
   /* Spacing unit — every padding, margin, gap and size step is a multiple of it */
@@ -563,10 +597,13 @@
   --gradient-brand-dark:  linear-gradient(135deg, #17B581 0%, #5420CC 100%);
   --gradient-brand-text:  linear-gradient(135deg, #6EEDC0 0%, #A48AFF 100%);
   --gradient-primary:     linear-gradient(135deg, #6EEDC0 0%, #15E99A 45%, #17B581 100%);
-  --gradient-violet:      linear-gradient(135deg, #8B5CF6 0%, #6F32FF 50%, #5420CC 100%);
+  --gradient-warning:     linear-gradient(135deg, #FDE047 0%, #FACC15 45%, #CA8A04 100%);
+  --gradient-danger:      linear-gradient(135deg, #FB7070 0%, #E53535 45%, #B91C1C 100%);
+  --gradient-violet:     linear-gradient(135deg, #8B5CF6 0%, #6F32FF 50%, #5420CC 100%);
   --gradient-card:        linear-gradient(135deg, rgba(111, 50, 255, 0.06) 0%, rgba(111, 50, 255, 0) 55%);
   --gradient-card-hero:   linear-gradient(135deg, rgba(111, 50, 255, 0.16) 0%, rgba(111, 50, 255, 0.03) 50%, rgba(21, 233, 154, 0.12) 100%);
   --gradient-active:      linear-gradient(135deg, rgba(21, 233, 154, 0.16) 0%, rgba(21, 233, 154, 0.04) 100%);
+  --gradient-hover:       linear-gradient(135deg, rgba(111, 50, 255, 0.18) 0%, rgba(111, 50, 255, 0.04) 100%);
 
   /* Transitions */
   --transition-fast:    150ms ease-out;
@@ -791,6 +828,12 @@
 .bg-gradient-primary {
   background-image: var(--gradient-primary);
 }
+.bg-gradient-warning {
+  background-image: var(--gradient-warning);
+}
+.bg-gradient-danger {
+  background-image: var(--gradient-danger);
+}
 .bg-gradient-violet {
   background-image: var(--gradient-violet);
 }
@@ -815,6 +858,13 @@
 .active-gradient-active:is([data-state='active'], [data-state='on'], [aria-selected='true'], [aria-current='page']) {
   background-image: var(--gradient-active);
 }
+/* The violet hover — every hover that turns a surface violet. It sets only
+   background-image, over whatever fill the element has, so a card lightens
+   rather than losing its colour. group-hover-* follows a .group parent. */
+.hover-gradient-violet:hover:not(:disabled),
+.group:hover .group-hover-gradient-violet {
+  background-image: var(--gradient-hover);
+}
 /* A 1px brand-gradient border drawn outside the element's own background.
    Needs a positioned element; the ring sits in ::before so content and
    radius are untouched. */
@@ -832,6 +882,59 @@
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
   pointer-events: none;
+}
+/* The card's glass edge — the 1px --card-edge ring on every shadow-card,
+   drawn in ::before. It is inset box-shadows, not a masked gradient: a
+   masked 1px ring is anti-aliased twice on its curves and thins out in the
+   corners, a shadow ring keeps its width all round. The alpha mask fades it
+   at 135° — bright top-left and bottom-right, near-clear in between. A
+   static card becomes the ring's containing block; a positioned one keeps
+   its position. */
+.shadow-card:not(.absolute, .fixed, .sticky),
+.shadow-card-hover:not(.absolute, .fixed, .sticky) {
+  position: relative;
+}
+.shadow-card::before,
+.shadow-card-hover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--card-edge);
+  -webkit-mask-image: linear-gradient(135deg, #000 0%, rgba(0, 0, 0, 0.3) 35%, rgba(0, 0, 0, 0.3) 65%, #000 100%);
+  mask-image: linear-gradient(135deg, #000 0%, rgba(0, 0, 0, 0.3) 35%, rgba(0, 0, 0, 0.3) 65%, #000 100%);
+  pointer-events: none;
+}
+/* A chip that stands for a network (NetworkStatusChip): the network badge's
+   fill at rest; on hover the network's own colour, stronger — a deeper fill,
+   and a ring in that colour. --kui-network-chip / --kui-network-accent
+   are set inline by networkChipVars(). */
+.kui-network-chip {
+  background-color: var(--kui-network-chip);
+  color: var(--kui-network-text);
+}
+.kui-network-chip:hover {
+  background-color: color-mix(in srgb, var(--kui-network-accent) 24%, var(--kui-network-chip));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--kui-network-accent) 60%, transparent);
+}
+/* The well: the one surface of every read-only text box — an info cell, a summary
+   row, a record, a PageHeader's page. Borderless. In dark it sits a step under
+   --muted, with violet catching its top-left corner and green fading in at the
+   bottom-right; in light it is --muted with the same two tints, fainter. */
+.kui-well {
+  background-color: color-mix(in srgb, var(--muted) 50%, var(--background));
+  background-image: linear-gradient(135deg, rgba(139, 92, 246, 0.16) 0%, rgba(139, 92, 246, 0.04) 38%, rgba(21, 233, 154, 0.07) 100%);
+}
+.light .kui-well {
+  background-color: var(--muted);
+  background-image: linear-gradient(135deg, rgba(111, 50, 255, 0.05) 0%, rgba(111, 50, 255, 0.01) 40%, rgba(21, 233, 154, 0.05) 100%);
+}
+/* Danger red: the brighter #FF3333 is for dark; light keeps the original #F94040
+   (and its gradient), which already reads on white. Last in the file, so it wins
+   over the @theme value on the same element. */
+.light {
+  --color-danger: #F94040;
+  --gradient-danger: linear-gradient(135deg, #FB7070 0%, #F94040 45%, #B91C1C 100%);
 }
 /* A white monochrome mark (Spark's asterisk) drawn black on the light theme. */
 .light .kui-mono-icon {

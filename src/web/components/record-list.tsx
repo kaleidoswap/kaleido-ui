@@ -1,8 +1,7 @@
 import * as React from 'react'
-import { Button } from '../primitives/button'
-import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 import { eyebrow } from '../utils/type-roles'
+import { IconButton } from '../primitives/icon-button'
 
 // The stacked form of a table row, for narrow screens: the same data as the
 // row, laid out as a card. A `Table` on the desktop and a `RecordList` below
@@ -56,8 +55,8 @@ const RecordItem = React.forwardRef<HTMLLIElement, RecordItemProps>(
         aria-current={selected ? 'true' : undefined}
         onClick={onOpen}
         className={cn(
-          'space-y-3 rounded-xl bg-muted/40 px-4 py-3 transition-all duration-200',
-          onOpen && 'cursor-pointer shadow-raised hover:bg-secondary/10',
+          'space-y-3 rounded-xl kui-well px-4 py-3 transition-all duration-200',
+          onOpen && 'cursor-pointer shadow-raised hover-gradient-violet',
           selected && 'bg-primary/10 bg-gradient-active shadow-glow-primary-soft ring-1 ring-inset ring-primary/40 hover:bg-primary/10',
           className,
         )}
@@ -71,25 +70,21 @@ const RecordItem = React.forwardRef<HTMLLIElement, RecordItemProps>(
           <div className="flex shrink-0 items-center gap-2">
             {status}
             {onOpen && (
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                aria-label={`Open ${openLabel}`}
+              <IconButton
+                icon="chevron_right"
+                label={`Open ${openLabel}`}
+                size="sm"
                 onClick={(event) => {
                   stop(event)
                   onOpen()
                 }}
-                className="text-muted-foreground hover:bg-secondary/15 hover:text-secondary-content focus-visible:ring-primary/50 focus-visible:ring-offset-0 focus-visible:shadow-glow-primary-soft"
-              >
-                <Icon name="chevron_right" className="text-icon-md" />
-              </Button>
+              />
             )}
           </div>
         </div>
         {children && <dl className="m-0 grid grid-cols-2 gap-x-4 gap-y-2">{children}</dl>}
         {actions && (
-          <div className="flex justify-end gap-2" onClick={stop}>
+          <div className="mt-3 flex justify-start gap-2" onClick={stop}>
             {actions}
           </div>
         )}

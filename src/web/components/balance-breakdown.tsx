@@ -1,9 +1,10 @@
 import { useState, type ReactNode } from 'react'
 import { ActionTile } from './action-tile'
 import { Icon } from '../primitives/icon'
-import { LiquidNetworkIcon } from './network-icon'
+import { LiquidNetworkIcon, OnchainNetworkIcon } from './network-icon'
 import { eyebrow } from '../utils/type-roles'
 import { cn } from '../utils/cn'
+import { IconButton } from '../primitives/icon-button'
 
 export interface BalanceBreakdownAsset {
   asset_id: string
@@ -107,9 +108,7 @@ export interface BalanceBreakdownProps {
 }
 
 function OnchainIcon({ className = '' }: { className?: string }) {
-  return (
-    <Icon name="link" className={className} />
-  )
+  return <OnchainNetworkIcon className={className} />
 }
 
 function ImageIcon({
@@ -198,7 +197,7 @@ export function BalanceBreakdown({
               </div>
             ) : (
               <>
-                <div className="flex min-w-0 max-w-full flex-wrap items-baseline gap-x-1.5 gap-y-1">
+                <div className="flex min-w-0 max-w-full flex-wrap items-center gap-x-1.5 gap-y-1">
                   <span className="text-display font-black leading-[1.1] tracking-tighter tabular-nums text-gradient-brand drop-shadow-sm transition-all duration-300 group-active:scale-95">
                     {balanceVisible ? numberOnly(format(totalBTC)) : '••••••'}
                   </span>
@@ -232,30 +231,23 @@ export function BalanceBreakdown({
 
           <div className="mt-1 flex shrink-0 items-center gap-1.5">
             {onRefresh && (
-              <button
+              <IconButton
+                label="Refresh balances"
+                variant="surface"
+                size="sm"
                 onClick={onRefresh}
                 disabled={isRefreshing}
-                className="flex size-7 items-center justify-center rounded-full bg-secondary/15 shadow-raised ring-1 ring-inset ring-secondary/25 transition-all hover:bg-secondary/25 hover:shadow-glow-violet-soft disabled:opacity-40"
-                title="Refresh balances"
-              >
-                <Icon
-                  name="refresh"
-                  className={`text-icon-sm text-foreground/60${isRefreshing ? ' animate-spin' : ''}`}
-                />
-              </button>
-            )}
-            <button
-              onClick={() => setExpanded(!expanded)}
-              aria-label={expanded ? 'Collapse balance breakdown' : 'Expand balance breakdown'}
-              aria-expanded={expanded}
-              className="flex size-7 items-center justify-center rounded-full bg-secondary/15 shadow-raised ring-1 ring-inset ring-secondary/25 transition-all hover:bg-secondary/25 hover:shadow-glow-violet-soft"
-            >
-              <Icon
-                name={expanded ? 'expand_less' : 'expand_more'}
-                size="md"
-                className="size-7 text-foreground/60"
+                icon={<Icon name="refresh" aria-hidden="true" className={isRefreshing ? 'animate-spin motion-reduce:animate-none' : undefined} />}
               />
-            </button>
+            )}
+            <IconButton
+              label={expanded ? 'Collapse balance breakdown' : 'Expand balance breakdown'}
+              variant="surface"
+              size="sm"
+              aria-expanded={expanded}
+              onClick={() => setExpanded(!expanded)}
+              icon={expanded ? 'expand_less' : 'expand_more'}
+            />
           </div>
         </div>
 
@@ -362,7 +354,7 @@ export function BalanceBreakdown({
                 <p className={cn('mb-3 text-muted-foreground', eyebrow)}>
                   Token Holdings
                 </p>
-                <div className="flex items-center justify-between rounded-xl bg-muted/40 px-3 py-2 shadow-raised">
+                <div className="flex items-center justify-between rounded-xl kui-well px-3 py-2 shadow-raised">
                   <div className="flex items-center gap-3">
                     <div className="h-7 w-0.5 rounded-full bg-success opacity-80" />
                     <div className="flex size-7 items-center justify-center rounded-lg bg-secondary/15 text-icon-sm text-secondary-content ring-1 ring-inset ring-secondary/25">
@@ -501,7 +493,7 @@ function RgbAssetsBreakdown({
 
 function StatusChip({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl bg-muted/40 px-3 py-2">
+    <div className="rounded-xl kui-well px-3 py-2">
       <div className={cn('text-muted-foreground', eyebrow)}>{label}</div>
       <div className="mt-1 truncate text-caption font-semibold text-foreground/80">{value}</div>
     </div>
@@ -540,7 +532,7 @@ function NetworkRow({
   return (
     <div
       data-testid={testId}
-      className={`flex items-center justify-between rounded-xl px-3 py-2 transition-colors ${isEmpty ? 'opacity-35' : 'bg-muted/40 shadow-raised hover:bg-secondary/10'}`}
+      className={`flex items-center justify-between rounded-xl px-3 py-2 transition-colors ${isEmpty ? 'opacity-35' : 'bg-muted/40 shadow-raised hover-gradient-violet'}`}
     >
       <div className="flex items-center gap-3">
         <div className={`h-7 w-0.5 rounded-full ${dotColor} opacity-80`} />

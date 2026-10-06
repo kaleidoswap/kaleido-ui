@@ -1,7 +1,6 @@
 import { type ClassValue, clsx } from 'clsx'
 import { extendTailwindMerge } from 'tailwind-merge'
 
-import { brandGlowShadows } from '../../tokens/brand'
 import { radius } from '../../tokens/radius'
 import { shadow } from '../../tokens/shadows'
 import { iconSize, letterSpacing, typeScale } from '../../tokens/typography'
@@ -32,7 +31,7 @@ const radii = Object.keys(radius).filter((key) =>
 )
 
 /** Every `--shadow-*` token, plus the per-theme brand glows. */
-const shadows = [...Object.keys(shadow).map(camelToKebab), ...brandGlowShadows]
+const shadows = Object.keys(shadow).map(camelToKebab)
 
 const roundedGroups = [
   'rounded',

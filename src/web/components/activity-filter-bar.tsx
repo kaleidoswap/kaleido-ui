@@ -1,5 +1,4 @@
 import { AppIcon } from './app-icon'
-import { Button } from '../primitives/button'
 import {
   Select,
   SelectContent,
@@ -7,6 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../primitives/select'
+import { IconButton } from '../primitives/icon-button'
 
 export interface ActivityStatusOption<TValue extends string = string> {
   value: TValue
@@ -51,14 +51,13 @@ export function ActivityFilterBar<TStatus extends string = string>({
           className="h-full w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 py-2.5 pl-10 pr-8 text-caption text-foreground shadow-inner outline-none transition-all placeholder:text-muted-foreground focus:bg-secondary/10 focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
         />
         {searchTerm && (
-          <button
-            type="button"
-            aria-label="Clear search"
+          <IconButton
+            icon="close"
+            label="Clear search"
+            size="sm"
             onClick={() => onSearchTermChange('')}
-            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-foreground/55 transition-colors hover:text-foreground"
-          >
-            <AppIcon name="close" size="sm" />
-          </button>
+            className="absolute right-1.5 top-1/2 -translate-y-1/2"
+          />
         )}
       </div>
 
@@ -69,7 +68,7 @@ export function ActivityFilterBar<TStatus extends string = string>({
         >
           <SelectTrigger
             aria-label="Filter activity by status"
-            className="h-full rounded-xl border-0 bg-foreground/5 px-3 py-0 text-caption font-bold text-foreground shadow-inner hover:bg-secondary/10 focus:ring-0 data-[state=open]:bg-secondary/15 data-[state=open]:ring-1 data-[state=open]:ring-primary/50 data-[state=open]:shadow-glow-primary-soft"
+            className="h-full rounded-xl border-0 bg-foreground/5 px-3 py-0 text-caption font-bold text-foreground shadow-inner hover-gradient-violet focus:ring-0 data-[state=open]:bg-secondary/15 data-[state=open]:ring-1 data-[state=open]:ring-primary/50 data-[state=open]:shadow-glow-primary-soft"
           >
             <SelectValue />
           </SelectTrigger>
@@ -84,16 +83,7 @@ export function ActivityFilterBar<TStatus extends string = string>({
       </div>
 
       {hasActiveFilters && onClearFilters && (
-        <Button
-          variant="surface"
-          size="icon-lg"
-          onClick={onClearFilters}
-          aria-label="Clear filters"
-          title="Clear Filters"
-          className="h-11 w-11 shrink-0 rounded-xl"
-        >
-          <AppIcon name="close" size="lg" />
-        </Button>
+        <IconButton icon="close" label="Clear filters" variant="surface" size="lg" onClick={onClearFilters} />
       )}
     </div>
   )

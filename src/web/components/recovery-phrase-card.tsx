@@ -50,10 +50,9 @@ export function RecoveryPhraseCard({
         {hasWords && revealed && onRevealChange && (
           <Button
             type="button"
-            variant="ghost"
-            size="sm"
+            variant="surface"
+            size="xs"
             onClick={() => onRevealChange(!revealed)}
-            className="h-auto rounded-lg px-2 py-1 text-caption text-muted-foreground hover:bg-secondary/10 hover:text-secondary-content"
           >
             <Icon name="visibility_off" className="text-icon-md" />
             Hide
@@ -102,10 +101,10 @@ export function RecoveryPhraseCard({
       {hasWords && revealed && handleCopy && (
         <Button
           type="button"
-          variant="h3"
+          variant="surface"
           size="lg"
           onClick={handleCopy}
-          className={cn('w-full', copied && 'bg-primary/10 shadow-glow-primary-soft')}
+          className={cn('w-full', copied && 'bg-primary/10 bg-gradient-active text-brand ring-primary/40 hover:ring-primary/50')}
         >
           <Icon name={copied ? 'check' : 'content_copy'} className="text-icon-lg" />
           {copied ? copiedLabel : copyLabel}

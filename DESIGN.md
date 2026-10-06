@@ -10,7 +10,7 @@ colors:
   brand.primary-light: "#17B581"    # light theme
   brand.primary-contrast: "#051B10"
   brand.foreground: "#15E99A"       # text-brand, dark theme
-  brand.foreground-light: "#086E46" # text-brand, light theme (AA on the light ramp)
+  brand.foreground-light: "#097B4E" # text-brand, light theme (AA on the light ramp)
   brand.mark-violet: "#6F32FF"      # logo paint only
   brand.mark-green: "#17B581"       # logo paint only
   brand.mark-mint: "#15E99A"        # logo paint only
@@ -31,7 +31,7 @@ colors:
   destructive: "hsl(0 62% 50%)"
   success: "#15E99A"                # identical to brand.primary
   warning: "#FACC15"
-  danger: "#F94040"
+  danger: "#E53535"
   info: "#4290FF"
   network.bitcoin: "#F7931A"
   network.lightning: "#F6C343"
@@ -53,7 +53,7 @@ typography:
   body:     { family: "Satoshi", weight: 500, size: 16, line: 24 }
   caption:  { family: "Satoshi", weight: 500, size: 14, line: 20 }
   tiny:     { family: "Satoshi", weight: 500, size: 12, line: 17 }
-  label:    { family: "Satoshi", weight: 700, size: 10, line: 13, tracking: 0.18em, transform: uppercase }
+  label:    { family: "Satoshi", weight: 500, size: 10, line: 13, tracking: 0.18em, transform: uppercase }
   mono:     { family: "Geist Mono", weight: 500, size: 13 }
 rounded:
   card: 16        # rounded-2xl — cards, tiles, settings/account rows, dialogs, sheet top edge
@@ -153,7 +153,7 @@ The palette is organised into six groups. Each group has a specific job; mixing 
 ### Brand
 
 - **`brand.primary` `#15E99A`** (light theme: `#17B581`) — *the* KaleidoSwap signal. Reserve it for three things only: primary CTAs (the single most important action on a screen), active states (selected tab, active nav slot, focused input ring), and success confirmations (completed swap, settled payment). Using it on borders of passive surfaces or as a decorative accent dilutes the signal and makes real CTAs disappear.
-- **`brand.violet` `#6F32FF`** — the supporting brand accent: the `secondary` button (violet gradient) and the `surface` button (violet tint), icon tiles, row hover, field hairlines and form `Label`s, the card light and the shadow ink. **Selection, active and focus are green, not violet** — the selected tab / pill / chip / option, the current page, the focused field. Utilities: `bg-secondary`, `bg-secondary/15`, `ring-secondary/30`. On dark, violet *text and icons* use **`brand.violet-content` `#A48AFF`** (`text-secondary-content`) — `#6F32FF` is a fill, it is too dark to read as text.
+- **`brand.violet` `#6F32FF`** — the supporting brand accent: the `secondary` button (violet gradient) and the `surface` button (violet tint), icon tiles, row hover, field hairlines and form `Label`s, the card light and the shadow ink. **Selection, active and focus are green, not violet** — the selected tab / pill / chip / option, the current page, the focused field. Utilities: `bg-secondary`, `bg-secondary/15`, `ring-secondary/30`. **Every violet hover is `hover-gradient-violet`** (`group-hover-gradient-violet` under a `.group`): the `--gradient-hover` light, violet from the top-left fading out, laid over the element's own fill — a hovered card lightens rather than losing its surface. Do not hover with `hover:bg-secondary/*`. On dark, violet *text and icons* use **`brand.violet-content` `#A48AFF`** (`text-secondary-content`) — `#6F32FF` is a fill, it is too dark to read as text.
 - **`brand.primary-contrast` `#051B10`** — the near-black green that sits on top of `brand.primary`. Use it for button label text, icons inside primary-filled tiles, and any glyph that needs to punch through the green. Never use it as a surface fill.
 
 > **`#2BEE79` is not the brand primary.** It was, and it is still in the tokens —
@@ -171,7 +171,7 @@ measured by `tests/brand-tokens.test.tsx`). Each clears 4.5:1 on every surface
 of its theme, and the status and network ones also on a 14% tint of their own
 hue (a status pill):
 
-- `text-brand` (`#086E46` light / `#15E99A` dark), `text-accent-send-fg`
+- `text-brand` (`#097B4E` light / `#15E99A` dark), `text-accent-send-fg`
   (`#6428F0` / `#AD94FB`), `text-accent-recv-fg`.
 - `text-success-fg`, `text-warning-fg`, `text-danger-fg`, `text-info-fg`.
 - `text-network-{bitcoin,lightning,liquid,arkade,spark,rgb,taproot}-fg`.
@@ -193,8 +193,7 @@ files under `kaleido-ui/brand/`. Do not redraw the mark: the older
 **Depth (opt-in utilities).** `bg-page-brand` is the coloured page wash (mint
 from the top, violet lower left, a little sky; soft tints in light).
 `text-gradient-brand` is the brand gradient for display-size headings only.
-`shadow-glow-send` / `shadow-glow-recv` / `shadow-glow-card` are the accent
-glows for the send and receive panels and the swap hero card. `HaloBackdrop`
+`HaloBackdrop`
 draws the slowly drifting mint and violet blobs behind a screen (motion stops
 under reduced motion).
 
@@ -246,7 +245,7 @@ surface they sit on, so one value works at every step of the ramp:
 - **`destructive` `hsl(0 62% 50%)`** — delete, cancel, failed. Always paired with a confirmation step.
 - **`success` `#15E99A`** — intentionally identical to `brand.primary`. Success *is* the brand.
 - **`warning` `#FACC15`** — a state that needs attention but is not a failure.
-- **`danger` `#F94040`** — a failure. `destructive` is the button variant; `danger` is the text/fill token.
+- **`danger` `#E53535`** — a failure. `destructive` is the button variant; `danger` is the text/fill token.
 - **`info` `#4290FF`** — neutral notice. Also `tx.swap`, because a swap is neither in nor out.
 
 ### Network tokens (semantic, do not recolor)
@@ -286,7 +285,7 @@ emit — `text-display`, `text-body`, `text-mini` and so on:
 - **`body` — Satoshi 500 / 16 / 24** — the default. Everything not otherwise specified renders here.
 - **`caption` — Satoshi 500 / 14 / 20** — helper text under a field.
 - **`tiny` — Satoshi 500 / 12 / 17** — timestamps, dense meta rows.
-- **`mini` / `label` — Satoshi 700 / 10 / 13 / tracking `eyebrow` 0.18em / uppercase** — the **signature micro-label** of the system. Filter headers ("NETWORKS"), section labels ("RECENT ACTIVITY"), pill captions, table column heads. When you see uppercase 10 px letter-spaced type, you know you are in a KaleidoSwap surface. Use it liberally for structural labels; never use it for content. `eyebrowWide` (0.22em) is the wider variant.
+- **`mini` / `label` — Satoshi 500 / 10 / 13 / tracking `eyebrow` 0.18em / uppercase** — the **signature micro-label** of the system. Filter headers ("NETWORKS"), section labels ("RECENT ACTIVITY"), pill captions, table column heads. When you see uppercase 10 px letter-spaced type, you know you are in a KaleidoSwap surface. Use it liberally for structural labels; never use it for content. `eyebrowWide` (0.22em) is the wider variant.
 - **`mono` — Geist Mono 500 / 14** — addresses, tx hashes, raw amounts where digit alignment matters.
 
 Numeric amounts (balances, prices) render in `display` or `body` weight 700, not `mono` — mono is reserved for identifiers that the user copy-pastes.
@@ -307,7 +306,7 @@ Components set text **only** with these steps — never Tailwind's default sizes
 | Dense chip text | `xxs` 11 | hints, compact tile descriptions |
 | **Eyebrow** — every structural uppercase label | `mini` 10 | section titles, field labels, column heads, filter headers, tile labels, status badges |
 
-**The eyebrow is written once**, as `eyebrow` in `src/web/utils/type-roles.ts`: `text-mini font-bold uppercase tracking-eyebrow` — Satoshi 700 / 10 px / 0.18em, the `label` token above. The tokens are authoritative (weight tops out at 700; tracking is 0.18em), and this document matches them. Any uppercase letter-spaced label uses `tracking-eyebrow` (or `tracking-eyebrow-wide`); hand-written `tracking-[…]` values are not allowed.
+**The eyebrow is written once**, as `eyebrow` in `src/web/utils/type-roles.ts`: `text-mini font-medium uppercase tracking-eyebrow` — Satoshi 500 / 10 px / 0.18em, the `label` token above. The tokens are authoritative (weight tops out at 700; tracking is 0.18em), and this document matches them. Any uppercase letter-spaced label uses `tracking-eyebrow` (or `tracking-eyebrow-wide`); hand-written `tracking-[…]` values are not allowed.
 
 **Every field label is the eyebrow, and it is `Label`.** A form's field (settings, the desk's app and webhook forms, `FormField`) and a wallet flow's (send, receive, swap, deposit) wear the same label: `Label`, the eyebrow in `secondary-content` (violet). It is tied to its control with `htmlFor` / `id`; a hand-written `<label>` with no `htmlFor` names nothing. A heading over a group of buttons (a fee-rate picker, a route list) is not a `<label>`: it is an eyebrow `<p>` with an `id` that the group's `role="group"` points at with `aria-labelledby`.
 
@@ -338,6 +337,9 @@ both modes.
 | `shadow-raised` | a small control that pops off a card: tab lists, chips that are controls, switch thumbs |
 | `shadow-button-primary` / `shadow-button-violet` | green / violet button: a coloured drop shadow only — no edge line |
 | `shadow-glow-primary(-soft/-strong)` | green halo — hover of green CTAs, checked switch, focused fields, selected cards |
+| `shadow-glow-primary-faint` | the green halo held down — the selected option in a row of options (fee rate) |
+| `shadow-glow-violet-faint` | the violet halo held down — an icon tile lit by its row's hover |
+| `shadow-card-hover-soft` | hover on a settings-style card: a soft violet under-glow, no deeper drop |
 | `shadow-glow-violet(-soft)` | violet halo — hover of violet controls and icon tiles |
 | `shadow-glow-brand` | green-left + violet-right halo — brand moments only (hero CTA, success icon) |
 | `shadow-popover` / `shadow-toast` | floating layers, with a violet hairline and bloom |
@@ -362,10 +364,8 @@ Do not hand-write shadows or gradients (`shadow-[…]`, raw colours are lint
 errors) — add a token here and in `src/tokens/` instead.
 
 The one sanctioned exception is the **brand depth** set from the Brand layer
-above: `shadow-glow-send`, `shadow-glow-recv` and `shadow-glow-card` on the
-swap hero's send / receive panels and card, plus `bg-page-brand` or
-`HaloBackdrop` behind a full screen. They are named tokens, per theme, and
-nothing else may invent a glow.
+above: `bg-page-brand` or `HaloBackdrop` behind a full screen. They are named
+tokens, per theme, and nothing else may invent a glow.
 
 ## Shapes
 
@@ -396,6 +396,18 @@ Leading icon sits left of the label with spacing `2` (8 px); trailing icon, when
 - Wrong: `<button class="bg-card text-white h-11 rounded-xl">Confirm</button>` — this is a primary action styled as a surface button; the user can't find the CTA.
 - Right: use the `primary` variant (`<Button variant="primary">Confirm</Button>`) — green fill, dark text, glow on hover.
 
+### IconButton
+
+**Every icon-only button is `IconButton icon label`.** `label` is required — it is the accessible name and the tooltip; a glyph alone names nothing. One shape, a rounded square that sizes its own glyph, in three sizes:
+
+| size | box | glyph | for |
+|---|---|---|---|
+| `sm` | 32 px (`size-7`), `rounded-lg` | 16 px | inline and row actions — copy, clear, paste, open, a notice's close |
+| `md` (default) | 40 px (`size-9`), `rounded-xl` | 18 px | toolbars, the sidebar's collapse, a menu trigger, an edit |
+| `lg` | 50 px (`size-11`), `rounded-xl` | 20 px | a screen's back, a row of icon actions under a QR, a toolbar beside a field |
+
+Six looks, each a Button variant under the same name, lightest first. **`quiet`** (default) — muted glyph that turns violet on the violet hover: close, back, clear, copy, open. **`surface`** — the violet tint: an action the screen offers (paste, refresh, edit). **`secondary`** — solid violet, the one strong action (new address). **`danger-quiet`** — the danger glyph, tinted on hover only, where a filled square would be too loud (a row's delete). **`danger-subtle`** — the danger tint: an action that deletes or removes, and the controls of an error surface (a destructive toast's copy and close). **`destructive`** — solid red, the danger counterpart of `secondary`. Every look also comes round: `shape="circle"` for a button that sits on a line or over content, like the swap card's flip; the rounded square stays the default. Focus is the green glow. The same steps are `Button size="icon-sm" | "icon" | "icon-lg"` for a trigger that must be a `Button` (`asChild`); `icon-xl` is a deprecated alias of `icon-lg`. Composite controls keep their own parts: a stepper's −/+, the swap card's flip.
+
 ### Card (asset)
 
 **Intended use.** The row / tile that represents an asset in a list: logo, ticker, name, amount, fiat equivalent. The workhorse of the wallet screen.
@@ -410,7 +422,7 @@ Leading icon sits left of the label with spacing `2` (8 px); trailing icon, when
 
 **Intended use.** The Deposit / Swap / Withdraw trio on the asset-detail screen — and any future equivalent where a small cluster of equally-weighted primary actions needs to sit side-by-side. Each tile has an icon slot on top and a label beneath.
 
-**Key tokens.** bg `surface.card`, border `border.subtle`, radius `inner` (12) — the trio sits inside the balance card, so it takes the nested scale — icon slot `tile-size: 44` px with an icon sized `20` px inside. At rest, the tile reads as a surface card. On hover it fills with `brand.primary` and its icon/label flip to `brand.primary-contrast`, and the primary glow engages. Label text below the tile uses the `label` type token.
+**Key tokens.** bg `surface.card`, border `border.subtle`, radius `inner` (12) — the trio sits inside the balance card, so it takes the nested scale — icon slot `tile-size: 44` px with an icon sized `20` px inside. At rest, the tile reads as a surface card with its icon and label in `text-brand`. On hover it fills with `brand.primary` and its icon/label flip to `brand.primary-contrast`, and the primary glow engages. Label text below the tile uses the `label` type token.
 
 **Wrong vs right.**
 - Wrong: three tiles with a green icon at rest, no fill change on hover — nothing tells the user the tile is the target. (This is the current state in `rate-extension/src/components/AssetDetail.tsx:833-858`.)
@@ -555,15 +567,15 @@ The tile is a `role="group"` named by its label (or `aria-label`), so a failure 
 
 ### SummaryRows
 
-Label/value rows on `bg-muted/40`, separated by spacing. The markup follows the content: `as="dl"` (default) is a label/value list, a `dt`/`dd` per row; `as="ol"` is an ordered log (a status history); `as="ul"` an unordered one. The visual does not change with `as`. `tone: 'muted'` sets a value quieter than its label (`caption`, normal weight, `muted-foreground`), for the timestamp beside a log event.
+Label/value rows in the transaction-card style: the label and value tied by a continuous leader line (`DottedLeader`), no row fill. The markup follows the content: `as="dl"` (default) is a label/value list, a `dt`/`dd` per row; `as="ol"` is an ordered log (a status history); `as="ul"` an unordered one. The visual does not change with `as`. `tone: 'muted'` sets a value quieter than its label (`caption`, normal weight, `muted-foreground`), for the timestamp beside a log event.
 
 ### CopyButton
 
 Copying reports what actually happened, everywhere. `useCopyToClipboard()` returns `{ state: 'idle' | 'copied' | 'failed', copy(value), reset() }`: a missing clipboard (an insecure context) or a rejected write is `failed`, never `copied`, and there is no timer — the state changes only on the next copy or `reset()`.
 
-- **`CopyButton value label`** — a 24×24 ghost icon button named "Copy {label}" with `CopyIcon`'s glyph (`variant="bare"`): the copy glyph, the check once copied. A success is announced ("{label} copied to the clipboard"); a failure shows "Copy failed — select it and copy by hand." beside it as an alert. It stops the click's propagation, since it usually sits in a clickable row.
+- **`CopyButton value label`** — the small (`sm`) quiet icon button named "Copy {label}" with `CopyIcon`'s glyph (`variant="bare"`): the copy glyph, the check once copied. A success is announced ("{label} copied to the clipboard"); a failure shows "Copy failed — select it and copy by hand." beside it as an alert. It stops the click's propagation, since it usually sits in a clickable row.
 - **`Copyable value label`** — the value (or a shortened `children`) plus its `CopyButton`; the text stays `select-all` and its `title` is the full value, which is also what is copied.
-- **`CodeBlock code label language`** — a monospaced `<pre>` that scrolls sideways, with a `CopyButton` top right; `language` is a label, not highlighting.
+- **`CodeBlock code label language`** — a monospaced `<pre>` that scrolls sideways inside the box's padding, with a `CopyButton` top right; `language` is a label, not highlighting.
 
 `ActivityDetailRow`, `SecretRevealCard` and `RecoveryPhraseCard` take `copyValue` to copy themselves this way; `onCopy` still works for existing callers. The destructive toast's copy control uses the hook and no longer shows "Copied" after a failed write. `CopyIcon` alone (`variant="tile"`) is the glyph for a row that is itself the control.
 
@@ -598,7 +610,7 @@ Mutually exclusive options — a chart / list view toggle — are `FilterChipGro
 
 ### Scrollbars
 
-**Two components, one look.** `ScrollArea` (also `VerticalScrollArea`) scrolls up and down, `HorizontalScrollArea` sideways. Both hide the native bar and draw an overlay thumb on `scrollbar.thumb`: `scrollbar` (2 px) thick at rest, `scrollbarHover` (6 px) under the pointer, never shorter than `scrollbarThumbMin` (24 px), on the right edge or the bottom edge. It takes no room from the content, and it can be dragged, or the track clicked to jump. `viewportClassName` styles the element that scrolls, `viewportAs` makes it a `main` or a `pre`, `viewportProps` gives it attributes.
+**Two components, one look.** `ScrollArea` (also `VerticalScrollArea`) scrolls up and down, `HorizontalScrollArea` sideways. Both hide the native bar and draw an overlay thumb on `scrollbar.thumb`: `scrollbar` (2 px) thick at rest, `scrollbarHover` (6 px) under the pointer, never shorter than `scrollbarThumbMin` (24 px), on the right edge or the bottom edge. It takes no room from the content, and it can be dragged, or the track clicked to jump. `viewportClassName` styles the element that scrolls, `viewportAs` makes it a `main` or a `pre`, `viewportProps` gives it attributes. `thickness="thick"` is the page bar: `scrollbarThick` (6 px) at rest, `scrollbarThickHover` (10 px) under the pointer — for the scroller of a whole page, where the bar is how the reader sees where they are; panels, lists and code keep the thin one.
 
 **Every scroller is one of them.** `CodeBlock`, `Table`, `BottomSheet`, `DrawerBody`, the `AssetSelector` lists, `InlineSelector` and the page frames scroll on these two, so a scrollbar looks the same everywhere. A new component that scrolls uses one of them, never `overflow-auto` with the browser's bar. Rows of chips that scroll sideways (`FilterChipGroup` chips, the network filters) stay without a bar: they are swiped, and a thumb under a 28 px row reads as a divider.
 
@@ -687,7 +699,7 @@ Every component works on both themes from the same classes; nothing is dark-only
 Layered translucency lets the animated background glow breathe through the UI without hurting readability. Every translucent surface maps to exactly one of these roles — don't invent new alpha values.
 
 - `glass.nav` — floating chrome (bottom nav, sticky headers): `bg-card/60 backdrop-blur-xl`
-- `glass.card` — every card, panel and tile: `bg-card/55 backdrop-blur-xl backdrop-saturate-150`, paired with `bg-gradient-card` (or `-hero`) and `shadow-card`, whose inset hairline is the glass edge (`--app-glass-edge`). The page ambience (`bg-page-radial`) is what the glass picks up, so a full-screen view should carry it.
+- `glass.card` — every card, panel and tile: `bg-card/55 backdrop-blur-xl backdrop-saturate-150`, paired with `bg-gradient-card` (or `-hero`) and `shadow-card`, which also draws the glass edge: a 1px `--card-edge` ring of inset shadows (violet top-left → near-clear → green bottom-right, like the card fill) in the card's `::before`, so don't put a `before:` on a card. The page ambience (`bg-page-radial`) is what the glass picks up, so a full-screen view should carry it.
 - `glass.field` — text fields: `fieldSurface` in `src/web/utils/field-styles.ts` (`Input`, `NumberInput`, the full `SelectTrigger`) — the glass card with an inner shadow and a `secondary/15` hairline that brightens on hover and turns green (the ring) on focus. A hand-rolled field nested in a card uses the same classes minus the blur. Its `Label` is the eyebrow in `text-secondary-content`.
 - `glass.row` — rows nested inside a card: `bg-muted/40`, no blur
 - `glass.pill` — chips, filter pills, selector triggers: `bg-white/8`

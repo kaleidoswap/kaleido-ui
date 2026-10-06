@@ -34,8 +34,8 @@ export function SettingItem({
   return (
     <div
       className={cn(
-        'p-5 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-card transition-all duration-200 group',
-        isClickable && 'cursor-pointer hover:shadow-card-hover hover:-translate-y-0.5 active:scale-[0.98]',
+        'p-5 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-card-secondary transition-all duration-200 group',
+        isClickable && 'cursor-pointer hover:shadow-card-hover-soft hover:-translate-y-0.5 active:scale-[0.98]',
         className
       )}
       onClick={onClick}
@@ -45,7 +45,7 @@ export function SettingItem({
           {(icon || iconSrc) && (
             <div
               className={cn(
-                'flex-shrink-0 size-10 rounded-xl flex items-center justify-center bg-secondary/15 ring-1 ring-inset ring-secondary/25 group-hover:bg-secondary/25 group-hover:shadow-glow-violet-soft group-hover:scale-105 transition-all',
+                'flex-shrink-0 size-10 rounded-xl flex items-center justify-center bg-secondary/15 ring-1 ring-inset ring-secondary/25 group-hover-gradient-violet group-hover:shadow-glow-violet-faint group-hover:scale-105 transition-all',
                 iconColor
               )}
             >

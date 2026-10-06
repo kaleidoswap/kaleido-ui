@@ -25,6 +25,7 @@ export type AppSemanticToken =
   | 'surface-overlay'
   | 'surface-elevated'
   | 'surface-high'
+  | 'surface-inset'
   | 'primary'
   | 'primary-emphasis'
   | 'primary-foreground'
@@ -57,6 +58,9 @@ export const appSemanticDark: AppSemanticChannels = {
   'surface-overlay': '28 26 42', // #1C1A2A — card bg
   'surface-elevated': '40 38 56', // #282638 — sections inside cards
   'surface-high': '54 51 74', //    #36334A — hover/active highlights
+  // An inset box inside a card (DisclosureCard), used at /40: on dark it is
+  // the muted fill; on light a cool grey, so the box still reads on white.
+  'surface-inset': '20 19 30', //   #14131E
   primary: '21 233 154', //         #15E99A
   'primary-emphasis': '18 201 126', // #12C97E
   'primary-foreground': '14 13 22',
@@ -88,6 +92,7 @@ export const appSemanticLight: AppSemanticChannels = {
   'surface-overlay': '255 255 255', // #FFFFFF — card bg (white)
   'surface-elevated': '250 250 252', // #FAFAFC — sections inside cards
   'surface-high': '239 239 244', // #EFEFF4 — hover/active highlights
+  'surface-inset': '214 213 228', // #D6D5E4 — at /40 on white, #EFEFF4
   primary: '23 181 129', //         #17B581
   'primary-emphasis': '19 138 100', // #138A64
   'primary-foreground': '14 13 22', // #0E0D16 — dark ink on green (white was 2.6:1)
@@ -106,7 +111,9 @@ export const appSemanticLight: AppSemanticChannels = {
   'status-danger': '220 38 38',
   'status-warning': '217 119 6',
   'status-info': '2 132 199',
-  divider: '222 222 230', //         #DEDEE6
+  // Darker than border-default: rules are drawn at 35–60 % on surfaces as
+  // light as #F3F3F7, where #DEDEE6 did not show.
+  divider: '196 196 208', //         #C4C4D0
   'network-spark': '13 12 20', //   #0D0C14
 }
 

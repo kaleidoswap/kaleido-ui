@@ -18,7 +18,7 @@
  *     it proves the "needs tokens" point for the redesign discussion.
  */
 
-import { Button, Icon } from '@kaleido-ui/index'
+import { Button, Icon, IconButton, OnchainNetworkIcon } from '@kaleido-ui/index'
 
 // ─── Panel scaffolding ───────────────────────────────────────────────────────
 
@@ -170,9 +170,7 @@ function Panel1Buttons() {
         <Button variant="cta" size="cta">
           cta
         </Button>
-        <Button size="icon" aria-label="icon">
-          <Icon name="add" />
-        </Button>
+        <IconButton icon="add" label="Add" />
       </div>
 
       <SubLabel>rate-extension main-action trio (inlined — current)</SubLabel>
@@ -286,7 +284,7 @@ function Panel3FilterPills() {
   // Two pills: NETWORK (shows the "all" icon cluster) and ASSET (shows the
   // specific "Bitcoin" option selected so the reviewer can see both states).
   const networkOptions = [
-    { id: 'onchain', label: 'On-chain', icon: <MS>link</MS> },
+    { id: 'onchain', label: 'On-chain', icon: <OnchainNetworkIcon className="size-3.5" /> },
     { id: 'lightning', label: 'Lightning', icon: <LightningIcon className="size-3.5" /> },
     { id: 'spark', label: 'Spark', icon: <SparkIcon className="size-3.5" /> },
     { id: 'arkade', label: 'Arkade', icon: <ArkadeIcon className="size-3.5" /> },

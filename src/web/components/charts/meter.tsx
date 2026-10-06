@@ -34,7 +34,7 @@ export function Meter({
 }: MeterProps) {
   const ratio = max > 0 ? Math.min(1, Math.max(0, value / max)) : 0
   const state = ratio >= dangerAt ? 'danger' : ratio >= warnAt ? 'warning' : 'normal'
-  const fill = { normal: 'bg-primary bg-gradient-primary', warning: 'bg-warning', danger: 'bg-danger' }[state]
+  const fill = { normal: 'bg-primary bg-gradient-primary', warning: 'bg-warning bg-gradient-warning', danger: 'bg-danger bg-gradient-danger' }[state]
   const track = { normal: 'bg-primary/15', warning: 'bg-warning/15', danger: 'bg-danger/15' }[state]
   const percent = Math.round(ratio * 100)
 

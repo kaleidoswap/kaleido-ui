@@ -11,6 +11,7 @@ import {
   type DepositNetworkKey,
 } from './deposit-ui-shared'
 import { eyebrow } from '../utils/type-roles'
+import { IconButton } from '../primitives/icon-button'
 
 export interface DepositGeneratedAsset {
   ticker?: string
@@ -117,7 +118,7 @@ export function DepositGeneratedView({
   return (
     <div className="space-y-3 animate-in fade-in zoom-in-95 duration-300">
       {(network === 'lightning' || (network === 'arkade' && arkSubMode === 'ark')) && isBtc && (
-        <div className="flex flex-col gap-1.5 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-2.5 shadow-card">
+        <div className="flex flex-col gap-2 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-2.5 shadow-card">
           <div className="flex items-center justify-between px-1">
             <Label htmlFor={btcAmountId}>
               Specify amount (optional)
@@ -150,7 +151,7 @@ export function DepositGeneratedView({
       )}
 
       {network === 'lightning' && !isBtc && (
-        <div className="flex flex-col gap-1.5 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-2.5 shadow-card">
+        <div className="flex flex-col gap-2 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-2.5 shadow-card">
           <div className="flex items-center justify-between px-1">
             <Label htmlFor={assetAmountId}>
               Specify amount (optional)
@@ -222,7 +223,7 @@ export function DepositGeneratedView({
                 'flex items-center gap-1 rounded-full border px-2.5 py-1 transition-all', eyebrow,
                 isAddressCopied
                   ? 'border-primary/30 bg-primary/10 text-brand shadow-glow-primary-soft'
-                  : 'border-secondary/30 bg-secondary/15 text-secondary-content shadow-raised hover:border-secondary/50 hover:bg-secondary/25 hover:text-foreground'
+                  : 'border-secondary/30 bg-secondary/15 text-secondary-content shadow-raised hover:border-secondary/50 hover-gradient-violet hover:text-foreground'
               )}
               onClick={(event) => {
                 event.stopPropagation()
@@ -254,7 +255,7 @@ export function DepositGeneratedView({
         data-address={address}
         className={cn(
           'group flex cursor-pointer items-center gap-2 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-2.5 py-1.5 shadow-card',
-          'transition-all hover:bg-secondary/10 hover:shadow-card-hover active:scale-[0.98]'
+          'transition-all hover-gradient-violet hover:shadow-card-hover active:scale-[0.98]'
         )}
         onClick={() => void copyToClipboard(address)}
       >
@@ -299,10 +300,9 @@ export function DepositGeneratedView({
 
       {showRegenerate && (
         <div className="flex justify-center pt-1">
-          <button
-            type="button"
-            aria-label={`New ${network === 'lightning' ? 'invoice' : 'address'}`}
-            title={`New ${network === 'lightning' ? 'invoice' : 'address'}`}
+          <IconButton
+            label={`New ${network === 'lightning' ? 'invoice' : 'address'}`}
+            variant="secondary"
             disabled={loading}
             onClick={() => {
               if (onRegenerate) {
@@ -319,10 +319,8 @@ export function DepositGeneratedView({
               setAmount('')
               setInvoiceStatus(null)
             }}
-            className="flex size-10 items-center justify-center rounded-full bg-secondary bg-gradient-violet text-white shadow-button-violet transition-all hover:shadow-glow-violet active:scale-[0.98] disabled:opacity-50"
-          >
-            <Icon name="refresh" className={cn('text-icon-md', loading && 'animate-spin')} />
-          </button>
+            icon={<Icon name="refresh" aria-hidden="true" className={cn(loading && 'animate-spin motion-reduce:animate-none')} />}
+          />
         </div>
       )}
     </div>

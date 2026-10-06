@@ -14,10 +14,10 @@ const labelFor = (markup: string, text: string) => markup.match(new RegExp(`<lab
 
 test('Label is the shared eyebrow in violet (secondary-content), in a form as in a wallet flow', () => {
   const markup = renderToStaticMarkup(createElement(Label, { htmlFor: 'x' }, 'Amount'))
-  assert.match(markup, /text-mini font-bold uppercase tracking-eyebrow text-secondary-content/)
+  assert.match(markup, /text-mini font-medium uppercase tracking-eyebrow text-secondary-content/)
   assert.doesNotMatch(markup, /text-body/)
   const field = renderToStaticMarkup(createElement(FormField, { label: 'Webhook URL' }, createElement(Input)))
-  assert.match(field, /<label[^>]*text-mini font-bold uppercase tracking-eyebrow/)
+  assert.match(field, /<label[^>]*text-mini font-medium uppercase tracking-eyebrow/)
 })
 
 test('withdraw destination: its label points at the input', () => {

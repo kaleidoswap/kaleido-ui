@@ -24,14 +24,14 @@ const SelectTrigger = React.forwardRef<
       compact
         ? [
             'w-auto gap-1 rounded-2xl bg-foreground/[0.09] px-2 py-1.5 text-caption leading-none shadow-raised backdrop-blur-md',
-            'hover:bg-secondary/15 data-[state=open]:bg-secondary/20 data-[state=open]:text-secondary-content data-[state=open]:shadow-glow-primary-soft',
+            'hover-gradient-violet data-[state=open]:bg-secondary/20 data-[state=open]:text-secondary-content',
           ]
         : [
             'w-full gap-3 px-4 py-3 text-left text-body',
             fieldSurface,
-            'data-[state=open]:ring-primary/50 data-[state=open]:shadow-glow-primary-soft',
+            'data-[state=open]:ring-primary/50',
           ],
-      'focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft',
+      'focus:ring-1 focus:ring-primary/50',
       'disabled:cursor-not-allowed disabled:opacity-50',
       className
     )}
@@ -63,7 +63,7 @@ const SelectContent = React.forwardRef<
       className={cn(
         'relative min-w-[8rem] overflow-hidden rounded-2xl bg-popover/95 bg-gradient-card p-2 shadow-popover ring-1 ring-inset ring-secondary/20 backdrop-blur',
         'z-[var(--z-popover)]',
-        position === 'popper' && 'w-[var(--radix-select-trigger-width)]',
+        position === 'popper' && 'w-max min-w-[var(--radix-select-trigger-width)]',
         className
       )}
       position={position}
@@ -99,7 +99,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex w-full cursor-pointer select-none items-center justify-between rounded-xl px-3 py-3 text-body outline-none transition-colors',
+      'relative flex w-full cursor-pointer whitespace-nowrap select-none items-center justify-between rounded-xl px-3 py-3 text-body outline-none transition-colors',
       'data-[highlighted]:bg-secondary/15',
       'data-[state=checked]:bg-primary/10 data-[state=checked]:font-semibold data-[state=checked]:ring-1 data-[state=checked]:ring-inset data-[state=checked]:ring-primary/40 data-[state=checked]:text-brand',
       'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',

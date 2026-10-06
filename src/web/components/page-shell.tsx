@@ -120,7 +120,7 @@ export function ErrorCard({
         <button
           type="button"
           onClick={onRetry}
-          className="rounded-xl bg-secondary/15 px-4 py-2 text-caption font-semibold text-secondary-content shadow-raised ring-1 ring-inset ring-secondary/30 transition-all hover:bg-secondary/25 hover:shadow-glow-violet-soft"
+          className="rounded-xl bg-secondary/15 px-4 py-2 text-caption font-semibold text-secondary-content shadow-raised ring-1 ring-inset ring-secondary/30 transition-all hover-gradient-violet hover:shadow-glow-violet-soft"
         >
           {retryLabel}
         </button>

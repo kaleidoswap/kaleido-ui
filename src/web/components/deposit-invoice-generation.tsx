@@ -13,9 +13,9 @@ import { BtcUnifiedReceive, type BtcUnifiedReceiveResult } from './btc-unified-r
 import { DepositPreGeneration } from './deposit-pre-generation'
 import { DepositGeneratedView } from './deposit-generated-view'
 import { ScrollArea } from '../primitives/scroll-area'
-import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
 import { eyebrow } from '../utils/type-roles'
+import { IconButton } from '../primitives/icon-button'
 
 export interface DepositInvoiceAsset {
   asset_id?: string
@@ -337,9 +337,7 @@ export function DepositInvoiceGeneration({
   return (
     <div className="relative flex h-screen flex-col overflow-hidden bg-background bg-page-radial pt-16 font-display text-foreground">
       <div className="absolute left-4 top-4 z-30">
-        <Button type="button" variant="ghost" size="icon-xl" onClick={handleBack} aria-label="Go back">
-          <Icon name="arrow_back" size="xl" />
-        </Button>
+        <IconButton icon="arrow_back" label="Go back" size="lg" onClick={handleBack} />
       </div>
 
       {(() => {

@@ -1,8 +1,9 @@
 import type { ReactNode } from 'react'
-import { Icon } from '../primitives/icon'
 import { CopyButton } from './copy-button'
+import { DottedLeader } from './dotted-leader'
 import { eyebrow } from '../utils/type-roles'
 import { cn } from '../utils/cn'
+import { IconButton } from '../primitives/icon-button'
 
 export interface ActivityDetailRowProps {
   label: string
@@ -33,26 +34,24 @@ export function ActivityDetailRow({
       <span className={cn('shrink-0 text-muted-foreground', eyebrow)}>
         {label}
       </span>
-      {/* Dotted leader tying each label to its value across the row gap. */}
-      <span aria-hidden className="min-w-4 flex-1 self-center border-b border-dotted border-foreground/15" />
+      <DottedLeader />
       <div className="flex max-w-[65%] items-center gap-2">
         <span className="truncate font-mono text-caption font-medium text-foreground/90">{value}</span>
         {onCopy && (
-          <button
-            type="button"
+          <IconButton
+            icon={isCopied ? 'check' : 'content_copy'}
+            label={`Copy ${label.toLowerCase()}`}
+            title={fullValue ? `Copy: ${fullValue}` : 'Copy'}
+            size="sm"
+            variant="surface"
+            className="-my-1"
             onClick={(event) => {
               event.stopPropagation()
               onCopy()
             }}
-            className="-my-1 rounded-md p-1 text-muted-foreground transition-colors hover:bg-secondary/15 hover:text-secondary-content active:scale-95"
-            title={fullValue ? `Copy: ${fullValue}` : 'Copy'}
-          >
-            {/* Inline SVG rather than a Material Symbols ligature -- see
-                status-badge.tsx. Icon sizes off 1em, so fontSize still drives it. */}
-            <Icon name={isCopied ? 'check' : 'content_copy'} style={{ fontSize: '14px' }} />
-          </button>
+          />
         )}
-        {!onCopy && copyValue !== undefined && <CopyButton value={copyValue} label={label.toLowerCase()} />}
+        {!onCopy && copyValue !== undefined && <CopyButton value={copyValue} label={label.toLowerCase()} variant="surface" />}
       </div>
     </div>
   )

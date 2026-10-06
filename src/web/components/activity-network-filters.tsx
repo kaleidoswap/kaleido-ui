@@ -1,5 +1,5 @@
 import { AppIcon } from './app-icon'
-import { ArkadeNetworkIcon, LightningNetworkIcon, SparkNetworkIcon } from './network-icon'
+import { ArkadeNetworkIcon, LightningNetworkIcon, OnchainNetworkIcon, SparkNetworkIcon } from './network-icon'
 import { cn } from '../utils/cn'
 import { eyebrow } from '../utils/type-roles'
 
@@ -27,7 +27,7 @@ export function getActivityNetworkFilterIcon(filter: ActivityNetworkFilterValue)
   // overflows the 14px box, rendering visibly larger and above the text.
   switch (filter) {
     case 'onchain':
-      return <AppIcon name="onchain" size="xs" className="size-icon-sm" />
+      return <OnchainNetworkIcon className="size-3.5" />
     case 'lightning':
       return <LightningNetworkIcon className="size-3.5" alt="" />
     case 'spark':
@@ -66,7 +66,7 @@ export function ActivityNetworkFilters<TValue extends string = ActivityNetworkFi
               'flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1.5 transition-all', eyebrow,
               isActive
                 ? 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
-                : 'bg-foreground/5 text-muted-foreground hover:bg-secondary/10 hover:text-secondary-content'
+                : 'bg-foreground/5 text-muted-foreground hover-gradient-violet hover:text-secondary-content'
             )}
           >
             <span

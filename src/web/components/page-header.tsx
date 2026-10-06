@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
-import { Button } from '../primitives/button'
-import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
+import { IconButton } from '../primitives/icon-button'
 
 export interface PageHeaderProps {
   /**
@@ -51,16 +50,7 @@ export function PageHeader({
       >
         <div data-slot="page-header-leading" className="flex min-w-0 flex-[1_1_16rem] items-start gap-3">
           {onBack && (
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-lg"
-              onClick={onBack}
-              aria-label={backLabel}
-              className="-ml-2 shrink-0"
-            >
-              <Icon name="arrow_back" size="lg" />
-            </Button>
+            <IconButton icon="arrow_back" label={backLabel} onClick={onBack} className="-ml-2" />
           )}
           <div className="min-w-0">
             <h1 className="m-0 text-title font-bold text-foreground">{title}</h1>
@@ -84,16 +74,7 @@ export function PageHeader({
   }
 
   const backButton = onBack ? (
-    <Button
-      type="button"
-      variant="ghost"
-      size="icon-xl"
-      onClick={onBack}
-      aria-label={backLabel}
-      className="shrink-0"
-    >
-      <Icon name="arrow_back" size="xl" />
-    </Button>
+    <IconButton icon="arrow_back" label={backLabel} size="lg" onClick={onBack} />
   ) : null
   const titleBlock = title ? (
     <div className="min-w-0 text-left">

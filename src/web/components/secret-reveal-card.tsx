@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 import { useCopyToClipboard } from '../hooks/use-copy-to-clipboard'
@@ -47,11 +48,13 @@ export function SecretRevealCard({
   return (
     <div className={cn('space-y-3', className)}>
       <div className="relative">
-        <div className="rounded-xl bg-card bg-gradient-card px-3 py-3 shadow-card">
+        {/* The value sits in a read-only text field: the field surface, at rest. */}
+        <div className="rounded-xl bg-card/55 bg-gradient-card px-3 py-3 shadow-inner ring-1 ring-inset ring-secondary/15 backdrop-blur-xl backdrop-saturate-150">
           <p
             className={cn(
               'break-all font-mono text-body text-foreground transition-all duration-300',
-              !revealed && 'pointer-events-none select-none blur-sm',
+              // Hidden: blurred and faded, so the reveal button reads over it.
+              !revealed && 'pointer-events-none select-none opacity-[var(--app-hidden-opacity)] blur-md',
               valueClassName,
             )}
           >
@@ -60,40 +63,33 @@ export function SecretRevealCard({
         </div>
         {!revealed && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <button
-              type="button"
-              onClick={() => onRevealChange(true)}
-              className="flex items-center gap-2 rounded-xl bg-secondary bg-gradient-violet px-4 py-2 text-body font-bold text-secondary-foreground shadow-button-violet transition-all duration-200 hover:-translate-y-0.5 hover:shadow-glow-violet"
-            >
+            <Button type="button" variant="surface" size="sm" onClick={() => onRevealChange(true)}>
               <Icon name="visibility" className="text-icon-lg" />
               {revealLabel}
-            </button>
+            </Button>
           </div>
         )}
       </div>
-      <div className="flex gap-2">
-        <button
-          type="button"
-          onClick={() => onRevealChange(!revealed)}
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-secondary/15 py-3 text-caption font-semibold text-secondary-content shadow-raised ring-1 ring-inset ring-secondary/25 transition-all duration-200 hover:bg-secondary/25 hover:text-foreground"
-        >
-          <Icon name={revealed ? 'visibility_off' : 'visibility'} className="text-icon-lg" />
-          {revealed ? hideLabel : revealLabel}
-        </button>
-        {revealed && handleCopy && (
-          <button
-            type="button"
-            onClick={handleCopy}
-            className={cn(
-              'flex flex-1 items-center justify-center gap-2 rounded-xl bg-secondary/15 py-3 text-caption font-semibold text-secondary-content shadow-raised ring-1 ring-inset ring-secondary/25 transition-all duration-200 hover:bg-secondary/25 hover:text-foreground',
-              copied && 'bg-primary/10 bg-gradient-active text-brand ring-primary/40 shadow-glow-primary-soft hover:bg-primary/15 hover:text-brand',
-            )}
-          >
-            <Icon name={copied ? 'check' : 'content_copy'} className="text-icon-lg" />
-            {copied ? copiedLabel : copyLabel}
-          </button>
-        )}
-      </div>
+      {/* While hidden, the button over the value is the only way to reveal it. */}
+      {revealed && (
+        <div className="flex gap-2">
+          <Button type="button" variant="surface" className="flex-1" onClick={() => onRevealChange(false)}>
+            <Icon name="visibility_off" className="text-icon-lg" />
+            {hideLabel}
+          </Button>
+          {handleCopy && (
+            <Button
+              type="button"
+              variant="surface"
+              onClick={handleCopy}
+              className={cn('flex-1', copied && 'bg-primary/10 bg-gradient-active text-brand ring-primary/40 hover:ring-primary/50')}
+            >
+              <Icon name={copied ? 'check' : 'content_copy'} className="text-icon-lg" />
+              {copied ? copiedLabel : copyLabel}
+            </Button>
+          )}
+        </div>
+      )}
       {selfCopy && clipboard.state === 'failed' && (
         <p role="alert" className="m-0 text-caption text-danger-fg">
           {copyFailedMessage}

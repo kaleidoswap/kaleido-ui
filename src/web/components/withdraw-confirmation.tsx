@@ -3,6 +3,7 @@ import { Icon } from '../primitives/icon'
 import { ScrollArea } from '../primitives/scroll-area'
 import { formatAmount } from '../utils/amount-display'
 import type { WithdrawAddressType } from './withdraw-destination-input'
+import { IconButton } from '../primitives/icon-button'
 
 export interface WithdrawConfirmationRgbInvoice {
   recipient_type?: string
@@ -63,20 +64,17 @@ export function WithdrawConfirmation({
   return (
     <div className="relative flex h-screen flex-col overflow-hidden bg-background bg-page-radial font-display text-foreground">
       <div className="absolute left-4 top-4 z-30">
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-xl"
+        <IconButton
+          icon="arrow_back"
+          label="Go back"
+          size="lg"
           onClick={() => {
             if (!isConfirming && !isPollingStatus) {
               setShowConfirmation(false)
             }
           }}
-          aria-label="Go back"
           className={isConfirming || isPollingStatus ? 'pointer-events-none opacity-70' : undefined}
-        >
-          <Icon name="arrow_back" size="xl" />
-        </Button>
+        />
       </div>
 
       <ScrollArea className="flex-1" viewportClassName="px-5 pt-16 pb-6">

@@ -20,6 +20,7 @@ export {
 
 // Primitives
 export { Button, buttonVariants, type ButtonProps } from './primitives/button'
+export { IconButton, type IconButtonProps } from './primitives/icon-button'
 export {
   Card,
   CardHeader,
@@ -27,6 +28,8 @@ export {
   CardTitle,
   CardDescription,
   CardContent,
+  cardSurface,
+  type CardProps,
 } from './primitives/card'
 export { Input, type InputProps } from './primitives/input'
 export {
@@ -144,7 +147,7 @@ export {
 // Shared Components
 export { StatusBadge, type StatusType } from './components/status-badge'
 export { StatusIconBadge, type StatusIconBadgeProps } from './components/status-icon-badge'
-export { NetworkBadge, type NetworkBadgeProps, type NetworkType } from './components/network-badge'
+export { NetworkBadge, networkChipStyle, type NetworkBadgeProps, type NetworkType } from './components/network-badge'
 export { SwapBadge, type SwapBadgeProps } from './components/swap-badge'
 export { AssetIcon } from './components/asset-icon'
 export { AssetCard, type AssetCardProps } from './components/asset-card'
@@ -164,6 +167,7 @@ export {
   RgbNetworkIcon,
   NostrNetworkIcon,
   LiquidNetworkIcon,
+  OnchainNetworkIcon,
   type NetworkIconProps,
 } from './components/network-icon'
 export { ActionTile, type ActionTileProps } from './components/action-tile'
@@ -265,6 +269,7 @@ export {
   type ActivityTypeTabCounts,
 } from './components/activity-type-tabs'
 export { ActivityDetailRow, type ActivityDetailRowProps } from './components/activity-detail-row'
+export { DottedLeader } from './components/dotted-leader'
 export {
   WithdrawDestinationInput,
   type WithdrawAddressType,
@@ -355,12 +360,14 @@ export { AlertBanner } from './components/alert-banner'
 export { InfoPanel, type InfoPanelProps } from './components/info-panel'
 export {
   InfoChip,
+  StatusChip,
   NetworkInfoChip,
   AssetInfoChip,
   type InfoChipProps,
   type InfoChipContentProps,
   type InfoChipEditAction,
   type InfoChipStatus,
+  type StatusChipProps,
   type NetworkInfoChipProps,
   type AssetInfoChipProps,
 } from './components/info-chip'
@@ -371,6 +378,7 @@ export {
   type SettingsSelectorRowProps,
 } from './components/settings-selector-row'
 export { BottomSheet, type BottomSheetProps, type BottomSheetAction } from './components/bottom-sheet'
+export { BasicCollapsible, type BasicCollapsibleProps } from './components/basic-collapsible'
 export { DisclosureCard, type DisclosureCardProps } from './components/disclosure-card'
 export {
   StepperNumberInput,
@@ -411,6 +419,7 @@ export {
   LineChart,
   AreaChart,
   BarChart,
+  MixedChart,
   BarList,
   DonutChart,
   foldSegments,
@@ -421,8 +430,14 @@ export {
   type ChartFrameProps,
   type ChartSeries,
   type ChartTable,
+  type ChartTimeframe,
+  type ChartFilter,
+  type ChartTitleProps,
   type LineChartProps,
   type BarChartProps,
+  type MixedChartMark,
+  type MixedChartProps,
+  type MixedChartSeries,
   type BarListItem,
   type BarListProps,
   type DonutChartProps,

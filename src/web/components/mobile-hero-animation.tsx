@@ -280,6 +280,7 @@ export const MobileHeroAnimation: FC<MobileHeroAnimationProps> = ({
                   <img
                     src={iconBasePath ? `${iconBasePath}/${protocol.iconSuffix}` : (protocolIcons[protocol.network] ?? protocol.iconSuffix)}
                     alt={protocol.name}
+                    className={protocol.network === 'Spark' ? 'kui-mono-icon' : undefined}
                     style={{ width: 20, height: 20, objectFit: 'contain' }}
                   />
                 </div>

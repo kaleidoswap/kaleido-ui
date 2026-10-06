@@ -23,7 +23,6 @@ export {
   themedForeground,
   themedForegroundOrder,
   brandDepth,
-  brandGlowShadows,
   halo,
   brandTheme,
   type ThemedForegroundToken,

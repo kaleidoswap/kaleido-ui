@@ -1,10 +1,9 @@
 import type { ReactNode } from 'react'
-import { Button } from '../primitives/button'
-import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 import { AssetIcon } from './asset-icon'
 import { NetworkBadge, type NetworkType } from './network-badge'
 import { eyebrow } from '../utils/type-roles'
+import { IconButton } from '../primitives/icon-button'
 
 export type InfoChipStatus = 'success' | 'warning' | 'danger' | 'info'
 
@@ -67,6 +66,31 @@ const statusDotClass: Record<InfoChipStatus, string> = {
   info: 'bg-secondary-content',
 }
 
+export interface StatusChipProps {
+  status: InfoChipStatus
+  /** Defaults to the status name (Success, Warning, Error, Info). */
+  label?: string
+  className?: string
+}
+
+/** The small tinted pill with a dot: the status an InfoChip carries, usable on its own. */
+export function StatusChip({ status, label, className }: StatusChipProps) {
+  return (
+    <span
+      data-slot="status-chip"
+      data-status={status}
+      className={cn(
+        'inline-flex max-w-full items-center gap-1.5 rounded-full border px-2 py-0.5 text-xxs font-bold leading-4',
+        statusToneClass[status],
+        className,
+      )}
+    >
+      <span aria-hidden="true" className={cn('size-1.5 shrink-0 rounded-full', statusDotClass[status])} />
+      <span className="truncate">{label ?? defaultStatusLabel[status]}</span>
+    </span>
+  )
+}
+
 export function InfoChip({
   leading,
   label,
@@ -119,33 +143,12 @@ export function InfoChip({
           >
             {value}
           </span>
-          {status && (
-            <span
-              className={cn(
-                'inline-flex max-w-full items-center gap-1.5 rounded-full border px-2 py-0.5 text-xxs font-bold leading-4',
-                statusToneClass[status],
-              )}
-            >
-              <span aria-hidden="true" className={cn('size-1.5 shrink-0 rounded-full', statusDotClass[status])} />
-              <span className="truncate">{readableStatus}</span>
-            </span>
-          )}
+          {status && <StatusChip status={status} label={readableStatus ?? undefined} />}
         </dd>
       </dl>
 
       {onEdit && (
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-lg"
-          onClick={onEdit}
-          disabled={editDisabled}
-          aria-label={editLabel}
-          title={editLabel}
-          className="shrink-0"
-        >
-          <Icon name="edit" size="sm" aria-hidden="true" />
-        </Button>
+        <IconButton icon="edit" label={editLabel} onClick={onEdit} disabled={editDisabled} />
       )}
     </div>
   )

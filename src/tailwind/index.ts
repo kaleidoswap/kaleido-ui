@@ -82,7 +82,7 @@ const opacity = Object.fromEntries(
  * unit — `p-4` is 4 units on both.
  */
 const spacingSteps = [
-  0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 20, 24, 28, 32, 36, 40, 44, 48,
+  0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 44, 48,
   52, 56, 60, 64, 72, 80, 96,
 ]
 const spacingScale = Object.fromEntries(
@@ -145,6 +145,8 @@ const preset = {
         ...prefixed('icon', iconBoxSize),
         scrollbar: sizing.scrollbar,
         'scrollbar-hover': sizing.scrollbarHover,
+        'scrollbar-thick': sizing.scrollbarThick,
+        'scrollbar-thick-hover': sizing.scrollbarThickHover,
         'scrollbar-thumb-min': sizing.scrollbarThumbMin,
       },
       // Per-theme: the --kui-shadow-* vars kaleido-ui/css declares for dark and light.

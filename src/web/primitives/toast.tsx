@@ -1,8 +1,8 @@
 import * as React from 'react'
 import * as ToastPrimitives from '@radix-ui/react-toast'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { Icon } from './icon'
 import { cn } from '../utils/cn'
+import { IconButton } from './icon-button'
 
 const ToastProvider = ToastPrimitives.Provider
 
@@ -27,7 +27,8 @@ const toastVariants = cva(
     variants: {
       variant: {
         default: 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero text-foreground ring-1 ring-inset ring-secondary/25',
-        destructive: 'bg-danger/20 text-danger-fg ring-1 ring-inset ring-danger/30',
+        // `destructive` is also the marker the group-[.destructive] parts read.
+        destructive: 'destructive bg-danger/20 text-danger-fg ring-1 ring-inset ring-danger/30',
       },
     },
     defaultVariants: {
@@ -58,7 +59,7 @@ const ToastAction = React.forwardRef<
   <ToastPrimitives.Action
     ref={ref}
     className={cn(
-      'inline-flex h-8 shrink-0 items-center justify-center rounded-lg border border-secondary/50 bg-secondary/10 px-3 text-caption font-semibold text-secondary-content shadow-raised transition-all hover:border-secondary hover:bg-secondary/20 hover:shadow-glow-violet-soft focus:outline-none disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-danger/30 group-[.destructive]:text-danger-fg group-[.destructive]:hover:border-danger group-[.destructive]:hover:bg-danger/10',
+      'inline-flex h-8 shrink-0 items-center justify-center rounded-lg border border-secondary/50 bg-secondary/10 px-3 text-caption font-semibold text-secondary-content shadow-raised transition-all hover:border-secondary hover-gradient-violet hover:shadow-glow-violet-soft focus:outline-none disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-danger/30 group-[.destructive]:text-danger-fg group-[.destructive]:hover:border-danger group-[.destructive]:hover:bg-danger/10',
       className
     )}
     {...props}
@@ -68,18 +69,20 @@ ToastAction.displayName = ToastPrimitives.Action.displayName
 
 const ToastClose = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Close>,
-  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Close>
->(({ className, ...props }, ref) => (
-  <ToastPrimitives.Close
-    ref={ref}
-    className={cn(
-      'p-1.5 text-muted-foreground opacity-100 transition-all hover:text-secondary-content focus:opacity-100 focus:outline-none group-[.destructive]:text-danger-fg/80 group-[.destructive]:hover:text-danger-fg',
-      className
-    )}
-    toast-close=""
-    {...props}
-  >
-    <Icon name="close" size="sm" />
+  Omit<React.ComponentPropsWithoutRef<typeof ToastPrimitives.Close>, 'children' | 'asChild'> & {
+    label?: string
+    /** The toast's own variant: a destructive toast closes with the danger-subtle IconButton. */
+    variant?: 'default' | 'destructive' | null
+  }
+>(({ className, label = 'Close', variant, ...props }, ref) => (
+  <ToastPrimitives.Close ref={ref} asChild toast-close="" {...props}>
+    <IconButton
+      icon="close"
+      label={label}
+      size="sm"
+      variant={variant === 'destructive' ? 'danger-subtle' : 'quiet'}
+      className={className}
+    />
   </ToastPrimitives.Close>
 ))
 ToastClose.displayName = ToastPrimitives.Close.displayName

@@ -60,7 +60,10 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
           self-hosted the icon font rendered the literal word ("error", "schedule")
           inside the pill. Every glyph this component needs already exists in the
           Icon set, so there is nothing to trade away. */}
-      <Icon name={icon} className="text-icon-sm" />
+      {/* The labels are mostly lowercase, so the eye centres them on the
+          x-height, 2px under the cap centre the flex box aligns: 1px down
+          splits the difference. */}
+      <Icon name={icon} className="text-icon-sm translate-y-px" />
       <span>{label}</span>
     </div>
   )

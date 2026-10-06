@@ -45,7 +45,7 @@ export function FormField({ label, children, id: idProp, hint, error, className 
   })
 
   return (
-    <div data-slot="form-field" className={cn('space-y-1.5', className)}>
+    <div data-slot="form-field" className={cn('flex flex-col gap-2', className)}>
       <Label htmlFor={id}>{label}</Label>
       {control}
       {hint && (

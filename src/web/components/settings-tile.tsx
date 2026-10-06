@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Button } from '../primitives/button'
 import { AppIcon } from './app-icon'
 
 export interface SettingsTileProps {
@@ -14,11 +15,11 @@ export function SettingsTile({ icon, title, description, value, onClick }: Setti
     <button
       type="button"
       onClick={onClick}
-      className="group w-full rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-5 text-left shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover active:scale-[0.98]"
+      className="group w-full rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-5 text-left shadow-card-secondary transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover-soft active:scale-[0.98]"
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 flex-1 items-center gap-3">
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25 transition-all group-hover:bg-secondary/25 group-hover:shadow-glow-violet-soft">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25 transition-all group-hover-gradient-violet group-hover:shadow-glow-violet-faint">
             {icon}
           </div>
           <div className="flex min-w-0 flex-1 flex-col">
@@ -57,13 +58,9 @@ export function SettingsActionButton({
   onClick: () => void
 }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="flex w-full items-center justify-center gap-2 rounded-xl bg-secondary/15 py-3 font-bold text-secondary-content shadow-raised transition-all hover:bg-secondary/25 hover:shadow-glow-violet-soft"
-    >
+    <Button type="button" variant="h2" size="lg" onClick={onClick}>
       {icon}
       {children}
-    </button>
+    </Button>
   )
 }

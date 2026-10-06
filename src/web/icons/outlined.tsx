@@ -73,6 +73,35 @@ export const BarChart = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 )
 
+// Chart-view glyphs, drawn on the same 128 grid and bar positions as BarChart.
+export const StackedBarChart = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 128 128" fill="currentColor" aria-hidden="true" {...props}>
+    <path d="M26.6568 74.6391H37.3196V106.6273H26.6568ZM26.6568 47.9823H37.3196V68.6391H26.6568ZM58.645 64H69.3078V106.6273H58.645ZM58.645 21.3255H69.3078V58H58.645ZM90.6332 85.3137H101.296V106.6273H90.6332ZM90.6332 53.3137H101.296V79.3137H90.6332Z"/>
+  </svg>
+)
+
+export const ShowChart = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 128 128" fill="currentColor" aria-hidden="true" {...props}>
+    <path d="M21.3 90.7L50.7 61.3L72 82.7L106.7 37.3" fill="none" stroke="currentColor" strokeWidth="10.66" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+)
+
+export const AreaChart = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 128 128" fill="currentColor" aria-hidden="true" {...props}>
+    <path d="M21.3 106.7V85.3L50.7 56L72 77.3L106.7 32V106.7Z" fillOpacity="0.35"/>
+    <path d="M21.3 85.3L50.7 56L72 77.3L106.7 32" fill="none" stroke="currentColor" strokeWidth="10.66" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+)
+
+export const ScatterPlot = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 128 128" fill="currentColor" aria-hidden="true" {...props}>
+    <circle cx="34.7" cy="85.3" r="10.7"/>
+    <circle cx="58.7" cy="50.7" r="10.7"/>
+    <circle cx="80" cy="77.3" r="10.7"/>
+    <circle cx="98.7" cy="37.3" r="10.7"/>
+  </svg>
+)
+
 export const Bolt = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 128 128" fill="currentColor" aria-hidden="true" {...props}>
     <path d="M52.3807 105.9609L89.567 61.3107H65.5758L70.374 23.1914 36.6531 71.9735H57.1789L52.3807 105.9609ZM42.6509 117.2901L47.9823 79.9705H21.3255L69.3078 10.6627H79.9705L74.6391 53.3137H106.6273L53.3137 117.2901H42.6509ZM63.1767 64.5095Z"/>
@@ -645,5 +674,19 @@ export const SwapCalls = (props: React.SVGProps<SVGSVGElement>) => (
 export const ProgressActivity = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true" {...props}>
     <path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q17 0 28.5 11.5T520-840q0 17-11.5 28.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160q133 0 226.5-93.5T800-480q0-17 11.5-28.5T840-520q17 0 28.5 11.5T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Z"/>
+  </svg>
+)
+export const Language = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 128 128" fill="none" stroke="currentColor" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
+    <circle cx="64" cy="64" r="46" />
+    <ellipse cx="64" cy="64" rx="19" ry="46" />
+    <path d="M18 64h92M26 38h76M26 90h76" />
+  </svg>
+)
+
+export const Notifications = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 128 128" fill="none" stroke="currentColor" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
+    <path d="M30 94V60a34 34 0 0 1 68 0v34l9 10H21l9-10Z" />
+    <path d="M54 112a10 10 0 0 0 20 0" />
   </svg>
 )

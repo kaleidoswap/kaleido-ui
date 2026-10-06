@@ -3,6 +3,8 @@ import { cn } from '../utils/cn'
 import { eyebrow } from '../utils/type-roles'
 
 export interface SettingsSectionCardProps {
+  /** Icon shown in a tile before the title, matching SettingsTile and SettingsSelectorRow. */
+  icon?: ReactNode
   title: ReactNode
   description?: ReactNode
   badge?: ReactNode
@@ -12,6 +14,7 @@ export interface SettingsSectionCardProps {
 }
 
 export function SettingsSectionCard({
+  icon,
   title,
   description,
   badge,
@@ -20,11 +23,18 @@ export function SettingsSectionCard({
   bodyClassName,
 }: SettingsSectionCardProps) {
   return (
-    <section className={cn('space-y-4 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-4 shadow-card', className)}>
+    <section className={cn('space-y-4 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-4 shadow-card-secondary', className)}>
       <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0 flex-1">
-          <h2 className="text-body font-bold text-foreground">{title}</h2>
-          {description && <p className="mt-1 text-caption text-muted-foreground">{description}</p>}
+        <div className="flex min-w-0 flex-1 items-start gap-3">
+          {icon && (
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25">
+              {icon}
+            </div>
+          )}
+          <div className="min-w-0 flex-1">
+            <h2 className="text-body font-bold text-foreground">{title}</h2>
+            {description && <p className="mt-1 text-caption text-muted-foreground">{description}</p>}
+          </div>
         </div>
         {badge}
       </div>

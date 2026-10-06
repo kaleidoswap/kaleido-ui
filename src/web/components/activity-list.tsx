@@ -1,6 +1,7 @@
 import { Icon } from '../primitives/icon'
 import type { ReactNode } from 'react'
 import { Button } from '../primitives/button'
+import { cardSurface } from '../primitives/card'
 import { TransactionCard } from './transaction-card'
 import { NetworkBadge, type NetworkType } from './network-badge'
 import { SwapBadge } from './swap-badge'
@@ -108,7 +109,9 @@ export function ActivityList<TData = unknown>({
         return (
           <div
             key={item.id}
-            className="relative overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-card transition-all hover:shadow-card-hover animate-in fade-in slide-in-from-bottom-2 duration-500"
+            // The row is a TransactionCard and keeps its own surface collapsed or
+            // expanded; only the details panel below it takes the secondary card.
+            className="relative overflow-hidden rounded-2xl animate-in fade-in slide-in-from-bottom-2 duration-500"
           >
             <TransactionCard
               direction={item.direction}
@@ -119,15 +122,10 @@ export function ActivityList<TData = unknown>({
               onSubAmountInfo={item.onSubAmountInfo}
               timestamp={item.timestamp}
               onClick={() => onExpandedChange?.(isExpanded ? null : item.id)}
-              // Stays above the details, which tuck underneath its rounded
-              // bottom corners.
-              className={cn('relative z-[1] bg-card', isExpanded && 'shadow-raised')}
+              className={cn(isExpanded && 'rounded-b-none')}
             />
             {isExpanded && (
-              // -mt-4/pt-4 slides the details up behind the card's bottom
-              // radius, so the corner notches show the details' own
-              // background instead of the darker container.
-              <div className="-mt-4 pt-4 animate-in slide-in-from-top-2 duration-300">
+              <div className={cn('animate-in slide-in-from-top-2 duration-300', cardSurface.secondary, 'rounded-t-none')}>
                 {(item.network || item.label) && (
                   <div className="flex items-center gap-1.5 px-3 py-2.5">
                     {item.network &&

@@ -99,13 +99,13 @@ export function FilterChipGroup<TValue extends string = string>({
                     iconOnly ? 'size-8' : 'h-8 px-3 text-caption',
                     active
                       ? 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
-                      : 'text-muted-foreground hover:bg-secondary/15 hover:text-secondary-content',
+                      : 'text-muted-foreground hover-gradient-violet hover:text-secondary-content',
                   )
                 : cn(
                     'flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-1 text-tiny font-bold transition-all',
                     active
                       ? 'border-transparent bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
-                      : 'border-foreground/8 bg-foreground/5 text-muted-foreground hover:border-secondary/40 hover:bg-secondary/10 hover:text-secondary-content',
+                      : 'border-foreground/8 bg-foreground/5 text-muted-foreground hover:border-secondary/40 hover-gradient-violet hover:text-secondary-content',
                   ),
               option.disabled && 'cursor-not-allowed opacity-40',
             )}

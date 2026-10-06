@@ -35,6 +35,12 @@ export interface ScrollAreaProps extends HTMLAttributes<HTMLDivElement> {
   viewportAs?: ScrollViewportElement
   /** Attributes for the element that scrolls (`data-slot`, `aria-*`, `tabIndex`). */
   viewportProps?: HTMLAttributes<HTMLElement> & Record<`data-${string}`, string | undefined>
+  /**
+   * `thin` (default): 2px at rest, 6px under the pointer — for panels, lists,
+   * code. `thick`: 6px at rest, 10px under the pointer — for a whole page's
+   * scroller, where the bar is the main way to see and move through it.
+   */
+  thickness?: 'thin' | 'thick'
 }
 
 const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect
@@ -79,6 +85,7 @@ function OverlayScrollArea({
   thumbClassName,
   viewportAs: Viewport = 'div',
   viewportProps,
+  thickness: size = 'thin',
   ...props
 }: ScrollAreaProps & { axis: ScrollAxis }) {
   const viewportRef = useRef<HTMLDivElement & HTMLPreElement & HTMLElement>(null)
@@ -193,7 +200,9 @@ function OverlayScrollArea({
   })
 
   const vertical = axis === 'y'
-  const thickness = isHoveringThumb ? 'var(--spacing-scrollbar-hover)' : 'var(--spacing-scrollbar)'
+  const restVar = size === 'thick' ? 'var(--spacing-scrollbar-thick)' : 'var(--spacing-scrollbar)'
+  const hoverVar = size === 'thick' ? 'var(--spacing-scrollbar-thick-hover)' : 'var(--spacing-scrollbar-hover)'
+  const thickness = isHoveringThumb ? hoverVar : restVar
 
   return (
     <div className={cn('relative min-h-0 min-w-0 overflow-hidden', className)} {...props}>
@@ -215,15 +224,15 @@ function OverlayScrollArea({
           ref={trackRef}
           data-slot="scrollbar"
           data-orientation={vertical ? 'vertical' : 'horizontal'}
+          data-thickness={size}
           className={
-            vertical
-              ? 'absolute inset-y-0 right-0 flex w-[var(--spacing-scrollbar-hover)] justify-end'
-              : 'absolute inset-x-0 bottom-0 flex h-[var(--spacing-scrollbar-hover)] items-end'
+            vertical ? 'absolute inset-y-0 right-0 flex justify-end' : 'absolute inset-x-0 bottom-0 flex items-end'
           }
           onPointerEnter={() => setIsHoveringThumb(true)}
           onPointerLeave={() => setIsHoveringThumb(false)}
           onPointerDown={handleTrackPointerDown}
-          style={{ zIndex: 'var(--z-scrollbar)' }}
+          // The track is as wide as the hovered thumb, so the pointer finds it.
+          style={{ zIndex: 'var(--z-scrollbar)', ...(vertical ? { width: hoverVar } : { height: hoverVar }) }}
         >
           <div
             data-slot="scrollbar-thumb"

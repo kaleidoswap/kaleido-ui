@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { Button } from '../primitives/button'
 import { DotPagination } from '../primitives/dot-pagination'
 import { Icon } from '../primitives/icon'
 import { AssetIcon } from './asset-icon'
@@ -10,6 +9,7 @@ import { ScrollArea } from '../primitives/scroll-area'
 import { cn } from '../utils/cn'
 import type { DepositAccountId } from './deposit-ui-shared'
 import { eyebrow } from '../utils/type-roles'
+import { IconButton } from '../primitives/icon-button'
 
 const ADD_ASSET_SUBTITLE: Record<DepositAccountId, string> = {
   RGB: 'RGB asset on Bitcoin',
@@ -142,15 +142,7 @@ export function DepositAssetSelection<TView extends string = string>({
   return (
     <div className="relative flex h-screen flex-col overflow-hidden bg-background bg-page-radial pt-16 font-display text-foreground">
       <div className="absolute left-4 top-4 z-30">
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-xl"
-          onClick={() => setCurrentView('dashboard' as TView)}
-          aria-label="Go back"
-        >
-          <Icon name="arrow_back" size="xl" />
-        </Button>
+        <IconButton icon="arrow_back" label="Go back" size="lg" onClick={() => setCurrentView('dashboard' as TView)} />
       </div>
 
       <div className="flex-shrink-0 px-5 pb-3 pt-4">
@@ -185,7 +177,7 @@ export function DepositAssetSelection<TView extends string = string>({
           <button
             type="button"
             data-testid="deposit-asset-btc"
-            className="group flex w-full min-w-0 items-center gap-3 overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-4 py-3 text-body shadow-card transition-all duration-200 hover:bg-secondary/10 hover:shadow-card-hover"
+            className="group flex w-full min-w-0 items-center gap-3 overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-4 py-3 text-body shadow-card transition-all duration-200 hover-gradient-violet hover:shadow-card-hover"
             onClick={() => onSelectAsset(btcAsset)}
           >
             <AssetIcon ticker="BTC" size={40} className="flex-shrink-0" />
@@ -219,7 +211,7 @@ export function DepositAssetSelection<TView extends string = string>({
               disabled={isSearching}
               className={cn(
                 'flex w-full items-center gap-2 rounded-2xl px-4 py-2.5 transition-all',
-                showOwnedAssets ? 'bg-gradient-active ring-1 ring-inset ring-primary/40' : 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-raised hover:bg-secondary/10',
+                showOwnedAssets ? 'bg-gradient-active ring-1 ring-inset ring-primary/40' : 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-raised hover-gradient-violet',
                 isSearching && 'cursor-default',
               )}
             >
@@ -245,7 +237,7 @@ export function DepositAssetSelection<TView extends string = string>({
                       key={asset.asset_id}
                       type="button"
                       data-testid={`deposit-asset-${asset.asset_id}`}
-                      className="group flex w-full min-w-0 items-center gap-3 overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-4 py-3 text-body shadow-card transition-all duration-200 hover:bg-secondary/10 hover:shadow-card-hover"
+                      className="group flex w-full min-w-0 items-center gap-3 overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-4 py-3 text-body shadow-card transition-all duration-200 hover-gradient-violet hover:shadow-card-hover"
                       onClick={() => onSelectAsset(asset)}
                     >
                       <AssetIcon ticker={asset.ticker} size={40} className="flex-shrink-0" />
@@ -315,7 +307,7 @@ export function DepositAssetSelection<TView extends string = string>({
               type="button"
               data-testid="deposit-add-asset"
               onClick={() => setShowAddAssetModal(true)}
-              className="group flex w-full items-center gap-3 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-3 shadow-card transition-all duration-200 hover:bg-secondary/10 hover:shadow-card-hover"
+              className="group flex w-full items-center gap-3 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-3 shadow-card transition-all duration-200 hover-gradient-violet hover:shadow-card-hover"
             >
               <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25">
                 <Icon name="add" size="md" />

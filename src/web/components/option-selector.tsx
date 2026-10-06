@@ -46,9 +46,9 @@ export function OptionSelector({
       renderTrigger={({ open }) => (
         <span
           className={cn(
-            'flex h-9 min-w-[4.5rem] items-center gap-1.5 rounded-full bg-foreground/8 px-3.5 text-body font-semibold leading-none text-foreground shadow-raised transition-all hover:bg-secondary/15',
+            'flex h-9 min-w-[4.5rem] items-center gap-1.5 rounded-full bg-foreground/8 px-3.5 text-body font-semibold leading-none text-foreground shadow-raised transition-all hover-gradient-violet',
             triggerAlign === 'center' ? 'justify-center' : 'justify-between',
-            open && 'bg-secondary/20 text-secondary-content ring-1 ring-inset ring-secondary/40 shadow-glow-violet-soft hover:bg-secondary/20',
+            open && 'bg-secondary/20 text-secondary-content ring-1 ring-inset ring-secondary/40 shadow-glow-violet-soft hover-gradient-violet',
             !compact && 'w-full',
           )}
         >

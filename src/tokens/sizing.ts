@@ -12,5 +12,8 @@ export const spacingUnit = '0.28125rem'
 export const sizing = {
   scrollbar: '2px',
   scrollbarHover: '6px',
+  /** The thick variant, for a whole page's scroller: easier to find and to grab. */
+  scrollbarThick: '6px',
+  scrollbarThickHover: '10px',
   scrollbarThumbMin: '24px',
 } as const

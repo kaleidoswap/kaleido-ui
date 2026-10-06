@@ -8,9 +8,12 @@ import {
   type AssetSelectorOption,
   type AssetSelectorQuickAsset,
 } from './asset-selector'
+import { DottedLeader } from './dotted-leader'
+import { cardSurface } from '../primitives/card'
 import { cn } from '../utils/cn'
 import { formatDisplayAmountText, type AmountDisplayUnit } from '../utils/amount-display'
 import { eyebrow } from '../utils/type-roles'
+import { IconButton } from '../primitives/icon-button'
 
 export interface SwapInputCardProps {
   fromTicker: string
@@ -147,7 +150,7 @@ export function SwapInputCard({
                     'rounded px-1.5 py-0.5 text-xxs font-bold transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-40',
                     selectedPercentage === percent
                       ? 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
-                      : 'bg-secondary/10 text-secondary-content shadow-raised hover:bg-secondary/20 hover:text-foreground',
+                      : 'bg-secondary/10 text-secondary-content shadow-raised hover-gradient-violet hover:text-foreground',
                   )}
                 >
                   {percent}%
@@ -206,21 +209,20 @@ export function SwapInputCard({
           </div>
         </div>
 
-        <div className="relative mx-6 flex h-px items-center justify-center bg-secondary/25">
-          {/* The flip button rotates 180° on hover; previously it carried a
-              directional `shadow-lg shadow-black/35` that visibly slid as the
-              button rotated. Wrap the button in a non-rotating shadow host
-              and rotate only the inner glyph so the shadow stays put. */}
-          <span className="absolute flex h-11 w-11 items-center justify-center rounded-full bg-secondary shadow-button-violet transition-shadow duration-300 hover:shadow-glow-violet">
-            <button
-              type="button"
-              onClick={onFlip}
-              title="Flip assets"
-              className="flex h-11 w-11 items-center justify-center rounded-full bg-secondary bg-gradient-violet text-white ring-4 ring-card transition-transform duration-500 hover:rotate-180 active:scale-95"
-            >
-              <Icon name="swap_vert" size="md" />
-            </button>
-          </span>
+        {/* The same neutral ink as the quote rows' leader lines. */}
+        <div className="relative flex h-px items-center justify-center bg-foreground/15">
+          {/* The flip: the solid violet IconButton, ringed in the card colour so
+              it cuts the divider. Only the glyph turns on hover, so the shadow
+              stays put. */}
+          <IconButton
+            icon="swap_vert"
+            label="Flip assets"
+            variant="secondary"
+            size="lg"
+            shape="circle"
+            onClick={onFlip}
+            className="absolute ring-4 ring-card [&_svg]:transition-transform [&_svg]:duration-500 hover:[&_svg]:rotate-180 motion-reduce:[&_svg]:transition-none"
+          />
         </div>
 
         <div className="rounded-b-2xl bg-gradient-to-br from-secondary/[0.06] to-primary/[0.08] p-3.5 pt-4 transition-all duration-300">
@@ -261,14 +263,15 @@ export function SwapInputCard({
       </div>
 
       {(quoteError || quoteRateText || quoteVenueText || quoteFeeText || quoteExpiresText) && (
-        <div className="rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-3 shadow-card">
+        <div className={cn(cardSurface.secondary, 'p-3')}>
           {quoteError ? (
             <p className="text-center text-caption text-danger-fg">{quoteError}</p>
           ) : (
             <div className="space-y-1.5">
               {quoteVenueText && (
-                <div className="flex items-center justify-between text-caption">
+                <div className="flex items-center gap-3 text-caption">
                   <span className="text-foreground/55">Provider</span>
+                  <DottedLeader />
                   <span className="inline-flex items-center gap-1.5 font-medium text-foreground/65">
                     <span
                       className={cn(
@@ -284,14 +287,16 @@ export function SwapInputCard({
                 </div>
               )}
               {quoteRateText && (
-                <div className="flex items-center justify-between text-caption">
+                <div className="flex items-center gap-3 text-caption">
                   <span className="text-foreground/55">Rate</span>
+                  <DottedLeader />
                   <span className="font-medium text-foreground/65">{quoteRateText}</span>
                 </div>
               )}
               {(quoteFeeText || quoteExpiresText) && (
-                <div className="flex items-center justify-between text-caption">
+                <div className="flex items-center gap-3 text-caption">
                   <span className="text-foreground/55">Fee</span>
+                  <DottedLeader />
                   <div className="flex items-center gap-2">
                     {quoteFeeText && <span className="text-foreground/65">{quoteFeeText}</span>}
                     {quoteFeeText && quoteExpiresText && (
@@ -325,7 +330,7 @@ export function SwapInputCard({
       <Button
         variant={submitVariant}
         size="cta"
-        className="w-full"
+        className="mt-4 w-full"
         onClick={onSubmit}
         disabled={submitDisabled}
       >

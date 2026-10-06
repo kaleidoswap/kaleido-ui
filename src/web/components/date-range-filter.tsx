@@ -4,6 +4,7 @@ import { Icon } from '../primitives/icon'
 import { Input } from '../primitives/input'
 import { Label } from '../primitives/label'
 import { cn } from '../utils/cn'
+import { IconButton } from '../primitives/icon-button'
 
 export interface DateRange {
   /** `YYYY-MM-DD`, or empty. */
@@ -22,6 +23,11 @@ export interface DateRangeFilterProps {
   toLabel?: string
   clearLabel?: string
   refreshLabel?: string
+  /**
+   * The range's own "Clear". On by default; turn it off inside a `FilterBar`,
+   * whose "Clear all" already empties the range with the other filters.
+   */
+  showClear?: boolean
   className?: string
 }
 
@@ -38,6 +44,7 @@ export function DateRangeFilter({
   toLabel = 'To',
   clearLabel = 'Clear',
   refreshLabel = 'Refresh',
+  showClear = true,
   className,
 }: DateRangeFilterProps) {
   const id = useId().replace(/:/g, '')
@@ -45,7 +52,7 @@ export function DateRangeFilter({
 
   return (
     <div data-slot="date-range-filter" className={cn('flex flex-wrap items-end gap-3', className)}>
-      <div className="min-w-36 space-y-1.5">
+      <div className="flex min-w-36 flex-col gap-2">
         <Label htmlFor={`${id}-from`}>{fromLabel}</Label>
         <Input
           id={`${id}-from`}
@@ -55,7 +62,7 @@ export function DateRangeFilter({
           onChange={(event) => onChange({ ...value, from: event.target.value })}
         />
       </div>
-      <div className="min-w-36 space-y-1.5">
+      <div className="flex min-w-36 flex-col gap-2">
         <Label htmlFor={`${id}-to`}>{toLabel}</Label>
         <Input
           id={`${id}-to`}
@@ -65,23 +72,21 @@ export function DateRangeFilter({
           onChange={(event) => onChange({ ...value, to: event.target.value })}
         />
       </div>
-      <Button type="button" variant="ghost" disabled={empty} onClick={() => onChange({ from: '', to: '' })}>
-        {clearLabel}
-      </Button>
+      {showClear && (
+        <Button type="button" variant="ghost" disabled={empty} onClick={() => onChange({ from: '', to: '' })}>
+          {clearLabel}
+        </Button>
+      )}
       {onRefresh && (
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-xl"
-          aria-label={refreshLabel}
-          title={refreshLabel}
+        <IconButton
+          label={refreshLabel}
+          variant="surface"
+          size="lg"
           disabled={isRefreshing}
           aria-busy={isRefreshing || undefined}
           onClick={onRefresh}
-          className="text-secondary-content hover:bg-secondary/15 hover:shadow-glow-violet-soft focus-visible:ring-primary/50 focus-visible:ring-offset-0 focus-visible:shadow-glow-primary-soft"
-        >
-          <Icon name="refresh" className={cn('text-icon-lg', isRefreshing && 'animate-spin motion-reduce:animate-none')} />
-        </Button>
+          icon={<Icon name="refresh" aria-hidden="true" className={cn(isRefreshing && 'animate-spin motion-reduce:animate-none')} />}
+        />
       )}
     </div>
   )

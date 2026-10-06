@@ -26,7 +26,7 @@ export interface CopyButtonProps
 export const COPY_FAILED_MESSAGE = 'Copy failed — select it and copy by hand.'
 
 /**
- * A 24×24 ghost icon button that copies `value` and says whether it worked:
+ * The small (`icon-sm`) quiet icon button that copies `value` and says whether it worked:
  * the copy glyph, a check once copied, and on failure a visible message
  * (`role="alert"`) instead of a check — never "copied" when nothing was.
  * A success is announced through a polite live region.
@@ -42,7 +42,7 @@ export function CopyButton({
   copiedAnnouncement,
   onCopied,
   onCopyError,
-  variant = 'ghost',
+  variant = 'quiet',
   className,
   disabled,
   ...props
@@ -59,15 +59,13 @@ export function CopyButton({
       <Button
         type="button"
         variant={variant}
-        size="icon"
+        size="icon-sm"
         aria-label={copyLabel ?? `Copy ${label}`}
         disabled={disabled}
         onClick={onClick}
         className={cn(
           'focus-visible:ring-primary/50 focus-visible:ring-offset-0 focus-visible:shadow-glow-primary-soft',
-          state === 'copied'
-            ? 'bg-primary/10 text-brand hover:bg-primary/15'
-            : 'text-muted-foreground hover:bg-secondary/15 hover:text-secondary-content',
+          state === 'copied' && 'bg-primary/10 text-brand hover:bg-primary/15 hover:text-brand',
           className,
         )}
         {...props}

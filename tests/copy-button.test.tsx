@@ -72,13 +72,12 @@ const renderButton = (props: Record<string, unknown> = {}) => {
   }
 }
 
-test('a 24px ghost icon button named for what it copies', () => {
+test('the small quiet icon button, named for what it copies', () => {
   accept()
   const { view, button } = renderButton()
   assert.equal(button.getAttribute('type'), 'button')
   assert.equal(button.getAttribute('aria-label'), 'Copy transaction id')
-  assert.match(button.className, /\bh-6\b/)
-  assert.match(button.className, /\bw-6\b/)
+  assert.match(button.className, /\bsize-7\b/)
   view.unmount()
 })
 

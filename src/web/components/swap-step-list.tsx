@@ -79,7 +79,12 @@ const labelClass: Record<SwapStepStatus, string> = {
 export function SwapStepList({ steps, connector = true, statusLabels, className }: SwapStepListProps) {
   const labels = { ...defaultStatusLabels, ...statusLabels }
   return (
-    <div data-slot="swap-step-list" className={cn('flex flex-col', !connector && 'gap-3', className)}>
+    // A checklist's items stand alone, so a hairline rule separates them where
+    // a flow has its rail.
+    <div
+      data-slot="swap-step-list"
+      className={cn('flex flex-col', !connector && 'divide-y divide-divider/35', className)}
+    >
       {steps.map((step, index) => {
         const isLast = index === steps.length - 1
         return (
@@ -87,7 +92,7 @@ export function SwapStepList({ steps, connector = true, statusLabels, className 
             key={step.id}
             data-slot="swap-step"
             data-status={step.status}
-            className="flex gap-3"
+            className={cn('flex gap-3', !connector && 'py-3 first:pt-0 last:pb-0')}
           >
             <div className="flex w-5 shrink-0 flex-col items-center">
               <span

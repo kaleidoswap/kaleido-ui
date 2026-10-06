@@ -1,7 +1,7 @@
 import { Icon } from '../primitives/icon'
 import type { ReactNode } from 'react'
 import { cn } from '../utils/cn'
-import { LiquidNetworkIcon } from './network-icon'
+import { LiquidNetworkIcon, OnchainNetworkIcon } from './network-icon'
 import type { DepositAccountId, DepositNetworkKey } from './deposit-ui-shared'
 import { eyebrow } from '../utils/type-roles'
 
@@ -23,7 +23,7 @@ const NETWORK_OPTIONS: Record<DepositAccountId, DepositNetworkOption> = {
     account: 'RGB',
     label: 'On-chain / Lightning',
     description: 'Classic Bitcoin address or Lightning invoice via the RLN node.',
-    icon: <Icon name="link" className="text-icon-lg" />,
+    icon: <OnchainNetworkIcon className="size-5" />,
     accentBg: 'bg-network-bitcoin/10',
     accentBorder: 'border-network-bitcoin/30',
     accentText: 'text-network-bitcoin-fg',
@@ -109,7 +109,7 @@ export function DepositNetworkDefaultModal({
                   'flex w-full items-center gap-3 rounded-xl p-3 text-left transition-all',
                   isSuggested
                     ? cn(option.accentBg, 'shadow-glow-violet-soft ring-1 ring-inset ring-secondary/50')
-                    : 'bg-muted/40 shadow-raised hover:bg-secondary/10'
+                    : 'bg-muted/40 shadow-raised hover-gradient-violet'
                 )}
               >
                 <div

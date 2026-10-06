@@ -10,6 +10,18 @@ import {
 } from 'react'
 import { cn } from '../utils/cn'
 import { formatAmount } from '../utils/amount-display'
+import {
+  ChartDataTable,
+  ChartHeader,
+  ChartLegend,
+  ChartLegendRow,
+  ChartTooltip,
+  tooltipText,
+  type ChartTitleProps,
+  type ChartView,
+  type TooltipRow,
+  useSeriesVisibility,
+} from './charts/core'
 
 /**
  * Series colours are the theme's own custom properties, never literals, so the
@@ -44,7 +56,7 @@ export interface TrendChartPoint {
   values: Readonly<Record<string, number>>
 }
 
-export interface TrendChartProps {
+export interface TrendChartProps extends ChartTitleProps {
   points: readonly TrendChartPoint[]
   /** Stacked bottom to top, in this order. */
   series: readonly TrendChartSeries[]
@@ -65,7 +77,8 @@ export interface TrendChartProps {
 }
 
 const toneFill: Record<TrendChartTone, string> = {
-  primary: 'var(--primary)',
+  // The charts' green, so every chart draws the same one.
+  primary: 'var(--series-1)',
   danger: 'var(--destructive)',
   info: 'var(--chart-4)',
   warning: 'var(--chart-2)',
@@ -156,24 +169,30 @@ function useElementWidth() {
  * Every value it draws can be read off an axis: the value axis is linear from
  * zero, its top is the tallest bar, and every label on it names a height the
  * data reaches. Periods are read by hovering, or by focusing the plot and using
- * the arrow keys; the readout above the plot is a live region, so a screen
- * reader hears the figures of the period it lands on.
+ * the arrow keys; the period's figures show in a tooltip by its bar, as in the
+ * line and area charts, and a hidden live region says them to a screen reader.
  *
  * It draws nothing when there are no points: an empty period is the consumer's
  * empty state, passed as `empty`, not a frame with no bars in it.
  */
 export function TrendChart({
   points,
-  series,
+  series: allSeries,
   scaleLabel,
   label,
   empty,
   formatValue = defaultFormat,
   height = 220,
   className,
+  ...head
 }: TrendChartProps) {
   const [containerRef, width] = useElementWidth()
   const [active, setActive] = useState<number | null>(null)
+  const [view, setView] = useState<ChartView>('chart')
+  // Each series keeps its own texture when another is switched off.
+  const styledSeries = allSeries.map((s, index) => ({ ...s, texture: s.texture ?? (index === 0 ? 'solid' : 'hatch') }))
+  const visibility = useSeriesVisibility(allSeries.map((s) => s.id))
+  const series = styledSeries.filter((s) => visibility.isVisible(s.id))
   const idBase = `trend-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`
   const count = points.length
 
@@ -209,7 +228,7 @@ export function TrendChart({
 
   if (count === 0) return <>{empty ?? null}</>
 
-  const textures = series.map((s, index) => s.texture ?? (index === 0 ? 'solid' : 'hatch'))
+  const textures = series.map((s) => s.texture)
   const totals = points.map((point) =>
     series.reduce((sum, s) => sum + Math.max(0, point.values[s.id] ?? 0), 0),
   )
@@ -240,6 +259,19 @@ export function TrendChart({
 
   const activePoint = active === null ? null : points[active]
   const readoutId = `${idBase}-readout`
+  // The period's figures, as the Area chart shows them: a tooltip by the bar.
+  const activeRows: TooltipRow[] = activePoint
+    ? series.map((s) => ({
+        id: s.id,
+        label: s.label,
+        value: formatValue(activePoint.values[s.id] ?? 0),
+        color: toneFill[s.tone],
+      }))
+    : []
+  const activeTitle = activePoint ? (activePoint.detail ?? activePoint.label) : ''
+  // The SVG is drawn in measured px; the tooltip is placed in the container's.
+  const containerWidth = containerRef.current?.clientWidth ?? width
+  const toContainer = width > 0 ? containerWidth / width : 1
 
   return (
     <figure
@@ -247,56 +279,31 @@ export function TrendChart({
       aria-label={label}
       className={cn('m-0 min-w-0 space-y-2', className)}
     >
-      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-caption">
-        <span data-slot="trend-chart-scale" className="text-muted-foreground">
-          {scaleLabel} · linear, from 0
-        </span>
-        <ul data-slot="trend-chart-legend" className="m-0 flex list-none flex-wrap gap-3 p-0">
-          {series.map((s, index) => (
-            <li key={s.id} className="flex items-center gap-1.5 text-foreground">
-              <svg width="12" height="12" aria-hidden="true" className="shrink-0">
-                <Texture id={`${idBase}-legend-${index}`} tone={s.tone} texture={textures[index]} />
-                <rect
-                  width="12"
-                  height="12"
-                  rx="2"
-                  fill={
-                    textures[index] === 'hatch' ? `url(#${idBase}-legend-${index})` : toneFill[s.tone]
-                  }
-                  stroke={toneFill[s.tone]}
-                />
-              </svg>
-              {s.label}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ChartHeader {...head} view={view} onViewChange={setView} />
 
-      <p
-        id={readoutId}
-        data-slot="trend-chart-readout"
-        aria-live="polite"
-        className="m-0 min-h-[1.125rem] text-caption tabular-nums text-muted-foreground"
-      >
-        {activePoint ? (
-          <>
-            <span className="font-medium text-foreground">
-              {activePoint.detail ?? activePoint.label}
-            </span>
-            {series.map((s) => (
-              <span key={s.id}>
-                {' · '}
-                {formatValue(activePoint.values[s.id] ?? 0)} {s.label}
-              </span>
-            ))}
-          </>
-        ) : (
-          'Hover a bar, or focus the chart and use the arrow keys, to read a period.'
-        )}
+      {view === 'table' && (
+        <ChartDataTable
+          label={label}
+          table={{
+            columns: ['Period', ...series.map((s) => s.label), 'Total'],
+            rows: points.map((point, index) => [
+              point.detail ?? point.label,
+              ...series.map((s) => formatValue(point.values[s.id] ?? 0)),
+              formatValue(totals[index]),
+            ]),
+          }}
+        />
+      )}
+
+      {/* What the tooltip shows, said to a screen reader as the period changes. */}
+      <p id={readoutId} data-slot="trend-chart-readout" aria-live="polite" className="sr-only">
+        {activePoint ? tooltipText(activeTitle, activeRows) : ''}
       </p>
 
+      {/* Hidden, not unmounted, in the table view: it keeps measuring its width. */}
       <div
         ref={containerRef}
+        hidden={view === 'table'}
         role="group"
         aria-roledescription="chart"
         tabIndex={0}
@@ -305,7 +312,7 @@ export function TrendChart({
         aria-label={`${label}: ${count} periods. Arrow keys move between them.`}
         onKeyDown={moveActive}
         onBlur={() => setActive(null)}
-        className="w-full min-w-0 rounded-xl outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft"
+        className="relative mt-5 w-full min-w-0 rounded-xl outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft"
       >
         <svg
           width="100%"
@@ -422,7 +429,44 @@ export function TrendChart({
             ))}
           </g>
         </svg>
+        {activePoint && (
+          <ChartTooltip
+            title={activeTitle}
+            rows={activeRows}
+            swatch="rect"
+            x={(plotLeft + active! * band + band / 2) * toContainer}
+            y={plotTop}
+            width={containerWidth}
+          />
+        )}
       </div>
+      {view === 'chart' && (
+        <ChartLegendRow>
+          <ChartLegend
+            items={styledSeries.map((s, index) => ({
+              id: s.id,
+              label: s.label,
+              color: toneFill[s.tone],
+              swatch: (
+                <svg width="12" height="12" aria-hidden="true" className="shrink-0">
+                  <Texture id={`${idBase}-legend-${index}`} tone={s.tone} texture={s.texture} />
+                  <rect
+                    width="12"
+                    height="12"
+                    rx="2"
+                    fill={s.texture === 'hatch' ? `url(#${idBase}-legend-${index})` : toneFill[s.tone]}
+                    stroke={toneFill[s.tone]}
+                  />
+                </svg>
+              ),
+            }))}
+            {...visibility.legend}
+          />
+        </ChartLegendRow>
+      )}
+      <p data-slot="trend-chart-scale" className="sr-only">
+        {scaleLabel} · linear, from 0
+      </p>
     </figure>
   )
 }

@@ -1,6 +1,8 @@
 import { formatAmount } from '../utils/amount-display'
 import { useId, type ChangeEvent } from 'react'
+import { Button } from '../primitives/button'
 import { Label } from '../primitives/label'
+import { DottedLeader } from './dotted-leader'
 import { cn } from '../utils/cn'
 import { eyebrow } from '../utils/type-roles'
 
@@ -105,7 +107,7 @@ export function WithdrawAmountInput({
   return (
     <>
       {showAmountInput && (
-        <div className="space-y-3">
+        <div className="flex flex-col gap-2">
           <Label htmlFor={amountId} className="ml-1">
             Amount
           </Label>
@@ -123,18 +125,21 @@ export function WithdrawAmountInput({
                 />
                 <p className="mt-0.5 text-caption text-muted-foreground">{unitLabel}</p>
               </div>
-              <button
+              <Button
                 type="button"
-                className={cn('shrink-0 rounded-lg bg-secondary bg-gradient-violet px-3 py-1.5 text-white shadow-button-violet transition-shadow hover:shadow-glow-violet', eyebrow)}
+                variant="surface"
+                size="xs"
+                className={cn('shrink-0', eyebrow)}
                 onClick={handleSetMax}
               >
                 Max
-              </button>
+              </Button>
             </div>
             <div className={cn(
-              'flex items-center justify-between bg-muted/40 px-4 py-2',
+              'flex items-center gap-3 bg-muted/40 px-4 py-2',
             )}>
               <span className="text-xxs text-foreground/55">Available</span>
+              <DottedLeader />
               <span className={cn(
                 'tabular-nums text-xxs font-medium',
                 isOverBalance ? 'text-danger-fg' : 'text-foreground/55',
@@ -160,7 +165,7 @@ export function WithdrawAmountInput({
       )}
 
       {addressType === 'rgb' && decodedRgbInvoice?.recipient_type === 'Witness' && (
-        <div className="space-y-2">
+        <div className="flex flex-col gap-2">
           <Label htmlFor={witnessId} className="ml-1">
             Witness amount (sats) - min 512
           </Label>
@@ -182,8 +187,8 @@ export function WithdrawAmountInput({
       )}
 
       {(addressType === 'bitcoin' || addressType === 'rgb') && (
-        <div className="space-y-2">
-          <p id={feeRateId} className={cn('m-0 ml-1 block pb-1 leading-none', eyebrow, 'text-secondary-content')}>
+        <div className="flex flex-col gap-2">
+          <p id={feeRateId} className={cn('mb-1 ml-1 block leading-none', eyebrow, 'text-secondary-content')}>
             Fee Rate
           </p>
           {customFeeEnabled ? (
@@ -202,8 +207,8 @@ export function WithdrawAmountInput({
                       }}
                       className={`group relative overflow-hidden rounded-xl border px-2 py-3 transition-all active:scale-[0.98] ${
                         selected
-                          ? 'border-transparent bg-gradient-active ring-1 ring-inset ring-primary/40 shadow-glow-primary-soft'
-                          : 'border-transparent bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-raised hover:bg-secondary/10'
+                          ? 'border-transparent bg-gradient-active ring-1 ring-inset ring-primary/40 shadow-glow-primary-faint'
+                          : 'border-transparent bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-raised hover-gradient-violet'
                       }`}
                     >
                       <span
@@ -248,12 +253,12 @@ export function WithdrawAmountInput({
                   onClick={() => setFeeRate(rate)}
                   className={`group relative overflow-hidden rounded-[16px] px-3 py-3 transition-all active:scale-[0.98] ${
                     feeRate === rate
-                      ? 'bg-gradient-active ring-1 ring-inset ring-primary/40 shadow-glow-primary-soft'
-                      : 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-raised hover:bg-secondary/10'
+                      ? 'bg-gradient-active ring-1 ring-inset ring-primary/40 shadow-glow-primary-faint'
+                      : 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-raised hover-gradient-violet'
                   }`}
                 >
                   <div
-                    className={`pointer-events-none absolute inset-0 bg-gradient-to-br from-secondary/15 to-transparent transition-opacity ${feeRate === rate ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                    className={`pointer-events-none absolute inset-0 bg-gradient-to-br from-secondary/15 to-transparent transition-opacity ${feeRate === rate ? 'opacity-100 [.light_&]:opacity-0' : 'opacity-0'}`}
                   />
                   <div className="relative z-10 flex flex-col items-center">
                     <div

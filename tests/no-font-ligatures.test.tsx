@@ -252,7 +252,7 @@ const NOT_RENDERED = new Set([
   // Need their data; tests/lists-p3.test.tsx renders them.
   'DateRangeFilter', 'EventTimeline', 'ValueList',
   // Charts need their data; tests/charts.test.tsx renders every one of them.
-  'LineChart', 'AreaChart', 'BarChart', 'BarList', 'DonutChart', 'ScatterChart', 'Sparkline',
+  'LineChart', 'AreaChart', 'BarChart', 'MixedChart', 'BarList', 'DonutChart', 'ScatterChart', 'Sparkline',
   'ChartLegend', 'ChartTooltip', 'ChartFrame',
 ])
 

@@ -9,6 +9,7 @@ import {
 import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
 import { NetworkStatusChip } from './network-status-chip'
+import type { NetworkType } from './network-badge'
 import { cn } from '../utils/cn'
 import { eyebrow } from '../utils/type-roles'
 
@@ -23,6 +24,8 @@ export interface AccountStatusTabItem<TId extends string = string> {
   state: string
   detail: string
   icon: ReactNode
+  /** The account's network: its chip takes that network's badge fill. */
+  network?: NetworkType
   /** Optional larger protocol mark used only in the read-only details modal. */
   detailIcon?: ReactNode
   dotTone: string
@@ -94,7 +97,7 @@ export function AccountStatusDetails<TId extends string = string>({
           <div className={eyebrow}>Network</div>
           <div className="mt-1 break-words text-body font-semibold">{account.networkLabel}</div>
         </div>
-        <div className="rounded-2xl bg-muted/40 px-4 py-3 shadow-raised">
+        <div className="rounded-2xl kui-well px-4 py-3 shadow-raised">
           <div className={cn('text-muted-foreground', eyebrow)}>
             Status
           </div>
@@ -107,7 +110,7 @@ export function AccountStatusDetails<TId extends string = string>({
       <p className="mt-5 text-caption leading-relaxed text-muted-foreground">{account.detail}</p>
 
       {account.details && account.details.length > 0 && (
-        <dl className="mt-5 space-y-2 rounded-2xl bg-muted/40 px-4 py-3 shadow-inner">
+        <dl className="mt-5 space-y-2 rounded-2xl kui-well px-4 py-3 shadow-inner">
           {account.details.map((item) => (
             <div key={item.label} className="grid grid-cols-[max-content_minmax(0,1fr)] gap-3 text-caption">
               <dt className="text-muted-foreground">{item.label}</dt>
@@ -163,7 +166,7 @@ export function AccountStatusTabs<TId extends string = string>({
 
   return (
     <>
-      <div className="flex max-w-full items-center justify-end overflow-x-auto no-scrollbar pl-3">
+      <div className="flex max-w-full flex-wrap items-center justify-end pl-3">
         <div className="flex items-center gap-1 px-1">
           {accounts.map((account) => (
             <div key={account.id} className="group relative shrink-0">
@@ -172,6 +175,7 @@ export function AccountStatusTabs<TId extends string = string>({
                   onSelect ? onSelect(account.id) : setSelectedAccountId(account.id)
                 }
                 icon={account.icon}
+                network={account.network}
                 dotClassName={account.dotTone}
                 ariaLabel={
                   onSelect ? `Open ${account.title}` : `Open ${account.title} details`

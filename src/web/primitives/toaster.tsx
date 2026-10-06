@@ -10,6 +10,7 @@ import {
 import { useToast } from '../hooks/use-toast'
 import { useCopyToClipboard } from '../hooks/use-copy-to-clipboard'
 import { Icon } from './icon'
+import { IconButton } from './icon-button'
 
 function toPlainText(node: any): string {
   if (node == null || node === false) return ''
@@ -81,22 +82,20 @@ function ToastWithProgress({ id, title, description, action, duration = 4000, va
       <div className="flex items-center gap-2 shrink-0">
         {action}
         {showCopy && (
-          <button
-            type="button"
+          <IconButton
+            icon={copied ? 'check' : copyFailed ? 'error' : 'content_copy'}
+            label={copyLabel}
+            size="sm"
+            variant="danger-subtle"
             onClick={copyText}
-            aria-label={copyLabel}
-            title={copyLabel}
-            className="rounded-md p-1 text-foreground/60 hover:text-secondary-content hover:bg-secondary/15 transition-colors"
-          >
-            <Icon name={copied ? 'check' : copyFailed ? 'error' : 'content_copy'} size="sm" />
-          </button>
+          />
         )}
         {showCopy && (
           <span aria-live="polite" className="sr-only">
             {copied ? 'Copied' : copyFailed ? copyLabel : ''}
           </span>
         )}
-        <ToastClose />
+        <ToastClose variant={variant} />
       </div>
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-foreground/10 overflow-hidden">
         <div

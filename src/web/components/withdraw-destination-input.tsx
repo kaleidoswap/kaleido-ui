@@ -1,6 +1,7 @@
 import { useId } from 'react'
 import { Icon } from '../primitives/icon'
 import { Label } from '../primitives/label'
+import { IconButton } from '../primitives/icon-button'
 
 export type WithdrawAddressType =
   | 'unknown'
@@ -37,7 +38,7 @@ export function WithdrawDestinationInput({
 }: WithdrawDestinationInputProps) {
   const inputId = useId()
   return (
-    <div className="space-y-2">
+    <div className="flex flex-col gap-2">
       <Label htmlFor={inputId} className="ml-1">
         Destination
       </Label>
@@ -53,26 +54,17 @@ export function WithdrawDestinationInput({
         />
         <div className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-1">
           {destination && (
-            <button
-              type="button"
-              aria-label="Clear"
+            <IconButton
+              icon="close"
+              label="Clear"
+              size="sm"
               onClick={() => {
                 setDestination('')
                 handleReset()
               }}
-              className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-secondary/10 hover:text-foreground"
-            >
-              <Icon name="close" className="text-icon-md" />
-            </button>
+            />
           )}
-          <button
-            type="button"
-            aria-label="Paste"
-            onClick={handlePaste}
-            className="rounded-lg bg-secondary/15 p-2 text-secondary-content shadow-raised ring-1 ring-inset ring-secondary/25 transition-all hover:bg-secondary hover:text-white hover:shadow-button-violet"
-          >
-            <Icon name="content_paste" className="text-icon-md" />
-          </button>
+          <IconButton icon="content_paste" label="Paste" variant="surface" size="sm" onClick={handlePaste} />
         </div>
       </div>
 

@@ -2,6 +2,8 @@ import { useState, type KeyboardEvent, type ReactNode } from 'react'
 import { chartSeriesLimit } from '../../../tokens/chart'
 import {
   ChartFrame,
+  useSeriesVisibility,
+  type ChartTitleProps,
   ChartLegend,
   defaultChartFormat,
   nextActiveIndex,
@@ -15,7 +17,7 @@ export interface DonutSegment {
   value: number
 }
 
-export interface DonutChartProps {
+export interface DonutChartProps extends ChartTitleProps {
   /**
    * The parts of one whole. Past six, the smallest fold into one "Other"
    * segment rather than taking a generated colour.
@@ -73,9 +75,12 @@ export function DonutChart({
   size = 200,
   empty,
   className,
+  ...head
 }: DonutChartProps) {
   const [active, setActive] = useState<number | null>(null)
-  const parts = foldSegments(segments)
+  const allParts = foldSegments(segments)
+  const visibility = useSeriesVisibility(allParts.map((part) => part.id))
+  const parts = allParts.filter((part) => visibility.isVisible(part.id))
   const total = parts.reduce((sum, s) => sum + s.value, 0)
   if (parts.length === 0 || total <= 0) return <>{empty ?? null}</>
 
@@ -94,8 +99,10 @@ export function DonutChart({
     return { part, start, end: Math.max(start + 0.001, end) }
   })
 
-  const colorOf = (index: number) =>
-    parts[index].id === OTHER_ID ? 'var(--muted-foreground)' : seriesColor(index)
+  // Colour follows the part's own slot, so switching one off never repaints the rest.
+  const colorOfPart = (part: DonutSegment) =>
+    part.id === OTHER_ID ? 'var(--muted-foreground)' : seriesColor(allParts.indexOf(part))
+  const colorOf = (index: number) => colorOfPart(parts[index])
   const share = (value: number) => `${Math.round((value / total) * 1000) / 10}%`
   const activePart = active === null ? null : parts[active]
 
@@ -111,15 +118,17 @@ export function DonutChart({
 
   return (
     <ChartFrame
+      {...head}
       label={label}
       className={className}
       legend={
         <ChartLegend
-          items={parts.map((part, index) => ({
+          items={allParts.map((part) => ({
             id: part.id,
-            label: `${part.label} · ${share(part.value)}`,
-            color: colorOf(index),
+            label: visibility.isVisible(part.id) ? `${part.label} · ${share(part.value)}` : part.label,
+            color: colorOfPart(part),
           }))}
+          {...visibility.legend}
         />
       }
       table={{
@@ -139,7 +148,8 @@ export function DonutChart({
         onKeyDown={onKeyDown}
         onBlur={() => setActive(null)}
         onPointerLeave={() => setActive(null)}
-        className={`${plotClass} flex justify-center`}
+        // Room above and below the ring, so it doesn't crowd the head and legend.
+        className={`${plotClass} flex justify-center py-4`}
       >
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden="true" className="block max-w-full">
           {arcs.map(({ part, start, end }, index) => (

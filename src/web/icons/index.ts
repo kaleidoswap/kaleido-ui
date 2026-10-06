@@ -104,7 +104,13 @@ export type IconName =
   | 'swap_calls'
   | 'progress_activity'
   | 'bar_chart'
+  | 'stacked_bar_chart'
+  | 'show_chart'
+  | 'area_chart'
+  | 'scatter_plot'
   | 'table_rows'
+  | 'language'
+  | 'notifications'
 
 export const outlinedMap: Record<IconName, React.FC<SVGProps<SVGSVGElement>>> = {
   'account_balance_wallet': Outlined.AccountBalanceWallet,
@@ -119,6 +125,10 @@ export const outlinedMap: Record<IconName, React.FC<SVGProps<SVGSVGElement>>> = 
   'arrow_upward': Outlined.ArrowUpward,
   'autorenew': Outlined.Autorenew,
   'bar_chart': Outlined.BarChart,
+  'stacked_bar_chart': Outlined.StackedBarChart,
+  'show_chart': Outlined.ShowChart,
+  'area_chart': Outlined.AreaChart,
+  'scatter_plot': Outlined.ScatterPlot,
   'bolt': Outlined.Bolt,
   'bug_report': Outlined.BugReport,
   'call_received': Outlined.CallReceived,
@@ -187,6 +197,8 @@ export const outlinedMap: Record<IconName, React.FC<SVGProps<SVGSVGElement>>> = 
   'sync': Outlined.Sync,
   'sync_alt': Outlined.SyncAlt,
   'table_rows': Outlined.TableRows,
+  'language': Outlined.Language,
+  'notifications': Outlined.Notifications,
   'timer': Outlined.Timer,
   'timer_off': Outlined.TimerOff,
   'token': Outlined.Token,

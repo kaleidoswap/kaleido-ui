@@ -11,6 +11,7 @@ import {
   DonutChart,
   LineChart,
   Meter,
+  MixedChart,
   ScatterChart,
   Sparkline,
   chartValueTicks,
@@ -62,6 +63,37 @@ test('a line chart: 2px lines in slot colours, a legend for two series, width 10
   assert.doesNotMatch(markup, hexFill)
   // Gridlines are solid hairlines, never dashed.
   assert.doesNotMatch(markup, /stroke-dasharray/)
+})
+
+test('a mixed chart draws one view at a time, and its switch offers every view and the table', async () => {
+  const view = mount(h(MixedChart, { data: months, series: two, label: 'Volume', scaleLabel: 'BTC' }))
+  const switchOptions = () =>
+    [...view.container.querySelectorAll('[data-slot="chart-view-toggle"] button[aria-label]')].map((o) => o.getAttribute('aria-label'))
+  assert.deepEqual(switchOptions(), ['Bars', 'Stacked bars', 'Lines', 'Areas', 'Dots', 'Table'])
+  const viewOf = () => view.container.querySelector('[data-slot="chart-marks"]')?.getAttribute('data-view')
+  assert.equal(viewOf(), 'bar')
+
+  for (const [name, mark] of [['Stacked bars', 'stacked'], ['Lines', 'line'], ['Areas', 'area'], ['Dots', 'dots']]) {
+    const option = view.container.querySelector(`[data-slot="chart-view-toggle"] [aria-label="${name}"]`) as HTMLElement
+    await interact(() => option.click())
+    assert.equal(viewOf(), mark)
+    // Every series is drawn in the one view, in its slot colour.
+    assert.ok(view.container.querySelector(`[data-mark="${mark}"][data-series="a"]`))
+    assert.ok(view.container.querySelector(`[data-mark="${mark}"][data-series="b"]`))
+  }
+  assert.doesNotMatch(view.container.innerHTML, hexFill)
+
+  const table = view.container.querySelector('[data-slot="chart-view-toggle"] [aria-label="Table"]') as HTMLElement
+  await interact(() => table.click())
+  assert.ok(view.container.querySelector('table'))
+  assert.equal(view.container.querySelector('[data-slot="chart-legend"]'), null)
+  view.unmount()
+})
+
+test('stacked, the mixed chart scales to the largest total', () => {
+  const markup = renderToStaticMarkup(h(MixedChart, { data: months, series: two, label: 'Volume', scaleLabel: 'BTC', marks: ['stacked'] }))
+  // Apr: 9 + 1 = 10 is the largest total, so the axis tops out at 10.
+  assert.match(markup, />10</)
 })
 
 test('one series needs no legend; an area chart draws its wash', () => {

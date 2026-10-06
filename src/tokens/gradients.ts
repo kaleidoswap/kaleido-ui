@@ -30,6 +30,10 @@ export const gradient = {
   brandText: 'linear-gradient(135deg, #6EEDC0 0%, #A48AFF 100%)',
   /** Primary (green) button fill — a lit top-left edge falling to brand green. */
   primary: 'linear-gradient(135deg, #6EEDC0 0%, #15E99A 45%, #17B581 100%)',
+  /** Warning (yellow) fill, built like `primary`: a lit edge falling to a deeper step. */
+  warning: 'linear-gradient(135deg, #FDE047 0%, #FACC15 45%, #CA8A04 100%)',
+  /** Danger (red) fill, built like `primary`. */
+  danger: 'linear-gradient(135deg, #FB7070 0%, #E53535 45%, #B91C1C 100%)',
   /** Violet button / selected fill. */
   violet: 'linear-gradient(135deg, #8B5CF6 0%, #6F32FF 50%, #5420CC 100%)',
   /** Card surface: a faint violet light from the top-left corner over bg-card. */
@@ -37,6 +41,12 @@ export const gradient = {
   /** Hero card (balance, swap): violet top-left, green bottom-right. */
   cardHero:
     'linear-gradient(135deg, rgba(111, 50, 255, 0.16) 0%, rgba(111, 50, 255, 0.03) 50%, rgba(21, 233, 154, 0.12) 100%)',
+  /**
+   * Violet hover: a soft violet light from the top-left that fades out. It
+   * layers over the element's own background (card, tint, nothing), so a
+   * hovered surface lightens instead of losing its fill.
+   */
+  hover: 'linear-gradient(135deg, rgba(111, 50, 255, 0.18) 0%, rgba(111, 50, 255, 0.04) 100%)',
   /** Active / selected tint: green wash for selected rows, options, nav items. */
   active: 'linear-gradient(135deg, rgba(21, 233, 154, 0.16) 0%, rgba(21, 233, 154, 0.04) 100%)',
 } as const

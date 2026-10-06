@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { cn } from '../../utils/cn'
-import { defaultChartFormat, seriesColor } from './core'
+import { ChartFrame, defaultChartFormat, seriesColor, type ChartTitleProps } from './core'
 
 export interface BarListItem {
   id: string
@@ -11,9 +11,14 @@ export interface BarListItem {
    * "12 / 15" (completed of total). Defaults to `formatValue(value)`.
    */
   valueText?: ReactNode
+  /**
+   * The row's percentage, as a fraction (0.8 = 80%), when it is not its share
+   * of the list: a completion rate, a success rate. Defaults to `value / sum`.
+   */
+  percent?: number
 }
 
-export interface BarListProps {
+export interface BarListProps extends ChartTitleProps {
   items: readonly BarListItem[]
   /** Accessible name of the list. */
   label: string
@@ -22,6 +27,8 @@ export interface BarListProps {
   max?: number
   /** `desc` ranks the rows largest first; `none` keeps the given order (a time series). */
   sort?: 'desc' | 'none'
+  /** Prints each row's percentage after its value. On by default. */
+  showPercent?: boolean
   empty?: ReactNode
   className?: string
 }
@@ -29,7 +36,11 @@ export interface BarListProps {
 /**
  * A ranked list of horizontal bars: label, bar, value, one row each — the
  * list view of a trend, or the top pairs by volume. Every value is printed, so
- * the list is its own table view and needs no hover.
+ * the list is its own table view and needs no hover. Each row also prints its
+ * percentage — its share of the list, or the item's own `percent`.
+ *
+ * Given a `title` or `timeframes`, it carries the common chart head (title,
+ * timeframe, the chart / table switch) like the other charts.
  *
  * One series, so one colour (series slot 1) for every bar: colouring nominal
  * rows darker-where-bigger would re-encode what the bar length already shows.
@@ -41,18 +52,35 @@ export function BarList({
   formatValue = defaultChartFormat,
   max,
   sort = 'none',
+  showPercent = true,
   empty,
   className,
+  ...head
 }: BarListProps) {
   if (items.length === 0) return <>{empty ?? null}</>
   const rows = sort === 'desc' ? [...items].sort((a, b) => b.value - a.value) : items
   const top = Math.max(max ?? 0, ...rows.map((item) => item.value), 0) || 1
+  const sum = rows.reduce((acc, item) => acc + Math.max(0, item.value), 0)
+  const percentOf = (item: BarListItem) =>
+    formatPercent(item.percent ?? (sum > 0 ? Math.max(0, item.value) / sum : 0))
 
-  return (
+  // The common head (title, timeframe, chart / table switch) only when asked
+  // for: on its own the list is its own table view and needs no frame.
+  const framed = head.title !== undefined || (head.timeframes?.length ?? 0) > 0
+
+  const list = (
     <ol
       data-slot="bar-list"
       aria-label={label}
-      className={cn('m-0 list-none space-y-2 p-0', className)}
+      // One grid for every row (rows are subgrids): the label column is as
+      // wide as the longest label, so bars start right after it, all aligned.
+      className={cn(
+        'm-0 grid list-none items-center gap-x-3 gap-y-2 p-0 text-caption',
+        // Under a head, a little more air than the plots' own top margin.
+        framed && 'pt-2',
+        showPercent ? 'grid-cols-[auto_1fr_auto_auto]' : 'grid-cols-[auto_1fr_auto]',
+        className
+      )}
     >
       {rows.map((item) => {
         const share = Math.max(0, item.value) / top
@@ -60,9 +88,9 @@ export function BarList({
           <li
             key={item.id}
             data-slot="bar-list-row"
-            className="grid grid-cols-[minmax(4.5rem,auto)_1fr_auto] items-center gap-3 text-caption"
+            className="col-span-full grid grid-cols-subgrid items-center"
           >
-            <span className="truncate text-muted-foreground">{item.label}</span>
+            <span className="max-w-[10rem] truncate text-muted-foreground">{item.label}</span>
             <span className="h-2 overflow-hidden rounded-full bg-secondary/15 shadow-inner" aria-hidden="true">
               <span
                 className="block h-full rounded-full"
@@ -77,9 +105,38 @@ export function BarList({
             <span className="text-right font-semibold tabular-nums text-foreground">
               {item.valueText ?? formatValue(item.value)}
             </span>
+            {showPercent && (
+              <span className="text-right tabular-nums text-muted-foreground">
+                {percentOf(item)}
+              </span>
+            )}
           </li>
         )
       })}
     </ol>
   )
+
+  if (!framed) return list
+
+  return (
+    <ChartFrame
+      {...head}
+      label={label}
+      table={{
+        columns: showPercent ? ['Item', 'Value', 'Percent'] : ['Item', 'Value'],
+        rows: rows.map((item) => {
+          const value = item.valueText ?? formatValue(item.value)
+          return showPercent ? [item.label, value, percentOf(item)] : [item.label, value]
+        }),
+      }}
+    >
+      {list}
+    </ChartFrame>
+  )
+}
+
+/** 0.8 → "80%"; a non-zero share under 1% prints "<1%", so it never reads as zero. */
+function formatPercent(fraction: number) {
+  if (fraction > 0 && fraction < 0.005) return '<1%'
+  return `${Math.round(fraction * 100)}%`
 }
