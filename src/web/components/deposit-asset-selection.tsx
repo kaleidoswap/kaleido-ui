@@ -309,7 +309,7 @@ export function DepositAssetSelection<TView extends string = string>({
               onClick={() => setShowAddAssetModal(true)}
               className="group flex w-full items-center gap-3 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-3 shadow-card transition-all duration-200 hover-gradient-violet hover:shadow-card-hover"
             >
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content">
                 <Icon name="add" size="md" />
               </div>
               <div className="flex-1 text-left">

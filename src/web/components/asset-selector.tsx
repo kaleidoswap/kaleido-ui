@@ -292,7 +292,7 @@ export function AssetSelector({
         onClick={() => setNetworkMenuOpen((value) => !value)}
       />
       {networkMenuOpen && (
-        <div className="absolute right-0 top-full z-10 mt-1.5 w-48 overflow-hidden rounded-xl border border-foreground/[0.08] bg-popover shadow-popover">
+        <div className="absolute right-0 top-full z-10 mt-1.5 w-48 overflow-hidden rounded-xl bg-popover shadow-popover">
           <ScrollArea viewportClassName="max-h-60 p-1">
             <button
               type="button"

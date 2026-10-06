@@ -52,10 +52,9 @@ export function DepositSuccessScreen({
           </div>
           <div
             className={cn(
-              'ml-1 flex items-center gap-1 rounded-full border px-2.5 py-1 text-xxs font-bold',
+              'ml-1 flex items-center gap-1 rounded-full px-2.5 py-1 text-xxs font-bold',
               net.bg,
-              net.text,
-              net.border
+              net.text
             )}
           >
             {net.icon}

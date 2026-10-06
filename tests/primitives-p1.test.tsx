@@ -51,7 +51,8 @@ test('a popover opens from its trigger and closes on Escape, returning focus', a
   const content = $('[data-slot="popover-content"]')!
   assert.ok(content, 'no popover content')
   assert.match(content.className, /bg-popover/)
-  assert.match(content.className, /ring-secondary\/25/)
+  assert.match(content.className, /shadow-popover/)
+  assert.doesNotMatch(content.className, /ring-1/)
   await interact(() => void key(content, 'Escape'))
   assert.equal(trigger.getAttribute('aria-expanded'), 'false')
   assert.equal(document.activeElement, trigger)

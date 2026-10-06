@@ -229,7 +229,7 @@ replacements for it. Different job, same word; check which one you want.
 Borders are translucent lavender, not opaque hues — they composite over whatever
 surface they sit on, so one value works at every step of the ramp:
 
-- **`border.default` `rgba(200,192,240,0.11)`** — the default hairline. Cards, inputs, filter pills at rest.
+- **`border.default` `rgba(200,192,240,0.11)`** — the default hairline. Cards, inputs.
 - **`border.subtle` `rgba(200,192,240,0.05)`** — the quietest edge, for a divider that should barely register.
 - **`border.strong` `rgba(200,192,240,0.18)`** — an edge that has to be seen: a focused input, a selected pill.
 - **`border.primary-ghost` `rgba(43, 238, 121, 0.22)`** — brand green at 22% alpha. Used only when a surface is in an active / selected / "this is the section you are in" state.
@@ -328,7 +328,7 @@ not flat. Shadows are cast in a near-black violet (`--app-shadow`) scaled per th
 (`--app-shadow-strength`: 1 on dark, 0.28 on light), so one token reads right in
 both modes.
 
-**Each theme has its own set.** Every `shadow-*` token is `--kui-shadow-*`, declared once for dark (`shadow` in `src/tokens/shadows.ts`) and once for light (`shadowLight`). Dark shadows are deep drops and coloured glows that read on near-black; on white those either vanish or smudge, so the light set is a crisp contact shadow plus a soft ambient one in a cool near-black (≤ 20%), with a hairline ring for the edge, and glows that are a 3 px tinted ring rather than a bloom.
+**Each theme has its own set.** Every `shadow-*` token is `--kui-shadow-*`, declared once for dark (`shadow` in `src/tokens/shadows.ts`) and once for light (`shadowLight`). Dark shadows are deep drops and coloured glows that read on near-black; on white those either vanish or smudge, so the light set is a crisp contact shadow plus a soft ambient one in a cool near-black (≤ 20%), with a hairline ring as the one edge of a floating layer (`popover`, `toast`; `raised` is drops alone), and glows that are a 3 px tinted ring rather than a bloom.
 
 | Token (utility) | Use |
 | --- | --- |
@@ -422,7 +422,7 @@ Six looks, each a Button variant under the same name, lightest first. **`quiet`*
 
 **Intended use.** The Deposit / Swap / Withdraw trio on the asset-detail screen — and any future equivalent where a small cluster of equally-weighted primary actions needs to sit side-by-side. Each tile has an icon slot on top and a label beneath.
 
-**Key tokens.** bg `surface.card`, border `border.subtle`, radius `inner` (12) — the trio sits inside the balance card, so it takes the nested scale — icon slot `tile-size: 44` px with an icon sized `20` px inside. At rest, the tile reads as a surface card with its icon and label in `text-brand`. On hover it fills with `brand.primary` and its icon/label flip to `brand.primary-contrast`, and the primary glow engages. Label text below the tile uses the `label` type token.
+**Key tokens.** a quiet tint under the `surface` gradient (`bg-gradient-surface`), no border, radius `inner` (12) — the trio sits inside the balance card, so it takes the nested scale — icon slot `tile-size: 44` px with an icon sized `20` px inside. At rest, the tile reads as a surface card with its icon and label in `text-brand`. On hover it fills with `brand.primary` and its icon/label flip to `brand.primary-contrast`, and the primary glow engages. Label text below the tile uses the `label` type token.
 
 **Wrong vs right.**
 - Wrong: three tiles with a green icon at rest, no fill change on hover — nothing tells the user the tile is the target. (This is the current state in `rate-extension/src/components/AssetDetail.tsx:833-858`.)
@@ -581,11 +581,11 @@ Copying reports what actually happened, everywhere. `useCopyToClipboard()` retur
 
 ### ToneBadge
 
-A small pill in a semantic tone, drawn from theme tokens only (the `muted` tone is `border-border bg-foreground/5 text-muted-foreground`, which is the old 10 % / 5 % / 55 % white on dark and stays visible on the light theme). `case="upper"` (default) is a status set as the eyebrow; `case="none"` is a value (a payout total) in `caption`, with no uppercase or tracking.
+A small pill in a semantic tone, drawn from theme tokens only with no border: the tint is the edge (the `muted` tone is `bg-foreground/[0.07] text-muted-foreground`, which stays visible on the light theme). `outline` alone is drawn as its `border-border` hairline. `case="upper"` (default) is a status set as the eyebrow; `case="none"` is a value (a payout total) in `caption`, with no uppercase or tracking.
 
 ### Popover and DropdownMenu
 
-Two floating surfaces on one look — `bg-popover`, a `border` hairline, `shadow-popover`, the same fade and 0.98 zoom as `Dialog` and `Select` — and two jobs:
+Two floating surfaces on one look — `bg-popover` and `shadow-popover`, whose hairline is the one edge (no ring or border on top), the same fade and 0.98 zoom as `Dialog` and `Select` — and two jobs:
 
 - **`Popover`** is a panel anchored to a trigger for content that is *not* a menu: a note, a few buttons, a copy control. Tab walks everything inside in order.
 - **`DropdownMenu`** is a real menu (`role="menu"`): `DropdownMenuItem`s (with `destructive` for Revoke / Delete, kept last), `DropdownMenuSeparator`, `DropdownMenuLabel`. The arrow keys move between items.
@@ -663,7 +663,7 @@ These rules exist because generated UIs kept drifting: ad-hoc borders, wrong but
 
 - The layering ladder is `surface.bg` (page) → `bg-card` (card) → `bg-muted/40` (row inside a card). Depth comes from the fill, not an outline.
 - **DON'T** add arbitrary border utilities (`border-white/10`, `border-primary/20`, `border-warning/30`, `border-t` dividers…) to new markup. If a surface looks like it needs an edge, it needs a different background layer instead.
-- Borders are allowed only where a component spec above explicitly calls for one: inputs, filter pills, status pills, the `border.primary-ghost` active state, `Table` row hairlines, and the `Drawer` edge rule and current-page rule. Nothing else.
+- Borders are allowed only where a component spec above explicitly calls for one: inputs, the outline `Button` and `ToneBadge`, the `border.primary-ghost` active state, `Table` row hairlines, and the `Drawer` edge rule and current-page rule. Nothing else.
 - Separate stacked rows with `space-y-*` spacing, not divider lines. The single exception is `Table` (see its section): a dense grid, not a list.
 
 ### Rows and toggles use the shipped primitives

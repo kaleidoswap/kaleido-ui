@@ -273,7 +273,7 @@ export function ChartTooltip({
     <div
       data-slot="chart-tooltip"
       role="presentation"
-      className="pointer-events-none absolute z-10 min-w-32 rounded-xl bg-popover bg-gradient-card-hero px-3 py-2 text-caption text-popover-foreground shadow-popover ring-1 ring-inset ring-secondary/15"
+      className="pointer-events-none absolute z-10 min-w-32 rounded-xl bg-popover bg-gradient-card-hero px-3 py-2 text-caption text-popover-foreground shadow-popover"
       style={{
         left: flip ? undefined : x + 12,
         right: flip ? width - x + 12 : undefined,

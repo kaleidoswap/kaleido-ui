@@ -53,8 +53,8 @@ const DialogContent = React.forwardRef<
         // fast fade + 0.98↔1 zoom (150ms ease-out) around the dialog's own
         // center. No slide-in/out utilities may ever be added back here.
         // (BottomSheet owns its own slide-up; it does not use this.)
-        // Its edge is the Toast's: a single inset violet hairline at 25%.
-        'fixed left-1/2 top-1/2 z-50 grid w-full max-w-sm [translate:-50%_-50%] gap-4 rounded-2xl bg-card bg-gradient-card-hero p-6 shadow-popover ring-1 ring-inset ring-secondary/25 duration-150 ease-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-[0.98] data-[state=closed]:zoom-out-[0.98]',
+        // Its one edge is the popover shadow's hairline.
+        'fixed left-1/2 top-1/2 z-50 grid w-full max-w-sm [translate:-50%_-50%] gap-4 rounded-2xl bg-card bg-gradient-card-hero p-6 shadow-popover duration-150 ease-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-[0.98] data-[state=closed]:zoom-out-[0.98]',
         className
       )}
       {...props}

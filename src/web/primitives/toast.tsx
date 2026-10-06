@@ -26,9 +26,9 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero text-foreground ring-1 ring-inset ring-secondary/25',
+        default: 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero text-foreground',
         // `destructive` is also the marker the group-[.destructive] parts read.
-        destructive: 'destructive bg-danger/20 text-danger-fg ring-1 ring-inset ring-danger/30',
+        destructive: 'destructive bg-danger/20 text-danger-fg',
       },
     },
     defaultVariants: {
@@ -59,7 +59,7 @@ const ToastAction = React.forwardRef<
   <ToastPrimitives.Action
     ref={ref}
     className={cn(
-      'inline-flex h-8 shrink-0 items-center justify-center rounded-lg border border-secondary/50 bg-secondary/10 px-3 text-caption font-semibold text-secondary-content shadow-raised transition-all hover:border-secondary hover-gradient-violet hover:shadow-glow-violet-soft focus:outline-none disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-danger/30 group-[.destructive]:text-danger-fg group-[.destructive]:hover:border-danger group-[.destructive]:hover:bg-danger/10',
+      'inline-flex h-8 shrink-0 items-center justify-center rounded-lg bg-secondary/15 bg-gradient-surface px-3 text-caption font-semibold text-secondary-content shadow-raised transition-all hover-gradient-violet hover:shadow-button-surface-hover focus:outline-none disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:bg-danger/15 group-[.destructive]:bg-none group-[.destructive]:text-danger-fg group-[.destructive]:hover:bg-danger/25',
       className
     )}
     {...props}

@@ -69,7 +69,7 @@ export function FilterChipGroup<TValue extends string = string>({
       onKeyDown={onKeyDown}
       className={cn(
         segmented
-          ? 'inline-flex gap-0.5 rounded-xl bg-card p-0.5 shadow-raised ring-1 ring-inset ring-secondary/15'
+          ? 'inline-flex gap-0.5 rounded-xl bg-card p-0.5 shadow-raised'
           : 'flex gap-1.5 overflow-x-auto no-scrollbar',
         className,
       )}
@@ -102,10 +102,10 @@ export function FilterChipGroup<TValue extends string = string>({
                       : 'text-muted-foreground hover-gradient-violet hover:text-secondary-content',
                   )
                 : cn(
-                    'flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-1 text-tiny font-bold transition-all',
+                    'flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-tiny font-bold transition-all',
                     active
-                      ? 'border-transparent bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
-                      : 'border-foreground/8 bg-foreground/5 text-muted-foreground hover:border-secondary/40 hover-gradient-violet hover:text-secondary-content',
+                      ? 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
+                      : 'bg-foreground/5 text-muted-foreground hover-gradient-violet hover:text-secondary-content',
                   ),
               option.disabled && 'cursor-not-allowed opacity-40',
             )}

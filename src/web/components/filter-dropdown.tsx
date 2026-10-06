@@ -66,7 +66,7 @@ export function FilterDropdown({
             'flex w-full items-center justify-between rounded-2xl leading-none outline-none transition-all',
             compact ? 'gap-1 px-2 py-1.5' : 'gap-1.5 px-2.5 py-2',
             isFiltered
-              ? 'bg-secondary/20 shadow-glow-violet-soft ring-1 ring-inset ring-secondary/40'
+              ? 'bg-primary/10 bg-gradient-active shadow-glow-primary-faint ring-1 ring-inset ring-primary/40'
               : 'bg-foreground/[0.09] shadow-raised backdrop-blur-md hover-gradient-violet',
             open && !isFiltered && 'bg-secondary/15 ring-1 ring-inset ring-secondary/30',
           )}

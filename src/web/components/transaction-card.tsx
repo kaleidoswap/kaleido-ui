@@ -55,7 +55,7 @@ export function TransactionCard({
     pending:   'bg-warning/20 text-warning-fg',
     failed:    'bg-danger/20 text-danger-fg',
     error:     'bg-danger/20 text-danger-fg',
-  }[status] ?? 'bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25'
+  }[status] ?? 'bg-secondary/15 text-secondary-content'
 
   const textColor = {
     success:   'text-brand',

@@ -92,7 +92,7 @@ export const shadowLight: Record<keyof typeof shadow, string> = {
   cardSecondary: `0 1px 2px ${lightInk(0.05)}, 0 4px 12px -4px ${lightInk(0.08)}, 0 14px 32px -16px ${lightInk(0.14)}`,
   cardHover: `0 2px 4px ${lightInk(0.05)}, 0 10px 24px -8px ${lightInk(0.12)}, 0 22px 44px -18px rgba(111, 50, 255, 0.18)`,
   cardHoverSoft: '0 4px 14px -8px rgba(111, 50, 255, 0.16)',
-  raised: `0 0 0 1px ${lightInk(0.06)}, 0 1px 2px ${lightInk(0.07)}, 0 3px 8px -3px ${lightInk(0.1)}`,
+  raised: `0 1px 2px ${lightInk(0.08)}, 0 3px 8px -3px ${lightInk(0.12)}`,
   buttonPrimary: '0 1px 2px rgba(13, 122, 88, 0.18), 0 4px 10px -6px rgba(23, 181, 129, 0.32)',
   buttonPrimaryHover: '0 1px 2px rgba(13, 122, 88, 0.18), 0 4px 10px -6px rgba(23, 181, 129, 0.32), 0 3px 10px -6px rgba(23, 181, 129, 0.2)',
   buttonViolet: '0 1px 2px rgba(55, 20, 136, 0.22), 0 6px 14px -6px rgba(111, 50, 255, 0.45)',

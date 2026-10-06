@@ -130,7 +130,7 @@ export function AccountStatusDetails<TId extends string = string>({
           {account.capabilityBullets.map((capability) => (
             <span
               key={capability}
-              className="inline-flex items-center gap-1.5 rounded-full bg-secondary/15 px-2.5 py-1 text-xxs font-medium text-secondary-content ring-1 ring-inset ring-secondary/25"
+              className="inline-flex items-center gap-1.5 rounded-full bg-secondary/15 px-2.5 py-1 text-xxs font-medium text-secondary-content"
             >
               <span className="size-1.5 rounded-full bg-primary" />
               {capability}

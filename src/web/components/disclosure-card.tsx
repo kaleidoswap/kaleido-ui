@@ -44,7 +44,6 @@ export function DisclosureCard({
       data-slot="disclosure-card"
       className={cn(
         'group/disclosure overflow-hidden rounded-xl bg-surface-inset/40 shadow-raised transition-all',
-        'data-[state=open]:ring-1 data-[state=open]:ring-inset data-[state=open]:ring-secondary/30',
         className,
       )}
     >

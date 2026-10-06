@@ -202,7 +202,7 @@ export function BalanceBreakdown({
                     {balanceVisible ? numberOnly(format(totalBTC)) : '••••••'}
                   </span>
                   {unit !== 'fiat' && (
-                    <span className={cn('inline-block rounded-md bg-secondary/15 px-2 py-0.5 text-muted-foreground ring-1 ring-inset ring-secondary/25', eyebrow)}>
+                    <span className={cn('inline-block rounded-md bg-secondary/15 px-2 py-0.5 text-muted-foreground', eyebrow)}>
                       {label}
                     </span>
                   )}
@@ -357,7 +357,7 @@ export function BalanceBreakdown({
                 <div className="flex items-center justify-between rounded-xl kui-well px-3 py-2 shadow-raised">
                   <div className="flex items-center gap-3">
                     <div className="h-7 w-0.5 rounded-full bg-success opacity-80" />
-                    <div className="flex size-7 items-center justify-center rounded-lg bg-secondary/15 text-icon-sm text-secondary-content ring-1 ring-inset ring-secondary/25">
+                    <div className="flex size-7 items-center justify-center rounded-lg bg-secondary/15 text-icon-sm text-secondary-content">
                       <Icon name="payments" />
                     </div>
                     <div className="flex flex-col">
@@ -537,7 +537,7 @@ function NetworkRow({
       <div className="flex items-center gap-3">
         <div className={`h-7 w-0.5 rounded-full ${dotColor} opacity-80`} />
         <div
-          className={`flex size-7 items-center justify-center rounded-lg bg-secondary/15 text-icon-sm ring-1 ring-inset ring-secondary/25 ${iconColor}`}
+          className={`flex size-7 items-center justify-center rounded-lg bg-secondary/15 text-icon-sm ${iconColor}`}
         >
           {icon}
         </div>

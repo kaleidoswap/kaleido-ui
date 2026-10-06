@@ -38,10 +38,10 @@ export function ActionTile({
     hideLabel ? 'w-10 shrink-0' : 'flex-1 px-2.5',
     // Icon and label are both the brand green, and flip together to the
     // ink on green when the hover fill shows.
-    'bg-foreground/8 text-brand ring-1 ring-inset ring-foreground/10 shadow-raised transition-all duration-200',
+    'bg-foreground/8 bg-gradient-surface text-brand shadow-raised transition-all duration-200',
     // On light, a lighter fill with a violet cast instead of the ink grey.
-    '[.light_&]:bg-secondary/[0.07] [.light_&]:ring-secondary/[0.14]',
-    'hover:-translate-y-0.5 hover:text-primary-foreground hover:ring-transparent hover:shadow-glow-primary-soft',
+    '[.light_&]:bg-secondary/[0.07]',
+    'hover:-translate-y-0.5 hover:text-primary-foreground hover:shadow-glow-primary-soft',
     'active:translate-y-0 active:scale-95 disabled:pointer-events-none disabled:opacity-50',
     // A link has no disabled state of its own.
     href && disabled && 'pointer-events-none opacity-50',

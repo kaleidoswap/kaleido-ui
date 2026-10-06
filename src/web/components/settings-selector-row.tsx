@@ -23,7 +23,7 @@ export function SettingsSelectorRow({
       <div className="flex min-w-0 flex-1 items-start gap-3">
         <div
           className={cn(
-            'flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25',
+            'flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content',
             iconClassName,
           )}
         >

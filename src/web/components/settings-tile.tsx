@@ -19,7 +19,7 @@ export function SettingsTile({ icon, title, description, value, onClick }: Setti
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 flex-1 items-center gap-3">
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25 transition-all group-hover-gradient-violet group-hover:shadow-glow-violet-faint">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content transition-all group-hover-gradient-violet group-hover:shadow-glow-violet-faint">
             {icon}
           </div>
           <div className="flex min-w-0 flex-1 flex-col">

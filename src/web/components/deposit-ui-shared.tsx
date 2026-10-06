@@ -102,6 +102,7 @@ const ACCOUNT_META: Record<
     shortLabel: string
     accentBg: string
     accentText: string
+    /** @deprecated Borderless sweep (DESIGN.md Coherence Rules): the selected chip takes the green selection ring. Kept for source compat. */
     accentBorder: string
     icon: ReactNode
   }
@@ -244,7 +245,7 @@ export function CopyIcon({ copied, variant = 'tile', className }: CopyIconProps)
         'flex-shrink-0 rounded-lg p-2 transition-all',
         copied
           ? 'bg-primary/15 text-brand shadow-glow-primary-soft'
-          : 'bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25 group-hover:bg-secondary group-hover:bg-gradient-violet group-hover:text-white'
+          : 'bg-secondary/15 text-secondary-content group-hover:bg-secondary group-hover:bg-gradient-violet group-hover:text-white'
       )}
     >
       {copied ? <Icon name="check" size="sm" /> : <Icon name="content_copy" size="sm" />}
@@ -272,10 +273,10 @@ export function AccountChoiceChip({
       onClick={onClick}
       data-testid={`deposit-account-${account.toLowerCase()}`}
       className={cn(
-        'flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-1.5 text-icon-xxs font-bold transition-all',
+        'flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-1.5 text-icon-xxs font-bold transition-all',
         active
-          ? cn(meta.accentBg, meta.accentText, meta.accentBorder, 'shadow-raised')
-          : 'border-foreground/8 bg-foreground/5 text-muted-foreground hover:border-secondary/40 hover-gradient-violet hover:text-foreground/80'
+          ? cn(meta.accentText, 'bg-primary/10 bg-gradient-active ring-1 ring-inset ring-primary/40 shadow-glow-primary-faint')
+          : 'bg-foreground/5 text-muted-foreground hover-gradient-violet hover:text-foreground/80'
       )}
     >
       {meta.icon}
@@ -424,12 +425,12 @@ export function MethodChoiceChip({
       disabled={!enabled}
       data-testid={`deposit-method-${method}`}
       className={cn(
-        'flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-1.5 text-icon-xxs font-bold transition-all',
+        'flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-1.5 text-icon-xxs font-bold transition-all',
         active
-          ? 'border-transparent bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
+          ? 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
           : enabled
-            ? 'border-foreground/8 bg-foreground/5 text-muted-foreground hover:border-secondary/40 hover-gradient-violet hover:text-foreground/80'
-            : 'cursor-not-allowed border-border bg-foreground/3 text-foreground/20'
+            ? 'bg-foreground/5 text-muted-foreground hover-gradient-violet hover:text-foreground/80'
+            : 'cursor-not-allowed bg-foreground/3 text-foreground/20'
       )}
     >
       <span className={cn('flex shrink-0 items-center', !enabled && 'opacity-40 grayscale')}>{meta.icon}</span>

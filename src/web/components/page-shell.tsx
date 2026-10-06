@@ -111,7 +111,7 @@ export function ErrorCard({
     <div
       className={cn('flex flex-col items-center justify-center py-16 text-center', className)}
     >
-      <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-danger/10 ring-1 ring-inset ring-danger/25 shadow-raised">
+      <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-danger/10 shadow-raised">
         <Icon name="error" className="text-danger-fg text-icon-4xl" />
       </div>
       <h3 className="mb-1 text-body font-semibold">{title}</h3>

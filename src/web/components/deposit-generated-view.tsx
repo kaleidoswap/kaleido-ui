@@ -194,9 +194,8 @@ export function DepositGeneratedView({
           {showQrNetworkBadge && network !== 'spark' && network !== 'arkade' && (
             <div
               className={cn(
-                'absolute right-2.5 top-2.5 flex items-center gap-1 rounded-full border bg-foreground/90 px-1.5 py-0.5 text-xxs font-bold shadow-sm',
-                net.text,
-                net.border
+                'absolute right-2.5 top-2.5 flex items-center gap-1 rounded-full bg-foreground/90 px-1.5 py-0.5 text-xxs font-bold shadow-sm',
+                net.text
               )}
             >
               {net.icon}
@@ -220,10 +219,10 @@ export function DepositGeneratedView({
             <button
               type="button"
               className={cn(
-                'flex items-center gap-1 rounded-full border px-2.5 py-1 transition-all', eyebrow,
+                'flex items-center gap-1 rounded-full px-2.5 py-1 transition-all', eyebrow,
                 isAddressCopied
-                  ? 'border-primary/30 bg-primary/10 text-brand shadow-glow-primary-soft'
-                  : 'border-secondary/30 bg-secondary/15 text-secondary-content shadow-raised hover:border-secondary/50 hover-gradient-violet hover:text-foreground'
+                  ? 'bg-primary/10 text-brand shadow-glow-primary-soft'
+                  : 'bg-secondary/15 text-secondary-content shadow-raised hover-gradient-violet hover:text-foreground'
               )}
               onClick={(event) => {
                 event.stopPropagation()

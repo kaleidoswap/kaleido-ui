@@ -45,7 +45,7 @@ export function SettingItem({
           {(icon || iconSrc) && (
             <div
               className={cn(
-                'flex-shrink-0 size-10 rounded-xl flex items-center justify-center bg-secondary/15 ring-1 ring-inset ring-secondary/25 group-hover-gradient-violet group-hover:shadow-glow-violet-faint group-hover:scale-105 transition-all',
+                'flex-shrink-0 size-10 rounded-xl flex items-center justify-center bg-secondary/15 group-hover-gradient-violet group-hover:shadow-glow-violet-faint group-hover:scale-105 transition-all',
                 iconColor
               )}
             >

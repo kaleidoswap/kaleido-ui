@@ -21,11 +21,10 @@ test('ToneBadge and InfoChip carry no hard-coded white alpha', () => {
 
 test('the muted badge is drawn from tokens that differ per theme', () => {
   const markup = renderToStaticMarkup(h(ToneBadge, null, 'Revoked'))
-  assert.match(markup, /border-border/)
-  assert.match(markup, /bg-foreground\/5/)
+  assert.doesNotMatch(markup, /border/)
+  assert.match(markup, /bg-foreground\/\[0\.07\]/)
   assert.match(markup, /text-muted-foreground/)
-  // On dark: an 11% lavender hairline and 58% cool-white text.
-  assert.equal(colors.border, 'rgba(200, 192, 240, 0.11)')
+  // On dark: 58% cool-white text.
   assert.equal(colors.mutedFg, 'rgba(232, 230, 245, 0.58)')
   // On light they are dark ink on the white card, so the badge stays legible.
   assert.equal(lightSemanticColors.mutedFg, '#4F4A75')

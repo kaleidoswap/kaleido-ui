@@ -41,7 +41,7 @@ const toneClasses: Record<NonNullable<MetricCardProps['tone']>, string> = {
   info: 'bg-info/10 text-info-fg',
   warning: 'bg-warning/10 text-warning-fg',
   success: 'bg-success/10 text-success-fg',
-  muted: 'bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25',
+  muted: 'bg-secondary/15 text-secondary-content',
 }
 
 /**

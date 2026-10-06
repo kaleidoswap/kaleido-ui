@@ -115,7 +115,7 @@ export function DepositNetworkDefaultModal({
                 <div
                   className={cn(
                     'flex size-8 flex-shrink-0 items-center justify-center rounded-lg',
-                    isSuggested ? cn(option.accentBg, 'shadow-raised') : 'bg-secondary/15 ring-1 ring-inset ring-secondary/25',
+                    isSuggested ? cn(option.accentBg, 'shadow-raised') : 'bg-secondary/15',
                     isSuggested ? option.accentText : 'text-secondary-content'
                   )}
                 >

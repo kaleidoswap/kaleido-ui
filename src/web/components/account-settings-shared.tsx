@@ -383,7 +383,7 @@ export function TransferRouteCard({
           {account ? (
             <AccountHeaderIcons accountId={account} />
           ) : (
-            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content">
               <Icon name="swap_horiz" size="sm" />
             </div>
           )}
