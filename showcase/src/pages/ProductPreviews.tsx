@@ -410,7 +410,7 @@ function WebNavBar({ route, onRoute }: { route: WebRoute; onRoute: (route: WebRo
 /** One side of the swap card: src/components/swap/amount-panel. */
 function AmountPanel({ side, ticker, venue, amount }: { side: 'You send' | 'You receive'; ticker: string; venue: string; amount: string }) {
   return (
-    <div className="flex-1 rounded-2xl bg-muted/40 p-4">
+    <div className="min-w-0 flex-1 rounded-2xl bg-muted/40 p-4">
       <p className="text-caption font-semibold text-muted-foreground">{side}</p>
       <div className="mt-2 flex items-center gap-3">
         <input
@@ -689,6 +689,8 @@ export function ProductPreviews({ onBack }: { onBack?: () => void }) {
         <KaleidoswapMark className="size-6" />
         <h1 className="text-subhead font-bold">Product previews</h1>
         <FilterChipGroup
+          variant="segmented"
+          ariaLabel="Products shown"
           value={product}
           onChange={setProduct}
           options={[
