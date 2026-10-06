@@ -22,7 +22,7 @@ import { radius } from '../src/tokens/radius.ts'
 import { sizing, spacingUnit } from '../src/tokens/sizing.ts'
 import { layer } from '../src/tokens/layers.ts'
 import { shadow, shadowLight } from '../src/tokens/shadows.ts'
-import { gradient } from '../src/tokens/gradients.ts'
+import { gradient, gradientLight } from '../src/tokens/gradients.ts'
 import {
   brandDepth,
   brandTheme,
@@ -112,6 +112,11 @@ const shadowDark = shadowVars(shadow)
 const shadowLightVars = shadowVars(shadowLight)
 const shadowInline = shadowKeys
   .map((k) => `  --shadow-${camelToKebab(k)}: var(--kui-shadow-${camelToKebab(k)});`)
+  .join('\n')
+
+// The light theme's button fills (src/tokens/gradients.ts `gradientLight`).
+const gradientLightVars = (Object.keys(gradientLight) as (keyof typeof gradientLight)[])
+  .map((k) => `  --gradient-${k}: ${gradientLight[k]};`)
   .join('\n')
 
 const appThemeInline = appSemanticOrder
@@ -278,6 +283,8 @@ ${shadowLightVars}
   /* The scrollbar thumb is a white wash on dark; on white it needs ink. */
   --color-scrollbar-thumb: rgba(20, 20, 43, 0.22);
   --color-scrollbar-thumb-hover: rgba(23, 181, 129, 0.7);
+  /* Button fills lighten toward the bottom-right on white — see gradientLight. */
+${gradientLightVars}
   --gradient-page: radial-gradient(ellipse 80% 55% at 85% -5%, rgba(111, 50, 255, 0.05) 0%, transparent 60%), radial-gradient(ellipse 70% 50% at 0% 105%, rgba(21, 233, 154, 0.05) 0%, transparent 60%);
 }
 
@@ -388,6 +395,7 @@ ${shadowInline}
   /* Scrollbar colors */
   --color-scrollbar-thumb:       ${colors.scrollbar.thumb};
   --color-scrollbar-thumb-hover: ${colors.scrollbar.thumbHover};
+  --color-scrollbar-thumb-active: ${colors.scrollbar.thumbActive};
   --color-scrollbar-track:       ${colors.scrollbar.track};
   --spacing-scrollbar:           ${sizing.scrollbar};
   --spacing-scrollbar-hover:     ${sizing.scrollbarHover};
@@ -456,6 +464,8 @@ ${iconBoxSizeTheme}
   --gradient-warning:     ${gradient.warning};
   --gradient-danger:      ${gradient.danger};
   --gradient-violet:     ${gradient.violet};
+  --gradient-destructive: ${gradient.destructive};
+  --gradient-surface:     ${gradient.surface};
   --gradient-card:        ${gradient.card};
   --gradient-card-hero:   ${gradient.cardHero};
   --gradient-active:      ${gradient.active};
@@ -579,6 +589,12 @@ ${keyframesCss}
 }
 .bg-gradient-violet {
   background-image: var(--gradient-violet);
+}
+.bg-gradient-destructive {
+  background-image: var(--gradient-destructive);
+}
+.bg-gradient-surface {
+  background-image: var(--gradient-surface);
 }
 .bg-gradient-card {
   background-image: var(--gradient-card);

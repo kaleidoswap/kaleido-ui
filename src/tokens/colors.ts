@@ -44,7 +44,8 @@ export const lightSemanticColors = {
   mutedFg: '#4F4A75', //    content-secondary
   accent: '#EFEFF4', //     surface-high
   accentFg: '#15122A',
-  destructive: '#e7000b',
+  // The dark theme's red, under white text: the bright #e7000b took the page ink.
+  destructive: 'hsl(0 62% 50%)',
   border: '#E3E3EA', //     border-default
   input: '#DCDCE4',
   ring: '#17B581',
@@ -129,6 +130,8 @@ export const colors = {
   scrollbar: {
     thumb: 'rgba(255, 255, 255, 0.16)',
     thumbHover: 'rgba(21, 233, 154, 0.55)',
+    /** While the thumb is dragged: the full brand green, brighter than hover. */
+    thumbActive: '#2BF5A8',
     track: 'transparent',
   },
 

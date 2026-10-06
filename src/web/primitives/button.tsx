@@ -9,13 +9,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary hover:brightness-110 hover:shadow-button-primary-hover disabled:shadow-none',
-        destructive: 'bg-destructive text-destructive-foreground shadow-raised hover:brightness-115',
+        destructive: 'bg-destructive bg-gradient-destructive text-white shadow-raised hover:brightness-110',
         outline: 'border border-primary/50 bg-transparent text-brand hover:bg-primary/5 hover:border-primary hover:shadow-button-outline-hover hover:brightness-115',
         secondary: 'bg-secondary bg-gradient-violet text-secondary-foreground shadow-button-violet hover:brightness-110 hover:shadow-glow-violet disabled:shadow-none',
         ghost: 'text-brand hover:bg-primary/10 hover:brightness-115 hover:[&_span]:brightness-115 active:bg-primary/15 active:brightness-100',
         link: 'text-brand underline-offset-4 hover:underline',
         glow: 'bg-primary bg-gradient-primary text-primary-foreground shadow-glow-primary hover:shadow-glow-primary-strong',
-        surface: 'bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/30 hover-gradient-violet hover:ring-secondary/50 hover:shadow-button-surface-hover',
+        surface: 'bg-secondary/15 bg-gradient-surface text-secondary-content hover-gradient-violet hover:shadow-button-surface-hover',
         cta: 'w-full bg-primary bg-gradient-primary text-primary-foreground font-bold rounded-2xl shadow-button-primary hover:brightness-110 hover:shadow-button-primary-hover disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none',
         'cta-gradient': 'w-full bg-secondary bg-gradient-brand-dark text-white font-extrabold rounded-2xl shadow-glow-brand hover:brightness-115 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-40 disabled:shadow-none disabled:cursor-not-allowed',
         'danger-subtle': 'bg-danger/10 text-danger-fg font-bold rounded-xl hover:bg-danger/15 hover:brightness-115',
@@ -25,7 +25,7 @@ const buttonVariants = cva(
         // Hierarchy variants — primary/secondary/tertiary action emphasis.
         // Pair with size="lg" or size="cta" for full-bleed buttons.
         h1: 'w-full bg-primary bg-gradient-primary text-primary-foreground font-bold rounded-2xl shadow-button-primary hover:brightness-110 hover:shadow-button-primary-hover disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none',
-        h2: 'w-full bg-secondary/15 text-secondary-content font-semibold rounded-xl ring-1 ring-inset ring-secondary/30 hover-gradient-violet hover:ring-secondary/50',
+        h2: 'w-full bg-secondary/15 bg-gradient-surface text-secondary-content font-semibold rounded-xl hover-gradient-violet hover:shadow-button-surface-hover',
         h3: 'text-brand font-semibold rounded-lg hover:bg-primary/10 active:bg-primary/15',
         // The icon-only default: a muted glyph that turns violet on the violet hover.
         quiet: 'text-muted-foreground hover-gradient-violet hover:text-secondary-content',

@@ -92,6 +92,7 @@ function OverlayScrollArea({
   const trackRef = useRef<HTMLDivElement>(null)
   const dragRef = useRef<{ pointerId: number; start: number; startScroll: number } | null>(null)
   const [thumb, setThumb] = useState<ThumbState>(hiddenThumb)
+  const [isDragging, setIsDragging] = useState(false)
   const [isHoveringThumb, setIsHoveringThumb] = useState(false)
 
   const updateThumb = useCallback(() => {
@@ -155,6 +156,7 @@ function OverlayScrollArea({
       startScroll: metrics(viewport, axis).position,
     }
     setIsHoveringThumb(true)
+    setIsDragging(true)
   }, [axis])
 
   const handleThumbPointerMove = useCallback((event: PointerEvent<HTMLDivElement>) => {
@@ -166,6 +168,7 @@ function OverlayScrollArea({
   const handleThumbPointerUp = useCallback((event: PointerEvent<HTMLDivElement>) => {
     if (dragRef.current?.pointerId !== event.pointerId) return
     dragRef.current = null
+    setIsDragging(false)
     event.currentTarget.releasePointerCapture(event.pointerId)
   }, [])
 
@@ -239,7 +242,8 @@ function OverlayScrollArea({
             className={cn(
               'absolute rounded-full bg-scrollbar-thumb',
               vertical ? 'right-0 transition-[width,background-color]' : 'bottom-0 transition-[height,background-color]',
-              isHoveringThumb && 'bg-scrollbar-thumb-hover',
+              // Held and dragged: a brighter green than the hover.
+              isDragging ? 'bg-scrollbar-thumb-active' : isHoveringThumb && 'bg-scrollbar-thumb-hover',
               thumbClassName,
             )}
             onPointerDown={handleThumbPointerDown}
@@ -250,7 +254,7 @@ function OverlayScrollArea({
               ...(vertical
                 ? { height: thumb.length, width: thickness, transform: `translateY(${thumb.offset}px)` }
                 : { width: thumb.length, height: thickness, transform: `translateX(${thumb.offset}px)` }),
-              cursor: isHoveringThumb ? 'grab' : 'default',
+              cursor: isDragging ? 'grabbing' : isHoveringThumb ? 'grab' : 'default',
             }}
           />
         </div>

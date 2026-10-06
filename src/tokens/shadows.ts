@@ -99,7 +99,7 @@ export const shadowLight: Record<keyof typeof shadow, string> = {
   // A 1px halo, not glowPrimarySoft's 3px: on white that ring reads as a thick border.
   buttonOutlineHover: '0 0 0 1px rgba(23, 181, 129, 0.12), 0 2px 8px -3px rgba(23, 181, 129, 0.25)',
   // Likewise a 1px halo, where glowVioletSoft's 3px reads as a thick border.
-  buttonSurfaceHover: '0 0 0 1px rgba(111, 50, 255, 0.14), 0 2px 8px -3px rgba(111, 50, 255, 0.22)',
+  buttonSurfaceHover: '0 2px 8px -3px rgba(111, 50, 255, 0.22)',
   // The row already carries a 1px ring: the halo is a drop only, or the two
   // stack into the thick green border the light theme showed.
   navActive: '0 2px 8px -3px rgba(23, 181, 129, 0.3)',
