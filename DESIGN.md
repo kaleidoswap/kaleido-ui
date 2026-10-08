@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.1.129   # must equal package.json's version; check-design-doc fails otherwise
+version: 0.1.130   # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
