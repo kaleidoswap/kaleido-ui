@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { cn } from '../utils/cn'
 import { Button, type ButtonProps } from '../primitives/button'
 import { Icon } from '../primitives/icon'
+import { ScrollArea } from '../primitives/scroll-area'
 import type { IconName } from '../primitives/icon'
 
 export interface BottomSheetAction {
@@ -49,14 +50,15 @@ export function BottomSheet({
       )}
       onClick={handleBackdropClick}
     >
-      <div
+      <ScrollArea
         className={cn(
-          'max-h-[90vh] w-full overflow-y-auto rounded-t-2xl bg-card px-4 pb-6 pt-5 shadow-xl animate-in slide-in-from-bottom-4 duration-200',
+          'w-full rounded-t-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-popover ring-1 ring-inset ring-secondary/20 animate-in slide-in-from-bottom-4 duration-200',
           contentClassName,
         )}
+        viewportClassName="max-h-[90vh] px-4 pb-6 pt-5"
       >
         <div className="-mt-1 flex justify-center">
-          <div className="h-1 w-10 rounded-full bg-white/15" />
+          <div className="h-1 w-10 rounded-full bg-secondary/40" />
         </div>
         {(title || icon) && (
           <div className="mt-4 flex items-center gap-2">
@@ -83,7 +85,7 @@ export function BottomSheet({
             ))}
           </div>
         )}
-      </div>
+      </ScrollArea>
     </div>
   )
 }

@@ -198,7 +198,6 @@ Additive, per-theme (light by default, `.dark` switches):
 | `text-network-{bitcoin,lightning,liquid,arkade,spark,rgb,taproot}-fg` | Network-hued text |
 | `bg-page-brand` | Coloured page wash (mint, violet, sky) |
 | `text-gradient-brand` | Brand gradient text, display sizes only |
-| `shadow-glow-send`, `shadow-glow-recv`, `shadow-glow-card` | Accent glows for send / receive panels and the hero card |
 
 ## Native Components
 

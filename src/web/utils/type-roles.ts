@@ -10,8 +10,8 @@
 
 /**
  * The eyebrow: the structural micro-label — section titles, column heads,
- * filter headers, tile labels. DESIGN.md's `label` token: Satoshi 700 / 9 px /
+ * filter headers, tile labels. DESIGN.md's `label` token: Satoshi 500 / 10 px /
  * 0.18em / uppercase. Written once so every eyebrow in the library is the same
  * one; colour is left to the caller (usually `text-muted-foreground`).
  */
-export const eyebrow = 'text-mini font-bold uppercase tracking-eyebrow'
+export const eyebrow = 'text-mini font-medium uppercase tracking-eyebrow'

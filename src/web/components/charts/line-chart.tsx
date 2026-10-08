@@ -2,6 +2,8 @@ import { useId, useState, type KeyboardEvent, type PointerEvent, type ReactNode 
 import { cn } from '../../utils/cn'
 import {
   ChartFrame,
+  useSeriesVisibility,
+  type ChartTitleProps,
   ChartLegend,
   ChartTooltip,
   TICK_FONT,
@@ -19,7 +21,7 @@ import {
   type TooltipRow,
 } from './core'
 
-export interface LineChartProps {
+export interface LineChartProps extends ChartTitleProps {
   /** One datum per x position, in order (usually time). */
   data: readonly ChartDatum[]
   /** Drawn in slot order; at most six (fold the tail into "Other"). */
@@ -55,7 +57,7 @@ const MARGIN = { top: 12, right: 16, bottom: 26, left: 8 }
  */
 export function LineChart({
   data,
-  series,
+  series: allSeries,
   label,
   scaleLabel,
   area = false,
@@ -64,10 +66,14 @@ export function LineChart({
   height = 240,
   empty,
   className,
+  ...head
 }: LineChartProps) {
   const [containerRef, width] = useChartWidth()
   const [active, setActive] = useState<number | null>(null)
   const idBase = `line-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`
+  const visibility = useSeriesVisibility(allSeries.map((s) => s.id))
+  const series = allSeries.filter((s) => visibility.isVisible(s.id))
+  const slotOf = (id: string) => allSeries.findIndex((s) => s.id === id)
 
   const count = data.length
   if (count === 0 || series.length === 0) return <>{empty ?? null}</>
@@ -95,7 +101,7 @@ export function LineChart({
       id: s.id,
       label: s.label,
       value: formatValue(data[index].values[s.id] ?? 0),
-      color: seriesColor(slot),
+      color: seriesColor(slotOf(s.id)),
     }))
 
   const onPointerMove = (event: PointerEvent<SVGSVGElement>) => {
@@ -119,14 +125,16 @@ export function LineChart({
 
   return (
     <ChartFrame
+      {...head}
       label={label}
       className={className}
       scale={`${scaleLabel} · linear, from 0`}
       legend={
-        series.length > 1 ? (
+        allSeries.length > 1 ? (
           <ChartLegend
             keyShape="line"
-            items={series.map((s, slot) => ({ id: s.id, label: s.label, color: seriesColor(slot) }))}
+            items={allSeries.map((s, slot) => ({ id: s.id, label: s.label, color: seriesColor(slot) }))}
+            {...visibility.legend}
           />
         ) : undefined
       }
@@ -197,7 +205,7 @@ export function LineChart({
                 data-series={s.id}
                 d={pathFor(s.id)}
                 fill="none"
-                stroke={seriesColor(slot)}
+                stroke={seriesColor(slotOf(s.id))}
                 strokeWidth={2}
                 strokeLinejoin="round"
                 strokeLinecap="round"
@@ -213,7 +221,7 @@ export function LineChart({
                 cx={x(count - 1)}
                 cy={y(data[count - 1].values[s.id] ?? 0)}
                 r={4}
-                fill={seriesColor(slot)}
+                fill={seriesColor(slotOf(s.id))}
                 stroke="var(--card)"
                 strokeWidth={2}
               />
@@ -229,7 +237,7 @@ export function LineChart({
                   cx={x(active)}
                   cy={y(data[active].values[s.id] ?? 0)}
                   r={4}
-                  fill={seriesColor(slot)}
+                  fill={seriesColor(slotOf(s.id))}
                   stroke="var(--card)"
                   strokeWidth={2}
                 />

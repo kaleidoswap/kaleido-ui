@@ -42,7 +42,7 @@ test('asset accent gradients keep text dominant', () => {
   )
 
   assert.match(markup, /var\(--card\) 35%/)
-  assert.match(markup, /#ff000033 78%/)
-  assert.match(markup, /#ff000070 100%/)
+  assert.match(markup, /#ff00001f 78%/)
+  assert.match(markup, /#ff00003d 100%/)
   assert.doesNotMatch(markup, /#ff0000b3/)
 })

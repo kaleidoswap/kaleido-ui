@@ -13,31 +13,31 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   // (DESIGN.md coherence: surfaces layer by background, not ad-hoc borders).
   const config: Record<StatusType, { color: string; bg: string; icon: IconName; label: string }> = {
     success: {
-      color: 'text-primary',
+      color: 'text-brand',
       bg: 'bg-primary/10',
       icon: 'check_circle',
       label: 'Success',
     },
     completed: {
-      color: 'text-primary',
+      color: 'text-brand',
       bg: 'bg-primary/10',
       icon: 'check_circle',
       label: 'Completed',
     },
     pending: {
-      color: 'text-warning',
+      color: 'text-warning-fg',
       bg: 'bg-warning/10',
       icon: 'schedule',
       label: 'Pending',
     },
     failed: {
-      color: 'text-danger',
+      color: 'text-danger-fg',
       bg: 'bg-danger/10',
       icon: 'error',
       label: 'Failed',
     },
     error: {
-      color: 'text-danger',
+      color: 'text-danger-fg',
       bg: 'bg-danger/10',
       icon: 'error',
       label: 'Error',
@@ -60,7 +60,10 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
           self-hosted the icon font rendered the literal word ("error", "schedule")
           inside the pill. Every glyph this component needs already exists in the
           Icon set, so there is nothing to trade away. */}
-      <Icon name={icon} className="text-icon-sm" />
+      {/* The labels are mostly lowercase, so the eye centres them on the
+          x-height, 2px under the cap centre the flex box aligns: 1px down
+          splits the difference. */}
+      <Icon name={icon} className="text-icon-sm translate-y-px" />
       <span>{label}</span>
     </div>
   )

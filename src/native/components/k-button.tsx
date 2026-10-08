@@ -1,8 +1,10 @@
 /**
  * KButton — themed button.
  *
- * Variants follow the brand: primary = green fill (dark text), secondary =
- * outline, violet = protocol accent, ghost = text-only, danger = destructive.
+ * Variants follow the brand: primary = green fill (dark text) with a green
+ * drop, secondary = violet-tinted outline, violet = protocol accent with a
+ * violet drop, ghost = text-only, danger = destructive (the web
+ * `shadow-button-*` treatment: a coloured drop, no edge line).
  * Disabled/pressed states keep contrast (no more washed-out CTAs).
  */
 import React from 'react'
@@ -14,6 +16,7 @@ import {
   type ViewStyle,
 } from 'react-native'
 import { useKaleidoTheme } from '../theme-context'
+import { kaleidoShadow } from '../theme'
 import { KText } from './k-text'
 import type { NativeTypeLevel } from '../../tokens/theme'
 
@@ -55,11 +58,15 @@ export function KButton({
   const palette = (pressed: boolean): { bg: string; border: string; fg: string } => {
     switch (variant) {
       case 'secondary':
-        return { bg: pressed ? theme.surface.raised : 'transparent', border: theme.border.strong, fg: theme.text.primary }
+        return {
+          bg: pressed ? theme.violetSurface : theme.surface.base,
+          border: theme.violetBorder,
+          fg: theme.violetText,
+        }
       case 'violet':
         return { bg: theme.violet, border: theme.violet, fg: theme.text.onFill }
       case 'ghost':
-        return { bg: pressed ? theme.surface.base : 'transparent', border: 'transparent', fg: theme.primary }
+        return { bg: pressed ? theme.violetSurface : 'transparent', border: 'transparent', fg: theme.primary }
       case 'danger':
         return { bg: theme.danger, border: theme.danger, fg: theme.text.onFill }
       case 'primary':
@@ -75,7 +82,17 @@ export function KButton({
       disabled={isDisabled}
       style={({ pressed }) => {
         const p = palette(pressed)
+        const filled = variant === 'primary' || variant === 'violet' || variant === 'danger'
+        const shadow =
+          isDisabled || !filled
+            ? null
+            : variant === 'violet'
+              ? kaleidoShadow(theme, 'buttonViolet')
+              : variant === 'primary'
+                ? kaleidoShadow(theme, 'buttonPrimary')
+                : kaleidoShadow(theme, 'raised')
         return {
+          ...shadow,
           height: s.h,
           paddingHorizontal: s.px,
           borderRadius: 14,

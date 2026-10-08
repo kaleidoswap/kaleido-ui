@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { cloneElement, isValidElement, useState, type ReactElement, type ReactNode } from 'react'
 import {
   AreaChart,
   BarChart,
@@ -8,14 +8,20 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  cn,
   DonutChart,
+  Icon,
   LineChart,
   MetricCard,
+  MixedChart,
   Meter,
   ScatterChart,
   Sparkline,
   TrendChart,
   type ChartDatum,
+  type ChartTimeframe,
+  type ChartFilter,
+  type ChartTitleProps,
   type TrendChartPoint,
 } from '@kaleido-ui/index'
 
@@ -101,13 +107,17 @@ const trendPoints: TrendChartPoint[] = (() => {
   })
 })()
 
-const dailyList = trendPoints.slice(-7).map((point) => {
+// The last N days, newest first, so the list reads from today down.
+const dailyListFor = (timeframe: string) => dailyListFrom(trendPoints.slice(-(daysIn[timeframe] ?? 7)).reverse())
+const dailyListFrom = (points: typeof trendPoints) => points.map((point) => {
   const total = point.values.completed + point.values.failed
   return {
     id: point.key,
     label: point.label,
     value: total,
     valueText: `${point.values.completed} / ${total}`,
+    // The completion rate, not the day's share of the week.
+    percent: total > 0 ? point.values.completed / total : 0,
   }
 })
 
@@ -142,28 +152,157 @@ const compactSats = (value: number) =>
   new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(value)
 const btc = (value: number) => `${value} BTC`
 
+// ─── Timeframes ─────────────────────────────────────────────────────────────
+//
+// The chart draws what it is given: the page swaps the data when the
+// timeframe changes. Series over time keep their last N periods; totals per
+// category are rescaled for the window, each part by its own amount, so the
+// shares move too.
+
+const MONTH_FRAMES: readonly ChartTimeframe[] = [
+  { value: '3m', label: '3M' },
+  { value: '6m', label: '6M' },
+  { value: '1y', label: '1Y' },
+]
+const DAY_FRAMES: readonly ChartTimeframe[] = [
+  { value: '7d', label: '7D' },
+  { value: '14d', label: '14D' },
+  { value: '30d', label: '30D' },
+]
+// The bar list prints a row per day: ten at most, so its card stays as tall
+// as the charts beside it.
+const LIST_FRAMES: readonly ChartTimeframe[] = [
+  { value: '5d', label: '5D' },
+  { value: '7d', label: '7D' },
+  { value: '10d', label: '10D' },
+]
+const WINDOW_FRAMES: readonly ChartTimeframe[] = [
+  { value: '1w', label: '1W' },
+  { value: '1m', label: '1M' },
+  { value: '3m', label: '3M' },
+]
+
+// The filters menu every chart carries beside its timeframe. Each filter
+// narrows the data by its share, so turning one on visibly changes the chart.
+const CHART_FILTERS: readonly ChartFilter[] = [
+  { value: 'settled', label: 'Settled only' },
+  { value: 'external', label: 'Exclude internal transfers' },
+]
+const filterShare = { settled: 0.9, external: 0.8 } as Record<string, number>
+
+type Numbers = Record<string, number>
+type FilterableProps = {
+  data?: readonly { values: Numbers }[]
+  points?: readonly ({ values: Numbers } | { y: number })[]
+  items?: readonly { value: number; valueText?: ReactNode }[]
+  segments?: readonly { value: number }[]
+}
+
+/**
+ * The chart's own data with the filters on, whatever its shape: the values of
+ * each datum or period, a list's or a donut's values, a scatter's y. Whole
+ * numbers (counts, sats) stay whole.
+ */
+const withFilters = (props: FilterableProps, active: readonly string[]): FilterableProps => {
+  const share = active.reduce((product, value) => product * (filterShare[value] ?? 1), 1)
+  if (share === 1) return {}
+  const scale = (value: number) =>
+    Number.isInteger(value) ? Math.round(value * share) : Math.round(value * share * 100) / 100
+  const scaleValues = (values: Numbers) =>
+    Object.fromEntries(Object.entries(values).map(([id, value]) => [id, scale(value)]))
+  const next: FilterableProps = {}
+  if (props.data) next.data = props.data.map((d) => ({ ...d, values: scaleValues(d.values) }))
+  if (props.points)
+    next.points = props.points.map((p) => ('values' in p ? { ...p, values: scaleValues(p.values) } : { ...p, y: scale(p.y) }))
+  // A filtered row prints its own value: the "12 / 15" text was the unfiltered count.
+  if (props.items) next.items = props.items.map((item) => ({ ...item, value: scale(item.value), valueText: undefined }))
+  if (props.segments) next.segments = props.segments.map((s) => ({ ...s, value: scale(s.value) }))
+  return next
+}
+
+const monthsIn = { '3m': 3, '6m': 6, '1y': 12 } as Record<string, number>
+const daysIn = { '5d': 5, '7d': 7, '10d': 10, '14d': 14, '30d': 30 } as Record<string, number>
+const windowScale = { '1w': 0.25, '1m': 1, '3m': 3 } as Record<string, number>
+
+/** Each part rescaled for the window, by a little more or less than the rest. */
+const tilt = (timeframe: string, index: number) =>
+  windowScale[timeframe] * (timeframe === '1m' ? 1 : 1 + 0.18 * Math.sin(index * 1.7 + windowScale[timeframe]))
+
+const rescaled = (data: readonly ChartDatum[], timeframe: string, round: (value: number) => number): ChartDatum[] =>
+  data.map((d) => ({
+    ...d,
+    values: Object.fromEntries(Object.entries(d.values).map(([id, value], index) => [id, round(value * tilt(timeframe, index))])),
+  }))
+
 // ─── Layout ─────────────────────────────────────────────────────────────────
+
+/** The charts that carry the chart / table switch. */
+const FRAMED_CHARTS = new Set<unknown>([LineChart, AreaChart, BarChart, BarList, DonutChart, ScatterChart, TrendChart, MixedChart])
 
 function ChartCard({
   title,
   use,
+  timeframes,
+  filters = CHART_FILTERS,
   children,
   wide = false,
 }: {
   title: string
-  /** When to reach for this form. */
+  /** What the chart measures, and on what scale. */
   use: string
-  children: ReactNode
+  /** The windows the chart can show; the widest is selected first. */
+  timeframes?: readonly ChartTimeframe[]
+  /** Further filters, in the menu beside the timeframe; all off at first. Every chart has them. */
+  filters?: readonly ChartFilter[]
+  /** The chart, or a function from the selected timeframe to the chart. */
+  children: ReactNode | ((timeframe: string) => ReactNode)
   wide?: boolean
 }) {
+  const [timeframe, setTimeframe] = useState(timeframes?.[timeframes.length - 1].value ?? '')
+  const [activeFilters, setActiveFilters] = useState<string[]>([])
+  const content = typeof children === 'function' ? children(timeframe) : children
+  // A chart with a frame draws its own head: the title and description at the
+  // top left, then the timeframe, the filters and the chart / table switch at
+  // the top right.
+  if (isValidElement(content) && FRAMED_CHARTS.has(content.type)) {
+    return (
+      <Card variant="secondary" className={wide ? 'xl:col-span-2' : undefined}>
+        <CardContent className="p-4">
+          {cloneElement(content as ReactElement<ChartTitleProps & FilterableProps>, {
+            title,
+            description: use,
+            timeframes,
+            timeframe,
+            onTimeframeChange: setTimeframe,
+            filters,
+            activeFilters,
+            onFiltersChange: setActiveFilters,
+            ...withFilters(content.props as FilterableProps, activeFilters),
+          })}
+        </CardContent>
+      </Card>
+    )
+  }
   return (
-    <Card className={wide ? 'xl:col-span-2' : undefined}>
-      <CardHeader className="p-4 pb-0">
+    <Card variant="secondary" className={wide ? 'xl:col-span-2' : undefined}>
+      <CardHeader className="space-y-1 p-4 pb-0">
         <CardTitle className="text-subhead">{title}</CardTitle>
         <CardDescription className="text-caption">{use}</CardDescription>
       </CardHeader>
-      <CardContent className="p-4">{children}</CardContent>
+      <CardContent className="p-4">{content}</CardContent>
     </Card>
+  )
+}
+
+/** A week-on-week change under a metric's figure: green up, red down. */
+function Delta({ value }: { value: string }) {
+  const down = value.startsWith('-')
+  return (
+    <span className={cn('inline-flex items-center gap-0.5 whitespace-nowrap font-semibold', down ? 'text-danger-fg' : 'text-success-fg')}>
+      <Icon name={down ? 'arrow_downward' : 'arrow_upward'} className="text-icon-xs" aria-hidden="true" />
+      {value}
+      <span className="sr-only"> vs last week</span>
+    </span>
   )
 }
 
@@ -176,120 +315,165 @@ export function ChartsGallery() {
           size="comfortable"
           label="Swaps this week"
           value="1,284"
-          description={<Sparkline values={[40, 44, 39, 52, 48, 57, 55, 61, 58, 66, 63, 71]} label="Swaps, last 12 weeks: 39 to 71" />}
+          description={<Delta value="+12.7%" />}
+          trend={<Sparkline height="fill" pulse values={[40, 44, 39, 52, 48, 57, 55, 61, 58, 66, 63, 71]} label="Swaps, last 12 weeks: 39 to 71" />}
         />
         <MetricCard
           size="comfortable"
           label="Volume"
-          value="12.9 BTC"
-          description={<Sparkline values={[8.1, 8.4, 9.0, 8.7, 9.6, 10.2, 9.9, 10.8, 11.4, 11.1, 12.2, 12.9]} label="Volume, last 12 weeks: 8.1 to 12.9 BTC" />}
+          value="9.4 BTC"
+          description={<Delta value="-8.7%" />}
+          trend={<Sparkline height="fill" pulse tone="negative" values={[12.9, 12.4, 12.8, 11.9, 12.1, 11.2, 11.6, 10.8, 10.9, 10.1, 10.3, 9.4]} label="Volume, last 12 weeks: 12.9 down to 9.4 BTC" />}
         />
         <MetricCard
           size="comfortable"
           label="Success rate"
           value="96.4%"
-          description={<Sparkline values={[94.1, 95.2, 93.8, 95.9, 96.0, 95.4, 96.8, 96.1, 95.7, 96.9, 96.2, 96.4]} label="Success rate, last 12 weeks: 93.8% to 96.9%" />}
+          description={<Delta value="+0.2%" />}
+          trend={<Sparkline height="fill" pulse values={[94.1, 95.2, 93.8, 95.9, 96.0, 95.4, 96.8, 96.1, 95.7, 96.9, 96.2, 96.4]} label="Success rate, last 12 weeks: 93.8% to 96.9%" />}
         />
       </div>
 
       <div className="grid gap-4 xl:grid-cols-2">
-        <ChartCard title="Line" use="Change over time, several series. The crosshair lists every series at that point." wide>
-          <LineChart
-            data={volumeByMonth}
-            series={[
-              { id: 'lightning', label: 'Lightning' },
-              { id: 'onchain', label: 'On-chain' },
-              { id: 'spark', label: 'Spark' },
-            ]}
-            label="Monthly volume by layer"
-            scaleLabel="Volume, BTC"
-            formatValue={btc}
-          />
+        <ChartCard title="Mixed" use="Volume, BTC · one view at a time: bars, stacked, lines, areas, dots" timeframes={MONTH_FRAMES} wide>
+          {(timeframe) => (
+            <MixedChart
+              data={volumeByMonth.slice(-monthsIn[timeframe])}
+              series={[
+                { id: 'lightning', label: 'Lightning' },
+                { id: 'onchain', label: 'On-chain' },
+                { id: 'spark', label: 'Spark' },
+              ]}
+              label="Monthly volume by layer"
+              scaleLabel="Volume, BTC"
+              formatValue={btc}
+            />
+          )}
         </ChartCard>
 
-        <ChartCard title="Area" use="One series over time, where the running level matters: a balance.">
-          <AreaChart
-            data={balanceByDay}
-            series={[{ id: 'balance', label: 'Balance' }]}
-            label="Wallet balance, September"
-            scaleLabel="Balance, sats"
-            integer
-            formatValue={compactSats}
-          />
+        <ChartCard title="Line" use="Volume, BTC · linear, from 0" timeframes={MONTH_FRAMES}>
+          {(timeframe) => (
+            <LineChart
+              data={volumeByMonth.slice(-monthsIn[timeframe])}
+              series={[
+                { id: 'lightning', label: 'Lightning' },
+                { id: 'onchain', label: 'On-chain' },
+                { id: 'spark', label: 'Spark' },
+              ]}
+              label="Monthly volume by layer"
+              scaleLabel="Volume, BTC"
+              formatValue={btc}
+            />
+          )}
         </ChartCard>
 
-        <ChartCard title="Stacked columns · TrendChart" use="A count per period, split into parts: completed and failed swaps. Up to ~120 periods at card width.">
-          <TrendChart
-            points={trendPoints}
-            series={[
-              { id: 'completed', label: 'completed', tone: 'primary' },
-              { id: 'failed', label: 'not completed', tone: 'danger' },
-            ]}
-            label="Swap trend"
-            scaleLabel="Swaps per day"
-          />
+        <ChartCard title="Area" use="Balance, sats · linear, from 0" timeframes={DAY_FRAMES}>
+          {(timeframe) => (
+            <AreaChart
+              data={balanceByDay.slice(-daysIn[timeframe])}
+              series={[{ id: 'balance', label: 'Balance' }]}
+              label="Wallet balance, September"
+              scaleLabel="Balance, sats"
+              integer
+              formatValue={compactSats}
+            />
+          )}
         </ChartCard>
 
-        <ChartCard title="Grouped columns" use="Compare a few series across a few categories.">
-          <BarChart
-            data={swapsByWeekday}
-            series={[
-              { id: 'lightning', label: 'Lightning' },
-              { id: 'onchain', label: 'On-chain' },
-              { id: 'spark', label: 'Spark' },
-            ]}
-            label="Swaps by weekday and layer"
-            scaleLabel="Swaps"
-            integer
-          />
+        <ChartCard title="Stacked columns over time" use="Swaps per day · linear, from 0" timeframes={DAY_FRAMES}>
+          {(timeframe) => (
+            <TrendChart
+              points={trendPoints.slice(-daysIn[timeframe])}
+              series={[
+                { id: 'completed', label: 'completed', tone: 'primary' },
+                { id: 'failed', label: 'not completed', tone: 'danger' },
+              ]}
+              label="Swap trend"
+              scaleLabel="Swaps per day"
+            />
+          )}
         </ChartCard>
 
-        <ChartCard title="Stacked columns" use="Part-to-whole per category: the total and what it is made of.">
-          <BarChart
-            data={swapsByWeekday}
-            series={[
-              { id: 'lightning', label: 'Lightning' },
-              { id: 'onchain', label: 'On-chain' },
-              { id: 'spark', label: 'Spark' },
-            ]}
-            layout="stacked"
-            label="Swaps by weekday, stacked by layer"
-            scaleLabel="Swaps"
-            integer
-          />
+        <ChartCard title="Grouped columns" use="Swaps · linear, from 0" timeframes={WINDOW_FRAMES}>
+          {(timeframe) => (
+            <BarChart
+              data={rescaled(swapsByWeekday, timeframe, Math.round)}
+              series={[
+                { id: 'lightning', label: 'Lightning' },
+                { id: 'onchain', label: 'On-chain' },
+                { id: 'spark', label: 'Spark' },
+              ]}
+              label="Swaps by weekday and layer"
+              scaleLabel="Swaps"
+              integer
+            />
+          )}
         </ChartCard>
 
-        <ChartCard title="Horizontal bars" use="Many categories, or long names. One series, so one colour.">
-          <BarChart
-            data={volumeByPair}
-            series={[{ id: 'volume', label: 'Volume' }]}
-            orientation="horizontal"
-            label="Volume by trading pair"
-            scaleLabel="Volume, BTC"
-            formatValue={btc}
-          />
+        <ChartCard title="Stacked columns by category" use="Swaps · linear, from 0" timeframes={WINDOW_FRAMES}>
+          {(timeframe) => (
+            <BarChart
+              data={rescaled(swapsByWeekday, timeframe, Math.round)}
+              series={[
+                { id: 'lightning', label: 'Lightning' },
+                { id: 'onchain', label: 'On-chain' },
+                { id: 'spark', label: 'Spark' },
+              ]}
+              layout="stacked"
+              label="Swaps by weekday, stacked by layer"
+              scaleLabel="Swaps"
+              integer
+            />
+          )}
         </ChartCard>
 
-        <ChartCard title="Bar list" use="A ranked or dated list with every value printed: the list view of a trend.">
-          <BarList items={dailyList} label="Swaps completed of total, last 7 days" />
+        <ChartCard title="Horizontal bars" use="Volume, BTC · linear, from 0" timeframes={WINDOW_FRAMES}>
+          {(timeframe) => (
+            <BarChart
+              data={volumeByPair.map((d, index) => ({ ...d, values: { volume: tenth(d.values.volume * tilt(timeframe, index)) } }))}
+              series={[{ id: 'volume', label: 'Volume' }]}
+              orientation="horizontal"
+              label="Volume by trading pair"
+              scaleLabel="Volume, BTC"
+              formatValue={btc}
+            />
+          )}
         </ChartCard>
 
-        <ChartCard title="Donut" use="Part-to-whole at a glance, six parts at most. Close values belong in a bar chart.">
-          <DonutChart segments={balanceByLayer} label="Balance by layer" totalLabel="Total balance" formatValue={compactSats} />
+        <ChartCard title="Bar list" use="Swaps completed of total, per day" timeframes={LIST_FRAMES}>
+          {(timeframe) => (
+            <BarList items={dailyListFor(timeframe)} label="Swaps completed of total, per day" />
+          )}
         </ChartCard>
 
-        <ChartCard title="Scatter" use="How two measures relate. Three series at most; hover finds the nearest point.">
-          <ScatterChart
-            series={feeVsAmount}
-            label="Fee against amount, by layer"
-            xLabel="Amount"
-            yLabel="Fee"
-            formatX={compactSats}
-            formatY={sats}
-          />
+        <ChartCard title="Donut" use="Balance by layer" timeframes={WINDOW_FRAMES}>
+          {(timeframe) => (
+              <DonutChart
+                segments={balanceByLayer.map((s, index) => ({ ...s, value: Math.round(s.value * tilt(timeframe, index)) }))}
+                label="Balance by layer"
+                totalLabel="Total balance"
+                formatValue={compactSats}
+              />
+          )}
         </ChartCard>
 
-        <ChartCard title="Meter" use="One ratio against a limit. Severity changes colour, and always adds an icon and a word.">
+        <ChartCard title="Scatter" use="Fee against Amount · both linear, from 0" timeframes={WINDOW_FRAMES}>
+          {(timeframe) => (
+            <ScatterChart
+              series={feeVsAmount.map((s) => ({
+                ...s,
+                points: s.points.slice(0, Math.ceil(s.points.length * Math.min(1, windowScale[timeframe] / 3 + (timeframe === '1w' ? 0.25 : 0.33)))),
+              }))}
+              label="Fee against amount, by layer"
+              xLabel="Amount"
+              yLabel="Fee"
+              formatX={compactSats}
+              formatY={sats}
+            />
+          )}
+        </ChartCard>
+
+        <ChartCard title="Meter" use="Used against each limit">
           <div className="space-y-5">
             <Meter label="Channel capacity used" value={420_000} max={1_000_000} formatValue={compactSats} />
             <Meter label="Daily swap limit" value={8_100_000} max={10_000_000} formatValue={compactSats} />

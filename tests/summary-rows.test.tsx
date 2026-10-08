@@ -17,10 +17,10 @@ test('the deciding number is the only emphasised row', () => {
   assert.equal(markup.match(/data-emphasis="true"/g)?.length, 1)
 })
 
-test('rows layer on bg-muted and separate by spacing, never dividers', () => {
+test('each row ties label to value with a continuous leader line', () => {
   const markup = renderToStaticMarkup(createElement(SummaryRows, { rows }))
-  assert.equal(markup.match(/bg-muted\/40/g)?.length, rows.length)
-  assert.doesNotMatch(markup, /border-t|divide-/)
+  assert.equal(markup.match(/border-b border-solid/g)?.length, rows.length)
+  assert.doesNotMatch(markup, /bg-muted|border-t|divide-/)
 })
 
 test('amounts are tabular so a stack of them lines up', () => {

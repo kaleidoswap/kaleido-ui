@@ -33,7 +33,7 @@ export function EventTimeline({ events, label, className }: EventTimelineProps) 
         <li
           key={event.id}
           data-slot="event-timeline-item"
-          className="flex items-baseline justify-between gap-3 rounded-xl bg-muted/40 px-3 py-2.5"
+          className="relative flex items-baseline justify-between gap-3 rounded-xl kui-well py-2.5 pl-7 pr-3 before:absolute before:left-3 before:top-1/2 before:size-1.5 before:-translate-y-1/2 before:rounded-full before:bg-primary/60 last:before:bg-primary last:before:shadow-glow-primary-soft"
         >
           <span className="min-w-0 text-caption font-medium text-foreground">{event.label}</span>
           <span className="flex shrink-0 items-baseline gap-2 text-caption tabular-nums text-muted-foreground">

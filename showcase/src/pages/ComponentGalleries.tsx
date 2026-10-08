@@ -1,5 +1,8 @@
 import { useState, type ReactNode } from 'react'
 import {
+  cn,
+  BasicCollapsible,
+  cardSurface,
   ActivityDetailRow,
   Avatar,
   Button,
@@ -9,10 +12,6 @@ import {
   CardHeader,
   CardTitle,
   CodeBlock,
-  Collapsible,
-  CollapsibleChevron,
-  CollapsibleContent,
-  CollapsibleTrigger,
   CopyButton,
   Copyable,
   DateRangeFilter,
@@ -67,19 +66,36 @@ import {
   ValueList,
   useIsNarrow,
   type DateRange,
+  ScrollArea,
+  HorizontalScrollArea,
 } from '@kaleido-ui/index'
 
 // Showcase demos for the components that had none: one card per component or
 // variant, on sample data, each saying when to reach for it.
 
-function Demo({ title, use, children }: { title: string; use: string; children: ReactNode }) {
+function Demo({
+  title,
+  use,
+  children,
+  className,
+  align = 'bottom',
+}: {
+  title: string
+  use: string
+  children: ReactNode
+  className?: string
+  /** `top` keeps the demo under the description, for one whose height changes (a state switcher). */
+  align?: 'top' | 'bottom'
+}) {
   return (
-    <Card className="min-w-0">
+    <Card variant="secondary" className={cn('min-w-0', className)}>
       <CardHeader className="p-4 pb-0">
         <CardTitle className="text-subhead">{title}</CardTitle>
         <CardDescription className="text-caption">{use}</CardDescription>
       </CardHeader>
-      <CardContent className="p-4">{children}</CardContent>
+      {/* mt-auto: in a grid row the cards stretch to the tallest; the demo
+          (its buttons, its trigger) stays on the bottom edge. */}
+      <CardContent className={cn('p-4', align === 'bottom' && 'mt-auto')}>{children}</CardContent>
     </Card>
   )
 }
@@ -157,10 +173,69 @@ export function TableGallery() {
   )
 }
 
+const SCROLL_ROWS = Array.from({ length: 16 }, (_, index) => ({
+  id: `sw_${(0x81f2 + index * 97).toString(16)}`,
+  amount: `${((index + 1) * 12_500).toLocaleString('en-US')} sats`,
+}))
+
+export function ScrollbarsGallery() {
+  return (
+    <Grid>
+      <Demo title="ScrollArea (vertical)" use="Up and down, the thumb on the right edge: 2px at rest, 6px under the pointer, never shorter than 24px. Drag it, or click the track to jump. It takes no width from the rows.">
+        <ScrollArea className="h-56 rounded-xl bg-muted" viewportClassName="space-y-1 p-2">
+          {SCROLL_ROWS.map((row) => (
+            <div key={row.id} className="flex items-center justify-between rounded-lg px-3 py-2 text-caption hover:bg-foreground/5">
+              <span className="font-mono text-foreground">{row.id}</span>
+              <span className="tabular-nums text-muted-foreground">{row.amount}</span>
+            </div>
+          ))}
+        </ScrollArea>
+      </Demo>
+      <Demo title="ScrollArea thickness=&quot;thick&quot;" use="The thick bar, for a whole page's scroller: 6px at rest, 10px under the pointer. The showcase pages scroll on it.">
+        <ScrollArea thickness="thick" className="h-56 rounded-xl bg-muted" viewportClassName="space-y-1 p-2 pr-4">
+          {SCROLL_ROWS.map((row) => (
+            <div key={row.id} className="flex items-center justify-between rounded-lg px-3 py-2 text-caption hover:bg-foreground/5">
+              <span className="font-mono text-foreground">{row.id}</span>
+              <span className="tabular-nums text-muted-foreground">{row.amount}</span>
+            </div>
+          ))}
+        </ScrollArea>
+      </Demo>
+      <Demo title="HorizontalScrollArea" use="Sideways, the same thumb on the bottom edge. CodeBlock and Table scroll on it; content that fits draws no thumb.">
+        <div className="space-y-4">
+          <HorizontalScrollArea className="rounded-xl bg-muted" viewportClassName="p-3 pb-4">
+            <div className="flex w-max gap-2">
+              {SCROLL_ROWS.map((row) => (
+                <div key={row.id} className="w-32 shrink-0 rounded-lg bg-card px-3 py-2 text-caption">
+                  <div className="font-mono text-foreground">{row.id}</div>
+                  <div className="tabular-nums text-muted-foreground">{row.amount}</div>
+                </div>
+              ))}
+            </div>
+          </HorizontalScrollArea>
+          <HorizontalScrollArea className="rounded-xl bg-muted" viewportClassName="p-3 text-caption text-muted-foreground">
+            Fits: no thumb.
+          </HorizontalScrollArea>
+        </div>
+      </Demo>
+      <Demo title="HorizontalScrollArea thickness=&quot;thick&quot;" use="The thick bar on the bottom edge: 6px at rest, 10px under the pointer — for a wide board or timeline that is a view of its own.">
+        <HorizontalScrollArea thickness="thick" className="rounded-xl bg-muted" viewportClassName="p-3 pb-5">
+          <div className="flex w-max gap-2">
+            {SCROLL_ROWS.map((row) => (
+              <div key={row.id} className="w-32 shrink-0 rounded-lg bg-card px-3 py-2 text-caption">
+                <div className="font-mono text-foreground">{row.id}</div>
+                <div className="tabular-nums text-muted-foreground">{row.amount}</div>
+              </div>
+            ))}
+          </div>
+        </HorizontalScrollArea>
+      </Demo>
+    </Grid>
+  )
+}
+
 export function FormsGallery() {
   const [url, setUrl] = useState('http://example.com/hook')
-  const [view, setView] = useState<'chart' | 'list'>('chart')
-  const [period, setPeriod] = useState<'7d' | '30d' | '90d'>('30d')
   const invalid = !url.startsWith('https://')
   return (
     <Grid>
@@ -174,73 +249,20 @@ export function FormsGallery() {
           </FormField>
         </div>
       </Demo>
-      <Demo title="Segmented control" use='FilterChipGroup variant="segmented": mutually exclusive options, one Tab stop, the arrow keys move and select. Options can be icon-only (named by ariaLabel, also their tooltip).'>
-        <div className="flex flex-col items-start gap-4">
-          <FilterChipGroup<'chart' | 'list'>
-            variant="segmented"
-            ariaLabel="Trend view"
-            value={view}
-            onChange={setView}
-            options={[
-              { value: 'chart', ariaLabel: 'Chart view', icon: <Icon name="trending_up" className="text-icon-md" /> },
-              { value: 'list', ariaLabel: 'List view', icon: <Icon name="menu" className="text-icon-md" /> },
-            ]}
-          />
-          <FilterChipGroup<'7d' | '30d' | '90d'>
-            variant="segmented"
-            ariaLabel="Period"
-            value={period}
-            onChange={setPeriod}
-            options={[
-              { value: '7d', label: '7 days' },
-              { value: '30d', label: '30 days' },
-              { value: '90d', label: '90 days' },
-            ]}
-          />
-          <p className="m-0 text-caption text-muted-foreground">
-            View: {view} · Period: {period}
-          </p>
-        </div>
-      </Demo>
     </Grid>
   )
 }
 
 // ─── Display ────────────────────────────────────────────────────────────────
 
-export function BadgesGallery() {
-  return (
-    <Grid>
-      <Demo title="ToneBadge — tones" use="A status as the eyebrow. secondary (violet) and outline stand in for a Badge's secondary and outline variants.">
-        <div className="flex flex-wrap gap-2">
-          {(['muted', 'primary', 'secondary', 'info', 'success', 'warning', 'danger', 'outline'] as const).map((tone) => (
-            <ToneBadge key={tone} tone={tone}>
-              {tone}
-            </ToneBadge>
-          ))}
-        </div>
-      </Demo>
-      <Demo title='ToneBadge case="none"' use="A value rather than a status: caption size, no uppercase, tabular figures.">
-        <div className="flex flex-wrap gap-2">
-          <ToneBadge tone="primary" case="none">1,250,000 sats</ToneBadge>
-          <ToneBadge tone="secondary" case="none">12 installs</ToneBadge>
-          <ToneBadge tone="outline" case="none">v2.4.1</ToneBadge>
-        </div>
-      </Demo>
-    </Grid>
-  )
-}
-
 export function AvatarGallery() {
   return (
     <Grid>
-      <Demo title="Avatar" use="sm 32px, lg 40px. An image, or initials / the person glyph on the violet-to-info gradient. Decorative unless alt is set with an image.">
+      <Demo title="Avatar" use="sm 32px, lg 40px. A custom image, or the initials on the violet-to-info gradient. Decorative unless alt is set with an image.">
         <div className="flex flex-wrap items-center gap-4">
           <Avatar initials="EJ" />
           <Avatar initials="EJ" size="lg" />
-          <Avatar />
-          <Avatar size="lg" />
-          <Avatar src="/brand/kaleidoswap-pictogram.svg" alt="KaleidoSwap" size="lg" className="bg-card" />
+          <Avatar src="/brand/kaleidoswap-pictogram.svg" alt="KaleidoSwap" initials="KS" size="lg" className="bg-card" />
           <Avatar src="/missing-image.png" initials="MW" size="lg" />
         </div>
         <p className="mt-3 text-caption text-muted-foreground">The last one points at a missing image and falls back to its initials.</p>
@@ -253,18 +275,12 @@ export function CollapsibleGallery() {
   const [open, setOpen] = useState(false)
   return (
     <Grid>
-      <Demo title="Collapsible" use="A button that opens and closes a section, with aria-expanded / aria-controls and a turning chevron. Uncontrolled here.">
-        <Collapsible>
-          <CollapsibleTrigger className="flex w-full items-center justify-between rounded-xl bg-muted px-3 py-2 text-caption font-semibold text-foreground">
-            Advanced settings
-            <CollapsibleChevron />
-          </CollapsibleTrigger>
-          <CollapsibleContent className="mt-2 rounded-xl bg-muted/40 p-3 text-caption text-muted-foreground">
-            Slippage, route preferences and the fee cap live here.
-          </CollapsibleContent>
-        </Collapsible>
+      <Demo title="BasicCollapsible" use="The plain Collapsible, styled: a compact row that opens a section of caption text, with aria-expanded / aria-controls and a turning chevron. Uncontrolled here.">
+        <BasicCollapsible title="Advanced settings">
+          Slippage, route preferences and the fee cap live here.
+        </BasicCollapsible>
       </Demo>
-      <Demo title="DisclosureCard" use="A card-styled Collapsible, controlled by its parent. Now built on Collapsible.">
+      <Demo title="DisclosureCard" use="A card-styled Collapsible: one box holds the trigger and the body. Controlled here; NetworkInfoDisclosure is built on it.">
         <DisclosureCard title="What are these fees?" open={open} onOpenChange={setOpen} icon={<Icon name="info" className="text-icon-md text-muted-foreground" />}>
           <p className="m-0 text-caption text-muted-foreground">The network fee pays the miners; the swap fee pays the market maker.</p>
         </DisclosureCard>
@@ -280,7 +296,7 @@ export function CollapsibleGallery() {
 export function DialogShowCloseDemo() {
   const [open, setOpen] = useState(false)
   return (
-    <div className="mt-6 space-y-2">
+    <div className="mt-6 flex flex-col items-start gap-4">
       <p className="m-0 text-caption text-muted-foreground">
         <code>showClose={'{false}'}</code> — a secret shown once must not sit beside a control that reads as “close”.
       </p>
@@ -358,30 +374,39 @@ export function PopoverMenuGallery() {
 export function NoticesGallery() {
   const [bar, setBar] = useState(false)
   const [floating, setFloating] = useState(false)
+  // Both notices are fixed to the window in an app. Here the bar opens under
+  // its button and the floating notice inside its own card, both absolutely
+  // placed so the cards keep their size.
+  const demoNotice = 'absolute inset-x-0 bottom-auto top-full z-10 mt-3 w-full translate-x-0'
   return (
     <Grid>
-      <Demo title="NoticeBar" use="Fixed to the top, full width, above the page. It publishes its height as --kui-notice-height so the page can move down. Try it: the bar appears at the very top of the window.">
-        <div className="space-y-3">
+      <Demo
+        title="NoticeBar"
+        use="In an app: fixed to the top, full width, above the page, publishing its height as --kui-notice-height so the page can move down."
+        className={cn(bar && 'relative z-30')}
+      >
+        <div className="relative">
           <Button variant="outline" size="sm" onClick={() => setBar(!bar)}>
             {bar ? 'Hide the notice bar' : 'Show the notice bar'}
           </Button>
-          <p className="m-0 text-caption text-muted-foreground">
-            The page padding below uses <code>var(--kui-notice-height, 0px)</code>.
-          </p>
+          <NoticeBar hidden={!bar} heightVariable="--kui-notice-height-demo" className={cn(demoNotice, cardSurface.secondary, 'bg-card p-4')}>
+            <p className="m-0 text-body font-semibold text-foreground">Scheduled maintenance</p>
+            <p className="m-0 mt-1 text-caption text-muted-foreground">Swaps pause on 3 October from 02:00 to 02:30 UTC.</p>
+          </NoticeBar>
         </div>
-        <NoticeBar hidden={!bar}>
-          <InfoPanel tone="warning" title="Scheduled maintenance">
-            Swaps pause on 3 October from 02:00 to 02:30 UTC.
-          </InfoPanel>
-        </NoticeBar>
-        {bar && <div aria-hidden="true" style={{ height: 'var(--kui-notice-height, 0px)' }} />}
       </Demo>
-      <Demo title="FloatingNotice" use="Bottom centre, above dialogs, until it is closed. It does not time out or queue like a toast.">
+      <Demo
+        title="FloatingNotice"
+        use="In an app: bottom centre of the window, above dialogs, until it is closed. It does not time out or queue like a toast. Here it sits at the bottom centre of this card."
+      >
         <Button variant="outline" size="sm" onClick={() => setFloating(true)} disabled={floating}>
           Show the floating notice
         </Button>
         {floating && (
-          <FloatingNotice onDismiss={() => setFloating(false)}>
+          <FloatingNotice
+            onDismiss={() => setFloating(false)}
+            className="absolute inset-x-4 bottom-4 w-auto translate-x-0"
+          >
             <InfoPanel tone="info" title="Testnet">
               You are on signet. Funds here have no value.
             </InfoPanel>
@@ -415,7 +440,7 @@ export function CopyGallery() {
           <Copyable value="bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh" label="address" />
         </div>
       </Demo>
-      <Demo title="CodeBlock" use="A monospaced block that scrolls sideways, with its copy button top right.">
+      <Demo title="CodeBlock" use="A monospaced block that scrolls sideways inside its margins, with its copy button top right.">
         <CodeBlock
           label="install command"
           language="bash"
@@ -443,6 +468,43 @@ export function CopyGallery() {
   )
 }
 
+// The segmented form of FilterChipGroup: a choice between exclusive options,
+// shown in Lists & filters beside the chips, the same component.
+function SegmentedControlDemo() {
+  const [view, setView] = useState<'chart' | 'list'>('chart')
+  const [period, setPeriod] = useState<'7d' | '30d' | '90d'>('30d')
+  return (
+    <Demo title="Segmented control" use='FilterChipGroup variant="segmented": mutually exclusive options, one Tab stop, the arrow keys move and select. Options can be icon-only (named by ariaLabel, also their tooltip).'>
+      <div className="flex flex-col items-start gap-4">
+        <FilterChipGroup<'chart' | 'list'>
+          variant="segmented"
+          ariaLabel="Trend view"
+          value={view}
+          onChange={setView}
+          options={[
+            { value: 'chart', ariaLabel: 'Chart view', icon: <Icon name="trending_up" className="text-icon-md" /> },
+            { value: 'list', ariaLabel: 'List view', icon: <Icon name="menu" className="text-icon-md" /> },
+          ]}
+        />
+        <FilterChipGroup<'7d' | '30d' | '90d'>
+          variant="segmented"
+          ariaLabel="Period"
+          value={period}
+          onChange={setPeriod}
+          options={[
+            { value: '7d', label: '7 days' },
+            { value: '30d', label: '30 days' },
+            { value: '90d', label: '90 days' },
+          ]}
+        />
+        <p className="m-0 text-caption text-muted-foreground">
+          View: {view} · Period: {period}
+        </p>
+      </div>
+    </Demo>
+  )
+}
+
 export function ListsGallery() {
   const narrow = useIsNarrow()
   const [mode, setMode] = useState<'loading' | 'error' | 'forbidden' | 'empty' | 'data'>('data')
@@ -457,7 +519,7 @@ export function ListsGallery() {
   return (
     <div className="space-y-4">
       <Grid>
-        <Demo title="QueryState" use="Loading, error and empty kept apart, so a failed read never looks like an empty list. Switch the state.">
+        <Demo title="QueryState" align="top" use="Loading, error and empty kept apart, so a failed read never looks like an empty list. Switch the state.">
           <div className="space-y-4">
             <FilterChipGroup
               variant="segmented"
@@ -511,13 +573,29 @@ export function ListsGallery() {
 
       <Demo title="FilterBar + DateRangeFilter" use="The filters of a list. Wide: in a row, with “N filters applied” and Clear all. Narrow (resize below 640px): one Filters toggle that opens them.">
         <FilterBar
+          align="end"
           activeCount={activeCount}
           onClear={() => {
             setApp('all')
             setRange({ from: '', to: '' })
           }}
         >
+          {/* As tall as the date inputs, so the chips sit on their centre line. */}
+          <div className="flex h-12 items-center">
+            <FilterChipGroup
+              ariaLabel="App"
+              value={app}
+              onChange={setApp}
+              options={[
+                { value: 'all', label: 'All apps' },
+                { value: 'wallet', label: 'Wallet' },
+                { value: 'checkout', label: 'Checkout' },
+              ]}
+            />
+          </div>
+          {/* Refresh last; Clear all, under the bar, empties the dates too. */}
           <DateRangeFilter
+            showClear={false}
             value={range}
             onChange={setRange}
             isRefreshing={refreshing}
@@ -526,19 +604,13 @@ export function ListsGallery() {
               setTimeout(() => setRefreshing(false), 1500)
             }}
           />
-          <FilterChipGroup
-            ariaLabel="App"
-            value={app}
-            onChange={setApp}
-            options={[
-              { value: 'all', label: 'All apps' },
-              { value: 'wallet', label: 'Wallet' },
-              { value: 'checkout', label: 'Checkout' },
-            ]}
-          />
         </FilterBar>
         <p className="mt-3 text-caption text-muted-foreground">useIsNarrow() is {String(narrow)} at this width.</p>
       </Demo>
+
+      <Grid>
+        <SegmentedControlDemo />
+      </Grid>
 
       <Grid>
         <Demo title="RecordList" use="The stacked form of a table row, for narrow screens. Tap an item or its chevron to open it; the actions do not open it.">
@@ -552,7 +624,7 @@ export function ListsGallery() {
                 onOpen={() => setOpened(swap.id)}
                 openLabel={`swap ${swap.id}`}
                 selected={opened === swap.id}
-                actions={swap.status === 'failed' ? <Button variant="ghost" size="sm">Refund</Button> : undefined}
+                actions={swap.status === 'failed' ? <Button variant="outline" size="sm">Refund</Button> : undefined}
               >
                 <RecordField label="Sent">{swap.sent}</RecordField>
                 <RecordField label="Received">{swap.received}</RecordField>
@@ -606,7 +678,8 @@ export function PageLayoutGallery() {
   return (
     <div className="space-y-4">
       <Demo title='PageHeader variant="page"' use="A desk page's header: the page's h1, a line of description and one action aligned with the title, wrapping under it on a phone.">
-        <div className="rounded-xl bg-background p-4">
+        {/* The page under the header: the muted well the other demos use, a soft gradient and no border. */}
+        <div className="rounded-xl kui-well p-4">
           <PageHeader
             variant="page"
             title="API keys"
@@ -622,8 +695,10 @@ export function PageLayoutGallery() {
       </Demo>
       <Grid>
         <Demo title="MetricCard — compact and comfortable" use="compact is the phone tile; comfortable the desk tile, with the figure in headline and the icon after it.">
-          <div className="grid gap-3 sm:grid-cols-2">
-            <MetricCard label="Swaps" value="1,284" icon="swap_horiz" tone="primary" description="this week" />
+          {/* items-start: the compact tile hugs its content's height instead of
+              stretching to the comfortable tile's. */}
+          <div className="grid items-start gap-3 sm:grid-cols-2">
+            <MetricCard iconPlacement="end" label="Swaps" value="1,284" icon="swap_horiz" tone="primary" description="this week" />
             <MetricCard size="comfortable" label="Swaps" value="1,284" icon="swap_horiz" tone="primary" description="this week" />
           </div>
         </Demo>

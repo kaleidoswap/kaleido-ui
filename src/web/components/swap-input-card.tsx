@@ -8,8 +8,12 @@ import {
   type AssetSelectorOption,
   type AssetSelectorQuickAsset,
 } from './asset-selector'
+import { DottedLeader } from './dotted-leader'
+import { cardSurface } from '../primitives/card'
 import { cn } from '../utils/cn'
 import { formatDisplayAmountText, type AmountDisplayUnit } from '../utils/amount-display'
+import { eyebrow } from '../utils/type-roles'
+import { IconButton } from '../primitives/icon-button'
 
 export interface SwapInputCardProps {
   fromTicker: string
@@ -128,10 +132,10 @@ export function SwapInputCard({
 
   return (
     <>
-      <div className="relative mb-3 flex flex-col rounded-2xl bg-white/[0.03] shadow-2xl shadow-black/40 backdrop-blur-2xl transition-all duration-300">
+      <div className="relative mb-3 flex flex-col rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-card transition-all duration-300">
         <div className="p-3.5 pb-4">
           <div className="mb-2 flex items-center justify-between gap-2">
-            <p className="text-mini font-bold uppercase tracking-eyebrow text-white/60">You Pay</p>
+            <p className={cn('text-muted-foreground', eyebrow)}>You Pay</p>
             {/* Percentage shortcuts now sit above the amount row per spec —
                 they read more naturally as inputs that drive the amount. */}
             {!hidePercentages && (
@@ -145,8 +149,8 @@ export function SwapInputCard({
                   className={cn(
                     'rounded px-1.5 py-0.5 text-xxs font-bold transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-40',
                     selectedPercentage === percent
-                      ? 'border-primary/50 bg-primary/20 text-primary shadow-sm'
-                      : 'bg-white/[0.03] text-muted-foreground hover:text-white',
+                      ? 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
+                      : 'bg-secondary/10 text-secondary-content shadow-raised hover-gradient-violet hover:text-foreground',
                   )}
                 >
                   {percent}%
@@ -177,13 +181,13 @@ export function SwapInputCard({
                 maxLength={24}
                 onChange={(event) => onFromInputChange(event.target.value)}
                 placeholder="0"
-                className="w-full min-w-0 border-none bg-transparent text-right text-headline font-bold tabular-nums text-white placeholder:text-white/15 focus:outline-none"
+                className="w-full min-w-0 border-none bg-transparent text-right text-headline font-bold tabular-nums text-foreground placeholder:text-foreground/15 focus:outline-none"
               />
               {fromUnitIsToggle && onToggleFromUnit ? (
                 <button
                   type="button"
                   onClick={onToggleFromUnit}
-                  className="mt-0.5 text-right text-caption text-muted-foreground transition-colors hover:text-primary"
+                  className="mt-0.5 text-right text-caption text-muted-foreground transition-colors hover:text-secondary-content"
                   title="Tap to switch unit"
                 >
                   {fromUnitLabel}
@@ -195,7 +199,7 @@ export function SwapInputCard({
           </div>
           <div className="mt-2 flex items-center justify-between gap-2">
             <p
-              className="min-w-0 max-w-full truncate text-xxs font-medium tabular-nums text-white/60"
+              className="min-w-0 max-w-full truncate text-xxs font-medium tabular-nums text-foreground/60"
               title={showMaxText && maxText ? `Max: ${maxText}` : `Available: ${availableText}`}
             >
               {showMaxText && maxDisplayText
@@ -205,25 +209,24 @@ export function SwapInputCard({
           </div>
         </div>
 
-        <div className="relative mx-6 flex h-px items-center justify-center bg-white/[0.08]">
-          {/* The flip button rotates 180° on hover; previously it carried a
-              directional `shadow-lg shadow-black/35` that visibly slid as the
-              button rotated. Wrap the button in a non-rotating shadow host
-              and rotate only the inner glyph so the shadow stays put. */}
-          <span className="absolute flex h-11 w-11 items-center justify-center rounded-full bg-card shadow-lg shadow-black/35">
-            <button
-              type="button"
-              onClick={onFlip}
-              title="Flip assets"
-              className="flex h-11 w-11 items-center justify-center rounded-full bg-card text-primary transition-transform duration-500 hover:rotate-180 hover:bg-accent active:scale-95"
-            >
-              <Icon name="swap_vert" size="md" />
-            </button>
-          </span>
+        {/* The same neutral ink as the quote rows' leader lines. */}
+        <div className="relative flex h-px items-center justify-center bg-foreground/15">
+          {/* The flip: the solid violet IconButton, ringed in the card colour so
+              it cuts the divider. Only the glyph turns on hover, so the shadow
+              stays put. */}
+          <IconButton
+            icon="swap_vert"
+            label="Flip assets"
+            variant="secondary"
+            size="lg"
+            shape="circle"
+            onClick={onFlip}
+            className="absolute ring-4 ring-card [&_svg]:transition-transform [&_svg]:duration-500 hover:[&_svg]:rotate-180 motion-reduce:[&_svg]:transition-none"
+          />
         </div>
 
-        <div className="rounded-b-2xl bg-gradient-to-br from-white/[0.01] to-primary/[0.04] p-3.5 pt-4 transition-all duration-300">
-          <p className="mb-2 text-mini font-bold uppercase tracking-eyebrow text-primary/70">
+        <div className="rounded-b-2xl bg-gradient-to-br from-secondary/[0.06] to-primary/[0.08] p-3.5 pt-4 transition-all duration-300">
+          <p className={cn('mb-2 text-brand/70', eyebrow)}>
             You Receive
           </p>
           <div className="flex items-center gap-2">
@@ -240,16 +243,16 @@ export function SwapInputCard({
             />
             <div className="min-w-0 flex-1 text-right">
               {isLoadingQuote ? (
-                <div className="ml-auto h-8 w-28 animate-pulse rounded-lg bg-white/10" />
+                <div className="ml-auto h-8 w-28 animate-pulse rounded-lg bg-secondary/15" />
               ) : receiveAmount ? (
                 <span
-                  className="block max-w-full truncate text-headline font-bold tabular-nums text-primary"
+                  className="block max-w-full truncate text-headline font-bold tabular-nums text-brand"
                   title={receiveAmount}
                 >
                   {receiveDisplayText}
                 </span>
               ) : (
-                <span className="text-headline font-bold text-white/15">-</span>
+                <span className="text-headline font-bold text-foreground/15">-</span>
               )}
               <p className="mt-0.5 text-caption text-muted-foreground">
                 {receiveUnitLabel || toTicker || '-'}
@@ -260,15 +263,16 @@ export function SwapInputCard({
       </div>
 
       {(quoteError || quoteRateText || quoteVenueText || quoteFeeText || quoteExpiresText) && (
-        <div className="rounded-xl bg-card/60 p-3">
+        <div className={cn(cardSurface.secondary, 'p-3')}>
           {quoteError ? (
-            <p className="text-center text-caption text-danger">{quoteError}</p>
+            <p className="text-center text-caption text-danger-fg">{quoteError}</p>
           ) : (
             <div className="space-y-1.5">
               {quoteVenueText && (
-                <div className="flex items-center justify-between text-caption">
-                  <span className="text-white/40">Provider</span>
-                  <span className="inline-flex items-center gap-1.5 font-medium text-white/65">
+                <div className="flex items-center gap-3 text-caption">
+                  <span className="text-foreground/55">Provider</span>
+                  <DottedLeader />
+                  <span className="inline-flex items-center gap-1.5 font-medium text-foreground/65">
                     <span
                       className={cn(
                         'size-1.5 rounded-full',
@@ -283,24 +287,26 @@ export function SwapInputCard({
                 </div>
               )}
               {quoteRateText && (
-                <div className="flex items-center justify-between text-caption">
-                  <span className="text-white/40">Rate</span>
-                  <span className="font-medium text-white/65">{quoteRateText}</span>
+                <div className="flex items-center gap-3 text-caption">
+                  <span className="text-foreground/55">Rate</span>
+                  <DottedLeader />
+                  <span className="font-medium text-foreground/65">{quoteRateText}</span>
                 </div>
               )}
               {(quoteFeeText || quoteExpiresText) && (
-                <div className="flex items-center justify-between text-caption">
-                  <span className="text-white/40">Fee</span>
+                <div className="flex items-center gap-3 text-caption">
+                  <span className="text-foreground/55">Fee</span>
+                  <DottedLeader />
                   <div className="flex items-center gap-2">
-                    {quoteFeeText && <span className="text-white/65">{quoteFeeText}</span>}
+                    {quoteFeeText && <span className="text-foreground/65">{quoteFeeText}</span>}
                     {quoteFeeText && quoteExpiresText && (
-                      <span className="text-white/15">·</span>
+                      <span className="text-foreground/15">·</span>
                     )}
                     {quoteExpiresText && (
                       <span
                         className={cn(
                           'tabular-nums',
-                          quoteExpiresUrgent ? 'font-semibold text-warning' : 'text-white/40',
+                          quoteExpiresUrgent ? 'font-semibold text-warning-fg' : 'text-foreground/55',
                         )}
                       >
                         {quoteExpiresText}
@@ -316,15 +322,15 @@ export function SwapInputCard({
 
       {warning && (
         <div className="flex items-start gap-2 rounded-xl bg-danger/10 p-3">
-          <Icon name="warning" size="sm" className="mt-0.5 text-danger" />
-          <p className="text-caption leading-relaxed text-danger">{warning}</p>
+          <Icon name="warning" size="sm" className="mt-0.5 text-danger-fg" />
+          <p className="text-caption leading-relaxed text-danger-fg">{warning}</p>
         </div>
       )}
 
       <Button
         variant={submitVariant}
         size="cta"
-        className="w-full"
+        className="mt-4 w-full"
         onClick={onSubmit}
         disabled={submitDisabled}
       >

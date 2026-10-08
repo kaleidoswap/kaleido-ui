@@ -1,11 +1,13 @@
 /**
  * StatusBadge — React Native version
  *
- * Inline badge for transaction/operation status.
+ * Inline badge for transaction/operation status — tri-alpha semantic pill,
+ * mode-aware via the Kaleido theme.
  */
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import { colors } from '../../tokens/colors'
+import type { KaleidoTheme } from '../../tokens/theme'
+import { useKaleidoTheme } from '../theme-context'
 
 export type StatusType = 'success' | 'pending' | 'failed' | 'completed' | 'error'
 
@@ -14,20 +16,32 @@ interface StatusBadgeProps {
   style?: any
 }
 
-const statusConfig: Record<StatusType, { color: string; bg: string; borderColor: string; label: string }> = {
-  success: { color: colors.primary, bg: `${colors.primary}1A`, borderColor: `${colors.primary}33`, label: 'Success' },
-  completed: { color: colors.primary, bg: `${colors.primary}1A`, borderColor: `${colors.primary}33`, label: 'Completed' },
-  pending: { color: colors.warning, bg: `${colors.warning}1A`, borderColor: `${colors.warning}33`, label: 'Pending' },
-  failed: { color: colors.danger, bg: `${colors.danger}1A`, borderColor: `${colors.danger}33`, label: 'Failed' },
-  error: { color: colors.danger, bg: `${colors.danger}1A`, borderColor: `${colors.danger}33`, label: 'Error' },
+type Intent = 'success' | 'warning' | 'danger'
+
+const statusConfig: Record<StatusType, { intent: Intent; label: string }> = {
+  success: { intent: 'success', label: 'Success' },
+  completed: { intent: 'success', label: 'Completed' },
+  pending: { intent: 'warning', label: 'Pending' },
+  failed: { intent: 'danger', label: 'Failed' },
+  error: { intent: 'danger', label: 'Error' },
+}
+
+function intentColors(theme: KaleidoTheme, intent: Intent) {
+  const color = theme[intent]
+  const bg =
+    intent === 'success' ? theme.successSurface : intent === 'warning' ? theme.warningSurface : theme.dangerSurface
+  // Theme intents are hex, so an 8-digit alpha suffix tints the border.
+  return { color, bg, borderColor: `${color}33` }
 }
 
 export function StatusBadge({ status, style }: StatusBadgeProps) {
-  const config = statusConfig[status]
+  const { theme, fontFamily } = useKaleidoTheme()
+  const entry = statusConfig[status]
+  const config = { ...intentColors(theme, entry.intent), label: entry.label }
 
   return (
     <View style={[styles.container, { backgroundColor: config.bg, borderColor: config.borderColor }, style]}>
-      <Text style={[styles.label, { color: config.color }]}>{config.label}</Text>
+      <Text style={[styles.label, { color: config.color, fontFamily }]}>{config.label}</Text>
     </View>
   )
 }

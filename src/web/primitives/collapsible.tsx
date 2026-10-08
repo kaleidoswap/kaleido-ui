@@ -22,7 +22,7 @@ const CollapsibleTrigger = React.forwardRef<
   <CollapsiblePrimitive.Trigger
     ref={ref}
     data-slot="collapsible-trigger"
-    className={cn('group/collapsible focus:outline-none focus-visible:ring-2 focus-visible:ring-ring', className)}
+    className={cn('group/collapsible transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft', className)}
     {...props}
   />
 ))
@@ -53,7 +53,7 @@ function CollapsibleChevron({ className }: { className?: string }) {
       name="expand_more"
       aria-hidden="true"
       className={cn(
-        'shrink-0 text-icon-md text-muted-foreground transition-transform duration-200 group-data-[state=open]/collapsible:rotate-180 motion-reduce:transition-none',
+        'shrink-0 text-icon-md text-muted-foreground transition-transform duration-200 group-hover/collapsible:text-secondary-content group-data-[state=open]/collapsible:rotate-180 group-data-[state=open]/collapsible:text-secondary-content motion-reduce:transition-none',
         className,
       )}
     />

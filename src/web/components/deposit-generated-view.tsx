@@ -1,5 +1,6 @@
-import type { ChangeEvent } from 'react'
+import { useId, type ChangeEvent } from 'react'
 import { Icon } from '../primitives/icon'
+import { Label } from '../primitives/label'
 import { QrCode } from './qr-code'
 import { cn } from '../utils/cn'
 import {
@@ -9,6 +10,8 @@ import {
   type DepositNetworkConfigEntry,
   type DepositNetworkKey,
 } from './deposit-ui-shared'
+import { eyebrow } from '../utils/type-roles'
+import { IconButton } from '../primitives/icon-button'
 
 export interface DepositGeneratedAsset {
   ticker?: string
@@ -110,25 +113,28 @@ export function DepositGeneratedView({
   showRegenerate = true,
   onRegenerate,
 }: DepositGeneratedViewProps) {
+  const btcAmountId = useId()
+  const assetAmountId = useId()
   return (
     <div className="space-y-3 animate-in fade-in zoom-in-95 duration-300">
       {(network === 'lightning' || (network === 'arkade' && arkSubMode === 'ark')) && isBtc && (
-        <div className="flex flex-col gap-1.5 rounded-xl bg-card/70 p-2.5">
+        <div className="flex flex-col gap-2 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-2.5 shadow-card">
           <div className="flex items-center justify-between px-1">
-            <label className="text-mini font-bold uppercase tracking-eyebrow text-white/40">
+            <Label htmlFor={btcAmountId}>
               Specify amount (optional)
-            </label>
+            </Label>
           </div>
           <input
+            id={btcAmountId}
             type="text"
             value={amount}
             onChange={handleAmountChange}
             placeholder="Any amount"
-            className="w-full rounded-lg border bg-white/5 px-3 py-1.5 font-mono text-caption font-bold text-white transition-all placeholder:text-white/25 focus:border-warning/40 focus:outline-none"
+            className="w-full rounded-lg bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-1.5 font-mono text-caption font-bold text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
             inputMode="decimal"
           />
           {amount && (
-            <p className="text-xxs text-warning/70">
+            <p className="text-xxs text-warning-fg/70">
               {loading ? (
                 <span className="flex items-center gap-1">
                   <Icon name="progress_activity" className="animate-spin text-icon-xxs" />
@@ -145,22 +151,23 @@ export function DepositGeneratedView({
       )}
 
       {network === 'lightning' && !isBtc && (
-        <div className="flex flex-col gap-1.5 rounded-xl bg-card/70 p-2.5">
+        <div className="flex flex-col gap-2 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-2.5 shadow-card">
           <div className="flex items-center justify-between px-1">
-            <label className="text-mini font-bold uppercase tracking-eyebrow text-white/40">
+            <Label htmlFor={assetAmountId}>
               Specify amount (optional)
-            </label>
+            </Label>
           </div>
           <input
+            id={assetAmountId}
             type="text"
             value={amount}
             onChange={handleAmountChange}
             placeholder={selectedAsset?.ticker ? `Any amount (${selectedAsset.ticker})` : 'Any amount'}
-            className="w-full rounded-lg border bg-white/5 px-3 py-1.5 font-mono text-caption font-bold text-white transition-all placeholder:text-white/25 focus:border-warning/40 focus:outline-none"
+            className="w-full rounded-lg bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-1.5 font-mono text-caption font-bold text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
             inputMode="decimal"
           />
           {amount && (
-            <p className="text-xxs text-warning/70">
+            <p className="text-xxs text-warning-fg/70">
               {loading ? (
                 <span className="flex items-center gap-1">
                   <Icon name="progress_activity" className="animate-spin text-icon-xxs" />
@@ -172,7 +179,7 @@ export function DepositGeneratedView({
             </p>
           )}
           {amount && maxDepositAmount > 0 && parseAssetAmount(amount, selectedAsset) > maxDepositAmount && (
-            <p className="rounded-lg bg-danger/10 px-2.5 py-1.5 text-xxs text-danger">
+            <p className="rounded-lg bg-danger/10 px-2.5 py-1.5 text-xxs text-danger-fg">
               Exceeds max: {formatAssetAmount(maxDepositAmount, selectedAsset)} {getUnitLabel()}
             </p>
           )}
@@ -187,9 +194,8 @@ export function DepositGeneratedView({
           {showQrNetworkBadge && network !== 'spark' && network !== 'arkade' && (
             <div
               className={cn(
-                'absolute right-2.5 top-2.5 flex items-center gap-1 rounded-full border bg-white/90 px-1.5 py-0.5 text-xxs font-bold shadow-sm',
-                net.text,
-                net.border
+                'absolute right-2.5 top-2.5 flex items-center gap-1 rounded-full bg-foreground/90 px-1.5 py-0.5 text-xxs font-bold shadow-sm',
+                net.text
               )}
             >
               {net.icon}
@@ -201,8 +207,8 @@ export function DepositGeneratedView({
           {loading && !isInvoicePaid && (
             // Loading scrim — sits over the QR while a fresh address/invoice
             // is being fetched (e.g. after the New Address button).
-            <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-white/80 backdrop-blur-sm">
-              <Icon name="progress_activity" className="animate-spin text-icon-3xl text-network-bitcoin" />
+            <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-foreground/80 backdrop-blur-sm">
+              <Icon name="progress_activity" className="animate-spin text-icon-3xl text-network-bitcoin-fg" />
             </div>
           )}
         </div>
@@ -213,10 +219,10 @@ export function DepositGeneratedView({
             <button
               type="button"
               className={cn(
-                'flex items-center gap-1 rounded-full border px-2.5 py-1 text-mini font-bold uppercase tracking-eyebrow transition-all',
+                'flex items-center gap-1 rounded-full px-2.5 py-1 transition-all', eyebrow,
                 isAddressCopied
-                  ? 'border-primary/30 bg-primary/10 text-primary'
-                  : 'border-border bg-white/5 text-muted-foreground hover:border-white/20 hover:bg-accent hover:text-white'
+                  ? 'bg-primary/10 text-brand shadow-glow-primary-soft'
+                  : 'bg-secondary/15 text-secondary-content shadow-raised hover-gradient-violet hover:text-foreground'
               )}
               onClick={(event) => {
                 event.stopPropagation()
@@ -247,8 +253,8 @@ export function DepositGeneratedView({
         data-testid="deposit-generated-address"
         data-address={address}
         className={cn(
-          'group flex cursor-pointer items-center gap-2 rounded-xl bg-card/70 px-2.5 py-1.5',
-          'transition-all hover:bg-card active:scale-[0.98]'
+          'group flex cursor-pointer items-center gap-2 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-2.5 py-1.5 shadow-card',
+          'transition-all hover-gradient-violet hover:shadow-card-hover active:scale-[0.98]'
         )}
         onClick={() => void copyToClipboard(address)}
       >
@@ -256,7 +262,7 @@ export function DepositGeneratedView({
           {net.icon}
         </div>
         <div className="min-w-0 flex-1">
-          <p className={cn('text-mini font-bold uppercase tracking-eyebrow', net.text)}>
+          <p className={cn(eyebrow, net.text)}>
             <span data-testid="deposit-address-label">{addressLabel}</span>
           </p>
           <p className="mt-0.5 truncate font-mono text-tiny text-muted-foreground">
@@ -269,16 +275,16 @@ export function DepositGeneratedView({
       {recipientId && (
         <div
           className={cn(
-            'group flex cursor-pointer items-center gap-2 rounded-xl bg-primary/10 px-2.5 py-1.5',
+            'group flex cursor-pointer items-center gap-2 rounded-xl bg-primary/10 px-2.5 py-1.5 shadow-raised',
             'transition-all hover:bg-primary/15 active:scale-[0.98]'
           )}
           onClick={() => void copyToClipboard(recipientId)}
         >
           <div className="flex size-5 flex-shrink-0 items-center justify-center rounded-md bg-primary/15">
-            <Icon name="person" size="xs" className="text-primary" />
+            <Icon name="person" size="xs" className="text-brand" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-mini font-bold uppercase tracking-eyebrow text-primary">
+            <p className={cn('text-brand', eyebrow)}>
               Recipient ID
             </p>
             <p className="mt-0.5 truncate font-mono text-tiny text-muted-foreground">
@@ -293,10 +299,9 @@ export function DepositGeneratedView({
 
       {showRegenerate && (
         <div className="flex justify-center pt-1">
-          <button
-            type="button"
-            aria-label={`New ${network === 'lightning' ? 'invoice' : 'address'}`}
-            title={`New ${network === 'lightning' ? 'invoice' : 'address'}`}
+          <IconButton
+            label={`New ${network === 'lightning' ? 'invoice' : 'address'}`}
+            variant="secondary"
             disabled={loading}
             onClick={() => {
               if (onRegenerate) {
@@ -313,10 +318,8 @@ export function DepositGeneratedView({
               setAmount('')
               setInvoiceStatus(null)
             }}
-            className="flex size-10 items-center justify-center rounded-full bg-primary/15 text-primary transition-all hover:bg-primary/25 active:scale-[0.98] disabled:opacity-50"
-          >
-            <Icon name="refresh" className={cn('text-icon-md', loading && 'animate-spin')} />
-          </button>
+            icon={<Icon name="refresh" aria-hidden="true" className={cn(loading && 'animate-spin motion-reduce:animate-none')} />}
+          />
         </div>
       )}
     </div>

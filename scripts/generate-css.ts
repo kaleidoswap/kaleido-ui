@@ -19,13 +19,12 @@ import {
   appStatusSubtleAlpha,
 } from '../src/tokens/app-semantic.ts'
 import { radius } from '../src/tokens/radius.ts'
-import { sizing } from '../src/tokens/sizing.ts'
+import { sizing, spacingUnit } from '../src/tokens/sizing.ts'
 import { layer } from '../src/tokens/layers.ts'
-import { shadow } from '../src/tokens/shadows.ts'
-import { gradient } from '../src/tokens/gradients.ts'
+import { shadow, shadowLight } from '../src/tokens/shadows.ts'
+import { gradient, gradientLight } from '../src/tokens/gradients.ts'
 import {
   brandDepth,
-  brandGlowShadows,
   brandTheme,
   halo,
   themedForeground,
@@ -93,6 +92,33 @@ const appChannelVars = (vals: Record<string, string>): string =>
 const appDarkVars = appChannelVars(appSemanticDark)
 const appLightVars = appChannelVars(appSemanticLight)
 
+// Network chips and chip text follow the theme: dark tints by default,
+// pale chips with dark text under .light.
+const networkNames = Object.keys(colors.networkChip) as (keyof typeof colors.networkChip)[]
+const networkChipVars = (chip: Record<string, string>, text: Record<string, string>): string =>
+  networkNames.map((n) => `  --network-${n}-chip: ${chip[n]};\n  --network-${n}-text: ${text[n]};`).join('\n')
+const networkChipDark = networkChipVars(colors.networkChip, colors.networkText)
+const networkChipLight = networkChipVars(colors.networkChipLight, colors.networkTextLight)
+const networkChipInline = networkNames
+  .map((n) => `  --color-network-${n}-chip: var(--network-${n}-chip);\n  --color-network-${n}-text: var(--network-${n}-text);`)
+  .join('\n')
+
+// Shadows per theme: the dark set (src/tokens/shadows.ts `shadow`) and the
+// light one (`shadowLight`), as --kui-shadow-* behind every --shadow-* token.
+const shadowKeys = Object.keys(shadow) as (keyof typeof shadow)[]
+const shadowVars = (set: Record<string, string>): string =>
+  shadowKeys.map((k) => `  --kui-shadow-${camelToKebab(k)}: ${set[k]};`).join('\n')
+const shadowDark = shadowVars(shadow)
+const shadowLightVars = shadowVars(shadowLight)
+const shadowInline = shadowKeys
+  .map((k) => `  --shadow-${camelToKebab(k)}: var(--kui-shadow-${camelToKebab(k)});`)
+  .join('\n')
+
+// The light theme's button fills (src/tokens/gradients.ts `gradientLight`).
+const gradientLightVars = (Object.keys(gradientLight) as (keyof typeof gradientLight)[])
+  .map((k) => `  --gradient-${k}: ${gradientLight[k]};`)
+  .join('\n')
+
 const appThemeInline = appSemanticOrder
   .map((k) => `  --color-${k}: rgb(var(--app-${k}));`)
   .join('\n')
@@ -114,14 +140,10 @@ const brandVars = (theme: Theme): string =>
     ...themedForegroundOrder.map((k) => `  --${k}: ${themedForeground[theme][k]};`),
     `  --gradient-page-brand: ${brandDepth[theme].pageWash};`,
     `  --brand-gradient: ${brandDepth[theme].gradient};`,
-    `  --glow-send: ${brandDepth[theme].glowSend};`,
-    `  --glow-recv: ${brandDepth[theme].glowRecv};`,
-    `  --glow-card: ${brandDepth[theme].glowCard};`,
   ].join('\n')
 
 const brandThemeInline = [
   ...themedForegroundOrder.map((k) => `  --color-${k}: var(--${k});`),
-  ...brandGlowShadows.map((k) => `  --shadow-${k}: var(--${k});`),
 ].join('\n')
 
 const hexToChannels = (hex: string): string => {
@@ -224,10 +246,46 @@ ${seriesVars(chartSeries.dark)}
 :root,
 .dark {
 ${appDarkVars}
+${networkChipDark}
+${shadowDark}
+  /* Elevation ink — shadows are cast in a near-black violet. */
+  --app-shadow: 7 4 22;
+  --app-shadow-strength: 1;
+  --app-rim-alpha: 0.06;
+  /* The rule on the left of the current drawer sub-item. */
+  --app-nav-rule: 2px;
+  /* How much of a hidden (blurred) secret still shows. */
+  --app-hidden-opacity: 0.6;
+  /* Card glass edge: a faint 1px ring, violet light along the top and left,
+     green along the bottom and right — the card fill's own direction. See .shadow-card::before. */
+  --card-edge: inset 0 0 0 1px rgba(255, 255, 255, 0.12), inset 1px 1px 0 0 rgba(164, 138, 255, 0.5), inset -1px -1px 0 0 rgba(110, 237, 192, 0.5);
 }
 
 .light {
 ${appLightVars}
+${networkChipLight}
+${shadowLightVars}
+  --app-shadow: 28 27 46;
+  --app-shadow-strength: 0.18;
+  --app-rim-alpha: 0.7;
+  /* On white the violet light reads pink: a trace of it, no more. */
+  --gradient-card: linear-gradient(135deg, rgba(111, 50, 255, 0.025) 0%, rgba(111, 50, 255, 0) 55%);
+  --card-edge: inset 0 0 0 1px rgba(20, 20, 43, 0.12), inset 1px 1px 0 0 rgba(111, 50, 255, 0.34), inset -1px -1px 0 0 rgba(23, 181, 129, 0.4);
+  --gradient-card-hero: linear-gradient(135deg, rgba(111, 50, 255, 0.05) 0%, rgba(111, 50, 255, 0) 50%, rgba(21, 233, 154, 0.06) 100%);
+  --gradient-hover: linear-gradient(135deg, rgba(111, 50, 255, 0.12) 0%, rgba(111, 50, 255, 0.03) 100%);
+  /* A selected card is only this tint: on light it needs a white floor, or it
+     takes the grey of whatever it sits on. */
+  --gradient-active: linear-gradient(135deg, rgba(21, 233, 154, 0.14) 0%, rgba(21, 233, 154, 0.04) 100%), linear-gradient(#FFFFFF, #FFFFFF);
+  /* On white the full green rule is heavy: half of it. */
+  --app-nav-rule: 1px;
+  /* Blurred ink fades into white faster: keep more of it. */
+  --app-hidden-opacity: 0.8;
+  /* The scrollbar thumb is a white wash on dark; on white it needs ink. */
+  --color-scrollbar-thumb: rgba(20, 20, 43, 0.22);
+  --color-scrollbar-thumb-hover: rgba(23, 181, 129, 0.7);
+  /* Button fills lighten toward the bottom-right on white — see gradientLight. */
+${gradientLightVars}
+  --gradient-page: radial-gradient(ellipse 80% 55% at 85% -5%, rgba(111, 50, 255, 0.05) 0%, transparent 60%), radial-gradient(ellipse 70% 50% at 0% 105%, rgba(21, 233, 154, 0.05) 0%, transparent 60%);
 }
 
 /* ── Brand layer — from src/tokens/brand.ts ─────────────────────────────
@@ -283,9 +341,14 @@ ${chartSeries.dark.map((_, index) => `  --color-series-${index + 1}:            
      border-border-x, bg-status-x with opacity) resolve to the canonical slate palette. */
 ${appThemeInline}
 ${appStatusSubtle}
+${networkChipInline}
 
   /* Brand layer — per-theme foregrounds and glows (see the blocks above) */
 ${brandThemeInline}
+
+  /* Shadows, per theme: --kui-shadow-* is declared for dark (:root, .dark) and
+     light (.light). Inline so each utility resolves it on the element. */
+${shadowInline}
 }
 
 @theme {
@@ -293,24 +356,9 @@ ${brandThemeInline}
   --color-network-bitcoin:   ${colors.network.bitcoin};
   --color-network-rgb:       ${colors.network.rgb};
   --color-network-arkade:    ${colors.network.arkade};
-  --color-network-spark:     ${colors.network.spark};
   --color-network-lightning: ${colors.network.lightning};
   --color-network-liquid:    ${colors.network.liquid};
   --color-network-taproot:   ${colors.network.taproot};
-  --color-network-bitcoin-chip:   ${colors.networkChip.bitcoin};
-  --color-network-rgb-chip:       ${colors.networkChip.rgb};
-  --color-network-arkade-chip:    ${colors.networkChip.arkade};
-  --color-network-spark-chip:     ${colors.networkChip.spark};
-  --color-network-lightning-chip: ${colors.networkChip.lightning};
-  --color-network-liquid-chip:    ${colors.networkChip.liquid};
-  --color-network-taproot-chip:   ${colors.networkChip.taproot};
-  --color-network-bitcoin-text:   ${colors.networkText.bitcoin};
-  --color-network-rgb-text:       ${colors.networkText.rgb};
-  --color-network-arkade-text:    ${colors.networkText.arkade};
-  --color-network-spark-text:     ${colors.networkText.spark};
-  --color-network-lightning-text: ${colors.networkText.lightning};
-  --color-network-liquid-text:    ${colors.networkText.liquid};
-  --color-network-taproot-text:   ${colors.networkText.taproot};
 
   /* Asset icon brand colors */
   --color-asset-eth:  ${colors.assetIcon.eth};
@@ -347,10 +395,16 @@ ${brandThemeInline}
   /* Scrollbar colors */
   --color-scrollbar-thumb:       ${colors.scrollbar.thumb};
   --color-scrollbar-thumb-hover: ${colors.scrollbar.thumbHover};
+  --color-scrollbar-thumb-active: ${colors.scrollbar.thumbActive};
   --color-scrollbar-track:       ${colors.scrollbar.track};
   --spacing-scrollbar:           ${sizing.scrollbar};
   --spacing-scrollbar-hover:     ${sizing.scrollbarHover};
+  --spacing-scrollbar-thick:     ${sizing.scrollbarThick};
+  --spacing-scrollbar-thick-hover: ${sizing.scrollbarThickHover};
   --spacing-scrollbar-thumb-min: ${sizing.scrollbarThumbMin};
+
+  /* Spacing unit — every padding, margin, gap and size step is a multiple of it */
+  --spacing: ${spacingUnit};
 
   /* Layers */
   --z-header:    ${layer.header};
@@ -392,25 +446,30 @@ ${iconBoxSizeTheme}
   --radius-pill:  ${radius.pill};
 
   /* Shadows */
-  --shadow-glow:                 ${shadow.glow};
-  --shadow-glow-strong:          ${shadow.glowStrong};
-  --shadow-glow-subtle:          ${shadow.glowSubtle};
-  --shadow-glow-accent:          ${shadow.glowAccent};
-  --shadow-header:               ${shadow.header};
-  --shadow-glow-primary-soft:    ${shadow.glowPrimarySoft};
-  --shadow-glow-primary:         ${shadow.glowPrimary};
-  --shadow-glow-primary-strong:  ${shadow.glowPrimaryStrong};
-  --shadow-popover:              ${shadow.popover};
-  --shadow-toast:                ${shadow.toast};
+  /* Shadows: every --shadow-* is themed — see the @theme inline block. */
 
   /* Drop-shadows (Tailwind v4 emits drop-shadow-* utilities from --drop-shadow-*) */
   --drop-shadow-glow-primary-soft: ${shadow.glowPrimarySoft};
   --drop-shadow-glow-primary:      ${shadow.glowPrimary};
+  --drop-shadow-glow-violet:       ${shadow.glowViolet};
 
   /* Gradients (use as background-image: var(--gradient-page)) */
   --gradient-page:        ${gradient.pageRadial};
   --gradient-card-sheen:  ${gradient.cardSheen};
   --gradient-headline:    ${gradient.headline};
+  --gradient-brand:       ${gradient.brand};
+  --gradient-brand-dark:  ${gradient.brandDark};
+  --gradient-brand-text:  ${gradient.brandText};
+  --gradient-primary:     ${gradient.primary};
+  --gradient-warning:     ${gradient.warning};
+  --gradient-danger:      ${gradient.danger};
+  --gradient-violet:     ${gradient.violet};
+  --gradient-destructive: ${gradient.destructive};
+  --gradient-surface:     ${gradient.surface};
+  --gradient-card:        ${gradient.card};
+  --gradient-card-hero:   ${gradient.cardHero};
+  --gradient-active:      ${gradient.active};
+  --gradient-hover:       ${gradient.hover};
 
   /* Transitions */
   --transition-fast:    ${transition.fast};
@@ -511,6 +570,135 @@ ${keyframesCss}
   50% { transform: translate3d(-5%, -5%, 0) scale(1.08); }
   to { transform: translate3d(7%, -26%, 0) scale(0.95); }
 }
+/* Brand gradients — 135° linear, from src/tokens/gradients.ts. They set only
+   background-image, so they layer over a bg-* colour utility. */
+.bg-gradient-brand {
+  background-image: var(--gradient-brand);
+}
+.bg-gradient-brand-dark {
+  background-image: var(--gradient-brand-dark);
+}
+.bg-gradient-primary {
+  background-image: var(--gradient-primary);
+}
+.bg-gradient-warning {
+  background-image: var(--gradient-warning);
+}
+.bg-gradient-danger {
+  background-image: var(--gradient-danger);
+}
+.bg-gradient-violet {
+  background-image: var(--gradient-violet);
+}
+.bg-gradient-destructive {
+  background-image: var(--gradient-destructive);
+}
+.bg-gradient-surface {
+  background-image: var(--gradient-surface);
+}
+.bg-gradient-card {
+  background-image: var(--gradient-card);
+}
+.bg-gradient-card-hero {
+  background-image: var(--gradient-card-hero);
+}
+.bg-gradient-active {
+  background-image: var(--gradient-active);
+}
+/* State-driven gradients — the gradient classes above take no Tailwind
+   variants, so a Radix trigger that is styled by its own data-state uses
+   these: the gradient appears only while the element is active/selected. */
+.active-gradient-violet:is([data-state='active'], [data-state='on'], [aria-selected='true'], [aria-current='page']) {
+  background-image: var(--gradient-violet);
+}
+.active-gradient-primary:is([data-state='active'], [data-state='on'], [aria-selected='true'], [aria-current='page']) {
+  background-image: var(--gradient-primary);
+}
+.active-gradient-active:is([data-state='active'], [data-state='on'], [aria-selected='true'], [aria-current='page']) {
+  background-image: var(--gradient-active);
+}
+/* The violet hover — every hover that turns a surface violet. It sets only
+   background-image, over whatever fill the element has, so a card lightens
+   rather than losing its colour. group-hover-* follows a .group parent. */
+.hover-gradient-violet:hover:not(:disabled),
+.group:hover .group-hover-gradient-violet {
+  background-image: var(--gradient-hover);
+}
+/* A 1px brand-gradient border drawn outside the element's own background.
+   Needs a positioned element; the ring sits in ::before so content and
+   radius are untouched. */
+.border-gradient-brand {
+  position: relative;
+}
+.border-gradient-brand::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: var(--gradient-brand);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+/* The card's glass edge — the 1px --card-edge ring on every shadow-card,
+   drawn in ::before. It is inset box-shadows, not a masked gradient: a
+   masked 1px ring is anti-aliased twice on its curves and thins out in the
+   corners, a shadow ring keeps its width all round. The alpha mask fades it
+   at 135° — bright top-left and bottom-right, near-clear in between. A
+   static card becomes the ring's containing block; a positioned one keeps
+   its position. */
+.shadow-card:not(.absolute, .fixed, .sticky),
+.shadow-card-hover:not(.absolute, .fixed, .sticky) {
+  position: relative;
+}
+.shadow-card::before,
+.shadow-card-hover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--card-edge);
+  -webkit-mask-image: linear-gradient(135deg, #000 0%, rgba(0, 0, 0, 0.3) 35%, rgba(0, 0, 0, 0.3) 65%, #000 100%);
+  mask-image: linear-gradient(135deg, #000 0%, rgba(0, 0, 0, 0.3) 35%, rgba(0, 0, 0, 0.3) 65%, #000 100%);
+  pointer-events: none;
+}
+/* A chip that stands for a network (NetworkStatusChip): the network badge's
+   fill at rest; on hover the network's own colour, stronger — a deeper fill,
+   and a ring in that colour. --kui-network-chip / --kui-network-accent
+   are set inline by networkChipVars(). */
+.kui-network-chip {
+  background-color: var(--kui-network-chip);
+  color: var(--kui-network-text);
+}
+.kui-network-chip:hover {
+  background-color: color-mix(in srgb, var(--kui-network-accent) 24%, var(--kui-network-chip));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--kui-network-accent) 60%, transparent);
+}
+/* The well: the one surface of every read-only text box — an info cell, a summary
+   row, a record, a PageHeader's page. Borderless. In dark it sits a step under
+   --muted, with violet catching its top-left corner and green fading in at the
+   bottom-right; in light it is --muted with the same two tints, fainter. */
+.kui-well {
+  background-color: color-mix(in srgb, var(--muted) 50%, var(--background));
+  background-image: linear-gradient(135deg, rgba(139, 92, 246, 0.16) 0%, rgba(139, 92, 246, 0.04) 38%, rgba(21, 233, 154, 0.07) 100%);
+}
+.light .kui-well {
+  background-color: var(--muted);
+  background-image: linear-gradient(135deg, rgba(111, 50, 255, 0.05) 0%, rgba(111, 50, 255, 0.01) 40%, rgba(21, 233, 154, 0.05) 100%);
+}
+/* Danger red: the brighter #FF3333 is for dark; light keeps the original #F94040
+   (and its gradient), which already reads on white. Last in the file, so it wins
+   over the @theme value on the same element. */
+.light {
+  --color-danger: #F94040;
+  --gradient-danger: linear-gradient(135deg, #FB7070 0%, #F94040 45%, #B91C1C 100%);
+}
+/* A white monochrome mark (Spark's asterisk) drawn black on the light theme. */
+.light .kui-mono-icon {
+  filter: invert(1);
+}
 /* Legacy app scroll region. Prefer the ScrollArea component for visible overlay scrollbars. */
 .app-scrollbar {
   -ms-overflow-style: none;
@@ -551,11 +739,17 @@ const brandCss = `/* AUTO-GENERATED — do not edit by hand.
 :root:not(.dark),
 .light {
   --primary: ${brandTheme.lightPrimary};
+  /* The deep brand green takes white text (5.3:1); the default light green takes dark ink. */
+  --primary-foreground: #FFFFFF;
+  /* …and its button gradient runs through the deep greens under that white text,
+     lightening toward the bottom-right like the default light fills. */
+  --gradient-primary: linear-gradient(135deg, #076A43 0%, ${brandTheme.lightPrimary} 50%, #0E8F5C 100%);
   --ring: ${brandTheme.lightPrimary};
 }
 
 .light {
   --app-primary: ${hexToChannels(brandTheme.lightPrimary)};
+  --app-primary-foreground: 255 255 255;
   --app-border-strong: ${hexToChannels(brandTheme.lightPrimary)};
 }
 

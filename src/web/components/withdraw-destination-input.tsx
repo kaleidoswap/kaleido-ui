@@ -1,3 +1,8 @@
+import { useId } from 'react'
+import { Icon } from '../primitives/icon'
+import { Label } from '../primitives/label'
+import { IconButton } from '../primitives/icon-button'
+
 export type WithdrawAddressType =
   | 'unknown'
   | 'bitcoin'
@@ -31,42 +36,35 @@ export function WithdrawDestinationInput({
   handlePaste,
   handleReset,
 }: WithdrawDestinationInputProps) {
+  const inputId = useId()
   return (
-    <div className="space-y-2">
-      <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+    <div className="flex flex-col gap-2">
+      <Label htmlFor={inputId} className="ml-1">
         Destination
-      </label>
+      </Label>
       <div className="relative">
         <input
+          id={inputId}
           type="text"
           data-testid="withdraw-destination-input"
-          className="w-full rounded-2xl bg-card px-5 py-4 pr-20 font-mono text-caption text-white shadow-inner transition-all placeholder:text-white/20 focus:outline focus:outline-2 focus:outline-primary/50"
+          className="w-full rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-5 py-4 pr-20 font-mono text-caption text-foreground shadow-inner transition-all placeholder:text-foreground/20 focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
           placeholder="Address, Invoice, or RGB Invoice"
           value={destination}
           onChange={(event) => setDestination(event.target.value)}
         />
         <div className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-1">
           {destination && (
-            <button
-              type="button"
-              aria-label="Clear"
+            <IconButton
+              icon="close"
+              label="Clear"
+              size="sm"
               onClick={() => {
                 setDestination('')
                 handleReset()
               }}
-              className="rounded-lg p-2 text-muted-foreground transition-colors hover:text-white"
-            >
-              <Icon name="close" className="text-icon-md" />
-            </button>
+            />
           )}
-          <button
-            type="button"
-            aria-label="Paste"
-            onClick={handlePaste}
-            className="rounded-lg bg-white/5 p-2 text-muted-foreground transition-colors hover:text-primary"
-          >
-            <Icon name="content_paste" className="text-icon-md" />
-          </button>
+          <IconButton icon="content_paste" label="Paste" variant="surface" size="sm" onClick={handlePaste} />
         </div>
       </div>
 
@@ -79,15 +77,15 @@ export function WithdrawDestinationInput({
             </span>
           ) : addressType !== 'unknown' && addressType !== 'invalid' ? (
             <>
-              <span className="text-primary">&#10003;</span>
+              <span className="text-brand">&#10003;</span>
               <span data-testid="withdraw-detected-network" className="text-muted-foreground">
                 Detected: {detectedNetworkLabel ?? addressType}
               </span>
             </>
           ) : addressType === 'invalid' ? (
             <>
-              <span className="text-danger">&#10007;</span>
-              <span data-testid="withdraw-invalid-destination" className="text-danger">
+              <span className="text-danger-fg">&#10007;</span>
+              <span data-testid="withdraw-invalid-destination" className="text-danger-fg">
                 Invalid address format
               </span>
             </>
@@ -96,5 +94,4 @@ export function WithdrawDestinationInput({
       )}
     </div>
   )
-}import { Icon } from '../primitives/icon'
-
+}

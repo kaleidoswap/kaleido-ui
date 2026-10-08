@@ -16,7 +16,7 @@ test('a comfortable MetricCard is a p-4 tile: eyebrow label, headline value', ()
     h(MetricCard, { size: 'comfortable', label: 'Swaps', value: '1,204', description: 'last 30 days', icon: 'swap_horiz' }),
   )
   assert.match(markup, /data-size="comfortable"[^>]*class="[^"]*\bp-4\b/)
-  assert.match(markup, /data-slot="metric-card-label" class="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground"/)
+  assert.match(markup, /data-slot="metric-card-label" class="text-mini font-medium uppercase tracking-eyebrow text-muted-foreground"/)
   assert.match(markup, /data-slot="metric-card-value" class="[^"]*text-headline[^"]*tabular-nums|data-slot="metric-card-value" class="[^"]*tabular-nums[^"]*text-headline/)
   assert.match(markup, /last 30 days/)
   assert.doesNotMatch(markup, TAILWIND_DEFAULT_SIZE)
@@ -94,10 +94,10 @@ test('as="ol" renders an ordered log with one li per row', () => {
   assert.doesNotMatch(markup, /<dt|<dd/)
 })
 
-test('the visual is unchanged across semantics: bg-muted/40 rows, no dividers', () => {
+test('the visual is unchanged across semantics: leader-line rows, no dividers', () => {
   for (const as of ['dl', 'ol', 'ul'] as const) {
     const markup = renderToStaticMarkup(h(SummaryRows, { rows, as }))
-    assert.equal(markup.match(/bg-muted\/40/g)?.length, rows.length)
+    assert.equal(markup.match(/border-b border-solid/g)?.length, rows.length)
     assert.doesNotMatch(markup, /border-t|divide-/)
   }
 })

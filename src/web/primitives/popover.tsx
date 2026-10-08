@@ -14,12 +14,13 @@ const PopoverAnchor = PopoverPrimitive.Anchor
 const PopoverClose = PopoverPrimitive.Close
 
 /**
- * The floating surface shared by Popover and DropdownMenu: the card fill, a
- * hairline border, the popover shadow, and the same fade + 0.98 zoom as
+ * The floating surface shared by Popover and DropdownMenu: the opaque popover
+ * fill under the hero card light, the popover shadow (its hairline is the one
+ * edge), and the same fade + 0.98 zoom as
  * Dialog and Select.
  */
 export const floatingSurface =
-  'z-50 rounded-xl border border-border bg-popover text-popover-foreground shadow-popover outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-[0.98] data-[state=closed]:zoom-out-[0.98] motion-reduce:animate-none'
+  'z-50 rounded-2xl bg-popover bg-gradient-card-hero text-popover-foreground shadow-popover outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-[0.98] data-[state=closed]:zoom-out-[0.98] motion-reduce:animate-none'
 
 export type PopoverContentProps = React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
 

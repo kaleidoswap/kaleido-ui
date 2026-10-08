@@ -10,8 +10,10 @@ import {
 export interface DisclosureCardProps {
   title: ReactNode
   children: ReactNode
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  /** Controlled open state. Leave out (with `onOpenChange`) and it runs itself. */
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  defaultOpen?: boolean
   icon?: ReactNode
   className?: string
   triggerClassName?: string
@@ -19,26 +21,36 @@ export interface DisclosureCardProps {
 }
 
 /**
- * A card-styled `Collapsible`: a muted trigger row and a muted body. Its open
- * state stays controlled, as it always was; the trigger now also reports
- * `aria-expanded` and points at the body with `aria-controls`.
+ * A card-styled `Collapsible`: one inset box that holds both the trigger row
+ * and, when open, the body under it — the text never leaves the box. The
+ * trigger reports `aria-expanded` and points at the body with `aria-controls`.
  */
 export function DisclosureCard({
   title,
   children,
   open,
   onOpenChange,
+  defaultOpen,
   icon,
   className,
   triggerClassName,
   contentClassName,
 }: DisclosureCardProps) {
   return (
-    <Collapsible open={open} onOpenChange={onOpenChange} className={className}>
+    <Collapsible
+      open={open}
+      onOpenChange={onOpenChange}
+      defaultOpen={defaultOpen}
+      data-slot="disclosure-card"
+      className={cn(
+        'group/disclosure overflow-hidden rounded-xl bg-surface-inset/40 shadow-raised transition-all',
+        className,
+      )}
+    >
       <CollapsibleTrigger
         type="button"
         className={cn(
-          'flex w-full items-center justify-between rounded-xl bg-muted/40 px-3 py-2 text-left transition-colors hover:bg-muted/60',
+          'flex w-full items-center justify-between gap-2 px-3 py-2 text-left hover-gradient-violet focus-visible:ring-inset',
           triggerClassName,
         )}
       >
@@ -48,7 +60,7 @@ export function DisclosureCard({
         </span>
         <CollapsibleChevron />
       </CollapsibleTrigger>
-      <CollapsibleContent className={cn('mt-3 rounded-xl bg-muted/40 px-3 py-3', contentClassName)}>
+      <CollapsibleContent className={cn('px-3 pb-3 pt-1', contentClassName)}>
         {children}
       </CollapsibleContent>
     </Collapsible>

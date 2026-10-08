@@ -26,16 +26,22 @@ export interface MetricCardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'c
    * Defaults to `label` for compact and `end` for comfortable.
    */
   iconPlacement?: 'label' | 'end'
+  /**
+   * A small chart of the figure's recent course, at the end of the tile and
+   * as tall as the tile's content: pass `<Sparkline height="fill" />`. Pair
+   * it with a `description` that says the change in words or a percentage.
+   */
+  trend?: ReactNode
 }
 
 const toneClasses: Record<NonNullable<MetricCardProps['tone']>, string> = {
-  primary: 'bg-primary/10 text-primary',
-  purple: 'bg-network-arkade/10 text-network-arkade',
-  blue: 'bg-info/10 text-info',
-  info: 'bg-info/10 text-info',
-  warning: 'bg-warning/10 text-warning',
-  success: 'bg-success/10 text-success',
-  muted: 'bg-white/8 text-muted-foreground',
+  primary: 'bg-primary/10 text-brand',
+  purple: 'bg-network-arkade/10 text-network-arkade-fg',
+  blue: 'bg-info/10 text-info-fg',
+  info: 'bg-info/10 text-info-fg',
+  warning: 'bg-warning/10 text-warning-fg',
+  success: 'bg-success/10 text-success-fg',
+  muted: 'bg-secondary/15 text-secondary-content',
 }
 
 /**
@@ -53,24 +59,30 @@ export function MetricCard({
   tone = 'muted',
   size = 'compact',
   iconPlacement,
+  trend,
   className,
   ...rest
 }: MetricCardProps) {
   const labelId = useId()
   const comfortable = size === 'comfortable'
   const placement = iconPlacement ?? (comfortable ? 'end' : 'label')
+  const hasEnd = placement === 'end' || !!trend
+  // Beside the label the icon is a glyph the label's height; at the end of the
+  // tile it stands on its own, so it steps up a size.
+  const iconBox = comfortable ? 'size-9 rounded-xl shadow-raised' : placement === 'end' ? 'size-7 rounded-lg' : 'size-5 rounded-md'
+  const iconGlyph = comfortable ? 'text-icon-lg' : placement === 'end' ? 'text-icon-md' : 'text-icon-xs'
 
   const iconNode = icon ? (
     <span
       data-slot="metric-card-icon"
       className={cn(
         'flex shrink-0 items-center justify-center',
-        comfortable ? 'size-9 rounded-xl' : 'size-5 rounded-md',
+        iconBox,
         toneClasses[tone],
       )}
     >
       {typeof icon === 'string' ? (
-        <Icon name={icon as IconName} className={comfortable ? 'text-icon-lg' : 'text-icon-xs'} />
+        <Icon name={icon as IconName} className={iconGlyph} />
       ) : (
         icon
       )}
@@ -90,13 +102,15 @@ export function MetricCard({
       data-slot="metric-card"
       data-size={size}
       className={cn(
-        comfortable ? 'rounded-2xl bg-card p-4' : 'rounded-xl bg-card/70 p-2.5',
-        placement === 'end' ? 'flex items-start justify-between gap-3' : 'space-y-1',
+        comfortable
+          ? 'rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero p-4 shadow-card'
+          : 'rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero p-2.5 shadow-raised',
+        hasEnd ? 'flex items-stretch justify-between gap-3' : 'space-y-1',
         className,
       )}
       {...rest}
     >
-      <div className={placement === 'end' ? 'min-w-0 flex-1 space-y-1' : 'contents'}>
+      <div className={hasEnd ? 'min-w-0 flex-1 space-y-1' : 'contents'}>
         <div className="flex items-center gap-1.5">
           {placement === 'label' && iconNode}
           {labelNode}
@@ -119,7 +133,16 @@ export function MetricCard({
           </p>
         )}
       </div>
-      {placement === 'end' && iconNode}
+      {hasEnd && (
+        <div className="flex shrink-0 flex-col items-end justify-between gap-2">
+          {placement === 'end' && iconNode}
+          {trend && (
+            <div data-slot="metric-card-trend" className="min-h-0 flex-1">
+              {trend}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }

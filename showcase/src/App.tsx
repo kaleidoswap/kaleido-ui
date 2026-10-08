@@ -1,10 +1,10 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, Fragment, useContext, useEffect, useState } from 'react'
 import { StateSnapshot } from './pages/StateSnapshot'
 import { ProductPreviews } from './pages/ProductPreviews'
+import { version } from '../../package.json'
 import { ChartsGallery } from './pages/ChartsGallery'
 import {
   AvatarGallery,
-  BadgesGallery,
   CollapsibleGallery,
   CopyGallery,
   DialogShowCloseDemo,
@@ -14,10 +14,12 @@ import {
   PageLayoutGallery,
   PopoverMenuGallery,
   TableGallery,
+  ScrollbarsGallery,
 } from './pages/ComponentGalleries'
-import { Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput } from '@kaleido-ui/index'
+import { ScrollArea, ThemeToggle, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput } from '@kaleido-ui/index'
 import {
   Button,
+  IconButton,
   buttonVariants,
   Card,
   CardHeader,
@@ -49,6 +51,7 @@ import {
   DrawerNavItem,
   DrawerNavGroup,
   DrawerFooter,
+  useDrawerCollapsed,
   Icon,
   Icons,
   Toaster,
@@ -56,11 +59,9 @@ import {
   useToast,
   StatusBadge,
   NetworkBadge,
-  InfoChip,
-  NetworkInfoChip,
-  AssetInfoChip,
+  StatusChip,
+  ToneBadge,
   AssetCard,
-  TransactionCard,
   SettingItem,
   SectionLabel,
   AlertBanner,
@@ -78,7 +79,6 @@ import {
   AssetSelector,
   BalanceBreakdown,
   BottomNav,
-  CopyIcon,
   InvoiceStatusBanner,
   MethodChoiceChip,
   NetworkInfoDisclosure,
@@ -89,6 +89,10 @@ import {
   SettingsStatusPanel,
   SettingsTile,
   FilterDropdown,
+  LightningNetworkIcon,
+  SparkNetworkIcon,
+  ArkadeNetworkIcon,
+  LiquidNetworkIcon,
   SwapInputCard,
   TransferRouteCard,
   WalletAssetList,
@@ -109,6 +113,7 @@ import {
   HaloBackdrop,
 } from '@kaleido-ui/index'
 import type { StatusType, NetworkType, IconName } from '@kaleido-ui/index'
+import { outlinedMap } from '@kaleido-ui/icons'
 
 // ─── Section wrapper ────────────────────────────────────────────────────────
 
@@ -116,6 +121,9 @@ import type { StatusType, NetworkType, IconName } from '@kaleido-ui/index'
 // renders only when it is the current page — so each component group is its
 // own page without splitting this file into a module per page.
 const CurrentPage = createContext<string>('')
+
+/** The element the page scrolls in: a page change starts it back at the top. */
+const SHOWCASE_SCROLL_ID = 'showcase-scroll'
 
 function Section({
   id,
@@ -132,11 +140,11 @@ function Section({
   return (
     <section id={id} aria-labelledby={`${id}-title`}>
       <div className="mb-6">
-        <h1 id={`${id}-title`} className="text-xl font-bold text-white tracking-tight">{title}</h1>
+        <h1 id={`${id}-title`} className="text-xl font-bold text-foreground tracking-tight">{title}</h1>
         {description && (
-          <p className="text-sm text-slate-400 mt-1">{description}</p>
+          <p className="text-sm text-muted-foreground mt-1">{description}</p>
         )}
-        <div className="mt-3 h-px bg-gradient-to-r from-primary/40 via-white/10 to-transparent" />
+        <div className="mt-3 h-px bg-gradient-to-r from-primary/40 via-foreground/10 to-transparent" />
       </div>
       {children}
     </section>
@@ -154,9 +162,105 @@ function Row({
 }) {
   return (
     <div className="mb-6">
-      <p className="text-xs font-mono text-slate-500 uppercase tracking-widest mb-3">{label}</p>
+      <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-3">{label}</p>
       <div className={`flex items-center gap-3 ${wrap ? 'flex-wrap' : ''}`}>{children}</div>
     </div>
+  )
+}
+
+// ─── External logos ─────────────────────────────────────────────────────────
+
+/**
+ * Third-party marks, served from /logos. `on` is the backdrop a variant is
+ * drawn for: a white mark sits on a dark swatch, a black one on a light swatch,
+ * and full-colour marks on the card in either theme.
+ */
+interface LogoVariant {
+  label: string
+  src: string
+  on?: 'dark' | 'light'
+}
+
+const PROTOCOL_LOGOS: { name: string; variants: LogoVariant[] }[] = [
+  { name: 'Bitcoin', variants: [{ label: 'Logo', src: '/logos/protocols/bitcoin.svg' }] },
+  { name: 'Lightning', variants: [{ label: 'Logo', src: '/logos/protocols/lightning.svg' }] },
+  {
+    name: 'Liquid',
+    variants: [
+      { label: 'Logo', src: '/logos/protocols/liquid.svg' },
+      { label: 'Wordmark, dark', src: '/logos/protocols/liquid-wordmark-dark.svg', on: 'light' },
+      { label: 'Wordmark, white', src: '/logos/protocols/liquid-wordmark-white.svg', on: 'dark' },
+    ],
+  },
+  { name: 'Arkade', variants: [{ label: 'Logo', src: '/logos/protocols/arkade.svg' }] },
+  {
+    name: 'Spark',
+    variants: [
+      { label: 'Logo, black', src: '/logos/protocols/spark-logo-black.svg', on: 'light' },
+      { label: 'Logo, white', src: '/logos/protocols/spark-logo-white.svg', on: 'dark' },
+      { label: 'Asterisk, black', src: '/logos/protocols/spark-asterisk-black.svg', on: 'light' },
+      { label: 'Asterisk, white', src: '/logos/protocols/spark-asterisk-white.svg', on: 'dark' },
+      { label: 'Badge, black', src: '/logos/protocols/spark-badge-black.svg', on: 'light' },
+      { label: 'Badge, white', src: '/logos/protocols/spark-badge-white.svg', on: 'dark' },
+    ],
+  },
+  { name: 'RGB', variants: [{ label: 'Logo', src: '/logos/protocols/rgb.webp' }] },
+  { name: 'Taproot Assets', variants: [{ label: 'Logo', src: '/logos/protocols/taproot-assets.webp' }] },
+  { name: 'Cashu', variants: [{ label: 'Logo', src: '/logos/protocols/cashu.svg' }] },
+  { name: 'Nostr', variants: [{ label: 'Logo', src: '/logos/protocols/nostr.svg' }] },
+  {
+    name: 'Lightning Labs (Wavelength)',
+    variants: [
+      { label: 'Logo, black', src: '/logos/protocols/lightning-labs-black.svg', on: 'light' },
+      { label: 'Logo, white', src: '/logos/protocols/lightning-labs-white.svg', on: 'dark' },
+    ],
+  },
+]
+
+const ASSET_LOGOS: { name: string; variants: LogoVariant[] }[] = [
+  {
+    name: 'Tether USDt',
+    variants: [
+      { label: 'Token', src: '/logos/assets/usdt.svg' },
+      { label: 'With background', src: '/logos/assets/usdt-background.svg' },
+      { label: 'White', src: '/logos/assets/usdt-white.svg', on: 'dark' },
+    ],
+  },
+  {
+    name: 'Tether Gold XAUt',
+    variants: [
+      { label: 'Token', src: '/logos/assets/xaut.svg' },
+      { label: 'With background', src: '/logos/assets/xaut-background.svg' },
+    ],
+  },
+]
+
+const LOGO_SWATCH = {
+  card: 'bg-foreground/[0.04] border-foreground/5',
+  dark: 'bg-[#0b0d10] border-white/10',
+  light: 'bg-white border-black/10',
+} as const
+
+function LogoGroup({ name, variants }: { name: string; variants: LogoVariant[] }) {
+  return (
+    <Card variant="secondary" className="p-4">
+      <p className="mb-3 text-sm font-semibold text-foreground">{name}</p>
+      <div className="flex flex-wrap gap-3">
+        {variants.map((v) => (
+          <figure key={v.src} className="flex w-28 flex-col gap-1.5">
+            <div
+              className={`flex h-20 items-center justify-center rounded-xl border p-3 ${LOGO_SWATCH[v.on ?? 'card']}`}
+            >
+              <img src={v.src} alt={`${name} — ${v.label}`} className="max-h-full max-w-full object-contain" />
+            </div>
+            <figcaption className="font-mono text-xxs leading-tight text-muted-foreground">
+              <span className="block text-foreground/80">{v.label}</span>
+              <span className="[overflow-wrap:anywhere]">{v.src.replace('/logos/', '')}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </Card>
   )
 }
 
@@ -168,82 +272,136 @@ interface NavPage {
   icon: IconName
 }
 
-// One page per component group, grouped by what the components are for.
-const NAV_CATEGORIES: { label: string; icon: IconName; pages: NavPage[] }[] = [
+interface NavCategory {
+  label: string
+  icon: IconName
+  pages: NavPage[]
+}
+
+// One page per component group, grouped by what the components are for:
+// the generic building blocks first, then the wallet's own surfaces and flows.
+const NAV_SECTIONS: { label: string; categories: NavCategory[] }[] = [
   {
-    label: 'Foundations',
-    icon: 'layers',
-    pages: [
-      { id: 'brand', label: 'Brand', icon: 'bolt' },
-      { id: 'buttons', label: 'Buttons', icon: 'touch_app' },
-      { id: 'icons', label: 'Icons', icon: 'palette' },
-      { id: 'inputs', label: 'Inputs', icon: 'edit' },
-      { id: 'tabs', label: 'Tabs', icon: 'tune' },
-      { id: 'forms', label: 'Forms', icon: 'edit' },
-      { id: 'table', label: 'Table', icon: 'grid_view' },
-    ],
-  },
-  {
-    label: 'Display',
-    icon: 'visibility',
-    pages: [
-      { id: 'status-badges', label: 'Status Badges', icon: 'verified' },
-      { id: 'network-badges', label: 'Network Badges', icon: 'hub' },
-      { id: 'info-chips', label: 'Info Chips', icon: 'info' },
-      { id: 'cards', label: 'Cards', icon: 'grid_view' },
-      { id: 'alert-banners', label: 'Alert Banners', icon: 'warning' },
-      { id: 'tone-badges', label: 'Tone Badges', icon: 'verified' },
-      { id: 'avatar', label: 'Avatar', icon: 'person' },
-      { id: 'collapsible', label: 'Collapsible', icon: 'expand_more' },
-    ],
-  },
-  {
-    label: 'Overlays',
-    icon: 'apps',
-    pages: [
-      { id: 'dialog', label: 'Dialog', icon: 'chat_bubble' },
-      { id: 'drawer', label: 'Drawer', icon: 'menu' },
-      { id: 'toast', label: 'Toast', icon: 'description' },
-      { id: 'popover-menu', label: 'Popover & Menu', icon: 'apps' },
-      { id: 'notices', label: 'Notices', icon: 'info' },
+    label: 'Basic Components',
+    categories: [
+      {
+        label: 'Foundations',
+        icon: 'layers',
+        pages: [
+          { id: 'brand', label: 'Brand', icon: 'rocket_launch' },
+          { id: 'icons', label: 'Icons', icon: 'palette' },
+          { id: 'external-logos', label: 'External logos', icon: 'hub' },
+          { id: 'buttons', label: 'Buttons', icon: 'touch_app' },
+          { id: 'inputs', label: 'Inputs', icon: 'edit' },
+          { id: 'forms', label: 'Forms', icon: 'radio_button_unchecked' },
+          { id: 'toggle', label: 'Toggles', icon: 'dark_mode' },
+          { id: 'tabs', label: 'Tabs', icon: 'tune' },
+        ],
+      },
+      {
+        label: 'Display',
+        icon: 'visibility',
+        pages: [
+          { id: 'chips', label: 'Chips', icon: 'verified' },
+          { id: 'network-badges', label: 'Network Badges', icon: 'hub' },
+          { id: 'cards', label: 'Cards', icon: 'grid_view' },
+          { id: 'alert-banners', label: 'Alert Banners', icon: 'warning' },
+          { id: 'avatar', label: 'Avatars', icon: 'person' },
+          { id: 'collapsible', label: 'Collapsibles', icon: 'expand_more' },
+          { id: 'scrollbars', label: 'Scrollbars', icon: 'swap_vert' },
+        ],
+      },
+      {
+        label: 'Overlays',
+        icon: 'hexagon',
+        pages: [
+          { id: 'dialog', label: 'Dialog', icon: 'chat_bubble' },
+          { id: 'drawer', label: 'Drawer', icon: 'menu' },
+          { id: 'toast', label: 'Toast', icon: 'description' },
+          { id: 'popover-menu', label: 'Popover & Menu', icon: 'open_in_new' },
+          { id: 'notices', label: 'Notices', icon: 'error' },
+        ],
+      },
+      {
+        label: 'Data',
+        icon: 'trending_up',
+        pages: [
+          { id: 'table', label: 'Table', icon: 'table_rows' },
+          { id: 'charts', label: 'Charts', icon: 'bar_chart' },
+        ],
+      },
+      {
+        label: 'Compositions',
+        icon: 'apps',
+        pages: [
+          { id: 'copy', label: 'Copy', icon: 'content_copy' },
+          { id: 'lists', label: 'Lists & Filters', icon: 'search' },
+          { id: 'page-layout', label: 'Page layout', icon: 'code' },
+        ],
+      },
     ],
   },
   {
     label: 'Wallet',
-    icon: 'account_balance_wallet',
-    pages: [
-      { id: 'asset-cards', label: 'Asset Cards', icon: 'token' },
-      { id: 'transaction-cards', label: 'Transaction Cards', icon: 'receipt_long' },
-      { id: 'feature-components', label: 'Feature Components', icon: 'account_balance_wallet' },
-      { id: 'account-components', label: 'Account Components', icon: 'person' },
-      { id: 'setting-items', label: 'Setting Items', icon: 'settings' },
+    categories: [
+      {
+        label: 'Surfaces',
+        icon: 'payments',
+        pages: [
+          { id: 'asset-cards', label: 'Asset Cards', icon: 'token' },
+          { id: 'transaction-cards', label: 'Transaction Cards', icon: 'receipt_long' },
+          { id: 'feature-components', label: 'Feature Components', icon: 'inventory_2' },
+          { id: 'account-components', label: 'Account Components', icon: 'fingerprint' },
+          { id: 'setting-items', label: 'Setting Items', icon: 'settings' },
+        ],
+      },
+      {
+        label: 'Flows',
+        icon: 'sync_alt',
+        pages: [
+          { id: 'activity-components', label: 'Activity', icon: 'history' },
+          { id: 'deposit-components', label: 'Deposit', icon: 'arrow_downward' },
+          { id: 'withdraw-components', label: 'Withdraw', icon: 'arrow_outward' },
+          { id: 'swap-flow', label: 'Swap Flow', icon: 'swap_horiz' },
+        ],
+      },
     ],
-  },
-  {
-    label: 'Flows',
-    icon: 'sync_alt',
-    pages: [
-      { id: 'activity-components', label: 'Activity', icon: 'history' },
-      { id: 'deposit-components', label: 'Deposit', icon: 'arrow_downward' },
-      { id: 'withdraw-components', label: 'Withdraw', icon: 'arrow_outward' },
-      { id: 'swap-flow', label: 'Swap Flow', icon: 'swap_horiz' },
-    ],
-  },
-  {
-    label: 'Patterns',
-    icon: 'receipt_long',
-    pages: [
-      { id: 'copy', label: 'Copy', icon: 'content_copy' },
-      { id: 'lists', label: 'Lists & filters', icon: 'tune' },
-      { id: 'page-layout', label: 'Page layout', icon: 'description' },
-    ],
-  },
-  {
-    label: 'Data',
-    icon: 'trending_up',
-    pages: [{ id: 'charts', label: 'Charts', icon: 'trending_up' }],
   },
 ]
+
+const NAV_CATEGORIES = NAV_SECTIONS.flatMap((section) => section.categories)
+
+// Every glyph in the set, read from the set itself, so the Icons page cannot
+// list a name that draws nothing.
+const ALL_ICON_NAMES = (Object.keys(outlinedMap) as IconName[]).sort()
+
+// The Icons page's grid: fixed, narrow columns, so the space between icons
+// is the same whatever the length of their names; a long name wraps under
+// its own icon.
+const ICON_GRID = 'grid w-full grid-cols-[repeat(auto-fill,4.5rem)] gap-x-3 gap-y-4'
+const ICON_CELL = 'flex min-w-0 flex-col items-center gap-1'
+// Each icon's tile: a faint mint wash on light, where the glyph is the dark
+// brand green; the stronger wash and the neon mint on dark.
+const ICON_TILE =
+  'flex size-10 cursor-default items-center justify-center rounded-xl bg-primary/5 transition-all hover:scale-105 hover:bg-primary/10 dark:bg-primary/15 dark:hover:bg-primary/25'
+const ICON_GLYPH = 'text-brand dark:text-[#31ff8b]'
+const ICON_LABEL = 'w-full text-center font-mono text-xxs leading-tight text-slate-500 [overflow-wrap:anywhere]'
+
+/**
+ * An icon's name, allowed to wrap between its words — after an underscore
+ * (`arrow_outward`) or before a capital (`VisibilityOff`) — rather than
+ * mid-word.
+ */
+const IconLabel = ({ name }: { name: string }) => (
+  <span className={ICON_LABEL}>
+    {name.split(/(?<=_)|(?=[A-Z])/).map((part, index) => (
+      <Fragment key={index}>
+        {index > 0 && <wbr />}
+        {part}
+      </Fragment>
+    ))}
+  </span>
+)
 
 const NAV_PAGES = NAV_CATEGORIES.flatMap((category) => category.pages)
 
@@ -273,6 +431,44 @@ const writeCollapsed = (collapsed: boolean) => {
   }
 }
 
+const REPO_URL = 'https://github.com/kaleidoswap/kaleido-ui'
+
+/** GitHub's mark (Octicons `mark-github`) — the icon set has no brand icons. */
+const GitHubMark = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" className={className}>
+    <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z" />
+  </svg>
+)
+
+/**
+ * The footer's actions: product previews on top, two side by side below.
+ * On the rail there is no room for their labels, so they stack as icon-only
+ * tiles.
+ */
+function NavFooterActions() {
+  const collapsed = useDrawerCollapsed()
+  return (
+    <div className={collapsed ? 'flex flex-col items-center gap-2' : 'grid grid-cols-2 gap-2'}>
+      <ActionTile
+        icon={<Icon name="grid_view" />}
+        label="Product previews"
+        href="#/products"
+        hideLabel={collapsed}
+        className={collapsed ? undefined : 'col-span-2'}
+      />
+      <ActionTile icon={<Icon name="science" />} label="Snapshot" href="#/state-snapshot" hideLabel={collapsed} />
+      <ActionTile
+        icon={<GitHubMark />}
+        label="GitHub"
+        href={REPO_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        hideLabel={collapsed}
+      />
+    </div>
+  )
+}
+
 // ─── App ────────────────────────────────────────────────────────────────────
 
 export function App() {
@@ -284,6 +480,7 @@ export function App() {
   const [language, setLanguage] = useState('en')
   const [activeView, setActiveView] = useState('dashboard')
   const [expandedActivityId, setExpandedActivityId] = useState<string | null>('tx-1')
+  const [expandedTransactionId, setExpandedTransactionId] = useState<string | null>('tx-completed')
   const [activityTab, setActivityTab] = useState('all')
   const [activityStatus, setActivityStatus] = useState('all')
   const [activityNetwork, setActivityNetwork] = useState('all')
@@ -292,6 +489,7 @@ export function App() {
   const [selectedAssetTicker, setSelectedAssetTicker] = useState('BTC')
   const [swapToTicker, setSwapToTicker] = useState('USDB')
   const [swapAmount, setSwapAmount] = useState('21000')
+  const [swapPercent, setSwapPercent] = useState<number | null>(null)
   const [accountNetwork, setAccountNetwork] = useState<'mainnet' | 'testnet' | 'signet' | 'regtest'>('testnet')
   const [withdrawDestination, setWithdrawDestination] = useState('bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh')
   const [withdrawAmount, setWithdrawAmount] = useState('21000')
@@ -319,7 +517,7 @@ export function App() {
   // A page change is a navigation: start at the top, and name the tab.
   useEffect(() => {
     if (route.startsWith('#/state-snapshot') || route.startsWith('#/products')) return
-    window.scrollTo({ top: 0 })
+    document.getElementById(SHOWCASE_SCROLL_ID)?.scrollTo({ top: 0 })
     document.title = `${NAV_PAGES[pageIndex].label} · kaleido-ui showcase`
   }, [route, pageIndex])
 
@@ -346,15 +544,15 @@ export function App() {
   // The showcase's own navigation, rendered by the desktop sidebar and the
   // mobile drawer alike: each category is a submenu, as Trade and Liquidity
   // are in the desktop app, and its pages show when it is opened.
-  const pageNav = (
-    <DrawerSection>
-      {NAV_CATEGORIES.map((category) => (
+  const pageNav = NAV_SECTIONS.map((section) => (
+    <DrawerSection key={section.label} label={section.label}>
+      {section.categories.map((category) => (
         <DrawerNavGroup
           key={category.label}
           label={category.label}
           icon={<Icon name={category.icon} className="text-icon-xl" />}
           active={category.pages.some((item) => item.id === page)}
-          railHref={`#/${category.pages[0].id}`}
+          href={`#/${category.pages[0].id}`}
         >
           {category.pages.map((item) => (
             <DrawerNavItem
@@ -368,29 +566,21 @@ export function App() {
         </DrawerNavGroup>
       ))}
     </DrawerSection>
+  ))
+
+  // The drawer's header and version line, the same in the showcase's own
+  // navigation and in the Drawer page's demo.
+  // The logo component: its wordmark is currentColor, so it reads on both themes.
+  const lockup = <KaleidoswapLogo className="h-8 w-auto text-foreground" />
+  const drawerVersion = (
+    <p className="truncate text-center text-xxs font-light text-content-tertiary">v{version}</p>
   )
 
   const navFooter = (
     <DrawerFooter className="space-y-3">
-      <DrawerNavItem
-        href="#/products"
-        label="Product previews"
-        icon={<Icon name="grid_view" className="text-icon-xl" />}
-      />
-      <DrawerNavItem
-        href="#/state-snapshot"
-        label="State Snapshot"
-        icon={<Icon name="science" className="text-icon-xl" />}
-      />
-      {!navCollapsed && <p className="truncate px-4 text-tiny text-content-tertiary">kaleido-ui showcase</p>}
+      <NavFooterActions />
+      {drawerVersion}
     </DrawerFooter>
-  )
-
-  const lockup = (
-    <div className="flex items-center gap-3">
-      <img src="/brand/kaleidoswap-pictogram.svg" alt="" className="h-7" />
-      <span className="font-bold text-white tracking-tight">kaleido-ui</span>
-    </div>
   )
 
   // One navigation list, rendered by both drawer demos.
@@ -421,7 +611,7 @@ export function App() {
   ))
 
   return (
-    <div className="flex min-h-screen bg-background text-foreground">
+    <div className="flex h-screen overflow-hidden bg-background text-foreground">
       <Toaster />
 
       {/* Left bar — desktop: the sidebar, folding to an icon rail */}
@@ -436,38 +626,37 @@ export function App() {
         header={lockup}
       >
         <DrawerBody>
-          <nav aria-label="Components">{pageNav}</nav>
+          <nav aria-label="Showcase">{pageNav}</nav>
         </DrawerBody>
         {navFooter}
       </DrawerSidebar>
 
-      <div className="flex min-w-0 flex-1 flex-col">
-        {/* Top bar — mobile: the same navigation, in a drawer over the page */}
-        <header className="sticky top-0 z-40 flex h-14 items-center gap-3 border-b border-white/5 bg-background/80 px-4 backdrop-blur-xl lg:hidden">
+      <div className="flex h-screen min-w-0 flex-1 flex-col">
+        {/* Top bar — the theme switch on the right; on mobile also the navigation drawer */}
+        <header className="z-40 flex h-14 shrink-0 items-center gap-3 border-b border-foreground/5 bg-background/80 px-4 backdrop-blur-xl">
+          <div className="lg:hidden">
           <Drawer open={navOpen} onOpenChange={setNavOpen}>
             <DrawerTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon-lg"
-                aria-label={`Open navigation, current page: ${NAV_PAGES[pageIndex].label}`}
-              >
-                <Icon name="menu" size="md" />
-              </Button>
+              <IconButton icon="menu" label={`Open navigation, current page: ${NAV_PAGES[pageIndex].label}`} />
             </DrawerTrigger>
             <DrawerContent header={lockup}>
               <DrawerTitle className="sr-only">Showcase navigation</DrawerTitle>
               <DrawerDescription>Component pages, by category</DrawerDescription>
               <DrawerBody>
-                <nav aria-label="Components">{pageNav}</nav>
+                <nav aria-label="Showcase">{pageNav}</nav>
               </DrawerBody>
               {navFooter}
             </DrawerContent>
           </Drawer>
+          </div>
+          <ThemeToggle className="ml-auto" />
         </header>
 
         {/* The current page */}
         <CurrentPage.Provider value={page}>
-        <main className="mx-auto w-full max-w-5xl min-w-0 flex-1 px-6 py-8">
+        {/* The page scrolls in the library's ScrollArea: the overlay thumb, not the browser's bar. */}
+        <ScrollArea className="flex-1" thickness="thick" viewportAs="main" viewportProps={{ id: SHOWCASE_SCROLL_ID }}>
+        <div className="mx-auto w-full max-w-5xl min-w-0 px-6 py-8">
 
           {/* ── Brand ───────────────────────────────────────────────────── */}
           <Section id="brand" title="Brand" description="Logo, per-theme foregrounds, brand gradient, glows and the halo backdrop.">
@@ -494,11 +683,6 @@ export function App() {
             </Row>
             <Row label="text-gradient-brand">
               <span className="text-gradient-brand text-display font-bold">Swap across layers</span>
-            </Row>
-            <Row label="shadow-glow-send / shadow-glow-recv / shadow-glow-card">
-              <div className="rounded-2xl bg-card px-5 py-4 shadow-glow-send">Send</div>
-              <div className="rounded-2xl bg-card px-5 py-4 shadow-glow-recv">Receive</div>
-              <div className="rounded-2xl bg-card px-5 py-4 shadow-glow-card">Card</div>
             </Row>
             <Row label="bg-page-brand + HaloBackdrop">
               <div className="bg-page-brand h-40 w-64 rounded-2xl bg-background" />
@@ -540,56 +724,107 @@ export function App() {
               <Button size="default">Default</Button>
               <Button size="lg">Large</Button>
               <Button size="xl">X-Large</Button>
-              <Button size="icon"><Icon name="add" /></Button>
-              <Button size="icon-lg"><Icon name="send" /></Button>
-              <Button size="icon-xl"><Icon name="swap_horiz" /></Button>
+            </Row>
+            <Row label="Action tiles (ActionTile)" wrap={false}>
+              <div className="flex w-full max-w-md gap-2.5">
+                <ActionTile icon={<Icon name="call_received" size="sm" />} label="Deposit" onClick={() => {}} />
+                <ActionTile icon={<Icon name="swap_horiz" size="sm" />} label="Swap" onClick={() => {}} />
+                <ActionTile icon={<Icon name="arrow_outward" size="sm" />} label="Withdraw" onClick={() => {}} />
+              </div>
+            </Row>
+            <Row label="Disabled action tiles" wrap={false}>
+              <div className="flex w-full max-w-md gap-2.5">
+                <ActionTile icon={<Icon name="content_copy" size="sm" />} label="Copy" disabled />
+                <ActionTile icon={<Icon name="edit" size="sm" />} label="Amount" disabled />
+                <ActionTile icon={<Icon name="ios_share" size="sm" />} label="Share" disabled />
+              </div>
             </Row>
             <Row label="With icons">
-              <Button><Icon name="send" size="sm" />Send</Button>
-              <Button variant="outline"><Icon name="qr_code" size="sm" />Receive</Button>
+              <Button><Icon name="arrow_outward" size="sm" />Send</Button>
+              <Button variant="outline"><Icon name="south_west" size="sm" />Receive</Button>
               <Button variant="ghost"><Icon name="swap_horiz" size="sm" />Swap</Button>
               <Button variant="hyperlink" className="no-underline"><Icon name="open_in_new" size="xs" className="!text-[15px] leading-none translate-y-[1.5px] icon" /><span className="underline underline-offset-2 group-hover:decoration-[#31ff8b]">Learn more</span></Button>
+            </Row>
+            <Row label="Icon-only · quiet, surface, secondary — sizes sm 32 / md 40 / lg 50, then disabled">
+              <IconButton icon="close" label="Close" size="sm" />
+              <IconButton icon="close" label="Close" />
+              <IconButton icon="close" label="Close" size="lg" />
+              <IconButton icon="close" label="Close" disabled />
+              <IconButton icon="refresh" label="Refresh" variant="surface" size="sm" />
+              <IconButton icon="refresh" label="Refresh" variant="surface" />
+              <IconButton icon="refresh" label="Refresh" variant="surface" size="lg" />
+              <IconButton icon="refresh" label="Refresh" variant="surface" disabled />
+              <IconButton icon="swap_vert" label="Swap direction" variant="secondary" size="sm" />
+              <IconButton icon="swap_vert" label="Swap direction" variant="secondary" />
+              <IconButton icon="swap_vert" label="Swap direction" variant="secondary" size="lg" />
+              <IconButton icon="swap_vert" label="Swap direction" variant="secondary" disabled />
+            </Row>
+            <Row label="Icon-only · danger-quiet, danger-subtle, destructive — sizes sm / md / lg, then disabled">
+              <IconButton icon="delete" label="Delete" variant="danger-quiet" size="sm" />
+              <IconButton icon="delete" label="Delete" variant="danger-quiet" />
+              <IconButton icon="delete" label="Delete" variant="danger-quiet" size="lg" />
+              <IconButton icon="delete" label="Delete" variant="danger-quiet" disabled />
+              <IconButton icon="delete" label="Delete" variant="danger-subtle" size="sm" />
+              <IconButton icon="delete" label="Delete" variant="danger-subtle" />
+              <IconButton icon="delete" label="Delete" variant="danger-subtle" size="lg" />
+              <IconButton icon="delete" label="Delete" variant="danger-subtle" disabled />
+              <IconButton icon="delete" label="Delete" variant="destructive" size="sm" />
+              <IconButton icon="delete" label="Delete" variant="destructive" />
+              <IconButton icon="delete" label="Delete" variant="destructive" size="lg" />
+              <IconButton icon="delete" label="Delete" variant="destructive" disabled />
+            </Row>
+            <Row label="Icon-only · shape=&quot;circle&quot; — on a line or over content, like the swap flip">
+              <IconButton icon="refresh" label="Refresh" variant="surface" shape="circle" size="sm" />
+              <IconButton icon="refresh" label="Refresh" variant="surface" shape="circle" />
+              <IconButton icon="refresh" label="Refresh" variant="surface" shape="circle" size="lg" />
+              <IconButton icon="swap_vert" label="Swap direction" variant="secondary" shape="circle" size="sm" />
+              <IconButton icon="swap_vert" label="Swap direction" variant="secondary" shape="circle" />
+              <IconButton icon="swap_vert" label="Swap direction" variant="secondary" shape="circle" size="lg" />
+              <IconButton icon="delete" label="Delete" variant="danger-subtle" shape="circle" size="sm" />
+              <IconButton icon="delete" label="Delete" variant="danger-subtle" shape="circle" />
+              <IconButton icon="delete" label="Delete" variant="danger-subtle" shape="circle" size="lg" />
             </Row>
           </Section>
 
           {/* ── Icons ───────────────────────────────────────────────────── */}
           <Section id="icons" title="Icons" description="Material Symbols wrapper with size variants.">
             <Row label="Named shortcuts (Icons.*)">
-              <div className="flex flex-wrap gap-4">
+              <div className={ICON_GRID}>
                 {Object.entries(Icons).map(([key, IconComp]) => (
-                  <div key={key} className="flex flex-col items-center gap-1">
-                    <div className="size-10 rounded-xl bg-primary/15 hover:bg-primary/25 hover:scale-105 transition-all flex items-center justify-center cursor-default">
-                      <IconComp size="md" className="text-[#31ff8b]" />
+                  <div key={key} className={ICON_CELL}>
+                    <div className={ICON_TILE}>
+                      <IconComp size="md" className={ICON_GLYPH} />
                     </div>
-                    <span className="text-xxs text-slate-500 font-mono">{key}</span>
+                    <IconLabel name={key} />
                   </div>
                 ))}
               </div>
             </Row>
-            <Row label="Common icons">
-              <div className="flex flex-wrap gap-4">
-                {[
-                  'home', 'settings', 'person', 'notifications', 'search',
-                  'arrow_back', 'close', 'check', 'add', 'remove',
-                  'visibility', 'visibility_off', 'copy_all', 'download', 'upload',
-                ].map((name) => (
-                  <div key={name} className="flex flex-col items-center gap-1">
-                    <div className="size-10 rounded-xl bg-primary/15 hover:bg-primary/25 hover:scale-105 transition-all flex items-center justify-center cursor-default">
-                      <Icon name={name} size="md" className="text-[#31ff8b]" />
+            <Row label={`The whole set (${ALL_ICON_NAMES.length})`}>
+              <div className={ICON_GRID}>
+                {ALL_ICON_NAMES.map((name) => (
+                  <div key={name} className={ICON_CELL}>
+                    <div className={ICON_TILE}>
+                      <Icon name={name} size="md" className={ICON_GLYPH} />
                     </div>
-                    <span className="text-xxs text-slate-500 font-mono">{name}</span>
+                    <IconLabel name={name} />
                   </div>
                 ))}
               </div>
             </Row>
           </Section>
 
-          {/* ── Status Badges ───────────────────────────────────────────── */}
-          <Section id="status-badges" title="Status Badges" description="Transaction and state indicators.">
-            <Row label="All statuses">
-              {(['success', 'completed', 'pending', 'failed', 'error'] as StatusType[]).map((s) => (
-                <StatusBadge key={s} status={s} />
-              ))}
+          {/* ── External logos ──────────────────────────────────────────── */}
+          <Section id="external-logos" title="External logos" description="Protocol and asset marks, served from /logos. White and black variants are shown on the backdrop they are drawn for.">
+            <Row label="Protocols" wrap={false}>
+              <div className="grid w-full gap-3 sm:grid-cols-2">
+                {PROTOCOL_LOGOS.map((g) => <LogoGroup key={g.name} {...g} />)}
+              </div>
+            </Row>
+            <Row label="Assets" wrap={false}>
+              <div className="grid w-full gap-3 sm:grid-cols-2">
+                {ASSET_LOGOS.map((g) => <LogoGroup key={g.name} {...g} />)}
+              </div>
             </Row>
           </Section>
 
@@ -607,45 +842,43 @@ export function App() {
             </Row>
           </Section>
 
-          {/* ── Info Chips ─────────────────────────────────────────────── */}
-          <Section id="info-chips" title="Info Chips" description="Compact, readable, read-only information for 400px popup layouts.">
-            <div className="grid max-w-[400px] gap-3">
-              <NetworkInfoChip
-                network="LN"
-                value="Lightning Network"
-                status="success"
-                statusLabel="Connected"
-                onEdit={() => toast({ title: 'Edit network' })}
-                editLabel="Edit selected network"
-              />
-              <AssetInfoChip
-                ticker="BTC"
-                value="Bitcoin · BTC"
-                status="info"
-                statusLabel="Native asset"
-              />
-              <InfoChip
-                leading={<Icon name="hub" />}
-                label="Node endpoint"
-                value="https://node.kaleidoswap.example/a-very-long-readable-path"
-                status="warning"
-                statusLabel="Needs review"
-                onEdit={() => toast({ title: 'Edit node endpoint' })}
-                editLabel="Edit node endpoint"
-              />
-            </div>
+          {/* ── Chips ───────────────────────────────────────────────────── */}
+          <Section id="chips" title="Chips" description="Every label pill: StatusBadge for the five transaction states, the dot StatusChip an InfoChip carries, and ToneBadge for any status or value in any tone.">
+            <Row label="Status badges">
+              {(['success', 'completed', 'pending', 'failed', 'error'] as StatusType[]).map((s) => (
+                <StatusBadge key={s} status={s} />
+              ))}
+            </Row>
+            <Row label="Info chips">
+              <StatusChip status="success" label="Connected" />
+              <StatusChip status="info" label="Native asset" />
+              <StatusChip status="warning" label="Needs review" />
+              <StatusChip status="danger" label="Offline" />
+            </Row>
+            <Row label="Tone badges — a status, any tone">
+              {(['muted', 'primary', 'secondary', 'info', 'success', 'warning', 'danger', 'outline'] as const).map((tone) => (
+                <ToneBadge key={tone} tone={tone}>
+                  {tone}
+                </ToneBadge>
+              ))}
+            </Row>
+            <Row label='Tone badges — case="none", a value'>
+              <ToneBadge tone="primary" case="none">1,250,000 sats</ToneBadge>
+              <ToneBadge tone="secondary" case="none">12 installs</ToneBadge>
+              <ToneBadge tone="outline" case="none">v2.4.1</ToneBadge>
+            </Row>
           </Section>
 
           {/* ── Cards ───────────────────────────────────────────────────── */}
-          <Section id="cards" title="Cards" description="Compositional card primitives.">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Section id="cards" title="Cards" description="Compositional card primitives. variant=&quot;secondary&quot; is the same card without the glass edge, for one that ranks under a primary card beside it.">
+            <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
               <Card>
                 <CardHeader>
                   <CardTitle>Basic Card</CardTitle>
                   <CardDescription>With header and content.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-slate-400">Card body content goes here. Cards can hold any child elements.</p>
+                  <p className="text-sm text-muted-foreground">Card body content goes here. Cards can hold any child elements.</p>
                 </CardContent>
               </Card>
               <Card>
@@ -654,7 +887,7 @@ export function App() {
                   <CardDescription>Actions in the footer slot.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-slate-400">Use CardFooter for action buttons or summary information.</p>
+                  <p className="text-sm text-muted-foreground">Use CardFooter for action buttons or summary information.</p>
                 </CardContent>
                 <CardFooter className="gap-2">
                   <Button size="sm">Confirm</Button>
@@ -662,6 +895,41 @@ export function App() {
                 </CardFooter>
               </Card>
             </div>
+            <Row label="Secondary — the same card, without the glass edge">
+              <div className="grid w-full grid-cols-1 gap-3 md:grid-cols-2">
+                <Card variant="secondary">
+                  <CardHeader>
+                    <CardTitle>Secondary card</CardTitle>
+                    <CardDescription>Fill, gradient and shadow of a primary card, no edge.</CardDescription>
+                  </CardHeader>
+                </Card>
+                <Card variant="secondary" className="space-y-1.5 p-4 text-caption">
+                  <div className="flex justify-between"><span className="text-muted-foreground">Network fee</span><span>512 sats</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Arrives</span><span>~10 min</span></div>
+                </Card>
+                <Card variant="secondary">
+                  <CardHeader>
+                    <CardTitle>With a ghost button</CardTitle>
+                    <CardDescription>A quiet action that does not outrank the primary card.</CardDescription>
+                  </CardHeader>
+                  <CardFooter>
+                    <Button variant="ghost" size="sm"><Icon name="receipt_long" size="sm" />View details</Button>
+                  </CardFooter>
+                </Card>
+              </div>
+            </Row>
+            <Row label="Primary + secondary — a card that ranks under the one beside it">
+              <div className="flex w-full max-w-md flex-col gap-3">
+                <Card className="p-4">
+                  <p className="text-caption text-muted-foreground">You pay</p>
+                  <p className="text-title font-bold">21,000 sats</p>
+                </Card>
+                <Card variant="secondary" className="space-y-1.5 p-3 text-caption">
+                  <div className="flex justify-between"><span className="text-muted-foreground">Rate</span><span>1 BTC = 99,140 USDB</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Fee</span><span>0.3%</span></div>
+                </Card>
+              </div>
+            </Row>
           </Section>
 
           {/* ── Asset Cards ─────────────────────────────────────────────── */}
@@ -697,30 +965,22 @@ export function App() {
 
           {/* ── Transaction Cards ───────────────────────────────────────── */}
           <Section id="transaction-cards" title="Transaction Cards" description="Transaction rows with direction, status, and amount.">
-            <div className="flex flex-col gap-3 max-w-md">
-              <TransactionCard
-                direction="inbound"
-                status="completed"
-                displayAmount="21,000"
-                unit="sats"
-                timestamp={1700000000}
-                onClick={() => {}}
-              />
-              <TransactionCard
-                direction="outbound"
-                status="pending"
-                displayAmount="5,000"
-                unit="sats"
-                timestamp={1700086400}
-                onClick={() => {}}
-              />
-              <TransactionCard
-                direction="outbound"
-                status="failed"
-                displayAmount="500"
-                unit="sats"
-                timestamp={1699913600}
-                onClick={() => {}}
+            <div className="max-w-md">
+              <ActivityList
+                expandedId={expandedTransactionId}
+                onExpandedChange={setExpandedTransactionId}
+                items={[
+                  { id: 'tx-completed', direction: 'inbound', status: 'completed', displayAmount: '21,000', unit: 'sats', timestamp: 1700000000, network: 'LN', label: 'Lightning Receive' },
+                  { id: 'tx-pending', direction: 'outbound', status: 'pending', displayAmount: '5,000', unit: 'sats', timestamp: 1700086400, network: 'L1', label: 'On-chain Send' },
+                  { id: 'tx-failed', direction: 'outbound', status: 'failed', displayAmount: '500', unit: 'sats', timestamp: 1699913600, network: 'Spark', label: 'Spark Transfer' },
+                ]}
+                renderDetails={(item) => (
+                  <>
+                    <ActivityDetailRow label="Reference" value={item.id} />
+                    <ActivityDetailRow label="Network" value={<NetworkBadge network={item.network ?? 'LN'} showLabel />} />
+                    <ActivityDetailRow label="Status" value={<StatusBadge status={item.status} />} />
+                  </>
+                )}
               />
             </div>
           </Section>
@@ -785,15 +1045,15 @@ export function App() {
                   value={featureFilter}
                   onChange={setFeatureFilter}
                   options={[
-                    { value: 'all', label: 'All Networks' },
-                    { value: 'lightning', label: 'Lightning' },
-                    { value: 'spark', label: 'Spark' },
-                    { value: 'arkade', label: 'Arkade' },
+                    { id: 'all', label: 'All Networks', icon: <Icon name="hub" size="sm" /> },
+                    { id: 'lightning', label: 'Lightning', icon: <LightningNetworkIcon className="size-4" /> },
+                    { id: 'spark', label: 'Spark', icon: <SparkNetworkIcon className="size-4" /> },
+                    { id: 'arkade', label: 'Arkade', icon: <ArkadeNetworkIcon className="size-4 rounded-sm" /> },
                   ]}
                 />
                 <div className="space-y-3">
                   <SettingsTile
-                    icon={<AppIcon name="vault" className="size-5 text-blue-400" />}
+                    icon={<AppIcon name="vault" className="size-5" />}
                     title="Change Password"
                     description="Update your wallet password"
                     onClick={() => {}}
@@ -808,11 +1068,6 @@ export function App() {
                 </div>
               </div>
               <div className="space-y-5 max-w-md">
-                <div className="flex gap-2.5">
-                  <ActionTile icon={<Icon name="call_received" size="sm" />} label="Deposit" onClick={() => {}} />
-                  <ActionTile icon={<Icon name="swap_horiz" size="sm" />} label="Swap" onClick={() => {}} />
-                  <ActionTile icon={<Icon name="send" size="sm" />} label="Withdraw" onClick={() => {}} />
-                </div>
                 <AssetSelector
                   label="From"
                   selectedTicker={selectedAssetTicker}
@@ -829,7 +1084,9 @@ export function App() {
                     { id: 'kaleidoswap:RGB:mstr', ticker: 'MSTR', name: 'MicroStrategy', network: 'RGB-LN', category: 'rwa' },
                   ]}
                 />
-                <QrCode value="kaleidoswap:receive:sample" size={168} />
+                <div className="w-fit rounded-2xl bg-white p-3">
+                  <QrCode value="kaleidoswap:receive:sample" size={168} />
+                </div>
               </div>
               <div className="max-w-md rounded-2xl bg-card/60 p-4">
                 <AccountStatusTabs
@@ -840,29 +1097,47 @@ export function App() {
                       state: 'Ready',
                       detail: 'RGB and Lightning features are available.',
                       icon: <img src="/icons/rgb/rgb-logo.svg" alt="" className="size-5" />,
+                      network: 'RGB-LN',
                       dotTone: 'bg-primary',
                       title: 'RGB & Lightning',
                       description: 'RGB assets and Lightning channels.',
                       capabilityBullets: ['RGB assets', 'Lightning invoices', 'On-chain receive'],
                       networkLabel: 'Testnet',
-                      networkBannerClassName: 'border-primary/20 bg-primary/10 text-primary',
+                      networkBannerClassName: 'border-primary/20 bg-primary/10 text-brand',
                       accentBg: 'bg-primary/10',
                       accentBorder: 'border-primary/20',
                     },
                     {
                       id: 'SPARK',
                       label: 'Spark',
-                      state: 'Ready',
-                      detail: 'Spark account is connected.',
-                      icon: <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" alt="" className="size-5" />,
-                      dotTone: 'bg-blue-300',
+                      state: 'Connecting',
+                      detail: 'Spark account is connecting.',
+                      icon: <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" alt="" className="kui-mono-icon size-5" />,
+                      network: 'Spark',
+                      dotTone: 'bg-warning',
                       title: 'Spark',
                       description: 'Fast Spark BTC and native assets.',
                       capabilityBullets: ['Instant receive', 'Native assets'],
                       networkLabel: 'Signet',
-                      networkBannerClassName: 'border-blue-500/20 bg-blue-500/10 text-blue-200',
-                      accentBg: 'bg-blue-500/10',
-                      accentBorder: 'border-blue-500/20',
+                      networkBannerClassName: 'border-warning/20 bg-warning/10 text-warning-fg',
+                      accentBg: 'bg-warning/10',
+                      accentBorder: 'border-warning/20',
+                    },
+                    {
+                      id: 'LIQUID',
+                      label: 'Liquid',
+                      state: 'Unavailable',
+                      detail: 'Liquid account is unavailable.',
+                      icon: <LiquidNetworkIcon className="size-5" />,
+                      network: 'Liquid',
+                      dotTone: 'bg-danger',
+                      title: 'Liquid',
+                      description: 'L-BTC and Liquid assets.',
+                      capabilityBullets: ['L-BTC', 'Liquid assets'],
+                      networkLabel: 'Mainnet',
+                      networkBannerClassName: 'border-danger/20 bg-danger/10 text-danger-fg',
+                      accentBg: 'bg-danger/10',
+                      accentBorder: 'border-danger/20',
                     },
                   ]}
                 />
@@ -906,6 +1181,7 @@ export function App() {
                   </div>
                 </AccountCapabilitiesCard>
                 <TransferRouteCard
+                  account="SPARK"
                   label="Spark"
                   summary="Fast Spark-native transfers when the destination supports it."
                   eta="Instant"
@@ -1012,12 +1288,13 @@ export function App() {
                     <PaidOverlay />
                   </div>
                 </div>
-                <button className="flex items-center gap-2 rounded-xl bg-card px-3 py-2 text-xs font-bold text-white">
-                  <CopyIcon copied={false} />
-                  Copy invoice
-                </button>
+                <div className="flex gap-2.5">
+                  <ActionTile icon={<Icon name="content_copy" size="sm" />} label="Copy" onClick={() => {}} />
+                  <ActionTile icon={<Icon name="edit" size="sm" />} label="Amount" onClick={() => {}} />
+                  <ActionTile icon={<Icon name="ios_share" size="sm" />} label="Share" onClick={() => {}} />
+                </div>
                 <div className="rounded-xl bg-card/70 p-3">
-                  <div className="mb-2 flex items-center gap-2 text-xs font-bold text-white">
+                  <div className="mb-2 flex items-center gap-2 text-xs font-bold text-foreground">
                     <span className={`flex size-5 items-center justify-center rounded-md ${NETWORK_CONFIG.lightning.bg}`}>
                       {NETWORK_CONFIG.lightning.icon}
                     </span>
@@ -1142,7 +1419,7 @@ export function App() {
           <Section id="swap-flow" title="Swap Flow" description="Deciding on a pending swap (SummaryRows) and following it (SwapStepList).">
             <div className="grid max-w-3xl gap-4 sm:grid-cols-2">
               <div className="rounded-2xl bg-card/70 p-4">
-                <SectionLabel>Review</SectionLabel>
+                <span className="text-mini font-medium uppercase tracking-eyebrow text-muted-foreground">Review</span>
                 <SummaryRows
                   className="mt-3"
                   rows={[
@@ -1155,7 +1432,7 @@ export function App() {
                 />
               </div>
               <div className="rounded-2xl bg-card/70 p-4">
-                <SectionLabel>Progress</SectionLabel>
+                <span className="text-mini font-medium uppercase tracking-eyebrow text-muted-foreground">Progress</span>
                 <SwapStepList
                   className="mt-3"
                   steps={[
@@ -1189,7 +1466,7 @@ export function App() {
                 onClick={() => {}}
               />
               <SettingItem
-                icon="security"
+                icon="shield"
                 title="Security"
                 description="PIN, biometrics, 2FA"
                 onClick={() => {}}
@@ -1233,6 +1510,20 @@ export function App() {
                 onClick={() => {}}
               />
             </div>
+          </Section>
+
+          {/* ── Toggles ─────────────────────────────────────────────────── */}
+          <Section id="toggle" title="Toggles" description="One switch, two forms: the compact on/off Switch, and the wide pill with a glyph per side — ThemeToggle is that one.">
+            <Row label="Switch — off / on / disabled (the one in SettingItem and SwitchRow)">
+              <Switch aria-label="Off" checked={false} />
+              <Switch aria-label="On" checked />
+              <Switch aria-label="Disabled off" checked={false} disabled />
+              <Switch aria-label="Disabled on" checked disabled />
+            </Row>
+            <Row label="ThemeToggle — light / dark (the one in the top bar drives the page)">
+              <ThemeToggle mode="light" onModeChange={() => {}} />
+              <ThemeToggle mode="dark" onModeChange={() => {}} />
+            </Row>
           </Section>
 
           {/* ── Inputs ──────────────────────────────────────────────────── */}
@@ -1293,7 +1584,7 @@ export function App() {
                       donation={donation}
                       setDonation={setDonation}
                     />
-                    <Button variant="cta" size="cta">Review Send</Button>
+                    <Button variant="cta" size="cta"><Icon name="receipt_long" size="sm" />Review Send</Button>
                   </div>
                 </TabsContent>
                 <TabsContent value="receive" className="mt-4">
@@ -1303,7 +1594,7 @@ export function App() {
                         <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                           Receive
                         </p>
-                        <p className="mt-1 text-sm font-semibold text-white">Lightning Invoice</p>
+                        <p className="mt-1 text-sm font-semibold text-foreground">Lightning Invoice</p>
                       </div>
                       <NetworkBadge network="LN" showLabel />
                     </div>
@@ -1319,62 +1610,72 @@ export function App() {
                       isInvoicePaid={false}
                       isInvoiceFailedOrExpired={false}
                     />
-                    <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-white/[0.05] px-3 py-3 text-xs font-bold text-white transition-colors hover:bg-white/[0.08]">
-                      <CopyIcon copied={false} />
-                      Copy invoice
-                    </button>
+                    <div className="flex gap-2.5">
+                      <ActionTile icon={<Icon name="content_copy" size="sm" />} label="Copy" onClick={() => {}} />
+                      <ActionTile icon={<Icon name="edit" size="sm" />} label="Amount" onClick={() => {}} />
+                      <ActionTile icon={<Icon name="ios_share" size="sm" />} label="Share" onClick={() => {}} />
+                    </div>
                     <NetworkInfoDisclosure networks={['onchain', 'lightning', 'spark', 'arkade']} />
                   </div>
                 </TabsContent>
                 <TabsContent value="swap" className="mt-4">
-                  <SwapInputCard
-                    fromTicker={selectedAssetTicker}
-                    toTicker={swapToTicker}
-                    fromInput={swapAmount}
-                    fromOptions={[
-                      { ticker: 'BTC', name: 'Bitcoin', network: 'LN', networkId: 'bitcoin' },
-                      { ticker: 'USDB', name: 'Bitcoin Dollar', network: 'Spark', category: 'stablecoins' },
-                      { ticker: 'MSTR', name: 'MicroStrategy', network: 'RGB-LN', category: 'rwa' },
-                      { id: 'ethereum:USDT', ticker: 'USDT', name: 'Tether (Ethereum)', networkId: 'ethereum', category: 'stablecoins', networkTag: { label: 'Ethereum', color: '#627eea' } },
-                      { id: 'tron:USDT', ticker: 'USDT', name: 'Tether (Tron)', networkId: 'tron', category: 'stablecoins', networkTag: { label: 'Tron', color: '#ff0013' } },
-                      { id: 'ethereum:USDC', ticker: 'USDC', name: 'USD Coin', networkId: 'ethereum', category: 'stablecoins', networkTag: { label: 'Ethereum', color: '#627eea' } },
-                    ]}
-                    fromNetworks={[
-                      { id: 'bitcoin', label: 'Bitcoin', iconUrl: '/icons/bitcoin/bitcoin-logo.svg' },
-                      { id: 'ethereum', label: 'Ethereum' },
-                      { id: 'tron', label: 'Tron' },
-                    ]}
-                    fromQuickAssets={[{ ticker: 'BTC' }, { ticker: 'USDT' }, { ticker: 'USDC' }]}
-                    toOptions={[
-                      { ticker: 'BTC', name: 'Bitcoin', network: 'LN' },
-                      { ticker: 'USDB', name: 'Bitcoin Dollar', network: 'Spark', category: 'stablecoins' },
-                      { ticker: 'MSTR', name: 'MicroStrategy', network: 'RGB-LN', category: 'rwa' },
-                    ]}
-                    categories={[
-                      { id: 'stablecoins', label: 'Stablecoins' },
-                      { id: 'rwa', label: 'RWA' },
-                      { id: 'meme', label: 'Meme' },
-                    ]}
-                    defaultActiveCategories={['stablecoins', 'rwa']}
-                    availableText="125,000 sats"
-                    selectedPercentage={50}
-                    fromUnitLabel="sats"
-                    receiveAmount="20.82"
-                    receiveUnitLabel={swapToTicker}
-                    quoteRateText="1 BTC = 99,140 USDB"
-                    quoteFeeText="0.3%"
-                    quoteExpiresText="24s"
-                    submitLabel="Review Swap"
-                    onFromTickerChange={setSelectedAssetTicker}
-                    onToTickerChange={setSwapToTicker}
-                    onFromInputChange={setSwapAmount}
-                    onPercentageClick={(percent) => setSwapAmount(String(Math.floor((125000 * percent) / 100)))}
-                    onFlip={() => {
-                      setSelectedAssetTicker(swapToTicker)
-                      setSwapToTicker(selectedAssetTicker)
-                    }}
-                    onSubmit={() => {}}
-                  />
+                  <div className="rounded-3xl bg-card/60 p-4">
+                    <SwapInputCard
+                      fromTicker={selectedAssetTicker}
+                      toTicker={swapToTicker}
+                      fromInput={swapAmount}
+                      fromOptions={[
+                        { ticker: 'BTC', name: 'Bitcoin', network: 'LN', networkId: 'bitcoin' },
+                        { ticker: 'USDB', name: 'Bitcoin Dollar', network: 'Spark', category: 'stablecoins' },
+                        { ticker: 'MSTR', name: 'MicroStrategy', network: 'RGB-LN', category: 'rwa' },
+                        { id: 'ethereum:USDT', ticker: 'USDT', name: 'Tether (Ethereum)', networkId: 'ethereum', category: 'stablecoins', networkTag: { label: 'Ethereum', color: '#627eea' } },
+                        { id: 'tron:USDT', ticker: 'USDT', name: 'Tether (Tron)', networkId: 'tron', category: 'stablecoins', networkTag: { label: 'Tron', color: '#ff0013' } },
+                        { id: 'ethereum:USDC', ticker: 'USDC', name: 'USD Coin', networkId: 'ethereum', category: 'stablecoins', networkTag: { label: 'Ethereum', color: '#627eea' } },
+                      ]}
+                      fromNetworks={[
+                        { id: 'bitcoin', label: 'Bitcoin', iconUrl: '/logos/protocols/bitcoin.svg' },
+                        { id: 'ethereum', label: 'Ethereum' },
+                        { id: 'tron', label: 'Tron' },
+                      ]}
+                      fromQuickAssets={[{ ticker: 'BTC' }, { ticker: 'USDT' }, { ticker: 'USDC' }]}
+                      toOptions={[
+                        { ticker: 'BTC', name: 'Bitcoin', network: 'LN' },
+                        { ticker: 'USDB', name: 'Bitcoin Dollar', network: 'Spark', category: 'stablecoins' },
+                        { ticker: 'MSTR', name: 'MicroStrategy', network: 'RGB-LN', category: 'rwa' },
+                      ]}
+                      categories={[
+                        { id: 'stablecoins', label: 'Stablecoins' },
+                        { id: 'rwa', label: 'RWA' },
+                        { id: 'meme', label: 'Meme' },
+                      ]}
+                      defaultActiveCategories={['stablecoins', 'rwa']}
+                      availableText="125,000 sats"
+                      selectedPercentage={swapPercent}
+                      fromUnitLabel="sats"
+                      receiveAmount="20.82"
+                      receiveUnitLabel={swapToTicker}
+                      quoteRateText="1 BTC = 99,140 USDB"
+                      quoteFeeText="0.3%"
+                      quoteExpiresText="24s"
+                      submitLabel="Review Swap"
+                      submitIcon={<Icon name="receipt_long" size="sm" />}
+                      onFromTickerChange={setSelectedAssetTicker}
+                      onToTickerChange={setSwapToTicker}
+                      onFromInputChange={(value) => {
+                        setSwapPercent(null)
+                        setSwapAmount(value)
+                      }}
+                      onPercentageClick={(percent) => {
+                        setSwapPercent(percent)
+                        setSwapAmount(String(Math.floor((125000 * percent) / 100)))
+                      }}
+                      onFlip={() => {
+                        setSelectedAssetTicker(swapToTicker)
+                        setSwapToTicker(selectedAssetTicker)
+                      }}
+                      onSubmit={() => {}}
+                    />
+                  </div>
                 </TabsContent>
               </Tabs>
             </div>
@@ -1390,11 +1691,11 @@ export function App() {
                 <DialogHeader>
                   <DialogTitle>Confirm Transaction</DialogTitle>
                   <DialogDescription>
-                    You are about to send <span className="text-white font-semibold">21,000 sats</span> to the following address. This action cannot be undone.
+                    You are about to send <span className="text-foreground font-semibold">21,000 sats</span> to the following address. This action cannot be undone.
                   </DialogDescription>
                 </DialogHeader>
-                <div className="my-2 p-3 rounded-xl bg-white/8">
-                  <p className="text-xs font-mono text-slate-300 break-all">
+                <div className="my-2 p-3 rounded-xl bg-foreground/8">
+                  <p className="text-xs font-mono text-foreground/80 break-all">
                     bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
                   </p>
                 </div>
@@ -1410,17 +1711,15 @@ export function App() {
           {/* ── Drawer ──────────────────────────────────────────────────── */}
           <Section id="drawer" title="Drawer" description="The desktop app's left sidebar: on the desktop it folds to an icon rail, on a phone it opens over the page. One navigation list renders in both.">
             <Row label="Desktop · DrawerSidebar (chevron folds it to the rail)" wrap={false}>
-              <div className="flex h-[440px] w-full overflow-hidden rounded-2xl ring-1 ring-white/10">
+              <div className="flex h-[440px] w-full overflow-hidden rounded-2xl ring-1 ring-foreground/10">
                 <DrawerSidebar
                   className="static h-full"
                   collapsed={sidebarCollapsed}
                   onCollapsedChange={setSidebarCollapsed}
-                  header={<img src="/brand/kaleidoswap-pictogram.svg" alt="KaleidoSwap" className="h-8" />}
+                  header={lockup}
                 >
                   <DrawerBody>{showcaseNav}</DrawerBody>
-                  <DrawerFooter>
-                    <p className="truncate text-center text-tiny text-content-tertiary">v0.1</p>
-                  </DrawerFooter>
+                  <DrawerFooter>{drawerVersion}</DrawerFooter>
                 </DrawerSidebar>
                 <div className="flex-1 bg-surface-raised p-6">
                   <p className="text-caption text-content-secondary">
@@ -1432,20 +1731,13 @@ export function App() {
             <Row label="Mobile · Drawer (the same list, over the page)">
               <Drawer>
                 <DrawerTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon-lg"
-                    aria-label={`Open navigation, current page: ${showcaseNavActive}`}
-                  >
-                    <Icon name="menu" size="md" />
-                  </Button>
+                  <IconButton icon="menu" label={`Open navigation, current page: ${showcaseNavActive}`} />
                 </DrawerTrigger>
-                <DrawerContent
-                  header={<img src="/brand/kaleidoswap-pictogram.svg" alt="KaleidoSwap" className="h-8" />}
-                >
+                <DrawerContent header={lockup}>
                   <DrawerTitle className="sr-only">Navigation</DrawerTitle>
                   <DrawerDescription>Main navigation</DrawerDescription>
                   <DrawerBody>{showcaseNav}</DrawerBody>
+                  <DrawerFooter>{drawerVersion}</DrawerFooter>
                 </DrawerContent>
               </Drawer>
             </Row>
@@ -1489,19 +1781,19 @@ export function App() {
             </Row>
           </Section>
 
-          <Section id="forms" title="Forms" description="FormField and the segmented control.">
+          <Section id="forms" title="Forms" description="FormField: a label, its control, a hint and an error.">
             <FormsGallery />
           </Section>
           <Section id="table" title="Table" description="The dense data grid for desk surfaces.">
             <TableGallery />
           </Section>
-          <Section id="tone-badges" title="Tone Badges" description="ToneBadge tones, including secondary and outline, and case=&quot;none&quot; for values.">
-            <BadgesGallery />
+          <Section id="scrollbars" title="Scrollbars" description="ScrollArea and HorizontalScrollArea: the one overlay thumb every scroller in the library uses.">
+            <ScrollbarsGallery />
           </Section>
-          <Section id="avatar" title="Avatar" description="Image, initials or the person glyph.">
+          <Section id="avatar" title="Avatars" description="Image, initials or the person glyph.">
             <AvatarGallery />
           </Section>
-          <Section id="collapsible" title="Collapsible" description="The open/close primitive, and DisclosureCard built on it.">
+          <Section id="collapsible" title="Collapsibles" description="Two disclosures built on the Collapsible primitive: BasicCollapsible, a compact row, and DisclosureCard, a card.">
             <CollapsibleGallery />
           </Section>
           <Section id="popover-menu" title="Popover & Menu" description="An anchored panel, and a real menu.">
@@ -1513,7 +1805,7 @@ export function App() {
           <Section id="copy" title="Copy" description="Copying that says whether it worked.">
             <CopyGallery />
           </Section>
-          <Section id="lists" title="Lists & filters" description="QueryState, EmptyState, RecordList, FilterBar, Pager, ValueList, EventTimeline and checklists.">
+          <Section id="lists" title="Lists & Filters" description="QueryState, EmptyState, RecordList, FilterBar, the segmented control, Pager, ValueList, EventTimeline and checklists.">
             <ListsGallery />
           </Section>
           <Section id="page-layout" title="Page layout" description="The desk page header, MetricCard sizes and an ordered log.">
@@ -1530,7 +1822,7 @@ export function App() {
           </Section>
 
           {/* Page to page, in nav order */}
-          <nav aria-label="Pages" className="mt-16 flex items-center justify-between gap-4 border-t border-white/5 pt-6">
+          <nav aria-label="Pages" className="mt-16 flex items-center justify-between gap-4 border-t border-foreground/5 pt-6">
             {previousPage ? (
               <a href={`#/${previousPage.id}`} className={buttonVariants({ variant: 'ghost' })}>
                 <Icon name="arrow_back" size="sm" /> {previousPage.label}
@@ -1544,7 +1836,8 @@ export function App() {
               </a>
             )}
           </nav>
-        </main>
+        </div>
+        </ScrollArea>
         </CurrentPage.Provider>
       </div>
     </div>

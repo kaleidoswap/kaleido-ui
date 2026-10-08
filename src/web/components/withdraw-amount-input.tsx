@@ -1,6 +1,10 @@
 import { formatAmount } from '../utils/amount-display'
-import type { ChangeEvent } from 'react'
+import { useId, type ChangeEvent } from 'react'
+import { Button } from '../primitives/button'
+import { Label } from '../primitives/label'
+import { DottedLeader } from './dotted-leader'
 import { cn } from '../utils/cn'
+import { eyebrow } from '../utils/type-roles'
 
 export interface WithdrawDecodedLnInvoice {
   amount?: number | null
@@ -80,6 +84,9 @@ export function WithdrawAmountInput({
   setDonation,
 }: WithdrawAmountInputProps) {
   // Custom mode is opt-in: callers wanting the sat/vB input pass setFeeRateMode.
+  const amountId = useId()
+  const witnessId = useId()
+  const feeRateId = useId()
   const customFeeEnabled = typeof setFeeRateMode === 'function'
   const activeFeeMode = feeRateMode ?? feeRate
   const unitLabel = selectedAssetId === 'BTC' ? 'sats' : (selectedAssetTicker ?? 'units')
@@ -100,38 +107,42 @@ export function WithdrawAmountInput({
   return (
     <>
       {showAmountInput && (
-        <div className="space-y-3">
-          <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+        <div className="flex flex-col gap-2">
+          <Label htmlFor={amountId} className="ml-1">
             Amount
-          </label>
-          <div className="overflow-hidden rounded-2xl bg-card/70">
+          </Label>
+          <div className="overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-card transition-shadow focus-within:ring-1 focus-within:ring-primary/50 focus-within:shadow-glow-primary-soft">
             <div className="flex items-center gap-3 px-4 pt-3.5 pb-2.5">
               <div className="min-w-0 flex-1">
                 <input
+                  id={amountId}
                   type="text"
                   inputMode="decimal"
-                  className="w-full bg-transparent text-headline font-bold tabular-nums text-white outline-none placeholder:text-white/15"
+                  className="w-full bg-transparent text-headline font-bold tabular-nums text-foreground outline-none placeholder:text-foreground/15"
                   placeholder="0"
                   value={amount}
                   onChange={handleAmountChange}
                 />
                 <p className="mt-0.5 text-caption text-muted-foreground">{unitLabel}</p>
               </div>
-              <button
+              <Button
                 type="button"
-                className="shrink-0 rounded-lg bg-primary/15 px-3 py-1.5 text-mini font-bold uppercase tracking-eyebrow text-primary transition-colors hover:bg-primary/25"
+                variant="surface"
+                size="xs"
+                className={cn('shrink-0', eyebrow)}
                 onClick={handleSetMax}
               >
                 Max
-              </button>
+              </Button>
             </div>
             <div className={cn(
-              'flex items-center justify-between bg-muted/40 px-4 py-2',
+              'flex items-center gap-3 bg-muted/40 px-4 py-2',
             )}>
-              <span className="text-xxs text-white/40">Available</span>
+              <span className="text-xxs text-foreground/55">Available</span>
+              <DottedLeader />
               <span className={cn(
                 'tabular-nums text-xxs font-medium',
-                isOverBalance ? 'text-danger' : 'text-white/55',
+                isOverBalance ? 'text-danger-fg' : 'text-foreground/55',
               )}>
                 {formattedBalance} {unitLabel}
               </span>
@@ -154,11 +165,12 @@ export function WithdrawAmountInput({
       )}
 
       {addressType === 'rgb' && decodedRgbInvoice?.recipient_type === 'Witness' && (
-        <div className="space-y-2">
-          <label className="ml-1 text-caption font-medium text-muted-foreground">
-            Witness Amount (sats) - min 512
-          </label>
+        <div className="flex flex-col gap-2">
+          <Label htmlFor={witnessId} className="ml-1">
+            Witness amount (sats) - min 512
+          </Label>
           <input
+            id={witnessId}
             type="number"
             min={512}
             value={witnessAmountSat}
@@ -166,7 +178,7 @@ export function WithdrawAmountInput({
               const value = parseInt(event.target.value, 10)
               if (!Number.isNaN(value)) setWitnessAmountSat(value)
             }}
-            className="w-full rounded-xl bg-card px-4 py-3 text-body text-white shadow-inner transition-all focus:outline focus:outline-2 focus:outline-primary/50"
+            className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-4 py-3 text-body text-foreground shadow-inner transition-all focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
           />
           <p className="ml-1 text-caption text-muted-foreground">
             Bitcoin amount sent to create the witness UTXO for the recipient.
@@ -175,36 +187,37 @@ export function WithdrawAmountInput({
       )}
 
       {(addressType === 'bitcoin' || addressType === 'rgb') && (
-        <div className="space-y-2">
-          <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+        <div className="flex flex-col gap-2">
+          <p id={feeRateId} className={cn('mb-1 ml-1 block leading-none', eyebrow, 'text-secondary-content')}>
             Fee Rate
-          </label>
+          </p>
           {customFeeEnabled ? (
             <>
-              <div className="grid grid-cols-4 gap-2">
+              <div role="group" aria-labelledby={feeRateId} className="grid grid-cols-4 gap-2">
                 {(['slow', 'normal', 'fast', 'custom'] as const).map((mode) => {
                   const selected = activeFeeMode === mode
                   return (
                     <button
                       key={mode}
                       type="button"
+                      aria-pressed={selected}
                       onClick={() => {
                         setFeeRateMode?.(mode)
                         if (mode !== 'custom') setFeeRate(mode)
                       }}
-                      className={`group relative overflow-hidden rounded-xl border px-2 py-3 shadow-sm transition-all active:scale-[0.98] ${
+                      className={`group relative overflow-hidden rounded-xl border px-2 py-3 transition-all active:scale-[0.98] ${
                         selected
-                          ? 'border-transparent bg-primary/[0.14]'
-                          : 'border-transparent bg-card/70 hover:bg-card'
+                          ? 'border-transparent bg-gradient-active ring-1 ring-inset ring-primary/40 shadow-glow-primary-faint'
+                          : 'border-transparent bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-raised hover-gradient-violet'
                       }`}
                     >
                       <span
-                        className={`block text-caption font-bold capitalize ${selected ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'}`}
+                        className={`block text-caption font-bold capitalize ${selected ? 'text-brand' : 'text-muted-foreground group-hover:text-secondary-content'}`}
                       >
                         {mode}
                       </span>
                       <span
-                        className={`mt-0.5 block text-xxs font-medium ${selected ? 'text-primary/70' : 'text-white/40 group-hover:text-white/70'}`}
+                        className={`mt-0.5 block text-xxs font-medium ${selected ? 'text-brand/70' : 'text-foreground/55 group-hover:text-foreground/70'}`}
                       >
                         {mode === 'custom' ? 'sat/vB' : `${feeRates[mode]} sat/vB`}
                       </span>
@@ -216,10 +229,11 @@ export function WithdrawAmountInput({
                 <input
                   type="text"
                   inputMode="decimal"
+                  aria-label="Custom fee rate (sat/vB)"
                   placeholder={`${feeRates[feeRate]} (${feeRate})`}
                   value={customFeeRate ?? ''}
                   onChange={(event) => setCustomFeeRate?.(event.target.value.replace(/[^\d.]/g, ''))}
-                  className="w-full rounded-xl bg-card px-4 py-3 text-body text-white shadow-inner transition-all focus:outline focus:outline-2 focus:outline-primary/50"
+                  className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-4 py-3 text-body text-foreground shadow-inner transition-all focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
                 />
               )}
               {typeof estimatedFee === 'number' && (
@@ -230,29 +244,30 @@ export function WithdrawAmountInput({
               )}
             </>
           ) : (
-            <div className="grid grid-cols-3 gap-3">
+            <div role="group" aria-labelledby={feeRateId} className="grid grid-cols-3 gap-3">
               {(['slow', 'normal', 'fast'] as const).map((rate) => (
                 <button
                   key={rate}
                   type="button"
+                  aria-pressed={feeRate === rate}
                   onClick={() => setFeeRate(rate)}
-                  className={`group relative overflow-hidden rounded-[16px] px-3 py-3 shadow-sm transition-all active:scale-[0.98] ${
+                  className={`group relative overflow-hidden rounded-[16px] px-3 py-3 transition-all active:scale-[0.98] ${
                     feeRate === rate
-                      ? 'bg-primary/10'
-                      : 'bg-card/40 backdrop-blur-xl hover:bg-card/60'
+                      ? 'bg-gradient-active ring-1 ring-inset ring-primary/40 shadow-glow-primary-faint'
+                      : 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-raised hover-gradient-violet'
                   }`}
                 >
                   <div
-                    className={`pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent transition-opacity ${feeRate === rate ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                    className={`pointer-events-none absolute inset-0 bg-gradient-to-br from-secondary/15 to-transparent transition-opacity ${feeRate === rate ? 'opacity-100 [.light_&]:opacity-0' : 'opacity-0'}`}
                   />
                   <div className="relative z-10 flex flex-col items-center">
                     <div
-                      className={`text-body font-bold capitalize transition-colors ${feeRate === rate ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'}`}
+                      className={`text-body font-bold capitalize transition-colors ${feeRate === rate ? 'text-brand' : 'text-muted-foreground group-hover:text-secondary-content'}`}
                     >
                       {rate}
                     </div>
                     <div
-                      className={`mt-0.5 text-xxs font-medium transition-colors ${feeRate === rate ? 'text-primary/70' : 'text-white/40 group-hover:text-white/70'}`}
+                      className={`mt-0.5 text-xxs font-medium transition-colors ${feeRate === rate ? 'text-brand/70' : 'text-foreground/55 group-hover:text-foreground/70'}`}
                     >
                       {feeRates[rate]} sat/vB
                     </div>
@@ -265,15 +280,15 @@ export function WithdrawAmountInput({
       )}
 
       {addressType === 'rgb' && (
-        <div className="flex items-center justify-between rounded-xl bg-card p-3">
+        <div className="flex items-center justify-between rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-3 shadow-card">
           <div>
-            <p className="text-body font-medium text-white">Gift / Donation</p>
+            <p className="text-body font-medium text-foreground">Gift / Donation</p>
             <p className="text-caption text-muted-foreground">Skip amount checks for this transfer</p>
           </div>
           <button
             type="button"
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              donation ? 'bg-primary' : 'bg-secondary'
+              donation ? 'bg-primary bg-gradient-primary shadow-glow-primary-soft' : 'bg-foreground/10 shadow-inner'
             }`}
             onClick={() => setDonation(!donation)}
           >

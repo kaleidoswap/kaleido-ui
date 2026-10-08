@@ -25,12 +25,14 @@ export type AppSemanticToken =
   | 'surface-overlay'
   | 'surface-elevated'
   | 'surface-high'
+  | 'surface-inset'
   | 'primary'
   | 'primary-emphasis'
   | 'primary-foreground'
   | 'secondary'
   | 'secondary-emphasis'
   | 'secondary-foreground'
+  | 'secondary-content'
   | 'content-primary'
   | 'content-secondary'
   | 'content-tertiary'
@@ -43,63 +45,76 @@ export type AppSemanticToken =
   | 'status-warning'
   | 'status-info'
   | 'divider'
+  | 'network-spark'
 
 type AppSemanticChannels = Record<AppSemanticToken, string>
 
 /** Dark mode — emitted under `:root, .dark`. */
 export const appSemanticDark: AppSemanticChannels = {
-  // Body is notably darker than cards — clear depth without full-black.
-  'surface-base': '18 19 28', //  #12131C — deepest bg, sidebar
-  'surface-raised': '24 25 36', // #181924 — page body bg
-  'surface-overlay': '36 38 56', // #242638 — card bg (~14 lighter than body)
-  'surface-elevated': '50 52 72', // #323448 — sections inside cards
-  'surface-high': '66 68 90', //    #42445A — hover/active highlights
+  // Near-black ramp with a violet cast (~245 deg, low saturation): the
+  // surfaces lean violet, the accents carry the colour — green first.
+  'surface-base': '14 13 22', //  #0E0D16 — deepest bg, sidebar
+  'surface-raised': '20 19 30', // #14131E — page body bg
+  'surface-overlay': '28 26 42', // #1C1A2A — card bg
+  'surface-elevated': '40 38 56', // #282638 — sections inside cards
+  'surface-high': '54 51 74', //    #36334A — hover/active highlights
+  // An inset box inside a card (DisclosureCard), used at /40: on dark it is
+  // the muted fill; on light a cool grey, so the box still reads on white.
+  'surface-inset': '20 19 30', //   #14131E
   primary: '21 233 154', //         #15E99A
   'primary-emphasis': '18 201 126', // #12C97E
-  'primary-foreground': '18 19 28',
-  secondary: '139 92 246', //       #8B5CF6
-  'secondary-emphasis': '124 58 237',
+  'primary-foreground': '14 13 22',
+  secondary: '111 50 255', //       #6F32FF — brand violet
+  'secondary-emphasis': '84 32 204', // #5420CC
   'secondary-foreground': '255 255 255',
-  'content-primary': '232 233 242', // #E8E9F2 — slightly cool white
-  'content-secondary': '142 146 172', // #8E92AC
-  'content-tertiary': '88 92 116', // #585C74
-  'content-inverse': '18 19 28',
-  'border-subtle': '40 42 60', //   #282A3C
-  'border-default': '54 56 76', //  #36384C
+  'secondary-content': '164 138 255', // #A48AFF — violet text/icons on dark
+  'content-primary': '237 236 246', // #EDECF6 — cool white
+  'content-secondary': '152 149 180', // #9895B4
+  'content-tertiary': '98 95 124', // #625F7C
+  'content-inverse': '14 13 22',
+  'border-subtle': '38 36 54', //   #262436
+  'border-default': '52 50 72', //  #343248
   'border-strong': '21 233 154',
   'status-success': '34 197 94',
   'status-danger': '248 113 113',
   'status-warning': '245 158 11',
   'status-info': '56 189 248',
-  divider: '86 89 108', //          #56596C
+  divider: '86 83 110', //          #56536E
+  // Spark's mark is white on dark, black on light.
+  'network-spark': '255 255 255', // #FFFFFF
 }
 
 /** Light mode — emitted under `.light`. */
 export const appSemanticLight: AppSemanticChannels = {
-  // Cards = white on a cool-gray page for clear depth.
-  'surface-base': '218 220 234', // #DADCEA — sidebar/deep backgrounds
-  'surface-raised': '234 236 248', // #EAECF8 — page body bg
+  // Cards = white on a near-white, faintly cool page: depth from shadow, not tint.
+  'surface-base': '243 243 247', // #F3F3F7 — sidebar/deep backgrounds
+  'surface-raised': '248 248 251', // #F8F8FB — page body bg
   'surface-overlay': '255 255 255', // #FFFFFF — card bg (white)
-  'surface-elevated': '246 247 253', // #F6F7FD — sections inside cards
-  'surface-high': '228 230 246', // #E4E6F6 — hover/active highlights
+  'surface-elevated': '250 250 252', // #FAFAFC — sections inside cards
+  'surface-high': '239 239 244', // #EFEFF4 — hover/active highlights
+  'surface-inset': '214 213 228', // #D6D5E4 — at /40 on white, #EFEFF4
   primary: '23 181 129', //         #17B581
   'primary-emphasis': '19 138 100', // #138A64
-  'primary-foreground': '255 255 255',
+  'primary-foreground': '14 13 22', // #0E0D16 — dark ink on green (white was 2.6:1)
   secondary: '111 50 255', //       #6F32FF
-  'secondary-emphasis': '90 31 229', // #5A1FE5
+  'secondary-emphasis': '84 32 204', // #5420CC
   'secondary-foreground': '255 255 255',
-  'content-primary': '18 19 30', //  #12131E
-  'content-secondary': '70 74 105', // #464A69
-  'content-tertiary': '118 122 152', // #767A98
+  'secondary-content': '84 32 204', // #5420CC — violet text/icons on light
+  'content-primary': '21 18 42', //  #15122A
+  'content-secondary': '79 74 117', // #4F4A75
+  'content-tertiary': '122 116 160', // #7A74A0
   'content-inverse': '255 255 255',
-  'border-subtle': '218 220 238', // #DADCEE
-  'border-default': '200 203 224', // #C8CBE0
+  'border-subtle': '236 236 241', // #ECECF1
+  'border-default': '222 222 230', // #DEDEE6
   'border-strong': '23 181 129',
   'status-success': '22 163 74',
   'status-danger': '220 38 38',
   'status-warning': '217 119 6',
   'status-info': '2 132 199',
-  divider: '200 203 224', //         #C8CBE0
+  // Darker than border-default: rules are drawn at 35–60 % on surfaces as
+  // light as #F3F3F7, where #DEDEE6 did not show.
+  divider: '196 196 208', //         #C4C4D0
+  'network-spark': '13 12 20', //   #0D0C14
 }
 
 /** Fixed-alpha tinted intent surfaces (e.g. `bg-status-danger-subtle`). */

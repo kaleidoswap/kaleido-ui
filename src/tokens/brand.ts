@@ -54,10 +54,11 @@ type ThemedForegrounds = Record<ThemedForegroundToken, string>
  */
 export const themedForeground: { light: ThemedForegrounds; dark: ThemedForegrounds } = {
   light: {
-    // Brand green darkened in the mint's own hue until it reads on white.
-    brand: '#086E46',
+    // Brand green in the mint's own hue, as light as it goes and still
+    // clears 4.5:1 on every light surface (4.63:1 on #EFEFF4).
+    brand: '#097B4E',
     'accent-send-fg': '#6428F0',
-    'accent-recv-fg': '#086E46',
+    'accent-recv-fg': '#097B4E',
     'success-fg': '#076A43', // a shade under brand: it also sits on a 14% mint tint
     // Tailwind -800 shades: -700 measured only 3.7 to 4.3:1 on the light ramp.
     'warning-fg': '#92400E',
@@ -67,7 +68,7 @@ export const themedForeground: { light: ThemedForegrounds; dark: ThemedForegroun
     'network-lightning-fg': '#854D0E',
     'network-liquid-fg': '#115E59',
     'network-arkade-fg': '#5B21B6',
-    'network-spark-fg': '#9A3412',
+    'network-spark-fg': '#0D0C14', // Spark is black on light
     'network-rgb-fg': '#991B1B',
     'network-taproot-fg': '#464A69',
   },
@@ -77,7 +78,7 @@ export const themedForeground: { light: ThemedForegrounds; dark: ThemedForegroun
     'accent-recv-fg': colors.primary,
     'success-fg': colors.success,
     'warning-fg': colors.warning,
-    // danger #F94040 and info #4290FF are 3.0:1 and 3.2:1 on the elevated
+    // danger #E53535 and info #4290FF are 3.0:1 and 3.2:1 on the elevated
     // surface. Same hues, lifted until they clear 4.5:1.
     'danger-fg': '#FF9999',
     'info-fg': '#8BBDFF',
@@ -87,7 +88,7 @@ export const themedForeground: { light: ThemedForegrounds; dark: ThemedForegroun
     // The rgb and arkade *-text tokens dip under 4.5:1 on the elevated
     // surface (3.9 and 4.1), so their -fg twins are lifted a step.
     'network-arkade-fg': '#B49CF5',
-    'network-spark-fg': colors.networkText.spark,
+    'network-spark-fg': colors.network.spark, // and white on dark
     'network-rgb-fg': '#F09490',
     'network-taproot-fg': colors.networkText.taproot,
   },
@@ -97,23 +98,22 @@ export const themedForeground: { light: ThemedForegrounds; dark: ThemedForegroun
 export const themedForegroundOrder = Object.keys(themedForeground.light) as ThemedForegroundToken[]
 
 /**
- * Per-theme brand depth: the coloured page wash, the brand gradient (for
- * large display text) and the accent glows for send / receive panels and the
- * hero card. Emitted as raw custom properties (`--gradient-page-brand`,
- * `--brand-gradient`, `--glow-send`, …) and surfaced as `bg-page-brand`,
- * `text-gradient-brand`, `shadow-glow-send`, `shadow-glow-recv` and
- * `shadow-glow-card`.
+ * Per-theme brand depth: the coloured page wash and the brand gradient (for
+ * large display text). Emitted as raw custom properties
+ * (`--gradient-page-brand`, `--brand-gradient`) and surfaced as `bg-page-brand`
+ * and `text-gradient-brand`.
  */
 export const brandDepth = {
   light: {
-    /** The same wash as the dark one, as soft tints on the lavender page. */
+    /** The same wash as the dark one, as soft tints on the near-white page. */
     pageWash:
       'radial-gradient(ellipse 70% 45% at 50% -5%, rgba(21, 233, 154, 0.16) 0%, transparent 70%), radial-gradient(ellipse 50% 32% at 0% 68%, rgba(124, 58, 237, 0.12) 0%, transparent 70%)',
-    /** Darker stops, each 4.5:1 or better on the light page. */
-    gradient: 'linear-gradient(90deg, #086E46 0%, #0369A1 55%, #6D28D9 100%)',
-    glowSend: '0 0 0 1px rgba(100, 40, 240, 0.22), 0 12px 32px -14px rgba(100, 40, 240, 0.4)',
-    glowRecv: '0 0 0 1px rgba(8, 110, 70, 0.2), 0 12px 32px -14px rgba(8, 110, 70, 0.35)',
-    glowCard: '0 0 0 1px rgba(20, 20, 60, 0.06), 0 30px 80px -40px rgba(100, 40, 240, 0.28)',
+    /**
+     * Darker stops, each the lightest of its hue that clears 3:1 on every
+     * light surface: the gradient is for headline and display type, which
+     * WCAG measures as large text.
+     */
+    gradient: 'linear-gradient(90deg, #0B9B63 0%, #048EDA 55%, #9D6FE6 100%)',
   },
   dark: {
     /** Mint from the top, violet from the lower left, a little sky on the right. */
@@ -121,15 +121,8 @@ export const brandDepth = {
       'radial-gradient(ellipse 70% 45% at 50% -5%, rgba(21, 233, 154, 0.13) 0%, transparent 70%), radial-gradient(ellipse 50% 32% at 0% 68%, rgba(124, 58, 237, 0.16) 0%, transparent 70%), radial-gradient(ellipse 45% 40% at 100% 50%, rgba(56, 189, 248, 0.07) 0%, transparent 70%)',
     /** Large text only: each stop clears 3:1 on the dark base. */
     gradient: 'linear-gradient(90deg, #15E99A 0%, #38BDF8 55%, #A78BFA 100%)',
-    glowSend: '0 0 0 1px rgba(167, 139, 250, 0.28), 0 12px 40px -12px rgba(124, 58, 237, 0.55)',
-    glowRecv: '0 0 0 1px rgba(21, 233, 154, 0.22), 0 12px 40px -12px rgba(21, 233, 154, 0.35)',
-    glowCard:
-      '0 0 0 1px rgba(255, 255, 255, 0.05), 0 40px 100px -40px rgba(124, 58, 237, 0.35), 0 -20px 80px -50px rgba(21, 233, 154, 0.3)',
   },
 } as const
-
-/** Shadow utility names backed by `brandDepth` (`shadow-glow-send`, …). */
-export const brandGlowShadows = ['glow-send', 'glow-recv', 'glow-card'] as const
 
 /**
  * The halo backdrop: three large, heavily blurred blobs that drift slowly

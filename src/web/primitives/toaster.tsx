@@ -10,6 +10,7 @@ import {
 import { useToast } from '../hooks/use-toast'
 import { useCopyToClipboard } from '../hooks/use-copy-to-clipboard'
 import { Icon } from './icon'
+import { IconButton } from './icon-button'
 
 function toPlainText(node: any): string {
   if (node == null || node === false) return ''
@@ -50,9 +51,9 @@ function ToastWithProgress({ id, title, description, action, duration = 4000, va
 
   const getIcon = () => {
     if (variant === 'destructive') {
-      return <Icon name="error" size="md" className="text-danger" />
+      return <Icon name="error" size="md" className="text-danger-fg" />
     }
-    return <Icon name="check_circle" size="md" className="text-primary" />
+    return <Icon name="check_circle" size="md" className="text-brand" />
   }
 
   // Errors are often the thing you most need to paste into a bug report — let
@@ -81,27 +82,25 @@ function ToastWithProgress({ id, title, description, action, duration = 4000, va
       <div className="flex items-center gap-2 shrink-0">
         {action}
         {showCopy && (
-          <button
-            type="button"
+          <IconButton
+            icon={copied ? 'check' : copyFailed ? 'error' : 'content_copy'}
+            label={copyLabel}
+            size="sm"
+            variant="danger-subtle"
             onClick={copyText}
-            aria-label={copyLabel}
-            title={copyLabel}
-            className="rounded-md p-1 text-foreground/60 hover:text-foreground hover:bg-white/10 transition-colors"
-          >
-            <Icon name={copied ? 'check' : copyFailed ? 'error' : 'content_copy'} size="sm" />
-          </button>
+          />
         )}
         {showCopy && (
           <span aria-live="polite" className="sr-only">
             {copied ? 'Copied' : copyFailed ? copyLabel : ''}
           </span>
         )}
-        <ToastClose />
+        <ToastClose variant={variant} />
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10 overflow-hidden">
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-foreground/10 overflow-hidden">
         <div
           className={`h-full transition-all ease-linear ${
-            variant === 'destructive' ? 'bg-danger' : 'bg-primary'
+            variant === 'destructive' ? 'bg-danger' : 'bg-primary bg-gradient-brand'
           }`}
           style={{ width: `${progress}%` }}
         />

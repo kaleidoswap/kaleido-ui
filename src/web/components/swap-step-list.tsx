@@ -44,18 +44,18 @@ const defaultStatusLabels: Record<SwapStepStatus, string> = {
 // Status is carried by the dot's fill alone — no rings, per DESIGN.md's
 // "depth comes from the fill, not an outline".
 const dotClass: Record<SwapStepStatus, string> = {
-  done: 'bg-primary text-background',
-  active: 'bg-warning/20 text-warning',
-  pending: 'bg-muted/40 text-muted-foreground',
-  failed: 'bg-danger/20 text-danger',
-  unknown: 'bg-muted/40 text-muted-foreground',
+  done: 'bg-primary bg-gradient-primary text-background shadow-glow-primary-soft',
+  active: 'bg-secondary bg-gradient-brand text-white shadow-glow-violet',
+  pending: 'bg-secondary/15 text-secondary-content ring-1 ring-inset ring-secondary/25',
+  failed: 'bg-danger/20 text-danger-fg',
+  unknown: 'bg-foreground/8 text-muted-foreground ring-1 ring-inset ring-foreground/10',
 }
 
 const labelClass: Record<SwapStepStatus, string> = {
   done: 'text-foreground',
   active: 'text-foreground',
   pending: 'text-muted-foreground',
-  failed: 'text-danger',
+  failed: 'text-danger-fg',
   unknown: 'text-foreground',
 }
 
@@ -79,7 +79,12 @@ const labelClass: Record<SwapStepStatus, string> = {
 export function SwapStepList({ steps, connector = true, statusLabels, className }: SwapStepListProps) {
   const labels = { ...defaultStatusLabels, ...statusLabels }
   return (
-    <div data-slot="swap-step-list" className={cn('flex flex-col', !connector && 'gap-3', className)}>
+    // A checklist's items stand alone, so a hairline rule separates them where
+    // a flow has its rail.
+    <div
+      data-slot="swap-step-list"
+      className={cn('flex flex-col', !connector && 'divide-y divide-divider/35', className)}
+    >
       {steps.map((step, index) => {
         const isLast = index === steps.length - 1
         return (
@@ -87,7 +92,7 @@ export function SwapStepList({ steps, connector = true, statusLabels, className 
             key={step.id}
             data-slot="swap-step"
             data-status={step.status}
-            className="flex gap-3"
+            className={cn('flex gap-3', !connector && 'py-3 first:pt-0 last:pb-0')}
           >
             <div className="flex w-5 shrink-0 flex-col items-center">
               <span
@@ -113,7 +118,7 @@ export function SwapStepList({ steps, connector = true, statusLabels, className 
                   aria-hidden
                   className={cn(
                     'mt-1 w-0.5 flex-1',
-                    step.status === 'done' ? 'bg-primary/60' : 'bg-muted/40',
+                    step.status === 'done' ? 'bg-primary/60' : step.status === 'active' ? 'bg-secondary/40' : 'bg-secondary/15',
                   )}
                 />
               )}

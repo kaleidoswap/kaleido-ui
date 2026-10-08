@@ -14,16 +14,15 @@ export {
 } from './app-semantic'
 export { fontFamily, typeScale, fontWeight, letterSpacing, iconSize, iconBoxSize } from './typography'
 export { radius } from './radius'
-export { sizing } from './sizing'
+export { sizing, spacingUnit } from './sizing'
 export { layer } from './layers'
 export { shadow } from './shadows'
-export { gradient } from './gradients'
+export { gradient, gradientLight } from './gradients'
 export {
   brandMark,
   themedForeground,
   themedForegroundOrder,
   brandDepth,
-  brandGlowShadows,
   halo,
   brandTheme,
   type ThemedForegroundToken,

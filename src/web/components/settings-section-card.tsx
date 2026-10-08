@@ -3,6 +3,8 @@ import { cn } from '../utils/cn'
 import { eyebrow } from '../utils/type-roles'
 
 export interface SettingsSectionCardProps {
+  /** Icon shown in a tile before the title, matching SettingsTile and SettingsSelectorRow. */
+  icon?: ReactNode
   title: ReactNode
   description?: ReactNode
   badge?: ReactNode
@@ -12,6 +14,7 @@ export interface SettingsSectionCardProps {
 }
 
 export function SettingsSectionCard({
+  icon,
   title,
   description,
   badge,
@@ -20,11 +23,18 @@ export function SettingsSectionCard({
   bodyClassName,
 }: SettingsSectionCardProps) {
   return (
-    <section className={cn('space-y-4 rounded-xl bg-card/70 p-4', className)}>
+    <section className={cn('space-y-4 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-4 shadow-card-secondary', className)}>
       <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0 flex-1">
-          <h2 className="text-body font-bold text-foreground">{title}</h2>
-          {description && <p className="mt-1 text-caption text-muted-foreground">{description}</p>}
+        <div className="flex min-w-0 flex-1 items-start gap-3">
+          {icon && (
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content">
+              {icon}
+            </div>
+          )}
+          <div className="min-w-0 flex-1">
+            <h2 className="text-body font-bold text-foreground">{title}</h2>
+            {description && <p className="mt-1 text-caption text-muted-foreground">{description}</p>}
+          </div>
         </div>
         {badge}
       </div>
@@ -51,16 +61,17 @@ export interface ToneBadgeProps {
 }
 
 const badgeToneClass: Record<NonNullable<ToneBadgeProps['tone']>, string> = {
-  primary: 'border-primary/30 bg-primary/10 text-primary',
-  info: 'border-info/30 bg-info/10 text-info',
-  warning: 'border-warning/30 bg-warning/10 text-warning',
-  danger: 'border-danger/30 bg-danger/10 text-danger',
-  success: 'border-success/30 bg-success/10 text-success',
+  primary: 'bg-primary/10 text-brand',
+  info: 'bg-secondary/15 text-secondary-content',
+  warning: 'bg-warning/10 text-warning-fg',
+  danger: 'bg-danger/10 text-danger-fg',
+  success: 'bg-success/10 text-success-fg',
   // Theme tokens, not white alphas: on the light theme a white-on-white badge
-  // disappears. On dark these resolve to the same 10% / 5% / 55% white.
-  muted: 'border-border bg-foreground/5 text-muted-foreground',
-  secondary: 'border-secondary/30 bg-secondary/10 text-secondary',
-  outline: 'border-border bg-transparent text-foreground',
+  // disappears. On dark these resolve to the same 7% / 55% white.
+  muted: 'bg-foreground/[0.07] text-muted-foreground',
+  secondary: 'bg-secondary/10 text-secondary-content',
+  // The one badge that is its edge, like the outline Button.
+  outline: 'border border-border bg-transparent text-foreground',
 }
 
 export function ToneBadge({ children, tone = 'muted', case: letterCase = 'upper', className }: ToneBadgeProps) {
@@ -68,7 +79,7 @@ export function ToneBadge({ children, tone = 'muted', case: letterCase = 'upper'
     <span
       data-slot="tone-badge"
       className={cn(
-        'rounded-full border px-2.5 py-1',
+        'rounded-full px-2.5 py-1',
         letterCase === 'upper' ? eyebrow : 'text-caption font-semibold tabular-nums',
         badgeToneClass[tone],
         className,

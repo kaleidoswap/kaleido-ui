@@ -83,7 +83,7 @@ test('ninety periods fit: the SVG is a percentage width with a measured viewBox'
 test('colour comes from theme custom properties, and series stay apart without it', () => {
   const markup = chart(30)
   assert.doesNotMatch(markup, /(fill|stroke)="#/, 'a literal colour in the chart')
-  assert.match(markup, /data-series="completed"[^>]*fill="var\(--primary\)"/)
+  assert.match(markup, /data-series="completed"[^>]*fill="var\(--series-1\)"/)
   // The second series is hatched: a texture, not only a hue.
   assert.match(markup, /data-series="failed"[^>]*fill="url\(#trend-[^"]*-hatch-1\)"/)
   assert.match(markup, /<pattern [^>]*patternTransform="rotate\(45\)"/)
@@ -131,19 +131,24 @@ test('the plot is focusable and the arrow keys walk the periods, announced live'
   await interact(() => void key(plot, 'Home'))
   assert.match(readout.textContent!, /^Day 1/)
   await interact(() => void key(plot, 'Escape'))
-  assert.match(readout.textContent!, /^Hover a bar/)
+  assert.equal(readout.textContent, '', 'Escape clears the period, with no hint left behind')
+  assert.equal(view.container.querySelector('[data-slot="chart-tooltip"]'), null)
   view.unmount()
 })
 
-test('hovering a period shows its figures', async () => {
+test('hovering a period shows its figures in a tooltip, as the area chart does', async () => {
   const view = mount(
     h(TrendChart, { points: points(5), series: SERIES, label: 'Swap trend', scaleLabel: 'Swaps per day' }),
   )
+  assert.equal(view.container.querySelector('[data-slot="chart-tooltip"]'), null, 'no tooltip at rest')
   const band = view.container.querySelector('[data-period="2026-06-003"] rect[fill="transparent"]')!
   await interact(() => {
     // React listens for pointerenter through pointerover on the root.
     band.dispatchEvent(new window.MouseEvent('pointerover', { bubbles: true }))
   })
+  const tooltip = view.container.querySelector('[data-slot="chart-tooltip"]')
+  assert.ok(tooltip, 'no tooltip on hover')
+  assert.match(tooltip.textContent!, /^Day 4/)
   assert.match(view.container.querySelector('[data-slot="trend-chart-readout"]')!.textContent!, /^Day 4/)
   view.unmount()
 })
@@ -161,7 +166,8 @@ test('the viewBox follows the measured container width', async () => {
     h(TrendChart, { points: points(90), series: SERIES, label: 'Swap trend', scaleLabel: 'Swaps per day' }),
   )
   await interact(() => notify?.([{ contentRect: { width: 480 } }]))
-  const svg = view.container.querySelector('svg[viewBox]')!
+  // The plot's own SVG: the header's view toggle draws icon SVGs too.
+  const svg = view.container.querySelector('[role="group"] > svg[viewBox]')!
   assert.equal(svg.getAttribute('width'), '100%')
   assert.equal(svg.getAttribute('viewBox'), '0 0 480 220')
   view.unmount()

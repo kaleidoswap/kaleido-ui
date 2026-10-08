@@ -11,15 +11,15 @@ export const fontFamily = {
  * Type scale — [fontSize, lineHeight]
  */
 export const typeScale = {
-  mini: ['9px', '12px'],
-  xxs: ['10px', '14px'],
-  tiny: ['11px', '16px'],
-  caption: ['13px', '18px'],
-  body: ['15px', '22px'],
-  subhead: ['17px', '24px'],
-  title: ['20px', '28px'],
-  headline: ['28px', '34px'],
-  display: ['36px', '40px'],
+  mini: ['10px', '13px'],
+  xxs: ['11px', '15px'],
+  tiny: ['12px', '17px'],
+  caption: ['14px', '20px'],
+  body: ['16px', '24px'],
+  subhead: ['18px', '26px'],
+  title: ['22px', '30px'],
+  headline: ['30px', '36px'],
+  display: ['38px', '44px'],
 } as const
 
 export const fontWeight = {

@@ -2,6 +2,7 @@ import * as React from 'react'
 import * as SelectPrimitive from '@radix-ui/react-select'
 import { Icon } from './icon'
 import { cn } from '../utils/cn'
+import { fieldSurface } from '../utils/field-styles'
 
 const Select = SelectPrimitive.Root
 const SelectGroup = SelectPrimitive.Group
@@ -22,12 +23,13 @@ const SelectTrigger = React.forwardRef<
       'group flex items-center justify-between transition-all outline-none',
       compact
         ? [
-            'w-auto gap-1 rounded-2xl bg-white/[0.09] px-2 py-1.5 text-caption leading-none backdrop-blur-md',
-            'hover:bg-white/[0.13] data-[state=open]:bg-white/[0.13]',
+            'w-auto gap-1 rounded-2xl bg-foreground/[0.09] px-2 py-1.5 text-caption leading-none shadow-raised backdrop-blur-md',
+            'hover-gradient-violet data-[state=open]:bg-secondary/20 data-[state=open]:text-secondary-content',
           ]
         : [
-            'w-full gap-3 rounded-xl border border-transparent bg-white/[0.04] px-4 py-3 text-left text-body',
-            'hover:border-primary/30 hover:bg-white/[0.06] data-[state=open]:border-primary/30',
+            'w-full gap-3 px-4 py-3 text-left text-body',
+            fieldSurface,
+            'data-[state=open]:ring-primary/50',
           ],
       'focus:ring-1 focus:ring-primary/50',
       'disabled:cursor-not-allowed disabled:opacity-50',
@@ -41,7 +43,9 @@ const SelectTrigger = React.forwardRef<
         name="expand_more"
         className={cn(
           'shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180',
-          compact ? 'text-icon-xs text-white/40' : 'text-icon-lg text-muted-foreground',
+          compact
+            ? 'text-icon-xs text-foreground/55 group-data-[state=open]:text-secondary-content'
+            : 'text-icon-lg text-muted-foreground group-hover:text-secondary-content group-data-[state=open]:text-secondary-content',
         )}
       />
     </SelectPrimitive.Icon>
@@ -57,9 +61,9 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        'relative min-w-[8rem] overflow-hidden rounded-2xl bg-popover/95 p-2 shadow-xl backdrop-blur',
+        'relative min-w-[8rem] overflow-hidden rounded-2xl bg-popover/95 bg-gradient-card p-2 shadow-popover backdrop-blur',
         'z-[var(--z-popover)]',
-        position === 'popper' && 'w-[var(--radix-select-trigger-width)]',
+        position === 'popper' && 'w-max min-w-[var(--radix-select-trigger-width)]',
         className
       )}
       position={position}
@@ -78,7 +82,7 @@ const SelectLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Label
     ref={ref}
-    className={cn('px-3 py-1.5 text-caption font-semibold text-muted-foreground', className)}
+    className={cn('px-3 py-1.5 text-caption font-semibold text-secondary-content/80', className)}
     {...props}
   />
 ))
@@ -95,9 +99,9 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex w-full cursor-pointer select-none items-center justify-between rounded-xl px-3 py-3 text-body outline-none transition-colors',
-      'data-[highlighted]:bg-white/[0.06]',
-      'data-[state=checked]:bg-primary/20 data-[state=checked]:text-primary',
+      'relative flex w-full cursor-pointer whitespace-nowrap select-none items-center justify-between rounded-xl px-3 py-3 text-body outline-none transition-colors',
+      'data-[highlighted]:bg-secondary/15',
+      'data-[state=checked]:bg-primary/10 data-[state=checked]:font-semibold data-[state=checked]:ring-1 data-[state=checked]:ring-inset data-[state=checked]:ring-primary/40 data-[state=checked]:text-brand',
       'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       className
     )}
@@ -110,7 +114,7 @@ const SelectItem = React.forwardRef<
       )}
     </div>
     <SelectPrimitive.ItemIndicator>
-      <Icon name="check" className="text-icon-md text-primary" />
+      <Icon name="check" className="text-icon-md text-brand" />
     </SelectPrimitive.ItemIndicator>
   </SelectPrimitive.Item>
 ))

@@ -2,11 +2,13 @@
  * ModeToggle — round button that flips light/dark.
  *
  * Headless-ish: you supply the glyph via `icon` (gets the current mode + themed
- * color + size) so the app keeps using its own icon set.
+ * color + size) so the app keeps using its own icon set. Styled as a raised
+ * violet-tinted control.
  */
 import React from 'react'
 import { Pressable, View } from 'react-native'
 import { useKaleidoTheme } from '../theme-context'
+import { kaleidoShadow } from '../theme'
 import type { ThemeMode } from '../../tokens/theme'
 
 export interface ModeToggleProps {
@@ -30,15 +32,15 @@ export function ModeToggle({ icon, size = 40, onToggle }: ModeToggleProps) {
         width: size,
         height: size,
         borderRadius: size / 2,
-        backgroundColor: theme.surface.raised,
+        backgroundColor: pressed ? theme.violetSurface : theme.surface.raised,
         borderWidth: 1,
-        borderColor: theme.border.subtle,
+        borderColor: theme.violetBorder,
         alignItems: 'center',
         justifyContent: 'center',
-        opacity: pressed ? 0.85 : 1,
+        ...kaleidoShadow(theme, 'raised'),
       })}
     >
-      <View>{icon(mode, theme.text.primary, Math.round(size * 0.5))}</View>
+      <View>{icon(mode, theme.violetText, Math.round(size * 0.5))}</View>
     </Pressable>
   )
 }

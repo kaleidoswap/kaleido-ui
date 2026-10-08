@@ -1,8 +1,12 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
+import { ScrollArea } from '../primitives/scroll-area'
 import { cn } from '../utils/cn'
+import { AlertBanner } from './alert-banner'
 import { NostrNetworkIcon, RgbNetworkIcon } from './network-icon'
+import { eyebrow } from '../utils/type-roles'
+import { IconButton } from '../primitives/icon-button'
 
 export type AccountSettingsProtocol = 'RGB' | 'SPARK' | 'ARKADE' | 'NOSTR'
 export type AccountSettingsNetwork = 'mainnet' | 'testnet' | 'regtest' | 'signet'
@@ -34,28 +38,28 @@ export function getAccountNetworkUi(network: AccountSettingsNetwork) {
   if (network === 'mainnet') {
     return {
       label,
-      badgeClassName: 'bg-success/12 text-success',
-      bannerClassName: 'bg-success/10 text-success',
+      badgeClassName: 'bg-success/12 text-success-fg',
+      bannerClassName: 'bg-success/10 text-success-fg',
     }
   }
   if (network === 'regtest') {
     return {
       label,
-      badgeClassName: 'bg-danger/12 text-danger',
-      bannerClassName: 'bg-danger/10 text-danger',
+      badgeClassName: 'bg-danger/12 text-danger-fg',
+      bannerClassName: 'bg-danger/10 text-danger-fg',
     }
   }
   return {
     label,
-    badgeClassName: 'bg-warning/12 text-warning',
-    bannerClassName: 'bg-warning/10 text-warning',
+    badgeClassName: 'bg-warning/12 text-warning-fg',
+    bannerClassName: 'bg-warning/10 text-warning-fg',
   }
 }
 
 export function AccountHeaderIcons({ accountId }: { accountId: AccountSettingsProtocol }) {
   if (accountId === 'RGB') {
     return (
-      <span className="flex size-10 items-center justify-center rounded-full bg-primary/15 shadow-inner">
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/15 shadow-raised">
         <RgbNetworkIcon className="size-5" />
       </span>
     )
@@ -63,22 +67,22 @@ export function AccountHeaderIcons({ accountId }: { accountId: AccountSettingsPr
 
   if (accountId === 'SPARK') {
     return (
-      <span className="flex size-10 items-center justify-center rounded-full bg-info/10 shadow-inner">
-        <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" alt="Spark" className="size-5 object-contain" />
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-info/10 shadow-raised">
+        <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" alt="Spark" className="kui-mono-icon size-5 object-contain" />
       </span>
     )
   }
 
   if (accountId === 'NOSTR') {
     return (
-      <span className="flex size-10 items-center justify-center rounded-full bg-network-arkade/10 shadow-inner">
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-network-arkade/10 shadow-raised">
         <NostrNetworkIcon className="size-5" />
       </span>
     )
   }
 
   return (
-    <span className="flex size-10 items-center justify-center rounded-full bg-network-arkade/10 shadow-inner">
+    <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-network-arkade/10 shadow-raised">
       <img src="/icons/arkade/arkade-icon.svg" alt="Arkade" className="size-5 rounded-sm object-contain" />
     </span>
   )
@@ -89,17 +93,17 @@ export function getAccountStatusUi(status: 'ready' | 'offline' | 'optional' | st
     case 'ready':
       return {
         label: 'Ready',
-        className: 'bg-success/10 text-success',
+        className: 'bg-success/10 text-success-fg',
       }
     case 'offline':
       return {
         label: 'Offline',
-        className: 'bg-warning/10 text-warning',
+        className: 'bg-warning/10 text-warning-fg',
       }
     default:
       return {
         label: 'Optional',
-        className: 'bg-white/[0.05] text-white/55',
+        className: 'bg-secondary/15 text-secondary-content',
       }
   }
 }
@@ -122,7 +126,7 @@ export function AccountNetworkSelector({
       role="radiogroup"
       aria-label="Network"
       className={cn(
-        'grid auto-cols-fr grid-flow-col gap-1 rounded-2xl bg-black/30 p-1 shadow-inner',
+        'grid auto-cols-fr grid-flow-col gap-1 rounded-2xl bg-muted p-1 shadow-inner',
         disabled && 'opacity-60'
       )}
     >
@@ -138,10 +142,10 @@ export function AccountNetworkSelector({
             disabled={disabled}
             onClick={() => onChange(network)}
             className={cn(
-              'rounded-xl px-3 py-2.5 text-mini font-bold uppercase tracking-eyebrow transition-all',
+              'rounded-xl px-3 py-2.5 transition-all', eyebrow,
               selected
-                ? `${ui.badgeClassName} shadow-inner`
-                : 'text-white/55 hover:bg-white/[0.04] hover:text-white'
+                ? `${ui.badgeClassName} shadow-raised`
+                : 'text-muted-foreground hover-gradient-violet hover:text-secondary-content'
             )}
           >
             {ui.label}
@@ -225,18 +229,16 @@ export function AccountSettingsShell({
           every other settings page uses). */}
       <header className="flex h-14 shrink-0 items-center gap-2 px-2">
         {onBack && (
-          <Button type="button" variant="ghost" size="icon-xl" onClick={onBack} aria-label="Go back">
-            <Icon name="arrow_back" size="xl" />
-          </Button>
+          <IconButton icon="arrow_back" label="Go back" size="lg" onClick={onBack} />
         )}
         <AccountHeaderIcons accountId={accountId} />
         <h1 className="text-subhead font-bold text-foreground">{title}</h1>
       </header>
 
-      <main className="flex-1 space-y-6 overflow-y-auto px-5 pb-28 pt-2">
+      <ScrollArea className="flex-1" viewportAs="main" viewportClassName="space-y-6 px-5 pb-28 pt-2">
         {subtitle && <p className="text-caption text-muted-foreground">{subtitle}</p>}
         {children}
-      </main>
+      </ScrollArea>
     </div>
   )
 }
@@ -245,15 +247,16 @@ export function AccountInfoGrid({ items }: { items: Array<{ label: string; value
   return (
     <div className="grid gap-3 sm:grid-cols-2">
       {items.map((item) => (
-        <div key={item.label} className="rounded-xl bg-black/20 p-3 text-caption">
+        <div key={item.label} className="rounded-xl kui-well p-3 text-caption">
           <p className="text-muted-foreground">{item.label}</p>
-          <div className="mt-1 break-all text-white/90">{item.value}</div>
+          <div className="mt-1 break-words text-foreground/90">{item.value}</div>
         </div>
       ))}
     </div>
   )
 }
 
+/** An account's notice: the Alert Banner, `info` by default and `warning` for a caution. */
 export function AccountNotice({
   tone = 'default',
   children,
@@ -261,20 +264,10 @@ export function AccountNotice({
   tone?: 'default' | 'warning'
   children: ReactNode
 }) {
-  return (
-    <div
-      className={cn(
-        'rounded-xl px-3 py-3 text-caption',
-        tone === 'warning'
-          ? 'bg-warning/10 text-warning'
-          : 'bg-black/20 text-white/80'
-      )}
-    >
-      {children}
-    </div>
-  )
+  return <AlertBanner variant={tone === 'warning' ? 'warning' : 'info'}>{children}</AlertBanner>
 }
 
+/** A network's notice: the Alert Banner in the tone of that network — success on mainnet, error on regtest, warning on the other test networks. */
 export function AccountNetworkNotice({
   network,
   children,
@@ -282,11 +275,8 @@ export function AccountNetworkNotice({
   network: AccountSettingsNetwork
   children: ReactNode
 }) {
-  return (
-    <div className={cn('rounded-xl px-3 py-3 text-caption', getAccountNetworkUi(network).bannerClassName)}>
-      {children}
-    </div>
-  )
+  const variant = network === 'mainnet' ? 'success' : network === 'regtest' ? 'error' : 'warning'
+  return <AlertBanner variant={variant}>{children}</AlertBanner>
 }
 
 export function AccountStatusPills({
@@ -310,7 +300,7 @@ export function AccountStatusPills({
     <div className="flex flex-wrap items-center gap-2">
       <span
         className={cn(
-          'rounded-full px-2.5 py-1 text-mini font-bold uppercase tracking-eyebrow',
+          'rounded-full px-2.5 py-1', eyebrow,
           statusUi.className
         )}
       >
@@ -319,7 +309,7 @@ export function AccountStatusPills({
       {!hideNetworkChip && (
         <span
           className={cn(
-            'rounded-full px-2.5 py-1 text-mini font-bold uppercase tracking-eyebrow',
+            'rounded-full px-2.5 py-1', eyebrow,
             networkUi.badgeClassName
           )}
         >
@@ -332,7 +322,7 @@ export function AccountStatusPills({
 
 export function SectionTitle({ children }: { children: ReactNode }) {
   return (
-    <h3 className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">{children}</h3>
+    <h3 className={cn('text-muted-foreground', eyebrow)}>{children}</h3>
   )
 }
 
@@ -349,22 +339,22 @@ export function InlineAction({
 }) {
   const className =
     accent === 'purple'
-      ? 'bg-network-arkade/10 text-network-arkade hover:bg-network-arkade/15'
+      ? 'bg-network-arkade/10 text-network-arkade-fg hover:bg-network-arkade/15'
       : accent === 'blue'
-        ? 'bg-info/10 text-info hover:bg-info/15'
-        : 'bg-primary/10 text-primary hover:bg-primary/15'
+        ? 'bg-info/10 text-info-fg hover:bg-info/15'
+        : 'bg-primary/10 text-brand hover:bg-primary/15'
 
   return (
     <button
       type="button"
       onClick={onClick}
       className={cn(
-        'flex w-full items-center justify-between rounded-xl px-3 py-3 text-left transition-colors',
+        'flex w-full items-center justify-between rounded-xl px-3 py-3 text-left shadow-raised transition-all',
         className
       )}
     >
       <div>
-        <p className="text-body font-semibold text-white">{title}</p>
+        <p className="text-body font-semibold text-foreground">{title}</p>
         <p className="mt-1 text-caption text-muted-foreground">{description}</p>
       </div>
       <Icon name="chevron_right" className="text-icon-lg" />
@@ -377,22 +367,34 @@ export function TransferRouteCard({
   summary,
   eta,
   feeHint,
+  account,
 }: {
   label: string
   summary: string
   eta: string
   feeHint: string
+  /** The account the route goes through — its logo leads the card. Without it, a generic transfer glyph. */
+  account?: AccountSettingsProtocol
 }) {
   return (
-    <div className="rounded-2xl bg-card/60 p-4 shadow-inner">
+    <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-4 shadow-card-secondary">
       <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="text-body font-bold text-white">{label}</p>
-          <p className="mt-1 text-caption text-muted-foreground">{summary}</p>
+        <div className="flex min-w-0 flex-1 items-start gap-3">
+          {account ? (
+            <AccountHeaderIcons accountId={account} />
+          ) : (
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content">
+              <Icon name="swap_horiz" size="sm" />
+            </div>
+          )}
+          <div className="min-w-0">
+            <p className="text-body font-bold text-foreground">{label}</p>
+            <p className="mt-1 text-caption text-muted-foreground">{summary}</p>
+          </div>
         </div>
         <div className="text-right">
-          <p className="text-mini font-bold uppercase tracking-eyebrow text-white/60">{eta}</p>
-          <p className="mt-1 text-tiny text-primary">{feeHint}</p>
+          <p className={cn('text-muted-foreground', eyebrow)}>{eta}</p>
+          <p className="mt-1 text-tiny text-brand">{feeHint}</p>
         </div>
       </div>
     </div>
@@ -447,8 +449,8 @@ export function AccountSettingsRow({
       type="button"
       onClick={onClick}
       className={cn(
-        'w-full rounded-2xl p-4 text-left shadow-inner transition-colors hover:brightness-110',
-        accent ? ACCOUNT_ACCENT_BG[accountId] : 'bg-white/[0.03] hover:bg-white/[0.05]'
+        'group w-full rounded-2xl p-4 text-left shadow-card-secondary transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover-soft',
+        accent ? ACCOUNT_ACCENT_BG[accountId] : 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card'
       )}
     >
       <div className="flex items-start gap-3">
@@ -457,16 +459,16 @@ export function AccountSettingsRow({
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <p className="text-body font-bold text-white">{title}</p>
+                <p className="text-body font-bold text-foreground">{title}</p>
                 {beta && (
-                  <span className="rounded-full bg-warning/15 px-1.5 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-warning">
+                  <span className={cn('rounded-full bg-warning/15 px-1.5 py-0.5 text-warning-fg', eyebrow)}>
                     Beta
                   </span>
                 )}
               </div>
               <p className="mt-1 text-caption text-muted-foreground">{description}</p>
             </div>
-            <Icon name="chevron_right" size="sm" className="text-white/40" />
+            <Icon name="chevron_right" size="sm" className="text-muted-foreground transition-colors group-hover:text-secondary-content" />
           </div>
           <div className="mt-3">
             <AccountStatusPills

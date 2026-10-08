@@ -4,10 +4,11 @@ import type { IconName } from '../primitives/icon'
 import type { ReactNode } from 'react'
 
 const variantStyles = {
-  error:   { container: 'bg-danger/40',    icon: 'text-danger',    iconName: 'error' },
-  warning: { container: 'bg-warning/40', icon: 'text-warning', iconName: 'warning' },
-  info:    { container: 'bg-info/40',   icon: 'text-info',   iconName: 'info' },
-  success: { container: 'bg-primary/8',     icon: 'text-primary/90', iconName: 'check_circle' },
+  // One tint for every tone: a 10% wash of the colour, its -fg for icon and text.
+  error:   { container: 'bg-danger/10',  icon: 'text-danger-fg',  iconName: 'error' },
+  warning: { container: 'bg-warning/10', icon: 'text-warning-fg', iconName: 'warning' },
+  info:    { container: 'bg-info/10',    icon: 'text-info-fg',    iconName: 'info' },
+  success: { container: 'bg-primary/10', icon: 'text-brand/90',  iconName: 'check_circle' },
 } as const
 
 interface AlertBannerProps {

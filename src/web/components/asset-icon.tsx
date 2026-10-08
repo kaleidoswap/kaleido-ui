@@ -19,15 +19,15 @@ const ASSET_COLORS: Record<string, string> = {
   USDC: 'bg-asset-usdc',
 }
 
+// Bundled data-URIs (protocolIcons, the same marks as the showcase's External
+// logos): a host app need not serve them, and a missing host asset would render
+// as a permanently broken image (onError bails early for local icons).
+// protocolIcons is a Partial for type reasons but these keys are always defined.
 const LOCAL_ICONS: Record<string, string> = {
-  BTC: '/icons/bitcoin/bitcoin-logo.svg',
-  ARKADE: '/icons/arkade/arkade-icon.svg',
-  // Bundled data-URIs (protocolIcons) — host apps don't serve /icons/rgb or
-  // /icons/liquid, and a missing host asset renders as a permanently broken
-  // image (onError bails early for local icons). protocolIcons is a Partial
-  // for type reasons but these keys are always defined.
+  BTC: protocolIcons.Bitcoin!,
+  ARKADE: protocolIcons.Arkade!,
   RGB: protocolIcons.RGB20!,
-  SPARK: '/icons/spark/Asterisk/Spark Asterisk White.svg',
+  SPARK: protocolIcons.Spark!,
   LIQUID: protocolIcons.Liquid!,
   'L-BTC': protocolIcons.Liquid!,
 }
@@ -59,7 +59,8 @@ export function AssetIcon({ ticker, logoUri, cdnBaseUrl, size = 40, className }:
           ? fallbackUrl || null
           : cdnUrl || fallbackUrl || null
 
-  const bgColor = ASSET_COLORS[normTicker] || 'bg-secondary'
+  // Unknown assets fall back to a brand-violet disc (gradient + white glyph).
+  const bgColor = ASSET_COLORS[normTicker] || 'bg-secondary bg-gradient-violet'
 
   if (iconUrl) {
     return (
@@ -76,7 +77,7 @@ export function AssetIcon({ ticker, logoUri, cdnBaseUrl, size = 40, className }:
           alt={`${ticker} icon`}
           width={size}
           height={size}
-          className="object-cover w-full h-full"
+          className={cn('object-cover w-full h-full', normTicker === 'SPARK' && localIcon && 'kui-mono-icon')}
           onError={() => {
             if (logoUri) {
               setFailed(false)
@@ -98,8 +99,9 @@ export function AssetIcon({ ticker, logoUri, cdnBaseUrl, size = 40, className }:
   return (
     <div
       className={cn(
-        'rounded-full flex items-center justify-center font-bold text-foreground shadow-inner',
+        'rounded-full flex items-center justify-center font-bold shadow-inner',
         bgColor,
+        ASSET_COLORS[normTicker] ? 'text-foreground' : 'text-secondary-foreground',
         className
       )}
       style={{ width: size, height: size, fontSize: size * 0.4 }}

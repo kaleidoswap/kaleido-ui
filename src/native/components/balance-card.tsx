@@ -1,8 +1,8 @@
 /**
  * BalanceCard — primary balance readout.
  *
- * Centered eyebrow + large amount + unit + fiat sub. Mode-aware; sits on the
- * dark canvas instead of a green gradient wallpaper.
+ * Centered violet eyebrow + large amount + unit + fiat sub. Mode-aware; sits
+ * on the dark canvas instead of a green gradient wallpaper.
  */
 import React from 'react'
 import { View, type ViewProps } from 'react-native'
@@ -31,7 +31,7 @@ export function BalanceCard({
   return (
     <View {...rest} style={[{ alignItems: 'center', gap: 6 }, style]}>
       {!!label && (
-        <KText variant="caption" weight="medium" tone="muted" eyebrow>
+        <KText variant="caption" weight="semibold" color={theme.violetText} eyebrow>
           {label}
         </KText>
       )}

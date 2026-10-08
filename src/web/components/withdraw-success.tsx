@@ -1,5 +1,7 @@
 import { formatAmount } from '../utils/amount-display'
 import { Icon } from '../primitives/icon'
+import { eyebrow } from '../utils/type-roles'
+import { cn } from '../utils/cn'
 
 export interface WithdrawSuccessProps {
   displayAmount: number
@@ -26,29 +28,29 @@ export function WithdrawSuccess({
   locale,
 }: WithdrawSuccessProps) {
   return (
-    <div className="relative flex min-h-screen flex-col overflow-hidden bg-background p-6 font-display text-foreground">
-      <div className="pointer-events-none absolute left-0 top-0 h-full w-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/30 to-transparent opacity-20" />
+    <div className="relative flex min-h-screen flex-col overflow-hidden bg-background bg-page-radial p-6 font-display text-foreground">
+      <div className="pointer-events-none absolute left-0 top-0 h-full w-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-secondary/40 to-transparent opacity-30" />
 
       <div className="z-10 flex flex-1 flex-col items-center justify-center">
         <div className="relative mb-8">
-          <div className="absolute inset-0 animate-pulse rounded-full bg-primary/30 blur-2xl" />
-          <div className="relative scale-110 rounded-full bg-primary p-6 text-background shadow-2xl">
+          <div className="absolute inset-0 animate-pulse rounded-full bg-secondary/30 blur-2xl" />
+          <div className="relative scale-110 rounded-full bg-primary bg-gradient-primary p-6 text-background shadow-glow-brand">
             <Icon name="check" className="text-icon-6xl" />
           </div>
         </div>
 
-        <h1 className="mb-2 text-headline font-bold">Payment Sent!</h1>
+        <h1 className="mb-2 text-headline font-bold text-gradient-brand">Payment Sent!</h1>
         <p className="max-w-xs text-center text-muted-foreground">
           Your transaction has been successfully processed.
         </p>
 
         <div className="mt-12 w-full max-w-xs space-y-4">
-          <div className="flex items-center justify-between rounded-2xl bg-card p-5 shadow-inner">
+          <div className="flex items-center justify-between rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero p-5 shadow-card">
             <span className="text-caption text-muted-foreground">Amount</span>
             <span className="text-title font-bold">
               {formatAmount(displayAmount, { locale })}{' '}
               {selectedAssetId === 'BTC' ? (
-                <span className="text-body text-primary/70">sats</span>
+                <span className="text-body text-brand/70">sats</span>
               ) : (
                 (selectedAsset?.ticker ?? 'units')
               )}
@@ -56,8 +58,8 @@ export function WithdrawSuccess({
           </div>
 
           {(txResult?.paymentHash || txResult?.payment_hash) && (
-            <div className="rounded-2xl bg-card p-5 shadow-inner">
-              <p className="mb-2 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+            <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-5 shadow-card">
+              <p className={cn('mb-2 text-muted-foreground', eyebrow)}>
                 Payment Hash
               </p>
               <p className="break-all font-mono text-caption leading-relaxed text-muted-foreground">
@@ -67,8 +69,8 @@ export function WithdrawSuccess({
           )}
 
           {txResult?.txid && (
-            <div className="rounded-2xl bg-card p-5 shadow-inner">
-              <p className="mb-2 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+            <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-5 shadow-card">
+              <p className={cn('mb-2 text-muted-foreground', eyebrow)}>
                 Transaction ID
               </p>
               <p className="break-all font-mono text-caption leading-relaxed text-muted-foreground">
@@ -86,7 +88,7 @@ export function WithdrawSuccess({
             handleReset()
             onDone()
           }}
-          className="w-full rounded-2xl bg-card py-4 text-subhead font-bold text-white transition-all hover:bg-accent active:scale-[0.98]"
+          className="w-full rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card py-4 text-subhead font-bold text-foreground shadow-card transition-all hover-gradient-violet hover:shadow-card-hover active:scale-[0.98]"
         >
           Back to Dashboard
         </button>

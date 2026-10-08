@@ -1,6 +1,7 @@
-import { useState, type ChangeEvent } from 'react'
+import { useId, useState, type ChangeEvent } from 'react'
 import { Button } from '../primitives/button'
 import { Icon } from '../primitives/icon'
+import { Label } from '../primitives/label'
 import { cn } from '../utils/cn'
 import { QrCode } from './qr-code'
 import { BottomSheet } from './bottom-sheet'
@@ -12,6 +13,8 @@ import {
   type DepositAccountId,
   type DepositNetworkKey,
 } from './deposit-ui-shared'
+import { eyebrow } from '../utils/type-roles'
+import { IconButton } from '../primitives/icon-button'
 
 export interface BtcUnifiedReceiveAddress {
   network: DepositNetworkKey
@@ -95,6 +98,8 @@ export function BtcUnifiedReceive({
   description,
   onDescriptionChange,
 }: BtcUnifiedReceiveProps) {
+  const amountId = useId()
+  const descriptionId = useId()
   const [showEdit, setShowEdit] = useState(false)
   const isQrCopied = copied === accountReceiveResult.qrValue
 
@@ -116,32 +121,23 @@ export function BtcUnifiedReceive({
 
         {/* Icon-only Surface actions: Copy, New Address, Edit (amount/description). */}
         <div className="flex items-center justify-center gap-2.5">
-          <Button
+          <IconButton
+            label={`Copy ${accountReceiveResult.qrLabel}`}
             variant="surface"
-            size="icon-xl"
-            aria-label={`Copy ${accountReceiveResult.qrLabel}`}
+            size="lg"
+            icon={isQrCopied ? 'check' : 'content_copy'}
             onClick={() => void copyToClipboard(accountReceiveResult.qrValue)}
-          >
-            <Icon name={isQrCopied ? 'check' : 'content_copy'} size="lg" />
-          </Button>
+          />
           {showRegenerate && (
-            <Button
-              variant="surface"
-              size="icon-xl"
-              aria-label="New address"
-              onClick={handleNewAddress}
-            >
-              <Icon name="refresh" size="lg" />
-            </Button>
+            <IconButton label="New address" variant="surface" size="lg" icon="refresh" onClick={handleNewAddress} />
           )}
-          <Button
+          <IconButton
+            label="Edit amount and description"
             variant="surface"
-            size="icon-xl"
-            aria-label="Edit amount and description"
+            size="lg"
+            icon="edit"
             onClick={() => setShowEdit(true)}
-          >
-            <Icon name="edit" size="lg" />
-          </Button>
+          />
         </div>
       </div>
 
@@ -155,7 +151,7 @@ export function BtcUnifiedReceive({
       )}
 
       <div className="space-y-1.5">
-        <p className="text-mini font-bold uppercase tracking-eyebrow text-white/30">
+        <p className={cn('text-muted-foreground', eyebrow)}>
           Available Addresses
         </p>
         {accountReceiveResult.addresses.map((address) => {
@@ -164,8 +160,8 @@ export function BtcUnifiedReceive({
             <div
               key={address.network}
               className={cn(
-                'group flex cursor-pointer items-center gap-2 rounded-xl bg-white/3 px-2.5 py-1.5',
-                'transition-all hover:bg-white/6 active:scale-[0.98]'
+                'group flex cursor-pointer items-center gap-2 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-2.5 py-1.5 shadow-raised',
+                'transition-all hover-gradient-violet hover:shadow-card-hover active:scale-[0.98]'
               )}
               style={{ borderLeftWidth: 3, borderLeftColor: network.color }}
               onClick={() => void copyToClipboard(address.value)}
@@ -175,13 +171,13 @@ export function BtcUnifiedReceive({
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
-                  <p className={cn('text-mini font-bold uppercase tracking-eyebrow', network.text)}>
+                  <p className={cn(eyebrow, network.text)}>
                     {address.label}
                   </p>
                   {(() => {
                     const amountLabel = formatSatsForRow(address.amountSats)
                     return amountLabel ? (
-                      <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-tiny font-bold tabular-nums text-white/70">
+                      <span className="rounded-full bg-secondary/15 px-1.5 py-0.5 text-tiny font-bold tabular-nums text-secondary-content">
                         {amountLabel}
                       </span>
                     ) : null
@@ -206,20 +202,21 @@ export function BtcUnifiedReceive({
         onClose={() => setShowEdit(false)}
       >
         <div className="space-y-4">
-          <div className="space-y-1.5">
-            <label className="text-mini font-bold uppercase tracking-eyebrow text-white/40">
+          <div className="flex flex-col gap-2">
+            <Label htmlFor={amountId}>
               Amount (optional)
-            </label>
+            </Label>
             <input
+              id={amountId}
               type="text"
               value={amount}
               onChange={handleAmountChange}
               placeholder="Any amount"
-              className="w-full rounded-xl bg-white/5 px-3 py-2.5 font-mono text-caption font-bold text-white shadow-inner transition-all placeholder:text-white/25 focus:outline focus:outline-2 focus:outline-primary/40"
+              className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-2.5 font-mono text-caption font-bold text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
               inputMode="decimal"
             />
             {amount && loading && (
-              <p className="flex items-center gap-1 text-xxs text-warning/70">
+              <p className="flex items-center gap-1 text-xxs text-warning-fg/70">
                 <Icon name="progress_activity" className="animate-spin text-icon-xxs" />
                 Updating invoice...
               </p>
@@ -227,16 +224,17 @@ export function BtcUnifiedReceive({
           </div>
 
           {onDescriptionChange && (
-            <div className="space-y-1.5">
-              <label className="text-mini font-bold uppercase tracking-eyebrow text-white/40">
+            <div className="flex flex-col gap-2">
+              <Label htmlFor={descriptionId}>
                 Description (optional)
-              </label>
+              </Label>
               <input
+                id={descriptionId}
                 type="text"
                 value={description ?? ''}
                 onChange={(event) => onDescriptionChange(event.target.value)}
                 placeholder="What's this for?"
-                className="w-full rounded-xl bg-white/5 px-3 py-2.5 text-caption text-white shadow-inner transition-all placeholder:text-white/25 focus:outline focus:outline-2 focus:outline-primary/40"
+                className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-2.5 text-caption text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
               />
             </div>
           )}

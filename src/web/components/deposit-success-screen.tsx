@@ -30,32 +30,31 @@ export function DepositSuccessScreen({
     : `Incoming deposit detected via ${networkLabel}. Funds will be available after confirmation.`
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-background font-display text-foreground">
+    <div className="flex h-screen flex-col overflow-hidden bg-background bg-page-radial font-display text-foreground">
       <div className="flex flex-1 flex-col items-center justify-center p-6 text-center">
         <div className="relative mb-8">
-          <div className="absolute inset-0 scale-150 animate-pulse rounded-full bg-primary/20 blur-2xl" />
-          <div className="relative flex size-20 items-center justify-center rounded-full bg-primary/15 shadow-sm">
-            <Icon name="check_circle" className="size-12 text-primary animate-in zoom-in-50 duration-500" />
+          <div className="absolute inset-0 scale-150 animate-pulse rounded-full bg-secondary/25 blur-2xl" />
+          <div className="relative flex size-20 items-center justify-center rounded-full bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-glow-brand">
+            <Icon name="check_circle" className="size-12 text-brand animate-in zoom-in-50 duration-500" />
           </div>
         </div>
 
-        <h1 className="mb-2 text-headline font-bold text-white">{title}</h1>
+        <h1 className="mb-2 text-headline font-bold text-gradient-brand">{title}</h1>
         <p className="mb-8 max-w-[260px] text-caption leading-relaxed text-muted-foreground">
           {subtitle}
         </p>
 
-        <div className="mb-10 flex items-center gap-3 rounded-2xl bg-card/70 px-4 py-3">
+        <div className="mb-10 flex items-center gap-3 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero px-4 py-3 shadow-card">
           <AssetIcon ticker={displayTicker} size={36} />
           <div className="text-left">
-            <p className="text-body font-bold text-white">{displayTicker}</p>
-            <p className="text-caption text-white/40">{selectedAsset?.name ?? displayTicker}</p>
+            <p className="text-body font-bold text-foreground">{displayTicker}</p>
+            <p className="text-caption text-foreground/55">{selectedAsset?.name ?? displayTicker}</p>
           </div>
           <div
             className={cn(
-              'ml-1 flex items-center gap-1 rounded-full border px-2.5 py-1 text-xxs font-bold',
+              'ml-1 flex items-center gap-1 rounded-full px-2.5 py-1 text-xxs font-bold',
               net.bg,
-              net.text,
-              net.border
+              net.text
             )}
           >
             {net.icon}

@@ -123,9 +123,6 @@ test('every per-theme foreground is emitted for both themes and mapped to a util
     assert.ok(darkBlock.includes(`--${token}: ${themedForeground.dark[token]};`), `dark --${token}`)
     assert.ok(css.includes(`--color-${token}: var(--${token});`), `utility for ${token}`)
   }
-  for (const glow of ['send', 'recv', 'card']) {
-    assert.ok(css.includes(`--shadow-glow-${glow}: var(--glow-${glow});`), `shadow-glow-${glow}`)
-  }
   assert.ok(darkBlock.includes(`--gradient-page-brand: ${brandDepth.dark.pageWash};`))
   assert.ok(darkBlock.includes(`--brand-gradient: ${brandDepth.dark.gradient};`))
   assert.match(css, /\.text-gradient-brand \{[^}]*var\(--brand-gradient\)/)
@@ -140,7 +137,7 @@ test('the brand layer is additive: existing tokens keep their values', () => {
 
 test('the opt-in brand theme swaps in the AA primary and lifted dark status colours', () => {
   assert.match(brandCss, new RegExp(`:root:not\\(\\.dark\\),\\n\\.light \\{\\n  --primary: ${brandTheme.lightPrimary};`))
-  assert.match(brandCss, /--app-primary: 8 110 70;/)
+  assert.match(brandCss, /--app-primary: 9 123 78;/)
   assert.match(brandCss, new RegExp(`--color-danger: ${brandTheme.darkDanger};`))
   assert.match(brandCss, new RegExp(`--color-info: ${brandTheme.darkInfo};`))
   // White on the light primary stays readable for filled buttons.

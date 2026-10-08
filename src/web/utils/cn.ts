@@ -1,7 +1,6 @@
 import { type ClassValue, clsx } from 'clsx'
 import { extendTailwindMerge } from 'tailwind-merge'
 
-import { brandGlowShadows } from '../../tokens/brand'
 import { radius } from '../../tokens/radius'
 import { shadow } from '../../tokens/shadows'
 import { iconSize, letterSpacing, typeScale } from '../../tokens/typography'
@@ -32,7 +31,7 @@ const radii = Object.keys(radius).filter((key) =>
 )
 
 /** Every `--shadow-*` token, plus the per-theme brand glows. */
-const shadows = [...Object.keys(shadow).map(camelToKebab), ...brandGlowShadows]
+const shadows = Object.keys(shadow).map(camelToKebab)
 
 const roundedGroups = [
   'rounded',
@@ -52,10 +51,33 @@ const roundedGroups = [
   'rounded-bl',
 ] as const
 
-const twMerge = extendTailwindMerge({
+/**
+ * The gradient classes in kaleido-ui/css are background IMAGES, but a stock
+ * tailwind-merge reads `bg-gradient-card` as a background COLOUR, so
+ * `cn('bg-card bg-gradient-card')` dropped the fill the gradient sits on.
+ * `text-gradient-brand` and `border-gradient-brand` are their own things.
+ */
+const bgImages = [
+  'gradient-brand',
+  'gradient-brand-dark',
+  'gradient-primary',
+  'gradient-violet',
+  'gradient-card',
+  'gradient-card-hero',
+  'gradient-active',
+  'gradient-headline',
+  'page-radial',
+  'page-brand',
+  'card-sheen',
+]
+
+const twMerge = extendTailwindMerge<'text-gradient' | 'border-gradient'>({
   extend: {
     classGroups: {
       'font-size': [{ text: fontSizes }],
+      'bg-image': [{ bg: bgImages }],
+      'text-gradient': ['text-gradient-brand'],
+      'border-gradient': ['border-gradient-brand'],
       tracking: [{ tracking: Object.keys(letterSpacing).map(camelToKebab) }],
       shadow: [{ shadow: shadows }],
       ...Object.fromEntries(

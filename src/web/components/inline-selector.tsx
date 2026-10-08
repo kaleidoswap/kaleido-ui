@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
-import { ScrollArea } from './scroll-area'
+import { ScrollArea } from '../primitives/scroll-area'
 
 export interface InlineSelectorOption {
   id: string
@@ -123,7 +123,7 @@ export function InlineSelector<TOption extends InlineSelectorOption>({
         <div
           ref={panelRef}
           className={cn(
-            'absolute left-0 top-full z-[var(--z-popover)] mt-2 w-full rounded-2xl bg-popover/95 p-1.5 shadow-2xl backdrop-blur-xl duration-200 animate-in fade-in slide-in-from-top-1',
+            'absolute left-0 top-full z-[var(--z-popover)] mt-2 w-full rounded-2xl bg-popover/95 bg-gradient-card p-1.5 shadow-popover backdrop-blur-xl duration-200 animate-in fade-in slide-in-from-top-1',
             panelClassName,
           )}
         >
@@ -133,7 +133,7 @@ export function InlineSelector<TOption extends InlineSelectorOption>({
           <ScrollArea className="max-h-72" viewportClassName="max-h-72">
           <div className="space-y-1">
             {options.length === 0 ? (
-              <div className="flex flex-col items-center gap-2 px-4 py-8 text-center text-caption text-white/30">
+              <div className="flex flex-col items-center gap-2 px-4 py-8 text-center text-caption text-foreground/55">
                 <Icon name="search" size="md" className="opacity-40" />
                 <span>No results</span>
               </div>
@@ -154,7 +154,9 @@ export function InlineSelector<TOption extends InlineSelectorOption>({
                     }}
                     className={cn(
                       'w-full rounded-xl text-left outline-none transition-all disabled:cursor-not-allowed disabled:opacity-50',
-                      selectedOption ? 'bg-white/15 shadow-sm' : 'hover:bg-accent',
+                      selectedOption
+                        ? 'bg-primary/10 bg-gradient-active ring-1 ring-inset ring-primary/40'
+                        : 'hover-gradient-violet',
                       optionClassName,
                     )}
                   >

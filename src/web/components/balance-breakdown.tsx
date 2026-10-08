@@ -1,7 +1,10 @@
 import { useState, type ReactNode } from 'react'
 import { ActionTile } from './action-tile'
 import { Icon } from '../primitives/icon'
-import { LiquidNetworkIcon } from './network-icon'
+import { LiquidNetworkIcon, OnchainNetworkIcon } from './network-icon'
+import { eyebrow } from '../utils/type-roles'
+import { cn } from '../utils/cn'
+import { IconButton } from '../primitives/icon-button'
 
 export interface BalanceBreakdownAsset {
   asset_id: string
@@ -105,9 +108,7 @@ export interface BalanceBreakdownProps {
 }
 
 function OnchainIcon({ className = '' }: { className?: string }) {
-  return (
-    <Icon name="link" className={className} />
-  )
+  return <OnchainNetworkIcon className={className} />
 }
 
 function ImageIcon({
@@ -175,9 +176,10 @@ export function BalanceBreakdown({
     <div className={`flex flex-col ${compact ? 'gap-2' : 'gap-3'}`}>
       <div
         data-testid="balance-breakdown-card"
-        className={`relative overflow-hidden rounded-2xl bg-card ${compact ? 'p-3.5' : 'p-5'}`}
+        className={`relative overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-card ${compact ? 'p-3.5' : 'p-5'}`}
       >
-        <div className="pointer-events-none absolute right-0 top-0 h-48 w-48 -translate-y-1/4 translate-x-1/4 rounded-full bg-white/[0.04] blur-[60px]" />
+        <div className="pointer-events-none absolute right-0 top-0 h-48 w-48 -translate-y-1/4 translate-x-1/4 rounded-full bg-secondary/25 blur-[60px] [.light_&]:bg-secondary/8" />
+        <div className="pointer-events-none absolute bottom-0 left-0 h-40 w-40 -translate-x-1/3 translate-y-1/3 rounded-full bg-primary/10 blur-[60px]" />
 
         <div className="relative z-10 flex items-start justify-between gap-3">
           <button
@@ -185,28 +187,28 @@ export function BalanceBreakdown({
             className="group flex min-w-0 flex-1 flex-col items-start text-left"
             title={`Tap to switch unit (current: ${label})`}
           >
-            <p className="mb-1 text-mini font-bold uppercase tracking-eyebrow text-white/40">
+            <p className={cn('mb-1 text-muted-foreground', eyebrow)}>
               Total Balance
             </p>
             {isLoading ? (
               <div className="mt-1 space-y-2">
-                <div className="h-9 w-36 animate-pulse rounded-lg bg-white/10" />
-                <div className="h-3 w-20 animate-pulse rounded bg-white/5" />
+                <div className="h-9 w-36 animate-pulse rounded-lg bg-foreground/10" />
+                <div className="h-3 w-20 animate-pulse rounded bg-foreground/5" />
               </div>
             ) : (
               <>
-                <div className="flex min-w-0 max-w-full flex-wrap items-baseline gap-x-1.5 gap-y-1">
-                  <span className="text-display font-black leading-[1.1] tracking-tighter tabular-nums text-white drop-shadow-sm transition-all duration-300 group-active:scale-95 group-active:text-primary">
+                <div className="flex min-w-0 max-w-full flex-wrap items-center gap-x-1.5 gap-y-1">
+                  <span className="text-display font-black leading-[1.1] tracking-tighter tabular-nums text-gradient-brand drop-shadow-sm transition-all duration-300 group-active:scale-95">
                     {balanceVisible ? numberOnly(format(totalBTC)) : '••••••'}
                   </span>
                   {unit !== 'fiat' && (
-                    <span className="inline-block rounded-md bg-white/8 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-white/45">
+                    <span className={cn('inline-block rounded-md bg-secondary/15 px-2 py-0.5 text-muted-foreground', eyebrow)}>
                       {label}
                     </span>
                   )}
                   {isPartial && (
                     <span
-                      className="inline-flex size-4 items-center justify-center rounded-full bg-white/[0.06]"
+                      className="inline-flex size-4 items-center justify-center rounded-full bg-secondary/15"
                       title="Loading remaining balances"
                     >
                       <span className="size-2 animate-spin rounded-full border border-primary/30 border-t-primary" />
@@ -214,12 +216,12 @@ export function BalanceBreakdown({
                   )}
                 </div>
                 {balanceVisible && unit !== 'fiat' && fiatTotal && (
-                  <span className="mt-1 text-caption font-medium tabular-nums text-white/45">
+                  <span className="mt-1 text-caption font-medium tabular-nums text-foreground/55">
                     {fiatTotal}
                   </span>
                 )}
                 {balanceVisible && unit === 'fiat' && totalBTC > 0 && (
-                  <span className="mt-1 text-caption font-medium tabular-nums text-white/45">
+                  <span className="mt-1 text-caption font-medium tabular-nums text-foreground/55">
                     {(totalBTC / 1e8).toFixed(8).replace(/\.?0+$/, '')}&nbsp;BTC
                   </span>
                 )}
@@ -229,30 +231,23 @@ export function BalanceBreakdown({
 
           <div className="mt-1 flex shrink-0 items-center gap-1.5">
             {onRefresh && (
-              <button
+              <IconButton
+                label="Refresh balances"
+                variant="surface"
+                size="sm"
                 onClick={onRefresh}
                 disabled={isRefreshing}
-                className="flex size-7 items-center justify-center rounded-full bg-white/[0.08] transition-all hover:bg-white/[0.12] disabled:opacity-40"
-                title="Refresh balances"
-              >
-                <Icon
-                  name="refresh"
-                  className={`text-icon-sm text-white/60${isRefreshing ? ' animate-spin' : ''}`}
-                />
-              </button>
-            )}
-            <button
-              onClick={() => setExpanded(!expanded)}
-              aria-label={expanded ? 'Collapse balance breakdown' : 'Expand balance breakdown'}
-              aria-expanded={expanded}
-              className="flex size-7 items-center justify-center rounded-full bg-white/[0.08] transition-all hover:bg-white/[0.12]"
-            >
-              <Icon
-                name={expanded ? 'expand_less' : 'expand_more'}
-                size="md"
-                className="size-7 text-white/60"
+                icon={<Icon name="refresh" aria-hidden="true" className={isRefreshing ? 'animate-spin motion-reduce:animate-none' : undefined} />}
               />
-            </button>
+            )}
+            <IconButton
+              label={expanded ? 'Collapse balance breakdown' : 'Expand balance breakdown'}
+              variant="surface"
+              size="sm"
+              aria-expanded={expanded}
+              onClick={() => setExpanded(!expanded)}
+              icon={expanded ? 'expand_less' : 'expand_more'}
+            />
           </div>
         </div>
 
@@ -261,12 +256,12 @@ export function BalanceBreakdown({
             aria-label="Bitcoin balance breakdown"
             className={`space-y-1 duration-300 animate-in fade-in slide-in-from-top-2 ${compact ? 'mt-3 pt-3' : 'mt-4 pt-4'}`}
           >
-            <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-white/30">
+            <p className={cn('mb-3 text-muted-foreground', eyebrow)}>
               Bitcoin
             </p>
             <NetworkRow
               icon={<OnchainIcon className="text-icon-sm" />}
-              iconColor="text-network-spark"
+              iconColor="text-network-spark-fg"
               dotColor="bg-network-spark"
               label={rgbBtcLabels.onchainLabel}
               sublabel={rgbBtcLabels.onchainSublabel}
@@ -287,7 +282,7 @@ export function BalanceBreakdown({
                     className="size-3.5"
                   />
                 }
-                iconColor="text-network-lightning"
+                iconColor="text-network-lightning-fg"
                 dotColor="bg-network-lightning"
                 label={lightningLabel}
                 sublabel={lightningSublabel}
@@ -304,7 +299,7 @@ export function BalanceBreakdown({
                 <ImageIcon
                   src="/icons/spark/Asterisk/Spark Asterisk White.svg"
                   alt="Spark"
-                  className="size-3.5 opacity-90"
+                  className="kui-mono-icon size-3.5 opacity-90"
                 />
               }
               iconColor=""
@@ -356,28 +351,28 @@ export function BalanceBreakdown({
 
             {tokenValueSats !== undefined && tokenValueSats > 0 && (
               <div className="mt-4 pt-1">
-                <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-white/30">
+                <p className={cn('mb-3 text-muted-foreground', eyebrow)}>
                   Token Holdings
                 </p>
-                <div className="flex items-center justify-between rounded-xl bg-white/[0.03] px-3 py-2">
+                <div className="flex items-center justify-between rounded-xl kui-well px-3 py-2 shadow-raised">
                   <div className="flex items-center gap-3">
                     <div className="h-7 w-0.5 rounded-full bg-success opacity-80" />
-                    <div className="flex size-7 items-center justify-center rounded-lg bg-white/5 text-icon-sm">
+                    <div className="flex size-7 items-center justify-center rounded-lg bg-secondary/15 text-icon-sm text-secondary-content">
                       <Icon name="payments" />
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-caption font-semibold leading-tight text-white/80">Stablecoins &amp; Tokens</span>
-                      <span className="mt-0.5 text-xxs font-medium leading-tight text-white/30">
+                      <span className="text-caption font-semibold leading-tight text-foreground/80">Stablecoins &amp; Tokens</span>
+                      <span className="mt-0.5 text-xxs font-medium leading-tight text-foreground/55">
                         Converted value in BTC
                       </span>
                     </div>
                   </div>
                   <div className="flex flex-col items-end">
-                    <span className="tabular-nums text-caption font-bold text-white">
+                    <span className="tabular-nums text-caption font-bold text-foreground">
                       {balanceVisible ? format(tokenValueSats) : '••••••'}
                     </span>
                     {balanceVisible && (
-                      <span className="mt-0.5 text-xxs tabular-nums text-white/35">
+                      <span className="mt-0.5 text-xxs tabular-nums text-foreground/55">
                         {formatFiatValue(tokenValueSats)}
                       </span>
                     )}
@@ -388,7 +383,7 @@ export function BalanceBreakdown({
 
             {accounts.RGB?.connected && nodeInfo?.pubkey && (
               <div className="mt-4 pt-1">
-                <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-white/30">
+                <p className={cn('mb-3 text-muted-foreground', eyebrow)}>
                   RLN Details
                 </p>
                 <div className="grid grid-cols-3 gap-2">
@@ -442,7 +437,7 @@ function RgbAssetsBreakdown({
 }) {
   return (
     <div className="mt-4 pt-1">
-      <p className="mb-3 text-mini font-bold uppercase tracking-eyebrow text-white/30">
+      <p className={cn('mb-3 text-muted-foreground', eyebrow)}>
         RGB Assets
       </p>
       <div className="space-y-2">
@@ -461,22 +456,22 @@ function RgbAssetsBreakdown({
                   <img src="/icons/rgb/rgb-logo.svg" alt="RGB" className="size-3.5 object-contain" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-caption font-semibold text-white/90">{asset.ticker}</span>
-                  <span className="max-w-[90px] truncate text-xxs text-white/40">{asset.name}</span>
+                  <span className="text-caption font-semibold text-foreground/90">{asset.ticker}</span>
+                  <span className="max-w-[90px] truncate text-xxs text-foreground/55">{asset.name}</span>
                 </div>
               </div>
               <div className="flex flex-col items-end text-right">
-                <span className="tabular-nums text-body font-bold text-white">
+                <span className="tabular-nums text-body font-bold text-foreground">
                   {balanceVisible ? formatRgb(total) : '••••••'}
                 </span>
                 {balanceVisible && (onChain > 0 || offChain > 0) && (
-                  <div className="mt-0.5 flex items-center gap-1 text-xxs text-white/40">
+                  <div className="mt-0.5 flex items-center gap-1 text-xxs text-foreground/55">
                     {onChain > 0 && (
-                      <span className="text-network-spark/80">{formatRgb(onChain)} on-chain</span>
+                      <span className="text-network-spark-fg/80">{formatRgb(onChain)} on-chain</span>
                     )}
-                    {onChain > 0 && offChain > 0 && <span className="text-white/20">|</span>}
+                    {onChain > 0 && offChain > 0 && <span className="text-foreground/20">|</span>}
                     {offChain > 0 && (
-                      <span className="inline-flex items-center gap-1 text-network-lightning/80">
+                      <span className="inline-flex items-center gap-1 text-network-lightning-fg/80">
                         {formatRgb(offChain)}
                         <ImageIcon
                           src="/icons/lightning/lightning.svg"
@@ -498,9 +493,9 @@ function RgbAssetsBreakdown({
 
 function StatusChip({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl bg-muted/40 px-3 py-2">
-      <div className="text-mini font-bold uppercase tracking-eyebrow text-white/30">{label}</div>
-      <div className="mt-1 truncate text-caption font-semibold text-white/80">{value}</div>
+    <div className="rounded-xl kui-well px-3 py-2">
+      <div className={cn('text-muted-foreground', eyebrow)}>{label}</div>
+      <div className="mt-1 truncate text-caption font-semibold text-foreground/80">{value}</div>
     </div>
   )
 }
@@ -537,18 +532,18 @@ function NetworkRow({
   return (
     <div
       data-testid={testId}
-      className={`flex items-center justify-between rounded-xl px-3 py-2 transition-colors ${isEmpty ? 'opacity-35' : 'bg-white/[0.03] hover:bg-accent'}`}
+      className={`flex items-center justify-between rounded-xl px-3 py-2 transition-colors ${isEmpty ? 'opacity-35' : 'bg-muted/40 shadow-raised hover-gradient-violet'}`}
     >
       <div className="flex items-center gap-3">
         <div className={`h-7 w-0.5 rounded-full ${dotColor} opacity-80`} />
         <div
-          className={`flex size-7 items-center justify-center rounded-lg bg-white/5 text-icon-sm ${iconColor}`}
+          className={`flex size-7 items-center justify-center rounded-lg bg-secondary/15 text-icon-sm ${iconColor}`}
         >
           {icon}
         </div>
         <div className="flex flex-col">
-          <span className="text-caption font-semibold leading-tight text-white/80">{label}</span>
-          <span className="mt-0.5 text-xxs font-medium leading-tight text-white/30">
+          <span className="text-caption font-semibold leading-tight text-foreground/80">{label}</span>
+          <span className="mt-0.5 text-xxs font-medium leading-tight text-foreground/55">
             {sublabel}
           </span>
         </div>
@@ -556,18 +551,18 @@ function NetworkRow({
       <div className="flex flex-col items-end">
         {isPending ? (
           <div className="flex items-center gap-1.5">
-            <div className="h-3.5 w-12 animate-pulse rounded bg-white/10" />
-            <span className="inline-flex size-3 items-center justify-center rounded-full bg-white/[0.06]">
+            <div className="h-3.5 w-12 animate-pulse rounded bg-foreground/10" />
+            <span className="inline-flex size-3 items-center justify-center rounded-full bg-secondary/15">
               <span className="size-1.5 animate-spin rounded-full border border-primary/30 border-t-primary" />
             </span>
           </div>
         ) : (
           <>
-            <span className="tabular-nums text-caption font-bold text-white">
+            <span className="tabular-nums text-caption font-bold text-foreground">
               {visible ? format(amount) : '••••••'}
             </span>
             {fiat && visible && !isEmpty && (
-              <span className="mt-0.5 text-xxs tabular-nums text-white/35">{fiat}</span>
+              <span className="mt-0.5 text-xxs tabular-nums text-foreground/55">{fiat}</span>
             )}
           </>
         )}

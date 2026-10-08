@@ -34,7 +34,6 @@ export type IconName =
   | 'download'
   | 'edit'
   | 'error'
-  | 'error_outline'
   | 'expand_less'
   | 'expand_more'
   | 'fingerprint'
@@ -98,11 +97,20 @@ export type IconName =
   | 'trending_up'
   | 'touch_app'
   | 'dark_mode'
+  | 'light_mode'
   | 'palette'
   | 'keyboard_arrow_up'
   | 'keyboard_arrow_down'
   | 'swap_calls'
   | 'progress_activity'
+  | 'bar_chart'
+  | 'stacked_bar_chart'
+  | 'show_chart'
+  | 'area_chart'
+  | 'scatter_plot'
+  | 'table_rows'
+  | 'language'
+  | 'notifications'
 
 export const outlinedMap: Record<IconName, React.FC<SVGProps<SVGSVGElement>>> = {
   'account_balance_wallet': Outlined.AccountBalanceWallet,
@@ -116,6 +124,11 @@ export const outlinedMap: Record<IconName, React.FC<SVGProps<SVGSVGElement>>> = 
   'arrow_outward': Outlined.ArrowOutward,
   'arrow_upward': Outlined.ArrowUpward,
   'autorenew': Outlined.Autorenew,
+  'bar_chart': Outlined.BarChart,
+  'stacked_bar_chart': Outlined.StackedBarChart,
+  'show_chart': Outlined.ShowChart,
+  'area_chart': Outlined.AreaChart,
+  'scatter_plot': Outlined.ScatterPlot,
   'bolt': Outlined.Bolt,
   'bug_report': Outlined.BugReport,
   'call_received': Outlined.CallReceived,
@@ -136,7 +149,6 @@ export const outlinedMap: Record<IconName, React.FC<SVGProps<SVGSVGElement>>> = 
   'download': Outlined.Download,
   'edit': Outlined.Edit,
   'error': Outlined.Error,
-  'error_outline': Outlined.ErrorOutline,
   'expand_less': Outlined.ExpandLess,
   'expand_more': Outlined.ExpandMore,
   'fingerprint': Outlined.Fingerprint,
@@ -184,6 +196,9 @@ export const outlinedMap: Record<IconName, React.FC<SVGProps<SVGSVGElement>>> = 
   'swap_vert': Outlined.SwapVert,
   'sync': Outlined.Sync,
   'sync_alt': Outlined.SyncAlt,
+  'table_rows': Outlined.TableRows,
+  'language': Outlined.Language,
+  'notifications': Outlined.Notifications,
   'timer': Outlined.Timer,
   'timer_off': Outlined.TimerOff,
   'token': Outlined.Token,
@@ -200,6 +215,7 @@ export const outlinedMap: Record<IconName, React.FC<SVGProps<SVGSVGElement>>> = 
   'trending_up': Outlined.TrendingUp,
   'touch_app': Outlined.TouchApp,
   'dark_mode': Outlined.DarkMode,
+  'light_mode': Outlined.LightMode,
   'palette': Outlined.Palette,
   'keyboard_arrow_up': Outlined.KeyboardArrowUp,
   'keyboard_arrow_down': Outlined.KeyboardArrowDown,

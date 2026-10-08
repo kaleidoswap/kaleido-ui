@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { PageHeader, type PageHeaderProps } from './page-header'
-import { ScrollArea } from './scroll-area'
+import { ScrollArea } from '../primitives/scroll-area'
 import { FadeOverlay } from './page-shell'
 import { cn } from '../utils/cn'
 
@@ -60,7 +60,7 @@ export function ExtensionPageFrame({
   return (
     <div
       className={cn(
-        'relative flex h-screen flex-col overflow-hidden bg-background font-display text-foreground',
+        'relative flex h-screen flex-col overflow-hidden bg-background bg-page-radial font-display text-foreground',
         className,
       )}
     >

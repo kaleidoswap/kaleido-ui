@@ -61,7 +61,7 @@ test('cells are caption at px-4 py-3; heads are the eyebrow in muted-foreground'
     assert.ok(cell.includes('px-4') && cell.includes('py-3'), cell.join(' '))
   }
   for (const head of classesOf(markup, 'table-head')) {
-    for (const token of ['px-4', 'py-3', 'text-mini', 'font-bold', 'uppercase', 'tracking-eyebrow', 'text-muted-foreground']) {
+    for (const token of ['px-4', 'py-3', 'text-mini', 'font-medium', 'uppercase', 'tracking-eyebrow', 'text-muted-foreground']) {
       assert.ok(head.includes(token), `head lacks ${token}: ${head.join(' ')}`)
     }
   }

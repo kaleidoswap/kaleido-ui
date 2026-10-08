@@ -17,10 +17,10 @@ export interface StatusIconBadgeProps {
 }
 
 const STATUS_UI: Record<string, { icon: IconName; className: string }> = {
-  completed: { icon: 'check', className: 'bg-primary text-primary-foreground' },
-  success: { icon: 'check', className: 'bg-primary text-primary-foreground' },
-  failed: { icon: 'close', className: 'bg-danger text-background' },
-  error: { icon: 'close', className: 'bg-danger text-background' },
+  completed: { icon: 'check', className: 'bg-primary bg-gradient-primary text-primary-foreground' },
+  success: { icon: 'check', className: 'bg-primary bg-gradient-primary text-primary-foreground' },
+  failed: { icon: 'close', className: 'bg-danger text-white' },
+  error: { icon: 'close', className: 'bg-danger text-white' },
   pending: { icon: 'schedule', className: 'bg-warning text-background' },
 }
 

@@ -1,6 +1,6 @@
 ---
 name: KaleidoSwap
-description: KaleidoSwap shared design system — brand-green, Bitcoin-native wallet UI.
+description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
 version: 0.1.129   # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
@@ -10,31 +10,33 @@ colors:
   brand.primary-light: "#17B581"    # light theme
   brand.primary-contrast: "#051B10"
   brand.foreground: "#15E99A"       # text-brand, dark theme
-  brand.foreground-light: "#086E46" # text-brand, light theme (AA on the light ramp)
+  brand.foreground-light: "#097B4E" # text-brand, light theme (AA on the light ramp)
   brand.mark-violet: "#6F32FF"      # logo paint only
   brand.mark-green: "#17B581"       # logo paint only
   brand.mark-mint: "#15E99A"        # logo paint only
-  surface.bg: "#12131C"             # surface-base
-  surface.raised: "#181924"         # muted
-  surface.card: "#242638"           # surface-overlay, card + popover
-  surface.elevated: "#323448"       # accent
-  surface.high: "rgb(66 68 90)"
-  border.default: "rgba(255, 255, 255, 0.10)"
-  border.subtle: "rgba(255, 255, 255, 0.04)"
-  border.strong: "rgba(255, 255, 255, 0.15)"
+  brand.violet: "#6F32FF"           # supporting accent — secondary actions, icon tiles, hover
+  brand.violet-content: "#A48AFF"   # violet text/icons on dark (secondary-content)
+  surface.bg: "#0E0D16"             # surface-base
+  surface.raised: "#14131E"         # muted
+  surface.card: "#1C1A2A"           # surface-overlay, card
+  surface.elevated: "#282638"       # accent
+  surface.high: "rgb(54 51 74)"
+  border.default: "rgba(200, 192, 240, 0.11)"
+  border.subtle: "rgba(200, 192, 240, 0.05)"
+  border.strong: "rgba(200, 192, 240, 0.18)"
   border.primary-ghost: "rgba(43, 238, 121, 0.22)"
   text.primary: "#FFFFFF"
-  text.muted: "rgba(255, 255, 255, 0.55)"
+  text.muted: "rgba(232, 230, 245, 0.58)"
   text.on-primary: "#051B10"
   destructive: "hsl(0 62% 50%)"
   success: "#15E99A"                # identical to brand.primary
   warning: "#FACC15"
-  danger: "#F94040"
+  danger: "#E53535"
   info: "#4290FF"
   network.bitcoin: "#F7931A"
   network.lightning: "#F6C343"
   network.rgb: "#DD352E"
-  network.spark: "#FF6D00"
+  network.spark: "#FFFFFF"           # dark theme; black #0D0C14 on light
   network.arkade: "#7C3AED"
   network.liquid: "#22e1c9"
   network.taproot: "#D1D6D8"
@@ -44,14 +46,14 @@ colors:
 typography:
   # Sizes are the typeScale keys in src/tokens/typography.ts, which is what the
   # text-* utilities emit. fontWeight tops out at 700 — there is no 800.
-  display:  { family: "Satoshi", weight: 700, size: 36, line: 40, tracking: -0.02em }
-  headline: { family: "Satoshi", weight: 700, size: 28, line: 34 }
-  title:    { family: "Satoshi", weight: 700, size: 20, line: 28, tracking: -0.01em }
-  subhead:  { family: "Satoshi", weight: 600, size: 17, line: 24 }
-  body:     { family: "Satoshi", weight: 500, size: 15, line: 22 }
-  caption:  { family: "Satoshi", weight: 500, size: 13, line: 18 }
-  tiny:     { family: "Satoshi", weight: 500, size: 11, line: 16 }
-  label:    { family: "Satoshi", weight: 700, size: 9,  line: 12, tracking: 0.18em, transform: uppercase }
+  display:  { family: "Satoshi", weight: 700, size: 38, line: 44, tracking: -0.02em }
+  headline: { family: "Satoshi", weight: 700, size: 30, line: 36 }
+  title:    { family: "Satoshi", weight: 700, size: 22, line: 30, tracking: -0.01em }
+  subhead:  { family: "Satoshi", weight: 600, size: 18, line: 26 }
+  body:     { family: "Satoshi", weight: 500, size: 16, line: 24 }
+  caption:  { family: "Satoshi", weight: 500, size: 14, line: 20 }
+  tiny:     { family: "Satoshi", weight: 500, size: 12, line: 17 }
+  label:    { family: "Satoshi", weight: 500, size: 10, line: 13, tracking: 0.18em, transform: uppercase }
   mono:     { family: "Geist Mono", weight: 500, size: 13 }
 rounded:
   card: 16        # rounded-2xl — cards, tiles, settings/account rows, dialogs, sheet top edge
@@ -61,27 +63,36 @@ rounded:
   panel: 24       # rounded-3xl
   nav: 32
 spacing:
-  1: 4
-  2: 8
-  3: 12
-  4: 16
-  5: 20
-  6: 24
-  8: 32
+  # One unit is spacingUnit (0.28125rem = 4.5px), in src/tokens/sizing.ts.
+  1: 4.5
+  2: 9
+  3: 13.5
+  4: 18
+  5: 22.5
+  6: 27
+  8: 36
 components:
   button.primary:
     bg: "{colors.brand.primary}"
     fg: "{colors.brand.primary-contrast}"
+    fill: "gradient.primary"
+    shadow: "shadow.button-primary"
+    hover.shadow: "shadow.glow-primary"
     radius: "{rounded.button}"
     height: 44
     weight: 800
+  button.secondary:
+    bg: "{colors.brand.violet}"
+    fill: "gradient.violet"
+    fg: "#FFFFFF"
+    shadow: "shadow.button-violet"
+    hover.shadow: "shadow.glow-violet"
   button.surface:
-    bg: "{colors.surface.card}"
-    fg: "{colors.text.primary}"
-    border: "{colors.border.subtle}"
+    bg: "violet/15"
+    fg: "{colors.brand.violet-content}"
+    ring: "violet/30"
     radius: "{rounded.button}"
-    hover.bg: "{colors.brand.primary}"
-    hover.fg: "{colors.brand.primary-contrast}"
+    hover.shadow: "shadow.glow-violet-soft"
   card.asset:
     bg: "{colors.surface.card}"
     border: "{colors.border.subtle}"
@@ -120,13 +131,16 @@ components:
 
 ## Overview
 
-KaleidoSwap is a Bitcoin-native wallet that lives across multiple layers: on-chain BTC, Lightning (RLN), RGB assets, Spark, and Arkade. A single user action — "send," "swap," "receive" — can route through any of those rails, and the interface has to make that feel coherent rather than like five different wallets glued together. The design language is **near-black and brand-green**: a cool, almost neutral
-dark ramp for every surface, and a single punchy brand green (`#15E99A`) that
-signals "this is the action, this is alive, this worked." It began as a
-*dark-forest* palette — green-tinted surfaces in the same hue family as the
-accent — and moved off that: at 70% alpha over an animated background the
-mid-green cards read muddy against white text. The green is now carried by the
-accents alone, which is why the ramp below is blue-slate rather than forest.
+KaleidoSwap is a Bitcoin-native wallet that lives across multiple layers: on-chain BTC, Lightning (RLN), RGB assets, Spark, and Arkade. A single user action — "send," "swap," "receive" — can route through any of those rails, and the interface has to make that feel coherent rather than like five different wallets glued together. The design language is **brand green first, violet in support** — a kaleidoscope,
+not a terminal. Every surface sits on a near-black ramp with a violet cast; the
+brand green (`#15E99A`) is the primary colour: the action, the selected and active
+state, the focus ring, success. The brand violet (`#6F32FF`) is the supporting
+accent: secondary actions, icon tiles, hover light, the card light and the shadow ink. Depth is
+real: cards cast soft violet-black shadows and catch a faint violet light from
+the top-left, CTAs are lit gradients with a coloured drop, and brand moments
+use the 135° green→violet gradient. (History: the ramp was dark-forest, then
+blue-slate and deliberately flat; it moved to violet because the flat slate UI
+read as lifeless and under-branded.)
 
 This document is the **single source of truth** for the `kaleido-ui` package and every consumer downstream — most visibly the `rate-extension` browser wallet. It exists because the package ships neutral-gray defaults (`primary: #e5e5e5`, `bg: #0a0a0a` in `src/tokens/colors.ts`) that silently produce unstyled, off-brand output on any component a consumer forgets to re-theme. DESIGN.md replaces those defaults as the normative spec: the tokens below are what the library should render, what the Tailwind preset should expose, and what every PR is measured against.
 
@@ -139,6 +153,7 @@ The palette is organised into six groups. Each group has a specific job; mixing 
 ### Brand
 
 - **`brand.primary` `#15E99A`** (light theme: `#17B581`) — *the* KaleidoSwap signal. Reserve it for three things only: primary CTAs (the single most important action on a screen), active states (selected tab, active nav slot, focused input ring), and success confirmations (completed swap, settled payment). Using it on borders of passive surfaces or as a decorative accent dilutes the signal and makes real CTAs disappear.
+- **`brand.violet` `#6F32FF`** — the supporting brand accent: the `secondary` button (violet gradient) and the `surface` button (violet tint), icon tiles, row hover, field hairlines and form `Label`s, the card light and the shadow ink. **Selection, active and focus are green, not violet** — the selected tab / pill / chip / option, the current page, the focused field. Utilities: `bg-secondary`, `bg-secondary/15`, `ring-secondary/30`. **Every violet hover is `hover-gradient-violet`** (`group-hover-gradient-violet` under a `.group`): the `--gradient-hover` light, violet from the top-left fading out, laid over the element's own fill — a hovered card lightens rather than losing its surface. Do not hover with `hover:bg-secondary/*`. On dark, violet *text and icons* use **`brand.violet-content` `#A48AFF`** (`text-secondary-content`) — `#6F32FF` is a fill, it is too dark to read as text.
 - **`brand.primary-contrast` `#051B10`** — the near-black green that sits on top of `brand.primary`. Use it for button label text, icons inside primary-filled tiles, and any glyph that needs to punch through the green. Never use it as a surface fill.
 
 > **`#2BEE79` is not the brand primary.** It was, and it is still in the tokens —
@@ -156,7 +171,7 @@ measured by `tests/brand-tokens.test.tsx`). Each clears 4.5:1 on every surface
 of its theme, and the status and network ones also on a 14% tint of their own
 hue (a status pill):
 
-- `text-brand` (`#086E46` light / `#15E99A` dark), `text-accent-send-fg`
+- `text-brand` (`#097B4E` light / `#15E99A` dark), `text-accent-send-fg`
   (`#6428F0` / `#AD94FB`), `text-accent-recv-fg`.
 - `text-success-fg`, `text-warning-fg`, `text-danger-fg`, `text-info-fg`.
 - `text-network-{bitcoin,lightning,liquid,arkade,spark,rgb,taproot}-fg`.
@@ -178,8 +193,7 @@ files under `kaleido-ui/brand/`. Do not redraw the mark: the older
 **Depth (opt-in utilities).** `bg-page-brand` is the coloured page wash (mint
 from the top, violet lower left, a little sky; soft tints in light).
 `text-gradient-brand` is the brand gradient for display-size headings only.
-`shadow-glow-send` / `shadow-glow-recv` / `shadow-glow-card` are the accent
-glows for the send and receive panels and the swap hero card. `HaloBackdrop`
+`HaloBackdrop`
 draws the slowly drifting mint and violet blobs behind a screen (motion stops
 under reduced motion).
 
@@ -191,17 +205,15 @@ opt-in import.
 
 ### Surface ramp
 
-Five layers, near-black and stepping up in lightness. Under the glass system
-(`bg-card/70` over animated backgrounds) the old mid-green surfaces read muddy and
-low-contrast against white text, so the ramp moved off the forest hue entirely:
-it now sits in a cool blue-slate band (~235°), and the green identity is carried
-by the brand accents alone rather than by the surfaces.
+Five layers, near-black and stepping up in lightness, with a low-saturation
+violet cast (~245°): enough to belong with the violet accent, not so much that
+the surfaces compete with the green.
 
-- **`surface.bg` `#12131C`** — the page background. Every full-screen view starts here.
-- **`surface.raised` `#181924`** — the `muted` token: rows nested inside a card, quiet fills.
-- **`surface.card` `#242638`** — the default card / panel / action-tile fill, and `popover`.
-- **`surface.elevated` `#323448`** — the `accent` token: nested panels, dropdowns, hover states on cards.
-- **`surface.high` `rgb(66 68 90)`** — the topmost step, for a control raised above an elevated surface.
+- **`surface.bg` `#0E0D16`** — the page background. Every full-screen view starts here, washed by `bg-page-radial`.
+- **`surface.raised` `#14131E`** — the `muted` token: rows nested inside a card, quiet fills.
+- **`surface.card` `#1C1A2A`** — the default card / panel / action-tile fill (`popover` is one step lighter, `#211F31`).
+- **`surface.elevated` `#282638`** — the `accent` token: nested panels, dropdowns, hover states on cards.
+- **`surface.high` `rgb(54 51 74)`** — the topmost step, for a control raised above an elevated surface.
 
 Do not collapse these to a single value, and do not use raw `#0a0a0a` or `#000`:
 the ramp is near-black but never black, and its neutrality is what lets the
@@ -214,18 +226,18 @@ replacements for it. Different job, same word; check which one you want.
 
 ### Borders
 
-Borders are translucent white, not opaque hues — they composite over whatever
+Borders are translucent lavender, not opaque hues — they composite over whatever
 surface they sit on, so one value works at every step of the ramp:
 
-- **`border.default` `rgba(255,255,255,0.10)`** — the default hairline. Cards, inputs, filter pills at rest.
-- **`border.subtle` `rgba(255,255,255,0.04)`** — the quietest edge, for a divider that should barely register.
-- **`border.strong` `rgba(255,255,255,0.15)`** — an edge that has to be seen: a focused input, a selected pill.
+- **`border.default` `rgba(200,192,240,0.11)`** — the default hairline. Cards, inputs.
+- **`border.subtle` `rgba(200,192,240,0.05)`** — the quietest edge, for a divider that should barely register.
+- **`border.strong` `rgba(200,192,240,0.18)`** — an edge that has to be seen: a focused input, a selected pill.
 - **`border.primary-ghost` `rgba(43, 238, 121, 0.22)`** — brand green at 22% alpha. Used only when a surface is in an active / selected / "this is the section you are in" state.
 
 ### Text
 
 - **`text.primary` `#FFFFFF`** — body copy, titles, numeric readouts.
-- **`text.muted` `rgba(255,255,255,0.55)`** — secondary labels, helper text, timestamps. Do not go lower than 55% alpha for anything the user is meant to read.
+- **`text.muted` `rgba(232,230,245,0.58)`** — secondary labels, helper text, timestamps, section eyebrows. Do not go lower than 55% alpha for anything the user is meant to read.
 - **`text.on-primary` `#051B10`** — text that sits on top of `brand.primary` fills.
 
 ### Destructive & Success
@@ -233,7 +245,7 @@ surface they sit on, so one value works at every step of the ramp:
 - **`destructive` `hsl(0 62% 50%)`** — delete, cancel, failed. Always paired with a confirmation step.
 - **`success` `#15E99A`** — intentionally identical to `brand.primary`. Success *is* the brand.
 - **`warning` `#FACC15`** — a state that needs attention but is not a failure.
-- **`danger` `#F94040`** — a failure. `destructive` is the button variant; `danger` is the text/fill token.
+- **`danger` `#E53535`** — a failure. `destructive` is the button variant; `danger` is the text/fill token.
 - **`info` `#4290FF`** — neutral notice. Also `tx.swap`, because a swap is neither in nor out.
 
 ### Network tokens (semantic, do not recolor)
@@ -243,7 +255,7 @@ Each supported layer has a fixed, non-negotiable brand color that users recognis
 - **`network.bitcoin` `#F7931A`** — on-chain BTC, the canonical Bitcoin orange.
 - **`network.lightning` `#F6C343`** — Lightning / RLN.
 - **`network.rgb` `#DD352E`** — RGB protocol red.
-- **`network.spark` `#FF6D00`** — Spark L2.
+- **`network.spark` `#FFFFFF`** — Spark L2. White on dark, **black (`#0D0C14`) on light**: the only network colour that follows the theme (the `network-spark` app token; `-chip` and `-text` follow it too). Its white asterisk mark takes `kui-mono-icon`, which inverts it on the light theme.
 - **`network.arkade` `#7C3AED`** — Arkade.
 - **`network.liquid` `#22e1c9`** — Liquid.
 - **`network.taproot` `#D1D6D8`** — Taproot Assets.
@@ -266,15 +278,15 @@ the 9 px micro-labels this interface leans on heavily.
 The sizes below are the `typeScale` keys, which is what the `text-*` utilities
 emit — `text-display`, `text-body`, `text-mini` and so on:
 
-- **`display` — Satoshi 700 / 36 / 40 / tracking -0.02em** — balance numbers, empty-state headlines, the single largest piece of type on any screen.
-- **`headline` — Satoshi 700 / 28 / 34** — section headlines above a card group.
-- **`title` — Satoshi 700 / 20 / 28 / tracking -0.01em** — screen titles, modal headers.
-- **`subhead` — Satoshi 600 / 17 / 24** — a heading inside a card.
-- **`body` — Satoshi 500 / 15 / 22** — the default. Everything not otherwise specified renders here.
-- **`caption` — Satoshi 500 / 13 / 18** — helper text under a field.
-- **`tiny` — Satoshi 500 / 11 / 16** — timestamps, dense meta rows.
-- **`mini` / `label` — Satoshi 700 / 9 / 12 / tracking `eyebrow` 0.18em / uppercase** — the **signature micro-label** of the system. Filter headers ("NETWORKS"), section labels ("RECENT ACTIVITY"), pill captions, table column heads. When you see uppercase 9 px letter-spaced type, you know you are in a KaleidoSwap surface. Use it liberally for structural labels; never use it for content. `eyebrowWide` (0.22em) is the wider variant.
-- **`mono` — Geist Mono 500 / 13** — addresses, tx hashes, raw amounts where digit alignment matters.
+- **`display` — Satoshi 700 / 38 / 44 / tracking -0.02em** — balance numbers, empty-state headlines, the single largest piece of type on any screen.
+- **`headline` — Satoshi 700 / 30 / 36** — section headlines above a card group.
+- **`title` — Satoshi 700 / 22 / 30 / tracking -0.01em** — screen titles, modal headers.
+- **`subhead` — Satoshi 600 / 18 / 26** — a heading inside a card.
+- **`body` — Satoshi 500 / 16 / 24** — the default. Everything not otherwise specified renders here.
+- **`caption` — Satoshi 500 / 14 / 20** — helper text under a field.
+- **`tiny` — Satoshi 500 / 12 / 17** — timestamps, dense meta rows.
+- **`mini` / `label` — Satoshi 500 / 10 / 13 / tracking `eyebrow` 0.18em / uppercase** — the **signature micro-label** of the system. Filter headers ("NETWORKS"), section labels ("RECENT ACTIVITY"), pill captions, table column heads. When you see uppercase 10 px letter-spaced type, you know you are in a KaleidoSwap surface. Use it liberally for structural labels; never use it for content. `eyebrowWide` (0.22em) is the wider variant.
+- **`mono` — Geist Mono 500 / 14** — addresses, tx hashes, raw amounts where digit alignment matters.
 
 Numeric amounts (balances, prices) render in `display` or `body` weight 700, not `mono` — mono is reserved for identifiers that the user copy-pastes.
 
@@ -284,49 +296,76 @@ Components set text **only** with these steps — never Tailwind's default sizes
 
 | Role | Step | Examples |
 | --- | --- | --- |
-| Hero figure | `display` 36 | the amount on a confirmation screen |
-| Big figure | `headline` 28 | a comfortable `MetricCard` value, amount inputs, success titles |
-| Screen / page title | `title` 20 | `PageHeader variant="page"`, dialog titles, `CardTitle` |
-| Heading in a card, large button label | `subhead` 17 | CTA buttons |
-| Primary text, card and section titles, values | `body` 15 | `SettingsSectionCard` and `InfoPanel` titles, `Button` |
-| Secondary text, descriptions, data cells | `caption` 13 | `InfoPanel` body, `SettingsSectionCard` description, `Table` cells |
-| Meta rows, timestamps | `tiny` 11 | `TransactionCard` meta |
-| Dense chip text | `xxs` 10 | hints, compact tile descriptions |
-| **Eyebrow** — every structural uppercase label | `mini` 9 | section titles, column heads, filter headers, tile labels, status badges |
+| Hero figure | `display` 38 | the amount on a confirmation screen |
+| Big figure | `headline` 30 | a comfortable `MetricCard` value, amount inputs, success titles |
+| Screen / page title | `title` 22 | `PageHeader variant="page"`, dialog titles, `CardTitle` |
+| Heading in a card, large button label | `subhead` 18 | CTA buttons |
+| Primary text, card and section titles, values | `body` 16 | `SettingsSectionCard` and `InfoPanel` titles, `Button` |
+| Secondary text, descriptions, data cells | `caption` 14 | `InfoPanel` body, `SettingsSectionCard` description, `Table` cells |
+| Meta rows, timestamps | `tiny` 12 | `TransactionCard` meta |
+| Dense chip text | `xxs` 11 | hints, compact tile descriptions |
+| **Eyebrow** — every structural uppercase label | `mini` 10 | section titles, field labels, column heads, filter headers, tile labels, status badges |
 
-**The eyebrow is written once**, as `eyebrow` in `src/web/utils/type-roles.ts`: `text-mini font-bold uppercase tracking-eyebrow` — Satoshi 700 / 9 px / 0.18em, the `label` token above. The tokens are authoritative (weight tops out at 700; tracking is 0.18em), and this document matches them. Any uppercase letter-spaced label uses `tracking-eyebrow` (or `tracking-eyebrow-wide`); hand-written `tracking-[…]` values are not allowed.
+**The eyebrow is written once**, as `eyebrow` in `src/web/utils/type-roles.ts`: `text-mini font-medium uppercase tracking-eyebrow` — Satoshi 500 / 10 px / 0.18em, the `label` token above. The tokens are authoritative (weight tops out at 700; tracking is 0.18em), and this document matches them. Any uppercase letter-spaced label uses `tracking-eyebrow` (or `tracking-eyebrow-wide`); hand-written `tracking-[…]` values are not allowed.
 
-There are no spacing tokens yet; components use Tailwind's 4 px spacing scale (`p-4` card, `p-3` inner row, `p-2.5` compact tile). Follow those values rather than inventing new ones.
+**Every field label is the eyebrow, and it is `Label`.** A form's field (settings, the desk's app and webhook forms, `FormField`) and a wallet flow's (send, receive, swap, deposit) wear the same label: `Label`, the eyebrow in `secondary-content` (violet). It is tied to its control with `htmlFor` / `id`; a hand-written `<label>` with no `htmlFor` names nothing. A heading over a group of buttons (a fee-rate picker, a route list) is not a `<label>`: it is an eyebrow `<p>` with an `id` that the group's `role="group"` points at with `aria-labelledby`.
+
+Spacing is one token, `spacingUnit` (0.28125rem = **4.5 px**, `--spacing` in `kaleido-ui/css`, restated for the v3 preset): every `p-*`, `m-*`, `gap-*`, `space-*`, `w-*`/`h-*` step is a multiple of it, so `p-4` is 18 px. It was Tailwind's 4 px; the UI read cramped (a field label sat on its box). Keep using the step names (`p-4` card, `p-3` inner row, `p-2.5` compact tile) — never px arbitraries.
 
 ## Layout
 
 KaleidoSwap targets a **420 px max content width**: the browser-extension popup is the canonical viewport and everything else (webapp, mobile shell) adopts the same column so layouts translate 1:1.
 
-- **Spacing scale**: tight, in 4 px steps — `1:4, 2:8, 3:12, 4:16, 5:20, 6:24, 8:32`. Most gaps between elements are `2` or `3`. Section-to-section breathing room is `4` or `6`. Do not invent odd values.
+- **Spacing scale**: in 4.5 px steps — `1:4.5, 2:9, 3:13.5, 4:18, 5:22.5, 6:27, 8:36`. Most gaps between elements are `2` or `3`. Section-to-section breathing room is `4` or `6`. Do not invent odd values.
 - **Horizontal padding**: views pad `16` (spacing `4`) from the viewport edge. Cards inside pad `12` (spacing `3`).
 - **Bottom nav**: floats above the content; it is not a sticky footer. Every full-height view must reserve a **88 px bottom inset** (nav height + float gap) so the last row of content is not obscured.
 - **Scroll**: only the main column scrolls. Nav, headers, and modals remain fixed.
 
 ## Elevation & Depth
 
-Three layers, no more. Elevation is communicated by **surface color**, not by drop shadow.
+Elevation is carried by **surface colour, shadow and light together** — the UI is
+not flat. Shadows are cast in a near-black violet (`--app-shadow`) scaled per theme
+(`--app-shadow-strength`: 1 on dark, 0.28 on light), so one token reads right in
+both modes.
 
-1. **Base** — `surface.bg`. Page background.
-2. **Card** — `surface.card`. Asset rows, action tiles, filter pills, nav.
-3. **Elevated** — `surface.elevated`. Dropdowns, hovered cards, nested panels.
+**Each theme has its own set.** Every `shadow-*` token is `--kui-shadow-*`, declared once for dark (`shadow` in `src/tokens/shadows.ts`) and once for light (`shadowLight`). Dark shadows are deep drops and coloured glows that read on near-black; on white those either vanish or smudge, so the light set is a crisp contact shadow plus a soft ambient one in a cool near-black (≤ 20%), with a hairline ring as the one edge of a floating layer (`popover`, `toast`; `raised` is drops alone), and glows that are a 3 px tinted ring rather than a bloom.
 
-Two shadows exist in the entire system:
+| Token (utility) | Use |
+| --- | --- |
+| `shadow-card` | every resting card / panel / tile — a top rim light plus a soft drop |
+| `shadow-card-hover` | an interactive card on hover — deeper drop with a violet under-glow |
+| `shadow-raised` | a small control that pops off a card: tab lists, chips that are controls, switch thumbs |
+| `shadow-button-primary` / `shadow-button-violet` | green / violet button: a coloured drop shadow only — no edge line |
+| `shadow-glow-primary(-soft/-strong)` | green halo — hover of green CTAs, checked switch, focused fields, selected cards |
+| `shadow-glow-primary-faint` | the green halo held down — the selected option in a row of options (fee rate) |
+| `shadow-glow-violet-faint` | the violet halo held down — an icon tile lit by its row's hover |
+| `shadow-card-hover-soft` | hover on a settings-style card: a soft violet under-glow, no deeper drop |
+| `shadow-glow-violet(-soft)` | violet halo — hover of violet controls and icon tiles |
+| `shadow-glow-brand` | green-left + violet-right halo — brand moments only (hero CTA, success icon) |
+| `shadow-popover` / `shadow-toast` | floating layers, with a violet hairline and bloom |
 
-- **Inner shadow** (`shadow-sm`): a subtle inset on cards to sharpen the edge against `surface.bg`. Always inner, never outer.
-- **Primary glow** (`shadow-[0_0_30px_rgba(43,238,121,0.5)]`): **only** on the hover state of a primary button or ActionTile. It is how the brand announces itself. No other component may glow.
+### Gradients
 
-Do not add new drop shadows, do not add blur-behind surfaces, do not fake depth with gradients.
+Brand gradients are always **135° linear**. They are plain classes in
+`kaleido-ui/css` that set only `background-image`, so each is paired with a
+`bg-*` colour fallback (`bg-primary bg-gradient-primary`).
+
+- `bg-gradient-primary` — the green button fill, lit from the top-left.
+- `bg-gradient-violet` — violet fills: `secondary` button, the swap flip button, emphasised icon tiles.
+- `bg-gradient-brand` / `bg-gradient-brand-dark` — green→violet: progress, active steps, brand accents; `-dark` under white text.
+- `bg-gradient-card` — faint violet light on every card (`bg-card bg-gradient-card`).
+- `bg-gradient-card-hero` — stronger violet→green wash for hero surfaces: balance, swap input, dialogs, success.
+- `bg-gradient-active` — green wash for a selected row / card / option / nav item (paired with `ring-primary/40`). Radix triggers styled by `data-state` use `active-gradient-primary`.
+- `text-gradient-brand` — gradient text for headlines and hero figures only.
+- `border-gradient-brand` — a 1 px green→violet ring for a featured or selected card.
+- `bg-page-radial` — the page ambience: a violet bloom top-right and a green one bottom-left. The one radial gradient: it is light on the page, not a brand mark.
+
+Do not hand-write shadows or gradients (`shadow-[…]`, raw colours are lint
+errors) — add a token here and in `src/tokens/` instead.
 
 The one sanctioned exception is the **brand depth** set from the Brand layer
-above: `shadow-glow-send`, `shadow-glow-recv` and `shadow-glow-card` on the
-swap hero's send / receive panels and card, plus `bg-page-brand` or
-`HaloBackdrop` behind a full screen. They are named tokens, per theme, and
-nothing else may invent a glow.
+above: `bg-page-brand` or `HaloBackdrop` behind a full screen. They are named
+tokens, per theme, and nothing else may invent a glow.
 
 ## Shapes
 
@@ -357,6 +396,18 @@ Leading icon sits left of the label with spacing `2` (8 px); trailing icon, when
 - Wrong: `<button class="bg-card text-white h-11 rounded-xl">Confirm</button>` — this is a primary action styled as a surface button; the user can't find the CTA.
 - Right: use the `primary` variant (`<Button variant="primary">Confirm</Button>`) — green fill, dark text, glow on hover.
 
+### IconButton
+
+**Every icon-only button is `IconButton icon label`.** `label` is required — it is the accessible name and the tooltip; a glyph alone names nothing. One shape, a rounded square that sizes its own glyph, in three sizes:
+
+| size | box | glyph | for |
+|---|---|---|---|
+| `sm` | 32 px (`size-7`), `rounded-lg` | 16 px | inline and row actions — copy, clear, paste, open, a notice's close |
+| `md` (default) | 40 px (`size-9`), `rounded-xl` | 18 px | toolbars, the sidebar's collapse, a menu trigger, an edit |
+| `lg` | 50 px (`size-11`), `rounded-xl` | 20 px | a screen's back, a row of icon actions under a QR, a toolbar beside a field |
+
+Six looks, each a Button variant under the same name, lightest first. **`quiet`** (default) — muted glyph that turns violet on the violet hover: close, back, clear, copy, open. **`surface`** — the violet tint: an action the screen offers (paste, refresh, edit). **`secondary`** — solid violet, the one strong action (new address). **`danger-quiet`** — the danger glyph, tinted on hover only, where a filled square would be too loud (a row's delete). **`danger-subtle`** — the danger tint: an action that deletes or removes, and the controls of an error surface (a destructive toast's copy and close). **`destructive`** — solid red, the danger counterpart of `secondary`. Every look also comes round: `shape="circle"` for a button that sits on a line or over content, like the swap card's flip; the rounded square stays the default. Focus is the green glow. The same steps are `Button size="icon-sm" | "icon" | "icon-lg"` for a trigger that must be a `Button` (`asChild`); `icon-xl` is a deprecated alias of `icon-lg`. Composite controls keep their own parts: a stepper's −/+, the swap card's flip.
+
 ### Card (asset)
 
 **Intended use.** The row / tile that represents an asset in a list: logo, ticker, name, amount, fiat equivalent. The workhorse of the wallet screen.
@@ -371,7 +422,7 @@ Leading icon sits left of the label with spacing `2` (8 px); trailing icon, when
 
 **Intended use.** The Deposit / Swap / Withdraw trio on the asset-detail screen — and any future equivalent where a small cluster of equally-weighted primary actions needs to sit side-by-side. Each tile has an icon slot on top and a label beneath.
 
-**Key tokens.** bg `surface.card`, border `border.subtle`, radius `inner` (12) — the trio sits inside the balance card, so it takes the nested scale — icon slot `tile-size: 44` px with an icon sized `20` px inside. At rest, the tile reads as a surface card. On hover it fills with `brand.primary` and its icon/label flip to `brand.primary-contrast`, and the primary glow engages. Label text below the tile uses the `label` type token.
+**Key tokens.** a quiet tint under the `surface` gradient (`bg-gradient-surface`), no border, radius `inner` (12) — the trio sits inside the balance card, so it takes the nested scale — icon slot `tile-size: 44` px with an icon sized `20` px inside. At rest, the tile reads as a surface card with its icon and label in `text-brand`. On hover it fills with `brand.primary` and its icon/label flip to `brand.primary-contrast`, and the primary glow engages. Label text below the tile uses the `label` type token.
 
 **Wrong vs right.**
 - Wrong: three tiles with a green icon at rest, no fill change on hover — nothing tells the user the tile is the target. (This is the current state in `rate-extension/src/components/AssetDetail.tsx:833-858`.)
@@ -442,11 +493,11 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 
 **It is the desktop app's sidebar.** `surface.base`, a `divider/30` rule on the right edge, `shadow-2xl` at 30% black, a `px-4 py-5` header row with the logo slot and the chevron. Expanded `w-72`; the rail `w-20`, which hides the logo and the group eyebrows, splits groups with a rule, centres the icons and turns labels into tooltips (they stay in the accessibility tree). The mobile form is always expanded, caps at `85vw` so a strip of the page stays visible to tap away, over the `BottomSheet` scrim.
 
-**Items.** `rounded-xl`, `px-4 py-3`, label `body` semibold. Inactive `content.secondary`, hovering to `surface.overlay/80`. The current page is `status.success` on a 10% fill with a 2 px left rule, and carries `aria-current="page"`. Group labels are the shared eyebrow (`label` token) in `content.tertiary`.
+**Items.** `rounded-xl`, `px-4 py-3`, label `body` semibold. Inactive `content.secondary`, hovering to `surface.overlay/80`. The current page is green — `bg-gradient-active` with a 2 px green left rule and a soft green glow — and carries `aria-current="page"`. Group labels are the shared eyebrow (`label` token) in `content.tertiary`.
 
-**Submenus.** `DrawerNavGroup icon label active` is a row with a submenu — the desktop app's Trade and Liquidity. The row (a button with `aria-expanded`) shows and hides its `DrawerNavItem`s under it, and a chevron on its right turns 90° when open. It opens by itself when one of its pages is current, and is then marked like a current item. Its items become the submenu's rows: indented `pl-4`, `rounded-lg`, `px-4 py-2.5`, label `caption` medium with a 16 px icon, sliding right on hover; the current one is `status.success` on a 10% fill with a 2 px left rule. On the icon rail a submenu cannot open, so the row is a link to `railHref` (usually the group's first page).
+**Submenus.** `DrawerNavGroup icon label active` is a row with a submenu — the desktop app's Trade and Liquidity. The row (a button with `aria-expanded`) shows and hides its `DrawerNavItem`s under it, and a chevron on its right turns 90° when open. It opens by itself when one of its pages is current, and is then marked like a current item. Its items become the submenu's rows: indented `pl-4`, `rounded-lg`, `px-4 py-2.5`, label `caption` medium with a 16 px icon, sliding right on hover; the current one is `status.success` on a 10% fill with a 2 px left rule. With `href` (the group's first page), opening the group also goes there, so choosing it lands on its first page with the submenu open; while closed the row is then a link with `aria-expanded`. On the icon rail a submenu cannot open, so the row is a link to `href` that also unfolds the sidebar, where the group opens on that page. `railHref` is the old name of `href`.
 
-**No scrollbar.** `DrawerBody` scrolls by wheel, touch and keyboard but draws no native scrollbar, which on the 80 px rail took the width the icons are centred in.
+**Scrollbar.** `DrawerBody` is a `ScrollArea`: the library's overlay thumb, which takes no width. A native bar took the width the icons are centred in on the 80 px rail.
 
 **Chevron.** `p-3`, `rounded-lg`, a `divider/10` ring that turns `primary/30` on hover, 18 px. On the sidebar it points the way the panel will move (left to fold, right to unfold) and reports `aria-expanded`; on the mobile drawer it points left and closes it.
 
@@ -516,25 +567,25 @@ The tile is a `role="group"` named by its label (or `aria-label`), so a failure 
 
 ### SummaryRows
 
-Label/value rows on `bg-muted/40`, separated by spacing. The markup follows the content: `as="dl"` (default) is a label/value list, a `dt`/`dd` per row; `as="ol"` is an ordered log (a status history); `as="ul"` an unordered one. The visual does not change with `as`. `tone: 'muted'` sets a value quieter than its label (`caption`, normal weight, `muted-foreground`), for the timestamp beside a log event.
+Label/value rows in the transaction-card style: the label and value tied by a continuous leader line (`DottedLeader`), no row fill. The markup follows the content: `as="dl"` (default) is a label/value list, a `dt`/`dd` per row; `as="ol"` is an ordered log (a status history); `as="ul"` an unordered one. The visual does not change with `as`. `tone: 'muted'` sets a value quieter than its label (`caption`, normal weight, `muted-foreground`), for the timestamp beside a log event.
 
 ### CopyButton
 
 Copying reports what actually happened, everywhere. `useCopyToClipboard()` returns `{ state: 'idle' | 'copied' | 'failed', copy(value), reset() }`: a missing clipboard (an insecure context) or a rejected write is `failed`, never `copied`, and there is no timer — the state changes only on the next copy or `reset()`.
 
-- **`CopyButton value label`** — a 24×24 ghost icon button named "Copy {label}" with `CopyIcon`'s glyph (`variant="bare"`): the copy glyph, the check once copied. A success is announced ("{label} copied to the clipboard"); a failure shows "Copy failed — select it and copy by hand." beside it as an alert. It stops the click's propagation, since it usually sits in a clickable row.
+- **`CopyButton value label`** — the small (`sm`) quiet icon button named "Copy {label}" with `CopyIcon`'s glyph (`variant="bare"`): the copy glyph, the check once copied. A success is announced ("{label} copied to the clipboard"); a failure shows "Copy failed — select it and copy by hand." beside it as an alert. It stops the click's propagation, since it usually sits in a clickable row.
 - **`Copyable value label`** — the value (or a shortened `children`) plus its `CopyButton`; the text stays `select-all` and its `title` is the full value, which is also what is copied.
-- **`CodeBlock code label language`** — a monospaced `<pre>` that scrolls sideways, with a `CopyButton` top right; `language` is a label, not highlighting.
+- **`CodeBlock code label language`** — a monospaced `<pre>` that scrolls sideways inside the box's padding, with a `CopyButton` top right; `language` is a label, not highlighting.
 
 `ActivityDetailRow`, `SecretRevealCard` and `RecoveryPhraseCard` take `copyValue` to copy themselves this way; `onCopy` still works for existing callers. The destructive toast's copy control uses the hook and no longer shows "Copied" after a failed write. `CopyIcon` alone (`variant="tile"`) is the glyph for a row that is itself the control.
 
 ### ToneBadge
 
-A small pill in a semantic tone, drawn from theme tokens only (the `muted` tone is `border-border bg-foreground/5 text-muted-foreground`, which is the old 10 % / 5 % / 55 % white on dark and stays visible on the light theme). `case="upper"` (default) is a status set as the eyebrow; `case="none"` is a value (a payout total) in `caption`, with no uppercase or tracking.
+A small pill in a semantic tone, drawn from theme tokens only with no border: the tint is the edge (the `muted` tone is `bg-foreground/[0.07] text-muted-foreground`, which stays visible on the light theme). `outline` alone is drawn as its `border-border` hairline. `case="upper"` (default) is a status set as the eyebrow; `case="none"` is a value (a payout total) in `caption`, with no uppercase or tracking.
 
 ### Popover and DropdownMenu
 
-Two floating surfaces on one look — `bg-popover`, a `border` hairline, `shadow-popover`, the same fade and 0.98 zoom as `Dialog` and `Select` — and two jobs:
+Two floating surfaces on one look — `bg-popover` and `shadow-popover`, whose hairline is the one edge (no ring or border on top), the same fade and 0.98 zoom as `Dialog` and `Select` — and two jobs:
 
 - **`Popover`** is a panel anchored to a trigger for content that is *not* a menu: a note, a few buttons, a copy control. Tab walks everything inside in order.
 - **`DropdownMenu`** is a real menu (`role="menu"`): `DropdownMenuItem`s (with `destructive` for Revoke / Delete, kept last), `DropdownMenuSeparator`, `DropdownMenuLabel`. The arrow keys move between items.
@@ -547,7 +598,7 @@ A button that opens and closes a section: `Collapsible` → `CollapsibleTrigger`
 
 ### Avatar
 
-A circle, `sm` 32 px or `lg` 40 px: an image, or a fallback on the violet-to-info gradient (`from-secondary to-info`) with initials or the person glyph. Decorative (`aria-hidden`) unless `alt` is passed with an image that is itself the information.
+A circle, `sm` 32 px or `lg` 40 px: a custom image, or the name's initials (required, and the fallback when the image fails to load) on the violet-to-info gradient (`from-secondary to-info`). Never a stock person glyph. Decorative (`aria-hidden`) unless `alt` is passed with an image that is itself the information.
 
 ### FormField
 
@@ -556,6 +607,12 @@ A circle, `sm` 32 px or `lg` 40 px: an image, or a fallback on the violet-to-inf
 ### Segmented control
 
 Mutually exclusive options — a chart / list view toggle — are `FilterChipGroup variant="segmented"`: a radio group with one Tab stop, the arrow keys moving and selecting. An option may be icon-only; it then needs `ariaLabel`, which is also its tooltip. The default `chips` variant (the filter strip) is unchanged.
+
+### Scrollbars
+
+**Two components, one look.** `ScrollArea` (also `VerticalScrollArea`) scrolls up and down, `HorizontalScrollArea` sideways. Both hide the native bar and draw an overlay thumb on `scrollbar.thumb`: `scrollbar` (2 px) thick at rest, `scrollbarHover` (6 px) under the pointer, never shorter than `scrollbarThumbMin` (24 px), on the right edge or the bottom edge. It takes no room from the content, and it can be dragged, or the track clicked to jump. `viewportClassName` styles the element that scrolls, `viewportAs` makes it a `main` or a `pre`, `viewportProps` gives it attributes. `thickness="thick"` is the page bar: `scrollbarThick` (6 px) at rest, `scrollbarThickHover` (10 px) under the pointer — for the scroller of a whole page, where the bar is how the reader sees where they are; panels, lists and code keep the thin one.
+
+**Every scroller is one of them.** `CodeBlock`, `Table`, `BottomSheet`, `DrawerBody`, the `AssetSelector` lists, `InlineSelector` and the page frames scroll on these two, so a scrollbar looks the same everywhere. A new component that scrolls uses one of them, never `overflow-auto` with the browser's bar. Rows of chips that scroll sideways (`FilterChipGroup` chips, the network filters) stay without a bar: they are swiped, and a thumb under a 28 px row reads as a divider.
 
 ### Breakpoints
 
@@ -593,7 +650,8 @@ A `Toast` cannot do either: its viewport position is fixed, only one shows at a 
 - **DO** use `surface.bg` (`#12131C`) as the page background on every full-screen view.
 - **DON'T** use raw `#0a0a0a` or `#000` as a background. The ramp is near-black but never black, and that is what keeps the network colours legible on it.
 - **DO** keep filter cluster icons at `cluster-icon-size: 11` px and `cluster-opacity: 0.6`. The constraint is what makes the cluster legible.
-- **DON'T** introduce new drop shadows. The only shadows in the system are the card inner shadow and the primary-button glow on hover.
+- **DO** give every card `shadow-card` and every interactive card a `shadow-card-hover`; give colour fills their matching `shadow-button-*`. **DON'T** hand-write a shadow — use the tokens in Elevation & Depth.
+- **DO** keep green the primary colour: CTA, selection, active, focus, success. Use violet in support — secondary actions, icon tiles, hover — so a screen reads green first, violet second.
 - **DO** use the `label` type token (Satoshi 700 / 9 / uppercase / `tracking-eyebrow` 0.18em) for structural labels — filter headers, section titles, pill captions. It is the typographic fingerprint of the brand.
 - **DON'T** invent new radii, spacing steps, or surface colors. If you need something the tokens don't provide, extend DESIGN.md first, then propagate to `kaleido-ui/tokens` — `kaleido-ui/css` (Tailwind v4 `@theme`) and `kaleido-ui/tailwind` (the Tailwind v3 preset) are both generated from it. Both Tailwind versions are supported; see README.
 
@@ -605,7 +663,7 @@ These rules exist because generated UIs kept drifting: ad-hoc borders, wrong but
 
 - The layering ladder is `surface.bg` (page) → `bg-card` (card) → `bg-muted/40` (row inside a card). Depth comes from the fill, not an outline.
 - **DON'T** add arbitrary border utilities (`border-white/10`, `border-primary/20`, `border-warning/30`, `border-t` dividers…) to new markup. If a surface looks like it needs an edge, it needs a different background layer instead.
-- Borders are allowed only where a component spec above explicitly calls for one: inputs, filter pills, status pills, the `border.primary-ghost` active state, `Table` row hairlines, and the `Drawer` edge rule and current-page rule. Nothing else.
+- Borders are allowed only where a component spec above explicitly calls for one: inputs, the outline `Button` and `ToneBadge`, the `border.primary-ghost` active state, `Table` row hairlines, and the `Drawer` edge rule and current-page rule. Nothing else.
 - Separate stacked rows with `space-y-*` spacing, not divider lines. The single exception is `Table` (see its section): a dense grid, not a list.
 
 ### Rows and toggles use the shipped primitives
@@ -621,12 +679,28 @@ These rules exist because generated UIs kept drifting: ad-hoc borders, wrong but
 - Row-level actions inside cards are `ghost` `size="sm"`; destructive row actions (Block, Delete) are `destructive` `size="sm"` and always sit rightmost.
 - Never express an action as a styled `<div>`/`<button>` with utility classes — use `Button`.
 
+## Light theme
+
+Every component works on both themes from the same classes; nothing is dark-only.
+
+- **Neutral ink is `foreground`, never white.** `text-foreground/60`, `bg-foreground/5`, `border-foreground/8` — not `text-white/60` or `bg-white/5`, which vanish on the light ramp. `text-white` is only for text on a saturated fill (violet, gradients, destructive, network and asset discs).
+- **Coloured text uses the brand layer's per-theme foregrounds**: `text-brand` (not `text-primary`), `text-success-fg`, `text-warning-fg`, `text-danger-fg`, `text-info-fg`, `text-network-*-fg`. The plain tokens stay for fills, borders and rings. They clear 4.5:1 on both themes.
+- **Tertiary text floors at 55%** of the foreground (`text-foreground/55`); 30–45% reads under 3:1 on the light ramp.
+- **Text on green is dark ink on both themes** (`primary-foreground` `#0E0D16`; white on the light green was 2.6:1). The opt-in brand theme (`kaleido-ui/css/brand`) darkens the light green to `#086E46` and switches its text and button gradient back to white on deep green.
+- **Network chips follow the theme**: `bg-network-*-chip` / `text-network-*-text` are dark tints on dark, pale tints with dark text on light (`networkChipLight` / `networkTextLight`).
+- **Spark's white mark** takes `kui-mono-icon` and is drawn black on light.
+
+### ThemeToggle
+
+`<ThemeToggle />` — the light/dark switch, top right of an app's top bar. A `role="switch"` pill named "Dark mode" (checked = dark) with a sun and a moon; a raised thumb slides under the current mode and its glyph is `text-brand`. Uncontrolled by default: it puts `.dark` or `.light` on the document root and remembers the choice in localStorage (`useThemeMode`, `storageKey` `kaleido-ui:theme`). Pass `mode` + `onModeChange` when the app owns the theme.
+
 ## Transparency (glass) schema
 
 Layered translucency lets the animated background glow breathe through the UI without hurting readability. Every translucent surface maps to exactly one of these roles — don't invent new alpha values.
 
 - `glass.nav` — floating chrome (bottom nav, sticky headers): `bg-card/60 backdrop-blur-xl`
-- `glass.card` — in-flow content cards over animated/haloed backgrounds: `bg-card/70`, NO blur (per-element blur on scrolling lists is a perf trap)
+- `glass.card` — every card, panel and tile: `bg-card/55 backdrop-blur-xl backdrop-saturate-150`, paired with `bg-gradient-card` (or `-hero`) and `shadow-card`, which also draws the glass edge: a 1px `--card-edge` ring of inset shadows (violet top-left → near-clear → green bottom-right, like the card fill) in the card's `::before`, so don't put a `before:` on a card. The page ambience (`bg-page-radial`) is what the glass picks up, so a full-screen view should carry it.
+- `glass.field` — text fields: `fieldSurface` in `src/web/utils/field-styles.ts` (`Input`, `NumberInput`, the full `SelectTrigger`) — the glass card with an inner shadow and a `secondary/15` hairline that brightens on hover and turns green (the ring) on focus. A hand-rolled field nested in a card uses the same classes minus the blur. Its `Label` is the eyebrow in `text-secondary-content`.
 - `glass.row` — rows nested inside a card: `bg-muted/40`, no blur
 - `glass.pill` — chips, filter pills, selector triggers: `bg-white/8`
 - `glass.overlay` — sheets, dialogs, scrims: `bg-background/80 backdrop-blur-lg`
@@ -636,7 +710,7 @@ Rules:
 - **DON'T** drop text-bearing glass below 60% surface alpha — readability beats atmosphere.
 - **DON'T** nest blur inside blur. Inner layers are alpha-only; the outer surface owns the blur.
 - **DO** keep security surfaces (sign/confirm prompts, seed reveal) fully opaque `bg-card`. A decision surface never lets the background bleed through.
-- **DO** reserve `backdrop-blur` for floating chrome and overlays only — never on in-flow cards or rows.
+- **DO** keep `backdrop-blur` to glass cards, floating chrome and overlays — never on rows nested inside a card (`glass.row` stays alpha-only). Blur has a cost on long scrolling lists: watch it on low-end devices.
 
 ## Keeping this file honest
 

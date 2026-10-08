@@ -7,58 +7,81 @@
 // anchors back the component-facing full-color vars (--background, --card,
 // --primary, …) consumed via raw var() and the bg-card / bg-background /
 // text-foreground utilities NOT overridden by the channel-backed app tokens.
+/** Brand scales — the two KaleidoSwap accents (brand book). */
+export const brand = {
+  green: {
+    50: '#E8FDF4',
+    100: '#B0F6DA',
+    200: '#6EEDC0',
+    400: '#15E99A', // primary
+    600: '#17B581', // brand anchor
+    800: '#0D7A58',
+    900: '#053D2C',
+  },
+  violet: {
+    50: '#EDE8FF',
+    100: '#C9BAFF',
+    200: '#A48AFF',
+    400: '#6F32FF', // primary
+    600: '#5420CC',
+    800: '#371488',
+    900: '#1C0A45',
+  },
+} as const
+
 export const lightSemanticColors = {
-  background: '#EAECF8', // surface-raised (light page body)
-  foreground: '#12131E', // content-primary
+  background: '#F8F8FB', // surface-raised (light page body, near-white)
+  foreground: '#15122A', // content-primary
   card: '#FFFFFF', //       surface-overlay
-  cardFg: '#12131E',
+  cardFg: '#15122A',
   popover: '#FFFFFF',
-  popoverFg: '#12131E',
+  popoverFg: '#15122A',
   primary: '#17B581', //    brand green (light)
-  primaryFg: '#FFFFFF',
-  secondary: '#E4E6F6', //  neutral surface (bg-secondary utility is brand violet via app token)
-  secondaryFg: '#12131E',
-  muted: '#F6F7FD', //      surface-elevated
-  mutedFg: '#464A69', //    content-secondary
-  accent: '#E4E6F6', //     surface-high
-  accentFg: '#12131E',
-  destructive: '#e7000b',
-  border: '#C8CBE0', //     border-default
-  input: '#C8CBE0',
+  primaryFg: '#0E0D16', // dark ink on the green, as on the dark theme (white was 2.6:1)
+  secondary: '#EFEFF4', //  neutral surface (bg-secondary utility is brand violet via app token)
+  secondaryFg: '#15122A',
+  muted: '#FAFAFC', //      surface-elevated
+  mutedFg: '#4F4A75', //    content-secondary
+  accent: '#EFEFF4', //     surface-high
+  accentFg: '#15122A',
+  // The dark theme's red, under white text: the bright #e7000b took the page ink.
+  destructive: 'hsl(0 62% 50%)',
+  border: '#E3E3EA', //     border-default
+  input: '#DCDCE4',
   ring: '#17B581',
   chart1: '#2BEE79',
   chart2: '#F6C343',
   chart3: '#F7931A',
-  chart4: '#7C3AED',
+  chart4: '#6F32FF',
   chart5: '#DD352E',
 } as const
 
 const darkSemanticColors = {
-  background: '#12131C', // surface-base (deepest)
-  foreground: '#E8E9F2', // content-primary (cool white)
-  border: 'rgba(255, 255, 255, 0.10)',
-  input: 'rgba(255, 255, 255, 0.15)',
+  background: '#0E0D16', // surface-base (deepest, near-black with a violet cast)
+  foreground: '#EDECF6', // content-primary (cool white)
+  border: 'rgba(200, 192, 240, 0.11)', // lavender hairline
+  input: 'rgba(200, 192, 240, 0.16)',
   destructive: 'hsl(0 62% 50%)',
-  secondary: '#16273F', // neutral surface (bg-secondary utility is brand violet via app token)
-  secondaryFg: '#E8E9F2',
-  muted: '#181924', //     surface-raised
-  mutedFg: 'rgba(255, 255, 255, 0.55)',
+  secondary: '#282638', // neutral surface (bg-secondary utility is brand violet via app token)
+  secondaryFg: '#EDECF6',
+  muted: '#14131E', //     surface-raised
+  mutedFg: 'rgba(232, 230, 245, 0.58)',
   primary: '#15E99A', //   brand green (dark)
-  primaryFg: '#12131C',
-  accent: '#323448', //    surface-elevated
-  accentFg: '#E8E9F2',
+  primaryFg: '#0E0D16',
+  accent: '#282638', //    surface-elevated
+  accentFg: '#EDECF6',
   ring: '#15E99A',
-  card: '#242638', //      surface-overlay (card)
-  cardFg: '#E8E9F2',
-  popover: '#242638',
-  popoverFg: '#E8E9F2',
+  card: '#1C1A2A', //      surface-overlay (card)
+  cardFg: '#EDECF6',
+  popover: '#211F31',
+  popoverFg: '#EDECF6',
   chart1: '#2BEE79',
   chart2: '#F6C343',
   chart3: '#F7931A',
-  chart4: '#7C3AED',
+  chart4: '#8B5CF6',
   chart5: '#DD352E',
-  semanticBackground: '#242638',
-  semanticBorder: 'rgba(255, 255, 255, 0.10)',
+  semanticBackground: '#1C1A2A',
+  semanticBorder: 'rgba(200, 192, 240, 0.11)',
 } as const
 
 export const colors = {
@@ -71,7 +94,7 @@ export const colors = {
   /** Semantic intent colors (use as text-success, bg-warning/15, etc.) */
   success: darkSemanticColors.primary,
   warning: '#FACC15',
-  danger: '#F94040',
+  danger: '#E53535',
   info: '#4290FF',
   /** @deprecated alias for `danger` — kept for back-compat. */
   error: darkSemanticColors.destructive,
@@ -88,9 +111,9 @@ export const colors = {
 
   /** Border ladder — translucent edges on dark surfaces */
   borderToken: {
-    subtle: 'rgba(255, 255, 255, 0.04)',
-    default: 'rgba(255, 255, 255, 0.08)',
-    strong: 'rgba(255, 255, 255, 0.15)',
+    subtle: 'rgba(200, 192, 240, 0.05)',
+    default: 'rgba(200, 192, 240, 0.09)',
+    strong: 'rgba(200, 192, 240, 0.18)',
   },
 
   /** Text ladder for dark surfaces */
@@ -106,7 +129,9 @@ export const colors = {
   /** Scrollbar treatment for app-owned scroll regions */
   scrollbar: {
     thumb: 'rgba(255, 255, 255, 0.16)',
-    thumbHover: 'rgba(43, 238, 121, 0.55)',
+    thumbHover: 'rgba(21, 233, 154, 0.55)',
+    /** While the thumb is dragged: the full brand green, brighter than hover. */
+    thumbActive: '#2BF5A8',
     track: 'transparent',
   },
 
@@ -122,7 +147,7 @@ export const colors = {
     tron: '#FF4B4B',
     bitcoin: '#F7931A',
     lightning: '#F6C343',
-    spark: '#FF6D00',
+    spark: '#FFFFFF',
     avalanche: '#E84142',
     bsc: '#F0B90B',
     litecoin: '#4A7BD4',
@@ -135,7 +160,9 @@ export const colors = {
     bitcoin: '#F7931A',
     rgb: '#DD352E',
     arkade: '#7C3AED',
-    spark: '#FF6D00',
+    // Spark is white on dark, black on light: the themed value is the
+    // `network-spark` app token (app-semantic.ts). This is the dark one.
+    spark: '#FFFFFF',
     lightning: '#F6C343',
     liquid: '#22e1c9',
     taproot: '#D1D6D8',
@@ -144,7 +171,7 @@ export const colors = {
     bitcoin: '#44341F',
     rgb: '#44282B',
     arkade: '#362B55',
-    spark: '#463020',
+    spark: '#2B2A35',
     lightning: '#3D421F',
     liquid: '#0D2A2E',
     taproot: '#1E2328',
@@ -153,10 +180,31 @@ export const colors = {
     bitcoin: '#F2B063',
     rgb: '#E87872',
     arkade: '#A98CF2',
-    spark: '#F2A163',
+    spark: '#E8E7F0',
     lightning: '#E4D56F',
     liquid: '#5DE5D6',
     taproot: '#C4CACD',
+  },
+
+  /** Light-theme network chips: a pale tint of each hue (`networkChip` is the dark one). */
+  networkChipLight: {
+    bitcoin: '#FBEFD9',
+    rgb: '#FBE3E1',
+    arkade: '#ECE4FF',
+    spark: '#E6E5EE',
+    lightning: '#FCF6D6',
+    liquid: '#D8F5F1',
+    taproot: '#E9ECEE',
+  },
+  /** Light-theme chip text: each hue darkened until it clears 4.5:1 on its chip. */
+  networkTextLight: {
+    bitcoin: '#92400E',
+    rgb: '#991B1B',
+    arkade: '#5B21B6',
+    spark: '#0D0C14',
+    lightning: '#854D0E',
+    liquid: '#115E59',
+    taproot: '#464A69',
   },
 
   /** Asset icon brand colors — used as solid backgrounds behind glyphs */

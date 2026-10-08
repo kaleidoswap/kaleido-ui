@@ -29,8 +29,8 @@ test('cn still resolves conflicts inside one scale', () => {
 })
 
 test('cn knows the custom shadow, radius and tracking tokens', () => {
-  assert.equal(cn('shadow-glow-send', 'shadow-black/40'), 'shadow-glow-send shadow-black/40')
-  assert.equal(cn('shadow-glow-primary-soft', 'shadow-glow-card'), 'shadow-glow-card')
+  assert.equal(cn('shadow-glow-violet', 'shadow-black/40'), 'shadow-glow-violet shadow-black/40')
+  assert.equal(cn('shadow-glow-primary-soft', 'shadow-glow-primary'), 'shadow-glow-primary')
   assert.equal(cn('shadow-lg', 'shadow-popover'), 'shadow-popover')
   assert.equal(cn('rounded-xl', 'rounded-card'), 'rounded-card')
   assert.equal(cn('rounded-t-xl', 'rounded-t-pill'), 'rounded-t-pill')

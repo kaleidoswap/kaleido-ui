@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { cn } from '../utils/cn'
+import { eyebrow } from '../utils/type-roles'
 
 export interface SectionHeaderProps {
   children: ReactNode
@@ -16,7 +17,7 @@ export function SectionHeader({
 }: SectionHeaderProps) {
   return (
     <div className={cn('flex items-center justify-between gap-3 px-1', className)}>
-      <Tag className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+      <Tag className={cn('text-muted-foreground', eyebrow)}>
         {children}
       </Tag>
       {right}

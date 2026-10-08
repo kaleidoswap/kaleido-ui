@@ -1,8 +1,10 @@
-import { useState, type CSSProperties, type ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 import { colors } from '../../tokens/colors'
-import { LiquidNetworkIcon, RgbNetworkIcon } from './network-icon'
+import { LiquidNetworkIcon, OnchainNetworkIcon, RgbNetworkIcon } from './network-icon'
+import { DisclosureCard } from './disclosure-card'
+import { eyebrow } from '../utils/type-roles'
 
 /**
  * 15%-alpha brand-tinted QR glow. Tailwind cannot statically generate
@@ -43,20 +45,20 @@ export const NETWORK_CONFIG: Record<DepositNetworkKey, DepositNetworkConfigEntry
     label: 'On-chain',
     color: colors.network.bitcoin,
     bg: 'bg-network-bitcoin/15',
-    text: 'text-network-bitcoin',
+    text: 'text-network-bitcoin-fg',
     border: 'border-network-bitcoin/40',
     qrBorder: 'border-network-bitcoin/30',
     qrGlow: qrGlowStyle(colors.network.bitcoin),
-    // On-chain uses a chain-link glyph rather than the ₿ coin — the coin reads
+    // On-chain uses the chain mark (as in NetworkBadge) rather than the ₿ coin — the coin reads
     // as "the BTC asset", whereas this row is specifically the *on-chain* (L1)
     // receive rail alongside Lightning/Spark/Arkade, so a chain mark disambiguates.
-    icon: <Icon name="link" className="text-icon-xs" />,
+    icon: <OnchainNetworkIcon className="size-3" />,
   },
   lightning: {
     label: 'Lightning',
     color: colors.network.lightning,
     bg: 'bg-network-lightning/15',
-    text: 'text-network-lightning',
+    text: 'text-network-lightning-fg',
     border: 'border-network-lightning/40',
     qrBorder: 'border-network-lightning/30',
     qrGlow: qrGlowStyle(colors.network.lightning),
@@ -66,17 +68,17 @@ export const NETWORK_CONFIG: Record<DepositNetworkKey, DepositNetworkConfigEntry
     label: 'Spark',
     color: colors.info,
     bg: 'bg-info/15',
-    text: 'text-info',
+    text: 'text-info-fg',
     border: 'border-info/40',
     qrBorder: 'border-info/30',
     qrGlow: qrGlowStyle(colors.info),
-    icon: <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" className="h-3 w-3" alt="" />,
+    icon: <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" className="kui-mono-icon h-3 w-3" alt="" />,
   },
   arkade: {
     label: 'Arkade',
     color: colors.network.arkade,
     bg: 'bg-network-arkade/15',
-    text: 'text-network-arkade',
+    text: 'text-network-arkade-fg',
     border: 'border-network-arkade/40',
     qrBorder: 'border-network-arkade/30',
     qrGlow: qrGlowStyle(colors.network.arkade),
@@ -86,7 +88,7 @@ export const NETWORK_CONFIG: Record<DepositNetworkKey, DepositNetworkConfigEntry
     label: 'Liquid',
     color: colors.network.liquid,
     bg: 'bg-network-liquid/15',
-    text: 'text-network-liquid',
+    text: 'text-network-liquid-fg',
     border: 'border-network-liquid/40',
     qrBorder: 'border-network-liquid/30',
     qrGlow: qrGlowStyle(colors.network.liquid),
@@ -100,6 +102,7 @@ const ACCOUNT_META: Record<
     shortLabel: string
     accentBg: string
     accentText: string
+    /** @deprecated Borderless sweep (DESIGN.md Coherence Rules): the selected chip takes the green selection ring. Kept for source compat. */
     accentBorder: string
     icon: ReactNode
   }
@@ -107,7 +110,7 @@ const ACCOUNT_META: Record<
   RGB: {
     shortLabel: 'RGB',
     accentBg: 'bg-primary/10',
-    accentText: 'text-primary',
+    accentText: 'text-brand',
     accentBorder: 'border-primary/30',
     // Bundled RGB mark (protocolIcons) — a host-served /icons/rgb/... path
     // renders as a broken box in consumers that don't ship that asset.
@@ -115,40 +118,44 @@ const ACCOUNT_META: Record<
   },
   SPARK: {
     shortLabel: 'Spark',
-    accentBg: 'bg-info/10',
-    accentText: 'text-info',
-    accentBorder: 'border-info/30',
+    accentBg: 'bg-network-spark/10',
+    accentText: 'text-network-spark-fg',
+    accentBorder: 'border-network-spark/30',
     icon: (
       <img
         src="/icons/spark/Asterisk/Spark Asterisk White.svg"
         alt=""
-        className="h-2.5 w-2.5 object-contain"
+        className="kui-mono-icon h-2.5 w-2.5 object-contain"
       />
     ),
   },
   ARKADE: {
     shortLabel: 'Arkade',
     accentBg: 'bg-network-arkade/10',
-    accentText: 'text-network-arkade',
+    accentText: 'text-network-arkade-fg',
     accentBorder: 'border-network-arkade/30',
     icon: <img src="/icons/arkade/arkade-icon.svg" alt="" className="h-2.5 w-2.5 rounded-[1px] object-contain" />,
   },
   LIQUID: {
     shortLabel: 'Liquid',
     accentBg: 'bg-network-liquid/10',
-    accentText: 'text-network-liquid',
+    accentText: 'text-network-liquid-fg',
     accentBorder: 'border-network-liquid/30',
     icon: <LiquidNetworkIcon className="h-2.5 w-2.5" />,
   },
 }
 
-const METHOD_META: Record<DepositTransferMethod, { label: string }> = {
-  bitcoin_l1: { label: 'On-chain' },
-  lightning: { label: 'Lightning' },
-  spark: { label: 'Spark' },
-  arkade: { label: 'Arkade' },
-  boarding: { label: 'Boarding' },
-  submarine_swap: { label: 'Submarine Swap' },
+const METHOD_META: Record<DepositTransferMethod, { label: string; icon: ReactNode }> = {
+  bitcoin_l1: { label: 'On-chain', icon: <OnchainNetworkIcon className="size-3" /> },
+  lightning: { label: 'Lightning', icon: <img src="/icons/lightning/lightning.svg" className="size-3" alt="" /> },
+  spark: {
+    label: 'Spark',
+    icon: <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" className="kui-mono-icon size-3 object-contain" alt="" />,
+  },
+  arkade: { label: 'Arkade', icon: <img src="/icons/arkade/arkade-icon.svg" className="size-3 rounded-sm object-contain" alt="" /> },
+  // Boarding is on-chain BTC joining Arkade; a submarine swap is a swap between rails.
+  boarding: { label: 'Boarding', icon: <OnchainNetworkIcon className="size-3" /> },
+  submarine_swap: { label: 'Submarine Swap', icon: <Icon name="swap_horiz" className="text-icon-xs" /> },
 }
 
 export function InvoiceStatusBanner({
@@ -167,10 +174,10 @@ export function InvoiceStatusBanner({
       className={cn(
         'flex items-center justify-center gap-2 rounded-xl px-3 py-1.5 text-caption font-bold',
         isInvoicePaid
-          ? 'bg-primary/10 text-primary'
+          ? 'bg-primary/10 text-brand shadow-glow-primary-soft'
           : isInvoiceFailedOrExpired
-            ? 'bg-danger/10 text-danger'
-            : 'bg-warning/10 text-warning'
+            ? 'bg-danger/10 text-danger-fg'
+            : 'bg-warning/10 text-warning-fg'
       )}
     >
       {isInvoicePending && (
@@ -197,12 +204,15 @@ export function InvoiceStatusBanner({
 
 export function PaidOverlay() {
   return (
-    <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-background/80">
+    // Reaches 3px past the QR card, its radius concentric with the card's
+    // rounded-2xl, so neither the card's anti-aliased white edge nor a frame
+    // of up to 3px shows at the corners.
+    <div className="absolute -inset-[3px] flex items-center justify-center rounded-[calc(var(--radius-2xl)+3px)] bg-background/95 bg-gradient-card-hero">
       <div className="flex flex-col items-center gap-2">
-        <div className="flex size-14 items-center justify-center rounded-full bg-primary">
+        <div className="flex size-14 items-center justify-center rounded-full bg-primary bg-gradient-primary shadow-glow-brand">
           <Icon name="check" className="text-icon-4xl text-background" />
         </div>
-        <span className="text-body font-bold text-primary">Received!</span>
+        <span className="text-body font-bold text-gradient-brand">Received!</span>
       </div>
     </div>
   )
@@ -225,7 +235,7 @@ export function CopyIcon({ copied, variant = 'tile', className }: CopyIconProps)
       <Icon
         name={copied ? 'check' : 'content_copy'}
         aria-hidden="true"
-        className={cn('text-icon-sm', copied && 'text-primary', className)}
+        className={cn('text-icon-sm', copied && 'text-brand', className)}
       />
     )
   }
@@ -234,8 +244,8 @@ export function CopyIcon({ copied, variant = 'tile', className }: CopyIconProps)
       className={cn(
         'flex-shrink-0 rounded-lg p-2 transition-all',
         copied
-          ? 'bg-primary/15 text-primary'
-          : 'bg-white/5 text-white/40 group-hover:bg-primary/10 group-hover:text-primary'
+          ? 'bg-primary/15 text-brand shadow-glow-primary-soft'
+          : 'bg-secondary/15 text-secondary-content group-hover:bg-secondary group-hover:bg-gradient-violet group-hover:text-white'
       )}
     >
       {copied ? <Icon name="check" size="sm" /> : <Icon name="content_copy" size="sm" />}
@@ -263,10 +273,10 @@ export function AccountChoiceChip({
       onClick={onClick}
       data-testid={`deposit-account-${account.toLowerCase()}`}
       className={cn(
-        'flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-1.5 text-icon-xxs font-bold transition-all',
+        'flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-1.5 text-icon-xxs font-bold transition-all',
         active
-          ? cn(meta.accentBg, meta.accentText, meta.accentBorder)
-          : 'border-white/8 bg-white/5 text-muted-foreground hover:border-white/20 hover:text-white/80'
+          ? cn(meta.accentText, 'bg-primary/10 bg-gradient-active ring-1 ring-inset ring-primary/40 shadow-glow-primary-faint')
+          : 'bg-foreground/5 text-muted-foreground hover-gradient-violet hover:text-foreground/80'
       )}
     >
       {meta.icon}
@@ -330,6 +340,17 @@ const NETWORK_INFO: Record<DepositNetworkKey, NetworkInfoEntry> = {
   },
 }
 
+// The protocol marks (the same files as the showcase's External logos, served
+// from /logos/protocols) and each network's per-theme foreground from Brand.
+// Spark's asterisk is white; kui-mono-icon draws it black on the light theme.
+const NETWORK_INFO_MARK: Record<DepositNetworkKey, { src: string; text: string; mono?: boolean }> = {
+  onchain: { src: '/logos/protocols/bitcoin.svg', text: 'text-network-bitcoin-fg' },
+  lightning: { src: '/logos/protocols/lightning.svg', text: 'text-network-lightning-fg' },
+  spark: { src: '/logos/protocols/spark-asterisk-white.svg', text: 'text-network-spark-fg', mono: true },
+  arkade: { src: '/logos/protocols/arkade.svg', text: 'text-network-arkade-fg' },
+  liquid: { src: '/logos/protocols/liquid.svg', text: 'text-network-liquid-fg' },
+}
+
 export function NetworkInfoDisclosure({
   networks,
   className,
@@ -337,53 +358,48 @@ export function NetworkInfoDisclosure({
   networks: DepositNetworkKey[]
   className?: string
 }) {
-  const [open, setOpen] = useState(false)
   if (networks.length === 0) return null
 
   return (
-    <div className={cn('overflow-hidden rounded-xl bg-card/70 transition-all', className)}>
-      <button
-        type="button"
-        onClick={() => setOpen((value) => !value)}
-        aria-expanded={open}
-        className="flex w-full items-center gap-2 px-2.5 py-1.5 text-left transition-colors hover:bg-white/4"
-      >
-        <Icon name="info" size="xs" className="text-white/40" />
-        <span className="flex-1 text-mini font-bold uppercase tracking-eyebrow text-white/50">
-          What are these networks?
-        </span>
-        <Icon name={open ? 'expand_less' : 'expand_more'} size="xs" className="text-white/40" />
-      </button>
-      {open && (
-        <div className="space-y-2 px-2.5 pb-2.5 pt-0.5 animate-in fade-in slide-in-from-top-1 duration-200">
-          {networks.map((network) => {
-            const info = NETWORK_INFO[network]
-            const cfg = NETWORK_CONFIG[network]
-            return (
-              <div key={network} className="space-y-1">
-                <div className="flex items-center gap-1.5">
-                  <div className={cn('flex size-4 flex-shrink-0 items-center justify-center rounded-md', cfg.bg)}>
-                    {cfg.icon}
-                  </div>
-                  <span className={cn('text-mini font-bold uppercase tracking-eyebrow', cfg.text)}>
-                    {info.title}
-                  </span>
-                </div>
-                <p className="pl-5 text-tiny leading-snug text-muted-foreground">{info.detail}</p>
-                <ul className="space-y-0.5 pl-5">
-                  {info.bullets.map((bullet) => (
-                    <li key={bullet} className="flex items-start gap-1.5 text-xxs leading-snug text-white/50">
-                      <span className="mt-[1px] text-white/30">-</span>
-                      <span>{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )
-          })}
-        </div>
-      )}
-    </div>
+    <DisclosureCard
+      className={className}
+      triggerClassName="px-2.5 py-1.5"
+      contentClassName="space-y-2 px-2.5 pb-2.5 pt-1"
+      icon={<Icon name="info" size="xs" className="text-secondary-content" />}
+      title={<span className={cn('text-muted-foreground', eyebrow)}>What are these networks?</span>}
+    >
+      {networks.map((network) => {
+        const info = NETWORK_INFO[network]
+        const mark = NETWORK_INFO_MARK[network]
+        return (
+          <div key={network} className="space-y-1">
+            <div className="flex items-center gap-1.5">
+              {network === 'onchain' ? (
+                <OnchainNetworkIcon />
+              ) : (
+                <img
+                  src={mark.src}
+                  alt=""
+                  className={cn('size-3.5 flex-shrink-0 object-contain', mark.mono && 'kui-mono-icon')}
+                />
+              )}
+              <span className={cn(eyebrow, mark.text)}>
+                {info.title}
+              </span>
+            </div>
+            <p className="pl-5 text-tiny leading-snug text-muted-foreground">{info.detail}</p>
+            <ul className="space-y-0.5 pl-5">
+              {info.bullets.map((bullet) => (
+                <li key={bullet} className="flex items-start gap-1.5 text-xxs leading-snug text-foreground/50">
+                  <span className="mt-[1px] text-foreground/55">-</span>
+                  <span>{bullet}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      })}
+    </DisclosureCard>
   )
 }
 
@@ -409,14 +425,15 @@ export function MethodChoiceChip({
       disabled={!enabled}
       data-testid={`deposit-method-${method}`}
       className={cn(
-        'flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-1.5 text-icon-xxs font-bold transition-all',
+        'flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-1.5 text-icon-xxs font-bold transition-all',
         active
-          ? 'border-white/20 bg-white/12 text-white shadow-sm'
+          ? 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
           : enabled
-            ? 'border-white/8 bg-white/5 text-muted-foreground hover:border-white/20 hover:text-white/80'
-            : 'cursor-not-allowed border-border bg-white/3 text-white/20'
+            ? 'bg-foreground/5 text-muted-foreground hover-gradient-violet hover:text-foreground/80'
+            : 'cursor-not-allowed bg-foreground/3 text-foreground/20'
       )}
     >
+      <span className={cn('flex shrink-0 items-center', !enabled && 'opacity-40 grayscale')}>{meta.icon}</span>
       {meta.label}
       {!enabled && disabledReason && (
         <span className="text-xxs font-normal opacity-60">{disabledReason}</span>

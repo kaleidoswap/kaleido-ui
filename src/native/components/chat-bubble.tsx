@@ -2,8 +2,8 @@
  * ChatBubble — themed assistant/user message row.
  *
  * Shared chat primitive: handles row alignment, the mount entrance animation,
- * the bubble container (flat brand fill for the user, surface card for the
- * assistant), and an optional timestamp. Avatar and body are consumer-owned
+ * the bubble container (brand green fill with a green drop for the user,
+ * raised violet-tinted card for the assistant), and an optional timestamp. Avatar and body are consumer-owned
  * slots, so app-specific concerns (icons, markdown, structured cards) stay in
  * the consumer while web + mobile share the same bubble shape and motion.
  *
@@ -12,6 +12,7 @@
 import React, { useEffect, useRef, type ReactNode } from 'react'
 import { View, Text, StyleSheet, Animated, Pressable, type ViewStyle } from 'react-native'
 import { useKaleidoTheme } from '../theme-context'
+import { kaleidoShadow } from '../theme'
 
 export type ChatRole = 'user' | 'assistant'
 
@@ -59,14 +60,13 @@ export function ChatBubble({
         styles.bubble,
         { maxWidth },
         isUser
-          ? { backgroundColor: theme.primary }
+          ? { backgroundColor: theme.primary, ...kaleidoShadow(theme, 'buttonPrimary') }
           : {
               backgroundColor: theme.card,
-              shadowColor: theme.background,
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.3,
-              shadowRadius: 6,
-              elevation: 3,
+              borderWidth: 1,
+              borderColor: theme.border.subtle,
+              borderTopColor: theme.highlight,
+              ...kaleidoShadow(theme, 'card'),
             },
         style,
       ]}

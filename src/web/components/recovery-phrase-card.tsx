@@ -3,6 +3,7 @@ import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 import { useCopyToClipboard } from '../hooks/use-copy-to-clipboard'
 import { COPY_FAILED_MESSAGE } from './copy-button'
+import { eyebrow } from '../utils/type-roles'
 
 export interface RecoveryPhraseCardProps {
   words: string[]
@@ -45,14 +46,13 @@ export function RecoveryPhraseCard({
   return (
     <section className={cn('space-y-2', className)}>
       <div className="flex items-center justify-between px-0.5">
-        <p className="text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">{title}</p>
+        <p className={cn('text-muted-foreground', eyebrow)}>{title}</p>
         {hasWords && revealed && onRevealChange && (
           <Button
             type="button"
-            variant="ghost"
-            size="sm"
+            variant="surface"
+            size="xs"
             onClick={() => onRevealChange(!revealed)}
-            className="h-auto rounded-lg px-2 py-1 text-caption text-muted-foreground hover:text-white"
           >
             <Icon name="visibility_off" className="text-icon-md" />
             Hide
@@ -69,16 +69,16 @@ export function RecoveryPhraseCard({
             )}
           >
             {words.map((word, index) => (
-              <div key={`${index}-${word}`} className="flex items-center gap-2 rounded-xl bg-card px-3 py-2.5">
-                <span className="w-4 shrink-0 text-caption font-bold text-muted-foreground">
+              <div key={`${index}-${word}`} className="flex items-center gap-2 rounded-xl bg-card bg-gradient-card px-3 py-2.5 shadow-raised">
+                <span className="w-4 shrink-0 text-caption font-bold text-secondary-content">
                   {index + 1}
                 </span>
-                <span className="font-mono text-body text-white">{word}</span>
+                <span className="font-mono text-body text-foreground">{word}</span>
               </div>
             ))}
           </div>
         ) : (
-          <div className="rounded-xl bg-warning/10 px-4 py-3 text-body text-warning">
+          <div className="rounded-xl bg-warning/10 px-4 py-3 text-body text-warning-fg">
             {emptyMessage}
           </div>
         )}
@@ -101,17 +101,17 @@ export function RecoveryPhraseCard({
       {hasWords && revealed && handleCopy && (
         <Button
           type="button"
-          variant="h3"
+          variant="surface"
           size="lg"
           onClick={handleCopy}
-          className="w-full"
+          className={cn('w-full', copied && 'bg-primary/10 bg-gradient-active text-brand ring-primary/40 hover:ring-primary/50')}
         >
           <Icon name={copied ? 'check' : 'content_copy'} className="text-icon-lg" />
           {copied ? copiedLabel : copyLabel}
         </Button>
       )}
       {selfCopy && clipboard.state === 'failed' && (
-        <p role="alert" className="m-0 text-caption text-danger">
+        <p role="alert" className="m-0 text-caption text-danger-fg">
           {copyFailedMessage}
         </p>
       )}

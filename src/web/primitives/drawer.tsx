@@ -2,8 +2,10 @@ import * as React from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { Slot } from '@radix-ui/react-slot'
 import { Icon } from './icon'
+import { ScrollArea } from './scroll-area'
 import { cn } from '../utils/cn'
 import { eyebrow } from '../utils/type-roles'
+import { IconButton } from './icon-button'
 
 // The desktop app's left sidebar, in its two forms.
 //
@@ -24,6 +26,8 @@ import { eyebrow } from '../utils/type-roles'
 interface DrawerContextValue {
   /** The icon rail: labels hidden, items centred. Desktop only. */
   collapsed: boolean
+  /** Unfolds the rail back to the full sidebar, when the sidebar can fold. */
+  expand?: () => void
   /** Inside the mobile overlay, the way to close it: choosing a destination does. */
   close?: () => void
 }
@@ -37,15 +41,12 @@ const DrawerOpenContext = React.createContext<(() => void) | undefined>(undefine
 /** Whether the surrounding drawer is folded to its icon rail. */
 export const useDrawerCollapsed = () => React.useContext(DrawerContext).collapsed
 
-// The panel itself: surface-base, the rule on its right edge, the heavy shadow.
-const panel = 'flex h-full flex-col border-r border-divider/30 bg-surface-base text-foreground shadow-2xl shadow-black/30'
+// The panel itself: surface-base, the rule on its right edge, a soft shadow.
+const panel = 'flex h-full flex-col border-r border-divider/30 bg-surface-base bg-gradient-card text-foreground shadow-raised'
 
-// The sidebar's collapse button, which is also the mobile drawer's close.
-const edgeButton =
-  'shrink-0 rounded-lg p-3 text-content-secondary ring-1 ring-divider/10 transition-all duration-300 hover:scale-110 hover:bg-surface-overlay/50 hover:text-primary hover:ring-primary/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95 motion-reduce:transition-none motion-reduce:hover:scale-100'
 
 // The group label: the library's eyebrow, in the desktop sidebar's colour.
-const sectionLabel = cn(eyebrow, 'text-content-tertiary')
+const sectionLabel = cn(eyebrow, 'text-muted-foreground')
 
 // ── Desktop ────────────────────────────────────────────────────────────────
 
@@ -92,19 +93,20 @@ const DrawerSidebar = React.forwardRef<HTMLElement, DrawerSidebarProps>(
         <div className={cn('flex items-center px-4 py-5', collapsed ? 'justify-center' : 'justify-between gap-3')}>
           {!collapsed && header && <div className="min-w-0 flex-1">{header}</div>}
           {onCollapsedChange && (
-            <button
-              type="button"
+            <IconButton
+              icon={collapsed ? 'chevron_right' : 'chevron_left'}
+              label={collapsed ? expandLabel : collapseLabel}
               aria-expanded={!collapsed}
-              aria-label={collapsed ? expandLabel : collapseLabel}
-              className={edgeButton}
               onClick={() => onCollapsedChange(!collapsed)}
-            >
-              <Icon name={collapsed ? 'chevron_right' : 'chevron_left'} className="text-icon-lg" />
-            </button>
+            />
           )}
         </div>
       )}
-      <DrawerContext.Provider value={{ collapsed }}>{children}</DrawerContext.Provider>
+      <DrawerContext.Provider
+        value={{ collapsed, expand: onCollapsedChange ? () => onCollapsedChange(false) : undefined }}
+      >
+        {children}
+      </DrawerContext.Provider>
     </aside>
   )
 )
@@ -193,8 +195,8 @@ const DrawerContent = React.forwardRef<
           <div className="flex items-center justify-between gap-3 px-4 py-5">
             <div className="min-w-0 flex-1">{header}</div>
             {showClose && (
-              <DialogPrimitive.Close aria-label={closeLabel} className={edgeButton}>
-                <Icon name="chevron_left" className="text-icon-lg" />
+              <DialogPrimitive.Close asChild>
+                <IconButton icon="chevron_left" label={closeLabel} />
               </DialogPrimitive.Close>
             )}
           </div>
@@ -227,12 +229,15 @@ DrawerDescription.displayName = 'DrawerDescription'
 // ── Shared parts ───────────────────────────────────────────────────────────
 
 /**
- * The scrolling list between the header and the footer. It still scrolls by
- * wheel, touch and keyboard, but draws no native scrollbar: on the 80px rail a
- * classic 15px bar took the width the icons are centred in.
+ * The scrolling list between the header and the footer, on the library's
+ * vertical scrollbar: an overlay thumb that takes no width, where on the 80px
+ * rail a classic 15px bar took the width the icons are centred in. `className`
+ * styles the list itself, as it did when the body was the scroller.
  */
-const DrawerBody = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('app-scrollbar min-h-0 flex-1 overflow-y-auto px-4 pt-4', className)} {...props} />
+const DrawerBody = ({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <ScrollArea className="min-h-0 flex-1" viewportClassName={cn('px-4 py-4', className)} {...props}>
+    {children}
+  </ScrollArea>
 )
 DrawerBody.displayName = 'DrawerBody'
 
@@ -246,7 +251,7 @@ const DrawerSection = ({ className, label, children, ...props }: DrawerSectionPr
   return (
     <div className={cn('group/section [&+&]:mt-6', className)} {...props}>
       {collapsed ? (
-        <div role="separator" className="mx-2 my-3 border-t border-divider/20 group-first/section:hidden" />
+        <div role="separator" className="mx-2 my-3 border-t border-divider/60 group-first/section:hidden" />
       ) : (
         label && <div className={cn('mb-2 px-4', sectionLabel)}>{label}</div>
       )}
@@ -267,6 +272,16 @@ export interface DrawerNavItemProps extends React.AnchorHTMLAttributes<HTMLAncho
    */
   asChild?: boolean
 }
+
+// The current destination: a violet wash, the violet rule on its left edge,
+// the label in white and the icon in the brand green -- the one "you are here"
+// cue of the list. The icon is the row's aria-hidden span.
+const activeIcon = '[&>span[aria-hidden=true]]:text-status-success'
+const activeRow = cn(
+  'border-l-2 border-primary bg-primary/10 bg-gradient-active font-semibold text-foreground ring-1 ring-inset ring-primary/40 shadow-nav-active',
+  activeIcon
+)
+const idleRow = 'text-content-secondary hover-gradient-violet hover:text-foreground hover:shadow-raised'
 
 // Inside a `DrawerNavGroup`: its items are the submenu's rows.
 const DrawerGroupContext = React.createContext(false)
@@ -295,8 +310,8 @@ const DrawerNavItem = React.forwardRef<HTMLAnchorElement, DrawerNavItemProps>(
         className: cn(
           'flex min-w-0 items-center gap-3 rounded-lg px-4 py-2.5 text-caption transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none',
           active
-            ? 'border-l-2 border-status-success/50 bg-status-success/10 font-semibold text-status-success'
-            : 'text-content-secondary hover:translate-x-1 hover:bg-surface-overlay/80 hover:text-foreground motion-reduce:hover:translate-x-0',
+            ? cn('border-l-[length:var(--app-nav-rule)] border-primary bg-primary/10 bg-gradient-active font-semibold text-brand', activeIcon)
+            : 'text-content-secondary hover:translate-x-1 hover-gradient-violet hover:text-foreground motion-reduce:hover:translate-x-0',
           className
         ),
         onClick: (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -333,8 +348,8 @@ const DrawerNavItem = React.forwardRef<HTMLAnchorElement, DrawerNavItemProps>(
         'group flex min-w-0 items-center rounded-xl px-4 py-3 transition-all duration-300 hover:scale-[1.02] focus:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95 motion-reduce:transition-none motion-reduce:hover:scale-100',
         collapsed ? 'justify-center' : 'gap-4',
         active
-          ? 'border-l-2 border-status-success/60 bg-status-success/10 font-semibold text-status-success shadow-lg shadow-status-success/5'
-          : 'text-content-secondary hover:bg-surface-overlay/80 hover:text-foreground hover:shadow-md',
+          ? activeRow
+          : idleRow,
         className
       ),
       // In the mobile drawer, choosing a destination is the end of the errand
@@ -370,11 +385,19 @@ export interface DrawerNavGroupProps {
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void
   /**
-   * On the icon rail there is no room for a submenu, so the row is a link to
-   * this destination — usually the group's first page. Without it, the rail
-   * row does nothing.
+   * The group's first page. Opening the group goes there, so choosing
+   * "Display" lands on its first page with the submenu open. On the icon rail
+   * the row is a link to it that also unfolds the sidebar. Without it, the row
+   * only shows and hides the submenu, and the rail row does nothing.
    */
+  href?: string
+  /** @deprecated The old name of `href`. */
   railHref?: string
+  /**
+   * Goes to `href` in place of the browser: a single-page app passes its
+   * router's navigate here, so following the row does not reload the page.
+   */
+  onNavigate?: (href: string) => void
   /** Its `DrawerNavItem`s, which render as the submenu's rows. */
   children: React.ReactNode
   className?: string
@@ -384,9 +407,11 @@ export interface DrawerNavGroupProps {
  * A navigation row with a submenu — the desktop app's Trade and Liquidity.
  *
  * The row names a group of pages; activating it (the row or its chevron)
- * shows or hides the pages under it. It opens by itself when one of them is
- * the current page, and is marked as active while it is. On the icon rail the
- * submenu cannot open: the row becomes a link to `railHref` instead.
+ * shows or hides the pages under it, and opening it goes to `href`, its first
+ * page. It opens by itself when one of them is the current page, and is
+ * marked as active while it is. On the icon rail the submenu cannot open: the
+ * row is a link to `href` that unfolds the sidebar, where the group is then
+ * open on that page.
  */
 const DrawerNavGroup = ({
   icon,
@@ -395,11 +420,14 @@ const DrawerNavGroup = ({
   open: openProp,
   defaultOpen,
   onOpenChange,
+  href: hrefProp,
   railHref,
+  onNavigate,
   children,
   className,
 }: DrawerNavGroupProps) => {
-  const { collapsed, close } = React.useContext(DrawerContext)
+  const href = hrefProp ?? railHref
+  const { collapsed, close, expand } = React.useContext(DrawerContext)
   const [uncontrolled, setUncontrolled] = React.useState(defaultOpen ?? active)
   const open = openProp ?? uncontrolled
   const setOpen = (next: boolean) => {
@@ -411,13 +439,20 @@ const DrawerNavGroup = ({
     if (active && openProp === undefined) setUncontrolled(true)
   }, [active, openProp])
 
+  // Following the row: the app's router when it has one, the browser otherwise.
+  const follow = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!href || !onNavigate) return
+    event.preventDefault()
+    onNavigate(href)
+  }
+
   const panelId = React.useId()
   const rowClass = cn(
     'group flex w-full min-w-0 items-center rounded-xl px-4 py-3 text-left transition-all duration-300 hover:scale-[1.02] focus:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95 motion-reduce:transition-none motion-reduce:hover:scale-100',
     collapsed ? 'justify-center' : 'gap-4',
     active
-      ? 'border-l-2 border-status-success/60 bg-status-success/10 font-semibold text-status-success shadow-lg shadow-status-success/5'
-      : 'text-content-secondary hover:bg-surface-overlay/80 hover:text-foreground hover:shadow-md'
+      ? activeRow
+      : idleRow
   )
   const iconNode = icon && (
     <span
@@ -428,10 +463,36 @@ const DrawerNavGroup = ({
     </span>
   )
 
+  const rowContent = (
+    <>
+      {iconNode}
+      <span className="min-w-0 flex-1 truncate text-body font-semibold">{label}</span>
+      <Icon
+        name="chevron_right"
+        className={cn(
+          'shrink-0 text-icon-md transition-all duration-300 motion-reduce:transition-none',
+          open && 'rotate-90'
+        )}
+      />
+    </>
+  )
+
   if (collapsed) {
     const railTitle = typeof label === 'string' ? label : undefined
-    return railHref ? (
-      <a href={railHref} title={railTitle} className={cn(rowClass, className)} onClick={() => close?.()}>
+    return href ? (
+      <a
+        href={href}
+        title={railTitle}
+        className={cn(rowClass, className)}
+        onClick={(event) => {
+          follow(event)
+          // The rail unfolds, and the page is one of the group's: the
+          // submenu opens on it by itself.
+          setOpen(true)
+          expand?.()
+          close?.()
+        }}
+      >
         {iconNode}
         <span className="sr-only">{label}</span>
       </a>
@@ -445,23 +506,27 @@ const DrawerNavGroup = ({
 
   return (
     <div className={cn('relative', className)}>
-      <button
-        type="button"
-        aria-expanded={open}
-        aria-controls={panelId}
-        className={rowClass}
-        onClick={() => setOpen(!open)}
-      >
-        {iconNode}
-        <span className="min-w-0 flex-1 truncate text-body font-semibold">{label}</span>
-        <Icon
-          name="chevron_right"
-          className={cn(
-            'shrink-0 text-icon-md transition-all duration-300 motion-reduce:transition-none',
-            open && 'rotate-90'
-          )}
-        />
-      </button>
+      {!open && href ? (
+        // Closed, with a first page: the row is a link there, and opens.
+        <a
+          href={href}
+          aria-expanded={false}
+          aria-controls={panelId}
+          className={rowClass}
+          onClick={(event) => {
+            follow(event)
+            setOpen(true)
+            // Like any row that leaves for a page, it closes the mobile drawer.
+            close?.()
+          }}
+        >
+          {rowContent}
+        </a>
+      ) : (
+        <button type="button" aria-expanded={open} aria-controls={panelId} className={rowClass} onClick={() => setOpen(!open)}>
+          {rowContent}
+        </button>
+      )}
       {open && (
         <div
           id={panelId}
@@ -476,9 +541,15 @@ const DrawerNavGroup = ({
 }
 DrawerNavGroup.displayName = 'DrawerNavGroup'
 
-/** Below the list, kept on screen while it scrolls: quick actions, the version. */
-const DrawerFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('px-4 pb-4 pt-6', className)} {...props} />
+/**
+ * Below the list, kept on screen while it scrolls: quick actions, the version.
+ * A rule on its top edge marks where the scrolling list ends.
+ */
+const DrawerFooter = ({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn('px-4 pb-4', className)} {...props}>
+    <div role="separator" className="mb-4 border-t border-divider/60" />
+    {children}
+  </div>
 )
 DrawerFooter.displayName = 'DrawerFooter'
 

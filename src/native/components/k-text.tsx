@@ -60,7 +60,7 @@ export function KText({
     (tone === 'accent'
       ? theme.primary
       : tone === 'violet'
-        ? theme.violet
+        ? theme.violetText
         : tone === 'success'
           ? theme.success
           : tone === 'warning'

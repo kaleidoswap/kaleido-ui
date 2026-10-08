@@ -40,15 +40,15 @@ export function OptionSelector({
       options={options}
       onChange={onChange}
       className={cn(compact ? 'w-auto shrink-0' : 'w-full', className)}
-      panelClassName="right-0 left-auto min-w-[11rem] rounded-xl bg-card"
-      optionClassName="px-3.5 py-2.5 hover:bg-white/6 data-[selected]:bg-transparent data-[selected]:shadow-none"
+      panelClassName="right-0 left-auto min-w-[11rem] rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card"
+      optionClassName="px-3.5 py-2.5 data-[selected]:shadow-none"
       onOpenPanelHeightChange={onOpenPanelHeightChange}
       renderTrigger={({ open }) => (
         <span
           className={cn(
-            'flex h-9 min-w-[4.5rem] items-center gap-1.5 rounded-full bg-white/8 px-3.5 text-body font-semibold leading-none text-foreground transition-colors hover:bg-white/12',
+            'flex h-9 min-w-[4.5rem] items-center gap-1.5 rounded-full bg-foreground/8 px-3.5 text-body font-semibold leading-none text-foreground shadow-raised transition-all hover-gradient-violet',
             triggerAlign === 'center' ? 'justify-center' : 'justify-between',
-            open && 'bg-primary/15 text-primary hover:bg-primary/15',
+            open && 'bg-secondary/20 text-secondary-content ring-1 ring-inset ring-secondary/40 shadow-glow-violet-soft hover-gradient-violet',
             !compact && 'w-full',
           )}
         >
@@ -59,7 +59,7 @@ export function OptionSelector({
             name="expand_more"
             className={cn(
               'shrink-0 text-icon-xs transition-transform',
-              open ? 'rotate-180 text-primary' : 'text-muted-foreground',
+              open ? 'rotate-180 text-secondary-content' : 'text-muted-foreground',
             )}
           />
         </span>
@@ -72,7 +72,7 @@ export function OptionSelector({
               <span
                 className={cn(
                   'block truncate text-body',
-                  optionSelected ? 'font-semibold text-primary' : 'font-medium text-foreground',
+                  optionSelected ? 'font-semibold text-brand' : 'font-medium text-foreground',
                 )}
               >
                 {option.label}
@@ -84,7 +84,7 @@ export function OptionSelector({
               )}
             </span>
           </span>
-          {optionSelected && <Icon name="check" className="text-icon-sm text-primary" />}
+          {optionSelected && <Icon name="check" className="text-icon-sm text-secondary-content" />}
         </span>
       )}
     />

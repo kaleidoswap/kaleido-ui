@@ -3,6 +3,7 @@ import { AssetCard } from './asset-card'
 import type { NetworkType } from './network-badge'
 import type { StatusType } from './status-badge'
 import { cn } from '../utils/cn'
+import { eyebrow } from '../utils/type-roles'
 
 export interface WalletAssetListItem {
   id: string
@@ -40,22 +41,22 @@ export interface WalletAssetListProps {
 function AssetSkeleton({ index }: { index: number }) {
   return (
     <div
-      className="flex items-center justify-between rounded-card bg-white/[0.03] p-3 animate-pulse"
+      className="flex items-center justify-between rounded-card bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-3 shadow-card animate-pulse"
       style={{ animationDelay: `${index * 100}ms` }}
     >
       <div className="flex items-center gap-3">
         <div className="relative">
-          <div className="size-8 rounded-full bg-white/10" />
-          <div className="absolute -bottom-1 -right-1 size-icon-md rounded-full bg-white/10" />
+          <div className="size-8 rounded-full bg-secondary/20" />
+          <div className="absolute -bottom-1 -right-1 size-icon-md rounded-full bg-secondary/15" />
         </div>
         <div className="flex flex-col gap-1.5">
-          <div className="h-3.5 w-20 rounded bg-white/10" />
-          <div className="h-2.5 w-10 rounded bg-white/5" />
+          <div className="h-3.5 w-20 rounded bg-foreground/10" />
+          <div className="h-2.5 w-10 rounded bg-foreground/5" />
         </div>
       </div>
       <div className="flex flex-col items-end gap-1.5">
-        <div className="h-3.5 w-16 rounded bg-white/10" />
-        <div className="h-2.5 w-8 rounded bg-white/5" />
+        <div className="h-3.5 w-16 rounded bg-foreground/10" />
+        <div className="h-2.5 w-8 rounded bg-foreground/5" />
       </div>
     </div>
   )
@@ -65,7 +66,7 @@ function EmptyState({ state }: { state: WalletAssetListEmptyState }) {
   return (
     <div className="py-8 text-center">
       {state.icon && (
-        <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-card bg-card">
+        <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-card bg-secondary/15 text-secondary-content shadow-raised">
           {state.icon}
         </div>
       )}
@@ -94,10 +95,10 @@ export function WalletAssetList({
     <div className={cn('flex flex-col gap-3', className)}>
       {!hideHeader && (
         <div className="mb-1 mt-3 flex items-center justify-between px-2">
-          <span className="text-mini font-bold uppercase tracking-eyebrow text-foreground/80">
+          <span className={cn('text-muted-foreground', eyebrow)}>
             {title}
           </span>
-          <span className="text-mini font-bold uppercase tracking-eyebrow text-foreground/80">
+          <span className={cn('text-muted-foreground', eyebrow)}>
             {amountLabel}
           </span>
         </div>

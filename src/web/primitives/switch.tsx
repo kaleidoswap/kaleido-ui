@@ -7,6 +7,13 @@ interface SwitchProps {
   disabled?: boolean
   className?: string
   /**
+   * A glyph for each side of the track. With them the switch grows into the
+   * wide pill (`ThemeToggle` is this, sun and moon): the raised thumb slides
+   * under the current glyph and the glyphs say the state, so the track stays
+   * neutral. Without them it is the compact on/off switch.
+   */
+  icons?: { off: React.ReactNode; on: React.ReactNode }
+  /**
    * How the control is named. A `role="switch"` with no accessible name is
    * unreachable by name for screen readers and for tests, so callers that
    * render their own visible label (`SwitchRow`) pass it here.
@@ -15,6 +22,9 @@ interface SwitchProps {
   'aria-labelledby'?: string
   'aria-describedby'?: string
   id?: string
+  title?: string
+  'data-slot'?: string
+  'data-mode'?: string
 }
 
 const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
@@ -24,13 +34,23 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
       onCheckedChange,
       disabled = false,
       className,
+      icons,
       id,
+      title,
       'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledBy,
       'aria-describedby': ariaDescribedBy,
+      'data-slot': dataSlot = 'switch',
+      'data-mode': dataMode,
     },
     ref
   ) => {
+    const glyph = (on: boolean) =>
+      cn(
+        'relative z-10 flex size-7 items-center justify-center transition-colors duration-300',
+        checked === on ? 'text-brand' : 'text-muted-foreground group-hover:text-foreground/80'
+      )
+
     return (
       <button
         ref={ref}
@@ -41,20 +61,44 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
         aria-describedby={ariaDescribedBy}
+        title={title}
+        data-slot={dataSlot}
+        data-mode={dataMode}
+        data-state={checked ? 'checked' : 'unchecked'}
         disabled={disabled}
         onClick={() => onCheckedChange?.(!checked)}
         className={cn(
-          'relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
-          checked ? 'bg-primary' : 'bg-white/10',
+          // The base: an inset track and a raised card thumb. Only the off track
+          // is ringed in violet: on light it would otherwise have no edge.
+          'group relative inline-flex shrink-0 cursor-pointer items-center rounded-full p-1 shadow-inner transition-all duration-300',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft',
+          'disabled:pointer-events-none disabled:opacity-50',
+          // The wide track is 18 steps: p-1 + two size-7 glyphs + p-1 leaves 2 between
+          // them, so the thumb's 9-step slide lands exactly on the second glyph.
+          icons ? 'h-9 w-18' : 'h-6 w-11',
+          !icons && checked
+            ? 'bg-primary bg-gradient-primary'
+            : 'bg-foreground/8 ring-1 ring-inset ring-secondary/20',
           className
         )}
       >
+        {/* The thumb slides under the current side. */}
         <span
+          aria-hidden="true"
           className={cn(
-            'pointer-events-none block h-4 w-4 rounded-full shadow-sm transition-all duration-200',
-            checked ? 'translate-x-6 bg-white' : 'translate-x-1 bg-primary'
+            'pointer-events-none absolute left-1 top-1 rounded-full shadow-raised transition-transform duration-300 ease-out motion-reduce:transition-none',
+            icons ? 'size-7' : 'size-4',
+            // Compact and off, a card thumb would vanish into the track.
+            !icons && !checked ? 'bg-secondary-content' : 'bg-card bg-gradient-card',
+            checked && (icons ? 'translate-x-9' : 'translate-x-5')
           )}
         />
+        {icons && (
+          <>
+            <span aria-hidden="true" className={glyph(false)}>{icons.off}</span>
+            <span aria-hidden="true" className={cn(glyph(true), 'ml-auto')}>{icons.on}</span>
+          </>
+        )}
       </button>
     )
   }
@@ -62,3 +106,4 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
 Switch.displayName = 'Switch'
 
 export { Switch }
+export type { SwitchProps }

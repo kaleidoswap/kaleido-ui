@@ -2,6 +2,8 @@ import { useState, type KeyboardEvent, type PointerEvent, type ReactNode } from 
 import { chartScatterSeriesLimit } from '../../../tokens/chart'
 import {
   ChartFrame,
+  useSeriesVisibility,
+  type ChartTitleProps,
   ChartLegend,
   ChartTooltip,
   TICK_FONT,
@@ -28,7 +30,7 @@ export interface ScatterSeries {
   points: readonly ScatterPoint[]
 }
 
-export interface ScatterChartProps {
+export interface ScatterChartProps extends ChartTitleProps {
   /**
    * At most three: in a scatter any two points can sit side by side, and only
    * the first three palette slots stay apart for every pair under colour
@@ -55,7 +57,7 @@ const HIT_RADIUS = 12
  * pointer; focus the plot and ←/→ walk the points in x order.
  */
 export function ScatterChart({
-  series,
+  series: allSeries,
   label,
   xLabel,
   yLabel,
@@ -64,17 +66,21 @@ export function ScatterChart({
   height = 260,
   empty,
   className,
+  ...head
 }: ScatterChartProps) {
   const [containerRef, width] = useChartWidth()
   const [active, setActive] = useState<number | null>(null)
-  if (series.length > chartScatterSeriesLimit) {
+  const visibility = useSeriesVisibility(allSeries.map((s) => s.id))
+  const series = allSeries.filter((s) => visibility.isVisible(s.id))
+  const slotOf = (id: string) => allSeries.findIndex((s) => s.id === id)
+  if (allSeries.length > chartScatterSeriesLimit) {
     throw new Error(
-      `ScatterChart takes at most ${chartScatterSeriesLimit} series (got ${series.length}); fold the rest into "Other" or use small multiples.`,
+      `ScatterChart takes at most ${chartScatterSeriesLimit} series (got ${allSeries.length}); fold the rest into "Other" or use small multiples.`,
     )
   }
 
   const points = series
-    .flatMap((s, slot) => s.points.map((p) => ({ ...p, slot, seriesLabel: s.label })))
+    .flatMap((s) => s.points.map((p) => ({ ...p, slot: slotOf(s.id), seriesLabel: s.label })))
     .sort((a, b) => a.x - b.x)
   if (points.length === 0) return <>{empty ?? null}</>
 
@@ -125,12 +131,17 @@ export function ScatterChart({
 
   return (
     <ChartFrame
+      {...head}
       label={label}
       className={className}
       scale={`${yLabel} against ${xLabel} · both linear, from 0`}
       legend={
-        series.length > 1 ? (
-          <ChartLegend keyShape="dot" items={series.map((s, slot) => ({ id: s.id, label: s.label, color: seriesColor(slot) }))} />
+        allSeries.length > 1 ? (
+          <ChartLegend
+            keyShape="dot"
+            items={allSeries.map((s, slot) => ({ id: s.id, label: s.label, color: seriesColor(slot) }))}
+            {...visibility.legend}
+          />
         ) : undefined
       }
       table={{
@@ -191,7 +202,7 @@ export function ScatterChart({
             {points.map((p, index) => (
               <circle
                 key={`${p.slot}-${p.id}`}
-                data-series={series[p.slot].id}
+                data-series={allSeries[p.slot].id}
                 cx={sx(p.x)}
                 cy={sy(p.y)}
                 r={active === index ? 6 : 4}

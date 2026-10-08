@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react'
+import { useId, type ReactNode } from 'react'
 import { cn } from '../utils/cn'
+import { eyebrow } from '../utils/type-roles'
 
 export interface WithdrawRouteOption<TAccount extends string = string> {
   account: TAccount
@@ -53,36 +54,36 @@ function RouteChoiceCard<TAccount extends string>({
 
   // Card body: protocol name, current amount below it, and the fee hint.
   const body = (
-    <div className="flex items-start justify-between gap-3">
+    <div className="flex items-center justify-between gap-3">
       <div className="flex min-w-0 items-start gap-3">
         {accountIcon && <div className="mt-0.5 shrink-0">{accountIcon}</div>}
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-body font-bold text-white">{route.accountTitle}</span>
+            <span className="text-body font-bold text-foreground">{route.accountTitle}</span>
             {recommended && !disabled && (
-              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-primary">
+              <span className={cn('rounded-full bg-primary/15 px-2 py-0.5 text-brand', eyebrow)}>
                 Recommended
               </span>
             )}
             {disabled && (
-              <span className="rounded-full bg-danger/10 px-2 py-0.5 text-mini font-bold uppercase tracking-eyebrow text-danger">
+              <span className={cn('rounded-full bg-danger/10 px-2 py-0.5 text-danger-fg', eyebrow)}>
                 Insufficient
               </span>
             )}
           </div>
           {balanceLabel && (
-            <p className="mt-0.5 text-caption tabular-nums text-white/55">{balanceLabel}</p>
+            <p className="mt-0.5 text-caption tabular-nums text-foreground/55">{balanceLabel}</p>
           )}
         </div>
       </div>
-      <span className="shrink-0 text-mini font-bold uppercase tracking-eyebrow text-white/40">
+      <span className={cn('shrink-0 text-foreground/55', eyebrow)}>
         {route.feeHint}
       </span>
     </div>
   )
 
   if (displayOnly) {
-    return <div className="rounded-2xl bg-card/50 px-4 py-3.5">{body}</div>
+    return <div className="rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-4 py-3.5 shadow-card-secondary">{body}</div>
   }
 
   return (
@@ -94,17 +95,20 @@ function RouteChoiceCard<TAccount extends string>({
       aria-disabled={disabled}
       title={disabled ? disabledReason : undefined}
       className={cn(
-        'w-full rounded-2xl p-4 text-left transition-all',
+        'w-full rounded-2xl p-4 text-left transition-all duration-200',
         disabled
           ? 'cursor-not-allowed bg-danger/5 opacity-60'
           : selected
-            ? (accentClassName ?? 'bg-primary/10')
-            : 'bg-white/4 hover:bg-white/6'
+            ? cn(
+                'bg-gradient-active shadow-glow-primary-faint ring-1 ring-inset ring-primary/40',
+                accentClassName ?? 'bg-secondary/10',
+              )
+            : 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-card-secondary hover-gradient-violet hover:shadow-card-hover-soft'
       )}
     >
       {body}
       {disabled && disabledReason && (
-        <p className="mt-2 text-xxs leading-relaxed text-danger/80">{disabledReason}</p>
+        <p className="mt-2 text-xxs leading-relaxed text-danger-fg/80">{disabledReason}</p>
       )}
     </button>
   )
@@ -117,14 +121,15 @@ export function WithdrawRouteSelector<TAccount extends string = string>({
   onRouteChange,
 }: WithdrawRouteSelectorProps<TAccount>) {
   const isDisplayOnly = routes.length === 1 && !routes[0].disabled
+  const headingId = useId()
 
   return (
-    <div className="space-y-2">
-      <label className="ml-1 text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+    <div className="flex flex-col gap-2">
+      <p id={headingId} className={cn('mb-1 ml-1 block leading-none', eyebrow, 'text-secondary-content')}>
         Route
-      </label>
+      </p>
 
-      <div className="space-y-2">
+      <div role="group" aria-labelledby={headingId} className="space-y-2">
         {routes.map((route) => (
           <RouteChoiceCard
             key={route.account}

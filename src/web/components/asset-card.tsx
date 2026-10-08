@@ -4,6 +4,7 @@ import { NetworkBadge, type NetworkType } from './network-badge'
 import { AssetIcon } from './asset-icon'
 import { formatDisplayAmountText } from '../utils/amount-display'
 import { StatusBadge, type StatusType } from './status-badge'
+import { eyebrow } from '../utils/type-roles'
 
 export interface AssetCardProps {
   /** Asset ticker symbol (e.g. "BTC", "USDT") */
@@ -49,7 +50,7 @@ export function AssetCard({
 
   const gradientStyle = accentColor
     ? {
-        background: `linear-gradient(135deg, var(--card) 35%, ${accentColor}${hovered ? '55' : '33'} 78%, ${accentColor}${hovered ? '99' : '70'} 100%)`,
+        background: `linear-gradient(135deg, var(--card) 35%, ${accentColor}${hovered ? '33' : '1f'} 78%, ${accentColor}${hovered ? '55' : '3d'} 100%)`,
         transition: 'background 0.3s ease',
       }
     : undefined
@@ -57,9 +58,9 @@ export function AssetCard({
   return (
     <div
       className={cn(
-        'p-4 rounded-card backdrop-blur-xl transition-all shadow-sm relative overflow-hidden group',
-        !accentColor && 'bg-card',
-        onClick && 'cursor-pointer hover:brightness-110 active:scale-[0.98]',
+        'p-4 rounded-card transition-all duration-200 shadow-card-secondary relative overflow-hidden group',
+        !accentColor && 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card',
+        onClick && 'cursor-pointer hover:shadow-card-secondary hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
         className
       )}
       style={gradientStyle}
@@ -67,7 +68,7 @@ export function AssetCard({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
       <div className="relative z-10 flex min-w-0 items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
           <AssetIcon
@@ -104,7 +105,7 @@ export function AssetCard({
             {status && <StatusBadge status={status} />}
             {status && ticker && <span className="text-tiny text-muted-foreground">·</span>}
             {showYield && (
-              <div title="Yield Generating Asset" className="text-success/90 flex items-center justify-center bg-success/10 rounded-full p-0.5">
+              <div title="Yield Generating Asset" className="text-success-fg/90 flex items-center justify-center bg-success/10 rounded-full p-0.5">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -120,7 +121,7 @@ export function AssetCard({
                 </svg>
               </div>
             )}
-            <p className="truncate text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+            <p className={cn('truncate text-muted-foreground', eyebrow)}>
               {ticker}
             </p>
           </div>

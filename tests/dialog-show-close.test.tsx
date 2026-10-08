@@ -24,7 +24,7 @@ const open = (props: Record<string, unknown>) =>
   )
 
 const closeButton = () =>
-  [...document.querySelectorAll('button')].find((button) => button.textContent === 'Close')
+  [...document.querySelectorAll('button')].find((button) => button.getAttribute('aria-label') === 'Close')
 
 test('the corner close is drawn by default', () => {
   const view = open({})

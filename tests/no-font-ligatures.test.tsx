@@ -66,6 +66,7 @@ const net = ui.NETWORK_CONFIG.lightning
  */
 const FIXTURES: Record<string, () => ReactElement[]> = {
   ActivityList: () => [createElement(ui.ActivityList, { items: [] })],
+  Avatar: () => [createElement(ui.Avatar, { src: '/me.png', initials: 'EJ' })],
   BalanceBreakdown: () => [
     createElement(ui.BalanceBreakdown, {
       btcOnchain: 1_000,
@@ -251,7 +252,7 @@ const NOT_RENDERED = new Set([
   // Need their data; tests/lists-p3.test.tsx renders them.
   'DateRangeFilter', 'EventTimeline', 'ValueList',
   // Charts need their data; tests/charts.test.tsx renders every one of them.
-  'LineChart', 'AreaChart', 'BarChart', 'BarList', 'DonutChart', 'ScatterChart', 'Sparkline',
+  'LineChart', 'AreaChart', 'BarChart', 'MixedChart', 'BarList', 'DonutChart', 'ScatterChart', 'Sparkline',
   'ChartLegend', 'ChartTooltip', 'ChartFrame',
 ])
 

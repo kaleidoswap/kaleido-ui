@@ -9,34 +9,34 @@ type InfoPanelTone = 'default' | 'primary' | 'info' | 'warning' | 'danger' | 'su
 // rings on notices/banners — surfaces separate by background layering).
 const toneClass: Record<InfoPanelTone, { panel: string; icon: string; title: string }> = {
   default: {
-    panel: 'bg-card/70',
-    icon: 'text-muted-foreground',
+    panel: 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-card',
+    icon: 'text-secondary-content',
     title: 'text-foreground',
   },
   primary: {
     panel: 'bg-primary/10',
-    icon: 'text-primary',
-    title: 'text-primary',
+    icon: 'text-brand',
+    title: 'text-brand',
   },
   info: {
-    panel: 'bg-info/10',
-    icon: 'text-info',
-    title: 'text-info',
+    panel: 'bg-info/10 bg-gradient-card shadow-raised',
+    icon: 'text-info-fg',
+    title: 'text-info-fg',
   },
   warning: {
     panel: 'bg-warning/10',
-    icon: 'text-warning',
-    title: 'text-warning',
+    icon: 'text-warning-fg',
+    title: 'text-warning-fg',
   },
   danger: {
     panel: 'bg-danger/10',
-    icon: 'text-danger',
-    title: 'text-danger',
+    icon: 'text-danger-fg',
+    title: 'text-danger-fg',
   },
   success: {
     panel: 'bg-success/10',
-    icon: 'text-success',
-    title: 'text-success',
+    icon: 'text-success-fg',
+    title: 'text-success-fg',
   },
 }
 

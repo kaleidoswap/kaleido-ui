@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { cn } from '../utils/cn'
+import { fieldSurface } from '../utils/field-styles'
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
@@ -9,7 +10,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <input
         type={type}
         className={cn(
-          'flex h-12 w-full rounded-xl bg-white/8 px-4 py-3 text-body transition-all border border-transparent file:border-0 file:bg-transparent file:text-caption file:font-medium placeholder:text-muted-foreground focus:border-primary/25 focus-visible:outline-none focus-visible:border-primary/25 disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-white/6',
+          'flex h-12 w-full px-4 py-3 text-body file:border-0 file:bg-transparent file:text-caption file:font-medium',
+          fieldSurface,
           className
         )}
         ref={ref}

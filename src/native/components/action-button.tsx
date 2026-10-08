@@ -2,13 +2,15 @@
  * ActionButton — the Send / Receive / Swap / Activity quick action.
  *
  * Replaces the rainbow filled circles with a coherent brand treatment: a
- * themed surface tile with a tinted glyph (green/violet/neutral), or a filled
- * accent for the single primary action. Icon is a render function so the glyph
+ * themed surface tile with a tinted glyph (green/violet/neutral) and a
+ * violet-tinted ring, or a filled accent with a coloured drop shadow for the
+ * single primary action. Icon is a render function so the glyph
  * is always tinted to match the active theme.
  */
 import React from 'react'
 import { Pressable, View } from 'react-native'
 import { useKaleidoTheme } from '../theme-context'
+import { kaleidoShadow } from '../theme'
 import { KText } from './k-text'
 
 type Tone = 'primary' | 'violet' | 'neutral'
@@ -36,9 +38,28 @@ export function ActionButton({
 }: ActionButtonProps) {
   const { theme } = useKaleidoTheme()
 
-  const accent = tone === 'violet' ? theme.violet : tone === 'primary' ? theme.primary : theme.text.primary
-  const tileBg = filled ? accent : theme.surface.raised
-  const glyphColor = filled ? (tone === 'violet' ? theme.text.onFill : theme.primaryFg) : accent
+  const fill = tone === 'violet' ? theme.violet : tone === 'primary' ? theme.primary : theme.cardElevated
+  const glyph = tone === 'violet' ? theme.violetText : tone === 'primary' ? theme.primary : theme.text.primary
+  const tileBg = filled
+    ? fill
+    : tone === 'violet'
+      ? theme.violetSurface
+      : tone === 'primary'
+        ? theme.successSurface
+        : theme.surface.raised
+  const glyphColor = filled
+    ? tone === 'violet'
+      ? theme.text.onFill
+      : tone === 'primary'
+        ? theme.primaryFg
+        : theme.text.primary
+    : glyph
+  const ring = tone === 'primary' ? theme.border.default : theme.violetBorder
+  const shadow = disabled
+    ? null
+    : filled
+      ? kaleidoShadow(theme, tone === 'primary' ? 'buttonPrimary' : 'buttonViolet')
+      : kaleidoShadow(theme, 'raised')
 
   return (
     <Pressable
@@ -58,8 +79,10 @@ export function ActionButton({
           height: size,
           borderRadius: size / 2,
           backgroundColor: tileBg,
-          borderWidth: filled ? 0 : 1,
-          borderColor: theme.border.subtle,
+          borderWidth: 1,
+          borderColor: filled ? fill : ring,
+          borderTopColor: filled ? theme.highlight : ring,
+          ...shadow,
           alignItems: 'center',
           justifyContent: 'center',
         }}

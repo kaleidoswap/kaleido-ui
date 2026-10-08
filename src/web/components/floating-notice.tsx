@@ -1,7 +1,6 @@
 import type { AriaRole, ReactNode } from 'react'
-import { Button } from '../primitives/button'
-import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
+import { IconButton } from '../primitives/icon-button'
 
 export interface FloatingNoticeProps {
   /** The notice — usually an `InfoPanel`. */
@@ -38,23 +37,14 @@ export function FloatingNotice({
       data-slot="floating-notice"
       role={role}
       className={cn(
-        'fixed bottom-4 left-1/2 z-[var(--z-modal)] w-[min(32rem,calc(100vw-2rem))] -translate-x-1/2 rounded-xl bg-card shadow-popover',
+        'fixed bottom-4 left-1/2 z-[var(--z-modal)] w-[min(32rem,calc(100vw-2rem))] -translate-x-1/2 rounded-2xl bg-card bg-gradient-card-hero shadow-toast',
         className,
       )}
     >
       <div className="relative">
         {children}
         {showClose && (
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            aria-label={dismissLabel}
-            onClick={onDismiss}
-            className="absolute right-2 top-2 rounded-md text-muted-foreground hover:text-foreground"
-          >
-            <Icon name="close" className="text-icon-md" />
-          </Button>
+          <IconButton icon="close" label={dismissLabel} size="sm" onClick={onDismiss} className="absolute right-2 top-2" />
         )}
       </div>
     </div>

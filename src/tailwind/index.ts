@@ -23,11 +23,12 @@
  */
 import { animation, keyframes } from '../tokens/animations'
 import { appSemanticOrder } from '../tokens/app-semantic'
+import { themedForegroundOrder } from '../tokens/brand'
 import { colors } from '../tokens/colors'
 import { layer } from '../tokens/layers'
 import { radius } from '../tokens/radius'
 import { shadow } from '../tokens/shadows'
-import { sizing } from '../tokens/sizing'
+import { sizing, spacingUnit } from '../tokens/sizing'
 import { fontFamily, fontWeight, iconBoxSize, iconSize, letterSpacing, typeScale } from '../tokens/typography'
 
 const kebab = (key: string) => key.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)
@@ -75,6 +76,19 @@ const opacity = Object.fromEntries(
   Array.from({ length: 101 }, (_, step) => [String(step), String(step / 100)]),
 )
 
+/**
+ * v4 derives every spacing step from `--spacing` (the unit in tokens/sizing);
+ * v3 has a fixed rem scale, so the same steps are restated as multiples of the
+ * unit — `p-4` is 4 units on both.
+ */
+const spacingSteps = [
+  0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 44, 48,
+  52, 56, 60, 64, 72, 80, 96,
+]
+const spacingScale = Object.fromEntries(
+  spacingSteps.map((step) => [String(step), `calc(${spacingUnit} * ${step})`]),
+)
+
 /** v4 accepts any number for `brightness-*`; v3 needs the steps named. */
 const brightness = Object.fromEntries(
   [90, 95, 100, 105, 110, 115, 120, 125, 150].map((step) => [String(step), String(step / 100)]),
@@ -100,8 +114,13 @@ const preset = {
         danger: colors.danger,
         info: colors.info,
         ...prefixed('network', colors.network),
-        ...Object.fromEntries(Object.entries(colors.networkChip).map(([k, v]) => [`network-${k}-chip`, v])),
-        ...Object.fromEntries(Object.entries(colors.networkText).map(([k, v]) => [`network-${k}-text`, v])),
+        // Chips and chip text follow the theme (the --network-*-chip/-text vars).
+        ...Object.fromEntries(Object.keys(colors.networkChip).map((k) => [`network-${k}-chip`, cssVar(`network-${k}-chip`)])),
+        ...Object.fromEntries(Object.keys(colors.networkText).map((k) => [`network-${k}-text`, cssVar(`network-${k}-text`)])),
+        // The brand layer's per-theme AA foregrounds (text-brand, text-danger-fg, …).
+        ...Object.fromEntries(themedForegroundOrder.map((token) => [token, cssVar(token)])),
+        // Spark is themed (white on dark, black on light): back to its app token.
+        'network-spark': appVar('network-spark'),
         ...prefixed('asset', colors.assetIcon),
         ...prefixed('tx', colors.tx),
         ...prefixed('text', colors.text),
@@ -122,12 +141,16 @@ const preset = {
       fontWeight,
       letterSpacing: Object.fromEntries(Object.entries(letterSpacing).map(([k, v]) => [kebab(k), v])),
       spacing: {
+        ...spacingScale,
         ...prefixed('icon', iconBoxSize),
         scrollbar: sizing.scrollbar,
         'scrollbar-hover': sizing.scrollbarHover,
+        'scrollbar-thick': sizing.scrollbarThick,
+        'scrollbar-thick-hover': sizing.scrollbarThickHover,
         'scrollbar-thumb-min': sizing.scrollbarThumbMin,
       },
-      boxShadow: Object.fromEntries(Object.entries(shadow).map(([key, value]) => [kebab(key), value])),
+      // Per-theme: the --kui-shadow-* vars kaleido-ui/css declares for dark and light.
+      boxShadow: Object.fromEntries(Object.keys(shadow).map((key) => [kebab(key), `var(--kui-shadow-${kebab(key)})`])),
       zIndex: { ...layer },
       opacity,
       brightness,

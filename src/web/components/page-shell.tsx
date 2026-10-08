@@ -82,7 +82,7 @@ export function LoadingCard({ message = 'Loading...', className }: LoadingCardPr
         className,
       )}
     >
-      <div className="mb-4 size-12 animate-spin rounded-full border-4 border-primary/20 border-t-primary" />
+      <div className="mb-4 size-12 animate-spin rounded-full border-4 border-secondary/25 border-t-primary shadow-glow-violet-soft" />
       <p className="text-body">{message}</p>
     </div>
   )
@@ -111,8 +111,8 @@ export function ErrorCard({
     <div
       className={cn('flex flex-col items-center justify-center py-16 text-center', className)}
     >
-      <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-danger/10">
-        <Icon name="error" className="text-danger text-icon-4xl" />
+      <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-danger/10 shadow-raised">
+        <Icon name="error" className="text-danger-fg text-icon-4xl" />
       </div>
       <h3 className="mb-1 text-body font-semibold">{title}</h3>
       <p className="mb-4 max-w-xs text-caption text-muted-foreground">{description}</p>
@@ -120,7 +120,7 @@ export function ErrorCard({
         <button
           type="button"
           onClick={onRetry}
-          className="rounded-xl bg-primary/15 px-4 py-2 text-caption font-semibold text-primary transition-all hover:bg-primary/25"
+          className="rounded-xl bg-secondary/15 bg-gradient-surface px-4 py-2 text-caption font-semibold text-secondary-content shadow-raised transition-all hover-gradient-violet hover:shadow-button-surface-hover"
         >
           {retryLabel}
         </button>

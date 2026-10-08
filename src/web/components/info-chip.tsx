@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react'
-import { Button } from '../primitives/button'
-import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 import { AssetIcon } from './asset-icon'
 import { NetworkBadge, type NetworkType } from './network-badge'
+import { eyebrow } from '../utils/type-roles'
+import { IconButton } from '../primitives/icon-button'
 
 export type InfoChipStatus = 'success' | 'warning' | 'danger' | 'info'
 
@@ -46,24 +46,49 @@ const defaultStatusLabel: Record<InfoChipStatus, string> = {
 }
 
 const leadingToneClass: Record<InfoChipStatus, string> = {
-  success: 'bg-success/10 text-success',
-  warning: 'bg-warning/10 text-warning',
-  danger: 'bg-danger/10 text-danger',
-  info: 'bg-info/10 text-info',
+  success: 'bg-success/10 text-success-fg',
+  warning: 'bg-warning/10 text-warning-fg',
+  danger: 'bg-danger/10 text-danger-fg',
+  info: 'bg-secondary/15 text-secondary-content',
 }
 
 const statusToneClass: Record<InfoChipStatus, string> = {
-  success: 'border-success/25 bg-success/10 text-success',
-  warning: 'border-warning/25 bg-warning/10 text-warning',
-  danger: 'border-danger/25 bg-danger/10 text-danger',
-  info: 'border-info/25 bg-info/10 text-info',
+  success: 'bg-success/10 text-success-fg',
+  warning: 'bg-warning/10 text-warning-fg',
+  danger: 'bg-danger/10 text-danger-fg',
+  info: 'bg-secondary/15 text-secondary-content',
 }
 
 const statusDotClass: Record<InfoChipStatus, string> = {
   success: 'bg-success',
   warning: 'bg-warning',
   danger: 'bg-danger',
-  info: 'bg-info',
+  info: 'bg-secondary-content',
+}
+
+export interface StatusChipProps {
+  status: InfoChipStatus
+  /** Defaults to the status name (Success, Warning, Error, Info). */
+  label?: string
+  className?: string
+}
+
+/** The small tinted pill with a dot: the status an InfoChip carries, usable on its own. */
+export function StatusChip({ status, label, className }: StatusChipProps) {
+  return (
+    <span
+      data-slot="status-chip"
+      data-status={status}
+      className={cn(
+        'inline-flex max-w-full items-center gap-1.5 rounded-full px-2 py-0.5 text-xxs font-bold leading-4',
+        statusToneClass[status],
+        className,
+      )}
+    >
+      <span aria-hidden="true" className={cn('size-1.5 shrink-0 rounded-full', statusDotClass[status])} />
+      <span className="truncate">{label ?? defaultStatusLabel[status]}</span>
+    </span>
+  )
 }
 
 export function InfoChip({
@@ -89,7 +114,7 @@ export function InfoChip({
       data-info-kind={dataInfoKind}
       data-testid={dataTestId}
       className={cn(
-        'flex w-full max-w-full items-center gap-3 rounded-xl border border-border bg-surface-card px-3 py-2.5',
+        'flex w-full max-w-full items-center gap-3 rounded-xl bg-surface-card bg-gradient-card px-3 py-2.5 shadow-raised',
         className,
       )}
     >
@@ -97,7 +122,7 @@ export function InfoChip({
         <span
           aria-hidden="true"
           className={cn(
-            'flex size-9 shrink-0 items-center justify-center rounded-full bg-accent text-muted-foreground [&_svg]:size-icon-lg',
+            'flex size-9 shrink-0 items-center justify-center rounded-full bg-secondary/15 text-secondary-content [&_svg]:size-icon-lg',
             status && leadingToneClass[status],
           )}
         >
@@ -106,7 +131,7 @@ export function InfoChip({
       )}
 
       <dl className="min-w-0 flex-1">
-        <dt className="truncate text-mini font-bold uppercase tracking-eyebrow text-muted-foreground">
+        <dt className={cn('truncate text-muted-foreground', eyebrow)}>
           {label}
         </dt>
         <dd className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
@@ -118,33 +143,12 @@ export function InfoChip({
           >
             {value}
           </span>
-          {status && (
-            <span
-              className={cn(
-                'inline-flex max-w-full items-center gap-1.5 rounded-full border px-2 py-0.5 text-xxs font-bold leading-4',
-                statusToneClass[status],
-              )}
-            >
-              <span aria-hidden="true" className={cn('size-1.5 shrink-0 rounded-full', statusDotClass[status])} />
-              <span className="truncate">{readableStatus}</span>
-            </span>
-          )}
+          {status && <StatusChip status={status} label={readableStatus ?? undefined} />}
         </dd>
       </dl>
 
       {onEdit && (
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-lg"
-          onClick={onEdit}
-          disabled={editDisabled}
-          aria-label={editLabel}
-          title={editLabel}
-          className="shrink-0"
-        >
-          <Icon name="edit" size="sm" aria-hidden="true" />
-        </Button>
+        <IconButton icon="edit" label={editLabel} onClick={onEdit} disabled={editDisabled} />
       )}
     </div>
   )

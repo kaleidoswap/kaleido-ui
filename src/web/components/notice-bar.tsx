@@ -59,7 +59,7 @@ export function NoticeBar({ children, hidden = false, heightVariable = '--kui-no
     <div
       ref={ref}
       data-slot="notice-bar"
-      className={cn('fixed inset-x-0 top-0 z-[var(--z-popover)] bg-background px-4 py-2', className)}
+      className={cn('fixed inset-x-0 top-0 z-[var(--z-popover)] bg-background/90 bg-gradient-card px-4 py-2 shadow-raised backdrop-blur-xl backdrop-saturate-150', className)}
     >
       {children}
     </div>

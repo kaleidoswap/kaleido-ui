@@ -1,6 +1,7 @@
 import { cn } from '../utils/cn'
 import type { ReactNode } from 'react'
 import { protocolIcons } from '../assets/protocol-icons'
+import { OnchainNetworkIcon } from './network-icon'
 
 export type NetworkType = 'L1' | 'LN' | 'RGB20' | 'RGB21' | 'RGB-L1' | 'RGB-LN' | 'Spark' | 'Arkade' | 'Bitcoin' | 'Liquid' | 'Taproot'
 
@@ -24,6 +25,8 @@ const networkConfig: Record<
   {
     chipVar: string
     textVar: string
+    /** The network's own colour, for a hovered or emphasised chip. */
+    accentVar: string
     border: string
     label: string
     iconSuffix: string
@@ -32,6 +35,7 @@ const networkConfig: Record<
 > = {
   L1: {
     chipVar: '--color-network-bitcoin-chip',
+    accentVar: '--color-network-bitcoin',
     textVar: '--color-network-bitcoin-text',
     border: 'border-network-bitcoin/20',
     label: 'L1',
@@ -39,6 +43,7 @@ const networkConfig: Record<
   },
   LN: {
     chipVar: '--color-network-lightning-chip',
+    accentVar: '--color-network-lightning',
     textVar: '--color-network-lightning-text',
     border: 'border-network-lightning/20',
     label: 'LN',
@@ -46,6 +51,7 @@ const networkConfig: Record<
   },
   RGB20: {
     chipVar: '--color-network-rgb-chip',
+    accentVar: '--color-network-rgb',
     textVar: '--color-network-rgb-text',
     border: 'border-danger/20',
     label: 'RGB',
@@ -53,6 +59,7 @@ const networkConfig: Record<
   },
   RGB21: {
     chipVar: '--color-network-rgb-chip',
+    accentVar: '--color-network-rgb',
     textVar: '--color-network-rgb-text',
     border: 'border-danger/20',
     label: 'RGB21',
@@ -60,6 +67,7 @@ const networkConfig: Record<
   },
   'RGB-L1': {
     chipVar: '--color-network-rgb-chip',
+    accentVar: '--color-network-rgb',
     textVar: '--color-network-rgb-text',
     border: 'border-danger/20',
     label: 'RGB L1',
@@ -67,6 +75,7 @@ const networkConfig: Record<
   },
   'RGB-LN': {
     chipVar: '--color-network-rgb-chip',
+    accentVar: '--color-network-rgb',
     textVar: '--color-network-rgb-text',
     border: 'border-danger/20',
     label: 'RGB LN',
@@ -74,13 +83,17 @@ const networkConfig: Record<
   },
   Spark: {
     chipVar: '--color-network-spark-chip',
+    accentVar: '--color-network-spark',
     textVar: '--color-network-spark-text',
-    border: 'border-black/20 dark:border-white/20',
+    border: 'border-black/20 dark:border-foreground/20',
     label: 'Spark',
     iconSuffix: 'spark/Asterisk/Spark Asterisk White.svg',
+    // The asterisk is white: drawn black on the light theme, like the label.
+    defaultIconClassName: 'kui-mono-icon',
   },
   Arkade: {
     chipVar: '--color-network-arkade-chip',
+    accentVar: '--color-network-arkade',
     textVar: '--color-network-arkade-text',
     border: 'border-network-arkade/20',
     label: 'Arkade',
@@ -88,6 +101,7 @@ const networkConfig: Record<
   },
   Bitcoin: {
     chipVar: '--color-network-bitcoin-chip',
+    accentVar: '--color-network-bitcoin',
     textVar: '--color-network-bitcoin-text',
     border: 'border-network-bitcoin/20',
     label: 'Bitcoin',
@@ -95,6 +109,7 @@ const networkConfig: Record<
   },
   Liquid: {
     chipVar: '--color-network-liquid-chip',
+    accentVar: '--color-network-liquid',
     textVar: '--color-network-liquid-text',
     border: 'border-network-liquid/20',
     label: 'Liquid',
@@ -102,11 +117,31 @@ const networkConfig: Record<
   },
   Taproot: {
     chipVar: '--color-network-taproot-chip',
+    accentVar: '--color-network-taproot',
     textVar: '--color-network-taproot-text',
     border: 'border-network-taproot/20',
     label: 'Taproot',
     iconSuffix: 'taproot-assets/tapass-logo.svg',
   },
+}
+
+/** A network's chip fill and ink — the badge's colours, for any surface that stands for that network. */
+export function networkChipStyle(network: NetworkType): { backgroundColor: string; color: string } {
+  const { chipVar, textVar } = networkConfig[network]
+  return { backgroundColor: `var(${chipVar})`, color: `var(${textVar})` }
+}
+
+/**
+ * The same colours as CSS variables, for `.kui-network-chip`: the badge fill
+ * at rest and the network's own colour on hover.
+ */
+export function networkChipVars(network: NetworkType): Record<string, string> {
+  const { chipVar, textVar, accentVar } = networkConfig[network]
+  return {
+    '--kui-network-chip': `var(${chipVar})`,
+    '--kui-network-text': `var(${textVar})`,
+    '--kui-network-accent': `var(${accentVar})`,
+  }
 }
 
 export function NetworkBadge({
@@ -118,30 +153,17 @@ export function NetworkBadge({
   className,
   iconClassName,
 }: NetworkBadgeProps) {
-  const { chipVar, textVar, label, iconSuffix, defaultIconClassName } = networkConfig[network]
+  const { label, iconSuffix, defaultIconClassName } = networkConfig[network]
   const icon = iconBasePath ? `${iconBasePath}/${iconSuffix}` : (protocolIcons[network] ?? `${iconSuffix}`)
   const shouldShowLabel = showLabel ?? false
   const content = children ?? (shouldShowLabel ? label : null)
   const chipSize = size === 'sm' ? 'size-6' : size === 'lg' ? 'size-14' : 'size-8'
   const imageSize = size === 'sm' ? 'size-3.5' : size === 'lg' ? 'size-7' : 'size-icon-lg'
-  const chipStyle = {
-    backgroundColor: `var(${chipVar})`,
-    color: `var(${textVar})`,
-  }
+  const chipStyle = networkChipStyle(network)
 
   const renderGlyph = (className: string) =>
     network === 'L1' ? (
-      <svg
-        viewBox="0 0 47.5 47.5"
-        fill="currentColor"
-        aria-hidden
-        width="1em"
-        height="1em"
-        className={cn('inline-block shrink-0', className)}
-      >
-        <path transform="matrix(1.25 0 0 -1.25 0 47.5)" d="m16 28 6 6s6 6 12 0 0-12 0-12l-8-8s-6-6-12 0c-1.125 1.125-1.822 2.62-1.822 2.62l3.353 3.348S15.396 18.604 17 17c0 0 3-3 6 0l8 8s3 3 0 6-6 0-6 0l-3.729-3.729s-1.854 1.521-5.646.354L16 28Z" />
-        <path transform="matrix(1.25 0 0 -1.25 0 47.5)" d="m21.845 10-6-6s-6-6-12 0 0 12 0 12l8 8s6 6 12 0c1.125-1.125 1.822-2.62 1.822-2.62l-3.353-3.349s.135 1.365-1.469 2.969c0 0-3 3-6 0l-8-8s-3-3 0-6 6 0 6 0l3.729 3.729s1.854-1.52 5.646-.354L21.845 10Z" />
-      </svg>
+      <OnchainNetworkIcon className={className} />
     ) : (
       <img
         src={icon}

@@ -42,7 +42,7 @@ export const Icons = {
 
   // Actions
   Send: (props: Omit<IconProps, 'name'>) => <Icon name="arrow_outward" {...props} />,
-  Receive: (props: Omit<IconProps, 'name'>) => <Icon name="arrow_downward" {...props} />,
+  Receive: (props: Omit<IconProps, 'name'>) => <Icon name="south_west" {...props} />,
   Swap: (props: Omit<IconProps, 'name'>) => <Icon name="swap_horiz" {...props} />,
   Copy: (props: Omit<IconProps, 'name'>) => <Icon name="content_copy" {...props} />,
   Paste: (props: Omit<IconProps, 'name'>) => <Icon name="content_paste" {...props} />,

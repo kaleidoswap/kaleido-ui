@@ -8,9 +8,9 @@ export interface SkeletonProps {
 }
 
 const toneClass: Record<SkeletonTone, string> = {
-  primary: 'bg-white/10',
-  secondary: 'bg-white/5',
-  card: 'bg-white/[0.06]',
+  primary: 'bg-secondary/15',
+  secondary: 'bg-secondary/10',
+  card: 'bg-secondary/[0.08]',
 }
 
 export function Skeleton({ className, tone = 'primary' }: SkeletonProps) {
@@ -30,7 +30,7 @@ export function ListSkeletonRows({ rows = 3, className, rowClassName }: ListSkel
         <div
           key={index}
           className={cn(
-            'flex items-center gap-3 rounded-2xl bg-white/[0.02] p-4 animate-pulse',
+            'flex items-center gap-3 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-4 shadow-card animate-pulse',
             rowClassName,
           )}
         >

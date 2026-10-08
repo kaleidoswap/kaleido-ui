@@ -13,47 +13,13 @@
    Only showcase-specific additions go here.
    ───────────────────────────────────────────────────────────────────────── */
 
-/* Showcase surface palette — not yet part of the library token set */
-@theme inline {
-  --color-background-dark:   #102217;
-  --color-background-light:  #F6F8F7;
-  --color-surface-dark:      #162E21;
-  --color-surface-highlight: #243E30;
-  --color-surface-border:    #244A35;
-  --color-surface-darker:    #0B1810;
-}
-
-/* ─────────────────────────────────────────────────────────────────────────
-   DARK MODE OVERRIDES
-   The library ships conservative defaults. The showcase uses the full
-   forest-dark / brand-green palette from DESIGN.md.
-   ───────────────────────────────────────────────────────────────────────── */
-.dark {
-  --background: hsl(158 35% 7%);
-  --foreground: #ffffff;
-  --card: hsl(160 12% 8%);
-  --card-foreground: #ffffff;
-  --popover: hsl(158 10% 12%);
-  --popover-foreground: #ffffff;
-  --primary: #2bee79;
-  --primary-foreground: #051b10;
-  --secondary: hsl(158 10% 12%);
-  --secondary-foreground: #ffffff;
-  --muted: hsl(160 12% 8%);
-  --muted-foreground: rgba(255, 255, 255, 0.55);
-  --accent: hsl(158 10% 12%);
-  --accent-foreground: #ffffff;
-  --destructive: hsl(0 62% 50%);
-  --border: hsl(156 10% 18%);
-  --input: rgba(255, 255, 255, 0.15);
-  --ring: #2bee79;
-}
-
 /* ─── Base ──────────────────────────────────────────────────────────────── */
 @layer base {
   * { border-color: var(--border); }
   body {
     background-color: var(--background);
+    background-image: var(--gradient-page);
+    background-attachment: fixed;
     color: var(--foreground);
     font-family: var(--font-sans);
   }
@@ -83,12 +49,6 @@
 }
 .glass-card:active { transform: scale(0.98); }
 
-/* ─── Brand glow utilities (green-tinted, showcase-specific) ────────────── */
-.shadow-glow-subtle { box-shadow: 0 0 10px rgba(43, 238, 121, 0.1); }
-.shadow-glow        { box-shadow: 0 0 20px rgba(43, 238, 121, 0.2); }
-.shadow-glow-strong { box-shadow: 0 0 30px rgba(43, 238, 121, 0.3); }
-.shadow-glow-accent { box-shadow: 0 4px 30px rgba(43, 238, 121, 0.25); }
-
 /* ─── Utilities ─────────────────────────────────────────────────────────── */
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -98,8 +58,8 @@
 
 /* ─── App-specific keyframes ────────────────────────────────────────────── */
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(43, 238, 121, 0.2); }
-  50%       { box-shadow: 0 0 30px rgba(43, 238, 121, 0.4); }
+  0%, 100% { box-shadow: 0 0 20px rgba(111, 50, 255, 0.25); }
+  50%       { box-shadow: 0 0 30px rgba(21, 233, 154, 0.35); }
 }
 
 .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
