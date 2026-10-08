@@ -73,6 +73,13 @@ export interface TrendChartProps extends ChartTitleProps {
   formatValue?: (value: number) => string
   /** Plot height in px, axes included. */
   height?: number
+  /**
+   * Chart or table, controlled. Leave both out and the chart keeps its own
+   * view; pass them when the host keeps the view in its own state (an address,
+   * a saved preference), so the chart's switch is the only one on screen.
+   */
+  view?: ChartView
+  onViewChange?: (view: ChartView) => void
   className?: string
 }
 
@@ -183,12 +190,19 @@ export function TrendChart({
   empty,
   formatValue = defaultFormat,
   height = 220,
+  view: controlledView,
+  onViewChange,
   className,
   ...head
 }: TrendChartProps) {
   const [containerRef, width] = useElementWidth()
   const [active, setActive] = useState<number | null>(null)
-  const [view, setView] = useState<ChartView>('chart')
+  const [ownView, setOwnView] = useState<ChartView>('chart')
+  const view = controlledView ?? ownView
+  const setView = (next: ChartView) => {
+    if (controlledView === undefined) setOwnView(next)
+    onViewChange?.(next)
+  }
   // Each series keeps its own texture when another is switched off.
   const styledSeries = allSeries.map((s, index) => ({ ...s, texture: s.texture ?? (index === 0 ? 'solid' : 'hatch') }))
   const visibility = useSeriesVisibility(allSeries.map((s) => s.id))
