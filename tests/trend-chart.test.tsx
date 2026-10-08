@@ -173,3 +173,9 @@ test('the viewBox follows the measured container width', async () => {
   view.unmount()
   delete (globalThis as Record<string, unknown>).ResizeObserver
 })
+
+test('the view can be controlled: the table renders when the host says so', () => {
+  const markup = chart(5, { view: 'table', onViewChange: () => {} })
+  assert.match(markup, /<table/, 'a controlled table view renders the table')
+  assert.doesNotMatch(chart(5), /<table/, 'uncontrolled, it still starts on the chart')
+})
