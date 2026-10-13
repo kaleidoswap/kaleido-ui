@@ -33,6 +33,17 @@ import {
   EventTimeline,
   FilterBar,
   FilterChipGroup,
+  FilterDropdown,
+  LightningNetworkIcon,
+  SparkNetworkIcon,
+  ArkadeNetworkIcon,
+  RgbNetworkIcon,
+  IconButton,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   FloatingNotice,
   FormField,
   Icon,
@@ -56,9 +67,7 @@ import {
   SwapStepList,
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -114,31 +123,47 @@ const swaps = [
   { id: 'sw_5d90f1c377', pair: 'BTC → L-BTC', sent: '50,000 sats', received: '49,850 sats', status: 'failed', app: 'Wallet', at: '30 Sep, 12:15' },
 ] as const
 
+// The swaps that exist in the period; the table shows the first page of them.
+const SWAPS_TOTAL = 128
+
 const statusTone = { completed: 'success', pending: 'warning', failed: 'danger' } as const
 
 // ─── Foundations ────────────────────────────────────────────────────────────
 
 export function TableGallery() {
   const [selected, setSelected] = useState<string>(swaps[0].id)
+  const [sortKey, setSortKey] = useState<'id' | 'pair' | 'sent' | 'received' | 'at' | null>(null)
+  const [dir, setDir] = useState<'asc' | 'desc'>('asc')
+  const sortBy = (key: NonNullable<typeof sortKey>) => {
+    setDir(sortKey === key && dir === 'asc' ? 'desc' : 'asc')
+    setSortKey(key)
+  }
+  const rows = sortKey
+    ? [...swaps].sort((a, b) => a[sortKey].localeCompare(b[sortKey], 'en', { numeric: true }) * (dir === 'asc' ? 1 : -1))
+    : swaps
   return (
     <Grid>
       <div className="xl:col-span-2">
-        <Demo title="Table" use="Dense grids on desk surfaces. Caption-size cells, eyebrow heads, a hairline between rows; it scrolls inside its own wrapper. Click a row to select it (aria-selected).">
-          <Table>
-            <TableCaption>Swaps in the last 24 hours</TableCaption>
+        <Demo title="Table" use="Dense grids on desk surfaces. Caption-size cells, left-aligned throughout, a hairline between rows; it scrolls inside its own wrapper. Sortable heads are ghost buttons. showRowCount states the rows shown out of those that exist; the title and what the table shows sit above it. Click a row to select it (aria-selected).">
+          {/* What the table shows is said under its title, above the grid. */}
+          <div className="mb-3 space-y-1 px-4">
+            <h4 className="m-0 text-subhead font-semibold text-foreground">Swaps</h4>
+            <p className="m-0 text-caption text-muted-foreground">Swaps in the last 24 hours, newest first.</p>
+          </div>
+          <Table showRowCount totalRowCount={SWAPS_TOTAL}>
             <TableHeader>
               <TableRow>
-                <TableHead>Id</TableHead>
-                <TableHead>Pair</TableHead>
-                <TableHead className="text-right">Sent</TableHead>
-                <TableHead className="text-right">Received</TableHead>
+                <TableHead sortable sortDirection={sortKey === 'id' ? dir : 'none'} onSort={() => sortBy('id')}>Id</TableHead>
+                <TableHead sortable sortDirection={sortKey === 'pair' ? dir : 'none'} onSort={() => sortBy('pair')}>Pair</TableHead>
+                <TableHead sortable sortDirection={sortKey === 'sent' ? dir : 'none'} onSort={() => sortBy('sent')}>Sent</TableHead>
+                <TableHead sortable sortDirection={sortKey === 'received' ? dir : 'none'} onSort={() => sortBy('received')}>Received</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>App</TableHead>
-                <TableHead>Time</TableHead>
+                <TableHead sortable sortDirection={sortKey === 'at' ? dir : 'none'} onSort={() => sortBy('at')}>Time</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {swaps.map((swap) => (
+              {rows.map((swap) => (
                 <TableRow
                   key={swap.id}
                   aria-selected={swap.id === selected}
@@ -151,8 +176,8 @@ export function TableGallery() {
                     </Copyable>
                   </TableCell>
                   <TableCell className="whitespace-nowrap">{swap.pair}</TableCell>
-                  <TableCell className="whitespace-nowrap text-right tabular-nums">{swap.sent}</TableCell>
-                  <TableCell className="whitespace-nowrap text-right tabular-nums">{swap.received}</TableCell>
+                  <TableCell className="whitespace-nowrap tabular-nums">{swap.sent}</TableCell>
+                  <TableCell className="whitespace-nowrap tabular-nums">{swap.received}</TableCell>
                   <TableCell>
                     <ToneBadge tone={statusTone[swap.status]}>{swap.status}</ToneBadge>
                   </TableCell>
@@ -161,11 +186,6 @@ export function TableGallery() {
                 </TableRow>
               ))}
             </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TableCell colSpan={7}>3 swaps</TableCell>
-              </TableRow>
-            </TableFooter>
           </Table>
         </Demo>
       </div>
@@ -323,7 +343,44 @@ export function DialogShowCloseDemo() {
   )
 }
 
+const MENU_APPS = [
+  'Acme Wallet (iOS)',
+  'Acme Wallet (Android)',
+  'Acme Web',
+  'Acme Checkout',
+  'Acme Extension',
+  'Acme Telegram bot',
+  'Partner portal',
+  'Backoffice',
+  'Sandbox',
+  'Staging',
+]
+
+/**
+ * The network filter, as the Popover & Menu demo shows it. Feature Components
+ * renders this same element, so a change here shows in both places.
+ */
+export function NetworkFilterDropdown({ value, onChange }: { value: string; onChange: (id: string) => void }) {
+  return (
+    <FilterDropdown
+      label="Network"
+      value={value}
+      onChange={onChange}
+      options={[
+        { id: 'all', label: 'All Networks', icon: <Icon name="hub" size="sm" /> },
+        { id: 'lightning', label: 'Lightning', icon: <LightningNetworkIcon className="size-4" /> },
+        { id: 'spark', label: 'Spark', icon: <SparkNetworkIcon className="size-4" /> },
+        { id: 'arkade', label: 'Arkade', icon: <ArkadeNetworkIcon className="size-4 rounded-sm" /> },
+        { id: 'rgb', label: 'RGB', icon: <RgbNetworkIcon className="size-4" /> },
+      ]}
+    />
+  )
+}
+
 export function PopoverMenuGallery() {
+  const [environment, setEnvironment] = useState('production')
+  const [app, setApp] = useState<string>(MENU_APPS[0])
+  const [network, setNetwork] = useState('all')
   const [last, setLast] = useState('—')
   return (
     <Grid>
@@ -347,7 +404,7 @@ export function PopoverMenuGallery() {
           </PopoverContent>
         </Popover>
       </Demo>
-      <Demo title="DropdownMenu" use="A real menu: items, a label, a separator, a destructive item kept last. Arrow keys move, Enter selects.">
+      <Demo title="DropdownMenu" use="A real menu of actions: items, a label, a separator, a destructive item kept last. Arrow keys move, Enter selects. Past four items it scrolls and opens with a search field.">
         <div className="flex items-center gap-3">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -366,6 +423,35 @@ export function PopoverMenuGallery() {
           </DropdownMenu>
           <span className="text-caption text-muted-foreground">Last chosen: {last}</span>
         </div>
+      </Demo>
+      <Demo title="Select" use="Picks a value that stays set: the trigger shows it, the menu ticks it. Up to four options it shows them all; past four it shows four, scrolls the rest and opens with a search field. hug makes the trigger as wide as its value. Every select in the library is this one.">
+        <div className="flex flex-wrap items-center gap-3">
+          <Select value={environment} onValueChange={setEnvironment}>
+            <SelectTrigger hug aria-label="Environment">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="production">Production</SelectItem>
+              <SelectItem value="staging">Staging</SelectItem>
+              <SelectItem value="sandbox">Sandbox</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={app} onValueChange={setApp}>
+            <SelectTrigger hug aria-label="App">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {MENU_APPS.map((name) => (
+                <SelectItem key={name} value={name}>
+                  {name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </Demo>
+      <Demo title="FilterDropdown" use="A filter with an icon per option, for a narrow wallet surface: a full-width pill with the label and a +N count, opening a panel of options as wide as itself, over the content below. Past four options it shows four and scrolls the rest; it is not a Select, so there is no search. Used by the extension dashboard's network filter.">
+        <NetworkFilterDropdown value={network} onChange={setNetwork} />
       </Demo>
     </Grid>
   )
@@ -505,15 +591,44 @@ function SegmentedControlDemo() {
   )
 }
 
+const PERIODS = [
+  { value: '24h', label: 'Last 24 hours' },
+  { value: '7d', label: 'Last 7 days' },
+  { value: 'wtd', label: 'Week to date' },
+  { value: '30d', label: 'Last 30 days' },
+  { value: 'mtd', label: 'Month to date' },
+  { value: '90d', label: 'Last 90 days' },
+  { value: '6m', label: 'Last 6 months' },
+  { value: '12m', label: 'Last 12 months' },
+  { value: 'ytd', label: 'Year to date' },
+  { value: 'custom', label: 'Custom range' },
+] as const
+
+type Period = (typeof PERIODS)[number]['value']
+const DEFAULT_PERIOD: Period = '12m'
+
+const ALL = 'all'
+type FilterKey = 'app' | 'apiKey' | 'install' | 'pair'
+
+// More than four options, so these menus scroll and open with a search field.
+const LIST_FILTERS: { key: FilterKey; label: string; all: string; options: string[] }[] = [
+  { key: 'app', label: 'App', all: 'All apps', options: ['Wallet', 'Checkout', 'Extension'] },
+  { key: 'apiKey', label: 'API key', all: 'All API keys', options: ['Production', 'Staging', 'Sandbox', 'Mobile app', 'Partner portal', 'Backoffice'] },
+  { key: 'install', label: 'Install', all: 'All installs', options: ['iOS', 'Android', 'Web', 'Desktop', 'Browser extension', 'Telegram bot'] },
+  { key: 'pair', label: 'Pair', all: 'All pairs', options: ['BTC / USDT', 'BTC / L-BTC', 'USDT / L-BTC', 'BTC / USDC', 'USDT / USDC', 'L-BTC / USDC'] },
+]
+
 export function ListsGallery() {
   const narrow = useIsNarrow()
   const [mode, setMode] = useState<'loading' | 'error' | 'forbidden' | 'empty' | 'data'>('data')
   const [offset, setOffset] = useState(0)
   const [range, setRange] = useState<DateRange>({ from: '2026-09-01', to: '' })
   const [refreshing, setRefreshing] = useState(false)
-  const [app, setApp] = useState<'all' | 'wallet' | 'checkout'>('all')
+  const [filters, setFilters] = useState<Record<FilterKey, string>>({ app: ALL, apiKey: ALL, install: ALL, pair: ALL })
+  const [period, setPeriod] = useState<Period>(DEFAULT_PERIOD)
   const [opened, setOpened] = useState<string | null>(null)
-  const activeCount = (app !== 'all' ? 1 : 0) + (range.from || range.to ? 1 : 0)
+  const activeCount =
+    LIST_FILTERS.filter((filter) => filters[filter.key] !== ALL).length + (period !== DEFAULT_PERIOD ? 1 : 0)
   const pageRows = [50, 50, 50, 23]
 
   return (
@@ -571,38 +686,60 @@ export function ListsGallery() {
         </Demo>
       </Grid>
 
-      <Demo title="FilterBar + DateRangeFilter" use="The filters of a list. Wide: in a row, with “N filters applied” and Clear all. Narrow (resize below 640px): one Filters toggle that opens them.">
+      <Demo title="FilterBar + DateRangeFilter" use="The filters of a list: a period, an app, an API key, an install and a pair, as selects that hug their value and show four items before they scroll, with a search field past four. Custom range opens the date inputs; Refresh stays after the last filter. Wide: in a row, with “N filters applied” and Clear all. Narrow (resize below 640px): one Filters toggle that opens them.">
         <FilterBar
-          align="end"
           activeCount={activeCount}
           onClear={() => {
-            setApp('all')
+            setFilters({ app: ALL, apiKey: ALL, install: ALL, pair: ALL })
+            setPeriod(DEFAULT_PERIOD)
             setRange({ from: '', to: '' })
           }}
         >
-          {/* As tall as the date inputs, so the chips sit on their centre line. */}
-          <div className="flex h-12 items-center">
-            <FilterChipGroup
-              ariaLabel="App"
-              value={app}
-              onChange={setApp}
-              options={[
-                { value: 'all', label: 'All apps' },
-                { value: 'wallet', label: 'Wallet' },
-                { value: 'checkout', label: 'Checkout' },
-              ]}
-            />
-          </div>
-          {/* Refresh last; Clear all, under the bar, empties the dates too. */}
-          <DateRangeFilter
-            showClear={false}
-            value={range}
-            onChange={setRange}
-            isRefreshing={refreshing}
-            onRefresh={() => {
+          <Select value={period} onValueChange={(value) => setPeriod(value as Period)}>
+            <SelectTrigger hug aria-label="Period">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {PERIODS.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {LIST_FILTERS.map((filter) => (
+            <Select
+              key={filter.key}
+              value={filters[filter.key]}
+              onValueChange={(value) => setFilters((current) => ({ ...current, [filter.key]: value }))}
+            >
+              <SelectTrigger hug aria-label={filter.label}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={ALL}>{filter.all}</SelectItem>
+                {filter.options.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          ))}
+          {/* Custom range opens the dates; Clear all, under the bar, empties them too. */}
+          {period === 'custom' && <DateRangeFilter showClear={false} value={range} onChange={setRange} />}
+          {/* Refresh always sits after the last filter, whichever that is. */}
+          <IconButton
+            label="Refresh"
+            variant="surface"
+            size="lg"
+            disabled={refreshing}
+            aria-busy={refreshing || undefined}
+            onClick={() => {
               setRefreshing(true)
               setTimeout(() => setRefreshing(false), 1500)
             }}
+            icon={<Icon name="refresh" aria-hidden="true" className={cn(refreshing && 'animate-spin motion-reduce:animate-none')} />}
           />
         </FilterBar>
         <p className="mt-3 text-caption text-muted-foreground">useIsNarrow() is {String(narrow)} at this width.</p>

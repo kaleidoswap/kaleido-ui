@@ -86,3 +86,31 @@ test('a consumer class reaches the cell and wins over the default', () => {
   assert.ok(first.includes('text-right'))
   assert.ok(first.includes('text-body'))
 })
+
+test('a sortable head is a ghost button with aria-sort and a sort icon', () => {
+  const markup = renderToStaticMarkup(
+    h(
+      'table',
+      null,
+      h('thead', null, h('tr', null, h(TableHead, { sortable: true, sortDirection: 'desc', onSort: () => {} }, 'Sent'), h(TableHead, null, 'Type'))),
+    ),
+  )
+  assert.match(markup, /aria-sort="descending"/)
+  assert.match(markup, /<button[^>]*data-slot="table-sort"|<button[^>]*type="button"/)
+  assert.equal((markup.match(/<button/g) ?? []).length, 1)
+  // heads and cells are left-aligned, never right-aligned
+  assert.doesNotMatch(markup, /text-right/)
+})
+
+test('showRowCount states the body rows shown out of the rows that exist', () => {
+  const rows = (n: number) =>
+    h(TableBody, null, ...Array.from({ length: n }, (_, i) => h(TableRow, { key: i }, h(TableCell, null, `sw_${i}`))))
+  const count = (props: Record<string, unknown>, n: number) => {
+    const markup = renderToStaticMarkup(h(Table, props, rows(n)))
+    return markup.match(/data-slot="table-row-count"[^>]*>([^<]*)</)?.[1]
+  }
+  assert.equal(count({ showRowCount: true }, 3), '3 of 3 rows')
+  assert.equal(count({ showRowCount: true }, 1), '1 of 1 row')
+  assert.equal(count({ showRowCount: true, totalRowCount: 120 }, 3), '3 of 120 rows')
+  assert.equal(count({}, 3), undefined)
+})

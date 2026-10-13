@@ -3,6 +3,8 @@ import * as SelectPrimitive from '@radix-ui/react-select'
 import { Icon } from './icon'
 import { cn } from '../utils/cn'
 import { fieldSurface } from '../utils/field-styles'
+import { ScrollArea } from './scroll-area'
+import { MENU_VISIBLE_ITEMS, MenuNoResults, MenuSearch, countMenuItems, filterMenuItems, isElementOf } from './menu-search'
 
 const Select = SelectPrimitive.Root
 const SelectGroup = SelectPrimitive.Group
@@ -11,12 +13,14 @@ const SelectValue = SelectPrimitive.Value
 interface SelectTriggerProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> {
   /** Compact pill style — matches the FilterDropdown button aesthetic. */
   compact?: boolean
+  /** Hug the value instead of filling the width: the trigger is as wide as its content. */
+  hug?: boolean
 }
 
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   SelectTriggerProps
->(({ className, children, compact = false, ...props }, ref) => (
+>(({ className, children, compact = false, hug = false, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
@@ -27,7 +31,8 @@ const SelectTrigger = React.forwardRef<
             'hover-gradient-violet data-[state=open]:bg-secondary/20 data-[state=open]:text-secondary-content',
           ]
         : [
-            'w-full gap-3 px-4 py-3 text-left text-body',
+            hug ? 'w-auto' : 'w-full',
+            'gap-3 px-4 py-3 text-left text-body',
             fieldSurface,
             'data-[state=open]:ring-primary/50',
           ],
@@ -53,6 +58,38 @@ const SelectTrigger = React.forwardRef<
 ))
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
 
+// Four items at 51 px (py-3 plus the body line); the fifth is reached by scrolling.
+const SELECT_MAX_HEIGHT = 'max-h-[204px]'
+
+const isSelectItem = (element: React.ReactElement) => isElementOf(SelectItem)(element)
+
+/**
+ * The list, the search field above it when there are more than four items, and
+ * the scroll area that shows four and scrolls the rest. Its own component so the
+ * query starts empty each time the menu opens.
+ */
+function SelectBody({ children }: { children: React.ReactNode }) {
+  const [query, setQuery] = React.useState('')
+  const searchable = countMenuItems(children, isSelectItem) > MENU_VISIBLE_ITEMS
+  const searching = searchable && query.trim() !== ''
+  const shown = searching ? filterMenuItems(children, isSelectItem, query) : children
+  return (
+    <>
+      {searchable && <MenuSearch value={query} onChange={setQuery} />}
+      {/* A long list reaches into the content's right padding (-mr-1.5) and pads
+          its rows back (pr-1.5): the rows keep their width and the thumb runs in
+          the gutter by the edge, clear of the rows and their selected ring. */}
+      <ScrollArea
+        className={searchable ? '-mr-1.5' : undefined}
+        viewportClassName={searchable ? cn(SELECT_MAX_HEIGHT, 'pr-1.5') : undefined}
+      >
+        <SelectPrimitive.Viewport style={{ overflow: 'visible' }}>{shown}</SelectPrimitive.Viewport>
+        {searching && React.Children.count(shown) === 0 && <MenuNoResults />}
+      </ScrollArea>
+    </>
+  )
+}
+
 const SelectContent = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
@@ -70,7 +107,7 @@ const SelectContent = React.forwardRef<
       sideOffset={8}
       {...props}
     >
-      <SelectPrimitive.Viewport>{children}</SelectPrimitive.Viewport>
+      <SelectBody>{children}</SelectBody>
     </SelectPrimitive.Content>
   </SelectPrimitive.Portal>
 ))

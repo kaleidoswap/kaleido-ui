@@ -13,19 +13,19 @@
  */
 :root:not(.dark),
 .light {
-  --primary: #097B4E;
+  --primary: #007D49;
   /* The deep brand green takes white text (5.3:1); the default light green takes dark ink. */
   --primary-foreground: #FFFFFF;
   /* …and its button gradient runs through the deep greens under that white text,
      lightening toward the bottom-right like the default light fills. */
-  --gradient-primary: linear-gradient(135deg, #076A43 0%, #097B4E 50%, #0E8F5C 100%);
-  --ring: #097B4E;
+  --gradient-primary: linear-gradient(135deg, #076A43 0%, #007D49 50%, #0E8F5C 100%);
+  --ring: #007D49;
 }
 
 .light {
-  --app-primary: 9 123 78;
+  --app-primary: 0 125 73;
   --app-primary-foreground: 255 255 255;
-  --app-border-strong: 9 123 78;
+  --app-border-strong: 0 125 73;
 }
 
 .dark {

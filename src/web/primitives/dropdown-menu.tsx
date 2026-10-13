@@ -3,6 +3,8 @@ import * as MenuPrimitive from '@radix-ui/react-dropdown-menu'
 import { cn } from '../utils/cn'
 import { eyebrow } from '../utils/type-roles'
 import { floatingSurface } from './popover'
+import { ScrollArea } from './scroll-area'
+import { MENU_VISIBLE_ITEMS, MenuNoResults, MenuSearch, countMenuItems, filterMenuItems, isElementOf } from './menu-search'
 
 /**
  * A real menu (`role="menu"`): items, separators, labels, a destructive item.
@@ -18,10 +20,32 @@ const DropdownMenuPortal = MenuPrimitive.Portal
 
 export type DropdownMenuContentProps = React.ComponentPropsWithoutRef<typeof MenuPrimitive.Content>
 
+// Four items at 38 px (py-2 plus the caption line); the fifth is reached by scrolling.
+const MENU_MAX_HEIGHT = 'max-h-[152px]'
+
+const isMenuItem = (element: React.ReactElement) => isElementOf(DropdownMenuItem)(element)
+
+/** The items, the search field above them past four, and the scroll area that shows four. */
+function MenuBody({ children }: { children: React.ReactNode }) {
+  const [query, setQuery] = React.useState('')
+  const searchable = countMenuItems(children, isMenuItem) > MENU_VISIBLE_ITEMS
+  const searching = searchable && query.trim() !== ''
+  const shown = searching ? filterMenuItems(children, isMenuItem, query) : children
+  return (
+    <>
+      {searchable && <MenuSearch value={query} onChange={setQuery} />}
+      <ScrollArea viewportClassName={searchable ? MENU_MAX_HEIGHT : undefined}>
+        {shown}
+        {searching && React.Children.count(shown) === 0 && <MenuNoResults />}
+      </ScrollArea>
+    </>
+  )
+}
+
 const DropdownMenuContent = React.forwardRef<
   React.ElementRef<typeof MenuPrimitive.Content>,
   DropdownMenuContentProps
->(({ className, sideOffset = 6, align = 'end', ...props }, ref) => (
+>(({ className, children, sideOffset = 6, align = 'end', ...props }, ref) => (
   <MenuPrimitive.Portal>
     <MenuPrimitive.Content
       ref={ref}
@@ -30,7 +54,9 @@ const DropdownMenuContent = React.forwardRef<
       align={align}
       className={cn(floatingSurface, 'min-w-44 p-1.5', className)}
       {...props}
-    />
+    >
+      <MenuBody>{children}</MenuBody>
+    </MenuPrimitive.Content>
   </MenuPrimitive.Portal>
 ))
 DropdownMenuContent.displayName = MenuPrimitive.Content.displayName

@@ -1,5 +1,4 @@
 import { createContext, Fragment, useContext, useEffect, useState } from 'react'
-import { StateSnapshot } from './pages/StateSnapshot'
 import { ProductPreviews } from './pages/ProductPreviews'
 import { version } from '../../package.json'
 import { ChartsGallery } from './pages/ChartsGallery'
@@ -15,6 +14,7 @@ import {
   PopoverMenuGallery,
   TableGallery,
   ScrollbarsGallery,
+  NetworkFilterDropdown,
 } from './pages/ComponentGalleries'
 import { ScrollArea, ThemeToggle, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput } from '@kaleido-ui/index'
 import {
@@ -88,10 +88,6 @@ import {
   SettingsActionButton,
   SettingsStatusPanel,
   SettingsTile,
-  FilterDropdown,
-  LightningNetworkIcon,
-  SparkNetworkIcon,
-  ArkadeNetworkIcon,
   LiquidNetworkIcon,
   SwapInputCard,
   TransferRouteCard,
@@ -441,7 +437,7 @@ const GitHubMark = ({ className }: { className?: string }) => (
 )
 
 /**
- * The footer's actions: product previews on top, two side by side below.
+ * The footer's actions: previews and GitHub side by side.
  * On the rail there is no room for their labels, so they stack as icon-only
  * tiles.
  */
@@ -451,12 +447,10 @@ function NavFooterActions() {
     <div className={collapsed ? 'flex flex-col items-center gap-2' : 'grid grid-cols-2 gap-2'}>
       <ActionTile
         icon={<Icon name="grid_view" />}
-        label="Product previews"
+        label="Previews"
         href="#/products"
         hideLabel={collapsed}
-        className={collapsed ? undefined : 'col-span-2'}
       />
-      <ActionTile icon={<Icon name="science" />} label="Snapshot" href="#/state-snapshot" hideLabel={collapsed} />
       <ActionTile
         icon={<GitHubMark />}
         label="GitHub"
@@ -496,8 +490,8 @@ export function App() {
   const [feeRate, setFeeRate] = useState<'slow' | 'normal' | 'fast'>('normal')
   const [donation, setDonation] = useState(true)
 
-  // Hash-based route: `#/state-snapshot` renders the State Snapshot page,
-  // `#/products` the product previews, anything else the component showcase.
+  // Hash-based route: `#/products` renders the previews, anything else the
+  // component showcase.
   const [route, setRoute] = useState(() =>
     typeof window === 'undefined' ? '' : window.location.hash,
   )
@@ -516,7 +510,7 @@ export function App() {
 
   // A page change is a navigation: start at the top, and name the tab.
   useEffect(() => {
-    if (route.startsWith('#/state-snapshot') || route.startsWith('#/products')) return
+    if (route.startsWith('#/products')) return
     document.getElementById(SHOWCASE_SCROLL_ID)?.scrollTo({ top: 0 })
     document.title = `${NAV_PAGES[pageIndex].label} · kaleido-ui showcase`
   }, [route, pageIndex])
@@ -524,16 +518,6 @@ export function App() {
   if (route.startsWith('#/products')) {
     return (
       <ProductPreviews
-        onBack={() => {
-          window.location.hash = ''
-        }}
-      />
-    )
-  }
-
-  if (route.startsWith('#/state-snapshot')) {
-    return (
-      <StateSnapshot
         onBack={() => {
           window.location.hash = ''
         }}
@@ -1040,17 +1024,8 @@ export function App() {
                     { id: 'usdt', ticker: 'USDT', name: 'Tether USD', displayBalance: '1,670.00', networks: ['RGB-LN'], accentColor: '#26A17B' },
                   ]}
                 />
-                <FilterDropdown
-                  label="Network"
-                  value={featureFilter}
-                  onChange={setFeatureFilter}
-                  options={[
-                    { id: 'all', label: 'All Networks', icon: <Icon name="hub" size="sm" /> },
-                    { id: 'lightning', label: 'Lightning', icon: <LightningNetworkIcon className="size-4" /> },
-                    { id: 'spark', label: 'Spark', icon: <SparkNetworkIcon className="size-4" /> },
-                    { id: 'arkade', label: 'Arkade', icon: <ArkadeNetworkIcon className="size-4 rounded-sm" /> },
-                  ]}
-                />
+                {/* The same element as the FilterDropdown demo in Popover & Menu. */}
+                <NetworkFilterDropdown value={featureFilter} onChange={setFeatureFilter} />
                 <div className="space-y-3">
                   <SettingsTile
                     icon={<AppIcon name="vault" className="size-5" />}
@@ -1477,7 +1452,7 @@ export function App() {
                 showChevron={false}
                 value={
                   <Select value={language} onValueChange={setLanguage}>
-                    <SelectTrigger className="w-auto py-1.5 px-3 text-xs font-mono">
+                    <SelectTrigger hug aria-label="Language">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>

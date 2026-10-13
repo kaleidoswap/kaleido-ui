@@ -35,8 +35,10 @@ export function ActivityFilterBar<TStatus extends string = string>({
   searchPlaceholder = 'Search by txid, asset...',
 }: ActivityFilterBarProps<TStatus>) {
   return (
-    <div className="flex h-11 items-center gap-2">
-      <div className="group relative h-full flex-1">
+    // The row takes the status Select's height, and the search field stretches to
+    // match it, so the two read as one bar.
+    <div className="flex items-stretch gap-2">
+      <div className="group relative min-w-0 flex-1">
         <AppIcon
           name="search"
           size="sm"
@@ -61,20 +63,19 @@ export function ActivityFilterBar<TStatus extends string = string>({
         )}
       </div>
 
-      <div className="h-full w-28 shrink-0">
+      {/* The library Select as it is: no classes of its own, so it scrolls and
+          searches past four statuses like every other select. */}
+      <div className="shrink-0">
         <Select
           value={statusFilter}
           onValueChange={(value) => onStatusFilterChange(value as TStatus)}
         >
-          <SelectTrigger
-            aria-label="Filter activity by status"
-            className="h-full rounded-xl border-0 bg-foreground/5 px-3 py-0 text-caption font-bold text-foreground shadow-inner hover-gradient-violet focus:ring-0 data-[state=open]:bg-secondary/15 data-[state=open]:ring-1 data-[state=open]:ring-primary/50 data-[state=open]:shadow-glow-primary-soft"
-          >
+          <SelectTrigger hug aria-label="Filter activity by status">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="bg-popover/95 p-1.5 shadow-popover">
+          <SelectContent>
             {statusOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value} className="py-2 text-caption">
+              <SelectItem key={option.value} value={option.value}>
                 {option.label}
               </SelectItem>
             ))}
@@ -83,7 +84,7 @@ export function ActivityFilterBar<TStatus extends string = string>({
       </div>
 
       {hasActiveFilters && onClearFilters && (
-        <IconButton icon="close" label="Clear filters" variant="surface" size="lg" onClick={onClearFilters} />
+        <IconButton icon="close" label="Clear filters" variant="surface" size="lg" className="self-center" onClick={onClearFilters} />
       )}
     </div>
   )

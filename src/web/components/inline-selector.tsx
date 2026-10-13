@@ -31,6 +31,10 @@ export interface InlineSelectorProps<TOption extends InlineSelectorOption> {
   triggerClassName?: string
   panelClassName?: string
   optionClassName?: string
+  /** Classes for the options' scroll area (default caps it at max-h-72). */
+  scrollClassName?: string
+  /** Classes for the element that scrolls (default caps it at max-h-72). */
+  scrollViewportClassName?: string
   closeOnSelect?: boolean
   onOpenPanelHeightChange?: (height: number) => void
   renderTrigger: (args: InlineSelectorRenderArgs<TOption>) => ReactNode
@@ -48,6 +52,8 @@ export function InlineSelector<TOption extends InlineSelectorOption>({
   triggerClassName,
   panelClassName,
   optionClassName,
+  scrollClassName,
+  scrollViewportClassName,
   closeOnSelect = true,
   onOpenPanelHeightChange,
   renderTrigger,
@@ -130,7 +136,7 @@ export function InlineSelector<TOption extends InlineSelectorOption>({
           {renderPanelHeader?.(renderArgs)}
           {/* Long option lists scroll inside the panel with the shared thumb
               instead of overflowing or falling back to the native scrollbar. */}
-          <ScrollArea className="max-h-72" viewportClassName="max-h-72">
+          <ScrollArea className={cn('max-h-72', scrollClassName)} viewportClassName={cn('max-h-72', scrollViewportClassName)}>
           <div className="space-y-1">
             {options.length === 0 ? (
               <div className="flex flex-col items-center gap-2 px-4 py-8 text-center text-caption text-foreground/55">

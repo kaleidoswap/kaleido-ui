@@ -35,6 +35,11 @@ import {
   Label,
   NetworkBadge,
   OptionSelector,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   PageHeader,
   QrCode,
   ScrollArea,
@@ -278,7 +283,16 @@ function ExtensionSettings({ onNavigate }: { onNavigate: (view: ExtensionView) =
           <SectionTitle>App</SectionTitle>
           <OptionSelector label="Bitcoin Unit" value={unit} onChange={setUnit} options={[{ id: 'sats', label: 'sats' }, { id: 'btc', label: 'BTC' }]} />
           <OptionSelector label="Fiat Currency" value={fiat} onChange={setFiat} options={[{ id: 'usd', label: 'USD' }, { id: 'eur', label: 'EUR' }, { id: 'chf', label: 'CHF' }]} />
-          <OptionSelector label="Language" value={language} onChange={setLanguage} options={[{ id: 'en', label: 'English' }, { id: 'it', label: 'Italiano' }, { id: 'es', label: 'Español' }]} />
+          <Select value={language} onValueChange={setLanguage}>
+            <SelectTrigger aria-label="Language">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="en">English</SelectItem>
+              <SelectItem value="it">Italiano</SelectItem>
+              <SelectItem value="es">Español</SelectItem>
+            </SelectContent>
+          </Select>
           <SettingsTile icon={tileIcon('open_in_new')} title="Open in Full Tab" onClick={() => {}} />
           <SettingsTile icon={tileIcon('bug_report')} title="Send Feedback" onClick={() => {}} />
           <SettingsTile icon={tileIcon('info')} title="About" value="v1.4.0" onClick={() => {}} />
@@ -655,7 +669,7 @@ export function ProductPreviews({ onBack }: { onBack?: () => void }) {
     return () => style.remove()
   }, [brand])
   useEffect(() => {
-    document.title = 'Product previews · kaleido-ui showcase'
+    document.title = 'Previews · kaleido-ui showcase'
   }, [])
 
   return (
@@ -667,7 +681,7 @@ export function ProductPreviews({ onBack }: { onBack?: () => void }) {
           Components
         </Button>
         <KaleidoswapMark className="size-6" />
-        <h1 className="text-subhead font-bold">Product previews</h1>
+        <h1 className="text-subhead font-bold">Previews</h1>
         <FilterChipGroup
           variant="segmented"
           ariaLabel="Products shown"

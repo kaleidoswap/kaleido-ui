@@ -39,9 +39,14 @@ export function ActionTile({
     // Icon and label are both the brand green, and flip together to the
     // ink on green when the hover fill shows.
     'bg-foreground/8 bg-gradient-surface text-brand shadow-raised transition-all duration-200',
-    // On light, a lighter fill with a violet cast instead of the ink grey.
-    '[.light_&]:bg-secondary/[0.07]',
+    // On light, a neutral grey that leans slightly violet toward the bottom
+    // right: the ink at low alpha under a faint secondary wash. Important: the
+    // dark surface gradient class is unlayered and would win otherwise.
+    '[.light_&]:bg-foreground/[0.05] [.light_&]:!bg-gradient-to-br [.light_&]:from-transparent [.light_&]:to-secondary/[0.08]',
     'hover:-translate-y-0.5 hover:text-primary-foreground hover:shadow-glow-primary-soft',
+    // The light glow is a 3px ring, which reads as a second border around the
+    // green fill: on light the tile keeps its own shadow instead.
+    '[.light_&]:hover:shadow-raised',
     'active:translate-y-0 active:scale-95 disabled:pointer-events-none disabled:opacity-50',
     // A link has no disabled state of its own.
     href && disabled && 'pointer-events-none opacity-50',

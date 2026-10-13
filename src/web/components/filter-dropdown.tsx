@@ -44,6 +44,10 @@ export function FilterDropdown({
   const selected = options.find((option) => option.id === value) ?? options[0]
   const specificOptions = options.filter((option) => option.id !== 'all')
   const isFiltered = value !== 'all'
+  // Past four options the panel shows four (49.5 px rows, 4.5 px apart) and
+  // scrolls the rest. The list reaches into the panel's right padding and pads
+  // its rows back, so the thumb runs in that gutter, clear of the rows.
+  const scrolls = options.length > 4
 
   const overflowBadge =
     value === 'all' && specificOptions.length > 0 ? (
@@ -59,6 +63,8 @@ export function FilterDropdown({
       className={cn('flex-1', className)}
       panelClassName="min-w-[140px]"
       optionClassName="px-3 py-2.5"
+      scrollClassName={scrolls ? 'max-h-none -mr-1' : undefined}
+      scrollViewportClassName={scrolls ? 'max-h-[211.5px] pr-1.5' : undefined}
       onOpenPanelHeightChange={onOpenPanelHeightChange}
       renderTrigger={({ open }) => (
         <span
