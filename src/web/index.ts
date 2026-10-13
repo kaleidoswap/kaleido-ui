@@ -88,6 +88,9 @@ export {
   TableHead,
   TableCell,
   TableCaption,
+  type TableProps,
+  type TableHeadProps,
+  type SortDirection,
 } from './primitives/table'
 export {
   Popover,

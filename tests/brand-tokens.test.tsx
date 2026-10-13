@@ -137,7 +137,7 @@ test('the brand layer is additive: existing tokens keep their values', () => {
 
 test('the opt-in brand theme swaps in the AA primary and lifted dark status colours', () => {
   assert.match(brandCss, new RegExp(`:root:not\\(\\.dark\\),\\n\\.light \\{\\n  --primary: ${brandTheme.lightPrimary};`))
-  assert.match(brandCss, /--app-primary: 9 123 78;/)
+  assert.match(brandCss, /--app-primary: 0 125 73;/)
   assert.match(brandCss, new RegExp(`--color-danger: ${brandTheme.darkDanger};`))
   assert.match(brandCss, new RegExp(`--color-info: ${brandTheme.darkInfo};`))
   // White on the light primary stays readable for filled buttons.

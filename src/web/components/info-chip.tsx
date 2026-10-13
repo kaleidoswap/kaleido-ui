@@ -70,11 +70,13 @@ export interface StatusChipProps {
   status: InfoChipStatus
   /** Defaults to the status name (Success, Warning, Error, Info). */
   label?: string
+  /** A halo pings out of the dot, so a live status reads as live. Off under reduced motion. */
+  pulse?: boolean
   className?: string
 }
 
 /** The small tinted pill with a dot: the status an InfoChip carries, usable on its own. */
-export function StatusChip({ status, label, className }: StatusChipProps) {
+export function StatusChip({ status, label, pulse = true, className }: StatusChipProps) {
   return (
     <span
       data-slot="status-chip"
@@ -85,7 +87,15 @@ export function StatusChip({ status, label, className }: StatusChipProps) {
         className,
       )}
     >
-      <span aria-hidden="true" className={cn('size-1.5 shrink-0 rounded-full', statusDotClass[status])} />
+      <span aria-hidden="true" className="relative flex size-1.5 shrink-0">
+        {pulse && (
+          <span
+            data-slot="status-chip-pulse"
+            className={cn('absolute inset-0 rounded-full opacity-0 motion-safe:animate-ping motion-safe:opacity-75', statusDotClass[status])}
+          />
+        )}
+        <span className={cn('relative size-1.5 rounded-full', statusDotClass[status])} />
+      </span>
       <span className="truncate">{label ?? defaultStatusLabel[status]}</span>
     </span>
   )

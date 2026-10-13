@@ -54,11 +54,11 @@ type ThemedForegrounds = Record<ThemedForegroundToken, string>
  */
 export const themedForeground: { light: ThemedForegrounds; dark: ThemedForegrounds } = {
   light: {
-    // Brand green in the mint's own hue, as light as it goes and still
-    // clears 4.5:1 on every light surface (4.63:1 on #EFEFF4).
-    brand: '#097B4E',
+    // Brand green at full saturation (no red), as light as it goes and still
+    // clears 4.5:1 on every light surface (4.55:1 on #EFEFF4).
+    brand: '#007D49',
     'accent-send-fg': '#6428F0',
-    'accent-recv-fg': '#097B4E',
+    'accent-recv-fg': '#007D49',
     'success-fg': '#076A43', // a shade under brand: it also sits on a 14% mint tint
     // Tailwind -800 shades: -700 measured only 3.7 to 4.3:1 on the light ramp.
     'warning-fg': '#92400E',

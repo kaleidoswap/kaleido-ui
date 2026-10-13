@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.1.131   # must equal package.json's version; check-design-doc fails otherwise
+version: 0.2.0     # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -10,7 +10,7 @@ colors:
   brand.primary-light: "#17B581"    # light theme
   brand.primary-contrast: "#051B10"
   brand.foreground: "#15E99A"       # text-brand, dark theme
-  brand.foreground-light: "#097B4E" # text-brand, light theme (AA on the light ramp)
+  brand.foreground-light: "#007D49" # text-brand, light theme (AA on the light ramp)
   brand.mark-violet: "#6F32FF"      # logo paint only
   brand.mark-green: "#17B581"       # logo paint only
   brand.mark-mint: "#15E99A"        # logo paint only
@@ -171,7 +171,7 @@ measured by `tests/brand-tokens.test.tsx`). Each clears 4.5:1 on every surface
 of its theme, and the status and network ones also on a 14% tint of their own
 hue (a status pill):
 
-- `text-brand` (`#097B4E` light / `#15E99A` dark), `text-accent-send-fg`
+- `text-brand` (`#007D49` light / `#15E99A` dark), `text-accent-send-fg`
   (`#6428F0` / `#AD94FB`), `text-accent-recv-fg`.
 - `text-success-fg`, `text-warning-fg`, `text-danger-fg`, `text-info-fg`.
 - `text-network-{bitcoin,lightning,liquid,arkade,spark,rgb,taproot}-fg`.
@@ -610,7 +610,7 @@ Mutually exclusive options — a chart / list view toggle — are `FilterChipGro
 
 ### Scrollbars
 
-**Two components, one look.** `ScrollArea` (also `VerticalScrollArea`) scrolls up and down, `HorizontalScrollArea` sideways. Both hide the native bar and draw an overlay thumb on `scrollbar.thumb`: `scrollbar` (2 px) thick at rest, `scrollbarHover` (6 px) under the pointer, never shorter than `scrollbarThumbMin` (24 px), on the right edge or the bottom edge. It takes no room from the content, and it can be dragged, or the track clicked to jump. `viewportClassName` styles the element that scrolls, `viewportAs` makes it a `main` or a `pre`, `viewportProps` gives it attributes. `thickness="thick"` is the page bar: `scrollbarThick` (6 px) at rest, `scrollbarThickHover` (10 px) under the pointer — for the scroller of a whole page, where the bar is how the reader sees where they are; panels, lists and code keep the thin one.
+**Two components, one look.** `ScrollArea` (also `VerticalScrollArea`) scrolls up and down, `HorizontalScrollArea` sideways. Both hide the native bar and draw an overlay thumb on `scrollbar.thumb`: `scrollbar` (2 px) thick at rest, `scrollbarHover` (4 px) under the pointer, never shorter than `scrollbarThumbMin` (24 px), on the right edge or the bottom edge. It takes no room from the content, and it can be dragged, or the track clicked to jump. `viewportClassName` styles the element that scrolls, `viewportAs` makes it a `main` or a `pre`, `viewportProps` gives it attributes. `thickness="thick"` is the page bar: `scrollbarThick` (6 px) at rest, `scrollbarThickHover` (8 px) under the pointer — for the scroller of a whole page, where the bar is how the reader sees where they are; panels, lists and code keep the thin one.
 
 **Every scroller is one of them.** `CodeBlock`, `Table`, `BottomSheet`, `DrawerBody`, the `AssetSelector` lists, `InlineSelector` and the page frames scroll on these two, so a scrollbar looks the same everywhere. A new component that scrolls uses one of them, never `overflow-auto` with the browser's bar. Rows of chips that scroll sideways (`FilterChipGroup` chips, the network filters) stay without a bar: they are swiped, and a thumb under a 28 px row reads as a divider.
 

@@ -283,9 +283,9 @@
    Light is the default (like --primary / --card above); .dark switches. ── */
 :root,
 .light {
-  --brand: #097B4E;
+  --brand: #007D49;
   --accent-send-fg: #6428F0;
-  --accent-recv-fg: #097B4E;
+  --accent-recv-fg: #007D49;
   --success-fg: #076A43;
   --warning-fg: #92400E;
   --danger-fg: #991B1B;
@@ -500,9 +500,9 @@
   --color-scrollbar-thumb-active: #2BF5A8;
   --color-scrollbar-track:       transparent;
   --spacing-scrollbar:           2px;
-  --spacing-scrollbar-hover:     6px;
+  --spacing-scrollbar-hover:     4px;
   --spacing-scrollbar-thick:     6px;
-  --spacing-scrollbar-thick-hover: 10px;
+  --spacing-scrollbar-thick-hover: 8px;
   --spacing-scrollbar-thumb-min: 24px;
 
   /* Spacing unit — every padding, margin, gap and size step is a multiple of it */
