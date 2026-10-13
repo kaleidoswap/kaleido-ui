@@ -128,6 +128,32 @@ const SWAPS_TOTAL = 128
 
 const statusTone = { completed: 'success', pending: 'warning', failed: 'danger' } as const
 
+// The same swaps with every field a settlement report carries: wider than any
+// card, so the table scrolls sideways on its bottom thumb.
+const swapDetails = [
+  { ...swaps[0], rate: '61,240 USDT/BTC', fee: '1,200 sats', network: 'Lightning', apiKey: 'Production', install: 'iOS', channel: 'ch_19a0…f3', order: 'ord_5520', created: '30 Sep, 14:01', settled: '30 Sep, 14:02', duration: '58 s' },
+  { ...swaps[1], rate: '61,710 USDT/BTC', fee: '0.35 USDT', network: 'RGB', apiKey: 'Staging', install: 'Web', channel: 'ch_7be2…01', order: 'ord_5519', created: '30 Sep, 13:46', settled: '—', duration: '—' },
+  { ...swaps[2], rate: '0.997 L-BTC/BTC', fee: '150 sats', network: 'Liquid', apiKey: 'Production', install: 'Android', channel: 'ch_33c4…9d', order: 'ord_5518', created: '30 Sep, 12:14', settled: '—', duration: '—' },
+] as const
+
+const WIDE_COLUMNS = [
+  ['id', 'Id'], ['pair', 'Pair'], ['sent', 'Sent'], ['received', 'Received'], ['rate', 'Rate'], ['fee', 'Fee'],
+  ['network', 'Network'], ['status', 'Status'], ['app', 'App'], ['apiKey', 'API key'], ['install', 'Install'],
+  ['channel', 'Channel'], ['order', 'Order'], ['created', 'Created'], ['settled', 'Settled'], ['duration', 'Duration'],
+] as const
+
+// A long page of swaps, more than the box shows: the grid scrolls up and down.
+const PAIRS = ['BTC → USDT', 'USDT → BTC', 'BTC → L-BTC', 'L-BTC → USDT'] as const
+const STATUSES = ['completed', 'completed', 'pending', 'completed', 'failed'] as const
+const swapLog = Array.from({ length: 24 }, (_, index) => ({
+  id: `sw_${(0x81f2a9c0 - index * 7919).toString(16)}`,
+  pair: PAIRS[index % PAIRS.length],
+  sent: `${((index + 3) * 41_250).toLocaleString('en-US')} sats`,
+  status: STATUSES[index % STATUSES.length],
+  app: index % 3 === 0 ? 'Checkout' : 'Wallet',
+  at: `30 Sep, ${String(14 - Math.floor(index / 4)).padStart(2, '0')}:${String(59 - (index % 4) * 13).padStart(2, '0')}`,
+}))
+
 // ─── Foundations ────────────────────────────────────────────────────────────
 
 export function TableGallery() {
@@ -187,6 +213,88 @@ export function TableGallery() {
               ))}
             </TableBody>
           </Table>
+        </Demo>
+      </div>
+      <div className="xl:col-span-2">
+        <Demo title="Table — wide" use="Sixteen columns, wider than the card: the grid scrolls sideways inside its own wrapper, on the HorizontalScrollArea thumb under the last row, and the page never widens. Cells stay on one line (whitespace-nowrap) so every row keeps one height.">
+          <div className="mb-3 space-y-1 px-4">
+            <h4 className="m-0 text-subhead font-semibold text-foreground">Settlement report</h4>
+            <p className="m-0 text-caption text-muted-foreground">Every field of the swaps above. Scroll sideways for the rest.</p>
+          </div>
+          <Table showRowCount totalRowCount={SWAPS_TOTAL}>
+            <TableHeader>
+              <TableRow>
+                {WIDE_COLUMNS.map(([key, label]) => (
+                  <TableHead key={key} className="whitespace-nowrap">{label}</TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {swapDetails.map((swap) => (
+                <TableRow key={swap.id}>
+                  {WIDE_COLUMNS.map(([key]) => (
+                    <TableCell
+                      key={key}
+                      className={cn('whitespace-nowrap', ['sent', 'received', 'rate', 'fee', 'duration'].includes(key) && 'tabular-nums', ['created', 'settled'].includes(key) && 'text-muted-foreground')}
+                    >
+                      {key === 'status' ? (
+                        <ToneBadge tone={statusTone[swap.status]}>{swap.status}</ToneBadge>
+                      ) : key === 'id' ? (
+                        <Copyable value={swap.id} label="swap id">
+                          {swap.id.slice(0, 7)}…
+                        </Copyable>
+                      ) : (
+                        swap[key]
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Demo>
+      </div>
+      <div className="xl:col-span-2">
+        <Demo title="Table — tall" use="Twenty-four rows in a box capped at 360px (max-h-80): wrap the Table in a ScrollArea with a max height on its viewport and the grid scrolls up and down on the right-edge thumb. The count sits outside the scroll area, so it stays put.">
+          <div className="mb-3 space-y-1 px-4">
+            <h4 className="m-0 text-subhead font-semibold text-foreground">Swap log</h4>
+            <p className="m-0 text-caption text-muted-foreground">Today's swaps, newest first. Scroll down for the rest.</p>
+          </div>
+          <ScrollArea viewportClassName="max-h-80">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Id</TableHead>
+                  <TableHead>Pair</TableHead>
+                  <TableHead>Sent</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>App</TableHead>
+                  <TableHead>Time</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {swapLog.map((swap) => (
+                  <TableRow key={swap.id}>
+                    <TableCell>
+                      <Copyable value={swap.id} label="swap id">
+                        {swap.id.slice(0, 7)}…
+                      </Copyable>
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">{swap.pair}</TableCell>
+                    <TableCell className="whitespace-nowrap tabular-nums">{swap.sent}</TableCell>
+                    <TableCell>
+                      <ToneBadge tone={statusTone[swap.status]}>{swap.status}</ToneBadge>
+                    </TableCell>
+                    <TableCell>{swap.app}</TableCell>
+                    <TableCell className="whitespace-nowrap text-muted-foreground">{swap.at}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+          <p className="m-0 px-4 pt-3 text-caption text-muted-foreground tabular-nums">
+            {swapLog.length} of {swapLog.length} rows
+          </p>
         </Demo>
       </div>
     </Grid>
