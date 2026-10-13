@@ -36,8 +36,8 @@ export interface ScrollAreaProps extends HTMLAttributes<HTMLDivElement> {
   /** Attributes for the element that scrolls (`data-slot`, `aria-*`, `tabIndex`). */
   viewportProps?: HTMLAttributes<HTMLElement> & Record<`data-${string}`, string | undefined>
   /**
-   * `thin` (default): 2px at rest, 6px under the pointer — for panels, lists,
-   * code. `thick`: 6px at rest, 10px under the pointer — for a whole page's
+   * `thin` (default): 2px at rest, 4px under the pointer — for panels, lists,
+   * code. `thick`: 6px at rest, 8px under the pointer — for a whole page's
    * scroller, where the bar is the main way to see and move through it.
    */
   thickness?: 'thin' | 'thick'
