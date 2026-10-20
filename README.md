@@ -147,10 +147,10 @@ console.log(typeScale.body)         // ['16px', '24px']
 
 | Component | Description |
 |-----------|-------------|
-| `Button` | 15 variants (default, destructive, outline, secondary, ghost, link, glow, surface, cta, cta-gradient, danger-subtle, danger-quiet, hyperlink, quiet), 11 sizes (`icon-xl` is deprecated, same as `icon-lg`) |
+| `Button` | 15 variants (default, destructive, outline, secondary, ghost, link, glow, surface, cta, cta-gradient, danger-subtle, danger-quiet, hyperlink, quiet), 11 sizes |
 | `Card` | Compositional: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter |
 | `Input` | Form text input with focus ring |
-| `Select` | Select (Radix): Select, SelectTrigger, SelectContent, SelectItem, etc. Past four items the list caps its height, scrolls and shows a search field |
+| `Select` | Select (Radix): Select, SelectTrigger, SelectContent, SelectItem, etc. Past four items, the list caps its height, scrolls, and shows a search field |
 | `DropdownMenu` | Dropdown menu (Radix): DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, etc. Searchable past four items, like `Select` |
 | `Table` | Table, TableHeader, TableBody, TableRow, TableHead, TableCell, etc. `TableHead` takes `sortable`, `sortDirection` (`'asc' \| 'desc' \| 'none'`) and `onSort`, and sets `aria-sort` |
 | `Dialog` | Modal dialog (Radix): Dialog, DialogContent, DialogHeader, DialogTitle, etc. |
