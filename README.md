@@ -135,9 +135,9 @@ Works in any JS runtime (Node.js, React Native, web) with zero dependencies.
 ```ts
 import { colors, typeScale, radius, shadow } from 'kaleido-ui/tokens'
 
-console.log(colors.primary)        // '#2BEE79'
+console.log(colors.primary)        // '#15E99A'
 console.log(colors.network.bitcoin) // '#F7931A'
-console.log(typeScale.body)         // ['15px', '22px']
+console.log(typeScale.body)         // ['16px', '24px']
 ```
 
 ## Web Components
@@ -146,9 +146,12 @@ console.log(typeScale.body)         // ['15px', '22px']
 
 | Component | Description |
 |-----------|-------------|
-| `Button` | 11 variants (default, destructive, outline, secondary, ghost, link, glow, surface, cta, cta-gradient, danger-subtle), 9 sizes |
+| `Button` | 15 variants (default, destructive, outline, secondary, ghost, link, glow, surface, cta, cta-gradient, danger-subtle, danger-quiet, hyperlink, quiet), 11 sizes (`icon-xl` is deprecated, same as `icon-lg`) |
 | `Card` | Compositional: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter |
 | `Input` | Form text input with focus ring |
+| `Select` | Select (Radix): Select, SelectTrigger, SelectContent, SelectItem, etc. Past four items the list caps its height, scrolls and shows a search field |
+| `DropdownMenu` | Dropdown menu (Radix): DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, etc. Searchable past four items, like `Select` |
+| `Table` | Table, TableHeader, TableBody, TableRow, TableHead, TableCell, etc. `TableHead` takes `sortable`, `sortDirection` (`'asc' \| 'desc' \| 'none'`) and `onSort`, and sets `aria-sort` |
 | `Dialog` | Modal dialog (Radix): Dialog, DialogContent, DialogHeader, DialogTitle, etc. |
 | `Tabs` | Tab navigation (Radix): Tabs, TabsList, TabsTrigger, TabsContent |
 | `Label` | Form label (Radix) |
@@ -173,6 +176,8 @@ console.log(typeScale.body)         // ['15px', '22px']
 | `KaleidoswapLogo` | Full logo, `orientation="horizontal" \| "vertical"`. Wordmark uses `currentColor`; size with `h-* w-auto` |
 | `KaleidoswapMark` | The K pictogram on its own; size with `size-*` |
 | `HaloBackdrop` | Decorative drifting brand-colour blobs behind a screen (parent needs `relative isolate`) |
+| `TrendChart` | Line/area trend chart with a chart/table switch; pass `view` + `onViewChange` to control the view from the host, or leave them out |
+| `WithdrawAmountInput` | Amount card for the withdraw flow; `unitSlot` replaces the unit label with your own control (e.g. a unit picker) inside the card |
 
 ### Hooks
 
@@ -213,12 +218,12 @@ StatusBadge, NetworkBadge, AlertBanner, SectionLabel
 
 | Token | Values |
 |-------|--------|
-| `colors` | primary (#2BEE79), surfaces, text, semantic, network, transaction |
-| `typeScale` | xxs (10px) through display (36px) |
-| `fontFamily` | Geist Sans, Geist Mono |
+| `colors` | primary (#15E99A, dark theme; `lightSemanticColors` for light), surfaces, text, semantic, network, transaction |
+| `typeScale` | mini (10px) through display (38px) |
+| `fontFamily` | Satoshi (display), Geist Mono (mono) |
 | `fontWeight` | normal (400) through bold (700) |
-| `radius` | sm (8px) through full (9999px) |
-| `shadow` | glow, glowStrong, glowSubtle, glowAccent |
+| `radius` | xs (2px) through full (9999px), plus card, panel, nav, pill |
+| `shadow` | glow*, glowPrimary*, glowViolet*, card*, raised, button*, popover, toast |
 | `transition` | fast (150ms), default (200ms), slow (300ms) |
 | `brandMark` | The logo's three fills (violet, green, mint): paint, never text |
 | `themedForeground` | Per-theme AA foregrounds (`brand`, `accent-*-fg`, status and network `-fg`) |
