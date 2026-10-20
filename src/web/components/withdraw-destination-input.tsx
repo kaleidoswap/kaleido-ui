@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef } from 'react'
 export type WithdrawAddressType =
   | 'unknown'
   | 'bitcoin'
@@ -31,21 +32,40 @@ export function WithdrawDestinationInput({
   handlePaste,
   handleReset,
 }: WithdrawDestinationInputProps) {
+  const fieldRef = useRef<HTMLTextAreaElement>(null)
+  // Grow with the content up to max-h, then scroll.
+  useLayoutEffect(() => {
+    const field = fieldRef.current
+    if (!field) return
+    field.style.height = 'auto'
+    field.style.height = `${field.scrollHeight}px`
+  }, [destination])
   return (
     <div className="space-y-2">
       <label className="ml-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
         Destination
       </label>
       <div className="relative">
-        <input
-          type="text"
+        {/* A textarea, not an input: an address or invoice wraps so the whole
+            string can be checked in the field itself, growing to a few lines
+            and scrolling beyond that. Enter and pasted line breaks never land
+            in the value. */}
+        <textarea
+          ref={fieldRef}
           data-testid="withdraw-destination-input"
-          className="w-full rounded-2xl bg-card px-5 py-4 pr-20 font-mono text-sm text-white shadow-inner transition-all placeholder:text-white/20 focus:outline focus:outline-2 focus:outline-primary/50"
+          rows={1}
+          spellCheck={false}
+          autoComplete="off"
+          autoCapitalize="off"
+          className="block max-h-32 min-h-14 w-full resize-none break-all leading-relaxed rounded-2xl bg-card px-5 py-4 pr-20 font-mono text-sm text-white shadow-inner transition-all placeholder:text-white/20 focus:outline focus:outline-2 focus:outline-primary/50"
           placeholder="Address, Invoice, or RGB Invoice"
           value={destination}
-          onChange={(event) => setDestination(event.target.value)}
+          onChange={(event) => setDestination(event.target.value.replace(/\s*[\r\n]+\s*/g, ''))}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') event.preventDefault()
+          }}
         />
-        <div className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-1">
+        <div className="absolute right-3 top-3 flex items-center gap-1">
           {destination && (
             <button
               type="button"

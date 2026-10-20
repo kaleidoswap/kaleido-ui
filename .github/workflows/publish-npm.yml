@@ -61,13 +61,13 @@ jobs:
 
       - name: Publish to npm with provenance
         if: steps.npm_check.outputs.already_published == 'false' && github.event.repository.private == false
-        run: npm publish --provenance --access public
+        run: npm publish --provenance --access public --tag v0-1
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish to npm without provenance
         if: steps.npm_check.outputs.already_published == 'false' && github.event.repository.private == true
-        run: npm publish --access public
+        run: npm publish --access public --tag v0-1
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 

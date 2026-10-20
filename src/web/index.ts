@@ -89,6 +89,7 @@ export {
   RgbNetworkIcon,
   NostrNetworkIcon,
   LiquidNetworkIcon,
+  OnchainNetworkIcon,
   type NetworkIconProps,
 } from './components/network-icon'
 export { ActionTile, type ActionTileProps } from './components/action-tile'

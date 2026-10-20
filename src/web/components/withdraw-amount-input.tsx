@@ -1,4 +1,4 @@
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, ReactNode } from 'react'
 import { cn } from '../utils/cn'
 
 export interface WithdrawDecodedLnInvoice {
@@ -26,6 +26,11 @@ export interface WithdrawAmountInputProps {
   handleSetMax: () => void
   selectedAssetId: string
   selectedAssetTicker: string | undefined
+  /**
+   * Replaces the unit caption under the amount, e.g. with a sats/fiat toggle,
+   * so the unit is picked where the amount is typed.
+   */
+  unitSlot?: ReactNode
   assetBalance?: number
   formattedBalance: string
   decodedLnInvoice: WithdrawDecodedLnInvoice | null
@@ -60,6 +65,7 @@ export function WithdrawAmountInput({
   handleSetMax,
   selectedAssetId,
   selectedAssetTicker,
+  unitSlot,
   formattedBalance,
   decodedLnInvoice,
   decodedRgbInvoice,
@@ -114,7 +120,13 @@ export function WithdrawAmountInput({
                   value={amount}
                   onChange={handleAmountChange}
                 />
-                <p className="mt-0.5 text-xs text-muted-foreground">{unitLabel}</p>
+                {unitSlot ? (
+                  <div data-slot="amount-unit" className="mt-1 flex min-w-0 items-center gap-2">
+                    {unitSlot}
+                  </div>
+                ) : (
+                  <p className="mt-0.5 text-xs text-muted-foreground">{unitLabel}</p>
+                )}
               </div>
               <button
                 type="button"

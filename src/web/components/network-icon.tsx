@@ -74,3 +74,32 @@ export function LiquidNetworkIcon({ className = 'size-3.5', alt = 'Liquid' }: Ne
     <img src={protocolIcons.Liquid} alt={alt} className={cn('object-contain', className)} />
   )
 }
+
+/** Bitcoin on-chain mark: two linked blocks, in the Bitcoin network colour. */
+export function OnchainNetworkIcon({
+  className = 'size-3.5',
+  inherit = false,
+}: {
+  className?: string
+  inherit?: boolean
+}) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      aria-hidden
+      width="1em"
+      height="1em"
+      className={cn('inline-block shrink-0', className)}
+      style={inherit ? undefined : { color: 'var(--color-network-bitcoin)' }}
+    >
+      <rect x="2" y="2" width="8" height="8" rx="2" stroke="none" />
+      <rect x="14" y="2" width="8" height="8" rx="2" stroke="none" />
+      <rect x="14" y="14" width="8" height="8" rx="2" stroke="none" />
+      <path d="M10 6h4M18 10v4" fill="none" />
+    </svg>
+  )
+}
