@@ -1314,6 +1314,34 @@ export function App() {
                   donation={donation}
                   setDonation={setDonation}
                 />
+                <WithdrawAmountInput
+                  addressType="lightning-address"
+                  amount="4"
+                  handleAmountChange={() => {}}
+                  handleSetMax={() => {}}
+                  selectedAssetId="__fiat__"
+                  selectedAssetTicker="USD"
+                  unitSlot={
+                    <>
+                      <span className="inline-flex items-center gap-0.5 rounded-full bg-muted/40 p-0.5">
+                        <span className="rounded-full px-2.5 py-1 text-xxs font-bold text-muted-foreground">sats</span>
+                        <span className="rounded-full bg-primary/15 px-2.5 py-1 text-xxs font-bold text-primary">USD</span>
+                      </span>
+                      <span className="truncate text-xxs tabular-nums text-muted-foreground">≈ 4,907 sats</span>
+                    </>
+                  }
+                  formattedBalance="16.03"
+                  decodedLnInvoice={null}
+                  decodedRgbInvoice={null}
+                  lnurlPayData={null}
+                  witnessAmountSat={512}
+                  setWitnessAmountSat={() => {}}
+                  feeRate={feeRate}
+                  setFeeRate={setFeeRate}
+                  feeRates={{ slow: 2, normal: 5, fast: 9 }}
+                  donation={donation}
+                  setDonation={setDonation}
+                />
               </div>
               <div className="space-y-4">
                 <WithdrawInvoiceInfo
