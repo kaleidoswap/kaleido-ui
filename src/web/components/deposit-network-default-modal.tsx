@@ -1,4 +1,5 @@
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { ChevronRight } from '../icons/outlined'
 import type { ReactNode } from 'react'
 import { cn } from '../utils/cn'
 import { LiquidNetworkIcon, OnchainNetworkIcon } from './network-icon'
@@ -142,8 +143,8 @@ export function DepositNetworkDefaultModal({
                   <p className="mt-0.5 text-xxs leading-snug text-foreground/55">{option.description}</p>
                 </div>
 
-                <Icon
-                  name="chevron_right"
+                <IconGlyph
+                  glyph={ChevronRight}
                   className={cn(
                     'flex-shrink-0 text-icon-lg',
                     isSuggested ? option.accentText : 'text-foreground/25'

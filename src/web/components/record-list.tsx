@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { cn } from '../utils/cn'
 import { eyebrow } from '../utils/type-roles'
-import { IconButton } from '../primitives/icon-button'
+import { GlyphButton } from '../primitives/glyph-button'
+import { ChevronRight } from '../icons/outlined'
 
 // The stacked form of a table row, for narrow screens: the same data as the
 // row, laid out as a card. A `Table` on the desktop and a `RecordList` below
@@ -70,8 +71,8 @@ const RecordItem = React.forwardRef<HTMLLIElement, RecordItemProps>(
           <div className="flex shrink-0 items-center gap-2">
             {status}
             {onOpen && (
-              <IconButton
-                icon="chevron_right"
+              <GlyphButton
+                icon={ChevronRight}
                 label={`Open ${openLabel}`}
                 size="sm"
                 onClick={(event) => {

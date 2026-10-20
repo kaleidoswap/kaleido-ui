@@ -2,7 +2,8 @@ import * as React from 'react'
 import * as ToastPrimitives from '@radix-ui/react-toast'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../utils/cn'
-import { IconButton } from './icon-button'
+import { GlyphButton } from './glyph-button'
+import { Close } from '../icons/outlined'
 
 const ToastProvider = ToastPrimitives.Provider
 
@@ -76,8 +77,8 @@ const ToastClose = React.forwardRef<
   }
 >(({ className, label = 'Close', variant, ...props }, ref) => (
   <ToastPrimitives.Close ref={ref} asChild toast-close="" {...props}>
-    <IconButton
-      icon="close"
+    <GlyphButton
+      icon={Close}
       label={label}
       size="sm"
       variant={variant === 'destructive' ? 'danger-subtle' : 'quiet'}

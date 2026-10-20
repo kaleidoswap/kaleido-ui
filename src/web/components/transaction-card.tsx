@@ -1,4 +1,5 @@
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { ArrowOutward, Info, SouthWest } from '../icons/outlined'
 import { cn } from '../utils/cn'
 import { StatusIconBadge } from './status-icon-badge'
 import type { StatusType } from './status-badge'
@@ -87,7 +88,7 @@ export function TransactionCard({
                 iconStyle
               )}
             >
-              <Icon name={isInbound ? 'south_west' : 'arrow_outward'} className="text-icon-xl" />
+              <IconGlyph glyph={isInbound ? SouthWest : ArrowOutward} className="text-icon-xl" />
             </div>
           }
         />
@@ -127,7 +128,7 @@ export function TransactionCard({
               className="mt-0.5 flex w-full items-center justify-end gap-1 text-tiny text-muted-foreground/70 font-medium tracking-wide tabular-nums transition-colors hover:text-foreground"
             >
               {subAmount}
-              <Icon name="info" className="text-icon-xs" />
+              <IconGlyph glyph={Info} className="text-icon-xs" />
             </button>
           ) : (
             <p className="mt-0.5 flex items-center justify-end gap-1 text-tiny text-muted-foreground/70 font-medium tracking-wide tabular-nums">

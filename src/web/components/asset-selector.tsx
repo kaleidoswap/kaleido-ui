@@ -5,7 +5,8 @@ import { InlineSelector, type InlineSelectorOption } from './inline-selector'
 import { NetworkBadge, type NetworkType } from './network-badge'
 import { iconBadgeOverlayClass } from './status-icon-badge'
 import { ScrollArea } from '../primitives/scroll-area'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Check, ExpandMore, Hub, Search } from '../icons/outlined'
 import { cn } from '../utils/cn'
 import { eyebrow } from '../utils/type-roles'
 
@@ -148,8 +149,8 @@ export function AssetSelectorNetworkFilterTrigger({
           )}
         </span>
       )}
-      <Icon
-        name="expand_more"
+      <IconGlyph
+        glyph={ExpandMore}
         size="xs"
         className={cn('shrink-0 transition-transform duration-200', open && 'rotate-180')}
       />
@@ -307,10 +308,10 @@ export function AssetSelector({
                   : 'text-foreground/75 hover-gradient-violet hover:text-foreground',
               )}
             >
-              <Icon name="hub" size="xs" className="shrink-0" />
+              <IconGlyph glyph={Hub} size="xs" className="shrink-0" />
               <span className="min-w-0 flex-1 truncate text-left">All networks</span>
               {activeNetwork === null && (
-                <Icon name="check" size="xs" className="shrink-0 text-secondary-content" />
+                <IconGlyph glyph={Check} size="xs" className="shrink-0 text-secondary-content" />
               )}
             </button>
             {networks.map((network) => {
@@ -332,7 +333,7 @@ export function AssetSelector({
                 >
                   <AssetSelectorNetworkMark network={network} />
                   <span className="min-w-0 flex-1 truncate text-left">{network.label}</span>
-                  {isActive && <Icon name="check" size="xs" className="shrink-0 text-secondary-content" />}
+                  {isActive && <IconGlyph glyph={Check} size="xs" className="shrink-0 text-secondary-content" />}
                 </button>
               )
             })}
@@ -583,8 +584,8 @@ export function AssetSelector({
 
                 <div className="flex-shrink-0 px-4 py-3">
                   <div className="relative">
-                    <Icon
-                      name="search"
+                    <IconGlyph
+                      glyph={Search}
                       size="sm"
                       className="absolute left-3.5 top-1/2 -translate-y-1/2 text-foreground/55"
                     />
@@ -604,7 +605,7 @@ export function AssetSelector({
                 <ScrollArea className="min-h-0 flex-1" viewportClassName="max-h-[56vh] px-2 py-2 pb-6">
                   {filtered.length === 0 ? (
                     <div className="flex flex-col items-center gap-2 px-4 py-10 text-center text-caption text-foreground/55">
-                      <Icon name="search" size="md" className="opacity-40" />
+                      <IconGlyph glyph={Search} size="md" className="opacity-40" />
                       <span>
                         No assets match {search ? `"${search}"` : 'the active filters'}
                       </span>
@@ -683,8 +684,8 @@ export function AssetSelector({
                 <span className="text-caption text-foreground/55">Select asset...</span>
               )}
             </span>
-            <Icon
-              name="expand_more"
+            <IconGlyph
+              glyph={ExpandMore}
               size="sm"
               className={cn(
                 'ml-2 flex-shrink-0 text-foreground/55 transition-transform duration-200',
@@ -718,8 +719,8 @@ export function AssetSelector({
 
           <div className="px-4 py-3">
             <div className="relative">
-              <Icon
-                name="search"
+              <IconGlyph
+                glyph={Search}
                 size="sm"
                 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-foreground/55"
               />

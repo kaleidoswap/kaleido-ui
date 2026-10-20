@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Button, type ButtonProps } from '../primitives/button'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { SwapVert, Warning } from '../icons/outlined'
 import {
   AssetSelector,
   type AssetSelectorCategory,
@@ -13,7 +14,7 @@ import { cardSurface } from '../primitives/card'
 import { cn } from '../utils/cn'
 import { formatDisplayAmountText, type AmountDisplayUnit } from '../utils/amount-display'
 import { eyebrow } from '../utils/type-roles'
-import { IconButton } from '../primitives/icon-button'
+import { GlyphButton } from '../primitives/glyph-button'
 
 export interface SwapInputCardProps {
   fromTicker: string
@@ -214,8 +215,8 @@ export function SwapInputCard({
           {/* The flip: the solid violet IconButton, ringed in the card colour so
               it cuts the divider. Only the glyph turns on hover, so the shadow
               stays put. */}
-          <IconButton
-            icon="swap_vert"
+          <GlyphButton
+            icon={SwapVert}
             label="Flip assets"
             variant="secondary"
             size="lg"
@@ -322,7 +323,7 @@ export function SwapInputCard({
 
       {warning && (
         <div className="flex items-start gap-2 rounded-xl bg-danger/10 p-3">
-          <Icon name="warning" size="sm" className="mt-0.5 text-danger-fg" />
+          <IconGlyph glyph={Warning} size="sm" className="mt-0.5 text-danger-fg" />
           <p className="text-caption leading-relaxed text-danger-fg">{warning}</p>
         </div>
       )}

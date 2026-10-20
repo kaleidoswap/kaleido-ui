@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as SelectPrimitive from '@radix-ui/react-select'
-import { Icon } from './icon'
+import { IconGlyph } from './icon-glyph'
+import { Check, ExpandMore } from '../icons/outlined'
 import { cn } from '../utils/cn'
 import { fieldSurface } from '../utils/field-styles'
 import { ScrollArea } from './scroll-area'
@@ -44,8 +45,8 @@ const SelectTrigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <Icon
-        name="expand_more"
+      <IconGlyph
+        glyph={ExpandMore}
         className={cn(
           'shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180',
           compact
@@ -151,7 +152,7 @@ const SelectItem = React.forwardRef<
       )}
     </div>
     <SelectPrimitive.ItemIndicator>
-      <Icon name="check" className="text-icon-md text-brand" />
+      <IconGlyph glyph={Check} className="text-icon-md text-brand" />
     </SelectPrimitive.ItemIndicator>
   </SelectPrimitive.Item>
 ))

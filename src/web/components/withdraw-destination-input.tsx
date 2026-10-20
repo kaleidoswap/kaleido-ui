@@ -1,7 +1,8 @@
 import { useId } from 'react'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Close, ContentPaste, ProgressActivity } from '../icons/outlined'
 import { Label } from '../primitives/label'
-import { IconButton } from '../primitives/icon-button'
+import { GlyphButton } from '../primitives/glyph-button'
 
 export type WithdrawAddressType =
   | 'unknown'
@@ -54,8 +55,8 @@ export function WithdrawDestinationInput({
         />
         <div className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-1">
           {destination && (
-            <IconButton
-              icon="close"
+            <GlyphButton
+              icon={Close}
               label="Clear"
               size="sm"
               onClick={() => {
@@ -64,7 +65,7 @@ export function WithdrawDestinationInput({
               }}
             />
           )}
-          <IconButton icon="content_paste" label="Paste" variant="surface" size="sm" onClick={handlePaste} />
+          <GlyphButton icon={ContentPaste} label="Paste" variant="surface" size="sm" onClick={handlePaste} />
         </div>
       </div>
 
@@ -72,7 +73,7 @@ export function WithdrawDestinationInput({
         <div className="ml-1 flex items-center gap-2 text-caption">
           {isDecoding || isResolvingLnurl ? (
             <span className="flex items-center gap-1 text-muted-foreground">
-              <Icon name="progress_activity" className="animate-spin text-icon-sm" />
+              <IconGlyph glyph={ProgressActivity} className="animate-spin text-icon-sm" />
               {isResolvingLnurl ? 'Resolving...' : 'Decoding...'}
             </span>
           ) : addressType !== 'unknown' && addressType !== 'invalid' ? (

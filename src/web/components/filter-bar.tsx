@@ -6,7 +6,8 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '../primitives/collapsible'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Tune } from '../icons/outlined'
 import { useIsNarrow } from '../hooks/use-media-query'
 import { cn } from '../utils/cn'
 
@@ -75,7 +76,7 @@ export function FilterBar({
             aria-label={`${filtersLabel}, ${countLabel(activeCount)}`}
             className="inline-flex h-9 items-center gap-2 rounded-xl bg-muted/40 px-3 text-caption font-semibold text-foreground shadow-raised hover-gradient-violet data-[state=open]:bg-secondary/15 data-[state=open]:text-secondary-content"
           >
-            <Icon name="tune" className="text-icon-md" />
+            <IconGlyph glyph={Tune} className="text-icon-md" />
             {filtersLabel}
             {activeCount > 0 && (
               <span aria-hidden="true" className="rounded-full bg-primary/15 px-1.5 text-xxs font-bold text-brand">

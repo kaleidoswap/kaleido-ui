@@ -3,7 +3,8 @@ import { cn } from '../utils/cn'
 import { AssetIcon } from './asset-icon'
 import { NetworkBadge, type NetworkType } from './network-badge'
 import { eyebrow } from '../utils/type-roles'
-import { IconButton } from '../primitives/icon-button'
+import { GlyphButton } from '../primitives/glyph-button'
+import { Edit } from '../icons/outlined'
 
 export type InfoChipStatus = 'success' | 'warning' | 'danger' | 'info'
 
@@ -158,7 +159,7 @@ export function InfoChip({
       </dl>
 
       {onEdit && (
-        <IconButton icon="edit" label={editLabel} onClick={onEdit} disabled={editDisabled} />
+        <GlyphButton icon={Edit} label={editLabel} onClick={onEdit} disabled={editDisabled} />
       )}
     </div>
   )

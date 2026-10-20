@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { cn } from '../utils/cn'
-import { IconButton } from '../primitives/icon-button'
+import { GlyphButton } from '../primitives/glyph-button'
+import { ArrowBack } from '../icons/outlined'
 
 export interface PageHeaderProps {
   /**
@@ -50,7 +51,7 @@ export function PageHeader({
       >
         <div data-slot="page-header-leading" className="flex min-w-0 flex-[1_1_16rem] items-start gap-3">
           {onBack && (
-            <IconButton icon="arrow_back" label={backLabel} onClick={onBack} className="-ml-2" />
+            <GlyphButton icon={ArrowBack} label={backLabel} onClick={onBack} className="-ml-2" />
           )}
           <div className="min-w-0">
             <h1 className="m-0 text-title font-bold text-foreground">{title}</h1>
@@ -74,7 +75,7 @@ export function PageHeader({
   }
 
   const backButton = onBack ? (
-    <IconButton icon="arrow_back" label={backLabel} size="lg" onClick={onBack} />
+    <GlyphButton icon={ArrowBack} label={backLabel} size="lg" onClick={onBack} />
   ) : null
   const titleBlock = title ? (
     <div className="min-w-0 text-left">

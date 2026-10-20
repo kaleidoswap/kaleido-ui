@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.2.1     # must equal package.json's version; check-design-doc fails otherwise
+version: 0.2.2     # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -398,7 +398,7 @@ Leading icon sits left of the label with spacing `2` (8 px); trailing icon, when
 
 ### IconButton
 
-**Every icon-only button is `IconButton icon label`.** `label` is required — it is the accessible name and the tooltip; a glyph alone names nothing. One shape, a rounded square that sizes its own glyph, in three sizes:
+**Every icon-only button is `IconButton icon label`.** `label` is required — it is the accessible name and the tooltip; a glyph alone names nothing. `GlyphButton` is the same button for a glyph passed as a component (`icon={Close}` from `kaleido-ui/icons`) rather than by name; the library's own controls use it so they do not carry the whole icon set. One shape, a rounded square that sizes its own glyph, in three sizes:
 
 | size | box | glyph | for |
 |---|---|---|---|

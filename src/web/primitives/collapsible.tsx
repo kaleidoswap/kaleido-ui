@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as CollapsiblePrimitive from '@radix-ui/react-collapsible'
-import { Icon } from './icon'
+import { IconGlyph } from './icon-glyph'
+import { ExpandMore } from '../icons/outlined'
 import { cn } from '../utils/cn'
 
 /**
@@ -49,8 +50,8 @@ CollapsibleContent.displayName = CollapsiblePrimitive.Content.displayName
  */
 function CollapsibleChevron({ className }: { className?: string }) {
   return (
-    <Icon
-      name="expand_more"
+    <IconGlyph
+      glyph={ExpandMore}
       aria-hidden="true"
       className={cn(
         'shrink-0 text-icon-md text-muted-foreground transition-transform duration-200 group-hover/collapsible:text-secondary-content group-data-[state=open]/collapsible:rotate-180 group-data-[state=open]/collapsible:text-secondary-content motion-reduce:transition-none',

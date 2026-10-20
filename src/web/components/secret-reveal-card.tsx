@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Button } from '../primitives/button'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Check, ContentCopy, Visibility, VisibilityOff } from '../icons/outlined'
 import { cn } from '../utils/cn'
 import { useCopyToClipboard } from '../hooks/use-copy-to-clipboard'
 import { COPY_FAILED_MESSAGE } from './copy-button'
@@ -64,7 +65,7 @@ export function SecretRevealCard({
         {!revealed && (
           <div className="absolute inset-0 flex items-center justify-center">
             <Button type="button" variant="surface" size="sm" onClick={() => onRevealChange(true)}>
-              <Icon name="visibility" className="text-icon-lg" />
+              <IconGlyph glyph={Visibility} className="text-icon-lg" />
               {revealLabel}
             </Button>
           </div>
@@ -74,7 +75,7 @@ export function SecretRevealCard({
       {revealed && (
         <div className="flex gap-2">
           <Button type="button" variant="surface" className="flex-1" onClick={() => onRevealChange(false)}>
-            <Icon name="visibility_off" className="text-icon-lg" />
+            <IconGlyph glyph={VisibilityOff} className="text-icon-lg" />
             {hideLabel}
           </Button>
           {handleCopy && (
@@ -84,7 +85,7 @@ export function SecretRevealCard({
               onClick={handleCopy}
               className={cn('flex-1', copied && 'bg-primary/10 bg-gradient-active text-brand ring-primary/40 hover:ring-primary/50')}
             >
-              <Icon name={copied ? 'check' : 'content_copy'} className="text-icon-lg" />
+              <IconGlyph glyph={copied ? Check : ContentCopy} className="text-icon-lg" />
               {copied ? copiedLabel : copyLabel}
             </Button>
           )}

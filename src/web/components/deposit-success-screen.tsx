@@ -1,4 +1,5 @@
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { AccountBalanceWallet, CheckCircle } from '../icons/outlined'
 import { Button } from '../primitives/button'
 import { AssetIcon } from './asset-icon'
 import { NETWORK_CONFIG, type DepositNetworkKey } from './deposit-ui-shared'
@@ -35,7 +36,7 @@ export function DepositSuccessScreen({
         <div className="relative mb-8">
           <div className="absolute inset-0 scale-150 animate-pulse rounded-full bg-secondary/25 blur-2xl" />
           <div className="relative flex size-20 items-center justify-center rounded-full bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-glow-brand">
-            <Icon name="check_circle" className="size-12 text-brand animate-in zoom-in-50 duration-500" />
+            <IconGlyph glyph={CheckCircle} className="size-12 text-brand animate-in zoom-in-50 duration-500" />
           </div>
         </div>
 
@@ -63,7 +64,7 @@ export function DepositSuccessScreen({
         </div>
 
         <Button variant="cta" size="cta" onClick={handleDone}>
-          <Icon name="account_balance_wallet" className="text-icon-lg" />
+          <IconGlyph glyph={AccountBalanceWallet} className="text-icon-lg" />
           Back to Wallet
         </Button>
       </div>

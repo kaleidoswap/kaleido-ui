@@ -1,4 +1,5 @@
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { DarkMode, LightMode } from '../icons/outlined'
 import { Switch } from '../primitives/switch'
 import { useThemeMode, type ThemeMode, type UseThemeModeOptions } from '../hooks/use-theme-mode'
 
@@ -26,7 +27,7 @@ function ThemeSwitch({ mode, onModeChange, className }: ThemeSwitchProps) {
     <Switch
       checked={dark}
       onCheckedChange={(next) => onModeChange(next ? 'dark' : 'light')}
-      icons={{ off: <Icon name="light_mode" size="sm" />, on: <Icon name="dark_mode" size="sm" /> }}
+      icons={{ off: <IconGlyph glyph={LightMode} size="sm" />, on: <IconGlyph glyph={DarkMode} size="sm" /> }}
       aria-label="Dark mode"
       title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
       data-slot="theme-toggle"

@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Cancel, Check, CheckCircle, ContentCopy, Info, ProgressActivity, SwapHoriz } from '../icons/outlined'
 import { cn } from '../utils/cn'
 import { colors } from '../../tokens/colors'
 import { LiquidNetworkIcon, OnchainNetworkIcon, RgbNetworkIcon } from './network-icon'
@@ -155,7 +156,7 @@ const METHOD_META: Record<DepositTransferMethod, { label: string; icon: ReactNod
   arkade: { label: 'Arkade', icon: <img src="/icons/arkade/arkade-icon.svg" className="size-3 rounded-sm object-contain" alt="" /> },
   // Boarding is on-chain BTC joining Arkade; a submarine swap is a swap between rails.
   boarding: { label: 'Boarding', icon: <OnchainNetworkIcon className="size-3" /> },
-  submarine_swap: { label: 'Submarine Swap', icon: <Icon name="swap_horiz" className="text-icon-xs" /> },
+  submarine_swap: { label: 'Submarine Swap', icon: <IconGlyph glyph={SwapHoriz} className="text-icon-xs" /> },
 }
 
 export function InvoiceStatusBanner({
@@ -182,19 +183,19 @@ export function InvoiceStatusBanner({
     >
       {isInvoicePending && (
         <>
-          <Icon name="progress_activity" className="animate-spin text-icon-sm" />
+          <IconGlyph glyph={ProgressActivity} className="animate-spin text-icon-sm" />
           <span>Waiting for payment...</span>
         </>
       )}
       {isInvoicePaid && (
         <>
-          <Icon name="check_circle" className="text-icon-sm" />
+          <IconGlyph glyph={CheckCircle} className="text-icon-sm" />
           <span>Payment received!</span>
         </>
       )}
       {isInvoiceFailedOrExpired && (
         <>
-          <Icon name="cancel" className="text-icon-sm" />
+          <IconGlyph glyph={Cancel} className="text-icon-sm" />
           <span>Invoice {invoiceStatus?.toLowerCase() === 'expired' ? 'expired' : 'failed'}</span>
         </>
       )}
@@ -210,7 +211,7 @@ export function PaidOverlay() {
     <div className="absolute -inset-[3px] flex items-center justify-center rounded-[calc(var(--radius-2xl)+3px)] bg-background/95 bg-gradient-card-hero">
       <div className="flex flex-col items-center gap-2">
         <div className="flex size-14 items-center justify-center rounded-full bg-primary bg-gradient-primary shadow-glow-brand">
-          <Icon name="check" className="text-icon-4xl text-background" />
+          <IconGlyph glyph={Check} className="text-icon-4xl text-background" />
         </div>
         <span className="text-body font-bold text-gradient-brand">Received!</span>
       </div>
@@ -232,8 +233,8 @@ export interface CopyIconProps {
 export function CopyIcon({ copied, variant = 'tile', className }: CopyIconProps) {
   if (variant === 'bare') {
     return (
-      <Icon
-        name={copied ? 'check' : 'content_copy'}
+      <IconGlyph
+        glyph={copied ? Check : ContentCopy}
         aria-hidden="true"
         className={cn('text-icon-sm', copied && 'text-brand', className)}
       />
@@ -248,7 +249,7 @@ export function CopyIcon({ copied, variant = 'tile', className }: CopyIconProps)
           : 'bg-secondary/15 text-secondary-content group-hover:bg-secondary group-hover:bg-gradient-violet group-hover:text-white'
       )}
     >
-      {copied ? <Icon name="check" size="sm" /> : <Icon name="content_copy" size="sm" />}
+      {copied ? <IconGlyph glyph={Check} size="sm" /> : <IconGlyph glyph={ContentCopy} size="sm" />}
     </div>
   )
 }
@@ -365,7 +366,7 @@ export function NetworkInfoDisclosure({
       className={className}
       triggerClassName="px-2.5 py-1.5"
       contentClassName="space-y-2 px-2.5 pb-2.5 pt-1"
-      icon={<Icon name="info" size="xs" className="text-secondary-content" />}
+      icon={<IconGlyph glyph={Info} size="xs" className="text-secondary-content" />}
       title={<span className={cn('text-muted-foreground', eyebrow)}>What are these networks?</span>}
     >
       {networks.map((network) => {

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { AccountHeaderIcons, type AccountSettingsProtocol } from './account-settings-shared'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { ExpandLess, ExpandMore } from '../icons/outlined'
 import { cn } from '../utils/cn'
 import { eyebrow } from '../utils/type-roles'
 
@@ -48,7 +49,7 @@ export function AccountCapabilitiesCard({
         <div className="flex flex-col items-end gap-2">
           {collapsible && (
             <div className="mt-1 text-muted-foreground transition-colors group-hover:text-secondary-content">
-              <Icon name={isExpanded ? 'expand_less' : 'expand_more'} size="md" />
+              <IconGlyph glyph={isExpanded ? ExpandLess : ExpandMore} size="md" />
             </div>
           )}
         </div>

@@ -1,10 +1,11 @@
 import { useState, type ReactNode } from 'react'
 import { ActionTile } from './action-tile'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { ArrowOutward, CallReceived, ExpandLess, ExpandMore, Payments, Refresh, SwapHoriz } from '../icons/outlined'
 import { LiquidNetworkIcon, OnchainNetworkIcon } from './network-icon'
 import { eyebrow } from '../utils/type-roles'
 import { cn } from '../utils/cn'
-import { IconButton } from '../primitives/icon-button'
+import { GlyphButton } from '../primitives/glyph-button'
 
 export interface BalanceBreakdownAsset {
   asset_id: string
@@ -231,22 +232,22 @@ export function BalanceBreakdown({
 
           <div className="mt-1 flex shrink-0 items-center gap-1.5">
             {onRefresh && (
-              <IconButton
+              <GlyphButton
                 label="Refresh balances"
                 variant="surface"
                 size="sm"
                 onClick={onRefresh}
                 disabled={isRefreshing}
-                icon={<Icon name="refresh" aria-hidden="true" className={isRefreshing ? 'animate-spin motion-reduce:animate-none' : undefined} />}
+                icon={<IconGlyph glyph={Refresh} aria-hidden="true" className={isRefreshing ? 'animate-spin motion-reduce:animate-none' : undefined} />}
               />
             )}
-            <IconButton
+            <GlyphButton
               label={expanded ? 'Collapse balance breakdown' : 'Expand balance breakdown'}
               variant="surface"
               size="sm"
               aria-expanded={expanded}
               onClick={() => setExpanded(!expanded)}
-              icon={expanded ? 'expand_less' : 'expand_more'}
+              icon={expanded ? ExpandLess : ExpandMore}
             />
           </div>
         </div>
@@ -358,7 +359,7 @@ export function BalanceBreakdown({
                   <div className="flex items-center gap-3">
                     <div className="h-7 w-0.5 rounded-full bg-success opacity-80" />
                     <div className="flex size-7 items-center justify-center rounded-lg bg-secondary/15 text-icon-sm text-secondary-content">
-                      <Icon name="payments" />
+                      <IconGlyph glyph={Payments} />
                     </div>
                     <div className="flex flex-col">
                       <span className="text-caption font-semibold leading-tight text-foreground/80">Stablecoins &amp; Tokens</span>
@@ -403,20 +404,20 @@ export function BalanceBreakdown({
           className={`relative z-10 flex gap-2.5 ${compact ? 'mt-2 pt-2' : 'mt-3 pt-3'}`}
         >
           <ActionTile
-            icon={<Icon name="call_received" className="text-icon-sm" />}
+            icon={<IconGlyph glyph={CallReceived} className="text-icon-sm" />}
             label={actionLabels?.receive ?? 'Deposit'}
             onClick={() => onNavigate?.('deposit')}
             data-testid="dashboard-action-deposit"
           />
           <ActionTile
-            icon={<Icon name="swap_horiz" className="text-icon-sm" />}
+            icon={<IconGlyph glyph={SwapHoriz} className="text-icon-sm" />}
             label="Swap"
             onClick={() => onNavigate?.('swap')}
             data-testid="dashboard-action-swap"
           />
           <ActionTile
             icon={
-              <Icon name="arrow_outward" className="text-icon-sm" />
+              <IconGlyph glyph={ArrowOutward} className="text-icon-sm" />
             }
             label={actionLabels?.send ?? 'Withdraw'}
             onClick={() => onNavigate?.('withdraw')}

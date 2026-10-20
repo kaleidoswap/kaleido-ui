@@ -1,10 +1,11 @@
 import { useId } from 'react'
 import { Button } from '../primitives/button'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Refresh } from '../icons/outlined'
 import { Input } from '../primitives/input'
 import { Label } from '../primitives/label'
 import { cn } from '../utils/cn'
-import { IconButton } from '../primitives/icon-button'
+import { GlyphButton } from '../primitives/glyph-button'
 
 export interface DateRange {
   /** `YYYY-MM-DD`, or empty. */
@@ -78,14 +79,14 @@ export function DateRangeFilter({
         </Button>
       )}
       {onRefresh && (
-        <IconButton
+        <GlyphButton
           label={refreshLabel}
           variant="surface"
           size="lg"
           disabled={isRefreshing}
           aria-busy={isRefreshing || undefined}
           onClick={onRefresh}
-          icon={<Icon name="refresh" aria-hidden="true" className={cn(isRefreshing && 'animate-spin motion-reduce:animate-none')} />}
+          icon={<IconGlyph glyph={Refresh} aria-hidden="true" className={cn(isRefreshing && 'animate-spin motion-reduce:animate-none')} />}
         />
       )}
     </div>

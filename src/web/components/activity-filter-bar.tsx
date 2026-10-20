@@ -6,7 +6,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../primitives/select'
-import { IconButton } from '../primitives/icon-button'
+import { GlyphButton } from '../primitives/glyph-button'
+import { Close } from '../icons/outlined'
 
 export interface ActivityStatusOption<TValue extends string = string> {
   value: TValue
@@ -53,8 +54,8 @@ export function ActivityFilterBar<TStatus extends string = string>({
           className="h-full w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 py-2.5 pl-10 pr-8 text-caption text-foreground shadow-inner outline-none transition-all placeholder:text-muted-foreground focus:bg-secondary/10 focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
         />
         {searchTerm && (
-          <IconButton
-            icon="close"
+          <GlyphButton
+            icon={Close}
             label="Clear search"
             size="sm"
             onClick={() => onSearchTermChange('')}
@@ -84,7 +85,7 @@ export function ActivityFilterBar<TStatus extends string = string>({
       </div>
 
       {hasActiveFilters && onClearFilters && (
-        <IconButton icon="close" label="Clear filters" variant="surface" size="lg" className="self-center" onClick={onClearFilters} />
+        <GlyphButton icon={Close} label="Clear filters" variant="surface" size="lg" className="self-center" onClick={onClearFilters} />
       )}
     </div>
   )

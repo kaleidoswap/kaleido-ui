@@ -1,5 +1,6 @@
 import { Button } from '../primitives/button'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { ChevronLeft, ChevronRight } from '../icons/outlined'
 import { cn } from '../utils/cn'
 
 export interface PagerProps {
@@ -54,12 +55,12 @@ export function Pager({
           disabled={!hasPrevious}
           onClick={() => onOffsetChange(Math.max(0, offset - limit))}
         >
-          <Icon name="chevron_left" className="text-icon-md" />
+          <IconGlyph glyph={ChevronLeft} className="text-icon-md" />
           {previousLabel}
         </Button>
         <Button type="button" variant="surface" size="sm" disabled={!hasNext} onClick={() => onOffsetChange(offset + limit)}>
           {nextLabel}
-          <Icon name="chevron_right" className="text-icon-md" />
+          <IconGlyph glyph={ChevronRight} className="text-icon-md" />
         </Button>
       </div>
     </nav>

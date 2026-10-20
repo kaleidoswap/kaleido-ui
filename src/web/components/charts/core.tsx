@@ -10,7 +10,9 @@ import { chartSeriesLimit } from '../../../tokens/chart'
 import { cn } from '../../utils/cn'
 import { formatAmount } from '../../utils/amount-display'
 import { Icon, type IconName } from '../../primitives/icon'
-import { IconButton } from '../../primitives/icon-button'
+import { IconGlyph } from '../../primitives/icon-glyph'
+import { BarChart, Check, Event, TableRows, Tune } from '../../icons/outlined'
+import { GlyphButton } from '../../primitives/glyph-button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -408,8 +410,8 @@ export interface ChartFrameProps extends ChartTitleProps, ChartViewsProps {
 export type ChartView = 'chart' | 'table'
 
 const viewOptions: readonly FilterChipOption<ChartView>[] = [
-  { value: 'chart', ariaLabel: 'Chart', icon: <Icon name="bar_chart" size="sm" /> },
-  { value: 'table', ariaLabel: 'Table', icon: <Icon name="table_rows" size="sm" /> },
+  { value: 'chart', ariaLabel: 'Chart', icon: <IconGlyph glyph={BarChart} size="sm" /> },
+  { value: 'table', ariaLabel: 'Table', icon: <IconGlyph glyph={TableRows} size="sm" /> },
 ]
 
 const tableOption: FilterChipOption<string> = viewOptions[1]
@@ -466,14 +468,14 @@ export function ChartTimeframeMenu({
     <div data-slot="chart-timeframe" className="shrink-0">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <IconButton icon="event" label={`Timeframe: ${current.label}`} />
+          <GlyphButton icon={Event} label={`Timeframe: ${current.label}`} />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-28">
           {timeframes.map((t) => (
             <DropdownMenuItem
               key={t.value}
               onSelect={() => onChange(t.value)}
-              icon={<Icon name="check" className={t.value === current.value ? undefined : 'invisible'} />}
+              icon={<IconGlyph glyph={Check} className={t.value === current.value ? undefined : 'invisible'} />}
             >
               {t.label}
               {t.value === current.value && <span className="sr-only"> (current)</span>}
@@ -507,8 +509,8 @@ export function ChartFiltersMenu({
     <div data-slot="chart-filters" className="shrink-0">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <IconButton
-            icon="tune"
+          <GlyphButton
+            icon={Tune}
             variant={on.length > 0 ? 'surface' : 'quiet'}
             label={on.length > 0 ? `Filters: ${on.length} on` : 'Filters'}
           />
@@ -526,7 +528,7 @@ export function ChartFiltersMenu({
                   event.preventDefault()
                   toggle(f.value)
                 }}
-                icon={<Icon name="check" className={checked ? undefined : 'invisible'} />}
+                icon={<IconGlyph glyph={Check} className={checked ? undefined : 'invisible'} />}
               >
                 {f.label}
               </DropdownMenuItem>

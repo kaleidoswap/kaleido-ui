@@ -1,37 +1,33 @@
-import type { SVGProps } from 'react'
-import { cn } from '../utils/cn'
+import { IconGlyph, type IconGlyphComponent, type IconGlyphProps } from './icon-glyph'
 import { outlinedMap, filledMap, type IconName } from '../icons'
 
 export type { IconName }
 
-export interface IconProps extends SVGProps<SVGSVGElement> {
-  name: IconName
+export interface IconProps<N extends string = IconName> extends Omit<IconGlyphProps, 'glyph'> {
+  name: N
   filled?: boolean
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
-  className?: string
 }
 
-const sizeClasses = {
-  xs: 'text-icon-sm',
-  sm: 'text-icon-md',
-  md: 'text-icon-xl',
-  lg: 'text-icon-2xl',
-  xl: 'text-icon-4xl',
-  '2xl': 'text-icon-5xl',
+/**
+ * Builds an `Icon` that knows only the glyphs passed in, so a bundle carries
+ * those and no others. The default `Icon` is this over the whole set.
+ *
+ *   import { createIcon, Close, Check } from 'kaleido-ui/icons'
+ *   const Icon = createIcon({ close: Close, check: Check })
+ *   <Icon name="close" size="sm" />
+ */
+export function createIcon<N extends string>(
+  outlined: Record<N, IconGlyphComponent>,
+  filled: Partial<Record<N, IconGlyphComponent>> = {},
+) {
+  return function Icon({ name, filled: preferFilled = false, ...props }: IconProps<N>) {
+    const glyph = (preferFilled ? filled[name] : undefined) ?? outlined[name]
+    if (!glyph) return null
+    return <IconGlyph glyph={glyph} {...props} />
+  }
 }
 
-export function Icon({ name, filled = false, size, className, ...props }: IconProps) {
-  const SvgComponent = (filled ? filledMap[name] : undefined) ?? outlinedMap[name]
-  if (!SvgComponent) return null
-  return (
-    <SvgComponent
-      width="1em"
-      height="1em"
-      className={cn('inline-block shrink-0', size && sizeClasses[size], className)}
-      {...props}
-    />
-  )
-}
+export const Icon = /*#__PURE__*/ createIcon<IconName>(outlinedMap, filledMap)
 
 export const Icons = {
   // Navigation

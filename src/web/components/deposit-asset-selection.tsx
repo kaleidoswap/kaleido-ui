@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { DotPagination } from '../primitives/dot-pagination'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Add, ArrowBack, ArrowForward, ExpandLess, ExpandMore, Search, SwapCalls } from '../icons/outlined'
 import { AssetIcon } from './asset-icon'
 import { BottomSheet } from './bottom-sheet'
 import { NetworkBadge } from './network-badge'
@@ -9,7 +10,7 @@ import { ScrollArea } from '../primitives/scroll-area'
 import { cn } from '../utils/cn'
 import type { DepositAccountId } from './deposit-ui-shared'
 import { eyebrow } from '../utils/type-roles'
-import { IconButton } from '../primitives/icon-button'
+import { GlyphButton } from '../primitives/glyph-button'
 
 const ADD_ASSET_SUBTITLE: Record<DepositAccountId, string> = {
   RGB: 'RGB asset on Bitcoin',
@@ -142,7 +143,7 @@ export function DepositAssetSelection<TView extends string = string>({
   return (
     <div className="relative flex h-screen flex-col overflow-hidden bg-background bg-page-radial pt-16 font-display text-foreground">
       <div className="absolute left-4 top-4 z-30">
-        <IconButton icon="arrow_back" label="Go back" size="lg" onClick={() => setCurrentView('dashboard' as TView)} />
+        <GlyphButton icon={ArrowBack} label="Go back" size="lg" onClick={() => setCurrentView('dashboard' as TView)} />
       </div>
 
       <div className="flex-shrink-0 px-5 pb-3 pt-4">
@@ -155,8 +156,8 @@ export function DepositAssetSelection<TView extends string = string>({
 
       <div className="flex-shrink-0 px-5 pb-3">
         <div className="relative">
-          <Icon
-            name="search"
+          <IconGlyph
+            glyph={Search}
             size="sm"
             className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-content"
           />
@@ -194,7 +195,7 @@ export function DepositAssetSelection<TView extends string = string>({
               {isArkadeConnected && <NetworkBadge network="Arkade" size="sm" />}
               {isLiquidConnected && <NetworkBadge network="Liquid" size="sm" />}
             </div>
-            <Icon name="arrow_forward" className="flex-shrink-0 text-icon-md text-foreground/20 transition-colors group-hover:text-secondary-content" />
+            <IconGlyph glyph={ArrowForward} className="flex-shrink-0 text-icon-md text-foreground/20 transition-colors group-hover:text-secondary-content" />
           </button>
         )}
 
@@ -223,7 +224,7 @@ export function DepositAssetSelection<TView extends string = string>({
               </span>
               <div className="flex-1" />
               {!isSearching && (
-                <Icon name={showOwnedAssets ? 'expand_less' : 'expand_more'} size="md" className="text-secondary-content" />
+                <IconGlyph glyph={showOwnedAssets ? ExpandLess : ExpandMore} size="md" className="text-secondary-content" />
               )}
             </button>
 
@@ -271,7 +272,7 @@ export function DepositAssetSelection<TView extends string = string>({
                           </div>
                         </div>
                       )}
-                      <Icon name="arrow_forward" className="flex-shrink-0 text-icon-sm text-foreground/20 transition-colors group-hover:text-secondary-content" />
+                      <IconGlyph glyph={ArrowForward} className="flex-shrink-0 text-icon-sm text-foreground/20 transition-colors group-hover:text-secondary-content" />
                     </button>
                   )
                 })}
@@ -288,7 +289,7 @@ export function DepositAssetSelection<TView extends string = string>({
               className="group flex w-full items-center gap-3 rounded-2xl bg-gradient-to-r from-secondary/20 to-primary/10 p-3 shadow-card transition-all duration-200 hover:from-secondary/30 hover:to-primary/15 hover:shadow-card-hover"
             >
               <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary bg-gradient-violet text-white shadow-button-violet">
-                <Icon name="swap_calls" className="text-icon-lg" />
+                <IconGlyph glyph={SwapCalls} className="text-icon-lg" />
               </div>
               <div className="flex-1 text-left">
                 <p className="text-body font-semibold text-foreground transition-colors group-hover:text-secondary-content">
@@ -296,7 +297,7 @@ export function DepositAssetSelection<TView extends string = string>({
                 </p>
                 <p className="text-xxs leading-tight text-foreground/55">USDC, USDT, ETH, SOL via Flashnet</p>
               </div>
-              <Icon name="arrow_forward" className="text-icon-lg text-foreground/55 transition-colors group-hover:text-secondary-content" />
+              <IconGlyph glyph={ArrowForward} className="text-icon-lg text-foreground/55 transition-colors group-hover:text-secondary-content" />
             </button>
           </div>
         )}
@@ -310,7 +311,7 @@ export function DepositAssetSelection<TView extends string = string>({
               className="group flex w-full items-center gap-3 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-3 shadow-card transition-all duration-200 hover-gradient-violet hover:shadow-card-hover"
             >
               <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content">
-                <Icon name="add" size="md" />
+                <IconGlyph glyph={Add} size="md" />
               </div>
               <div className="flex-1 text-left">
                 <p className="text-body font-semibold text-foreground transition-colors group-hover:text-secondary-content">
@@ -320,7 +321,7 @@ export function DepositAssetSelection<TView extends string = string>({
                   Receive a new {newAssetOptions.map((o) => o.ticker).join(', ')} asset
                 </p>
               </div>
-              <Icon name="arrow_forward" className="text-icon-lg text-foreground/55 transition-colors group-hover:text-secondary-content" />
+              <IconGlyph glyph={ArrowForward} className="text-icon-lg text-foreground/55 transition-colors group-hover:text-secondary-content" />
             </button>
           </div>
         )}
@@ -361,7 +362,7 @@ export function DepositAssetSelection<TView extends string = string>({
                   {ADD_ASSET_SUBTITLE[option.account]}
                 </div>
               </div>
-              <Icon name="add" size="sm" className="text-foreground/55 transition-colors group-hover:text-foreground/60" />
+              <IconGlyph glyph={Add} size="sm" className="text-foreground/55 transition-colors group-hover:text-foreground/60" />
             </button>
           ))}
         </div>

@@ -1,9 +1,10 @@
 import { Button } from '../primitives/button'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { ArrowBack, Fingerprint, ProgressActivity } from '../icons/outlined'
 import { ScrollArea } from '../primitives/scroll-area'
 import { formatAmount } from '../utils/amount-display'
 import type { WithdrawAddressType } from './withdraw-destination-input'
-import { IconButton } from '../primitives/icon-button'
+import { GlyphButton } from '../primitives/glyph-button'
 
 export interface WithdrawConfirmationRgbInvoice {
   recipient_type?: string
@@ -64,8 +65,8 @@ export function WithdrawConfirmation({
   return (
     <div className="relative flex h-screen flex-col overflow-hidden bg-background bg-page-radial font-display text-foreground">
       <div className="absolute left-4 top-4 z-30">
-        <IconButton
-          icon="arrow_back"
+        <GlyphButton
+          icon={ArrowBack}
           label="Go back"
           size="lg"
           onClick={() => {
@@ -166,7 +167,7 @@ export function WithdrawConfirmation({
 
         {isPollingStatus && (
           <div className="flex items-center gap-3 rounded-xl bg-gradient-active p-4 shadow-glow-violet-soft ring-1 ring-inset ring-secondary/40">
-            <Icon name="progress_activity" className="animate-spin text-icon-2xl text-secondary-content" />
+            <IconGlyph glyph={ProgressActivity} className="animate-spin text-icon-2xl text-secondary-content" />
             <div>
               <p className="text-body font-medium text-foreground">Processing payment...</p>
               <p className="text-caption text-muted-foreground">Waiting for confirmation</p>
@@ -183,12 +184,12 @@ export function WithdrawConfirmation({
         >
           {isConfirming || isPollingStatus ? (
             <>
-              <Icon name="progress_activity" className="animate-spin text-icon-2xl" />
+              <IconGlyph glyph={ProgressActivity} className="animate-spin text-icon-2xl" />
               {isPollingStatus ? 'Waiting for confirmation...' : 'Sending...'}
             </>
           ) : (
             <>
-              <Icon name="fingerprint" className="text-icon-2xl" />
+              <IconGlyph glyph={Fingerprint} className="text-icon-2xl" />
               Confirm & Send
             </>
           )}

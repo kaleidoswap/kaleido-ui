@@ -7,7 +7,8 @@ import {
   DialogTitle,
 } from '../primitives/dialog'
 import { Button } from '../primitives/button'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Settings } from '../icons/outlined'
 import { NetworkStatusChip } from './network-status-chip'
 import type { NetworkType } from './network-badge'
 import { cn } from '../utils/cn'
@@ -146,7 +147,7 @@ export function AccountStatusDetails<TId extends string = string>({
           onClick={() => onEdit(account.id)}
           className="mt-6 w-full bg-gradient-primary bg-primary text-primary-foreground shadow-button-primary hover:bg-primary/90"
         >
-          <Icon name="settings" size="sm" />
+          <IconGlyph glyph={Settings} size="sm" />
           Edit Settings
         </Button>
       )}

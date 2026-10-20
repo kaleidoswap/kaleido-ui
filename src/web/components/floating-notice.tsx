@@ -1,6 +1,7 @@
 import type { AriaRole, ReactNode } from 'react'
 import { cn } from '../utils/cn'
-import { IconButton } from '../primitives/icon-button'
+import { GlyphButton } from '../primitives/glyph-button'
+import { Close } from '../icons/outlined'
 
 export interface FloatingNoticeProps {
   /** The notice — usually an `InfoPanel`. */
@@ -44,7 +45,7 @@ export function FloatingNotice({
       <div className="relative">
         {children}
         {showClose && (
-          <IconButton icon="close" label={dismissLabel} size="sm" onClick={onDismiss} className="absolute right-2 top-2" />
+          <GlyphButton icon={Close} label={dismissLabel} size="sm" onClick={onDismiss} className="absolute right-2 top-2" />
         )}
       </div>
     </div>

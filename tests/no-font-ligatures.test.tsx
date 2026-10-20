@@ -7,6 +7,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 
 import * as ui from '../src/web/index'
 import { ErrorBoundary } from '../src/web/components/error-boundary'
+import { Close } from '../src/web/icons/outlined'
 
 // A Material Symbols ligature is a <span class="material-symbols-outlined">
 // whose TEXT is the icon's name. kaleido-ui ships no Material Symbols font, so
@@ -67,6 +68,8 @@ const net = ui.NETWORK_CONFIG.lightning
 const FIXTURES: Record<string, () => ReactElement[]> = {
   ActivityList: () => [createElement(ui.ActivityList, { items: [] })],
   Avatar: () => [createElement(ui.Avatar, { src: '/me.png', initials: 'EJ' })],
+  GlyphButton: () => [createElement(ui.GlyphButton, { icon: Close, label: 'Close' })],
+  IconGlyph: () => [createElement(ui.IconGlyph, { glyph: Close, size: 'sm' })],
   BalanceBreakdown: () => [
     createElement(ui.BalanceBreakdown, {
       btcOnchain: 1_000,

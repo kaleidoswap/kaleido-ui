@@ -2,7 +2,8 @@ import * as React from 'react'
 import { cn } from '../utils/cn'
 import { HorizontalScrollArea } from './scroll-area'
 import { Button } from './button'
-import { Icon } from './icon'
+import { IconGlyph } from './icon-glyph'
+import { ArrowDownward, ArrowUpward, SwapVert } from '../icons/outlined'
 import { eyebrow } from '../utils/type-roles'
 
 /**
@@ -169,7 +170,7 @@ const ariaSort = { asc: 'ascending', desc: 'descending', none: 'none' } as const
 
 const TableHead = React.forwardRef<HTMLTableCellElement, TableHeadProps>(
   ({ className, sortable, sortDirection = 'none', onSort, children, ...props }, ref) => {
-    const sortIcon = sortDirection === 'asc' ? 'arrow_upward' : sortDirection === 'desc' ? 'arrow_downward' : 'swap_vert'
+    const sortIcon = sortDirection === 'asc' ? ArrowUpward : sortDirection === 'desc' ? ArrowDownward : SwapVert
     return (
       <th
         ref={ref}
@@ -195,7 +196,7 @@ const TableHead = React.forwardRef<HTMLTableCellElement, TableHeadProps>(
             )}
           >
             {children}
-            <Icon name={sortIcon} size="sm" />
+            <IconGlyph glyph={sortIcon} size="sm" />
           </Button>
         ) : (
           children

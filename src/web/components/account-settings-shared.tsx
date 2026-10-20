@@ -1,12 +1,13 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Button } from '../primitives/button'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { ArrowBack, ChevronRight, ExpandLess, ExpandMore, SwapHoriz } from '../icons/outlined'
 import { ScrollArea } from '../primitives/scroll-area'
 import { cn } from '../utils/cn'
 import { AlertBanner } from './alert-banner'
 import { NostrNetworkIcon, RgbNetworkIcon } from './network-icon'
 import { eyebrow } from '../utils/type-roles'
-import { IconButton } from '../primitives/icon-button'
+import { GlyphButton } from '../primitives/glyph-button'
 
 export type AccountSettingsProtocol = 'RGB' | 'SPARK' | 'ARKADE' | 'NOSTR'
 export type AccountSettingsNetwork = 'mainnet' | 'testnet' | 'regtest' | 'signet'
@@ -229,7 +230,7 @@ export function AccountSettingsShell({
           every other settings page uses). */}
       <header className="flex h-14 shrink-0 items-center gap-2 px-2">
         {onBack && (
-          <IconButton icon="arrow_back" label="Go back" size="lg" onClick={onBack} />
+          <GlyphButton icon={ArrowBack} label="Go back" size="lg" onClick={onBack} />
         )}
         <AccountHeaderIcons accountId={accountId} />
         <h1 className="text-subhead font-bold text-foreground">{title}</h1>
@@ -357,7 +358,7 @@ export function InlineAction({
         <p className="text-body font-semibold text-foreground">{title}</p>
         <p className="mt-1 text-caption text-muted-foreground">{description}</p>
       </div>
-      <Icon name="chevron_right" className="text-icon-lg" />
+      <IconGlyph glyph={ChevronRight} className="text-icon-lg" />
     </button>
   )
 }
@@ -384,7 +385,7 @@ export function TransferRouteCard({
             <AccountHeaderIcons accountId={account} />
           ) : (
             <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content">
-              <Icon name="swap_horiz" size="sm" />
+              <IconGlyph glyph={SwapHoriz} size="sm" />
             </div>
           )}
           <div className="min-w-0">
@@ -402,7 +403,7 @@ export function TransferRouteCard({
 }
 
 export function ExpandIcon({ expanded }: { expanded: boolean }) {
-  return <Icon name={expanded ? 'expand_less' : 'expand_more'} size="md" />
+  return <IconGlyph glyph={expanded ? ExpandLess : ExpandMore} size="md" />
 }
 
 /**
@@ -468,7 +469,7 @@ export function AccountSettingsRow({
               </div>
               <p className="mt-1 text-caption text-muted-foreground">{description}</p>
             </div>
-            <Icon name="chevron_right" size="sm" className="text-muted-foreground transition-colors group-hover:text-secondary-content" />
+            <IconGlyph glyph={ChevronRight} size="sm" className="text-muted-foreground transition-colors group-hover:text-secondary-content" />
           </div>
           <div className="mt-3">
             <AccountStatusPills

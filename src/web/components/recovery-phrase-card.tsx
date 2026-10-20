@@ -1,5 +1,6 @@
 import { Button } from '../primitives/button'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Check, ContentCopy, Visibility, VisibilityOff } from '../icons/outlined'
 import { cn } from '../utils/cn'
 import { useCopyToClipboard } from '../hooks/use-copy-to-clipboard'
 import { COPY_FAILED_MESSAGE } from './copy-button'
@@ -54,7 +55,7 @@ export function RecoveryPhraseCard({
             size="xs"
             onClick={() => onRevealChange(!revealed)}
           >
-            <Icon name="visibility_off" className="text-icon-md" />
+            <IconGlyph glyph={VisibilityOff} className="text-icon-md" />
             Hide
           </Button>
         )}
@@ -91,7 +92,7 @@ export function RecoveryPhraseCard({
               size="sm"
               onClick={() => onRevealChange(true)}
             >
-              <Icon name="visibility" className="text-icon-lg" />
+              <IconGlyph glyph={Visibility} className="text-icon-lg" />
               Tap to reveal
             </Button>
           </div>
@@ -106,7 +107,7 @@ export function RecoveryPhraseCard({
           onClick={handleCopy}
           className={cn('w-full', copied && 'bg-primary/10 bg-gradient-active text-brand ring-primary/40 hover:ring-primary/50')}
         >
-          <Icon name={copied ? 'check' : 'content_copy'} className="text-icon-lg" />
+          <IconGlyph glyph={copied ? Check : ContentCopy} className="text-icon-lg" />
           {copied ? copiedLabel : copyLabel}
         </Button>
       )}
