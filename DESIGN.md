@@ -54,7 +54,7 @@ typography:
   caption:  { family: "Satoshi", weight: 500, size: 14, line: 20 }
   tiny:     { family: "Satoshi", weight: 500, size: 12, line: 17 }
   label:    { family: "Satoshi", weight: 500, size: 10, line: 13, tracking: 0.18em, transform: uppercase }
-  mono:     { family: "Geist Mono", weight: 500, size: 13 }
+  mono:     { family: "Geist Mono", weight: 500, size: 14 }
 rounded:
   card: 16        # rounded-2xl — cards, tiles, settings/account rows, dialogs, sheet top edge
   inner: 12       # rounded-xl — rows/inputs/icon tiles nested inside a card, ActionTile trio
@@ -79,8 +79,8 @@ components:
     shadow: "shadow.button-primary"
     hover.shadow: "shadow.glow-primary"
     radius: "{rounded.button}"
-    height: 44
-    weight: 800
+    height: 49.5      # h-11
+    weight: 600
   button.secondary:
     bg: "{colors.brand.violet}"
     fill: "gradient.violet"
@@ -142,7 +142,7 @@ use the 135° green→violet gradient. (History: the ramp was dark-forest, then
 blue-slate and deliberately flat; it moved to violet because the flat slate UI
 read as lifeless and under-branded.)
 
-This document is the **single source of truth** for the `kaleido-ui` package and every consumer downstream — most visibly the `rate-extension` browser wallet. It exists because the package ships neutral-gray defaults (`primary: #e5e5e5`, `bg: #0a0a0a` in `src/tokens/colors.ts`) that silently produce unstyled, off-brand output on any component a consumer forgets to re-theme. DESIGN.md replaces those defaults as the normative spec: the tokens below are what the library should render, what the Tailwind preset should expose, and what every PR is measured against.
+This document is the **single source of truth** for the `kaleido-ui` package and every consumer downstream — most visibly the `rate-extension` browser wallet. It exists because the brand used to live in each consumer's own overrides, and those drifted apart. DESIGN.md is the normative spec: the tokens below are what the library renders, what the Tailwind preset exposes, and what every PR is measured against.
 
 DESIGN.md is written for two audiences in parallel: humans shipping UI, and coding agents generating it. The YAML front matter is the machine-readable contract (tokens, component bindings); the prose below is the rationale — why a button is 44 px tall, why network icons must stay orange at 11 px, why the page background is not `#000`. When the two disagree, the YAML wins; when a token is missing, add it here first and propagate downstream.
 
@@ -198,7 +198,7 @@ draws the slowly drifting mint and violet blobs behind a screen (motion stops
 under reduced motion).
 
 **Brand theme stylesheet.** `@import "kaleido-ui/css/brand";` after
-`kaleido-ui/css` makes the light primary the AA green `#086E46`, lifts dark
+`kaleido-ui/css` makes the light primary the AA green `#007D49`, lifts dark
 `danger` / `info` to their `-fg` values and points `bg-page-radial` at the
 coloured wash. It changes existing tokens, which is why it is a separate,
 opt-in import.
@@ -317,7 +317,7 @@ Spacing is one token, `spacingUnit` (0.28125rem = **4.5 px**, `--spacing` in `ka
 KaleidoSwap targets a **420 px max content width**: the browser-extension popup is the canonical viewport and everything else (webapp, mobile shell) adopts the same column so layouts translate 1:1.
 
 - **Spacing scale**: in 4.5 px steps — `1:4.5, 2:9, 3:13.5, 4:18, 5:22.5, 6:27, 8:36`. Most gaps between elements are `2` or `3`. Section-to-section breathing room is `4` or `6`. Do not invent odd values.
-- **Horizontal padding**: views pad `16` (spacing `4`) from the viewport edge. Cards inside pad `12` (spacing `3`).
+- **Horizontal padding**: views pad `18` (spacing `4`) from the viewport edge. Cards inside pad `13.5` (spacing `3`).
 - **Bottom nav**: floats above the content; it is not a sticky footer. Every full-height view must reserve a **88 px bottom inset** (nav height + float gap) so the last row of content is not obscured.
 - **Scroll**: only the main column scrolls. Nav, headers, and modals remain fixed.
 
@@ -383,18 +383,18 @@ There is no larger step. No component may use `rounded-3xl` — the swap hero ca
 
 ### Button
 
-**Intended use.** A Button is the single unit of commitment on a screen. `primary` is the CTA ("Confirm swap," "Send"), and only one primary button should ever be visible at a time. `surface` is every secondary action that still needs to feel like a button ("Cancel," "Choose asset"). `ghost` is the flat, chrome-free variant used inside dense lists and dropdown rows.
+**Intended use.** A Button is the single unit of commitment on a screen. `default` is the CTA ("Confirm swap," "Send") — the primary button — and only one should ever be visible at a time. `surface` is every secondary action that still needs to feel like a button ("Cancel," "Choose asset"). `ghost` is the flat, chrome-free variant used inside dense lists and dropdown rows.
 
 **Key tokens.**
-- `primary`: bg `brand.primary`, fg `brand.primary-contrast`, radius `button` (12), height `44`, weight `800`. Hover adds the primary glow.
-- `surface`: bg `surface.card`, fg `text.primary`, border `border.subtle`, radius `button`. Hover swaps to `brand.primary` bg with `brand.primary-contrast` fg — the same fill the primary variant uses at rest.
-- `ghost`: transparent bg, fg `text.primary`, no border. Hover reveals `surface.card`.
+- `default`: bg `brand.primary` under `bg-gradient-primary`, fg `brand.primary-contrast`, `shadow-button-primary`, radius `button` (12), height `h-11` (49.5 px), weight `600`. Hover brightens the fill and deepens its shadow.
+- `surface`: the violet tint — bg `secondary/15`, fg `text-secondary-content`, no border, radius `button`. Hover deepens the tint to `secondary/25` and adds a soft violet glow.
+- `ghost`: transparent bg, fg `text-brand`, no border. Hover reveals a `primary/10` tint.
 
-Leading icon sits left of the label with spacing `2` (8 px); trailing icon, when present, sits right with the same gap. Active / pressed state darkens the fill by ~8%.
+Leading icon sits left of the label with spacing `2` (9 px); trailing icon, when present, sits right with the same gap. Active / pressed state darkens the fill by ~8%.
 
 **Wrong vs right.**
 - Wrong: `<button class="bg-card text-white h-11 rounded-xl">Confirm</button>` — this is a primary action styled as a surface button; the user can't find the CTA.
-- Right: use the `primary` variant (`<Button variant="primary">Confirm</Button>`) — green fill, dark text, glow on hover.
+- Right: use the `default` variant (`<Button variant="default">Confirm</Button>`, or no `variant`) — green fill, dark text, a deeper shadow on hover.
 
 ### IconButton
 
@@ -461,7 +461,7 @@ This tri-alpha pattern keeps every pill tonally consistent regardless of hue, wh
 - bg: `rgba(43, 238, 121, 0.22)` (`primary/22%`)
 - border: `border.primary-ghost`
 - fg (icon + label): `brand.primary`
-- inner radius: `nav` (20)
+- inner radius: `nav` (32)
 
 Inactive slots use `text.muted` for both icon and label, and have no background. Tapping a slot animates the active pill (only one active at a time).
 
@@ -509,7 +509,7 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 
 **Intended use.** Dense data grids on desk surfaces — the partner and admin panels' swaps, keys and installs tables. Nine columns, many rows, read across. A transaction *feed* on a phone is `ActivityList`, not a table.
 
-**Key tokens.** Cells `caption` (13 px) at `px-4 py-3`: a grid is scanned, not read, and at `body` (15 px) a swaps-width grid scrolls sideways where 13 px still fits. The 16 px inset lines the first column up with a card title padded `p-4` above the table. Column heads are the eyebrow (`label` token) in `muted-foreground`. Row hover is `bg-muted/50`. Every part takes `className`.
+**Key tokens.** Cells `caption` (14 px) at `px-4 py-3`: a grid is scanned, not read, and at `body` (16 px) a swaps-width grid scrolls sideways where 14 px still fits. The 18 px inset lines the first column up with a card title padded `p-4` above the table. Column heads are the eyebrow (`label` token) in `muted-foreground`. Row hover is `bg-muted/50`. Every part takes `className`.
 
 **Scrolling.** The table scrolls horizontally inside its own `min-w-0` wrapper and never widens the page or holds a grid column open.
 
@@ -556,7 +556,7 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 **Intended use.** One figure and its label: a balance, a count, a rate. Two sizes, one per surface:
 
 - **`compact`** (default) — the phone tile in the wallet's dense metric rows: `p-2.5`, `rounded-xl`, eyebrow label, value in `body`, icon beside the label.
-- **`comfortable`** — the desk tile on panel dashboards: `p-4`, `rounded-2xl` `bg-card`, eyebrow label, value in `headline` (28 px) with `tabular-nums`, `description` in `caption` under it, and the icon at the end of the tile, right of the figure. The figure is the point of the tile, so it is the largest text on it. Do not build a second stat tile from `Card`.
+- **`comfortable`** — the desk tile on panel dashboards: `p-4`, `rounded-2xl` `bg-card`, eyebrow label, value in `headline` (30 px) with `tabular-nums`, `description` in `caption` under it, and the icon at the end of the tile, right of the figure. The figure is the point of the tile, so it is the largest text on it. Do not build a second stat tile from `Card`.
 
 The tile is a `role="group"` named by its label (or `aria-label`), so a failure that replaces the value is announced as belonging to that metric.
 
@@ -705,7 +705,7 @@ Every component works on both themes from the same classes; nothing is dark-only
 - **Neutral ink is `foreground`, never white.** `text-foreground/60`, `bg-foreground/5`, `border-foreground/8` — not `text-white/60` or `bg-white/5`, which vanish on the light ramp. `text-white` is only for text on a saturated fill (violet, gradients, destructive, network and asset discs).
 - **Coloured text uses the brand layer's per-theme foregrounds**: `text-brand` (not `text-primary`), `text-success-fg`, `text-warning-fg`, `text-danger-fg`, `text-info-fg`, `text-network-*-fg`. The plain tokens stay for fills, borders and rings. They clear 4.5:1 on both themes.
 - **Tertiary text floors at 55%** of the foreground (`text-foreground/55`); 30–45% reads under 3:1 on the light ramp.
-- **Text on green is dark ink on both themes** (`primary-foreground` `#0E0D16`; white on the light green was 2.6:1). The opt-in brand theme (`kaleido-ui/css/brand`) darkens the light green to `#086E46` and switches its text and button gradient back to white on deep green.
+- **Text on green is dark ink on both themes** (`primary-foreground` `#0E0D16`; white on the light green was 2.6:1). The opt-in brand theme (`kaleido-ui/css/brand`) darkens the light green to `#007D49` and switches its text and button gradient back to white on deep green.
 - **Network chips follow the theme**: `bg-network-*-chip` / `text-network-*-text` are dark tints on dark, pale tints with dark text on light (`networkChipLight` / `networkTextLight`).
 - **Spark's white mark** takes `kui-mono-icon` and is drawn black on light.
 

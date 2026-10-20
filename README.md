@@ -147,7 +147,7 @@ console.log(typeScale.body)         // ['16px', '24px']
 
 | Component | Description |
 |-----------|-------------|
-| `Button` | 15 variants (default, destructive, outline, secondary, ghost, link, glow, surface, cta, cta-gradient, danger-subtle, danger-quiet, hyperlink, quiet), 11 sizes |
+| `Button` | 17 variants (default, destructive, outline, secondary, ghost, link, glow, surface, cta, cta-gradient, danger-subtle, danger-quiet, hyperlink, h1, h2, h3, quiet), 11 sizes |
 | `Card` | Compositional: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter |
 | `Input` | Form text input with focus ring |
 | `Select` | Select (Radix): Select, SelectTrigger, SelectContent, SelectItem, etc. Past four items, the list caps its height, scrolls, and shows a search field |
@@ -201,18 +201,53 @@ and `IconGlyph` draws one glyph at the icon scale (`<IconGlyph glyph={Close} siz
 | `TrendChart` | Line/area trend chart with a chart/table switch; pass `view` + `onViewChange` to control the view from the host, or leave them out |
 | `WithdrawAmountInput` | Amount card for the withdraw flow; `unitSlot` replaces the unit label with your own control (e.g. a unit picker) inside the card |
 
-### Hooks
+### Hooks and functions
+
+Every function and hook `kaleido-ui` exports. `tests/docs-accuracy.test.tsx`
+fails when one is missing here.
 
 | Hook | Description |
 |------|-------------|
-| `useToast` | Toast state management + `toast()` function |
-| `useAssetIcon` | Resolves asset ticker to CDN icon URL |
+| `useToast` | Toast state management; `toast()` shows one |
+| `useAssetIcon` | Resolves an asset ticker to its CDN icon URL |
+| `useCopyToClipboard` | `{ state: 'idle' \| 'copied' \| 'failed', copy, reset }`: a missing or refused clipboard is `failed`, never `copied` |
+| `useMediaQuery` | Whether a media query matches, kept up to date; `false` on the server and in jsdom |
+| `useIsNarrow` | Narrower than the `sm` breakpoint (40rem): a phone |
+| `useThemeMode` | The light/dark mode on the document root, remembered in localStorage (`kaleido-ui:theme`) |
+| `useDiscardGuard` | For a dialog holding unsaved input: closing asks first when there is something to lose |
+| `useDrawerCollapsed` | Whether the surrounding drawer is folded to its icon rail |
 
-### Utilities
-
-| Export | Description |
-|--------|-------------|
+| Function | Description |
+|----------|-------------|
 | `cn()` | `clsx` + `tailwind-merge`, configured with kaleido-ui's custom scales (`text-title`, `text-icon-md`, `rounded-card`, `shadow-glow-*`, `tracking-eyebrow`) so they are not mistaken for colours and dropped. Use it instead of a local `twMerge`. |
+| `toast()` | Shows a toast (see `useToast`) |
+| `applyThemeMode(mode)` | Puts `.dark` or `.light` on the document root, without the hook |
+| `formatAmount(value, { locale, maximumFractionDigits })` | Groups a number in an explicit locale (default `en-US`): the formatter the amount components share |
+| `formatDisplayAmountText(value, { unit, maxDecimals })` | Formats an amount string for display, keeping its unit suffix (`BTC`, `sats`, `mBTC`) and leaving locale-formatted strings intact |
+| `getAssetIconUrl(ticker, cdnBaseUrl?)` | The CDN icon URL for a ticker (what `useAssetIcon` returns, without React) |
+| `getFallbackAssetIconUrl(seed)` | A generated gradient placeholder icon URL for an asset with no CDN icon |
+| `createIcon(outlined, filled?)` | Builds an `Icon` that ships only the glyphs you pass (see above) |
+| `isIconName(value)` | Whether a string names a glyph in the set |
+| `buttonVariants` | `Button`'s variant classes (cva), for an element that must look like a button |
+| `avatarVariants` | `Avatar`'s size classes (cva) |
+| `cardSurface` | The two card surfaces' classes: `primary` (glass card with edge) and `secondary` (no edge, ranks under a primary card) |
+| `networkChipStyle(network)` | A network's chip fill and ink (`{ backgroundColor, color }`), for any surface that stands for that network |
+| `getActivityNetworkFilterIcon(filter)` | The icon element for an activity network filter |
+| `getAccountNetworkLabel(network)` | `'Mainnet'`, `'Testnet'`, `'Regtest'` or `'Signet'` |
+| `getAccountNetworkUi(network)` | Label plus badge and banner classes for an account's network |
+| `getAccountStatusUi(status)` | Label and classes for an account status (`ready`, `offline`, `optional`) |
+| `defaultClassifyError(error)` | `QueryState`'s fallback classifier: a retryable "Could not load" with the error's message |
+| `activeFiltersLabel(count)` | "1 filter applied", "3 filters applied" |
+| `seriesColor(slot)` | The chart series colour for a slot (`var(--series-N)`) |
+| `chartValueTicks(max, { integer })` | Value-axis ticks from zero whose top is the largest value |
+| `chartLabelIndices(count, maxLabels)` | Category indices that get a label: first and last, evenly spaced between |
+| `foldSegments(segments)` | Keeps the largest five donut segments and folds the rest into "Other" |
+| `trendChartTicks(max)` | `TrendChart`'s value-axis ticks (top = peak) |
+| `trendChartLabelIndices(count, maxLabels)` | `TrendChart`'s time-axis label indices |
+| `kaleidoswapMarkArtwork`, `kaleidoswapLogoHorizontalArtwork`, `kaleidoswapLogoVerticalArtwork` | The logo's `viewBox` and paths, for drawing it outside React |
+
+The chart helpers are what the chart components use; they are exported for a
+custom chart that should follow the same axis and colour rules.
 
 ### Brand utilities (from `kaleido-ui/css`)
 
