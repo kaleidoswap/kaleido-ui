@@ -38,7 +38,10 @@ test('a closed group hides its pages; its row opens and closes them', async () =
   assert.equal(row.getAttribute('aria-expanded'), 'true')
   const links = [...view.container.querySelectorAll('a')].map((a) => a.getAttribute('href'))
   assert.deepEqual(links, ['#/activity', '#/deposit'])
-  assert.equal(row.getAttribute('aria-controls'), view.container.querySelector('[id]:not(button)')?.id)
+  const submenu = view.container.querySelector('[role="group"]')!
+  assert.equal(row.getAttribute('aria-controls'), submenu.id)
+  // The submenu is a group named by its row.
+  assert.equal(view.container.querySelector(`[id="${submenu.getAttribute('aria-labelledby')}"]`)?.textContent, 'Flows')
 
   await interact(() => (row as HTMLButtonElement).click())
   assert.equal(view.container.querySelectorAll('a').length, 0)

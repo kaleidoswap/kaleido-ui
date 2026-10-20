@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.2.1     # must equal package.json's version; check-design-doc fails otherwise
+version: 0.2.2     # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -493,9 +493,9 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 
 **It is the desktop app's sidebar.** `surface.base`, a `divider/30` rule on the right edge, `shadow-2xl` at 30% black, a `px-4 py-5` header row with the logo slot and the chevron. Expanded `w-72`; the rail `w-20`, which hides the logo and the group eyebrows, splits groups with a rule, centres the icons and turns labels into tooltips (they stay in the accessibility tree). The mobile form is always expanded, caps at `85vw` so a strip of the page stays visible to tap away, over the `BottomSheet` scrim.
 
-**Items.** `rounded-xl`, `px-4 py-3`, label `body` semibold. Inactive `content.secondary`, hovering to `surface.overlay/80`. The current page is green — `bg-gradient-active` with a 2 px green left rule and a soft green glow — and carries `aria-current="page"`. Group labels are the shared eyebrow (`label` token) in `content.tertiary`.
+**Items.** `rounded-xl`, `px-4 py-3`, label `body` semibold. Inactive `content.secondary`, hovering to `surface.overlay/80`. The current page is `bg-gradient-active` on a `primary/10` wash with an inset `primary/40` ring and a soft glow, its icon in `status.success` — no rule on its left edge — and carries `aria-current="page"`. Group labels are the shared eyebrow (`label` token) in `content.tertiary`.
 
-**Submenus.** `DrawerNavGroup icon label active` is a row with a submenu — the desktop app's Trade and Liquidity. The row (a button with `aria-expanded`) shows and hides its `DrawerNavItem`s under it, and a chevron on its right turns 90° when open. It opens by itself when one of its pages is current, and is then marked like a current item. Its items become the submenu's rows: indented `pl-4`, `rounded-lg`, `px-4 py-2.5`, label `caption` medium with a 16 px icon, sliding right on hover; the current one is `status.success` on a 10% fill with a 2 px left rule. With `href` (the group's first page), opening the group also goes there, so choosing it lands on its first page with the submenu open; while closed the row is then a link with `aria-expanded`. On the icon rail a submenu cannot open, so the row is a link to `href` that also unfolds the sidebar, where the group opens on that page. `railHref` is the old name of `href`.
+**Submenus.** `DrawerNavGroup icon label active` is a row with a submenu — the desktop app's Trade and Liquidity. The row (a button with `aria-expanded`) shows and hides its `DrawerNavItem`s under it, and a chevron on its right turns 90° when open. It opens by itself when one of its pages is current, and is then marked like a current item. Its items become the submenu's rows: indented `pl-4`, `rounded-lg`, `px-4 py-2.5`, label `caption` medium with a 16 px icon, sliding right on hover; the current one is `brand` text on a `primary/10` fill, with no left rule. With `href` (the group's first page), opening the group also goes there, so choosing it lands on its first page with the submenu open; while closed the row is then a link with `aria-expanded`. On the icon rail a submenu cannot open, so the row is a link to `href` that also unfolds the sidebar, where the group opens on that page. `railHref` is the old name of `href`.
 
 **Scrollbar.** `DrawerBody` is a `ScrollArea`: the library's overlay thumb, which takes no width. A native bar took the width the icons are centred in on the 80 px rail.
 
@@ -640,6 +640,25 @@ Two containers for notices that are not toasts; neither has text of its own — 
 - **`FloatingNotice`** — bottom centre, above dialogs and overlays, until closed: it neither times out nor queues like a toast. It sits on an opaque card so a translucent `InfoPanel` stays legible, is `role="status"` by default, and has a named close button (`onDismiss`, `dismissible`); where the dismissal is remembered is the consumer's decision.
 
 A `Toast` cannot do either: its viewport position is fixed, only one shows at a time, and a `duration` of `Infinity` overflows `setTimeout` and closes it at once.
+
+### Desk panels: controls, statements and dialogs
+
+Pieces a desk app — a dashboard or a back office — is assembled from, beside **Lists and data**. Like those, none carries product text that cannot be overridden.
+
+- **`Tooltip content`** — a short description of one focusable control, shown on hover and on keyboard focus; the control gets `aria-describedby`. Pure CSS (the bubble is always in the document, hidden until its wrapper is hovered or holds focus), on the `Popover` look. It is a description, never the control's name. `TooltipBubble` is the bubble alone, for a trigger that wires `aria-describedby` itself inside a `group/tooltip` wrapper.
+- **`Restricted reason`** — a control the reader's role cannot use, shown rather than hidden: it stays in the tab order with `aria-disabled`, swallows its activation, and its reason is a `Tooltip`. Never `disabled` for this — a disabled button leaves the tab order and its reason with it. `DrawerNavItem disabledReason` is the same thing for a navigation row.
+- **`ConfirmDialog`** — asks before an action that cannot be taken back; only the confirm button acts (`destructive` for Delete / Revoke / Retire), and it stays enabled with `aria-busy` while `busy`. **`useDiscardGuard({ dirty, onClose })`** puts one over a dialog holding unsaved input: every way out calls `request`, which closes at once when clean and asks when dirty.
+- **`OneTimeSecretDialog secret onAcknowledge`** — a secret returned once (a new API key), shown until the reader says it is stored: no close control, Escape and the overlay do nothing, a refused copy says so, the value stays selectable, and the browser is asked to confirm a reload while it is open.
+- **`ListField`** — a list entered as a list (allowed origins, bundle ids): Enter or a comma adds what is in the box, each item is `check`ed as it is added, a rejected one stays in the box with its reason, and what has been accepted is the row of removable chips that will be sent.
+- **`ChoiceGroup legend` / `Choice title detail`** — a short set of mutually exclusive options in a form or dialog (an export's scope, format, zone): native radios in a `fieldset`, each with one truncated line under its title.
+- **`PeriodSelect`** — the period a page reads: a `Select` of presets, with a `DateRangeFilter` behind the custom option. The consumer seeds the custom range from the period on screen.
+- **`InstantsStatement description start end`** — the range in words with its zone, and the exact instants sent, each copyable, for a reader reconciling against their own logs.
+- **`ListSummary noun shown offset total`** — how many rows a list shows and, only where the API reports it, of how many. Pairs with `Pager` (`alwaysShow` keeps a one-page list's pager on screen, both buttons off).
+- **`ReadStatus reads formatTime`** — how old a surface's figures are, beside its one **`RefreshButton`**: the oldest successful read, "Updated" for a moment when a read lands, "Showing the previous read" when a refresh failed. The button is busy, never disabled, while a read is in flight; only a requested refresh is announced.
+- **`Amount figure asset stacked`** — an amount in a table cell: the figure never breaks, the asset is quieter text under it (`stacked`) or beside it, and it stays in the text that is read and copied.
+- **`EnvironmentIndicator name qualifier isTest`** — which environment this is, on every page, the live one included: the network's name and, in plain words, test or live. The words carry it; the amber or green tone is only an accent.
+- **`AccountMenu name secondary label`** — who is signed in, at the end of the top bar: avatar, name and one secondary line as the trigger, the identity and the account's entries (`AccountMenuItem`, `AccountMenuSeparator`, then a `destructive` Log out) in a panel on the `Popover` look. A disclosure, not a `menu`, because it may hold an id with its copy button: Tab walks it, Escape closes it and returns focus.
+- **`MetricCard definition change`** — `definition` says what the figure counts, under the label in `caption`; `change` is the comparison with an earlier period, under the figure. **`Copyable wrap`** shows a value read in full (an org id, an address) across lines instead of truncating it.
 
 ## Do's and Don'ts
 

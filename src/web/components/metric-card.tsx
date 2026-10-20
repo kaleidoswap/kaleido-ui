@@ -32,6 +32,18 @@ export interface MetricCardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'c
    * it with a `description` that says the change in words or a percentage.
    */
   trend?: ReactNode
+  /**
+   * What the figure counts and leaves out, in words, under the label: "Swaps
+   * that reached completed, in the period". Set as `caption`, not as the
+   * eyebrow, so it reads as a sentence.
+   */
+  definition?: ReactNode
+  /**
+   * The change against an earlier period, under the figure and above the
+   * description: "↑ 12% vs the previous 30 days". Its words carry the
+   * direction; colour, if any, is the caller's accent on them.
+   */
+  change?: ReactNode
 }
 
 const toneClasses: Record<NonNullable<MetricCardProps['tone']>, string> = {
@@ -60,6 +72,8 @@ export function MetricCard({
   size = 'compact',
   iconPlacement,
   trend,
+  definition,
+  change,
   className,
   ...rest
 }: MetricCardProps) {
@@ -115,6 +129,11 @@ export function MetricCard({
           {placement === 'label' && iconNode}
           {labelNode}
         </div>
+        {definition && (
+          <p data-slot="metric-card-definition" className="m-0 text-caption text-muted-foreground">
+            {definition}
+          </p>
+        )}
         <p
           data-slot="metric-card-value"
           className={cn(
@@ -124,6 +143,11 @@ export function MetricCard({
         >
           {value}
         </p>
+        {change && (
+          <p data-slot="metric-card-change" className={cn('m-0 tabular-nums text-foreground', comfortable ? 'text-caption' : 'text-xxs')}>
+            {change}
+          </p>
+        )}
         {description && (
           <p
             data-slot="metric-card-description"

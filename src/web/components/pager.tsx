@@ -14,6 +14,13 @@ export interface PagerProps {
   noun?: string
   previousLabel?: string
   nextLabel?: string
+  /**
+   * Keep the pager on screen when there is only one page, both buttons off,
+   * so a short list cannot be mistaken for one with no paging at all.
+   */
+  alwaysShow?: boolean
+  /** Said in place of the range when the window is empty. Defaults to "No {noun} in this window". */
+  emptyLabel?: string
   className?: string
 }
 
@@ -33,18 +40,20 @@ export function Pager({
   noun = 'rows',
   previousLabel = 'Previous',
   nextLabel = 'Next',
+  alwaysShow = false,
+  emptyLabel,
   className,
 }: PagerProps) {
   const hasPrevious = offset > 0
   const hasNext = returned === limit && limit > 0
-  if (!hasPrevious && !hasNext) return null
+  if (!hasPrevious && !hasNext && !alwaysShow) return null
   const first = returned > 0 ? offset + 1 : offset
   const last = offset + returned
 
   return (
     <nav aria-label="Pagination" data-slot="pager" className={cn('flex items-center justify-between gap-3', className)}>
       <p className="m-0 text-caption tabular-nums text-muted-foreground">
-        {noun} {first}–{last}
+        {returned === 0 && alwaysShow ? (emptyLabel ?? `No ${noun} in this window`) : `${noun} ${first}–${last}`}
       </p>
       <div className="flex gap-2">
         <Button
