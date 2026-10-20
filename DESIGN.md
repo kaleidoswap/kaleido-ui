@@ -666,12 +666,12 @@ Pieces a desk app — a dashboard or a back office — is assembled from, beside
 - **DON'T** style primary buttons inline with `bg-card` — use the `surface` button variant or ActionTile if the action is secondary, or use the real `primary` variant if it is the CTA.
 - **DO** tint every network icon with its semantic color (`network.bitcoin`, `network.lightning`, etc.) even at 11 px in a filter cluster. The color *is* the information.
 - **DON'T** recolor network tokens for visual harmony. Bitcoin is orange, RGB is red, they were orange and red before this app existed.
-- **DO** use `surface.bg` (`#12131C`) as the page background on every full-screen view.
+- **DO** use `surface.bg` (`#0E0D16`) as the page background on every full-screen view.
 - **DON'T** use raw `#0a0a0a` or `#000` as a background. The ramp is near-black but never black, and that is what keeps the network colours legible on it.
 - **DO** keep filter cluster icons at `cluster-icon-size: 11` px and `cluster-opacity: 0.6`. The constraint is what makes the cluster legible.
 - **DO** give every card `shadow-card` and every interactive card a `shadow-card-hover`; give colour fills their matching `shadow-button-*`. **DON'T** hand-write a shadow — use the tokens in Elevation & Depth.
 - **DO** keep green the primary colour: CTA, selection, active, focus, success. Use violet in support — secondary actions, icon tiles, hover — so a screen reads green first, violet second.
-- **DO** use the `label` type token (Satoshi 700 / 9 / uppercase / `tracking-eyebrow` 0.18em) for structural labels — filter headers, section titles, pill captions. It is the typographic fingerprint of the brand.
+- **DO** use the `label` type token (Satoshi 500 / 10 / uppercase / `tracking-eyebrow` 0.18em) for structural labels — filter headers, section titles, pill captions. It is the typographic fingerprint of the brand.
 - **DON'T** invent new radii, spacing steps, or surface colors. If you need something the tokens don't provide, extend DESIGN.md first, then propagate to `kaleido-ui/tokens` — `kaleido-ui/css` (Tailwind v4 `@theme`) and `kaleido-ui/tailwind` (the Tailwind v3 preset) are both generated from it. Both Tailwind versions are supported; see README.
 
 ## Coherence Rules (for agents & new components)
