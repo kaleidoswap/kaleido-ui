@@ -14,6 +14,12 @@ export interface CopyableProps {
   children?: ReactNode
   /** Monospace for ids, hashes and keys. On by default. */
   mono?: boolean
+  /**
+   * Show the whole value, breaking it across lines, instead of truncating it
+   * to one: for a value read in full (an address, an organization id) rather
+   * than recognised by its start in a dense row.
+   */
+  wrap?: boolean
   className?: string
 }
 
@@ -22,12 +28,12 @@ export interface CopyableProps {
  * one click selects it all for a manual copy) and carries the full value as
  * its `title`, so a shortened display never hides what will be copied.
  */
-export function Copyable({ value, label, children, mono = true, className }: CopyableProps) {
+export function Copyable({ value, label, children, mono = true, wrap = false, className }: CopyableProps) {
   return (
     <span data-slot="copyable" className={cn('inline-flex min-w-0 max-w-full items-center gap-1', className)}>
       <span
         title={value}
-        className={cn('min-w-0 select-all truncate text-foreground', mono && 'font-mono text-caption')}
+        className={cn('min-w-0 select-all text-foreground', wrap ? 'break-all' : 'truncate', mono && 'font-mono text-caption')}
       >
         {children ?? value}
       </span>

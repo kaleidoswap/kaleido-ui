@@ -172,8 +172,6 @@
   --app-shadow: 7 4 22;
   --app-shadow-strength: 1;
   --app-rim-alpha: 0.06;
-  /* The rule on the left of the current drawer sub-item. */
-  --app-nav-rule: 2px;
   /* How much of a hidden (blurred) secret still shows. */
   --app-hidden-opacity: 0.6;
   /* Card glass edge: a faint 1px ring, violet light along the top and left,
@@ -259,8 +257,6 @@
   /* A selected card is only this tint: on light it needs a white floor, or it
      takes the grey of whatever it sits on. */
   --gradient-active: linear-gradient(135deg, rgba(21, 233, 154, 0.14) 0%, rgba(21, 233, 154, 0.04) 100%), linear-gradient(#FFFFFF, #FFFFFF);
-  /* On white the full green rule is heavy: half of it. */
-  --app-nav-rule: 1px;
   /* Blurred ink fades into white faster: keep more of it. */
   --app-hidden-opacity: 0.8;
   /* The scrollbar thumb is a white wash on dark; on white it needs ink. */

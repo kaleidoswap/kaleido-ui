@@ -7,6 +7,7 @@ import { ScrollArea } from './scroll-area'
 import { cn } from '../utils/cn'
 import { eyebrow } from '../utils/type-roles'
 import { GlyphButton } from './glyph-button'
+import { TooltipBubble } from './tooltip'
 
 // The desktop app's left sidebar, in its two forms.
 //
@@ -272,14 +273,22 @@ export interface DrawerNavItemProps extends React.AnchorHTMLAttributes<HTMLAncho
    * does. Pass it as the only child, with no children of its own.
    */
   asChild?: boolean
+  /**
+   * The reader may not open this page: why, in words ("Only an admin can
+   * manage API keys"). The row stays listed and focusable, dimmed, with
+   * `aria-disabled`; it is not a link, and the reason shows on hover and
+   * focus — beside the row on the rail, under it elsewhere.
+   */
+  disabledReason?: string | null
 }
 
-// The current destination: a violet wash, the violet rule on its left edge,
-// the label in white and the icon in the brand green -- the one "you are here"
-// cue of the list. The icon is the row's aria-hidden span.
+// The current destination: a violet wash with an inset ring, the label in
+// white and the icon in the brand green -- the one "you are here" cue of the
+// list. No rule on its left edge: the wash and the ring mark it, and
+// `aria-current` says it. The icon is the row's aria-hidden span.
 const activeIcon = '[&>span[aria-hidden=true]]:text-status-success'
 const activeRow = cn(
-  'border-l-2 border-primary bg-primary/10 bg-gradient-active font-semibold text-foreground ring-1 ring-inset ring-primary/40 shadow-nav-active',
+  'bg-primary/10 bg-gradient-active font-semibold text-foreground ring-1 ring-inset ring-primary/40 shadow-nav-active',
   activeIcon
 )
 const idleRow = 'text-content-secondary hover-gradient-violet hover:text-foreground hover:shadow-raised'
@@ -288,9 +297,29 @@ const idleRow = 'text-content-secondary hover-gradient-violet hover:text-foregro
 const DrawerGroupContext = React.createContext(false)
 
 const DrawerNavItem = React.forwardRef<HTMLAnchorElement, DrawerNavItemProps>(
-  ({ className, icon, label, active = false, asChild = false, children, title, onClick, ...props }, ref) => {
+  ({ className, icon, label, active = false, asChild = false, disabledReason, children, title, onClick, ...props }, ref) => {
     const { collapsed, close } = React.useContext(DrawerContext)
     const nested = React.useContext(DrawerGroupContext)
+    const reasonId = React.useId()
+    // A page the reader may not open: the same row, dimmed, in the tab order,
+    // describing itself with the reason. Following it would only arrive at a refusal.
+    const restricted = (rowClassName: string, row: React.ReactNode) => (
+      <span data-slot="drawer-nav-item-restricted" className="group/tooltip relative block">
+        <span
+          role="link"
+          aria-disabled="true"
+          aria-describedby={reasonId}
+          tabIndex={0}
+          title={title}
+          className={cn(rowClassName, 'cursor-not-allowed opacity-50 hover:translate-x-0 hover:scale-100')}
+        >
+          {row}
+        </span>
+        <TooltipBubble id={reasonId} placement={collapsed ? 'right' : 'bottom'}>
+          {disabledReason}
+        </TooltipBubble>
+      </span>
+    )
     if (nested) {
       // A submenu row, as the desktop app's Trade and Liquidity rows are:
       // smaller, indented by the group, and sliding right on hover.
@@ -311,7 +340,7 @@ const DrawerNavItem = React.forwardRef<HTMLAnchorElement, DrawerNavItemProps>(
         className: cn(
           'flex min-w-0 items-center gap-3 rounded-lg px-4 py-2.5 text-caption transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none',
           active
-            ? cn('border-l-[length:var(--app-nav-rule)] border-primary bg-primary/10 bg-gradient-active font-semibold text-brand', activeIcon)
+            ? cn('bg-primary/10 bg-gradient-active font-semibold text-brand', activeIcon)
             : 'text-content-secondary hover:translate-x-1 hover-gradient-violet hover:text-foreground motion-reduce:hover:translate-x-0',
           className
         ),
@@ -321,6 +350,7 @@ const DrawerNavItem = React.forwardRef<HTMLAnchorElement, DrawerNavItemProps>(
         },
         ...props,
       }
+      if (disabledReason) return restricted(rowProps.className, row)
       return asChild && React.isValidElement(children) ? (
         <Slot {...rowProps}>{React.cloneElement(children as React.ReactElement, undefined, row)}</Slot>
       ) : (
@@ -361,6 +391,7 @@ const DrawerNavItem = React.forwardRef<HTMLAnchorElement, DrawerNavItemProps>(
       },
       ...props,
     }
+    if (disabledReason) return restricted(itemProps.className, content)
     // The consumer's link keeps its own props and gets the item's look and content.
     const item =
       asChild && React.isValidElement(children) ? (
@@ -389,7 +420,8 @@ export interface DrawerNavGroupProps {
    * The group's first page. Opening the group goes there, so choosing
    * "Display" lands on its first page with the submenu open. On the icon rail
    * the row is a link to it that also unfolds the sidebar. Without it, the row
-   * only shows and hides the submenu, and the rail row does nothing.
+   * only shows and hides the submenu, and the rail row unfolds the sidebar
+   * with the submenu open.
    */
   href?: string
   /** @deprecated The old name of `href`. */
@@ -399,6 +431,12 @@ export interface DrawerNavGroupProps {
    * router's navigate here, so following the row does not reload the page.
    */
   onNavigate?: (href: string) => void
+  /**
+   * On the rail, without `href`: the accessible name of the icon that unfolds
+   * the sidebar onto this group. Defaults to "{label}: expand the sidebar to
+   * show its pages".
+   */
+  expandGroupLabel?: string
   /** Its `DrawerNavItem`s, which render as the submenu's rows. */
   children: React.ReactNode
   className?: string
@@ -424,6 +462,7 @@ const DrawerNavGroup = ({
   href: hrefProp,
   railHref,
   onNavigate,
+  expandGroupLabel,
   children,
   className,
 }: DrawerNavGroupProps) => {
@@ -448,6 +487,7 @@ const DrawerNavGroup = ({
   }
 
   const panelId = React.useId()
+  const labelId = `${panelId}-label`
   const rowClass = cn(
     'group flex w-full min-w-0 items-center rounded-xl px-4 py-3 text-left transition-all duration-300 hover:scale-[1.02] focus:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95 motion-reduce:transition-none motion-reduce:hover:scale-100',
     collapsed ? 'justify-center' : 'gap-4',
@@ -467,7 +507,9 @@ const DrawerNavGroup = ({
   const rowContent = (
     <>
       {iconNode}
-      <span className="min-w-0 flex-1 truncate text-body font-semibold">{label}</span>
+      <span id={labelId} className="min-w-0 flex-1 truncate text-body font-semibold">
+        {label}
+      </span>
       <IconGlyph
         glyph={ChevronRight}
         className={cn(
@@ -497,6 +539,21 @@ const DrawerNavGroup = ({
         {iconNode}
         <span className="sr-only">{label}</span>
       </a>
+    ) : expand ? (
+      // No first page to go to: the icon unfolds the sidebar onto the group, open.
+      <button
+        type="button"
+        title={railTitle}
+        aria-label={expandGroupLabel ?? (railTitle ? `${railTitle}: expand the sidebar to show its pages` : undefined)}
+        className={cn(rowClass, className)}
+        onClick={() => {
+          setOpen(true)
+          expand()
+        }}
+      >
+        {iconNode}
+        {!expandGroupLabel && !railTitle && <span className="sr-only">{label}</span>}
+      </button>
     ) : (
       <div title={railTitle} className={cn(rowClass, className)}>
         {iconNode}
@@ -529,8 +586,11 @@ const DrawerNavGroup = ({
         </button>
       )}
       {open && (
+        // A named group, so a screen reader says which submenu its pages belong to.
         <div
           id={panelId}
+          role="group"
+          aria-labelledby={labelId}
           className="mt-2 space-y-1.5 pl-4 data-[state=open]:animate-fade-in motion-reduce:animate-none"
           data-state="open"
         >

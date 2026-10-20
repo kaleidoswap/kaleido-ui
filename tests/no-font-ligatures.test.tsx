@@ -66,6 +66,24 @@ const net = ui.NETWORK_CONFIG.lightning
  * spinners, empty states, success marks. Each entry renders every state listed.
  */
 const FIXTURES: Record<string, () => ReactElement[]> = {
+  AccountMenu: () => [createElement(ui.AccountMenu, { name: 'alex@example.com', label: 'Account' })],
+  ListField: () => [
+    createElement(ui.ListField, { label: 'Origins', noun: 'origin', items: ['https://a.example'], onChange: () => {} }),
+  ],
+  PeriodSelect: () => [
+    createElement(ui.PeriodSelect, {
+      options: [{ id: '7d', label: 'Last 7 days' }, { id: 'custom', label: 'Custom range' }],
+      period: 'custom',
+      onPeriodChange: () => {},
+      onRangeChange: () => {},
+    }),
+  ],
+  ReadStatus: () => [
+    createElement(ui.ReadStatus, {
+      reads: [{ data: {}, dataUpdatedAt: 0, isError: true, isFetching: true, refetch: () => {} }],
+      formatTime: String,
+    }),
+  ],
   ActivityList: () => [createElement(ui.ActivityList, { items: [] })],
   Avatar: () => [createElement(ui.Avatar, { src: '/me.png', initials: 'EJ' })],
   GlyphButton: () => [createElement(ui.GlyphButton, { icon: Close, label: 'Close' })],
@@ -257,6 +275,8 @@ const NOT_RENDERED = new Set([
   // Charts need their data; tests/charts.test.tsx renders every one of them.
   'LineChart', 'AreaChart', 'BarChart', 'MixedChart', 'BarList', 'DonutChart', 'ScatterChart', 'Sparkline',
   'ChartLegend', 'ChartTooltip', 'ChartFrame',
+  // Draws no icon of its own; tests/desk-panel-components.test.tsx renders it.
+  'Tooltip',
 ])
 
 const isComponent = (name: string, value: unknown): value is ComponentType<Record<string, unknown>> =>
