@@ -49,7 +49,7 @@ test('the built-in details modal supports read-only fields and a primary edit ro
   assert.match(source, /data-testid={`account-status-protocol-logo-\$\{account\.id\}`}/)
   assert.match(source, /size-16/)
   assert.match(source, /Edit Settings/)
-  assert.match(source, /name="settings"/)
+  assert.match(source, /glyph={Settings}/)
   assert.doesNotMatch(source, /Edit \{account\.title\}/)
   assert.match(source, /account\.details\.map/)
   assert.match(source, /data-testid={`account-status-edit-\$\{account\.id\}`}/)

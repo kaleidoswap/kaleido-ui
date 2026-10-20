@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Button } from '../primitives/button'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Refresh } from '../icons/outlined'
 import {
   Dialog,
   DialogContent,
@@ -75,7 +76,7 @@ export function ConfirmDialog({
               if (!busy) onConfirm()
             }}
           >
-            {busy && <Icon name="refresh" className="animate-spin text-icon-md motion-reduce:animate-none" />}
+            {busy && <IconGlyph glyph={Refresh} className="animate-spin text-icon-md motion-reduce:animate-none" />}
             {confirmLabel}
           </Button>
         </DialogFooter>

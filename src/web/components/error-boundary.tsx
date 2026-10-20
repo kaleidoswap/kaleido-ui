@@ -1,4 +1,5 @@
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Error } from '../icons/outlined'
 import { Component, type ReactNode } from 'react'
 
 interface Props {
@@ -31,7 +32,7 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         this.props.fallback ?? (
           <div className="min-h-screen bg-background bg-page-radial text-foreground font-display flex flex-col items-center justify-center p-6 gap-4">
-            <Icon name="error" className="text-danger-fg text-icon-5xl" />
+            <IconGlyph glyph={Error} className="text-danger-fg text-icon-5xl" />
             <h2 className="text-subhead font-bold">Something went wrong</h2>
             <p className="text-caption text-muted-foreground text-center">
               {this.state.error?.message ?? 'An unexpected error occurred.'}

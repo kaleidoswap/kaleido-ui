@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Search } from '../icons/outlined'
 import { cn } from '../utils/cn'
 import { ScrollArea } from '../primitives/scroll-area'
 
@@ -140,7 +141,7 @@ export function InlineSelector<TOption extends InlineSelectorOption>({
           <div className="space-y-1">
             {options.length === 0 ? (
               <div className="flex flex-col items-center gap-2 px-4 py-8 text-center text-caption text-foreground/55">
-                <Icon name="search" size="md" className="opacity-40" />
+                <IconGlyph glyph={Search} size="md" className="opacity-40" />
                 <span>No results</span>
               </div>
             ) : (

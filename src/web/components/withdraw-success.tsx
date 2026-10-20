@@ -1,5 +1,6 @@
 import { formatAmount } from '../utils/amount-display'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Check } from '../icons/outlined'
 import { eyebrow } from '../utils/type-roles'
 import { cn } from '../utils/cn'
 
@@ -35,7 +36,7 @@ export function WithdrawSuccess({
         <div className="relative mb-8">
           <div className="absolute inset-0 animate-pulse rounded-full bg-secondary/30 blur-2xl" />
           <div className="relative scale-110 rounded-full bg-primary bg-gradient-primary p-6 text-background shadow-glow-brand">
-            <Icon name="check" className="text-icon-6xl" />
+            <IconGlyph glyph={Check} className="text-icon-6xl" />
           </div>
         </div>
 

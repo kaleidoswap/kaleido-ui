@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { cn } from '../../utils/cn'
-import { Icon } from '../../primitives/icon'
+import { IconGlyph } from '../../primitives/icon-glyph'
+import { Error, Warning } from '../../icons/outlined'
 import { defaultChartFormat } from './core'
 
 export interface MeterProps {
@@ -59,7 +60,7 @@ export function Meter({
       </div>
       {state !== 'normal' && (
         <p className={cn('m-0 flex items-center gap-1 text-caption', state === 'danger' ? 'text-danger-fg' : 'text-warning-fg')}>
-          <Icon name={state === 'danger' ? 'error' : 'warning'} className="text-icon-sm" />
+          <IconGlyph glyph={state === 'danger' ? Error : Warning} className="text-icon-sm" />
           {state === 'danger' ? `Almost full · ${percent}%` : `Getting full · ${percent}%`}
         </p>
       )}

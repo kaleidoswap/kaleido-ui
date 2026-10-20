@@ -1,7 +1,8 @@
 import * as React from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { cn } from '../utils/cn'
-import { IconButton } from './icon-button'
+import { GlyphButton } from './glyph-button'
+import { Close } from '../icons/outlined'
 
 const Dialog = DialogPrimitive.Root
 const DialogTrigger = DialogPrimitive.Trigger
@@ -62,7 +63,7 @@ const DialogContent = React.forwardRef<
       {children}
       {showClose && (
         <DialogPrimitive.Close asChild>
-          <IconButton icon="close" label="Close" size="sm" className="absolute right-3 top-3" />
+          <GlyphButton icon={Close} label="Close" size="sm" className="absolute right-3 top-3" />
         </DialogPrimitive.Close>
       )}
     </DialogPrimitive.Content>

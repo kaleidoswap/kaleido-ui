@@ -1,11 +1,12 @@
 import * as React from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { Slot } from '@radix-ui/react-slot'
-import { Icon } from './icon'
+import { IconGlyph } from './icon-glyph'
+import { ChevronLeft, ChevronRight } from '../icons/outlined'
 import { ScrollArea } from './scroll-area'
 import { cn } from '../utils/cn'
 import { eyebrow } from '../utils/type-roles'
-import { IconButton } from './icon-button'
+import { GlyphButton } from './glyph-button'
 import { TooltipBubble } from './tooltip'
 
 // The desktop app's left sidebar, in its two forms.
@@ -94,8 +95,8 @@ const DrawerSidebar = React.forwardRef<HTMLElement, DrawerSidebarProps>(
         <div className={cn('flex items-center px-4 py-5', collapsed ? 'justify-center' : 'justify-between gap-3')}>
           {!collapsed && header && <div className="min-w-0 flex-1">{header}</div>}
           {onCollapsedChange && (
-            <IconButton
-              icon={collapsed ? 'chevron_right' : 'chevron_left'}
+            <GlyphButton
+              icon={collapsed ? ChevronRight : ChevronLeft}
               label={collapsed ? expandLabel : collapseLabel}
               aria-expanded={!collapsed}
               onClick={() => onCollapsedChange(!collapsed)}
@@ -197,7 +198,7 @@ const DrawerContent = React.forwardRef<
             <div className="min-w-0 flex-1">{header}</div>
             {showClose && (
               <DialogPrimitive.Close asChild>
-                <IconButton icon="chevron_left" label={closeLabel} />
+                <GlyphButton icon={ChevronLeft} label={closeLabel} />
               </DialogPrimitive.Close>
             )}
           </div>
@@ -509,8 +510,8 @@ const DrawerNavGroup = ({
       <span id={labelId} className="min-w-0 flex-1 truncate text-body font-semibold">
         {label}
       </span>
-      <Icon
-        name="chevron_right"
+      <IconGlyph
+        glyph={ChevronRight}
         className={cn(
           'shrink-0 text-icon-md transition-all duration-300 motion-reduce:transition-none',
           open && 'rotate-90'

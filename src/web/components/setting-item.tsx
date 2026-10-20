@@ -1,4 +1,6 @@
 import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { ChevronRight } from '../icons/outlined'
 import { isIconName, type IconName } from '../icons'
 import { cn } from '../utils/cn'
 import type { ReactNode } from 'react'
@@ -70,7 +72,7 @@ export function SettingItem({
         <div className="flex items-center gap-2 flex-shrink-0">
           {value && <span className="text-caption text-muted-foreground font-mono">{value}</span>}
           {showChevron && isClickable && (
-            <Icon name="chevron_right" className="text-icon-md text-muted-foreground group-hover:scale-110 group-hover:text-secondary-content transition-all" />
+            <IconGlyph glyph={ChevronRight} className="text-icon-md text-muted-foreground group-hover:scale-110 group-hover:text-secondary-content transition-all" />
           )}
         </div>
       </div>

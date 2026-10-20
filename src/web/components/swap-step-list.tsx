@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Check, Close, Help } from '../icons/outlined'
 import { cn } from '../utils/cn'
 
 /**
@@ -104,11 +105,11 @@ export function SwapStepList({ steps, connector = true, statusLabels, className 
                 )}
               >
                 {step.status === 'done' ? (
-                  <Icon name="check" className="text-icon-sm" />
+                  <IconGlyph glyph={Check} className="text-icon-sm" />
                 ) : step.status === 'failed' ? (
-                  <Icon name="close" className="text-icon-sm" />
+                  <IconGlyph glyph={Close} className="text-icon-sm" />
                 ) : step.status === 'unknown' ? (
-                  <Icon name="help" className="text-icon-sm" />
+                  <IconGlyph glyph={Help} className="text-icon-sm" />
                 ) : (
                   index + 1
                 )}

@@ -14,7 +14,7 @@
  *
  *   module.exports = {
  *     presets: [require('kaleido-ui/tailwind')],
- *     content: ['./src/**\/*.{ts,tsx}', './node_modules/kaleido-ui/dist/web/*.js'],
+ *     content: ['./src/**\/*.{ts,tsx}', './node_modules/kaleido-ui/dist/web/**\/*.js'],
  *     plugins: [require('tailwindcss-animate')],
  *   }
  *

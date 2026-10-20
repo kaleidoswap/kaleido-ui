@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { ExpandMore } from '../icons/outlined'
 import { InlineSelector, type InlineSelectorOption } from './inline-selector'
 import { cn } from '../utils/cn'
 
@@ -103,8 +104,8 @@ export function FilterDropdown({
             )}
           </span>
 
-          <Icon
-            name="expand_more"
+          <IconGlyph
+            glyph={ExpandMore}
             className={cn(
               'shrink-0 text-icon-xs text-foreground/55 transition-transform',
               (open || isFiltered) && 'text-secondary-content',

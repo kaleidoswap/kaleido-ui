@@ -1,5 +1,6 @@
 import { useId, useState, type ClipboardEvent, type KeyboardEvent, type ReactNode } from 'react'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Close } from '../icons/outlined'
 import { Input } from '../primitives/input'
 import { Label } from '../primitives/label'
 import { cn } from '../utils/cn'
@@ -165,7 +166,7 @@ export function ListField({
                   className="flex rounded-full p-1 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   onClick={() => onChange(items.filter((other) => other !== item))}
                 >
-                  <Icon name="close" className="text-icon-xs" />
+                  <IconGlyph glyph={Close} className="text-icon-xs" />
                 </button>
               </li>
             ))}

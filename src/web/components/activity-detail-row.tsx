@@ -3,7 +3,8 @@ import { CopyButton } from './copy-button'
 import { DottedLeader } from './dotted-leader'
 import { eyebrow } from '../utils/type-roles'
 import { cn } from '../utils/cn'
-import { IconButton } from '../primitives/icon-button'
+import { GlyphButton } from '../primitives/glyph-button'
+import { Check, ContentCopy } from '../icons/outlined'
 
 export interface ActivityDetailRowProps {
   label: string
@@ -38,8 +39,8 @@ export function ActivityDetailRow({
       <div className="flex max-w-[65%] items-center gap-2">
         <span className="truncate font-mono text-caption font-medium text-foreground/90">{value}</span>
         {onCopy && (
-          <IconButton
-            icon={isCopied ? 'check' : 'content_copy'}
+          <GlyphButton
+            icon={isCopied ? Check : ContentCopy}
             label={`Copy ${label.toLowerCase()}`}
             title={fullValue ? `Copy: ${fullValue}` : 'Copy'}
             size="sm"

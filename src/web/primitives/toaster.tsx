@@ -9,8 +9,9 @@ import {
 } from './toast'
 import { useToast } from '../hooks/use-toast'
 import { useCopyToClipboard } from '../hooks/use-copy-to-clipboard'
-import { Icon } from './icon'
-import { IconButton } from './icon-button'
+import { IconGlyph } from './icon-glyph'
+import { Check, CheckCircle, ContentCopy, Error } from '../icons/outlined'
+import { GlyphButton } from './glyph-button'
 
 function toPlainText(node: any): string {
   if (node == null || node === false) return ''
@@ -51,9 +52,9 @@ function ToastWithProgress({ id, title, description, action, duration = 4000, va
 
   const getIcon = () => {
     if (variant === 'destructive') {
-      return <Icon name="error" size="md" className="text-danger-fg" />
+      return <IconGlyph glyph={Error} size="md" className="text-danger-fg" />
     }
-    return <Icon name="check_circle" size="md" className="text-brand" />
+    return <IconGlyph glyph={CheckCircle} size="md" className="text-brand" />
   }
 
   // Errors are often the thing you most need to paste into a bug report — let
@@ -82,8 +83,8 @@ function ToastWithProgress({ id, title, description, action, duration = 4000, va
       <div className="flex items-center gap-2 shrink-0">
         {action}
         {showCopy && (
-          <IconButton
-            icon={copied ? 'check' : copyFailed ? 'error' : 'content_copy'}
+          <GlyphButton
+            icon={copied ? Check : copyFailed ? Error : ContentCopy}
             label={copyLabel}
             size="sm"
             variant="danger-subtle"

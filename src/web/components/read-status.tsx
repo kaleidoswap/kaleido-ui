@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Button } from '../primitives/button'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Check, Refresh } from '../icons/outlined'
 import { cn } from '../utils/cn'
 
 export interface RefreshButtonProps {
@@ -28,8 +29,8 @@ export function RefreshButton({ onRefresh, isRefreshing = false, label = 'Refres
         if (!isRefreshing) onRefresh()
       }}
     >
-      <Icon
-        name="refresh"
+      <IconGlyph
+        glyph={Refresh}
         className={cn('text-icon-md', isRefreshing && 'animate-spin motion-reduce:animate-none')}
       />
       {label}
@@ -135,7 +136,7 @@ export function ReadStatus({
         {lastUpdateLabel} {lastRead === undefined ? '—' : formatTime(lastRead)}
         {updated && (
           <span className="ml-2 inline-flex items-center gap-1 text-success-fg">
-            <Icon name="check" className="text-icon-xs" />
+            <IconGlyph glyph={Check} className="text-icon-xs" />
             {updatedLabel}
           </span>
         )}

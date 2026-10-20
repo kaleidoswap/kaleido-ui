@@ -1,4 +1,5 @@
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Add, Remove } from '../icons/outlined'
 import { cn } from '../utils/cn'
 
 export interface StepperNumberInputProps {
@@ -44,7 +45,7 @@ export function StepperNumberInput({
         onClick={() => clamp(value - step)}
         aria-label="Decrease"
       >
-        <Icon name="remove" className="text-icon-md" />
+        <IconGlyph glyph={Remove} className="text-icon-md" />
       </button>
       <input
         type="number"
@@ -67,7 +68,7 @@ export function StepperNumberInput({
         onClick={() => clamp(value + step)}
         aria-label="Increase"
       >
-        <Icon name="add" className="text-icon-md" />
+        <IconGlyph glyph={Add} className="text-icon-md" />
       </button>
     </div>
   )

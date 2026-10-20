@@ -21,6 +21,7 @@ export {
 // Primitives
 export { Button, buttonVariants, type ButtonProps } from './primitives/button'
 export { IconButton, type IconButtonProps } from './primitives/icon-button'
+export { GlyphButton, type GlyphButtonProps } from './primitives/glyph-button'
 export {
   Card,
   CardHeader,
@@ -140,7 +141,13 @@ export {
   ToastAction,
 } from './primitives/toast'
 export { Toaster } from './primitives/toaster'
-export { Icon, Icons, type IconProps, type IconName } from './primitives/icon'
+export { Icon, Icons, createIcon, type IconProps, type IconName } from './primitives/icon'
+export {
+  IconGlyph,
+  type IconGlyphComponent,
+  type IconGlyphProps,
+  type IconSize,
+} from './primitives/icon-glyph'
 export { isIconName } from './icons'
 export {
   DotPagination,

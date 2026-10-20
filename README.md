@@ -13,6 +13,7 @@ npm install kaleido-ui
 | Import | Description |
 |--------|-------------|
 | `kaleido-ui` | Web components (Tailwind CSS + Radix UI) |
+| `kaleido-ui/icons` | Every icon glyph as its own export, plus `createIcon` to build an `Icon` that ships only the glyphs you pass it |
 | `kaleido-ui/tokens` | Platform-agnostic design tokens (zero deps) |
 | `kaleido-ui/native` | React Native components (WDK + custom) |
 | `kaleido-ui/css` | CSS variables (light + dark), keyframes, utilities, and the Tailwind v4 `@theme` tokens |
@@ -50,7 +51,7 @@ npm install kaleido-ui
 // tailwind.config.js
 module.exports = {
   presets: [require('kaleido-ui/tailwind')],
-  content: ['./src/**/*.{ts,tsx}', './node_modules/kaleido-ui/dist/web/*.js'],
+  content: ['./src/**/*.{ts,tsx}', './node_modules/kaleido-ui/dist/web/**/*.js'],
   plugins: [require('tailwindcss-animate')],
 }
 ```
@@ -153,8 +154,29 @@ console.log(typeScale.body)         // ['15px', '22px']
 | `Tabs` | Tab navigation (Radix): Tabs, TabsList, TabsTrigger, TabsContent |
 | `Label` | Form label (Radix) |
 | `Toast` | Toast notifications (Radix): Toast, ToastProvider, Toaster |
-| `Icon` | Material Symbols wrapper with size variants (xs-2xl) |
+| `Icon` | Inline SVG icon by name, with size variants (xs-2xl). Looking a name up means shipping the whole set; see below |
 | `Icons` | Named icon shortcuts (Icons.Send, Icons.Receive, Icons.Swap, etc.) |
+
+#### Icons and bundle size
+
+The ESM build is one module per component and the package declares no side
+effects, so a bundler keeps only what the app imports. `<Icon name="…">` is the
+exception: any name can come in at runtime, so it carries every glyph (~75 KB
+minified). To ship only the glyphs you draw, import them from `kaleido-ui/icons`
+and build your own `Icon`. It takes the same props and the names you give it:
+
+```tsx
+import { createIcon, Close, Check, CheckCircleFilled } from 'kaleido-ui/icons'
+
+export const Icon = createIcon({ close: Close, check: Check }, { check: CheckCircleFilled })
+
+<Icon name="close" size="sm" />
+<Icon name="check" filled />
+```
+
+`IconButton icon="close"` looks the name up the same way; `GlyphButton` is the
+same button taking the glyph component (`<GlyphButton icon={Close} label="Close" />`),
+and `IconGlyph` draws one glyph at the icon scale (`<IconGlyph glyph={Close} size="sm" />`).
 
 ### Shared Components
 

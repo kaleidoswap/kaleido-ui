@@ -1,4 +1,5 @@
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { AddCircle, ProgressActivity, QrCode_2 } from '../icons/outlined'
 import { Label } from '../primitives/label'
 import { useId, type ChangeEvent } from 'react'
 import { AlertBanner } from './alert-banner'
@@ -136,7 +137,7 @@ export function DepositPreGeneration({
 
       {channelsLoading && selectedAccount === 'RGB' && currentMethod === 'lightning' && !isBtc && (
         <div className="flex items-center gap-2.5 rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-3 shadow-card">
-          <Icon name="progress_activity" className="animate-spin text-icon-lg text-secondary-content" />
+          <IconGlyph glyph={ProgressActivity} className="animate-spin text-icon-lg text-secondary-content" />
           <span className="text-caption font-medium text-foreground/60">Checking channel availability...</span>
         </div>
       )}
@@ -160,7 +161,7 @@ export function DepositPreGeneration({
       {isAutoGenerate && loading && (
         <div className="flex flex-col items-center gap-4 py-10">
           <div className={cn('flex size-16 items-center justify-center rounded-2xl shadow-raised', net.bg)}>
-            <Icon name="progress_activity" className={cn('animate-spin text-icon-4xl', net.text)} />
+            <IconGlyph glyph={ProgressActivity} className={cn('animate-spin text-icon-4xl', net.text)} />
           </div>
           <div className="space-y-1 text-center">
             <p className="text-caption font-bold text-muted-foreground">
@@ -294,7 +295,7 @@ export function DepositPreGeneration({
         onOpenCreateUtxos ? (
           <Button variant="cta" size="cta" onClick={onOpenCreateUtxos} disabled={loading}>
             <span className="flex items-center justify-center gap-2">
-              <Icon name="add_circle" className="text-icon-md" />
+              <IconGlyph glyph={AddCircle} className="text-icon-md" />
               Create Colorable UTXOs
             </span>
           </Button>
@@ -302,12 +303,12 @@ export function DepositPreGeneration({
           <Button variant="cta" size="cta" onClick={generateInvoice} disabled={loading}>
             {loading ? (
               <span className="flex items-center justify-center gap-2">
-                <Icon name="progress_activity" className="animate-spin text-icon-md" />
+                <IconGlyph glyph={ProgressActivity} className="animate-spin text-icon-md" />
                 Generating...
               </span>
             ) : (
               <span className="flex items-center justify-center gap-2">
-                <Icon name="qr_code_2" className="text-icon-md" />
+                <IconGlyph glyph={QrCode_2} className="text-icon-md" />
                 Generate Address
               </span>
             )}

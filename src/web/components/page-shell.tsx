@@ -1,4 +1,5 @@
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Error } from '../icons/outlined'
 import type { ReactNode } from 'react'
 import { cn } from '../utils/cn'
 
@@ -112,7 +113,7 @@ export function ErrorCard({
       className={cn('flex flex-col items-center justify-center py-16 text-center', className)}
     >
       <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-danger/10 shadow-raised">
-        <Icon name="error" className="text-danger-fg text-icon-4xl" />
+        <IconGlyph glyph={Error} className="text-danger-fg text-icon-4xl" />
       </div>
       <h3 className="mb-1 text-body font-semibold">{title}</h3>
       <p className="mb-4 max-w-xs text-caption text-muted-foreground">{description}</p>

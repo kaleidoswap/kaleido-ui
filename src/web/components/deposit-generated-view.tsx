@@ -1,5 +1,6 @@
 import { useId, type ChangeEvent } from 'react'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Check, ContentCopy, Person, ProgressActivity, Refresh } from '../icons/outlined'
 import { Label } from '../primitives/label'
 import { QrCode } from './qr-code'
 import { cn } from '../utils/cn'
@@ -11,7 +12,7 @@ import {
   type DepositNetworkKey,
 } from './deposit-ui-shared'
 import { eyebrow } from '../utils/type-roles'
-import { IconButton } from '../primitives/icon-button'
+import { GlyphButton } from '../primitives/glyph-button'
 
 export interface DepositGeneratedAsset {
   ticker?: string
@@ -137,7 +138,7 @@ export function DepositGeneratedView({
             <p className="text-xxs text-warning-fg/70">
               {loading ? (
                 <span className="flex items-center gap-1">
-                  <Icon name="progress_activity" className="animate-spin text-icon-xxs" />
+                  <IconGlyph glyph={ProgressActivity} className="animate-spin text-icon-xxs" />
                   Updating {network === 'arkade' ? 'URI' : 'invoice'}...
                 </span>
               ) : network === 'arkade' ? (
@@ -170,7 +171,7 @@ export function DepositGeneratedView({
             <p className="text-xxs text-warning-fg/70">
               {loading ? (
                 <span className="flex items-center gap-1">
-                  <Icon name="progress_activity" className="animate-spin text-icon-xxs" />
+                  <IconGlyph glyph={ProgressActivity} className="animate-spin text-icon-xxs" />
                   Updating invoice...
                 </span>
               ) : (
@@ -208,7 +209,7 @@ export function DepositGeneratedView({
             // Loading scrim — sits over the QR while a fresh address/invoice
             // is being fetched (e.g. after the New Address button).
             <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-foreground/80 backdrop-blur-sm">
-              <Icon name="progress_activity" className="animate-spin text-icon-3xl text-network-bitcoin-fg" />
+              <IconGlyph glyph={ProgressActivity} className="animate-spin text-icon-3xl text-network-bitcoin-fg" />
             </div>
           )}
         </div>
@@ -229,7 +230,7 @@ export function DepositGeneratedView({
                 void copyToClipboard(address)
               }}
             >
-              <Icon name={isAddressCopied ? 'check' : 'content_copy'} size="xs" />
+              <IconGlyph glyph={isAddressCopied ? Check : ContentCopy} size="xs" />
               {isAddressCopied
                 ? 'Copied'
                 : network === 'lightning'
@@ -281,7 +282,7 @@ export function DepositGeneratedView({
           onClick={() => void copyToClipboard(recipientId)}
         >
           <div className="flex size-5 flex-shrink-0 items-center justify-center rounded-md bg-primary/15">
-            <Icon name="person" size="xs" className="text-brand" />
+            <IconGlyph glyph={Person} size="xs" className="text-brand" />
           </div>
           <div className="min-w-0 flex-1">
             <p className={cn('text-brand', eyebrow)}>
@@ -299,7 +300,7 @@ export function DepositGeneratedView({
 
       {showRegenerate && (
         <div className="flex justify-center pt-1">
-          <IconButton
+          <GlyphButton
             label={`New ${network === 'lightning' ? 'invoice' : 'address'}`}
             variant="secondary"
             disabled={loading}
@@ -318,7 +319,7 @@ export function DepositGeneratedView({
               setAmount('')
               setInvoiceStatus(null)
             }}
-            icon={<Icon name="refresh" aria-hidden="true" className={cn(loading && 'animate-spin motion-reduce:animate-none')} />}
+            icon={<IconGlyph glyph={Refresh} aria-hidden="true" className={cn(loading && 'animate-spin motion-reduce:animate-none')} />}
           />
         </div>
       )}

@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { Icon } from './icon'
+import { IconGlyph } from './icon-glyph'
+import { Search } from '../icons/outlined'
 
 /**
  * Past this many items a menu caps its height at this many, scrolls the rest and
@@ -72,8 +73,8 @@ export function MenuSearch({ value, onChange, label = 'Search' }: MenuSearchProp
   }, [])
   return (
     <div data-slot="menu-search" className="relative mb-1.5">
-      <Icon
-        name="search"
+      <IconGlyph
+        glyph={Search}
         aria-hidden="true"
         className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-icon-md text-muted-foreground"
       />

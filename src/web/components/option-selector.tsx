@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Check, ExpandMore } from '../icons/outlined'
 import { InlineSelector, type InlineSelectorOption } from './inline-selector'
 import { cn } from '../utils/cn'
 
@@ -55,8 +56,8 @@ export function OptionSelector({
           {/* leading-normal (not the pill's leading-none) so descenders like
               the "g" in "English" aren't clipped by truncate's overflow. */}
           <span className="truncate leading-normal">{selected?.label}</span>
-          <Icon
-            name="expand_more"
+          <IconGlyph
+            glyph={ExpandMore}
             className={cn(
               'shrink-0 text-icon-xs transition-transform',
               open ? 'rotate-180 text-secondary-content' : 'text-muted-foreground',
@@ -84,7 +85,7 @@ export function OptionSelector({
               )}
             </span>
           </span>
-          {optionSelected && <Icon name="check" className="text-icon-sm text-secondary-content" />}
+          {optionSelected && <IconGlyph glyph={Check} className="text-icon-sm text-secondary-content" />}
         </span>
       )}
     />

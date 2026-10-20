@@ -1,6 +1,7 @@
 import { useId, useState, type ChangeEvent } from 'react'
 import { Button } from '../primitives/button'
-import { Icon } from '../primitives/icon'
+import { IconGlyph } from '../primitives/icon-glyph'
+import { Check, ContentCopy, Edit, ProgressActivity, Refresh } from '../icons/outlined'
 import { Label } from '../primitives/label'
 import { cn } from '../utils/cn'
 import { QrCode } from './qr-code'
@@ -14,7 +15,7 @@ import {
   type DepositNetworkKey,
 } from './deposit-ui-shared'
 import { eyebrow } from '../utils/type-roles'
-import { IconButton } from '../primitives/icon-button'
+import { GlyphButton } from '../primitives/glyph-button'
 
 export interface BtcUnifiedReceiveAddress {
   network: DepositNetworkKey
@@ -121,21 +122,21 @@ export function BtcUnifiedReceive({
 
         {/* Icon-only Surface actions: Copy, New Address, Edit (amount/description). */}
         <div className="flex items-center justify-center gap-2.5">
-          <IconButton
+          <GlyphButton
             label={`Copy ${accountReceiveResult.qrLabel}`}
             variant="surface"
             size="lg"
-            icon={isQrCopied ? 'check' : 'content_copy'}
+            icon={isQrCopied ? Check : ContentCopy}
             onClick={() => void copyToClipboard(accountReceiveResult.qrValue)}
           />
           {showRegenerate && (
-            <IconButton label="New address" variant="surface" size="lg" icon="refresh" onClick={handleNewAddress} />
+            <GlyphButton label="New address" variant="surface" size="lg" icon={Refresh} onClick={handleNewAddress} />
           )}
-          <IconButton
+          <GlyphButton
             label="Edit amount and description"
             variant="surface"
             size="lg"
-            icon="edit"
+            icon={Edit}
             onClick={() => setShowEdit(true)}
           />
         </div>
@@ -198,7 +199,7 @@ export function BtcUnifiedReceive({
       <BottomSheet
         open={showEdit}
         title="Edit request"
-        icon={<Icon name="edit" size="md" />}
+        icon={<IconGlyph glyph={Edit} size="md" />}
         onClose={() => setShowEdit(false)}
       >
         <div className="space-y-4">
@@ -217,7 +218,7 @@ export function BtcUnifiedReceive({
             />
             {amount && loading && (
               <p className="flex items-center gap-1 text-xxs text-warning-fg/70">
-                <Icon name="progress_activity" className="animate-spin text-icon-xxs" />
+                <IconGlyph glyph={ProgressActivity} className="animate-spin text-icon-xxs" />
                 Updating invoice...
               </p>
             )}

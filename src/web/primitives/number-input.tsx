@@ -1,4 +1,5 @@
-import { Icon } from './icon'
+import { IconGlyph } from './icon-glyph'
+import { KeyboardArrowDown, KeyboardArrowUp } from '../icons/outlined'
 import * as React from 'react'
 import { cn } from '../utils/cn'
 import { fieldSurface } from '../utils/field-styles'
@@ -52,7 +53,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
               onClick={() => nudge(1)}
               className="flex items-center justify-center h-4 w-5 rounded text-muted-foreground hover-gradient-violet hover:text-secondary-content transition-colors"
             >
-              <Icon name="keyboard_arrow_up" className="text-icon-sm" />
+              <IconGlyph glyph={KeyboardArrowUp} className="text-icon-sm" />
             </button>
             <button
               type="button"
@@ -60,7 +61,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
               onClick={() => nudge(-1)}
               className="flex items-center justify-center h-4 w-5 rounded text-muted-foreground hover-gradient-violet hover:text-secondary-content transition-colors"
             >
-              <Icon name="keyboard_arrow_down" className="text-icon-sm" />
+              <IconGlyph glyph={KeyboardArrowDown} className="text-icon-sm" />
             </button>
           </div>
         )}
