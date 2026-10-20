@@ -20,7 +20,7 @@ test('Label is the shared eyebrow in violet (secondary-content), in a form as in
   assert.match(field, /<label[^>]*text-mini font-medium uppercase tracking-eyebrow/)
 })
 
-test('withdraw destination: its label points at the input', () => {
+test('withdraw destination: its label points at the field', () => {
   const markup = renderToStaticMarkup(
     createElement(WithdrawDestinationInput, {
       destination: '',
@@ -34,7 +34,7 @@ test('withdraw destination: its label points at the input', () => {
   )
   const id = labelFor(markup, 'Destination')
   assert.ok(id)
-  assert.match(markup, new RegExp(`<input id="${id}"`))
+  assert.match(markup, new RegExp(`<textarea id="${id}"`))
 })
 
 test('withdraw amount: amount label points at its input; fee rate names its button group', () => {

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { Button } from '../primitives/button'
 import { IconGlyph } from '../primitives/icon-glyph'
 import { ArrowBack, Fingerprint, ProgressActivity } from '../icons/outlined'
@@ -5,6 +6,7 @@ import { ScrollArea } from '../primitives/scroll-area'
 import { formatAmount } from '../utils/amount-display'
 import type { WithdrawAddressType } from './withdraw-destination-input'
 import { GlyphButton } from '../primitives/glyph-button'
+import { AssetIcon } from './asset-icon'
 
 export interface WithdrawConfirmationRgbInvoice {
   recipient_type?: string
@@ -16,10 +18,14 @@ export interface WithdrawConfirmationProps {
   setShowConfirmation: (value: boolean) => void
   displayAmount: number
   selectedAssetId: string
-  selectedAsset?: { ticker?: string }
+  selectedAsset?: { ticker?: string; icon?: string }
   destination: string
   networkLabel: string
+  /** The network's mark, e.g. `<ArkadeNetworkIcon />`: shown in the Network row and as the badge on the asset. */
+  networkIcon?: ReactNode
+  /** The paying account. Shown as "from …" beside the network only when it differs from `networkLabel`. */
   routeAccount?: string
+  /** @deprecated No longer shown: the network and account already say how the payment goes. */
   routeMethod?: string
   estimatedFee: number
   /** The fee is quoted, not estimated: drop the `~`. Defaults to false. */
@@ -49,8 +55,8 @@ export function WithdrawConfirmation({
   selectedAsset,
   destination,
   networkLabel,
+  networkIcon,
   routeAccount,
-  routeMethod,
   estimatedFee,
   feeIsExact = false,
   feeRate,
@@ -62,6 +68,13 @@ export function WithdrawConfirmation({
   handleConfirmSend,
   locale,
 }: WithdrawConfirmationProps) {
+  const ticker = selectedAsset?.ticker ?? selectedAssetId
+  const unit = selectedAssetId === 'BTC' ? 'sats' : (selectedAsset?.ticker ?? 'units')
+  const busy = isConfirming || isPollingStatus
+  const showTotal = selectedAssetId === 'BTC' && estimatedFee > 0
+  const fromAccount =
+    routeAccount && routeAccount.toLowerCase() !== networkLabel.toLowerCase() ? routeAccount : null
+
   return (
     <div className="relative flex h-screen flex-col overflow-hidden bg-background bg-page-radial font-display text-foreground">
       <div className="absolute left-4 top-4 z-30">
@@ -70,132 +83,147 @@ export function WithdrawConfirmation({
           label="Go back"
           size="lg"
           onClick={() => {
-            if (!isConfirming && !isPollingStatus) {
-              setShowConfirmation(false)
-            }
+            if (!busy) setShowConfirmation(false)
           }}
-          className={isConfirming || isPollingStatus ? 'pointer-events-none opacity-70' : undefined}
+          className={busy ? 'pointer-events-none opacity-70' : undefined}
         />
       </div>
 
-      <ScrollArea className="flex-1" viewportClassName="px-5 pt-16 pb-6">
-      <main className="space-y-6">
-        <div className="flex flex-col items-center py-6">
-          <p className="mb-1 text-caption uppercase tracking-eyebrow text-muted-foreground">
-            {reviewLabels?.recipientReceives ?? 'Recipient receives'}
-          </p>
-          <h1 className="mb-2 text-display font-bold text-gradient-brand">{formatAmount(displayAmount, { locale })}</h1>
-          <p className="text-body text-muted-foreground">
-            {selectedAssetId === 'BTC' ? 'sats' : (selectedAsset?.ticker ?? 'units')}
-          </p>
-        </div>
-
-        <div className="overflow-hidden rounded-2xl bg-card bg-gradient-card py-1 shadow-card">
-          <div className="flex items-center justify-between px-5 py-4">
-            <span className="text-caption text-muted-foreground">To</span>
-            <span className="max-w-[200px] truncate font-mono text-body text-foreground" title={destination}>
-              {destination.length > 24
-                ? `${destination.substring(0, 12)}...${destination.slice(-12)}`
-                : destination}
-            </span>
-          </div>
-          <div className="flex items-center justify-between px-5 py-4">
-            <span className="text-caption text-muted-foreground">Network</span>
-            <div className="flex items-center gap-1.5">
-              <div className="size-1.5 rounded-full bg-primary shadow-glow-primary-soft" />
-              <span className="text-body font-bold text-foreground">{networkLabel}</span>
+      <ScrollArea className="flex-1" viewportClassName="px-5 pt-14 pb-6">
+        <main className="space-y-4">
+          <div data-slot="payment-review-hero" className="flex flex-col items-center pt-2">
+            <div className="relative mb-3">
+              <AssetIcon ticker={ticker} logoUri={selectedAsset?.icon} size={48} />
+              {networkIcon && (
+                <span
+                  data-slot="payment-review-network-badge"
+                  aria-hidden="true"
+                  className="absolute -bottom-1 -right-1 flex size-6 items-center justify-center rounded-full bg-card ring-2 ring-background"
+                >
+                  {networkIcon}
+                </span>
+              )}
             </div>
-          </div>
-          {routeAccount && (
-            <div className="flex items-center justify-between px-5 py-4">
-              <span className="text-caption text-muted-foreground">From Account</span>
-              <span className="text-body font-bold text-foreground">{routeAccount}</span>
-            </div>
-          )}
-          {routeMethod && (
-            <div className="flex items-center justify-between px-5 py-4">
-              <span className="text-caption text-muted-foreground">Route Method</span>
-              <span className="text-body font-bold text-foreground">{routeMethod}</span>
-            </div>
-          )}
-          <div className="flex items-center justify-between px-5 py-4">
-            <span className="text-caption text-muted-foreground">Asset</span>
-            <span className="text-body font-bold text-foreground">
-              {selectedAsset?.ticker ?? selectedAssetId}
-            </span>
-          </div>
-          {estimatedFee > 0 && (
-            <div
-              data-testid="payment-review-fee"
-              className="flex items-center justify-between px-5 py-4"
-            >
-              <span className="text-caption text-muted-foreground">
-                {reviewLabels?.estimatedNetworkFee ?? 'Estimated network fee'}
+            <p className="text-caption uppercase tracking-eyebrow text-muted-foreground">
+              {reviewLabels?.recipientReceives ?? 'Recipient receives'}
+            </p>
+            <p className="mt-1 flex items-baseline gap-2">
+              <span className="text-display font-bold tabular-nums text-gradient-brand">
+                {formatAmount(displayAmount, { locale })}
               </span>
-              <div className="flex flex-col items-end">
-                <span className="text-body text-foreground">
-                  {`${feeIsExact ? '' : '~'}${formatAmount(estimatedFee, { locale })} sats`}
+              <span className="text-body text-muted-foreground">{unit}</span>
+            </p>
+          </div>
+
+          <div className="space-y-1 rounded-2xl bg-card bg-gradient-card p-2 shadow-card">
+            <ReviewRow label="To">
+              <span className="min-w-0 truncate font-mono text-body text-foreground" title={destination}>
+                {destination.length > 24
+                  ? `${destination.slice(0, 12)}…${destination.slice(-8)}`
+                  : destination}
+              </span>
+            </ReviewRow>
+            <ReviewRow label="Network" data-testid="payment-review-network">
+              <span className="flex min-w-0 items-center gap-1.5">
+                {networkIcon && (
+                  <span aria-hidden="true" className="flex shrink-0 items-center">
+                    {networkIcon}
+                  </span>
+                )}
+                <span className="truncate text-body font-bold text-foreground">{networkLabel}</span>
+                {fromAccount && (
+                  <span className="shrink-0 text-caption text-muted-foreground">from {fromAccount}</span>
+                )}
+              </span>
+            </ReviewRow>
+            {estimatedFee > 0 && (
+              <ReviewRow
+                label={reviewLabels?.estimatedNetworkFee ?? 'Estimated network fee'}
+                data-testid="payment-review-fee"
+              >
+                <span className="flex items-baseline gap-1.5">
+                  <span className="text-body tabular-nums text-foreground">
+                    {`${feeIsExact ? '' : '~'}${formatAmount(estimatedFee, { locale })} sats`}
+                  </span>
+                  {feeRate && (
+                    <span className="text-xxs font-bold capitalize tracking-wider text-secondary-content">
+                      {feeRate}
+                    </span>
+                  )}
                 </span>
-                <span className="mt-0.5 text-xxs font-bold capitalize tracking-wider text-secondary-content">
-                  {feeRate}
+              </ReviewRow>
+            )}
+            {addressType === 'rgb' && decodedRgbInvoice?.recipient_type === 'Witness' && (
+              <ReviewRow label="Witness amount">
+                <span className="text-body tabular-nums text-foreground">
+                  {formatAmount(witnessAmountSat, { locale })} sats
                 </span>
+              </ReviewRow>
+            )}
+            {showTotal && (
+              <div
+                data-testid="payment-review-total"
+                className="flex items-center justify-between gap-3 rounded-xl bg-muted/40 px-3 py-2.5"
+              >
+                <span className="text-caption font-bold uppercase tracking-eyebrow text-brand">
+                  {reviewLabels?.totalDeducted ?? 'Total deducted'}
+                </span>
+                <span className="text-subhead font-bold tabular-nums text-foreground">
+                  {formatAmount(Math.round(parseFloat(amount.replace(/,/g, '')) || 0) + estimatedFee, { locale })}{' '}
+                  <span className="text-caption text-brand">sats</span>
+                </span>
+              </div>
+            )}
+          </div>
+
+          {isPollingStatus && (
+            <div className="flex items-center gap-3 rounded-xl bg-gradient-active p-4 shadow-glow-violet-soft ring-1 ring-inset ring-secondary/40">
+              <IconGlyph glyph={ProgressActivity} className="animate-spin text-icon-2xl text-secondary-content" />
+              <div>
+                <p className="text-body font-medium text-foreground">Processing payment...</p>
+                <p className="text-caption text-muted-foreground">Waiting for confirmation</p>
               </div>
             </div>
           )}
-          {addressType === 'rgb' && decodedRgbInvoice?.recipient_type === 'Witness' && (
-            <div className="flex items-center justify-between px-5 py-4">
-              <span className="text-caption text-muted-foreground">Witness Amount</span>
-              <span className="text-body text-foreground">{witnessAmountSat} sats</span>
-            </div>
-          )}
-        </div>
 
-        {selectedAssetId === 'BTC' && estimatedFee > 0 && (
-          <div
-            data-testid="payment-review-total"
-            className="flex items-center justify-between rounded-2xl bg-card bg-gradient-card-hero p-5 shadow-card"
+          <Button
+            variant="cta"
+            size="cta-lg"
+            onClick={handleConfirmSend}
+            disabled={busy}
+            className="w-full"
           >
-            <span className="text-body font-bold uppercase tracking-eyebrow text-brand">
-              {reviewLabels?.totalDeducted ?? 'Total deducted'}
-            </span>
-            <span className="text-title font-bold text-foreground">
-              {formatAmount(Math.round(parseFloat(amount) || 0) + estimatedFee, { locale })}{' '}
-              <span className="text-subhead text-brand/70">sats</span>
-            </span>
-          </div>
-        )}
-
-        {isPollingStatus && (
-          <div className="flex items-center gap-3 rounded-xl bg-gradient-active p-4 shadow-glow-violet-soft ring-1 ring-inset ring-secondary/40">
-            <IconGlyph glyph={ProgressActivity} className="animate-spin text-icon-2xl text-secondary-content" />
-            <div>
-              <p className="text-body font-medium text-foreground">Processing payment...</p>
-              <p className="text-caption text-muted-foreground">Waiting for confirmation</p>
-            </div>
-          </div>
-        )}
-
-        <Button
-          variant="cta"
-          size="cta-lg"
-          onClick={handleConfirmSend}
-          disabled={isConfirming || isPollingStatus}
-          className="mt-2 w-full"
-        >
-          {isConfirming || isPollingStatus ? (
-            <>
-              <IconGlyph glyph={ProgressActivity} className="animate-spin text-icon-2xl" />
-              {isPollingStatus ? 'Waiting for confirmation...' : 'Sending...'}
-            </>
-          ) : (
-            <>
-              <IconGlyph glyph={Fingerprint} className="text-icon-2xl" />
-              Confirm & Send
-            </>
-          )}
-        </Button>
-      </main>
+            {busy ? (
+              <>
+                <IconGlyph glyph={ProgressActivity} className="animate-spin text-icon-2xl" />
+                {isPollingStatus ? 'Waiting for confirmation...' : 'Sending...'}
+              </>
+            ) : (
+              <>
+                <IconGlyph glyph={Fingerprint} className="text-icon-2xl" />
+                Confirm & Send
+              </>
+            )}
+          </Button>
+        </main>
       </ScrollArea>
+    </div>
+  )
+}
+
+function ReviewRow({
+  label,
+  children,
+  ...props
+}: {
+  label: string
+  children: ReactNode
+  'data-testid'?: string
+}) {
+  return (
+    <div className="flex min-h-11 items-center justify-between gap-3 px-3 py-2" {...props}>
+      <span className="shrink-0 text-caption text-muted-foreground">{label}</span>
+      <span className="flex min-w-0 justify-end">{children}</span>
     </div>
   )
 }
