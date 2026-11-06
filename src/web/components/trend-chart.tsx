@@ -11,6 +11,8 @@ import {
 import { cn } from '../utils/cn'
 import { formatAmount } from '../utils/amount-display'
 import {
+  BAR_GAP,
+  barPath,
   ChartDataTable,
   ChartHeader,
   ChartLegend,
@@ -269,7 +271,7 @@ export function TrendChart({
   const labelIndices = trendChartLabelIndices(count, plotWidth / X_LABEL_SPACING)
 
   const fillFor = (index: number) =>
-    textures[index] === 'hatch' ? `url(#${idBase}-hatch-${index})` : toneFill[series[index].tone]
+    textures[index] === 'hatch' ? `url(#${idBase}-hatch-${index})` : `url(#${idBase}-fill-${index})`
 
   const activePoint = active === null ? null : points[active]
   const readoutId = `${idBase}-readout`
@@ -341,7 +343,9 @@ export function TrendChart({
             {series.map((s, index) =>
               textures[index] === 'hatch' ? (
                 <Texture key={s.id} id={`${idBase}-hatch-${index}`} tone={s.tone} texture="hatch" />
-              ) : null,
+              ) : (
+                <SolidFill key={s.id} id={`${idBase}-fill-${index}`} tone={s.tone} />
+              ),
             )}
           </defs>
 
@@ -394,18 +398,24 @@ export function TrendChart({
                     if (value <= 0) return null
                     const top = y(base + value)
                     const bottom = y(base)
+                    // A surface gap under a segment that sits on another, so
+                    // stacked parts separate even where their colours are close.
+                    const seam = base > 0 ? BAR_GAP : 0
                     base += value
+                    // Only the top of the stack has a rounded data end.
+                    const isTop = series.slice(seriesIndex + 1).every((next) => (point.values[next.id] ?? 0) <= 0)
                     const hatched = textures[seriesIndex] === 'hatch'
                     return (
-                      <rect
+                      <path
                         key={s.id}
                         data-series={s.id}
-                        x={plotLeft + pointIndex * band + barOffset}
-                        y={top}
-                        width={barWidth}
-                        // A 1px seam between stacked segments, so they part
-                        // even where their colours are close.
-                        height={Math.max(0.5, bottom - top - (seriesIndex > 0 ? 1 : 0))}
+                        d={barPath(
+                          plotLeft + pointIndex * band + barOffset,
+                          top,
+                          barWidth,
+                          Math.max(0.5, bottom - top - seam),
+                          isTop ? 'top' : 'none',
+                        )}
                         fill={fillFor(seriesIndex)}
                         stroke={hatched ? toneFill[s.tone] : undefined}
                         strokeWidth={hatched && barWidth >= 4 ? 1 : 0}
@@ -482,6 +492,20 @@ export function TrendChart({
         {scaleLabel} · linear, from 0
       </p>
     </figure>
+  )
+}
+
+/**
+ * A solid series' fill: its tone, lighter at the top of each bar, as the
+ * primary gradient runs on buttons and meters. The step is mixed from the tone
+ * itself, so it follows the theme like the tone does.
+ */
+function SolidFill({ id, tone }: { id: string; tone: TrendChartTone }) {
+  return (
+    <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" style={{ stopColor: `color-mix(in oklab, ${toneFill[tone]}, white 35%)` }} />
+      <stop offset="100%" style={{ stopColor: toneFill[tone] }} />
+    </linearGradient>
   )
 }
 
