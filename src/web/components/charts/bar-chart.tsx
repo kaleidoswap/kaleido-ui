@@ -7,6 +7,8 @@ import {
   ChartTooltip,
   TICK_FONT,
   axisTextWidth,
+  BAR_GAP,
+  barPath,
   chartLabelIndices,
   chartValueTicks,
   defaultChartFormat,
@@ -43,21 +45,7 @@ export interface BarChartProps extends ChartTitleProps {
 /** Bars never fill their slot: past 24px they read as blocks, not marks. */
 const MAX_BAR = 24
 /** The surface gap between touching marks. */
-const GAP = 2
-const RADIUS = 4
-
-/**
- * A rectangle with its data end rounded and its baseline end square, so the
- * bar reads as growing from the axis.
- */
-function barPath(x: number, y: number, w: number, h: number, end: 'top' | 'right' | 'none') {
-  const r = Math.min(RADIUS, w / 2, h / 2)
-  if (end === 'none' || r <= 0) return `M${x},${y}h${w}v${h}h${-w}Z`
-  if (end === 'top') {
-    return `M${x},${y + h}V${y + r}Q${x},${y} ${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h}Z`
-  }
-  return `M${x},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h - r}Q${x + w},${y + h} ${x + w - r},${y + h}H${x}Z`
-}
+const GAP = BAR_GAP
 
 /**
  * A bar chart: compare magnitude across categories. Grouped or stacked,

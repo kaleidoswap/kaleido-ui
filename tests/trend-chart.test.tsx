@@ -83,10 +83,29 @@ test('ninety periods fit: the SVG is a percentage width with a measured viewBox'
 test('colour comes from theme custom properties, and series stay apart without it', () => {
   const markup = chart(30)
   assert.doesNotMatch(markup, /(fill|stroke)="#/, 'a literal colour in the chart')
-  assert.match(markup, /data-series="completed"[^>]*fill="var\(--series-1\)"/)
+  // The solid series is its tone as a vertical gradient, mixed from the tone itself.
+  assert.match(markup, /data-series="completed"[^>]*fill="url\(#trend-[^"]*-fill-0\)"/)
+  assert.match(markup, /<linearGradient id="trend-[^"]*-fill-0"[^>]*><stop offset="0%" style="stop-color:color-mix\(in oklab, var\(--series-1\), white 35%\)"/)
   // The second series is hatched: a texture, not only a hue.
   assert.match(markup, /data-series="failed"[^>]*fill="url\(#trend-[^"]*-hatch-1\)"/)
   assert.match(markup, /<pattern [^>]*patternTransform="rotate\(45\)"/)
+})
+
+test('a stack rounds its top end only, and parts with a surface gap', () => {
+  const markup = renderToStaticMarkup(
+    h(TrendChart, {
+      label: 'Swaps',
+      points: [{ key: 'd1', label: 'd1', values: { completed: 8, failed: 2 } }],
+      series: [
+        { id: 'completed', label: 'completed', tone: 'primary' },
+        { id: 'failed', label: 'not completed', tone: 'danger' },
+      ],
+    }),
+  )
+  const completed = /data-series="completed" d="([^"]+)"/.exec(markup)?.[1] ?? ''
+  const failed = /data-series="failed" d="([^"]+)"/.exec(markup)?.[1] ?? ''
+  assert.doesNotMatch(completed, /Q/, 'the segment under another is square')
+  assert.match(failed, /Q/, 'the top of the stack has a rounded data end')
 })
 
 test('the scale is stated on the chart', () => {

@@ -59,6 +59,25 @@ export interface ChartDatum {
 }
 
 /** The series colour for a slot. Slots past the palette are a bug, not a new hue. */
+/** The surface gap between stacked bar segments, in px. */
+export const BAR_GAP = 2
+/** The rounded data end of a bar, in px; the baseline end stays square. */
+export const BAR_RADIUS = 4
+
+/**
+ * A bar's outline: a rectangle whose data end (`top` for a column, `right` for
+ * a horizontal bar) is rounded by `BAR_RADIUS`, or no end for a segment under
+ * another in a stack.
+ */
+export function barPath(x: number, y: number, w: number, h: number, end: 'top' | 'right' | 'none') {
+  const r = Math.min(BAR_RADIUS, w / 2, h / 2)
+  if (end === 'none' || r <= 0) return `M${x},${y}h${w}v${h}h${-w}Z`
+  if (end === 'top') {
+    return `M${x},${y + h}V${y + r}Q${x},${y} ${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h}Z`
+  }
+  return `M${x},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h - r}Q${x + w},${y + h} ${x + w - r},${y + h}H${x}Z`
+}
+
 export const seriesColor = (slot: number) => `var(--series-${(slot % chartSeriesLimit) + 1})`
 
 export const defaultChartFormat = (value: number) => formatAmount(value)
