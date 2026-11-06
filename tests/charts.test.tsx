@@ -167,6 +167,22 @@ test('a bar list prints every value and ranks on request', () => {
   assert.doesNotMatch(markup, /divide-|border-t/)
 })
 
+test('a bar list fills like a meter, and a label width lines several lists up', () => {
+  const items = [{ id: 'x', label: 'BTC/USDB', value: 3 }]
+  const markup = renderToStaticMarkup(h(BarList, { label: 'Pairs', items, labelWidth: '8rem', showPercent: false }))
+  assert.match(markup, /bg-gradient-primary/)
+  assert.match(markup, /bg-primary\/15/)
+  assert.match(markup, /--bar-list-columns:minmax\(0,8rem\) 1fr auto/)
+  const sized = renderToStaticMarkup(h(BarList, { label: 'Pairs', items }))
+  assert.match(sized, /--bar-list-columns:auto 1fr auto auto/)
+})
+
+test('on a phone a bar list row puts the bar under its label and value', () => {
+  const markup = renderToStaticMarkup(h(BarList, { label: 'Pairs', items: [{ id: 'x', label: 'BTC', value: 1 }] }))
+  // The bar spans the row and comes last below sm; beside the label from sm up.
+  assert.match(markup, /order-last col-span-full[^"]*sm:order-none sm:col-span-1/)
+})
+
 test('a donut folds the tail into Other past six parts, keeping survivors in order', () => {
   const segments = Array.from({ length: 8 }, (_, index) => ({ id: `s${index}`, label: `S${index}`, value: 10 - index }))
   const folded = foldSegments(segments)

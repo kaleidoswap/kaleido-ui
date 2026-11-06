@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.2.4     # must equal package.json's version; check-design-doc fails otherwise
+version: 0.2.5     # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -540,7 +540,7 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 | Compare a few series across a few categories | `BarChart` (grouped) |
 | Part-to-whole per category | `BarChart layout="stacked"` |
 | Many or long-named categories, one series | `BarChart orientation="horizontal"` |
-| A ranked or dated list with every value printed | `BarList` |
+| A ranked or dated list with every value printed | `BarList` (the `Meter` fill; `labelWidth` lines up lists stacked one under another; on a phone the bar runs under its label) |
 | Part-to-whole at a glance, ≤ 6 parts | `DonutChart` (close values belong in a bar chart) |
 | How two measures relate, ≤ 3 series | `ScatterChart` |
 | One ratio against a limit | `Meter` |
