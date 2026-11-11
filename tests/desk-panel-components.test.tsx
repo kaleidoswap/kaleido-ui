@@ -351,18 +351,18 @@ test('DrawerNavItem: a restricted page is listed, not a link, focusable, describ
   view.unmount()
 })
 
-test('DrawerNavItem: the current page carries no left rule', () => {
+test('DrawerNavItem: the current page carries no edge -- no left rule, ring or glow', () => {
   const view = mount(h(DrawerSidebar, null, h(DrawerNavItem, { href: '/', label: 'Home', active: true })))
   const link = view.container.querySelector('a')!
   assert.equal(link.getAttribute('aria-current'), 'page')
-  assert.doesNotMatch(link.className, /border-l/)
+  assert.doesNotMatch(link.className, /border-l|ring-primary|shadow-nav-active/)
   view.unmount()
 
   const nested = mount(
     h(DrawerSidebar, null, h(DrawerNavGroup, { label: 'Activity', active: true }, h(DrawerNavItem, { href: '/swaps', label: 'Swaps', active: true }))),
   )
   for (const element of nested.container.querySelectorAll('a, button')) {
-    assert.doesNotMatch(element.className, /border-l/)
+    assert.doesNotMatch(element.className, /border-l|ring-primary|shadow-nav-active/)
   }
   nested.unmount()
 })

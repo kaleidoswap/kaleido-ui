@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.2.6     # must equal package.json's version; check-design-doc fails otherwise
+version: 0.2.7     # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -493,9 +493,9 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 
 **It is the desktop app's sidebar.** `surface.base`, a `divider/30` rule on the right edge, `shadow-2xl` at 30% black, a `px-4 py-5` header row with the logo slot and the chevron. Expanded `w-72`; the rail `w-20`, which hides the logo and the group eyebrows, splits groups with a rule, centres the icons and turns labels into tooltips (they stay in the accessibility tree). The mobile form is always expanded, caps at `85vw` so a strip of the page stays visible to tap away, over the `BottomSheet` scrim.
 
-**Items.** `rounded-xl`, `px-4 py-3`, label `body` semibold. Inactive `content.secondary`, hovering to `surface.overlay/80`. The current page is `bg-gradient-active` on a `primary/10` wash with an inset `primary/40` ring and a soft glow, its icon in `status.success` — no rule on its left edge — and carries `aria-current="page"`. Group labels are the shared eyebrow (`label` token) in `content.tertiary`.
+**Items.** `rounded-xl`, `px-4 py-3`, label `body` semibold. Inactive `content.secondary`, hovering to `surface.overlay/80`. The current page has **no edge of any kind** — no ring, no glow, no rule on its left edge: it is `bg-gradient-active` on a `primary/15` wash, label `foreground` semibold, icon in `status.success`, and carries `aria-current="page"`. The green steps down with the hierarchy: a top-level page takes the full wash, a submenu row holding the current page takes a faint flat `primary/6` wash with its icon and chevron green, and the current page inside a submenu takes a stronger flat `primary/14` wash with its label in `brand`, so the page outranks the group that holds it. Group labels are the shared eyebrow (`label` token) in `content.tertiary`.
 
-**Submenus.** `DrawerNavGroup icon label active` is a row with a submenu — the desktop app's Trade and Liquidity. The row (a button with `aria-expanded`) shows and hides its `DrawerNavItem`s under it, and a chevron on its right turns 90° when open. It opens by itself when one of its pages is current, and is then marked like a current item. Its items become the submenu's rows: indented `pl-4`, `rounded-lg`, `px-4 py-2.5`, label `caption` medium with a 16 px icon, sliding right on hover; the current one is `brand` text on a `primary/10` fill, with no left rule. With `href` (the group's first page), opening the group also goes there, so choosing it lands on its first page with the submenu open; while closed the row is then a link with `aria-expanded`. On the icon rail a submenu cannot open, so the row is a link to `href` that also unfolds the sidebar, where the group opens on that page. `railHref` is the old name of `href`.
+**Submenus.** `DrawerNavGroup icon label active` is a row with a submenu — the desktop app's Trade and Liquidity. The row (a button with `aria-expanded`) shows and hides its `DrawerNavItem`s under it, and a chevron on its right turns 90° when open. It opens by itself when one of its pages is current, and is then marked as its parent: label `foreground` semibold, icon and chevron green, on a faint `primary/6` wash (on the icon rail, where the submenu is hidden, it takes the full current-page wash). Its items become the submenu's rows: indented `pl-4`, `rounded-lg`, `px-4 py-2.5`, label `caption` medium with a 16 px icon, sliding right on hover; the current one is `brand` text on a `primary/14` fill, with no edge. With `href` (the group's first page), opening the group also goes there, so choosing it lands on its first page with the submenu open; while closed the row is then a link with `aria-expanded`. On the icon rail a submenu cannot open, so the row is a link to `href` that also unfolds the sidebar, where the group opens on that page. `railHref` is the old name of `href`.
 
 **Scrollbar.** `DrawerBody` is a `ScrollArea`: the library's overlay thumb, which takes no width. A native bar took the width the icons are centred in on the 80 px rail.
 
@@ -682,7 +682,7 @@ These rules exist because generated UIs kept drifting: ad-hoc borders, wrong but
 
 - The layering ladder is `surface.bg` (page) → `bg-card` (card) → `bg-muted/40` (row inside a card). Depth comes from the fill, not an outline.
 - **DON'T** add arbitrary border utilities (`border-white/10`, `border-primary/20`, `border-warning/30`, `border-t` dividers…) to new markup. If a surface looks like it needs an edge, it needs a different background layer instead.
-- Borders are allowed only where a component spec above explicitly calls for one: inputs, the outline `Button` and `ToneBadge`, the `border.primary-ghost` active state, `Table` row hairlines, and the `Drawer` edge rule and current-page rule. Nothing else.
+- Borders are allowed only where a component spec above explicitly calls for one: inputs, the outline `Button` and `ToneBadge`, the `border.primary-ghost` active state, `Table` row hairlines, and the `Drawer` edge rule. Nothing else.
 - Separate stacked rows with `space-y-*` spacing, not divider lines. The single exception is `Table` (see its section): a dense grid, not a list.
 
 ### Rows and toggles use the shipped primitives
