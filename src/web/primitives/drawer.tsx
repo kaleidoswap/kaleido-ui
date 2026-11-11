@@ -282,15 +282,20 @@ export interface DrawerNavItemProps extends React.AnchorHTMLAttributes<HTMLAncho
   disabledReason?: string | null
 }
 
-// The current destination: a violet wash with an inset ring, the label in
-// white and the icon in the brand green -- the one "you are here" cue of the
-// list. No rule on its left edge: the wash and the ring mark it, and
+// The current destination, with no edge of any kind: no ring, no rule, no
+// glow. Three steps of green carry the hierarchy instead --
+//  - a top-level page: the green wash at full strength, the label in the
+//    foreground, the icon in the brand green;
+//  - a submenu row holding the current page: a faint flat wash, the label in
+//    the foreground and the icon and chevron in the brand green -- "it is in
+//    here";
+//  - the current page inside a submenu: a stronger flat wash on the smaller
+//    row, the label itself in `text-brand` -- the leaf outranks its parent.
 // `aria-current` says it. The icon is the row's aria-hidden span.
 const activeIcon = '[&>span[aria-hidden=true]]:text-status-success'
-const activeRow = cn(
-  'bg-primary/10 bg-gradient-active font-semibold text-foreground ring-1 ring-inset ring-primary/40 shadow-nav-active',
-  activeIcon
-)
+const activeRow = cn('bg-primary/15 bg-gradient-active font-semibold text-foreground', activeIcon)
+const activeGroupRow = cn('bg-primary/[0.06] font-semibold text-foreground', activeIcon)
+const activeSubRow = cn('bg-primary/[0.14] font-semibold text-brand', activeIcon)
 const idleRow = 'text-content-secondary hover-gradient-violet hover:text-foreground hover:shadow-raised'
 
 // Inside a `DrawerNavGroup`: its items are the submenu's rows.
@@ -340,7 +345,7 @@ const DrawerNavItem = React.forwardRef<HTMLAnchorElement, DrawerNavItemProps>(
         className: cn(
           'flex min-w-0 items-center gap-3 rounded-lg px-4 py-2.5 text-caption transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none',
           active
-            ? cn('bg-primary/10 bg-gradient-active font-semibold text-brand', activeIcon)
+            ? activeSubRow
             : 'text-content-secondary hover:translate-x-1 hover-gradient-violet hover:text-foreground motion-reduce:hover:translate-x-0',
           className
         ),
@@ -492,7 +497,9 @@ const DrawerNavGroup = ({
     'group flex w-full min-w-0 items-center rounded-xl px-4 py-3 text-left transition-all duration-300 hover:scale-[1.02] focus:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95 motion-reduce:transition-none motion-reduce:hover:scale-100',
     collapsed ? 'justify-center' : 'gap-4',
     active
-      ? activeRow
+      ? collapsed
+        ? activeRow // on the rail the submenu is hidden: the row is the only cue
+        : activeGroupRow
       : idleRow
   )
   const iconNode = icon && (
@@ -514,6 +521,7 @@ const DrawerNavGroup = ({
         glyph={ChevronRight}
         className={cn(
           'shrink-0 text-icon-md transition-all duration-300 motion-reduce:transition-none',
+          active && 'text-brand',
           open && 'rotate-90'
         )}
       />
