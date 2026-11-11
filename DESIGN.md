@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.2.7     # must equal package.json's version; check-design-doc fails otherwise
+version: 0.2.8     # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -591,6 +591,8 @@ Two floating surfaces on one look — `bg-popover` and `shadow-popover`, whose h
 - **`DropdownMenu`** is a real menu (`role="menu"`): `DropdownMenuItem`s (with `destructive` for Revoke / Delete, kept last), `DropdownMenuSeparator`, `DropdownMenuLabel`. The arrow keys move between items.
 
 Both are Radix: Escape and a click outside close them and focus returns to the trigger. Never hand-roll either — `InlineSelector`'s panel predates them and handles neither Escape nor focus return.
+
+**`DatePicker value onChange`** is one date from a month grid in a `Popover`, under a field-styled trigger (`fieldSurface`). The value is a `YYYY-MM-DD` string, the one `DateRangeFilter` uses, so no time zone is involved; `min` / `max` disable days outside them. The grid is a single Tab stop: arrows move by a day or a week, Home/End to the week's ends, PageUp/PageDown by a month, Enter selects; the selected day is the green fill. Every label (`previousMonthLabel`, `todayLabel`, …) has an English default and a prop to override it.
 
 ### Collapsible
 

@@ -53,6 +53,7 @@ import {
   NoticeBar,
   PageHeader,
   Pager,
+  DatePicker,
   Popover,
   PopoverClose,
   PopoverContent,
@@ -490,6 +491,7 @@ export function PopoverMenuGallery() {
   const [app, setApp] = useState<string>(MENU_APPS[0])
   const [network, setNetwork] = useState('all')
   const [last, setLast] = useState('—')
+  const [date, setDate] = useState('')
   return (
     <Grid>
       <Demo title="Popover" use="A panel anchored to a trigger for content that is not a menu. Tab walks it in order; Escape or a click outside closes it and focus returns to the trigger.">
@@ -530,6 +532,11 @@ export function PopoverMenuGallery() {
             </DropdownMenuContent>
           </DropdownMenu>
           <span className="text-caption text-muted-foreground">Last chosen: {last}</span>
+        </div>
+      </Demo>
+      <Demo title="DatePicker" use="One date from a month grid in a Popover, under a field-styled trigger. The value is YYYY-MM-DD. The grid is one Tab stop: arrows move by day or week, PageUp/PageDown by month, Enter selects; days outside min/max are disabled.">
+        <div className="w-full max-w-64">
+          <DatePicker value={date} onChange={setDate} aria-label="Date" max="2026-12-31" />
         </div>
       </Demo>
       <Demo title="Select" use="Picks a value that stays set: the trigger shows it, the menu ticks it. Up to four options it shows them all; past four it shows four, scrolls the rest and opens with a search field. hug makes the trigger as wide as its value. Every select in the library is this one.">
