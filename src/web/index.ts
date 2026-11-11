@@ -397,7 +397,8 @@ export {
   InstantsStatement,
   type InstantsStatementProps,
 } from './components/instants-statement'
-export { DateRangeFilter, type DateRange, type DateRangeFilterProps } from './components/date-range-filter'
+export { DatePicker, type DatePickerProps } from './components/date-picker'
+export { DateRangeFilter,type DateRange, type DateRangeFilterProps } from './components/date-range-filter'
 export { ValueList, type ValueListProps } from './components/value-list'
 export { EventTimeline, type EventTimelineProps, type TimelineEvent } from './components/event-timeline'
 export { NoticeBar, type NoticeBarProps } from './components/notice-bar'

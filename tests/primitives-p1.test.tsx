@@ -261,3 +261,24 @@ test('every priority-1 export is reachable from the package root', () => {
     assert.ok(name in ui, `${name} is not exported`)
   }
 })
+
+// ── DatePicker ──────────────────────────────────────────────────────────────
+
+test('a date picker opens a month grid, picks a day, and respects max', async () => {
+  const { DatePicker } = await import('../src/web/components/date-picker')
+  let value = '2026-03-10'
+  const render = () =>
+    h(DatePicker, { value, onChange: (v: string) => void (value = v), max: '2026-03-20', 'aria-label': 'Date' })
+  const view = mount(render())
+  const trigger = view.container.querySelector<HTMLButtonElement>('[data-slot="date-picker-trigger"]')!
+  assert.match(trigger.textContent ?? '', /Mar 10, 2026/)
+  await interact(() => trigger.click())
+  const grid = $('[role="grid"]')!
+  assert.ok(grid, 'no grid')
+  assert.equal(grid.querySelector<HTMLButtonElement>('[data-date="2026-03-25"]')!.disabled, true)
+  assert.equal(grid.querySelector<HTMLButtonElement>('[data-date="2026-03-10"]')!.tabIndex, 0)
+  await interact(() => grid.querySelector<HTMLButtonElement>('[data-date="2026-03-15"]')!.click())
+  assert.equal(value, '2026-03-15')
+  assert.equal(trigger.getAttribute('aria-expanded'), 'false')
+  view.unmount()
+})
