@@ -1,4 +1,4 @@
-import { useId, type HTMLAttributes, type ReactNode } from 'react'
+import { useId, useLayoutEffect, useRef, type HTMLAttributes, type ReactNode } from 'react'
 import { Icon } from '../primitives/icon'
 import type { IconName } from '../primitives/icon'
 import { cn } from '../utils/cn'
@@ -44,6 +44,12 @@ export interface MetricCardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'c
    * direction; colour, if any, is the caller's accent on them.
    */
   change?: ReactNode
+  /**
+   * How the label is set: `eyebrow` (default) is the small spaced caps line;
+   * `title` is a title-case, semibold line, for large tiles where the label
+   * names the card.
+   */
+  labelStyle?: 'eyebrow' | 'title'
 }
 
 const toneClasses: Record<NonNullable<MetricCardProps['tone']>, string> = {
@@ -74,10 +80,12 @@ export function MetricCard({
   trend,
   definition,
   change,
+  labelStyle = 'eyebrow',
   className,
   ...rest
 }: MetricCardProps) {
   const labelId = useId()
+  const valueRef = useRef<HTMLParagraphElement>(null)
   const comfortable = size === 'comfortable'
   const placement = iconPlacement ?? (comfortable ? 'end' : 'label')
   const hasEnd = placement === 'end' || !!trend
@@ -85,6 +93,27 @@ export function MetricCard({
   // tile it stands on its own, so it steps up a size.
   const iconBox = comfortable ? 'size-9 rounded-xl shadow-raised' : placement === 'end' ? 'size-7 rounded-lg' : 'size-5 rounded-md'
   const iconGlyph = comfortable ? 'text-icon-lg' : placement === 'end' ? 'text-icon-md' : 'text-icon-xs'
+
+  // The figure never runs into the trend: when it is wider than the column
+  // beside the trend, its size steps down (to 60% at the least).
+  useLayoutEffect(() => {
+    const el = valueRef.current
+    const column = el?.parentElement
+    if (!el || !column || !hasEnd) return
+    const fit = () => {
+      el.style.fontSize = ''
+      const base = parseFloat(getComputedStyle(el).fontSize)
+      let size = base
+      while (el.scrollWidth > el.clientWidth + 0.5 && size > base * 0.6) {
+        size -= 1
+        el.style.fontSize = `${size}px`
+      }
+    }
+    fit()
+    const observer = new ResizeObserver(fit)
+    observer.observe(column)
+    return () => observer.disconnect()
+  }, [value, hasEnd, comfortable])
 
   const iconNode = icon ? (
     <span
@@ -104,7 +133,11 @@ export function MetricCard({
   ) : null
 
   const labelNode = (
-    <span id={labelId} data-slot="metric-card-label" className={cn(eyebrow, 'text-muted-foreground')}>
+    <span
+      id={labelId}
+      data-slot="metric-card-label"
+      className={labelStyle === 'title' ? 'text-body font-semibold text-foreground' : cn(eyebrow, 'text-muted-foreground')}
+    >
       {label}
     </span>
   )
@@ -124,7 +157,11 @@ export function MetricCard({
       )}
       {...rest}
     >
-      <div className={hasEnd ? 'min-w-0 flex-1 space-y-1' : 'contents'}>
+      {/* With an end column the text splits in two: the label and definition
+          stay at the top, the figure and its change sit at the bottom, level
+          with the foot of the trend. */}
+      <div className={hasEnd ? 'flex min-w-0 flex-1 flex-col justify-between gap-4' : 'contents'}>
+        <div className={hasEnd ? (labelStyle === 'title' ? 'space-y-0' : 'space-y-1') : 'contents'}>
         <div className="flex items-center gap-1.5">
           {placement === 'label' && iconNode}
           {labelNode}
@@ -134,10 +171,14 @@ export function MetricCard({
             {definition}
           </p>
         )}
+        </div>
+        <div className={hasEnd ? 'space-y-1' : 'contents'}>
         <p
+          ref={valueRef}
           data-slot="metric-card-value"
           className={cn(
             'm-0 font-bold tabular-nums text-foreground',
+            hasEnd && 'whitespace-nowrap',
             comfortable ? 'text-headline' : 'text-body',
           )}
         >
@@ -156,9 +197,10 @@ export function MetricCard({
             {description}
           </p>
         )}
+        </div>
       </div>
       {hasEnd && (
-        <div className="flex shrink-0 flex-col items-end justify-between gap-2">
+        <div className="flex shrink-0 flex-col items-end justify-between gap-3">
           {placement === 'end' && iconNode}
           {trend && (
             <div data-slot="metric-card-trend" className="min-h-0 flex-1">

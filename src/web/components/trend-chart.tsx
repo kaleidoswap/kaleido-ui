@@ -501,10 +501,16 @@ export function TrendChart({
  * itself, so it follows the theme like the tone does.
  */
 function SolidFill({ id, tone }: { id: string; tone: TrendChartTone }) {
+  // Danger stays a full red, as the danger gradient on meters does: a lighter
+  // top would wash it to pink, so it runs from the tone to a deeper red.
+  const danger = tone === 'danger'
   return (
     <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" style={{ stopColor: `color-mix(in oklab, ${toneFill[tone]}, white 35%)` }} />
-      <stop offset="100%" style={{ stopColor: toneFill[tone] }} />
+      <stop
+        offset="0%"
+        style={{ stopColor: danger ? `color-mix(in srgb, ${toneFill[tone]}, white 12%)` : `color-mix(in oklab, ${toneFill[tone]}, white 35%)` }}
+      />
+      <stop offset="100%" style={{ stopColor: danger ? `color-mix(in srgb, ${toneFill[tone]}, black 22%)` : toneFill[tone] }} />
     </linearGradient>
   )
 }
