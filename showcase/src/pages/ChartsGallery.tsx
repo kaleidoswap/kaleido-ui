@@ -10,13 +10,10 @@ import {
   CardTitle,
   cn,
   DonutChart,
-  Icon,
   LineChart,
-  MetricCard,
   MixedChart,
   Meter,
   ScatterChart,
-  Sparkline,
   TrendChart,
   type ChartDatum,
   type ChartTimeframe,
@@ -294,46 +291,9 @@ function ChartCard({
   )
 }
 
-/** A week-on-week change under a metric's figure: green up, red down. */
-function Delta({ value }: { value: string }) {
-  const down = value.startsWith('-')
-  return (
-    <span className={cn('inline-flex items-center gap-0.5 whitespace-nowrap font-semibold', down ? 'text-danger-fg' : 'text-success-fg')}>
-      <Icon name={down ? 'arrow_downward' : 'arrow_upward'} className="text-icon-xs" aria-hidden="true" />
-      {value}
-      <span className="sr-only"> vs last week</span>
-    </span>
-  )
-}
-
 export function ChartsGallery() {
   return (
     <div className="space-y-6">
-      {/* A single figure is a stat tile, not a chart. */}
-      <div className="grid gap-4 sm:grid-cols-3">
-        <MetricCard
-          size="comfortable"
-          label="Swaps this week"
-          value="1,284"
-          description={<Delta value="+12.7%" />}
-          trend={<Sparkline height="fill" pulse values={[40, 44, 39, 52, 48, 57, 55, 61, 58, 66, 63, 71]} label="Swaps, last 12 weeks: 39 to 71" />}
-        />
-        <MetricCard
-          size="comfortable"
-          label="Volume"
-          value="9.4 BTC"
-          description={<Delta value="-8.7%" />}
-          trend={<Sparkline height="fill" pulse tone="negative" values={[12.9, 12.4, 12.8, 11.9, 12.1, 11.2, 11.6, 10.8, 10.9, 10.1, 10.3, 9.4]} label="Volume, last 12 weeks: 12.9 down to 9.4 BTC" />}
-        />
-        <MetricCard
-          size="comfortable"
-          label="Success rate"
-          value="96.4%"
-          description={<Delta value="+0.2%" />}
-          trend={<Sparkline height="fill" pulse values={[94.1, 95.2, 93.8, 95.9, 96.0, 95.4, 96.8, 96.1, 95.7, 96.9, 96.2, 96.4]} label="Success rate, last 12 weeks: 93.8% to 96.9%" />}
-        />
-      </div>
-
       <div className="grid gap-4 xl:grid-cols-2">
         <ChartCard title="Mixed" use="Volume, BTC · one view at a time: bars, stacked, lines, areas, dots" timeframes={MONTH_FRAMES} wide>
           {(timeframe) => (
@@ -386,7 +346,7 @@ export function ChartsGallery() {
               points={trendPoints.slice(-daysIn[timeframe])}
               series={[
                 { id: 'completed', label: 'completed', tone: 'primary' },
-                { id: 'failed', label: 'not completed', tone: 'danger' },
+                { id: 'failed', label: 'not completed', tone: 'danger', texture: 'solid' },
               ]}
               label="Swap trend"
               scaleLabel="Swaps per day"

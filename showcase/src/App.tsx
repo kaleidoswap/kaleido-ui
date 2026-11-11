@@ -2,6 +2,7 @@ import { createContext, Fragment, useContext, useEffect, useState } from 'react'
 import { ProductPreviews } from './pages/ProductPreviews'
 import { version } from '../../package.json'
 import { ChartsGallery } from './pages/ChartsGallery'
+import { MetricsGallery } from './pages/MetricsGallery'
 import {
   AvatarGallery,
   CollapsibleGallery,
@@ -323,6 +324,7 @@ const NAV_SECTIONS: { label: string; categories: NavCategory[] }[] = [
         label: 'Data',
         icon: 'trending_up',
         pages: [
+          { id: 'metrics', label: 'Metrics', icon: 'show_chart' },
           { id: 'table', label: 'Table', icon: 'table_rows' },
           { id: 'charts', label: 'Charts', icon: 'bar_chart' },
         ],
@@ -1827,6 +1829,15 @@ export function App() {
             description="The common chart forms, one per job: trend, comparison, part-to-whole, relation, a single figure. Plain SVG, theme colours, a table view on every chart."
           >
             <ChartsGallery />
+          </Section>
+
+          {/* ── Metrics ─────────────────────────────────────────────────── */}
+          <Section
+            id="metrics"
+            title="Metrics"
+            description="A single figure at a glance: the value, its change against the previous period, and a sparkline of the run-up."
+          >
+            <MetricsGallery />
           </Section>
 
           {/* Page to page, in nav order */}
