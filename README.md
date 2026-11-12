@@ -149,12 +149,14 @@ console.log(typeScale.body)         // ['16px', '24px']
 |-----------|-------------|
 | `Button` | 17 variants (default, destructive, outline, secondary, ghost, link, glow, surface, cta, cta-gradient, danger-subtle, danger-quiet, hyperlink, h1, h2, h3, quiet), 11 sizes |
 | `Card` | Compositional: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter |
-| `Input` | Form text input with focus ring |
+| `Input` | Form text input with focus ring; `prefix` / `suffix` put a unit (`%`, `bps`) inside the field, beside the typed text |
 | `Select` | Select (Radix): Select, SelectTrigger, SelectContent, SelectItem, etc. Past four items, the list caps its height, scrolls, and shows a search field |
+| `NativeSelect` | The browser's `<select>` styled as a field (`fieldSurface`, the Select chevron), for a short fixed list in a form or dialog; children are `<option>`s |
 | `DropdownMenu` | Dropdown menu (Radix): DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, etc. Searchable past four items, like `Select` |
 | `Table` | Table, TableHeader, TableBody, TableRow, TableHead, TableCell, etc. `TableHead` takes `sortable`, `sortDirection` (`'asc' \| 'desc' \| 'none'`) and `onSort`, and sets `aria-sort` |
 | `Dialog` | Modal dialog (Radix): Dialog, DialogContent, DialogHeader, DialogTitle, etc. |
-| `Tabs` | Tab navigation (Radix): Tabs, TabsList, TabsTrigger, TabsContent |
+| `Tabs` | Tab navigation (Radix): Tabs, TabsList, TabsTrigger, TabsContent. `TabsList` takes `size="compact"` (the card-header bar) and `fullWidth` |
+| `SegmentedTabs` | The Tabs bar as a radio group (`options`, `value`, `onValueChange`), full width by default: Test / Live in a form, 7D / 30D / 90D in a card header with `size="compact"` |
 | `Label` | Form label (Radix) |
 | `Toast` | Toast notifications (Radix): Toast, ToastProvider, Toaster |
 | `Icon` | Inline SVG icon by name, with size variants (xs-2xl). Looking a name up means shipping the whole set; see below |
@@ -187,6 +189,7 @@ and `IconGlyph` draws one glyph at the icon scale (`<IconGlyph glyph={Close} siz
 |-----------|-------------|
 | `StatusBadge` | Status indicator (success, pending, failed, completed, error) |
 | `NetworkBadge` | Network/layer badge (L1, LN, RGB20, RGB21, Spark, Arkade) |
+| `Tag` | A label pill with no status dot ("Revenue share", "Markup"); tones `neutral`, `success`, `warning`, `danger`, `info` (blue), `violet`, `bitcoin` |
 | `AssetIcon` | Circular asset icon with CDN + fallback chain |
 | `AssetCard` | Asset display with icon, name, networks, balance |
 | `TransactionCard` | Transaction row with direction, status, amount |
@@ -199,6 +202,7 @@ and `IconGlyph` draws one glyph at the icon scale (`<IconGlyph glyph={Close} siz
 | `KaleidoswapMark` | The K pictogram on its own; size with `size-*` |
 | `HaloBackdrop` | Decorative drifting brand-colour blobs behind a screen (parent needs `relative isolate`) |
 | `TrendChart` | Line/area trend chart with a chart/table switch; pass `view` + `onViewChange` to control the view from the host, or leave them out |
+| `EarningsByPartnerCard` | Partners ranked by revenue beside the selected partner's swap volume, with a 7D / 30D / 90D period; data through props only (`partners`, `period`, `onPeriodChange`, `selectedId`, `onSelect`, `unit`) |
 | `WithdrawAmountInput` | Amount card for the withdraw flow; `unitSlot` replaces the unit label with your own control (e.g. a unit picker) inside the card |
 
 ### Hooks and functions

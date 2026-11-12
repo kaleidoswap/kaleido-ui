@@ -17,6 +17,7 @@ import {
   appSemanticLight,
   appSemanticOrder,
   appStatusSubtleAlpha,
+  fieldEdge,
 } from '../src/tokens/app-semantic.ts'
 import { radius } from '../src/tokens/radius.ts'
 import { sizing, spacingUnit } from '../src/tokens/sizing.ts'
@@ -144,6 +145,13 @@ const brandVars = (theme: Theme): string =>
 
 const brandThemeInline = [
   ...themedForegroundOrder.map((k) => `  --color-${k}: var(--${k});`),
+].join('\n')
+
+// The field edge (`ring-field-edge`, `ring-field-edge-hover`): an app token at
+// an alpha, inlined so each field resolves it under its own theme.
+const fieldEdgeInline = [
+  `  --color-field-edge: rgb(var(--app-${fieldEdge.token}) / ${fieldEdge.alpha});`,
+  `  --color-field-edge-hover: rgb(var(--app-${fieldEdge.token}) / ${fieldEdge.hoverAlpha});`,
 ].join('\n')
 
 const hexToChannels = (hex: string): string => {
@@ -338,6 +346,9 @@ ${chartSeries.dark.map((_, index) => `  --color-series-${index + 1}:            
 ${appThemeInline}
 ${appStatusSubtle}
 ${networkChipInline}
+
+  /* The field edge — src/tokens/app-semantic.ts fieldEdge */
+${fieldEdgeInline}
 
   /* Brand layer — per-theme foregrounds and glows (see the blocks above) */
 ${brandThemeInline}

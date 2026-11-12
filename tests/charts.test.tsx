@@ -104,6 +104,23 @@ test('one series needs no legend; an area chart draws its wash', () => {
   assert.match(markup, /data-slot="chart-area"/)
 })
 
+test('a gradient area fades to nothing at the baseline, and a halo marks the latest point', () => {
+  const plain = renderToStaticMarkup(h(AreaChart, { data: months, series: [two[0]], label: 'Volume', scaleLabel: 'BTC' }))
+  // The defaults are unchanged: the flat wash and the r 4 end marker.
+  assert.match(plain, /stop-opacity="0.14"[\s\S]*stop-opacity="0.04"/)
+  assert.match(plain, /data-marker="dot"/)
+  assert.doesNotMatch(plain, /chart-end-halo/)
+  assert.match(plain, /<circle [^>]*r="4"/)
+
+  const marked = renderToStaticMarkup(
+    h(AreaChart, { data: months, series: [two[0]], label: 'Volume', scaleLabel: 'BTC', areaFill: 'gradient', latestMarker: 'halo' }),
+  )
+  assert.match(marked, /stop-opacity="0.38"[\s\S]*stop-opacity="0"/)
+  assert.match(marked, /data-slot="chart-end-halo"[^>]*r="10" fill="var\(--series-1\)" opacity="0.25"/)
+  assert.match(marked, /<circle [^>]*r="5.5" fill="var\(--series-1\)" stroke="var\(--card\)"/)
+  assert.doesNotMatch(marked, hexFill)
+})
+
 test('no data renders the empty state, never an empty frame', () => {
   const empty = h('p', null, 'No swaps yet')
   assert.equal(renderToStaticMarkup(h(LineChart, { data: [], series: two, label: 'x', scaleLabel: 'y', empty })), '<p>No swaps yet</p>')
@@ -181,6 +198,39 @@ test('on a phone a bar list row puts the bar under its label and value', () => {
   const markup = renderToStaticMarkup(h(BarList, { label: 'Pairs', items: [{ id: 'x', label: 'BTC', value: 1 }] }))
   // The bar spans the row and comes last below sm; beside the label from sm up.
   assert.match(markup, /order-last col-span-full[^"]*sm:order-none sm:col-span-1/)
+})
+
+test('ranked and selectable, bar list rows are buttons with a rank, a second line and the selected tint', async () => {
+  const partners = [
+    { id: 'orbit', label: 'Orbit Pay', value: 97_500, detail: '301 swaps' },
+    { id: 'acme', label: 'Acme Wallet', value: 412_300, detail: '1,284 swaps' },
+  ]
+  const picked: string[] = []
+  const view = mount(
+    h(BarList, { label: 'Partners', items: partners, sort: 'desc', ranked: true, showPercent: false, selectedId: 'acme', onSelect: (id: string) => picked.push(id) }),
+  )
+  const list = view.container.querySelector('[data-slot="bar-list"]')!
+  assert.equal(list.getAttribute('data-layout'), 'stacked')
+  const rows = [...view.container.querySelectorAll('[data-slot="bar-list-row"] > button')] as HTMLButtonElement[]
+  assert.deepEqual(rows.map((row) => row.getAttribute('aria-pressed')), ['true', 'false'])
+  // Ranked in the order shown, the badge hidden from the name (the list is ordered).
+  const ranks = [...view.container.querySelectorAll('[data-slot="bar-list-rank"]')]
+  assert.deepEqual(ranks.map((rank) => rank.textContent), ['1', '2'])
+  assert.ok(ranks.every((rank) => rank.getAttribute('aria-hidden') === 'true'))
+  assert.match(rows[0].textContent!, /Acme Wallet1,284 swaps412,300/)
+  // Selected is the active tint and no outline; the others hover violet.
+  assert.match(rows[0].className, /bg-gradient-active/)
+  assert.doesNotMatch(rows[0].className, /\bring-1\b|ring-inset|hover-gradient-violet/)
+  assert.match(rows[1].className, /hover-gradient-violet/)
+  await interact(() => rows[1].click())
+  assert.deepEqual(picked, ['orbit'])
+  view.unmount()
+})
+
+test('without onSelect or ranked a bar list keeps its rows; detail adds a second line under the label', () => {
+  const markup = renderToStaticMarkup(h(BarList, { label: 'Pairs', items: [{ id: 'x', label: 'BTC', value: 1, detail: '3 swaps' }] }))
+  assert.doesNotMatch(markup, /<button|data-layout|aria-pressed/)
+  assert.match(markup, />BTC<\/span><span class="truncate text-tiny tabular-nums text-muted-foreground">3 swaps</)
 })
 
 test('a donut folds the tail into Other past six parts, keeping survivors in order', () => {

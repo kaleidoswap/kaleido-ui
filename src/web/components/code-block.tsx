@@ -24,7 +24,7 @@ export function CodeBlock({ code, label = 'code', language, className }: CodeBlo
     <figure
       data-slot="code-block"
       aria-label={label}
-      className={cn('relative m-0 min-w-0 overflow-hidden rounded-xl bg-muted/60 shadow-inner ring-1 ring-inset ring-secondary/15', className)}
+      className={cn('relative m-0 min-w-0 overflow-hidden rounded-xl bg-muted/60 shadow-inner ring-1 ring-inset ring-secondary-content/30', className)}
     >
       {language && (
         <figcaption className={cn('px-4 pt-3 text-muted-foreground', eyebrow)}>{language}</figcaption>

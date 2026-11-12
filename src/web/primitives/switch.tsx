@@ -69,7 +69,7 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         onClick={() => onCheckedChange?.(!checked)}
         className={cn(
           // The base: an inset track and a raised card thumb. Only the off track
-          // is ringed in violet: on light it would otherwise have no edge.
+          // is ringed in violet content: without it the track has no edge.
           'group relative inline-flex shrink-0 cursor-pointer items-center rounded-full p-1 shadow-inner transition-all duration-300',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft',
           'disabled:pointer-events-none disabled:opacity-50',
@@ -78,7 +78,7 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
           icons ? 'h-9 w-18' : 'h-6 w-11',
           !icons && checked
             ? 'bg-primary bg-gradient-primary'
-            : 'bg-foreground/8 ring-1 ring-inset ring-secondary/20',
+            : 'bg-foreground/8 ring-1 ring-inset ring-secondary-content/45',
           className
         )}
       >

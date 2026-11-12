@@ -18,7 +18,7 @@ import {
   NetworkFilterDropdown,
 } from './pages/ComponentGalleries'
 import { DeskPanelGallery } from './pages/DeskPanelGallery'
-import { ScrollArea, ThemeToggle, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput } from '@kaleido-ui/index'
+import { ScrollArea, ThemeToggle, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput, NativeSelect } from '@kaleido-ui/index'
 import {
   Button,
   IconButton,
@@ -35,6 +35,7 @@ import {
   TabsList,
   TabsTrigger,
   TabsContent,
+  SegmentedTabs,
   Dialog,
   DialogTrigger,
   DialogContent,
@@ -62,6 +63,7 @@ import {
   StatusBadge,
   NetworkBadge,
   StatusChip,
+  Tag,
   ToneBadge,
   AssetCard,
   SettingItem,
@@ -162,6 +164,42 @@ function Row({
     <div className="mb-6">
       <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-3">{label}</p>
       <div className={`flex items-center gap-3 ${wrap ? 'flex-wrap' : ''}`}>{children}</div>
+    </div>
+  )
+}
+
+/** SegmentedTabs: a choice that switches no panel, full width in a form and compact in a card header. */
+function SegmentedTabsDemo() {
+  const [environment, setEnvironment] = useState('test')
+  const [period, setPeriod] = useState('30d')
+  return (
+    <div className="mt-8 flex max-w-lg flex-col gap-6">
+      <div className="flex flex-col gap-2">
+        <Label id="environment-label">Environment — full width, Live disabled</Label>
+        <SegmentedTabs
+          aria-labelledby="environment-label"
+          value={environment}
+          onValueChange={setEnvironment}
+          options={[
+            { value: 'test', label: 'Test' },
+            { value: 'live', label: 'Live', disabled: true },
+          ]}
+        />
+      </div>
+      <Row label='size="compact" fullWidth={false} — a card header period'>
+        <SegmentedTabs
+          aria-label="Period"
+          size="compact"
+          fullWidth={false}
+          value={period}
+          onValueChange={setPeriod}
+          options={[
+            { value: '7d', label: '7D' },
+            { value: '30d', label: '30D' },
+            { value: '90d', label: '90D' },
+          ]}
+        />
+      </Row>
     </div>
   )
 }
@@ -831,7 +869,7 @@ export function App() {
           </Section>
 
           {/* ── Chips ───────────────────────────────────────────────────── */}
-          <Section id="chips" title="Chips" description="Every label pill: StatusBadge for the five transaction states, the dot StatusChip an InfoChip carries, and ToneBadge for any status or value in any tone.">
+          <Section id="chips" title="Chips" description="Every label pill: StatusBadge for the five transaction states, the dot StatusChip an InfoChip carries, Tag for what a thing is (no dot), and ToneBadge for any status or value in any tone.">
             <Row label="Status badges">
               {(['success', 'completed', 'pending', 'failed', 'error'] as StatusType[]).map((s) => (
                 <StatusBadge key={s} status={s} />
@@ -848,6 +886,15 @@ export function App() {
                 <ToneBadge key={tone} tone={tone}>
                   {tone}
                 </ToneBadge>
+              ))}
+            </Row>
+            <Row label="Tags — what a thing is, no dot">
+              <Tag tone="info">Revenue share</Tag>
+              <Tag tone="bitcoin">Markup</Tag>
+              {(['neutral', 'success', 'warning', 'danger', 'violet'] as const).map((tone) => (
+                <Tag key={tone} tone={tone}>
+                  {tone}
+                </Tag>
               ))}
             </Row>
             <Row label='Tone badges — case="none", a value'>
@@ -1548,11 +1595,27 @@ export function App() {
                 <Label htmlFor="disabled">Disabled</Label>
                 <Input id="disabled" placeholder="Not editable" disabled />
               </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="markup">Markup — suffix</Label>
+                <Input id="markup" defaultValue="0.25" inputMode="decimal" suffix="%" className="max-w-56" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="share">Revenue share — prefix and suffix</Label>
+                <Input id="share" defaultValue="2500" inputMode="numeric" prefix="≈" suffix="bps" className="max-w-56" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="roll-deadline">Old key stops after — NativeSelect</Label>
+                <NativeSelect id="roll-deadline" defaultValue="7d">
+                  <option value="24h">24 hours</option>
+                  <option value="7d">7 days</option>
+                  <option value="30d">30 days</option>
+                </NativeSelect>
+              </div>
             </div>
           </Section>
 
           {/* ── Tabs ────────────────────────────────────────────────────── */}
-          <Section id="tabs" title="Tabs" description="Tabbed wallet workflow using send, receive, and swap components together.">
+          <Section id="tabs" title="Tabs" description="Tabbed wallet workflow using send, receive, and swap components together; then SegmentedTabs, the same bar as a radio group.">
             <div className="max-w-lg">
               <Tabs defaultValue="send">
                 <TabsList className="w-full">
@@ -1686,6 +1749,7 @@ export function App() {
                 </TabsContent>
               </Tabs>
             </div>
+            <SegmentedTabsDemo />
           </Section>
 
           {/* ── Dialog ──────────────────────────────────────────────────── */}
