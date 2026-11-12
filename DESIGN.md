@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.2.13    # must equal package.json's version; check-design-doc fails otherwise
+version: 0.2.14    # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -540,7 +540,7 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 | Compare a few series across a few categories | `BarChart` (grouped) |
 | Part-to-whole per category | `BarChart layout="stacked"` |
 | Many or long-named categories, one series | `BarChart orientation="horizontal"` |
-| A ranked or dated list with every value printed | `BarList` (the `Meter` fill; `labelWidth` lines up lists stacked one under another; on a phone the bar runs under its label) |
+| A ranked or dated list with every value printed | `BarList` (the `Meter` fill; `labelWidth` lines up lists stacked one under another; on a phone the bar runs under its label; `ranked`, a `detail` line per item, and `selectedId` + `onSelect` rows that drive a chart beside them) |
 | Part-to-whole at a glance, ≤ 6 parts | `DonutChart` (close values belong in a bar chart) |
 | How two measures relate, ≤ 3 series | `ScatterChart` |
 | One ratio against a limit | `Meter` |
@@ -548,6 +548,8 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 **Colour.** **Green, violet and azzurro** are series 1–3; a chart that needs more takes **yellow, magenta, orange** for series 4–6. They are `--series-1…6` from `chartSeries`, a step per theme. The brand colours themselves sit above the lightness band a series colour must stay inside on the dark surface, so these are the hues placed inside it (on dark the yellow is a gold). Violet and azzurro collapse into each other under deuteranopia at equal lightness, so violet is kept darker; yellow and orange are never neighbours, so magenta sits between them. The order is the colour-blind-safety mechanism: every adjacent pair passes CVD separation (worst ΔE 12.2 dark, 19.2 light) and the normal-vision floor. Never cycle past six: fold the tail into "Other" (`DonutChart` does it for you). Scatter charts are capped at three series (the slots that also pass for every pair) and throw on a fourth. One series means one colour for every bar — never a value ramp on nominal categories.
 
 **Marks.** Lines 2 px, round joins; end markers r 4 with a 2 px ring in the card colour; area fills a 10 % wash; bars at most 24 px thick with a 4 px rounded data end and a square baseline end; a 2 px surface gap between touching bars and stacked segments; gridlines solid hairlines on `border` — never dashed. Text never wears a series colour: values, labels and legends stay in text tokens beside a coloured key.
+
+**A selectable `BarList`.** With `onSelect` each row is a button (`aria-pressed`) that picks its item, with the violet hover; `selectedId`'s row takes the `gradient-active` tint and no outline, and its `ranked` badge turns green. `ranked` or `onSelect` stacks every row at any width — the rank badge, the label over its `detail`, the value, the bar under them — so the list fits a 21rem side column.
 
 **Every chart has** a value axis linear from zero whose top label is the largest value; a legend for two or more series (none for one — the label names it); a hover layer (a crosshair and every series at that x on line and area charts, the whole category band as the target on bars, the nearest point on a scatter) with the same readout on keyboard focus through ←/→, Home/End and Escape and a polite live region; a **table view** one toggle away, which is also the relief channel for the two light-theme slots below 3:1 on white; and an `empty` node instead of an empty frame.
 
