@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.2.10    # must equal package.json's version; check-design-doc fails otherwise
+version: 0.2.11    # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -605,6 +605,8 @@ A circle, `sm` 32 px or `lg` 40 px: a custom image, or the name's initials (requ
 ### FormField
 
 `<FormField label hint error>{control}</FormField>` wires a `Label` to its control (`htmlFor` / `id`, generated when absent), attaches the hint and the error with `aria-describedby`, marks the control `aria-invalid` on error and announces the error as an alert. Do not wire these by hand.
+
+**`Input prefix suffix`** puts a unit inside the field: a sign before the value, `%` or `bps` after it. The field becomes a box (`fieldShell`, the `fieldSurface` look with focus read through `focus-within`) holding the unit and the input side by side, so typed text stops short of the unit instead of running under it. The unit is `muted-foreground`, joins the input's `aria-describedby` so it is read with the value, and a press on it focuses the input. `className` styles the box; the ref is the input. Without either prop `Input` is the bare input it was.
 
 ### Segmented control
 

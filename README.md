@@ -149,7 +149,7 @@ console.log(typeScale.body)         // ['16px', '24px']
 |-----------|-------------|
 | `Button` | 17 variants (default, destructive, outline, secondary, ghost, link, glow, surface, cta, cta-gradient, danger-subtle, danger-quiet, hyperlink, h1, h2, h3, quiet), 11 sizes |
 | `Card` | Compositional: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter |
-| `Input` | Form text input with focus ring |
+| `Input` | Form text input with focus ring; `prefix` / `suffix` put a unit (`%`, `bps`) inside the field, beside the typed text |
 | `Select` | Select (Radix): Select, SelectTrigger, SelectContent, SelectItem, etc. Past four items, the list caps its height, scrolls, and shows a search field |
 | `DropdownMenu` | Dropdown menu (Radix): DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, etc. Searchable past four items, like `Select` |
 | `Table` | Table, TableHeader, TableBody, TableRow, TableHead, TableCell, etc. `TableHead` takes `sortable`, `sortDirection` (`'asc' \| 'desc' \| 'none'`) and `onSort`, and sets `aria-sort` |

@@ -1548,6 +1548,14 @@ export function App() {
                 <Label htmlFor="disabled">Disabled</Label>
                 <Input id="disabled" placeholder="Not editable" disabled />
               </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="markup">Markup — suffix</Label>
+                <Input id="markup" defaultValue="0.25" inputMode="decimal" suffix="%" className="max-w-56" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="share">Revenue share — prefix and suffix</Label>
+                <Input id="share" defaultValue="2500" inputMode="numeric" prefix="≈" suffix="bps" className="max-w-56" />
+              </div>
             </div>
           </Section>
 
