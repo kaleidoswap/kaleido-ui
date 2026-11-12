@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.2.16    # must equal package.json's version; check-design-doc fails otherwise
+version: 0.2.17    # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -561,6 +561,14 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 - **`comfortable`** — the desk tile on panel dashboards: `p-4`, `rounded-2xl` `bg-card`, eyebrow label, value in `headline` (30 px) with `tabular-nums`, `description` in `caption` under it, and the icon at the end of the tile, right of the figure. The figure is the point of the tile, so it is the largest text on it. Do not build a second stat tile from `Card`.
 
 The tile is a `role="group"` named by its label (or `aria-label`), so a failure that replaces the value is announced as belonging to that metric.
+
+### EarningsByPartnerCard
+
+**Intended use.** Earnings by partner on an admin overview or a partner dashboard: one component, so both draw the same card. It takes its data through props and fetches nothing; the period and the selected partner are the host's state.
+
+**Layout.** The header holds the title, a one-line `description` and the period as `SegmentedTabs size="compact"` (7D / 30D / 90D by default, `periods` to change them). Under it the card splits as the platform dashboard's earnings panel does: `lg:grid-cols-[21rem_minmax(0,1fr)]`, stacked below `lg`, with **no divider between the halves**. The left column sits on `bg-gradient-card-hero` and is a ranked, selectable `BarList` — rank, name, swap count, revenue and a bar per partner, largest first — over the total for all partners. The right is the selected partner's swap volume: a `text-subhead` title, the swap count and `bucketLabel` in `tiny`, the total volume in `title`, and an `AreaChart` with `areaFill="gradient"` and `latestMarker="halo"`.
+
+**Data.** `partners` is a list of `EarningsPartner` — `id`, `name`, `revenue`, `swaps`, `volumeSeries` — with `revenue` and each point's `volume` in sats; `unit` (`sat` or `BTC`) says how they print, and `formatValue` overrides that. `selectedId` defaults to the top partner. No partners renders `empty`; a partner with no volume renders `chartEmpty` in place of the chart. Every visible label has an English default and a prop.
 
 ### PageHeader
 

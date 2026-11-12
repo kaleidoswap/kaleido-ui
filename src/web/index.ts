@@ -438,6 +438,12 @@ export {
   type AssetInfoChipProps,
 } from './components/info-chip'
 export { Tag, type TagProps, type TagTone } from './components/tag'
+export {
+  EarningsByPartnerCard,
+  type EarningsByPartnerCardProps,
+  type EarningsPartner,
+  type EarningsVolumePoint,
+} from './components/earnings-by-partner-card'
 export { ErrorBoundary } from './components/error-boundary'
 export { RecoveryPhraseCard, type RecoveryPhraseCardProps } from './components/recovery-phrase-card'
 export {
