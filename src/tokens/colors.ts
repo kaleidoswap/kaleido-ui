@@ -59,7 +59,9 @@ export const lightSemanticColors = {
 const darkSemanticColors = {
   background: '#0E0D16', // surface-base (deepest, near-black with a violet cast)
   foreground: '#EDECF6', // content-primary (cool white)
-  border: 'rgba(200, 192, 240, 0.11)', // lavender hairline
+  // Lavender hairline. At 0.11 table rows, dividers and gridlines were barely
+  // visible on the dark surfaces; 0.20 is about 1.6:1 on the card.
+  border: 'rgba(200, 192, 240, 0.20)',
   input: 'rgba(200, 192, 240, 0.16)',
   destructive: 'hsl(0 62% 50%)',
   secondary: '#282638', // neutral surface (bg-secondary utility is brand violet via app token)
@@ -81,7 +83,7 @@ const darkSemanticColors = {
   chart4: '#8B5CF6',
   chart5: '#DD352E',
   semanticBackground: '#1C1A2A',
-  semanticBorder: 'rgba(200, 192, 240, 0.11)',
+  semanticBorder: 'rgba(200, 192, 240, 0.20)',
 } as const
 
 export const colors = {

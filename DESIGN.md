@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.2.9     # must equal package.json's version; check-design-doc fails otherwise
+version: 0.2.10    # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -21,7 +21,7 @@ colors:
   surface.card: "#1C1A2A"           # surface-overlay, card
   surface.elevated: "#282638"       # accent
   surface.high: "rgb(54 51 74)"
-  border.default: "rgba(200, 192, 240, 0.11)"
+  border.default: "rgba(200, 192, 240, 0.20)"
   border.subtle: "rgba(200, 192, 240, 0.05)"
   border.strong: "rgba(200, 192, 240, 0.18)"
   border.primary-ghost: "rgba(43, 238, 121, 0.22)"
@@ -229,7 +229,7 @@ replacements for it. Different job, same word; check which one you want.
 Borders are translucent lavender, not opaque hues — they composite over whatever
 surface they sit on, so one value works at every step of the ramp:
 
-- **`border.default` `rgba(200,192,240,0.11)`** — the default hairline. Cards, inputs.
+- **`border.default` `rgba(200,192,240,0.20)`** — the default hairline: table rows, dividers, the sidebar edge, chart gridlines. At 0.11 they barely showed on the dark surfaces.
 - **`border.subtle` `rgba(200,192,240,0.05)`** — the quietest edge, for a divider that should barely register.
 - **`border.strong` `rgba(200,192,240,0.18)`** — an edge that has to be seen: a focused input, a selected pill.
 - **`border.primary-ghost` `rgba(43, 238, 121, 0.22)`** — brand green at 22% alpha. Used only when a surface is in an active / selected / "this is the section you are in" state.
@@ -567,7 +567,7 @@ The tile is a `role="group"` named by its label (or `aria-label`), so a failure 
 
 ### SummaryRows
 
-Label/value rows in the transaction-card style: the label and value tied by a continuous leader line (`DottedLeader`), no row fill. The markup follows the content: `as="dl"` (default) is a label/value list, a `dt`/`dd` per row; `as="ol"` is an ordered log (a status history); `as="ul"` an unordered one. The visual does not change with `as`. `tone: 'muted'` sets a value quieter than its label (`caption`, normal weight, `muted-foreground`), for the timestamp beside a log event.
+Label/value rows in the transaction-card style: the label and value tied by a continuous leader line (`DottedLeader`, in the `divider` tone), no row fill. The markup follows the content: `as="dl"` (default) is a label/value list, a `dt`/`dd` per row; `as="ol"` is an ordered log (a status history); `as="ul"` an unordered one. The visual does not change with `as`. `tone: 'muted'` sets a value quieter than its label (`caption`, normal weight, `muted-foreground`), for the timestamp beside a log event.
 
 ### CopyButton
 
@@ -575,7 +575,7 @@ Copying reports what actually happened, everywhere. `useCopyToClipboard()` retur
 
 - **`CopyButton value label`** — the small (`sm`) quiet icon button named "Copy {label}" with `CopyIcon`'s glyph (`variant="bare"`): the copy glyph, the check once copied. A success is announced ("{label} copied to the clipboard"); a failure shows "Copy failed — select it and copy by hand." beside it as an alert. It stops the click's propagation, since it usually sits in a clickable row.
 - **`Copyable value label`** — the value (or a shortened `children`) plus its `CopyButton`; the text stays `select-all` and its `title` is the full value, which is also what is copied.
-- **`CodeBlock code label language`** — a monospaced `<pre>` that scrolls sideways inside the box's padding, with a `CopyButton` top right; `language` is a label, not highlighting.
+- **`CodeBlock code label language`** — a monospaced `<pre>` that scrolls sideways inside the box's padding, edged in `secondary-content` at 30%, with a `CopyButton` top right; `language` is a label, not highlighting.
 
 `ActivityDetailRow`, `SecretRevealCard` and `RecoveryPhraseCard` take `copyValue` to copy themselves this way; `onCopy` still works for existing callers. The destructive toast's copy control uses the hook and no longer shows "Copied" after a failed write. `CopyIcon` alone (`variant="tile"`) is the glyph for a row that is itself the control.
 
@@ -721,7 +721,7 @@ Layered translucency lets the animated background glow breathe through the UI wi
 
 - `glass.nav` — floating chrome (bottom nav, sticky headers): `bg-card/60 backdrop-blur-xl`
 - `glass.card` — every card, panel and tile: `bg-card/55 backdrop-blur-xl backdrop-saturate-150`, paired with `bg-gradient-card` (or `-hero`) and `shadow-card`, which also draws the glass edge: a 1px `--card-edge` ring of inset shadows (violet top-left → near-clear → green bottom-right, like the card fill) in the card's `::before`, so don't put a `before:` on a card. The page ambience (`bg-page-radial`) is what the glass picks up, so a full-screen view should carry it.
-- `glass.field` — text fields: `fieldSurface` in `src/web/utils/field-styles.ts` (`Input`, `NumberInput`, the full `SelectTrigger`) — the glass card with an inner shadow and a `secondary/15` hairline that brightens on hover and turns green (the ring) on focus. A hand-rolled field nested in a card uses the same classes minus the blur. Its `Label` is the eyebrow in `text-secondary-content`.
+- `glass.field` — text fields: `fieldSurface` in `src/web/utils/field-styles.ts` (`Input`, `NumberInput`, the full `SelectTrigger`) — the glass card with an inner shadow and the field edge, `ring-field-edge` (`fieldEdge` in the tokens: `secondary-content` at 40%, about 2.1:1 on a card in both themes), that brightens to `ring-field-edge-hover` (65%) on hover and turns green (the ring, no glow) on focus. Every field takes its edge from `fieldEdge`, so changing it there changes them all. A hand-rolled field nested in a card uses the same classes minus the blur. Its `Label` is the eyebrow in `text-secondary-content`.
 - `glass.row` — rows nested inside a card: `bg-muted/40`, no blur
 - `glass.pill` — chips, filter pills, selector triggers: `bg-white/8`
 - `glass.overlay` — sheets, dialogs, scrims: `bg-background/80 backdrop-blur-lg`

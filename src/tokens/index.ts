@@ -10,6 +10,7 @@ export {
   appSemanticLight,
   appSemanticOrder,
   appStatusSubtleAlpha,
+  fieldEdge,
   type AppSemanticToken,
 } from './app-semantic'
 export { fontFamily, typeScale, fontWeight, letterSpacing, iconSize, iconBoxSize } from './typography'

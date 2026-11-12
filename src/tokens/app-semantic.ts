@@ -117,6 +117,23 @@ export const appSemanticLight: AppSemanticChannels = {
   'network-spark': '13 12 20', //   #0D0C14
 }
 
+/**
+ * The field edge: the hairline round every text field (`fieldSurface`:
+ * `Input`, `NumberInput`, the full `SelectTrigger`, `DatePicker`), as
+ * `ring-field-edge`, brightening to `ring-field-edge-hover` under the pointer.
+ *
+ * One app token at an alpha, so it follows the theme, and one place to change
+ * it: a different edge for every field is an edit to this object. Violet
+ * content at 40% is about 2.1:1 against the card on dark (#A48AFF) and on
+ * white (#5420CC); `secondary/15`, the edge it replaces, vanished on dialogs
+ * and cards.
+ */
+export const fieldEdge: { token: AppSemanticToken; alpha: number; hoverAlpha: number } = {
+  token: 'secondary-content',
+  alpha: 0.4,
+  hoverAlpha: 0.65,
+}
+
 /** Fixed-alpha tinted intent surfaces (e.g. `bg-status-danger-subtle`). */
 export const appStatusSubtleAlpha = '0.15'
 
