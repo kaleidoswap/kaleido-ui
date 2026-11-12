@@ -63,6 +63,7 @@ import {
   StatusBadge,
   NetworkBadge,
   StatusChip,
+  Tag,
   ToneBadge,
   AssetCard,
   SettingItem,
@@ -868,7 +869,7 @@ export function App() {
           </Section>
 
           {/* ── Chips ───────────────────────────────────────────────────── */}
-          <Section id="chips" title="Chips" description="Every label pill: StatusBadge for the five transaction states, the dot StatusChip an InfoChip carries, and ToneBadge for any status or value in any tone.">
+          <Section id="chips" title="Chips" description="Every label pill: StatusBadge for the five transaction states, the dot StatusChip an InfoChip carries, Tag for what a thing is (no dot), and ToneBadge for any status or value in any tone.">
             <Row label="Status badges">
               {(['success', 'completed', 'pending', 'failed', 'error'] as StatusType[]).map((s) => (
                 <StatusBadge key={s} status={s} />
@@ -885,6 +886,15 @@ export function App() {
                 <ToneBadge key={tone} tone={tone}>
                   {tone}
                 </ToneBadge>
+              ))}
+            </Row>
+            <Row label="Tags — what a thing is, no dot">
+              <Tag tone="info">Revenue share</Tag>
+              <Tag tone="bitcoin">Markup</Tag>
+              {(['neutral', 'success', 'warning', 'danger', 'violet'] as const).map((tone) => (
+                <Tag key={tone} tone={tone}>
+                  {tone}
+                </Tag>
               ))}
             </Row>
             <Row label='Tone badges — case="none", a value'>

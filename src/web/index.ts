@@ -437,6 +437,7 @@ export {
   type NetworkInfoChipProps,
   type AssetInfoChipProps,
 } from './components/info-chip'
+export { Tag, type TagProps, type TagTone } from './components/tag'
 export { ErrorBoundary } from './components/error-boundary'
 export { RecoveryPhraseCard, type RecoveryPhraseCardProps } from './components/recovery-phrase-card'
 export {

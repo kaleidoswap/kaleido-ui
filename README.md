@@ -189,6 +189,7 @@ and `IconGlyph` draws one glyph at the icon scale (`<IconGlyph glyph={Close} siz
 |-----------|-------------|
 | `StatusBadge` | Status indicator (success, pending, failed, completed, error) |
 | `NetworkBadge` | Network/layer badge (L1, LN, RGB20, RGB21, Spark, Arkade) |
+| `Tag` | A label pill with no status dot ("Revenue share", "Markup"); tones `neutral`, `success`, `warning`, `danger`, `info` (blue), `violet`, `bitcoin` |
 | `AssetIcon` | Circular asset icon with CDN + fallback chain |
 | `AssetCard` | Asset display with icon, name, networks, balance |
 | `TransactionCard` | Transaction row with direction, status, amount |

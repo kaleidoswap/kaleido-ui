@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.2.15    # must equal package.json's version; check-design-doc fails otherwise
+version: 0.2.16    # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -584,6 +584,10 @@ Copying reports what actually happened, everywhere. `useCopyToClipboard()` retur
 ### ToneBadge
 
 A small pill in a semantic tone, drawn from theme tokens only with no border: the tint is the edge (the `muted` tone is `bg-foreground/[0.07] text-muted-foreground`, which stays visible on the light theme). `outline` alone is drawn as its `border-border` hairline. `case="upper"` (default) is a status set as the eyebrow; `case="none"` is a value (a payout total) in `caption`, with no uppercase or tracking.
+
+### Tag
+
+**`Tag tone`** names what a thing is — "Revenue share", "Markup" — where a `StatusChip` says how it is doing. The same pill as `StatusChip` (`xxs` bold, `rounded-full`, the tint as its only edge) with no dot. Tones are a tint and a per-theme foreground: `neutral` (the default), `success`, `warning`, `danger`, `info` (blue, `text-info-fg` on `bg-info/12` — not the violet of `StatusChip`'s info), `violet`, and `bitcoin` (the Bitcoin network chip, `bg-network-bitcoin-chip text-network-bitcoin-fg`). `ToneBadge` stays the pill for a status set as the eyebrow, or a value in `caption`.
 
 ### Popover and DropdownMenu
 
