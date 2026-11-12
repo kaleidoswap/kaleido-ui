@@ -43,6 +43,7 @@ export {
   SelectItem,
   SelectSeparator,
 } from './primitives/select'
+export { NativeSelect, type NativeSelectProps } from './primitives/native-select'
 export { Switch } from './primitives/switch'
 export { NumberInput, type NumberInputProps } from './primitives/number-input'
 export {

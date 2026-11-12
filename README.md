@@ -151,6 +151,7 @@ console.log(typeScale.body)         // ['16px', '24px']
 | `Card` | Compositional: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter |
 | `Input` | Form text input with focus ring; `prefix` / `suffix` put a unit (`%`, `bps`) inside the field, beside the typed text |
 | `Select` | Select (Radix): Select, SelectTrigger, SelectContent, SelectItem, etc. Past four items, the list caps its height, scrolls, and shows a search field |
+| `NativeSelect` | The browser's `<select>` styled as a field (`fieldSurface`, the Select chevron), for a short fixed list in a form or dialog; children are `<option>`s |
 | `DropdownMenu` | Dropdown menu (Radix): DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, etc. Searchable past four items, like `Select` |
 | `Table` | Table, TableHeader, TableBody, TableRow, TableHead, TableCell, etc. `TableHead` takes `sortable`, `sortDirection` (`'asc' \| 'desc' \| 'none'`) and `onSort`, and sets `aria-sort` |
 | `Dialog` | Modal dialog (Radix): Dialog, DialogContent, DialogHeader, DialogTitle, etc. |

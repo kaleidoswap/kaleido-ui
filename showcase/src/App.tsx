@@ -18,7 +18,7 @@ import {
   NetworkFilterDropdown,
 } from './pages/ComponentGalleries'
 import { DeskPanelGallery } from './pages/DeskPanelGallery'
-import { ScrollArea, ThemeToggle, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput } from '@kaleido-ui/index'
+import { ScrollArea, ThemeToggle, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput, NativeSelect } from '@kaleido-ui/index'
 import {
   Button,
   IconButton,
@@ -1555,6 +1555,14 @@ export function App() {
               <div className="flex flex-col gap-2">
                 <Label htmlFor="share">Revenue share — prefix and suffix</Label>
                 <Input id="share" defaultValue="2500" inputMode="numeric" prefix="≈" suffix="bps" className="max-w-56" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="roll-deadline">Old key stops after — NativeSelect</Label>
+                <NativeSelect id="roll-deadline" defaultValue="7d">
+                  <option value="24h">24 hours</option>
+                  <option value="7d">7 days</option>
+                  <option value="30d">30 days</option>
+                </NativeSelect>
               </div>
             </div>
           </Section>

@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.2.11    # must equal package.json's version; check-design-doc fails otherwise
+version: 0.2.12    # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -607,6 +607,8 @@ A circle, `sm` 32 px or `lg` 40 px: a custom image, or the name's initials (requ
 `<FormField label hint error>{control}</FormField>` wires a `Label` to its control (`htmlFor` / `id`, generated when absent), attaches the hint and the error with `aria-describedby`, marks the control `aria-invalid` on error and announces the error as an alert. Do not wire these by hand.
 
 **`Input prefix suffix`** puts a unit inside the field: a sign before the value, `%` or `bps` after it. The field becomes a box (`fieldShell`, the `fieldSurface` look with focus read through `focus-within`) holding the unit and the input side by side, so typed text stops short of the unit instead of running under it. The unit is `muted-foreground`, joins the input's `aria-describedby` so it is read with the value, and a press on it focuses the input. `className` styles the box; the ref is the input. Without either prop `Input` is the bare input it was.
+
+**`NativeSelect`** is the browser's own `<select>` in the field's clothes: `fieldSurface`, the `Select` trigger's chevron (`text-muted-foreground`, violet on hover), and the open list on the popover colours. Use it for a short fixed list in a form or dialog (a roll deadline: 24 hours, 7 days, 30 days), where the platform picker suits a phone and there is nothing to search; past a handful of options, or for options that need a description, use `Select`. `className` sizes the box round the select; the ref is the `<select>`.
 
 ### Segmented control
 
