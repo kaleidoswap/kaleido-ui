@@ -35,6 +35,18 @@ export interface LineChartProps extends ChartTitleProps {
    * several, overlapping washes stop reading as data, so only the lines draw.
    */
   area?: boolean
+  /**
+   * How the area fills. `wash` (default) is the flat 10% wash; `gradient`
+   * runs from 38% under the line to nothing at the baseline, for a single
+   * series that is the card's one figure (volume over a period).
+   */
+  areaFill?: 'wash' | 'gradient'
+  /**
+   * The mark on each series' latest point. `dot` (default) is the r 4 end
+   * marker; `halo` draws it a size up inside a soft ring of its own colour,
+   * so "now" is the point the eye lands on.
+   */
+  latestMarker?: 'dot' | 'halo'
   /** Counts: keep axis steps whole. */
   integer?: boolean
   formatValue?: (value: number) => string
@@ -61,6 +73,8 @@ export function LineChart({
   label,
   scaleLabel,
   area = false,
+  areaFill = 'wash',
+  latestMarker = 'dot',
   integer = false,
   formatValue = defaultChartFormat,
   height = 240,
@@ -166,8 +180,8 @@ export function LineChart({
           {showArea && (
             <defs>
               <linearGradient id={`${idBase}-wash`} x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0" stopColor={seriesColor(0)} stopOpacity="0.14" />
-                <stop offset="1" stopColor={seriesColor(0)} stopOpacity="0.04" />
+                <stop offset="0" stopColor={seriesColor(0)} stopOpacity={areaFill === 'gradient' ? 0.38 : 0.14} />
+                <stop offset="1" stopColor={seriesColor(0)} stopOpacity={areaFill === 'gradient' ? 0 : 0.04} />
               </linearGradient>
             </defs>
           )}
@@ -213,18 +227,30 @@ export function LineChart({
             ))}
           </g>
 
-          {/* End markers, ringed in the surface so they read where lines cross. */}
-          <g data-slot="chart-end-markers">
-            {series.map((s, slot) => (
-              <circle
-                key={s.id}
-                cx={x(count - 1)}
-                cy={y(data[count - 1].values[s.id] ?? 0)}
-                r={4}
-                fill={seriesColor(slotOf(s.id))}
-                stroke="var(--card)"
-                strokeWidth={2}
-              />
+          {/* End markers, ringed in the surface so they read where lines cross.
+              A halo marker is a size up inside a soft ring of its colour. */}
+          <g data-slot="chart-end-markers" data-marker={latestMarker}>
+            {series.map((s) => (
+              <g key={s.id}>
+                {latestMarker === 'halo' && (
+                  <circle
+                    data-slot="chart-end-halo"
+                    cx={x(count - 1)}
+                    cy={y(data[count - 1].values[s.id] ?? 0)}
+                    r={10}
+                    fill={seriesColor(slotOf(s.id))}
+                    opacity={0.25}
+                  />
+                )}
+                <circle
+                  cx={x(count - 1)}
+                  cy={y(data[count - 1].values[s.id] ?? 0)}
+                  r={latestMarker === 'halo' ? 5.5 : 4}
+                  fill={seriesColor(slotOf(s.id))}
+                  stroke="var(--card)"
+                  strokeWidth={2}
+                />
+              </g>
             ))}
           </g>
 

@@ -366,6 +366,21 @@ export function ChartsGallery() {
           )}
         </ChartCard>
 
+        <ChartCard title='Area, areaFill="gradient" latestMarker="halo"' use="Balance, sats · the fill fades to the baseline, the latest point stands out" timeframes={DAY_FRAMES}>
+          {(timeframe) => (
+            <AreaChart
+              data={balanceByDay.slice(-daysIn[timeframe])}
+              series={[{ id: 'balance', label: 'Balance' }]}
+              label="Wallet balance, September"
+              scaleLabel="Balance, sats"
+              integer
+              formatValue={compactSats}
+              areaFill="gradient"
+              latestMarker="halo"
+            />
+          )}
+        </ChartCard>
+
         <ChartCard title="Stacked columns over time" use="Swaps per day · linear, from 0" timeframes={DAY_FRAMES}>
           {(timeframe) => (
             <TrendChart

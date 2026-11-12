@@ -104,6 +104,23 @@ test('one series needs no legend; an area chart draws its wash', () => {
   assert.match(markup, /data-slot="chart-area"/)
 })
 
+test('a gradient area fades to nothing at the baseline, and a halo marks the latest point', () => {
+  const plain = renderToStaticMarkup(h(AreaChart, { data: months, series: [two[0]], label: 'Volume', scaleLabel: 'BTC' }))
+  // The defaults are unchanged: the flat wash and the r 4 end marker.
+  assert.match(plain, /stop-opacity="0.14"[\s\S]*stop-opacity="0.04"/)
+  assert.match(plain, /data-marker="dot"/)
+  assert.doesNotMatch(plain, /chart-end-halo/)
+  assert.match(plain, /<circle [^>]*r="4"/)
+
+  const marked = renderToStaticMarkup(
+    h(AreaChart, { data: months, series: [two[0]], label: 'Volume', scaleLabel: 'BTC', areaFill: 'gradient', latestMarker: 'halo' }),
+  )
+  assert.match(marked, /stop-opacity="0.38"[\s\S]*stop-opacity="0"/)
+  assert.match(marked, /data-slot="chart-end-halo"[^>]*r="10" fill="var\(--series-1\)" opacity="0.25"/)
+  assert.match(marked, /<circle [^>]*r="5.5" fill="var\(--series-1\)" stroke="var\(--card\)"/)
+  assert.doesNotMatch(marked, hexFill)
+})
+
 test('no data renders the empty state, never an empty frame', () => {
   const empty = h('p', null, 'No swaps yet')
   assert.equal(renderToStaticMarkup(h(LineChart, { data: [], series: two, label: 'x', scaleLabel: 'y', empty })), '<p>No swaps yet</p>')
