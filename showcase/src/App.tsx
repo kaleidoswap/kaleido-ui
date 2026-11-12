@@ -35,6 +35,7 @@ import {
   TabsList,
   TabsTrigger,
   TabsContent,
+  SegmentedTabs,
   Dialog,
   DialogTrigger,
   DialogContent,
@@ -162,6 +163,42 @@ function Row({
     <div className="mb-6">
       <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-3">{label}</p>
       <div className={`flex items-center gap-3 ${wrap ? 'flex-wrap' : ''}`}>{children}</div>
+    </div>
+  )
+}
+
+/** SegmentedTabs: a choice that switches no panel, full width in a form and compact in a card header. */
+function SegmentedTabsDemo() {
+  const [environment, setEnvironment] = useState('test')
+  const [period, setPeriod] = useState('30d')
+  return (
+    <div className="mt-8 flex max-w-lg flex-col gap-6">
+      <div className="flex flex-col gap-2">
+        <Label id="environment-label">Environment — full width, Live disabled</Label>
+        <SegmentedTabs
+          aria-labelledby="environment-label"
+          value={environment}
+          onValueChange={setEnvironment}
+          options={[
+            { value: 'test', label: 'Test' },
+            { value: 'live', label: 'Live', disabled: true },
+          ]}
+        />
+      </div>
+      <Row label='size="compact" fullWidth={false} — a card header period'>
+        <SegmentedTabs
+          aria-label="Period"
+          size="compact"
+          fullWidth={false}
+          value={period}
+          onValueChange={setPeriod}
+          options={[
+            { value: '7d', label: '7D' },
+            { value: '30d', label: '30D' },
+            { value: '90d', label: '90D' },
+          ]}
+        />
+      </Row>
     </div>
   )
 }
@@ -1568,7 +1605,7 @@ export function App() {
           </Section>
 
           {/* ── Tabs ────────────────────────────────────────────────────── */}
-          <Section id="tabs" title="Tabs" description="Tabbed wallet workflow using send, receive, and swap components together.">
+          <Section id="tabs" title="Tabs" description="Tabbed wallet workflow using send, receive, and swap components together; then SegmentedTabs, the same bar as a radio group.">
             <div className="max-w-lg">
               <Tabs defaultValue="send">
                 <TabsList className="w-full">
@@ -1702,6 +1739,7 @@ export function App() {
                 </TabsContent>
               </Tabs>
             </div>
+            <SegmentedTabsDemo />
           </Section>
 
           {/* ── Dialog ──────────────────────────────────────────────────── */}

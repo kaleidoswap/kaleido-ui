@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.2.12    # must equal package.json's version; check-design-doc fails otherwise
+version: 0.2.13    # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -613,6 +613,8 @@ A circle, `sm` 32 px or `lg` 40 px: a custom image, or the name's initials (requ
 ### Segmented control
 
 Mutually exclusive options — a chart / list view toggle — are `FilterChipGroup variant="segmented"`: a radio group with one Tab stop, the arrow keys moving and selecting. An option may be icon-only; it then needs `ariaLabel`, which is also its tooltip. The default `chips` variant (the filter strip) is unchanged.
+
+A choice that is a value in a form or a card — Test / Live in a dialog, the 7D / 30D / 90D period of a card — is **`SegmentedTabs`**: the `Tabs` bar (`bg-card`, `shadow-raised`, the selected option the green fill) as a radio group, one Tab stop, the arrow keys and Home / End moving and selecting, a disabled option skipped. It fills its row with the options sharing it (`fullWidth`, on by default); `size="compact"` is the 45 px bar for a card header, usually with `fullWidth={false}`. It needs `aria-label` or `aria-labelledby`. `TabsList` takes the same `size` and `fullWidth` for real tabs, which switch a panel.
 
 ### Scrollbars
 

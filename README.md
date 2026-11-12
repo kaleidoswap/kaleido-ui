@@ -155,7 +155,8 @@ console.log(typeScale.body)         // ['16px', '24px']
 | `DropdownMenu` | Dropdown menu (Radix): DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, etc. Searchable past four items, like `Select` |
 | `Table` | Table, TableHeader, TableBody, TableRow, TableHead, TableCell, etc. `TableHead` takes `sortable`, `sortDirection` (`'asc' \| 'desc' \| 'none'`) and `onSort`, and sets `aria-sort` |
 | `Dialog` | Modal dialog (Radix): Dialog, DialogContent, DialogHeader, DialogTitle, etc. |
-| `Tabs` | Tab navigation (Radix): Tabs, TabsList, TabsTrigger, TabsContent |
+| `Tabs` | Tab navigation (Radix): Tabs, TabsList, TabsTrigger, TabsContent. `TabsList` takes `size="compact"` (the card-header bar) and `fullWidth` |
+| `SegmentedTabs` | The Tabs bar as a radio group (`options`, `value`, `onValueChange`), full width by default: Test / Live in a form, 7D / 30D / 90D in a card header with `size="compact"` |
 | `Label` | Form label (Radix) |
 | `Toast` | Toast notifications (Radix): Toast, ToastProvider, Toaster |
 | `Icon` | Inline SVG icon by name, with size variants (xs-2xl). Looking a name up means shipping the whole set; see below |

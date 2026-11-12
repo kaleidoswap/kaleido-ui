@@ -258,7 +258,7 @@ const NOT_RENDERED = new Set([
   'DialogClose', 'DialogContent', 'DialogDescription', 'DialogOverlay', 'DialogPortal', 'DialogTitle', 'DialogTrigger',
   'DrawerClose', 'DrawerContent', 'DrawerDescription', 'DrawerOverlay', 'DrawerPortal', 'DrawerTitle', 'DrawerTrigger',
   'SelectItem', 'SelectLabel', 'SelectTrigger', 'SelectValue',
-  'TabsContent', 'TabsList', 'TabsTrigger', 'ActivityTypeTabs',
+  'TabsContent', 'TabsList', 'TabsTrigger', 'ActivityTypeTabs', 'SegmentedTabs',
   'Toast', 'ToastAction', 'ToastViewport',
   'AccountChoiceChip', 'AccountInfoGrid', 'AccountNetworkPicker', 'AccountNetworkSelector', 'AccountStatusTabs',
   'ActivityFilterBar', 'ActivityNetworkFilters', 'AssetCard', 'AssetIcon', 'AssetInfoChip', 'AssetSelector',
