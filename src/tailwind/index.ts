@@ -112,6 +112,8 @@ const preset = {
         // The field edge, at its fixed alphas (as in the v4 `@theme inline` block).
         'field-edge': `rgb(var(--app-${fieldEdge.token}) / ${fieldEdge.alpha})`,
         'field-edge-hover': `rgb(var(--app-${fieldEdge.token}) / ${fieldEdge.hoverAlpha})`,
+        // The focus ring: a per-theme var from kaleido-ui/css (`focusRing` in the tokens).
+        'focus-ring': 'var(--kui-focus-ring)',
         success: colors.success,
         warning: colors.warning,
         danger: colors.danger,

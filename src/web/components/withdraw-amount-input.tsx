@@ -118,7 +118,7 @@ export function WithdrawAmountInput({
           <Label htmlFor={amountId} className="ml-1">
             Amount
           </Label>
-          <div className="overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-card transition-shadow focus-within:ring-1 focus-within:ring-primary/50">
+          <div className="overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-card transition-shadow focus-within:ring-1 focus-within:ring-focus-ring">
             <div className="flex items-center gap-3 px-4 pt-3.5 pb-2.5">
               <div className="min-w-0 flex-1">
                 <input

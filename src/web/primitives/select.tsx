@@ -35,9 +35,9 @@ const SelectTrigger = React.forwardRef<
             hug ? 'w-auto' : 'w-full',
             'gap-3 px-4 py-3 text-left text-body',
             fieldSurface,
-            'data-[state=open]:ring-primary/50',
+            'data-[state=open]:ring-focus-ring',
           ],
-      'focus:ring-1 focus:ring-primary/50',
+      'focus:ring-1 focus:ring-focus-ring',
       'disabled:cursor-not-allowed disabled:opacity-50',
       className
     )}

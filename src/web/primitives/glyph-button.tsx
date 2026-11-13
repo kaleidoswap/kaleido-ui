@@ -45,7 +45,7 @@ export const GlyphButton = React.forwardRef<HTMLButtonElement, GlyphButtonProps>
       title={title ?? label}
       data-slot="icon-button"
       className={cn(
-        'shrink-0 focus-visible:ring-primary/50 focus-visible:ring-offset-0',
+        'shrink-0 focus-visible:ring-focus-ring focus-visible:ring-offset-0',
         shape === 'circle' && 'rounded-full',
         className,
       )}

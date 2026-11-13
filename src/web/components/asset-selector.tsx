@@ -595,7 +595,7 @@ export function AssetSelector({
                       value={search}
                       onChange={(event) => setSearch(event.target.value)}
                       placeholder="Search..."
-                      className="h-11 w-full rounded-2xl bg-foreground/[0.06] ring-1 ring-inset ring-border hover:ring-secondary/40 pl-10 pr-3 text-caption text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:outline-none"
+                      className="h-11 w-full rounded-2xl bg-foreground/[0.06] ring-1 ring-inset ring-border hover:ring-secondary/40 pl-10 pr-3 text-caption text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:ring-focus-ring focus:outline-none"
                     />
                   </div>
                   {filterControls}
@@ -730,7 +730,7 @@ export function AssetSelector({
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search..."
-                className="h-11 w-full rounded-2xl bg-foreground/[0.06] ring-1 ring-inset ring-border hover:ring-secondary/40 pl-10 pr-3 text-caption text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:outline-none"
+                className="h-11 w-full rounded-2xl bg-foreground/[0.06] ring-1 ring-inset ring-border hover:ring-secondary/40 pl-10 pr-3 text-caption text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:ring-focus-ring focus:outline-none"
               />
             </div>
             {filterControls}

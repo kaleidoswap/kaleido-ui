@@ -3,6 +3,8 @@
  *
  * Single source of truth for all color constants across web and native.
  */
+import { focusRing } from './app-semantic'
+
 // Slate identity (see src/tokens/app-semantic.ts). These shadcn-style semantic
 // anchors back the component-facing full-color vars (--background, --card,
 // --primary, …) consumed via raw var() and the bg-card / bg-background /
@@ -48,7 +50,7 @@ export const lightSemanticColors = {
   destructive: 'hsl(0 62% 50%)',
   border: '#E3E3EA', //     border-default
   input: '#DCDCE4',
-  ring: '#17B581',
+  ring: focusRing.light, // #007D49 — the light focus ring (see focusRing); #17B581 was 2.6:1 on white
   chart1: '#2BEE79',
   chart2: '#F6C343',
   chart3: '#F7931A',

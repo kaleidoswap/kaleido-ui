@@ -90,7 +90,7 @@ export function MenuSearch({ value, onChange, label = 'Search' }: MenuSearchProp
           if (['ArrowDown', 'ArrowUp', 'Escape', 'Tab'].includes(event.key)) return
           event.stopPropagation()
         }}
-        className="h-9 w-full rounded-xl bg-foreground/[0.06] pl-9 pr-3 text-caption text-foreground outline-none placeholder:text-muted-foreground focus:ring-1 focus:ring-primary/50 [&::-webkit-search-cancel-button]:hidden"
+        className="h-9 w-full rounded-xl bg-foreground/[0.06] pl-9 pr-3 text-caption text-foreground outline-none placeholder:text-muted-foreground focus:ring-1 focus:ring-focus-ring [&::-webkit-search-cancel-button]:hidden"
       />
     </div>
   )
