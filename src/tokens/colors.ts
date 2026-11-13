@@ -115,7 +115,9 @@ export const colors = {
   borderToken: {
     subtle: 'rgba(200, 192, 240, 0.05)',
     default: 'rgba(200, 192, 240, 0.09)',
-    strong: 'rgba(200, 192, 240, 0.18)',
+    // Above `--border` (0.20 since 0.2.10): at 0.18 the strong edge was the
+    // weaker of the two. 0.30 is about 2.1:1 on the card.
+    strong: 'rgba(200, 192, 240, 0.30)',
   },
 
   /** Text ladder for dark surfaces */

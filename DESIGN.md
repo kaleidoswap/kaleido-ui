@@ -23,7 +23,7 @@ colors:
   surface.high: "rgb(54 51 74)"
   border.default: "rgba(200, 192, 240, 0.20)"
   border.subtle: "rgba(200, 192, 240, 0.05)"
-  border.strong: "rgba(200, 192, 240, 0.18)"
+  border.strong: "rgba(200, 192, 240, 0.30)"
   border.primary-ghost: "rgba(43, 238, 121, 0.22)"
   text.primary: "#FFFFFF"
   text.muted: "rgba(232, 230, 245, 0.58)"
@@ -231,7 +231,7 @@ surface they sit on, so one value works at every step of the ramp:
 
 - **`border.default` `rgba(200,192,240,0.20)`** — the default hairline: table rows, dividers, the sidebar edge, chart gridlines. At 0.11 they barely showed on the dark surfaces.
 - **`border.subtle` `rgba(200,192,240,0.05)`** — the quietest edge, for a divider that should barely register.
-- **`border.strong` `rgba(200,192,240,0.18)`** — an edge that has to be seen: a focused input, a selected pill.
+- **`border.strong` `rgba(200,192,240,0.30)`** — an edge that has to be seen: a focused input, a selected pill. It stays above `border.default`; at 0.18 it had become the weaker of the two.
 - **`border.primary-ghost` `rgba(43, 238, 121, 0.22)`** — brand green at 22% alpha. Used only when a surface is in an active / selected / "this is the section you are in" state.
 
 ### Text
