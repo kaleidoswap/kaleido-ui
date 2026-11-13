@@ -67,6 +67,16 @@ const net = ui.NETWORK_CONFIG.lightning
  */
 const FIXTURES: Record<string, () => ReactElement[]> = {
   AccountMenu: () => [createElement(ui.AccountMenu, { name: 'alex@example.com', label: 'Account' })],
+  EarningsByPartnerCard: () => [
+    // With a partner: the chart's view switch draws its icons.
+    createElement(ui.EarningsByPartnerCard, {
+      partners: [{ id: 'a', name: 'Acme', revenue: 1_000, swaps: 3, volumeSeries: [{ key: '1', label: '1 Nov', volume: 5_000 }] }],
+      period: '30d',
+      onPeriodChange: () => {},
+      onSelect: () => {},
+      unit: 'sat',
+    }),
+  ],
   ListField: () => [
     createElement(ui.ListField, { label: 'Origins', noun: 'origin', items: ['https://a.example'], onChange: () => {} }),
   ],
@@ -258,7 +268,7 @@ const NOT_RENDERED = new Set([
   'DialogClose', 'DialogContent', 'DialogDescription', 'DialogOverlay', 'DialogPortal', 'DialogTitle', 'DialogTrigger',
   'DrawerClose', 'DrawerContent', 'DrawerDescription', 'DrawerOverlay', 'DrawerPortal', 'DrawerTitle', 'DrawerTrigger',
   'SelectItem', 'SelectLabel', 'SelectTrigger', 'SelectValue',
-  'TabsContent', 'TabsList', 'TabsTrigger', 'ActivityTypeTabs',
+  'TabsContent', 'TabsList', 'TabsTrigger', 'ActivityTypeTabs', 'SegmentedTabs',
   'Toast', 'ToastAction', 'ToastViewport',
   'AccountChoiceChip', 'AccountInfoGrid', 'AccountNetworkPicker', 'AccountNetworkSelector', 'AccountStatusTabs',
   'ActivityFilterBar', 'ActivityNetworkFilters', 'AssetCard', 'AssetIcon', 'AssetInfoChip', 'AssetSelector',

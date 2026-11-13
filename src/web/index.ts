@@ -43,6 +43,7 @@ export {
   SelectItem,
   SelectSeparator,
 } from './primitives/select'
+export { NativeSelect, type NativeSelectProps } from './primitives/native-select'
 export { Switch } from './primitives/switch'
 export { NumberInput, type NumberInputProps } from './primitives/number-input'
 export {
@@ -127,7 +128,17 @@ export { FormField, type FormFieldProps } from './components/form-field'
 export { useMediaQuery, useIsNarrow } from './hooks/use-media-query'
 export { useThemeMode, applyThemeMode, type ThemeMode, type UseThemeModeOptions } from './hooks/use-theme-mode'
 export { ThemeToggle, type ThemeToggleProps } from './components/theme-toggle'
-export { Tabs, TabsList, TabsTrigger, TabsContent } from './primitives/tabs'
+export {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+  SegmentedTabs,
+  type TabsListProps,
+  type TabsSize,
+  type SegmentedTabsOption,
+  type SegmentedTabsProps,
+} from './primitives/tabs'
 export { Label } from './primitives/label'
 export {
   type ToastProps,
@@ -426,6 +437,13 @@ export {
   type NetworkInfoChipProps,
   type AssetInfoChipProps,
 } from './components/info-chip'
+export { Tag, type TagProps, type TagTone } from './components/tag'
+export {
+  EarningsByPartnerCard,
+  type EarningsByPartnerCardProps,
+  type EarningsPartner,
+  type EarningsVolumePoint,
+} from './components/earnings-by-partner-card'
 export { ErrorBoundary } from './components/error-boundary'
 export { RecoveryPhraseCard, type RecoveryPhraseCardProps } from './components/recovery-phrase-card'
 export {

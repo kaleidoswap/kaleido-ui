@@ -1,4 +1,5 @@
-import { cn, Icon, MetricCard, Sparkline } from '@kaleido-ui/index'
+import { useState } from 'react'
+import { cn, EarningsByPartnerCard, Icon, MetricCard, Sparkline, Switch, type EarningsPartner } from '@kaleido-ui/index'
 
 /** A week-on-week change under a metric's figure: green up, red down. */
 function Delta({ value }: { value: string }) {
@@ -18,6 +19,70 @@ function Figure({ amount, unit }: { amount: string; unit: string }) {
     <span className="whitespace-nowrap">
       {amount} <span className="text-caption font-semibold uppercase tracking-wide text-muted-foreground">{unit}</span>
     </span>
+  )
+}
+
+// ─── Earnings by partner ────────────────────────────────────────────────────
+
+/** Sample partners; each period scales them and draws a series of its own length. */
+const SAMPLE_PARTNERS = [
+  { id: 'acme', name: 'Acme Wallet', revenue: 412_300, swaps: 1_284, volume: 642_000_000, seed: 3 },
+  { id: 'example', name: 'Example Exchange', revenue: 288_900, swaps: 902, volume: 495_000_000, seed: 7 },
+  { id: 'nimbus', name: 'Nimbus Wallet', revenue: 164_200, swaps: 517, volume: 271_000_000, seed: 11 },
+  { id: 'orbit', name: 'Orbit Pay', revenue: 97_500, swaps: 301, volume: 138_000_000, seed: 5 },
+  { id: 'sample', name: 'Sample Pay', revenue: 41_800, swaps: 122, volume: 66_000_000, seed: 13 },
+]
+const PERIODS: Record<string, { scale: number; points: number; bucket: string; step: number }> = {
+  '7d': { scale: 0.24, points: 7, bucket: 'per day', step: 1 },
+  '30d': { scale: 1, points: 30, bucket: 'per day', step: 1 },
+  '90d': { scale: 2.9, points: 13, bucket: 'per week', step: 7 },
+}
+
+function partnersFor(period: string): EarningsPartner[] {
+  const { scale, points, step } = PERIODS[period]
+  const end = Date.UTC(2026, 10, 12)
+  return SAMPLE_PARTNERS.map(({ seed, volume, ...partner }) => {
+    const weights = Array.from({ length: points }, (_, index) =>
+      0.45 + 0.4 * (Math.sin(index * 1.7 + seed) * 0.5 + 0.5) + 0.25 * (Math.sin(index * 0.6 + seed * 2) * 0.5 + 0.5) + 0.35 * (index / Math.max(1, points - 1)),
+    )
+    const sum = weights.reduce((a, b) => a + b, 0)
+    return {
+      ...partner,
+      revenue: Math.round(partner.revenue * scale),
+      swaps: Math.round(partner.swaps * scale),
+      volumeSeries: weights.map((weight, index) => {
+        const day = new Date(end - (points - 1 - index) * step * 86_400_000)
+        return {
+          key: day.toISOString().slice(0, 10),
+          label: day.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' }),
+          volume: Math.round((volume * scale * weight) / sum),
+        }
+      }),
+    }
+  })
+}
+
+function EarningsDemo() {
+  const [period, setPeriod] = useState('30d')
+  const [selected, setSelected] = useState<string | undefined>(undefined)
+  const [unit, setUnit] = useState<'sat' | 'BTC'>('sat')
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center gap-2 text-caption text-muted-foreground">
+        <Switch checked={unit === 'BTC'} onCheckedChange={(on) => setUnit(on ? 'BTC' : 'sat')} aria-label="Amounts in BTC" />
+        Amounts in BTC
+      </div>
+      <EarningsByPartnerCard
+        partners={partnersFor(period)}
+        period={period}
+        onPeriodChange={setPeriod}
+        selectedId={selected}
+        onSelect={setSelected}
+        unit={unit}
+        description="Ranked by revenue · publishable keys only"
+        bucketLabel={PERIODS[period].bucket}
+      />
+    </div>
   )
 }
 
@@ -89,6 +154,9 @@ export function MetricsGallery() {
           trend={<Sparkline height="fill" pulse values={[4, 4, 4, 4, 4, 4]} label="Orders, recent period: 4" />}
         />
       </div>
+
+      <p className="mb-3 pt-6 text-xs font-mono uppercase tracking-widest text-muted-foreground">EarningsByPartnerCard</p>
+      <EarningsDemo />
     </div>
   )
 }

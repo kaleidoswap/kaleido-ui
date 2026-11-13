@@ -91,7 +91,19 @@ function OverlayScrollArea({
   const viewportRef = useRef<HTMLDivElement & HTMLPreElement & HTMLElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
   const dragRef = useRef<{ pointerId: number; start: number; startScroll: number } | null>(null)
-  const [thumb, setThumb] = useState<ThumbState>(hiddenThumb)
+  const [thumb, commitThumb] = useState<ThumbState>(hiddenThumb)
+  // Each update is decided against the thumb last set here, not inside
+  // React's queue. Under React 18 a functional update can be rebased onto an
+  // older base state, so the equal-values bail-out in `updateThumb` returned a
+  // new object, re-rendered, and the effect that runs after every render
+  // queued it again: "Maximum update depth exceeded".
+  const lastThumbRef = useRef<ThumbState>(hiddenThumb)
+  const setThumb = useCallback((update: (current: ThumbState) => ThumbState) => {
+    const next = update(lastThumbRef.current)
+    if (next === lastThumbRef.current) return
+    lastThumbRef.current = next
+    commitThumb(next)
+  }, [])
   const [isDragging, setIsDragging] = useState(false)
   const [isHoveringThumb, setIsHoveringThumb] = useState(false)
 

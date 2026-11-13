@@ -22,7 +22,7 @@
  * its custom properties, which is what lets light and dark switch at runtime.
  */
 import { animation, keyframes } from '../tokens/animations'
-import { appSemanticOrder } from '../tokens/app-semantic'
+import { appSemanticOrder, fieldEdge } from '../tokens/app-semantic'
 import { themedForegroundOrder } from '../tokens/brand'
 import { colors } from '../tokens/colors'
 import { layer } from '../tokens/layers'
@@ -109,6 +109,9 @@ const preset = {
         ...semanticColors,
         ...appColors,
         ...statusSubtle,
+        // The field edge, at its fixed alphas (as in the v4 `@theme inline` block).
+        'field-edge': `rgb(var(--app-${fieldEdge.token}) / ${fieldEdge.alpha})`,
+        'field-edge-hover': `rgb(var(--app-${fieldEdge.token}) / ${fieldEdge.hoverAlpha})`,
         success: colors.success,
         warning: colors.warning,
         danger: colors.danger,

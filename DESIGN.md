@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.2.10    # must equal package.json's version; check-design-doc fails otherwise
+version: 0.2.19    # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -21,7 +21,7 @@ colors:
   surface.card: "#1C1A2A"           # surface-overlay, card
   surface.elevated: "#282638"       # accent
   surface.high: "rgb(54 51 74)"
-  border.default: "rgba(200, 192, 240, 0.11)"
+  border.default: "rgba(200, 192, 240, 0.20)"
   border.subtle: "rgba(200, 192, 240, 0.05)"
   border.strong: "rgba(200, 192, 240, 0.18)"
   border.primary-ghost: "rgba(43, 238, 121, 0.22)"
@@ -229,7 +229,7 @@ replacements for it. Different job, same word; check which one you want.
 Borders are translucent lavender, not opaque hues — they composite over whatever
 surface they sit on, so one value works at every step of the ramp:
 
-- **`border.default` `rgba(200,192,240,0.11)`** — the default hairline. Cards, inputs.
+- **`border.default` `rgba(200,192,240,0.20)`** — the default hairline: table rows, dividers, the sidebar edge, chart gridlines. At 0.11 they barely showed on the dark surfaces.
 - **`border.subtle` `rgba(200,192,240,0.05)`** — the quietest edge, for a divider that should barely register.
 - **`border.strong` `rgba(200,192,240,0.18)`** — an edge that has to be seen: a focused input, a selected pill.
 - **`border.primary-ghost` `rgba(43, 238, 121, 0.22)`** — brand green at 22% alpha. Used only when a surface is in an active / selected / "this is the section you are in" state.
@@ -540,14 +540,16 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 | Compare a few series across a few categories | `BarChart` (grouped) |
 | Part-to-whole per category | `BarChart layout="stacked"` |
 | Many or long-named categories, one series | `BarChart orientation="horizontal"` |
-| A ranked or dated list with every value printed | `BarList` (the `Meter` fill; `labelWidth` lines up lists stacked one under another; on a phone the bar runs under its label) |
+| A ranked or dated list with every value printed | `BarList` (the `Meter` fill; `labelWidth` lines up lists stacked one under another; on a phone the bar runs under its label; `ranked`, a `detail` line per item, and `selectedId` + `onSelect` rows that drive a chart beside them) |
 | Part-to-whole at a glance, ≤ 6 parts | `DonutChart` (close values belong in a bar chart) |
 | How two measures relate, ≤ 3 series | `ScatterChart` |
 | One ratio against a limit | `Meter` |
 
 **Colour.** **Green, violet and azzurro** are series 1–3; a chart that needs more takes **yellow, magenta, orange** for series 4–6. They are `--series-1…6` from `chartSeries`, a step per theme. The brand colours themselves sit above the lightness band a series colour must stay inside on the dark surface, so these are the hues placed inside it (on dark the yellow is a gold). Violet and azzurro collapse into each other under deuteranopia at equal lightness, so violet is kept darker; yellow and orange are never neighbours, so magenta sits between them. The order is the colour-blind-safety mechanism: every adjacent pair passes CVD separation (worst ΔE 12.2 dark, 19.2 light) and the normal-vision floor. Never cycle past six: fold the tail into "Other" (`DonutChart` does it for you). Scatter charts are capped at three series (the slots that also pass for every pair) and throw on a fourth. One series means one colour for every bar — never a value ramp on nominal categories.
 
-**Marks.** Lines 2 px, round joins; end markers r 4 with a 2 px ring in the card colour; area fills a 10 % wash; bars at most 24 px thick with a 4 px rounded data end and a square baseline end; a 2 px surface gap between touching bars and stacked segments; gridlines solid hairlines on `border` — never dashed. Text never wears a series colour: values, labels and legends stay in text tokens beside a coloured key.
+**Marks.** Lines 2 px, round joins; end markers r 4 with a 2 px ring in the card colour (`latestMarker="halo"` draws the latest point at r 5.5 inside a 25 % ring of its colour, for a chart whose "now" is the point to read); area fills a 10 % wash (`areaFill="gradient"` fades from 38 % under the line to nothing at the baseline, for a single series that is a card's one figure); bars at most 24 px thick with a 4 px rounded data end and a square baseline end; a 2 px surface gap between touching bars and stacked segments; gridlines solid hairlines on `border` — never dashed. Text never wears a series colour: values, labels and legends stay in text tokens beside a coloured key.
+
+**A selectable `BarList`.** With `onSelect` each row is a button (`aria-pressed`) that picks its item, with the violet hover; `selectedId`'s row takes the `gradient-active` tint and no outline, and its `ranked` badge turns green. `ranked` or `onSelect` stacks every row at any width — the rank badge, the label over its `detail`, the value, the bar under them — so the list fits a 21rem side column.
 
 **Every chart has** a value axis linear from zero whose top label is the largest value; a legend for two or more series (none for one — the label names it); a hover layer (a crosshair and every series at that x on line and area charts, the whole category band as the target on bars, the nearest point on a scatter) with the same readout on keyboard focus through ←/→, Home/End and Escape and a polite live region; a **table view** one toggle away, which is also the relief channel for the two light-theme slots below 3:1 on white; and an `empty` node instead of an empty frame.
 
@@ -560,6 +562,14 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 
 The tile is a `role="group"` named by its label (or `aria-label`), so a failure that replaces the value is announced as belonging to that metric.
 
+### EarningsByPartnerCard
+
+**Intended use.** Earnings by partner on an admin overview or a partner dashboard: one component, so both draw the same card. It takes its data through props and fetches nothing; the period and the selected partner are the host's state.
+
+**Layout.** The header holds the title, a one-line `description` and the period as `SegmentedTabs size="compact"` (7D / 30D / 90D by default, `periods` to change them). Under it the card splits as the platform dashboard's earnings panel does: `lg:grid-cols-[21rem_minmax(0,1fr)]`, stacked below `lg`, with **no divider between the halves**. The left column sits on `bg-gradient-card-hero` and is a ranked, selectable `BarList` — rank, name, swap count, revenue and a bar per partner, largest first — over the total for all partners. The right is the selected partner's swap volume: a `text-subhead` title, the swap count and `bucketLabel` in `tiny`, the total volume in `title`, and an `AreaChart` with `areaFill="gradient"` and `latestMarker="halo"`.
+
+**Data.** `partners` is a list of `EarningsPartner` — `id`, `name`, `revenue`, `swaps`, `volumeSeries` — with `revenue` and each point's `volume` in sats; `unit` (`sat` or `BTC`) says how they print, and `formatValue` overrides that. `selectedId` defaults to the top partner. No partners renders `empty`; a partner with no volume renders `chartEmpty` in place of the chart. Every visible label has an English default and a prop.
+
 ### PageHeader
 
 - **`variant="bar"`** (default) — the mobile app bar: sticky, back button, small title, `right` slot.
@@ -567,7 +577,7 @@ The tile is a `role="group"` named by its label (or `aria-label`), so a failure 
 
 ### SummaryRows
 
-Label/value rows in the transaction-card style: the label and value tied by a continuous leader line (`DottedLeader`), no row fill. The markup follows the content: `as="dl"` (default) is a label/value list, a `dt`/`dd` per row; `as="ol"` is an ordered log (a status history); `as="ul"` an unordered one. The visual does not change with `as`. `tone: 'muted'` sets a value quieter than its label (`caption`, normal weight, `muted-foreground`), for the timestamp beside a log event.
+Label/value rows in the transaction-card style: the label and value tied by a continuous leader line (`DottedLeader`, in the `divider` tone), no row fill. The markup follows the content: `as="dl"` (default) is a label/value list, a `dt`/`dd` per row; `as="ol"` is an ordered log (a status history); `as="ul"` an unordered one. The visual does not change with `as`. `tone: 'muted'` sets a value quieter than its label (`caption`, normal weight, `muted-foreground`), for the timestamp beside a log event.
 
 ### CopyButton
 
@@ -575,13 +585,17 @@ Copying reports what actually happened, everywhere. `useCopyToClipboard()` retur
 
 - **`CopyButton value label`** — the small (`sm`) quiet icon button named "Copy {label}" with `CopyIcon`'s glyph (`variant="bare"`): the copy glyph, the check once copied. A success is announced ("{label} copied to the clipboard"); a failure shows "Copy failed — select it and copy by hand." beside it as an alert. It stops the click's propagation, since it usually sits in a clickable row.
 - **`Copyable value label`** — the value (or a shortened `children`) plus its `CopyButton`; the text stays `select-all` and its `title` is the full value, which is also what is copied.
-- **`CodeBlock code label language`** — a monospaced `<pre>` that scrolls sideways inside the box's padding, with a `CopyButton` top right; `language` is a label, not highlighting.
+- **`CodeBlock code label language`** — a monospaced `<pre>` that scrolls sideways inside the box's padding, edged in `secondary-content` at 30%, with a `CopyButton` top right; `language` is a label, not highlighting.
 
 `ActivityDetailRow`, `SecretRevealCard` and `RecoveryPhraseCard` take `copyValue` to copy themselves this way; `onCopy` still works for existing callers. The destructive toast's copy control uses the hook and no longer shows "Copied" after a failed write. `CopyIcon` alone (`variant="tile"`) is the glyph for a row that is itself the control.
 
 ### ToneBadge
 
 A small pill in a semantic tone, drawn from theme tokens only with no border: the tint is the edge (the `muted` tone is `bg-foreground/[0.07] text-muted-foreground`, which stays visible on the light theme). `outline` alone is drawn as its `border-border` hairline. `case="upper"` (default) is a status set as the eyebrow; `case="none"` is a value (a payout total) in `caption`, with no uppercase or tracking.
+
+### Tag
+
+**`Tag tone`** names what a thing is — "Revenue share", "Markup" — where a `StatusChip` says how it is doing. The same pill as `StatusChip` (`caption` medium, `rounded-full`, the tint as its only edge) with no dot. Tones are a tint and a per-theme foreground: `neutral` (the default), `success`, `warning`, `danger`, `info` (blue, `text-info-fg` on `bg-info/12` — not the violet of `StatusChip`'s info), `violet`, and `bitcoin` (the Bitcoin network chip, `bg-network-bitcoin-chip text-network-bitcoin-fg`). `ToneBadge` stays the pill for a status set as the eyebrow, or a value in `caption`.
 
 ### Popover and DropdownMenu
 
@@ -606,9 +620,15 @@ A circle, `sm` 32 px or `lg` 40 px: a custom image, or the name's initials (requ
 
 `<FormField label hint error>{control}</FormField>` wires a `Label` to its control (`htmlFor` / `id`, generated when absent), attaches the hint and the error with `aria-describedby`, marks the control `aria-invalid` on error and announces the error as an alert. Do not wire these by hand.
 
+**`Input prefix suffix`** puts a unit inside the field: a sign before the value, `%` or `bps` after it. The field becomes a box (`fieldShell`, the `fieldSurface` look with focus read through `focus-within`) holding the unit and the input side by side, so typed text stops short of the unit instead of running under it. The unit is `muted-foreground`, joins the input's `aria-describedby` so it is read with the value, and a press on it focuses the input. `className` styles the box; the ref is the input. Without either prop `Input` is the bare input it was.
+
+**`NativeSelect`** is the browser's own `<select>` in the field's clothes: `fieldSurface`, the `Select` trigger's chevron (`text-muted-foreground`, violet on hover), and the open list on the popover colours. Use it for a short fixed list in a form or dialog (a roll deadline: 24 hours, 7 days, 30 days), where the platform picker suits a phone and there is nothing to search; past a handful of options, or for options that need a description, use `Select`. `className` sizes the box round the select; the ref is the `<select>`.
+
 ### Segmented control
 
 Mutually exclusive options — a chart / list view toggle — are `FilterChipGroup variant="segmented"`: a radio group with one Tab stop, the arrow keys moving and selecting. An option may be icon-only; it then needs `ariaLabel`, which is also its tooltip. The default `chips` variant (the filter strip) is unchanged.
+
+A choice that is a value in a form or a card — Test / Live in a dialog, the 7D / 30D / 90D period of a card — is **`SegmentedTabs`**: the `Tabs` bar (`bg-card`, `shadow-raised`, the selected option the green fill) as a radio group, one Tab stop, the arrow keys and Home / End moving and selecting, a disabled option skipped. It fills its row with the options sharing it (`fullWidth`, on by default); `size="compact"` is the 45 px bar for a card header, usually with `fullWidth={false}`. It needs `aria-label` or `aria-labelledby`. `TabsList` takes the same `size` and `fullWidth` for real tabs, which switch a panel.
 
 ### Scrollbars
 
@@ -721,7 +741,7 @@ Layered translucency lets the animated background glow breathe through the UI wi
 
 - `glass.nav` — floating chrome (bottom nav, sticky headers): `bg-card/60 backdrop-blur-xl`
 - `glass.card` — every card, panel and tile: `bg-card/55 backdrop-blur-xl backdrop-saturate-150`, paired with `bg-gradient-card` (or `-hero`) and `shadow-card`, which also draws the glass edge: a 1px `--card-edge` ring of inset shadows (violet top-left → near-clear → green bottom-right, like the card fill) in the card's `::before`, so don't put a `before:` on a card. The page ambience (`bg-page-radial`) is what the glass picks up, so a full-screen view should carry it.
-- `glass.field` — text fields: `fieldSurface` in `src/web/utils/field-styles.ts` (`Input`, `NumberInput`, the full `SelectTrigger`) — the glass card with an inner shadow and a `secondary/15` hairline that brightens on hover and turns green (the ring) on focus. A hand-rolled field nested in a card uses the same classes minus the blur. Its `Label` is the eyebrow in `text-secondary-content`.
+- `glass.field` — text fields: `fieldSurface` in `src/web/utils/field-styles.ts` (`Input`, `NumberInput`, the full `SelectTrigger`) — the glass card with an inner shadow and the field edge, `ring-field-edge` (`fieldEdge` in the tokens: `secondary-content` at 40%, about 2.1:1 on a card in both themes), that brightens to `ring-field-edge-hover` (65%) on hover and turns green (the ring, no glow) on focus. Every field takes its edge from `fieldEdge`, so changing it there changes them all. A hand-rolled field nested in a card uses the same classes minus the blur. Its `Label` is the eyebrow in `text-secondary-content`.
 - `glass.row` — rows nested inside a card: `bg-muted/40`, no blur
 - `glass.pill` — chips, filter pills, selector triggers: `bg-white/8`
 - `glass.overlay` — sheets, dialogs, scrims: `bg-background/80 backdrop-blur-lg`

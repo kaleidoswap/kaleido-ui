@@ -16,6 +16,8 @@ export interface BarListItem {
    * of the list: a completion rate, a success rate. Defaults to `value / sum`.
    */
   percent?: number
+  /** A second, quieter line under the label: "1,284 swaps". */
+  detail?: ReactNode
 }
 
 export interface BarListProps extends ChartTitleProps {
@@ -36,6 +38,16 @@ export interface BarListProps extends ChartTitleProps {
    * up. Longer labels are truncated. Defaults to the longest label.
    */
   labelWidth?: string
+  /** A rank badge (1, 2, 3 …, in the order shown) before each row. Pair with `sort="desc"`. */
+  ranked?: boolean
+  /**
+   * Makes each row a button that picks its item (`aria-pressed`): the list
+   * then drives something beside it, as the partners do the chart on the
+   * earnings card.
+   */
+  onSelect?: (id: string) => void
+  /** The picked row, drawn in the selected tint. */
+  selectedId?: string
   empty?: ReactNode
   className?: string
 }
@@ -58,6 +70,12 @@ export interface BarListProps extends ChartTitleProps {
  * On a phone the label and value share the top line and the bar runs the full
  * width under them, so a long label or value never squeezes the bar to a
  * sliver.
+ *
+ * With `ranked` or `onSelect` every row takes that stacked form at any width:
+ * the rank badge, the label over its `detail`, the value, and the bar under
+ * them, sized for a side column. With `onSelect` each row is a button
+ * (`aria-pressed`) with the violet hover, and `selectedId`'s row takes the
+ * `gradient-active` tint, no outline.
  */
 export function BarList({
   items,
@@ -67,6 +85,9 @@ export function BarList({
   sort = 'none',
   showPercent = true,
   labelWidth,
+  ranked = false,
+  onSelect,
+  selectedId,
   empty,
   className,
   ...head
@@ -87,7 +108,89 @@ export function BarList({
   const label_ = labelWidth ? `minmax(0,${labelWidth})` : 'auto'
   const wideColumns = showPercent ? `${label_} 1fr auto auto` : `${label_} 1fr auto`
 
-  const list = (
+  const stacked = ranked || onSelect !== undefined
+  const labelCell = (item: BarListItem, labelClass: string) =>
+    item.detail === undefined ? (
+      <span className={cn('min-w-0 truncate', labelClass)}>{item.label}</span>
+    ) : (
+      <span className="flex min-w-0 flex-col">
+        <span className={cn('truncate', labelClass)}>{item.label}</span>
+        <span className="truncate text-tiny tabular-nums text-muted-foreground">{item.detail}</span>
+      </span>
+    )
+  const bar = (item: BarListItem, trackClass: string) => (
+    <span className={cn('h-2 overflow-hidden rounded-full bg-primary/15 shadow-inner', trackClass)} aria-hidden="true">
+      <span
+        className="block h-full rounded-full bg-primary bg-gradient-primary"
+        style={{
+          width: `${(Math.max(0, item.value) / top) * 100}%`,
+          // A non-zero value keeps a sliver, so it never reads as zero.
+          minWidth: item.value > 0 ? 4 : 0,
+        }}
+      />
+    </span>
+  )
+
+  const list = stacked ? (
+    <ol
+      data-slot="bar-list"
+      data-layout="stacked"
+      aria-label={label}
+      className={cn('m-0 flex list-none flex-col gap-0.5 p-0 text-caption', framed && 'pt-2', className)}
+    >
+      {rows.map((item, index) => {
+        const selected = onSelect !== undefined && item.id === selectedId
+        // rank · label · value (· percent), the bar under all but the rank.
+        const columns = (ranked ? 1 : 0) + 2 + (showPercent ? 1 : 0)
+        const cells = (
+          <>
+            {ranked && (
+              <span
+                data-slot="bar-list-rank"
+                aria-hidden="true"
+                className={cn(
+                  'flex size-6 items-center justify-center rounded-lg text-tiny font-bold tabular-nums',
+                  selected ? 'bg-primary/15 text-brand' : 'bg-secondary/15 text-secondary-content'
+                )}
+              >
+                {index + 1}
+              </span>
+            )}
+            {labelCell(item, 'font-semibold text-foreground')}
+            <span className="whitespace-nowrap text-right font-bold tabular-nums text-foreground">
+              {item.valueText ?? formatValue(item.value)}
+            </span>
+            {showPercent && <span className="text-right tabular-nums text-muted-foreground">{percentOf(item)}</span>}
+            {bar(item, cn(ranked ? 'col-start-2' : 'col-start-1', STACKED_COLUMN_END[columns]))}
+          </>
+        )
+        const rowClass = cn(
+          'grid w-full items-center gap-x-3 gap-y-1.5 rounded-xl px-2.5 py-2 text-left',
+          STACKED_COLUMNS[`${ranked}-${showPercent}`]
+        )
+        return (
+          <li key={item.id} data-slot="bar-list-row">
+            {onSelect ? (
+              <button
+                type="button"
+                aria-pressed={selected}
+                onClick={() => onSelect(item.id)}
+                className={cn(
+                  rowClass,
+                  'cursor-pointer transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50',
+                  selected ? 'bg-gradient-active' : 'hover-gradient-violet'
+                )}
+              >
+                {cells}
+              </button>
+            ) : (
+              <div className={rowClass}>{cells}</div>
+            )}
+          </li>
+        )
+      })}
+    </ol>
+  ) : (
     <ol
       data-slot="bar-list"
       aria-label={label}
@@ -101,7 +204,6 @@ export function BarList({
       style={{ '--bar-list-columns': wideColumns } as CSSProperties}
     >
       {rows.map((item) => {
-        const share = Math.max(0, item.value) / top
         return (
           <li
             key={item.id}
@@ -113,22 +215,8 @@ export function BarList({
               'sm:col-span-full sm:grid-cols-subgrid sm:items-center sm:gap-y-0'
             )}
           >
-            <span className={cn('min-w-0 truncate text-muted-foreground', !labelWidth && 'sm:max-w-[10rem]')}>
-              {item.label}
-            </span>
-            <span
-              className="order-last col-span-full h-2 overflow-hidden rounded-full bg-primary/15 shadow-inner sm:order-none sm:col-span-1"
-              aria-hidden="true"
-            >
-              <span
-                className="block h-full rounded-full bg-primary bg-gradient-primary"
-                style={{
-                  width: `${share * 100}%`,
-                  // A non-zero value keeps a sliver, so it never reads as zero.
-                  minWidth: item.value > 0 ? 4 : 0,
-                }}
-              />
-            </span>
+            {labelCell(item, cn('text-muted-foreground', !labelWidth && 'sm:max-w-[10rem]'))}
+            {bar(item, 'order-last col-span-full sm:order-none sm:col-span-1')}
             <span className="whitespace-nowrap text-right font-semibold tabular-nums text-foreground">
               {item.valueText ?? formatValue(item.value)}
             </span>
@@ -161,6 +249,16 @@ export function BarList({
     </ChartFrame>
   )
 }
+
+/** Stacked rows, by `${ranked}-${showPercent}`: rank · label · value · percent. */
+const STACKED_COLUMNS: Record<string, string> = {
+  'true-true': 'grid-cols-[auto_minmax(0,1fr)_auto_auto]',
+  'true-false': 'grid-cols-[auto_minmax(0,1fr)_auto]',
+  'false-true': 'grid-cols-[minmax(0,1fr)_auto_auto]',
+  'false-false': 'grid-cols-[minmax(0,1fr)_auto]',
+}
+/** Where a stacked row's bar ends: the last grid line for its column count. */
+const STACKED_COLUMN_END: Record<number, string> = { 2: 'col-end-3', 3: 'col-end-4', 4: 'col-end-5' }
 
 /** 0.8 → "80%"; a non-zero share under 1% prints "<1%", so it never reads as zero. */
 function formatPercent(fraction: number) {

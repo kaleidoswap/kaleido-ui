@@ -79,7 +79,7 @@
   --accent:               #282638;
   --accent-foreground:    #EDECF6;
   --destructive:          hsl(0 62% 50%);
-  --border:               rgba(200, 192, 240, 0.11);
+  --border:               rgba(200, 192, 240, 0.20);
   --input:                rgba(200, 192, 240, 0.16);
   --ring:                 #15E99A;
   --chart-1:              #2BEE79;
@@ -404,6 +404,10 @@
   --color-network-liquid-text: var(--network-liquid-text);
   --color-network-taproot-chip: var(--network-taproot-chip);
   --color-network-taproot-text: var(--network-taproot-text);
+
+  /* The field edge — src/tokens/app-semantic.ts fieldEdge */
+  --color-field-edge: rgb(var(--app-secondary-content) / 0.4);
+  --color-field-edge-hover: rgb(var(--app-secondary-content) / 0.65);
 
   /* Brand layer — per-theme foregrounds and glows (see the blocks above) */
   --color-brand: var(--brand);

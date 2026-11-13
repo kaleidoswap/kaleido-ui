@@ -291,6 +291,32 @@ function ChartCard({
   )
 }
 
+/** Sample partners, so the list has something to rank. */
+const revenueByPartner = [
+  { id: 'acme', label: 'Acme Wallet', value: 412_300, detail: '1,284 swaps' },
+  { id: 'example', label: 'Example Exchange', value: 288_900, detail: '902 swaps' },
+  { id: 'nimbus', label: 'Nimbus Wallet', value: 164_200, detail: '517 swaps' },
+  { id: 'orbit', label: 'Orbit Pay', value: 97_500, detail: '301 swaps' },
+]
+
+function RankedBarList() {
+  const [selected, setSelected] = useState('acme')
+  return (
+    <div className="max-w-[21rem]">
+      <BarList
+        items={revenueByPartner}
+        label="Revenue by partner"
+        sort="desc"
+        ranked
+        showPercent={false}
+        formatValue={sats}
+        selectedId={selected}
+        onSelect={setSelected}
+      />
+    </div>
+  )
+}
+
 export function ChartsGallery() {
   return (
     <div className="space-y-6">
@@ -336,6 +362,21 @@ export function ChartsGallery() {
               scaleLabel="Balance, sats"
               integer
               formatValue={compactSats}
+            />
+          )}
+        </ChartCard>
+
+        <ChartCard title='Area, areaFill="gradient" latestMarker="halo"' use="Balance, sats · the fill fades to the baseline, the latest point stands out" timeframes={DAY_FRAMES}>
+          {(timeframe) => (
+            <AreaChart
+              data={balanceByDay.slice(-daysIn[timeframe])}
+              series={[{ id: 'balance', label: 'Balance' }]}
+              label="Wallet balance, September"
+              scaleLabel="Balance, sats"
+              integer
+              formatValue={compactSats}
+              areaFill="gradient"
+              latestMarker="halo"
             />
           )}
         </ChartCard>
@@ -404,6 +445,10 @@ export function ChartsGallery() {
           {(timeframe) => (
             <BarList items={dailyListFor(timeframe)} label="Swaps completed of total, per day" />
           )}
+        </ChartCard>
+
+        <ChartCard title="Ranked, selectable bar list" use="Revenue by partner · a rank, a second line, and the picked row in the selected tint">
+          <RankedBarList />
         </ChartCard>
 
         <ChartCard title="Donut" use="Balance by layer" timeframes={WINDOW_FRAMES}>
