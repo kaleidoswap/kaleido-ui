@@ -13,8 +13,8 @@ import * as web from '../src/web/index'
 test('a tag is the StatusChip pill without the dot', () => {
   const tag = renderToStaticMarkup(h(Tag, { tone: 'info' }, 'Revenue share'))
   const chip = renderToStaticMarkup(h(StatusChip, { status: 'info', label: 'Info', pulse: false }))
-  assert.match(tag, /^<span data-slot="tag" data-tone="info" class="[^"]*rounded-full px-2 py-0.5 text-xxs font-bold leading-4/)
-  assert.match(chip, /rounded-full px-2 py-0.5 text-xxs font-bold leading-4/)
+  assert.match(tag, /^<span data-slot="tag" data-tone="info" class="[^"]*rounded-full px-3 py-1 text-caption font-medium/)
+  assert.match(chip, /rounded-full px-3 py-1 text-caption font-medium/)
   assert.doesNotMatch(tag, /rounded-full bg-|size-1\.5|animate-ping/)
   assert.match(tag, />Revenue share<\/span><\/span>$/)
 })

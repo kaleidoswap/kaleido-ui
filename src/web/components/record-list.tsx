@@ -31,9 +31,11 @@ export interface RecordItemProps extends Omit<React.HTMLAttributes<HTMLLIElement
   status?: React.ReactNode
   /** One line under the identifier. */
   summary?: React.ReactNode
-  /** `RecordField`s, in a two-column grid. */
+  /** `RecordField`s, in a grid of `columns` (two by default). */
   children?: React.ReactNode
-  /** Buttons at the bottom right. They do not open the record. */
+  /** Fields per line. `4` puts four on one line from the `sm` breakpoint up, two below it. */
+  columns?: 2 | 3 | 4
+  /** Buttons at the right of the fields, on their line. They do not open the record. */
   actions?: React.ReactNode
   /**
    * Opens the record. The whole item becomes clickable, and an explicit
@@ -46,8 +48,14 @@ export interface RecordItemProps extends Omit<React.HTMLAttributes<HTMLLIElement
   selected?: boolean
 }
 
+const recordColumns = {
+  2: 'grid-cols-2',
+  3: 'grid-cols-3',
+  4: 'grid-cols-2 sm:grid-cols-4',
+} as const
+
 const RecordItem = React.forwardRef<HTMLLIElement, RecordItemProps>(
-  ({ identifier, status, summary, children, actions, onOpen, openLabel = 'record', selected = false, className, ...props }, ref) => {
+  ({ identifier, status, summary, children, columns = 2, actions, onOpen, openLabel = 'record', selected = false, className, ...props }, ref) => {
     const stop = (event: React.MouseEvent) => event.stopPropagation()
     return (
       <li
@@ -83,10 +91,14 @@ const RecordItem = React.forwardRef<HTMLLIElement, RecordItemProps>(
             )}
           </div>
         </div>
-        {children && <dl className="m-0 grid grid-cols-2 gap-x-4 gap-y-2">{children}</dl>}
-        {actions && (
-          <div className="mt-3 flex justify-start gap-2" onClick={stop}>
-            {actions}
+        {(children || actions) && (
+          <div className="flex items-end justify-between gap-3">
+            {children && <dl className={cn('m-0 grid min-w-0 flex-1 gap-x-2 gap-y-2', recordColumns[columns])}>{children}</dl>}
+            {actions && (
+              <div className="ml-auto flex shrink-0 justify-end gap-2" onClick={stop}>
+                {actions}
+              </div>
+            )}
           </div>
         )}
       </li>

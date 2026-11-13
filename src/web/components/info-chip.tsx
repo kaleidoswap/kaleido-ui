@@ -83,19 +83,19 @@ export function StatusChip({ status, label, pulse = true, className }: StatusChi
       data-slot="status-chip"
       data-status={status}
       className={cn(
-        'inline-flex max-w-full items-center gap-1.5 rounded-full px-2 py-0.5 text-xxs font-bold leading-4',
+        'inline-flex max-w-full items-center gap-2 rounded-full px-3 py-1 text-caption font-medium',
         statusToneClass[status],
         className,
       )}
     >
-      <span aria-hidden="true" className="relative flex size-1.5 shrink-0">
+      <span aria-hidden="true" className="relative flex size-2 shrink-0">
         {pulse && (
           <span
             data-slot="status-chip-pulse"
             className={cn('absolute inset-0 rounded-full opacity-0 motion-safe:animate-ping motion-safe:opacity-75', statusDotClass[status])}
           />
         )}
-        <span className={cn('relative size-1.5 rounded-full', statusDotClass[status])} />
+        <span className={cn('relative size-2 rounded-full', statusDotClass[status])} />
       </span>
       <span className="truncate">{label ?? defaultStatusLabel[status]}</span>
     </span>

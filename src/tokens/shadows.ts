@@ -58,6 +58,8 @@ export const shadow = {
   navActive: '0 0 8px rgba(21, 233, 154, 0.5)',
   /** Floating popover / modal elevation on dark surfaces. */
   popover: '0 0 0 1px rgba(164, 138, 255, 0.10), 0 24px 60px -12px rgba(7, 4, 22, 0.8), 0 0 48px -16px rgba(111, 50, 255, 0.35)',
+  /** Popover / dropdown panel: the popover elevation without its hairline edge. */
+  floating: '0 24px 60px -12px rgba(7, 4, 22, 0.8), 0 0 48px -16px rgba(111, 50, 255, 0.35)',
   /** Toast / inline-notification elevation. */
   toast: '0 0 0 1px rgba(164, 138, 255, 0.10), 0 12px 36px -8px rgba(7, 4, 22, 0.6)',
 } as const
@@ -104,5 +106,6 @@ export const shadowLight: Record<keyof typeof shadow, string> = {
   // stack into the thick green border the light theme showed.
   navActive: '0 2px 8px -3px rgba(23, 181, 129, 0.3)',
   popover: `0 0 0 1px ${lightInk(0.06)}, 0 4px 10px -4px ${lightInk(0.08)}, 0 18px 40px -14px ${lightInk(0.2)}`,
+  floating: `0 4px 10px -4px ${lightInk(0.08)}, 0 18px 40px -14px ${lightInk(0.2)}`,
   toast: `0 0 0 1px ${lightInk(0.06)}, 0 10px 28px -10px ${lightInk(0.2)}`,
 }

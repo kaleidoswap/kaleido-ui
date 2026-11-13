@@ -22,6 +22,8 @@ export interface AccountMenuProps {
   header?: React.ReactNode
   /** `AccountMenuItem`s and `AccountMenuSeparator`s. */
   children?: React.ReactNode
+  /** Which edge of the trigger the panel lines up with. `end` (default) suits the top bar's right end; `start` a menu at the left of its container. */
+  align?: 'start' | 'end'
   className?: string
 }
 
@@ -39,7 +41,7 @@ const initialsOf = (name: string) => (name.trim()[0] ?? '?').toUpperCase()
  * focus to the trigger, and a click outside or focus leaving closes it. For a
  * list of actions alone, use `DropdownMenu`.
  */
-export function AccountMenu({ name, secondary, label, avatar, header, children, className }: AccountMenuProps) {
+export function AccountMenu({ name, secondary, label, avatar, header, children, align = 'end', className }: AccountMenuProps) {
   const [open, setOpen] = React.useState(false)
   const rootRef = React.useRef<HTMLDivElement>(null)
   const triggerRef = React.useRef<HTMLButtonElement>(null)
@@ -105,7 +107,10 @@ export function AccountMenu({ name, secondary, label, avatar, header, children, 
       {open && (
         <div
           id={panelId}
-          className="absolute right-0 top-full z-50 mt-2 w-72 max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl bg-popover text-popover-foreground shadow-popover animate-fade-in motion-reduce:animate-none"
+          className={cn(
+            'absolute top-full z-50 mt-2 w-72 max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl bg-popover text-popover-foreground shadow-popover animate-fade-in motion-reduce:animate-none',
+            align === 'start' ? 'left-0' : 'right-0',
+          )}
         >
           <div className="bg-foreground/[0.03] p-3">
             <div className="flex items-center gap-3">

@@ -49,9 +49,8 @@ import {
   Icon,
   InfoPanel,
   Input,
-  MetricCard,
   NoticeBar,
-  PageHeader,
+  ListSummary,
   Pager,
   DatePicker,
   Popover,
@@ -118,11 +117,23 @@ const Grid = ({ children }: { children: ReactNode }) => (
 
 // ─── Sample data ────────────────────────────────────────────────────────────
 
-const swaps = [
-  { id: 'sw_81f2a9c0d1', pair: 'BTC → USDT', sent: '1,000,000 sats', received: '612.40 USDT', status: 'completed', app: 'Wallet', at: '30 Sep, 14:02' },
-  { id: 'sw_7c11e4b2aa', pair: 'USDT → BTC', sent: '250.00 USDT', received: '405,120 sats', status: 'pending', app: 'Checkout', at: '30 Sep, 13:47' },
-  { id: 'sw_5d90f1c377', pair: 'BTC → L-BTC', sent: '50,000 sats', received: '49,850 sats', status: 'failed', app: 'Wallet', at: '30 Sep, 12:15' },
-] as const
+// A long page of swaps, more than the box shows: the grid scrolls up and down.
+const PAIRS = ['BTC → USDT', 'USDT → BTC', 'BTC → L-BTC', 'L-BTC → USDT'] as const
+const STATUSES = ['completed', 'completed', 'pending', 'completed', 'failed'] as const
+type SwapStatus = (typeof STATUSES)[number]
+
+// A table shows ten rows by default (a page); with fewer rows than that, it says exactly how many exist.
+const PAGE_SIZE = 10
+
+const swaps = Array.from({ length: PAGE_SIZE }, (_, index) => ({
+  id: `sw_${(0x81f2a9c0 - index * 104729).toString(16)}`,
+  pair: PAIRS[index % PAIRS.length] as string,
+  sent: `${((index + 1) * 250_000).toLocaleString('en-US')} sats`,
+  received: `${((index + 1) * 153.1).toFixed(2)} USDT`,
+  status: STATUSES[index % STATUSES.length] as SwapStatus,
+  app: index % 3 === 0 ? 'Checkout' : 'Wallet',
+  at: `30 Sep, ${String(14 - Math.floor(index / 4)).padStart(2, '0')}:${String(59 - (index % 4) * 13).padStart(2, '0')}`,
+}))
 
 // The swaps that exist in the period; the table shows the first page of them.
 const SWAPS_TOTAL = 128
@@ -131,11 +142,20 @@ const statusTone = { completed: 'success', pending: 'warning', failed: 'danger' 
 
 // The same swaps with every field a settlement report carries: wider than any
 // card, so the table scrolls sideways on its bottom thumb.
-const swapDetails = [
-  { ...swaps[0], rate: '61,240 USDT/BTC', fee: '1,200 sats', network: 'Lightning', apiKey: 'Production', install: 'iOS', channel: 'ch_19a0…f3', order: 'ord_5520', created: '30 Sep, 14:01', settled: '30 Sep, 14:02', duration: '58 s' },
-  { ...swaps[1], rate: '61,710 USDT/BTC', fee: '0.35 USDT', network: 'RGB', apiKey: 'Staging', install: 'Web', channel: 'ch_7be2…01', order: 'ord_5519', created: '30 Sep, 13:46', settled: '—', duration: '—' },
-  { ...swaps[2], rate: '0.997 L-BTC/BTC', fee: '150 sats', network: 'Liquid', apiKey: 'Production', install: 'Android', channel: 'ch_33c4…9d', order: 'ord_5518', created: '30 Sep, 12:14', settled: '—', duration: '—' },
-] as const
+const NETWORKS = ['Lightning', 'RGB', 'Liquid', 'Spark'] as const
+const swapDetails = swaps.map((swap, index) => ({
+  ...swap,
+  rate: `${(61_240 + index * 47).toLocaleString('en-US')} USDT/BTC`,
+  fee: `${1_200 - index * 90} sats`,
+  network: NETWORKS[index % NETWORKS.length] as string,
+  apiKey: index % 2 === 0 ? 'Production' : 'Staging',
+  install: ['iOS', 'Web', 'Android'][index % 3],
+  channel: `ch_${(0x19a0 + index * 331).toString(16)}…${(index * 13 + 15).toString(16)}`,
+  order: `ord_${5520 - index}`,
+  created: swap.at,
+  settled: swap.status === 'completed' ? swap.at : '—',
+  duration: swap.status === 'completed' ? `${58 + index} s` : '—',
+}))
 
 const WIDE_COLUMNS = [
   ['id', 'Id'], ['pair', 'Pair'], ['sent', 'Sent'], ['received', 'Received'], ['rate', 'Rate'], ['fee', 'Fee'],
@@ -143,9 +163,6 @@ const WIDE_COLUMNS = [
   ['channel', 'Channel'], ['order', 'Order'], ['created', 'Created'], ['settled', 'Settled'], ['duration', 'Duration'],
 ] as const
 
-// A long page of swaps, more than the box shows: the grid scrolls up and down.
-const PAIRS = ['BTC → USDT', 'USDT → BTC', 'BTC → L-BTC', 'L-BTC → USDT'] as const
-const STATUSES = ['completed', 'completed', 'pending', 'completed', 'failed'] as const
 const swapLog = Array.from({ length: 24 }, (_, index) => ({
   id: `sw_${(0x81f2a9c0 - index * 7919).toString(16)}`,
   pair: PAIRS[index % PAIRS.length],
@@ -161,6 +178,8 @@ export function TableGallery() {
   const [selected, setSelected] = useState<string>(swaps[0].id)
   const [sortKey, setSortKey] = useState<'id' | 'pair' | 'sent' | 'received' | 'at' | null>(null)
   const [dir, setDir] = useState<'asc' | 'desc'>('asc')
+  const [logOffset, setLogOffset] = useState(0)
+  const logPage = swapLog.slice(logOffset, logOffset + PAGE_SIZE)
   const sortBy = (key: NonNullable<typeof sortKey>) => {
     setDir(sortKey === key && dir === 'asc' ? 'desc' : 'asc')
     setSortKey(key)
@@ -256,10 +275,10 @@ export function TableGallery() {
         </Demo>
       </div>
       <div className="xl:col-span-2">
-        <Demo title="Table — tall" use="Twenty-four rows in a box capped at 360px (max-h-80): wrap the Table in a ScrollArea with a max height on its viewport and the grid scrolls up and down on the right-edge thumb. The count sits outside the scroll area, so it stays put.">
+        <Demo title="Table — tall" use="A page of ten rows (of twenty-four) in a box capped at 360px (max-h-80): wrap the Table in a ScrollArea with a max height on its viewport and the grid scrolls up and down on the right-edge thumb. The ListSummary and Pager sit outside the scroll area, under the last row, so they stay put.">
           <div className="mb-3 space-y-1 px-4">
             <h4 className="m-0 text-subhead font-semibold text-foreground">Swap log</h4>
-            <p className="m-0 text-caption text-muted-foreground">Today's swaps, newest first. Scroll down for the rest.</p>
+            <p className="m-0 text-caption text-muted-foreground">Today's swaps, newest first, ten to a page. Scroll down for the rest of the page.</p>
           </div>
           <ScrollArea viewportClassName="max-h-80">
             <Table>
@@ -274,7 +293,7 @@ export function TableGallery() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {swapLog.map((swap) => (
+                {logPage.map((swap) => (
                   <TableRow key={swap.id}>
                     <TableCell>
                       <Copyable value={swap.id} label="swap id">
@@ -293,9 +312,10 @@ export function TableGallery() {
               </TableBody>
             </Table>
           </ScrollArea>
-          <p className="m-0 px-4 pt-3 text-caption text-muted-foreground tabular-nums">
-            {swapLog.length} of {swapLog.length} rows
-          </p>
+          <div className="space-y-3 px-4 pt-3">
+            <ListSummary noun="swaps" shown={logPage.length} offset={logOffset} total={swapLog.length} />
+            <Pager offset={logOffset} limit={PAGE_SIZE} returned={logPage.length} onOffsetChange={setLogOffset} noun="swaps" alwaysShow />
+          </div>
         </Demo>
       </div>
     </Grid>
@@ -676,28 +696,34 @@ function SegmentedControlDemo() {
   const [period, setPeriod] = useState<'7d' | '30d' | '90d'>('30d')
   return (
     <Demo title="Segmented control" use='FilterChipGroup variant="segmented": mutually exclusive options, one Tab stop, the arrow keys move and select. Options can be icon-only (named by ariaLabel, also their tooltip).'>
-      <div className="flex flex-col items-start gap-4">
-        <FilterChipGroup<'chart' | 'list'>
-          variant="segmented"
-          ariaLabel="Trend view"
-          value={view}
-          onChange={setView}
-          options={[
-            { value: 'chart', ariaLabel: 'Chart view', icon: <Icon name="trending_up" className="text-icon-md" /> },
-            { value: 'list', ariaLabel: 'List view', icon: <Icon name="menu" className="text-icon-md" /> },
-          ]}
-        />
-        <FilterChipGroup<'7d' | '30d' | '90d'>
-          variant="segmented"
-          ariaLabel="Period"
-          value={period}
-          onChange={setPeriod}
-          options={[
-            { value: '7d', label: '7 days' },
-            { value: '30d', label: '30 days' },
-            { value: '90d', label: '90 days' },
-          ]}
-        />
+      <div className="flex flex-col gap-4">
+        {/* One toolbar line: the timeframe at the left, the chart format and the filters at the right. */}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <FilterChipGroup<'7d' | '30d' | '90d'>
+            variant="segmented"
+            ariaLabel="Period"
+            value={period}
+            onChange={setPeriod}
+            options={[
+              { value: '7d', label: '7 days' },
+              { value: '30d', label: '30 days' },
+              { value: '90d', label: '90 days' },
+            ]}
+          />
+          <div className="flex items-center gap-2">
+            <IconButton label="Filters" variant="quiet" icon={<Icon name="tune" aria-hidden="true" />} />
+            <FilterChipGroup<'chart' | 'list'>
+              variant="segmented"
+              ariaLabel="Trend view"
+              value={view}
+              onChange={setView}
+              options={[
+                { value: 'chart', ariaLabel: 'Chart view', icon: <Icon name="trending_up" className="text-icon-md" /> },
+                { value: 'list', ariaLabel: 'List view', icon: <Icon name="menu" className="text-icon-md" /> },
+              ]}
+            />
+          </div>
+        </div>
         <p className="m-0 text-caption text-muted-foreground">
           View: {view} · Period: {period}
         </p>
@@ -860,99 +886,40 @@ export function ListsGallery() {
         <p className="mt-3 text-caption text-muted-foreground">useIsNarrow() is {String(narrow)} at this width.</p>
       </Demo>
 
-      <Grid>
-        <SegmentedControlDemo />
-      </Grid>
+      <SegmentedControlDemo />
 
       <Grid>
-        <Demo title="RecordList" use="The stacked form of a table row, for narrow screens. Tap an item or its chevron to open it; the actions do not open it.">
-          <RecordList aria-label="Swaps">
-            {swaps.map((swap) => (
-              <RecordItem
-                key={swap.id}
-                identifier={swap.id}
-                summary={swap.pair}
-                status={<ToneBadge tone={statusTone[swap.status]}>{swap.status}</ToneBadge>}
-                onOpen={() => setOpened(swap.id)}
-                openLabel={`swap ${swap.id}`}
-                selected={opened === swap.id}
-                actions={swap.status === 'failed' ? <Button variant="outline" size="sm">Refund</Button> : undefined}
-              >
-                <RecordField label="Sent">{swap.sent}</RecordField>
-                <RecordField label="Received">{swap.received}</RecordField>
-                <RecordField label="App">{swap.app}</RecordField>
-                <RecordField label="Time">{swap.at}</RecordField>
-              </RecordItem>
-            ))}
-          </RecordList>
-          <p className="mt-3 text-caption text-muted-foreground">Opened: {opened ?? '—'}</p>
-        </Demo>
-        <div className="space-y-4">
-          <Demo title="Pager" use="Offset paging with no total: a next page only after a full page, never “of N”.">
-            <Pager
-              offset={offset}
-              limit={50}
-              returned={pageRows[offset / 50] ?? 0}
-              noun="swaps"
-              onOffsetChange={setOffset}
-            />
-          </Demo>
-          <Demo title="ValueList" use="A list of strings in a cell, never truncated: a count that opens into copyable values.">
-            <ValueList
-              singular="address"
-              plural="addresses"
-              values={['bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh', 'bc1q9h6yzl9kh2y0q3v3r8x7a6f5e4d3c2b1a0z9y8', 'tb1qw508d6qejxtdg4y5r3zarvary0c5xw7kxpjzsx']}
-            />
-          </Demo>
-          <Demo title="Checklist (SwapStepList)" use='connector={false}: done / to do / cannot be checked, each with its own glyph and a spoken status, badges and an action.'>
-            <SwapStepList
-              connector={false}
-              steps={[
-                { id: 'key', label: 'Create an API key', status: 'done', description: 'kx_live_9f2c… created 12 Sep.' },
-                {
-                  id: 'hook',
-                  label: 'Register a webhook',
-                  status: 'pending',
-                  badges: <ToneBadge tone="warning">Required</ToneBadge>,
-                  action: <Button variant="surface" size="sm">Open settings</Button>,
-                },
-                { id: 'sdk', label: 'The SDK reports swaps', status: 'unknown', description: 'We cannot see this until the first swap arrives.' },
-              ]}
-            />
-          </Demo>
-        </div>
-      </Grid>
-    </div>
-  )
-}
-
-export function PageLayoutGallery() {
-  return (
-    <div className="space-y-4">
-      <Demo title='PageHeader variant="page"' use="A desk page's header: the page's h1, a line of description and one action aligned with the title, wrapping under it on a phone.">
-        {/* The page under the header: the muted well the other demos use, a soft gradient and no border. */}
-        <div className="rounded-xl kui-well p-4">
-          <PageHeader
-            variant="page"
-            title="API keys"
-            description="Keys your apps use to call the platform."
-            action={
-              <Button size="sm">
-                <Icon name="add" className="text-icon-md" />
-                Create key
-              </Button>
-            }
+        <Demo title="Pager" use="Offset paging with no total: a next page only after a full page, never “of N”.">
+          <Pager
+            offset={offset}
+            limit={50}
+            returned={pageRows[offset / 50] ?? 0}
+            noun="swaps"
+            onOffsetChange={setOffset}
           />
-        </div>
-      </Demo>
-      <Grid>
-        <Demo title="MetricCard — compact and comfortable" use="compact is the phone tile; comfortable the desk tile, with the figure in headline and the icon after it.">
-          {/* items-start: the compact tile hugs its content's height instead of
-              stretching to the comfortable tile's. */}
-          <div className="grid items-start gap-3 sm:grid-cols-2">
-            <MetricCard iconPlacement="end" label="Swaps" value="1,284" icon="swap_horiz" tone="primary" description="this week" />
-            <MetricCard size="comfortable" label="Swaps" value="1,284" icon="swap_horiz" tone="primary" description="this week" />
-          </div>
+        </Demo>
+        <Demo title="ValueList" use="A list of strings in a cell, never truncated: a count that opens into copyable values.">
+          <ValueList
+            singular="address"
+            plural="addresses"
+            values={['bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh', 'bc1q9h6yzl9kh2y0q3v3r8x7a6f5e4d3c2b1a0z9y8', 'tb1qw508d6qejxtdg4y5r3zarvary0c5xw7kxpjzsx']}
+          />
+        </Demo>
+        <Demo title="Checklist" use='connector={false}: done / to do / cannot be checked, each with its own glyph and a spoken status, badges and an action.'>
+          <SwapStepList
+            connector={false}
+            steps={[
+              { id: 'key', label: 'Create an API key', status: 'done', description: 'kx_live_9f2c… created 12 Sep.' },
+              {
+                id: 'hook',
+                label: 'Register a webhook',
+                status: 'pending',
+                badges: <ToneBadge tone="warning">Required</ToneBadge>,
+                action: <Button variant="surface" size="sm">Open settings</Button>,
+              },
+              { id: 'sdk', label: 'The SDK reports swaps', status: 'unknown', description: 'We cannot see this until the first swap arrives.' },
+            ]}
+          />
         </Demo>
         <Demo title='SummaryRows as="ol" and tone="muted"' use="An ordered log: the event, and its timestamp quieter than it.">
           <SummaryRows
@@ -965,6 +932,31 @@ export function PageLayoutGallery() {
           />
         </Demo>
       </Grid>
+
+      <Demo title="RecordList" use="The stacked form of a table row, for narrow screens. Tap an item or its chevron to open it; the actions do not open it.">
+        <RecordList aria-label="Swaps">
+          {swaps.map((swap) => (
+            <RecordItem
+              key={swap.id}
+              identifier={swap.id}
+              columns={4}
+              summary={swap.pair}
+              status={<ToneBadge tone={statusTone[swap.status]}>{swap.status}</ToneBadge>}
+              onOpen={() => setOpened(swap.id)}
+              openLabel={`swap ${swap.id}`}
+              selected={opened === swap.id}
+              actions={swap.status === 'failed' ? <Button variant="outline" size="sm">Refund</Button> : undefined}
+            >
+              <RecordField label="Sent">{swap.sent}</RecordField>
+              <RecordField label="Received">{swap.received}</RecordField>
+              <RecordField label="App">{swap.app}</RecordField>
+              <RecordField label="Time">{swap.at}</RecordField>
+            </RecordItem>
+          ))}
+        </RecordList>
+        <p className="mt-3 text-caption text-muted-foreground">Opened: {opened ?? '—'}</p>
+      </Demo>
     </div>
   )
 }
+

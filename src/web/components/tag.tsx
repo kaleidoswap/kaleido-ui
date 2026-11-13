@@ -35,7 +35,7 @@ export function Tag({ children, tone = 'neutral', className }: TagProps) {
       data-slot="tag"
       data-tone={tone}
       className={cn(
-        'inline-flex max-w-full items-center whitespace-nowrap rounded-full px-2 py-0.5 text-xxs font-bold leading-4',
+        'inline-flex max-w-full items-center whitespace-nowrap rounded-full px-3 py-1 text-caption font-medium',
         tagToneClass[tone],
         className,
       )}
