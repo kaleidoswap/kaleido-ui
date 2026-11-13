@@ -47,7 +47,7 @@
   --destructive:          hsl(0 62% 50%);
   --border:               #E3E3EA;
   --input:                #DCDCE4;
-  --ring:                 #17B581;
+  --ring:                 #007D49;
   --chart-1:              #2BEE79;
   --chart-2:              #F6C343;
   --chart-3:              #F7931A;
@@ -128,6 +128,7 @@
   --app-status-info: 56 189 248;
   --app-divider: 86 83 110;
   --app-network-spark: 255 255 255;
+  --kui-focus-ring: color-mix(in oklab, rgb(var(--app-primary)) 50%, transparent);
   --network-bitcoin-chip: #44341F;
   --network-bitcoin-text: #F2B063;
   --network-rgb-chip: #44282B;
@@ -206,6 +207,7 @@
   --app-status-info: 2 132 199;
   --app-divider: 196 196 208;
   --app-network-spark: 13 12 20;
+  --kui-focus-ring: #007D49;
   --network-bitcoin-chip: #FBEFD9;
   --network-bitcoin-text: #92400E;
   --network-rgb-chip: #FBE3E1;
@@ -406,6 +408,9 @@
   /* The field edge — src/tokens/app-semantic.ts fieldEdge */
   --color-field-edge: rgb(var(--app-secondary-content) / 0.4);
   --color-field-edge-hover: rgb(var(--app-secondary-content) / 0.65);
+
+  /* The focus ring — src/tokens/app-semantic.ts focusRing */
+  --color-focus-ring: var(--kui-focus-ring);
 
   /* Brand layer — per-theme foregrounds and glows (see the blocks above) */
   --color-brand: var(--brand);

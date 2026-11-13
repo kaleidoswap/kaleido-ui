@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.2.18    # must equal package.json's version; check-design-doc fails otherwise
+version: 0.2.19    # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -23,7 +23,7 @@ colors:
   surface.high: "rgb(54 51 74)"
   border.default: "rgba(200, 192, 240, 0.20)"
   border.subtle: "rgba(200, 192, 240, 0.05)"
-  border.strong: "rgba(200, 192, 240, 0.18)"
+  border.strong: "rgba(200, 192, 240, 0.30)"
   border.primary-ghost: "rgba(43, 238, 121, 0.22)"
   text.primary: "#FFFFFF"
   text.muted: "rgba(232, 230, 245, 0.58)"
@@ -154,6 +154,7 @@ The palette is organised into six groups. Each group has a specific job; mixing 
 
 - **`brand.primary` `#15E99A`** (light theme: `#17B581`) — *the* KaleidoSwap signal. Reserve it for three things only: primary CTAs (the single most important action on a screen), active states (selected tab, active nav slot, focused input ring), and success confirmations (completed swap, settled payment). Using it on borders of passive surfaces or as a decorative accent dilutes the signal and makes real CTAs disappear.
 - **`brand.violet` `#6F32FF`** — the supporting brand accent: the `secondary` button (violet gradient) and the `surface` button (violet tint), icon tiles, row hover, field hairlines and form `Label`s, the card light and the shadow ink. **Selection, active and focus are green, not violet** — the selected tab / pill / chip / option, the current page, the focused field. Utilities: `bg-secondary`, `bg-secondary/15`, `ring-secondary/30`. **Every violet hover is `hover-gradient-violet`** (`group-hover-gradient-violet` under a `.group`): the `--gradient-hover` light, violet from the top-left fading out, laid over the element's own fill — a hovered card lightens rather than losing its surface. Do not hover with `hover:bg-secondary/*`. On dark, violet *text and icons* use **`brand.violet-content` `#A48AFF`** (`text-secondary-content`) — `#6F32FF` is a fill, it is too dark to read as text.
+- **Focus ring** — `ring-focus-ring` (`focusRing` in `src/tokens/app-semantic.ts`), the one colour of every focus state: fields, glyph and copy buttons, switches, chips, chart plots. Dark: the primary at 50%, about 3.6:1 on the card. Light: the deep brand green `#007D49` at full strength, 5.2:1 on white and 4.55:1 on `#EFEFF4`, with or without `kaleido-ui/css/brand` (the light primary at 50% was 1.6:1). The light `--ring` (`ring-ring`: Button, Tabs, Drawer) is the same green; dark `--ring` stays the full primary. Focus is the ring alone, never a glow. Don't write `focus-visible:ring-primary/50`: use the token.
 - **`brand.primary-contrast` `#051B10`** — the near-black green that sits on top of `brand.primary`. Use it for button label text, icons inside primary-filled tiles, and any glyph that needs to punch through the green. Never use it as a surface fill.
 
 > **`#2BEE79` is not the brand primary.** It was, and it is still in the tokens —
@@ -231,7 +232,7 @@ surface they sit on, so one value works at every step of the ramp:
 
 - **`border.default` `rgba(200,192,240,0.20)`** — the default hairline: table rows, dividers, the sidebar edge, chart gridlines. At 0.11 they barely showed on the dark surfaces.
 - **`border.subtle` `rgba(200,192,240,0.05)`** — the quietest edge, for a divider that should barely register.
-- **`border.strong` `rgba(200,192,240,0.18)`** — an edge that has to be seen: a focused input, a selected pill.
+- **`border.strong` `rgba(200,192,240,0.30)`** — an edge that has to be seen: a focused input, a selected pill. It stays above `border.default`; at 0.18 it had become the weaker of the two.
 - **`border.primary-ghost` `rgba(43, 238, 121, 0.22)`** — brand green at 22% alpha. Used only when a surface is in an active / selected / "this is the section you are in" state.
 
 ### Text
@@ -336,7 +337,7 @@ both modes.
 | `shadow-card-hover` | an interactive card on hover — deeper drop with a violet under-glow |
 | `shadow-raised` | a small control that pops off a card: tab lists, chips that are controls, switch thumbs |
 | `shadow-button-primary` / `shadow-button-violet` | green / violet button: a coloured drop shadow only — no edge line |
-| `shadow-glow-primary(-soft/-strong)` | green halo — hover of green CTAs, checked switch, focused fields, selected cards |
+| `shadow-glow-primary(-soft/-strong)` | green halo — hover of green CTAs, checked switch, selected cards. Never focus: focus is the green ring alone |
 | `shadow-glow-primary-faint` | the green halo held down — the selected option in a row of options (fee rate) |
 | `shadow-glow-violet-faint` | the violet halo held down — an icon tile lit by its row's hover |
 | `shadow-card-hover-soft` | hover on a settings-style card: a soft violet under-glow, no deeper drop |
@@ -406,7 +407,7 @@ Leading icon sits left of the label with spacing `2` (9 px); trailing icon, when
 | `md` (default) | 40 px (`size-9`), `rounded-xl` | 18 px | toolbars, the sidebar's collapse, a menu trigger, an edit |
 | `lg` | 50 px (`size-11`), `rounded-xl` | 20 px | a screen's back, a row of icon actions under a QR, a toolbar beside a field |
 
-Six looks, each a Button variant under the same name, lightest first. **`quiet`** (default) — muted glyph that turns violet on the violet hover: close, back, clear, copy, open. **`surface`** — the violet tint: an action the screen offers (paste, refresh, edit). **`secondary`** — solid violet, the one strong action (new address). **`danger-quiet`** — the danger glyph, tinted on hover only, where a filled square would be too loud (a row's delete). **`danger-subtle`** — the danger tint: an action that deletes or removes, and the controls of an error surface (a destructive toast's copy and close). **`destructive`** — solid red, the danger counterpart of `secondary`. Every look also comes round: `shape="circle"` for a button that sits on a line or over content, like the swap card's flip; the rounded square stays the default. Focus is the green glow. The same steps are `Button size="icon-sm" | "icon" | "icon-lg"` for a trigger that must be a `Button` (`asChild`); `icon-xl` is a deprecated alias of `icon-lg`. Composite controls keep their own parts: a stepper's −/+, the swap card's flip.
+Six looks, each a Button variant under the same name, lightest first. **`quiet`** (default) — muted glyph that turns violet on the violet hover: close, back, clear, copy, open. **`surface`** — the violet tint: an action the screen offers (paste, refresh, edit). **`secondary`** — solid violet, the one strong action (new address). **`danger-quiet`** — the danger glyph, tinted on hover only, where a filled square would be too loud (a row's delete). **`danger-subtle`** — the danger tint: an action that deletes or removes, and the controls of an error surface (a destructive toast's copy and close). **`destructive`** — solid red, the danger counterpart of `secondary`. Every look also comes round: `shape="circle"` for a button that sits on a line or over content, like the swap card's flip; the rounded square stays the default. Focus is `ring-focus-ring` alone, no glow, as on every focusable control. The same steps are `Button size="icon-sm" | "icon" | "icon-lg"` for a trigger that must be a `Button` (`asChild`); `icon-xl` is a deprecated alias of `icon-lg`. Composite controls keep their own parts: a stepper's −/+, the swap card's flip.
 
 ### Card (asset)
 
@@ -741,7 +742,7 @@ Layered translucency lets the animated background glow breathe through the UI wi
 
 - `glass.nav` — floating chrome (bottom nav, sticky headers): `bg-card/60 backdrop-blur-xl`
 - `glass.card` — every card, panel and tile: `bg-card/55 backdrop-blur-xl backdrop-saturate-150`, paired with `bg-gradient-card` (or `-hero`) and `shadow-card`, which also draws the glass edge: a 1px `--card-edge` ring of inset shadows (violet top-left → near-clear → green bottom-right, like the card fill) in the card's `::before`, so don't put a `before:` on a card. The page ambience (`bg-page-radial`) is what the glass picks up, so a full-screen view should carry it.
-- `glass.field` — text fields: `fieldSurface` in `src/web/utils/field-styles.ts` (`Input`, `NumberInput`, the full `SelectTrigger`) — the glass card with an inner shadow and the field edge, `ring-field-edge` (`fieldEdge` in the tokens: `secondary-content` at 40%, about 2.1:1 on a card in both themes), that brightens to `ring-field-edge-hover` (65%) on hover and turns green (the ring, no glow) on focus. Every field takes its edge from `fieldEdge`, so changing it there changes them all. A hand-rolled field nested in a card uses the same classes minus the blur. Its `Label` is the eyebrow in `text-secondary-content`.
+- `glass.field` — text fields: `fieldSurface` in `src/web/utils/field-styles.ts` (`Input`, `NumberInput`, the full `SelectTrigger`) — the glass card with an inner shadow and the field edge, `ring-field-edge` (`fieldEdge` in the tokens: `secondary-content` at 40%, about 2.1:1 on a card in both themes), that brightens to `ring-field-edge-hover` (65%) on hover and turns to `ring-focus-ring` (the ring, no glow) on focus. Every field takes its edge from `fieldEdge`, so changing it there changes them all. A field nested in a card takes `fieldSurface` too, as the wallet's receive, deposit, withdraw, secret and activity-search fields do, rather than a hand-rolled copy of its classes. Its `Label` is the eyebrow in `text-secondary-content`.
 - `glass.row` — rows nested inside a card: `bg-muted/40`, no blur
 - `glass.pill` — chips, filter pills, selector triggers: `bg-white/8`
 - `glass.overlay` — sheets, dialogs, scrims: `bg-background/80 backdrop-blur-lg`

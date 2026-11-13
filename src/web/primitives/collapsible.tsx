@@ -23,7 +23,7 @@ const CollapsibleTrigger = React.forwardRef<
   <CollapsiblePrimitive.Trigger
     ref={ref}
     data-slot="collapsible-trigger"
-    className={cn('group/collapsible transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft', className)}
+    className={cn('group/collapsible transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring', className)}
     {...props}
   />
 ))

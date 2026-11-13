@@ -5,6 +5,7 @@ import { useId, type ChangeEvent } from 'react'
 import { AlertBanner } from './alert-banner'
 import { Button } from '../primitives/button'
 import { cn } from '../utils/cn'
+import { fieldSurface } from '../utils/field-styles'
 import type {
   DepositAccountId,
   DepositNetworkConfigEntry,
@@ -186,7 +187,7 @@ export function DepositPreGeneration({
             placeholder="rgb:... (leave empty for any asset)"
             spellCheck={false}
             autoCapitalize="off"
-            className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-2.5 font-mono text-caption text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
+            className={cn(fieldSurface, 'w-full px-3 py-2.5 font-mono text-caption text-foreground')}
           />
           <p className="text-xxs text-foreground/55">
             Enter a specific asset ID to receive it, or leave empty to accept any RGB asset to this
@@ -272,7 +273,7 @@ export function DepositPreGeneration({
             value={amount}
             onChange={handleAmountChange}
             placeholder={`e.g. 10.00 ${selectedAsset?.ticker ?? ''}`}
-            className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-2.5 font-mono text-caption font-bold text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
+            className={cn(fieldSurface, 'w-full px-3 py-2.5 font-mono text-caption font-bold text-foreground')}
             inputMode="decimal"
           />
         </div>

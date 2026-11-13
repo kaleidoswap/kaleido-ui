@@ -213,7 +213,7 @@ export function DatePicker({
                         data-date={iso}
                         onClick={() => choose(d)}
                         className={cn(
-                          'size-9 rounded-xl text-caption tabular-nums transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:cursor-not-allowed disabled:opacity-30',
+                          'size-9 rounded-xl text-caption tabular-nums transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring disabled:cursor-not-allowed disabled:opacity-30',
                           isSelected
                             ? 'bg-primary font-semibold text-primary-foreground shadow-button-primary'
                             : cn(
@@ -239,7 +239,7 @@ export function DatePicker({
                 onChange('')
                 setOpen(false)
               }}
-              className="rounded-lg px-2 py-1 text-caption font-medium text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:opacity-40"
+              className="rounded-lg px-2 py-1 text-caption font-medium text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring disabled:opacity-40"
             >
               {clearLabel}
             </button>
@@ -247,7 +247,7 @@ export function DatePicker({
               type="button"
               disabled={!inRange(parseIso(todayIso)!)}
               onClick={() => choose(parseIso(todayIso)!)}
-              className="rounded-lg px-2 py-1 text-caption font-medium text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:opacity-40"
+              className="rounded-lg px-2 py-1 text-caption font-medium text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring disabled:opacity-40"
             >
               {todayLabel}
             </button>

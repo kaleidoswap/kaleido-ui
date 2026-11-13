@@ -26,7 +26,7 @@ export function NetworkStatusChip({
       onClick={onClick}
       aria-label={ariaLabel}
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full px-1.5 py-1 shadow-raised transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50',
+        'inline-flex items-center gap-1.5 rounded-full px-1.5 py-1 shadow-raised transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring',
         network
           ? 'kui-network-chip'
           : 'bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card hover:bg-accent hover:shadow-glow-violet-soft',

@@ -4,6 +4,7 @@ import { Check, ContentCopy, Person, ProgressActivity, Refresh } from '../icons/
 import { Label } from '../primitives/label'
 import { QrCode } from './qr-code'
 import { cn } from '../utils/cn'
+import { fieldSurface } from '../utils/field-styles'
 import {
   CopyIcon,
   InvoiceStatusBanner,
@@ -131,7 +132,7 @@ export function DepositGeneratedView({
             value={amount}
             onChange={handleAmountChange}
             placeholder="Any amount"
-            className="w-full rounded-lg bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-1.5 font-mono text-caption font-bold text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
+            className={cn(fieldSurface, 'w-full rounded-lg px-3 py-1.5 font-mono text-caption font-bold text-foreground')}
             inputMode="decimal"
           />
           {amount && (
@@ -164,7 +165,7 @@ export function DepositGeneratedView({
             value={amount}
             onChange={handleAmountChange}
             placeholder={selectedAsset?.ticker ? `Any amount (${selectedAsset.ticker})` : 'Any amount'}
-            className="w-full rounded-lg bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-1.5 font-mono text-caption font-bold text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:ring-primary/50 focus:shadow-glow-primary-soft focus:outline-none"
+            className={cn(fieldSurface, 'w-full rounded-lg px-3 py-1.5 font-mono text-caption font-bold text-foreground')}
             inputMode="decimal"
           />
           {amount && (

@@ -64,7 +64,7 @@ export function CopyButton({
         disabled={disabled}
         onClick={onClick}
         className={cn(
-          'focus-visible:ring-primary/50 focus-visible:ring-offset-0 focus-visible:shadow-glow-primary-soft',
+          'focus-visible:ring-focus-ring focus-visible:ring-offset-0',
           state === 'copied' && 'bg-primary/10 text-brand hover:bg-primary/15 hover:text-brand',
           className,
         )}

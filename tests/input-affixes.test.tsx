@@ -22,7 +22,7 @@ test('a suffix sits beside the input in the field box, and is read after the val
     h(FormField, { label: 'Markup', hint: 'Up to your cap', id: 'markup' }, h(Input, { suffix: '%', className: 'max-w-56', inputMode: 'decimal' })),
   )
   // The box carries the surface and the caller's class; the input is bare inside it.
-  assert.match(markup, /<div data-slot="input-field" class="[^"]*ring-field-edge[^"]*focus-within:ring-primary\/50[^"]*max-w-56"/)
+  assert.match(markup, /<div data-slot="input-field" class="[^"]*ring-field-edge[^"]*focus-within:ring-focus-ring[^"]*max-w-56"/)
   assert.match(markup, /<input [^>]*class="h-full min-w-0 flex-1 bg-transparent/)
   const suffixId = /<span id="([^"]+)" data-slot="input-suffix"[^>]*>%<\/span>/.exec(markup)?.[1]
   assert.ok(suffixId, 'the suffix renders after the input')

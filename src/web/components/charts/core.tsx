@@ -196,7 +196,7 @@ export function ChartLegend({
                 title={off ? 'Show' : 'Hide'}
                 onClick={() => onToggle(item.id)}
                 className={cn(
-                  'flex items-center gap-1.5 rounded-md px-1.5 py-0.5 text-foreground transition-all hover-gradient-violet focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:cursor-default disabled:hover:bg-none',
+                  'flex items-center gap-1.5 rounded-md px-1.5 py-0.5 text-foreground transition-all hover-gradient-violet focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring disabled:cursor-default disabled:hover:bg-none',
                   off && 'opacity-45 line-through',
                 )}
               >
@@ -694,4 +694,4 @@ export function ChartFrame({
 
 /** Shared plot container classes: focusable, ringed on keyboard focus. */
 export const plotClass =
-  'relative w-full min-w-0 rounded-xl outline-none transition-shadow duration-200 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft'
+  'relative w-full min-w-0 rounded-xl outline-none transition-shadow duration-200 focus-visible:ring-2 focus-visible:ring-focus-ring'

@@ -95,7 +95,7 @@ export function FilterChipGroup<TValue extends string = string>({
             className={cn(
               segmented
                 ? cn(
-                    'flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft',
+                    'flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring',
                     iconOnly ? 'size-8' : 'h-8 px-3 text-caption',
                     active
                       ? 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'

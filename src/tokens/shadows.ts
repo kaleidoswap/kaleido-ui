@@ -18,7 +18,7 @@ export const shadow = {
   glowAccent: '0 4px 30px rgba(10, 10, 10, 0.18)',
   /** Header separation shadow for sticky app chrome. */
   header: '0 10px 24px rgba(7, 4, 22, 0.35), 0 1px 0 rgba(164, 138, 255, 0.08)',
-  /** Brand green glow — drives all primary CTA / focus halos. */
+  /** Brand green glow — primary CTA and selected halos. Never a focus state: focus is the ring alone. */
   glowPrimarySoft: '0 0 8px rgba(21, 233, 154, 0.5)',
   /** A selected option in a row of options: the green halo, held down so the row stays calm. */
   glowPrimaryFaint: '0 0 6px rgba(21, 233, 154, 0.22)',

@@ -134,6 +134,23 @@ export const fieldEdge: { token: AppSemanticToken; alpha: number; hoverAlpha: nu
   hoverAlpha: 0.65,
 }
 
+/**
+ * The focus ring: the one colour of every focus state in the library (the
+ * fields' `fieldSurface`, GlyphButton, CopyButton, Switch, the chart plots,
+ * …), as `ring-focus-ring`. No focus state adds a glow.
+ *
+ * Dark: the primary at 50%, about 3.6:1 on the card. Light: the deep brand
+ * green at full strength (`text-brand`'s #007D49), 5.2:1 on white and 4.55:1
+ * on #EFEFF4, the darkest light surface. The light primary at 50%, the ring it
+ * replaces, was 1.6:1 on white; at full strength (#17B581) still only 2.6:1.
+ * The light value is also the shadcn `--ring` (Button, Tabs, Drawer), so both
+ * rings read the same with or without `kaleido-ui/css/brand`.
+ */
+export const focusRing: { dark: { token: AppSemanticToken; alpha: number }; light: string } = {
+  dark: { token: 'primary', alpha: 0.5 },
+  light: '#007D49',
+}
+
 /** Fixed-alpha tinted intent surfaces (e.g. `bg-status-danger-subtle`). */
 export const appStatusSubtleAlpha = '0.15'
 

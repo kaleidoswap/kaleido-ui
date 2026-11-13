@@ -71,7 +71,7 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
           // The base: an inset track and a raised card thumb. Only the off track
           // is ringed in violet content: without it the track has no edge.
           'group relative inline-flex shrink-0 cursor-pointer items-center rounded-full p-1 shadow-inner transition-all duration-300',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring',
           'disabled:pointer-events-none disabled:opacity-50',
           // The wide track is 18 steps: p-1 + two size-7 glyphs + p-1 leaves 2 between
           // them, so the thumb's 9-step slide lands exactly on the second glyph.

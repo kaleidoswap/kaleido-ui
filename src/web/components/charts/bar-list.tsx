@@ -177,7 +177,7 @@ export function BarList({
                 onClick={() => onSelect(item.id)}
                 className={cn(
                   rowClass,
-                  'cursor-pointer transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50',
+                  'cursor-pointer transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring',
                   selected ? 'bg-gradient-active' : 'hover-gradient-violet'
                 )}
               >

@@ -64,7 +64,7 @@ export function WithdrawDestinationInput({
           spellCheck={false}
           autoComplete="off"
           autoCapitalize="off"
-          className="block max-h-32 min-h-14 w-full resize-none break-all rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-5 py-4 pr-20 font-mono text-caption leading-relaxed text-foreground shadow-inner transition-all placeholder:text-foreground/20 focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
+          className="block max-h-32 min-h-14 w-full resize-none break-all rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-5 py-4 pr-20 font-mono text-caption leading-relaxed text-foreground shadow-inner transition-all placeholder:text-foreground/20 focus:outline-none focus:ring-1 focus:ring-focus-ring"
           placeholder="Address, Invoice, or RGB Invoice"
           value={destination}
           onChange={(event) => setDestination(event.target.value.replace(/\s*[\r\n]+\s*/g, ''))}

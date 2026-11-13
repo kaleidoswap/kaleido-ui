@@ -18,6 +18,7 @@ import {
   appSemanticOrder,
   appStatusSubtleAlpha,
   fieldEdge,
+  focusRing,
 } from '../src/tokens/app-semantic.ts'
 import { radius } from '../src/tokens/radius.ts'
 import { sizing, spacingUnit } from '../src/tokens/sizing.ts'
@@ -154,6 +155,12 @@ const fieldEdgeInline = [
   `  --color-field-edge-hover: rgb(var(--app-${fieldEdge.token}) / ${fieldEdge.hoverAlpha});`,
 ].join('\n')
 
+// The focus ring (`ring-focus-ring`): one var per theme, set beside the app
+// tokens so it switches with them. Dark is the primary at its alpha, written
+// the way Tailwind writes `ring-primary/50`, so dark focus is unchanged.
+const focusRingDark = `  --kui-focus-ring: color-mix(in oklab, rgb(var(--app-${focusRing.dark.token})) ${focusRing.dark.alpha * 100}%, transparent);`
+const focusRingLight = `  --kui-focus-ring: ${focusRing.light};`
+
 const hexToChannels = (hex: string): string => {
   const h = hex.replace('#', '')
   return [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16)).join(' ')
@@ -254,6 +261,7 @@ ${seriesVars(chartSeries.dark)}
 :root,
 .dark {
 ${appDarkVars}
+${focusRingDark}
 ${networkChipDark}
 ${shadowDark}
   /* Elevation ink — shadows are cast in a near-black violet. */
@@ -269,6 +277,7 @@ ${shadowDark}
 
 .light {
 ${appLightVars}
+${focusRingLight}
 ${networkChipLight}
 ${shadowLightVars}
   --app-shadow: 28 27 46;
@@ -349,6 +358,9 @@ ${networkChipInline}
 
   /* The field edge — src/tokens/app-semantic.ts fieldEdge */
 ${fieldEdgeInline}
+
+  /* The focus ring — src/tokens/app-semantic.ts focusRing */
+  --color-focus-ring: var(--kui-focus-ring);
 
   /* Brand layer — per-theme foregrounds and glows (see the blocks above) */
 ${brandThemeInline}
