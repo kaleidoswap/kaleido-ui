@@ -11,13 +11,13 @@ import {
   FormsGallery,
   ListsGallery,
   NoticesGallery,
-  PageLayoutGallery,
   PopoverMenuGallery,
   TableGallery,
   ScrollbarsGallery,
   NetworkFilterDropdown,
 } from './pages/ComponentGalleries'
-import { DeskPanelGallery } from './pages/DeskPanelGallery'
+import { ActionsGallery } from './pages/ActionsGallery'
+import { InputFieldsGallery } from './pages/InputFieldsGallery'
 import { ScrollArea, ThemeToggle, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput } from '@kaleido-ui/index'
 import {
   Button,
@@ -333,10 +333,8 @@ const NAV_SECTIONS: { label: string; categories: NavCategory[] }[] = [
         label: 'Compositions',
         icon: 'apps',
         pages: [
-          { id: 'copy', label: 'Copy', icon: 'content_copy' },
           { id: 'lists', label: 'Lists & Filters', icon: 'search' },
-          { id: 'desk-panel', label: 'Desk panels', icon: 'settings' },
-          { id: 'page-layout', label: 'Page layout', icon: 'code' },
+          { id: 'actions', label: 'Actions', icon: 'touch_app' },
         ],
       },
     ],
@@ -1549,6 +1547,9 @@ export function App() {
                 <Input id="disabled" placeholder="Not editable" disabled />
               </div>
             </div>
+            <div className="mt-6">
+              <InputFieldsGallery />
+            </div>
           </Section>
 
           {/* ── Tabs ────────────────────────────────────────────────────── */}
@@ -1809,17 +1810,14 @@ export function App() {
           <Section id="notices" title="Notices" description="Notices that stay until closed: the top bar and the floating notice.">
             <NoticesGallery />
           </Section>
-          <Section id="copy" title="Copy" description="Copying that says whether it worked.">
-            <CopyGallery />
-          </Section>
           <Section id="lists" title="Lists & Filters" description="QueryState, EmptyState, RecordList, FilterBar, the segmented control, Pager, ValueList, EventTimeline and checklists.">
             <ListsGallery />
           </Section>
-          <Section id="desk-panel" title="Desk panels" description="Role-gated controls, confirmations, list fields, the period, how fresh the figures are, and who is signed in.">
-            <DeskPanelGallery />
-          </Section>
-          <Section id="page-layout" title="Page layout" description="The desk page header, MetricCard sizes and an ordered log.">
-            <PageLayoutGallery />
+          <Section id="actions" title="Actions" description="Who is signed in, how fresh the figures are with the refresh that updates them, and copying that says whether it worked.">
+            <ActionsGallery />
+            <div className="mt-4">
+              <CopyGallery />
+            </div>
           </Section>
 
           {/* ── Charts ──────────────────────────────────────────────────── */}
