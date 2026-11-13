@@ -51,7 +51,7 @@ export function ActivityFilterBar<TStatus extends string = string>({
           placeholder={searchPlaceholder}
           value={searchTerm}
           onChange={(event) => onSearchTermChange(event.target.value)}
-          className="h-full w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 py-2.5 pl-10 pr-8 text-caption text-foreground shadow-inner outline-none transition-all placeholder:text-muted-foreground focus:bg-secondary/10 focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
+          className="h-full w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 py-2.5 pl-10 pr-8 text-caption text-foreground shadow-inner outline-none transition-all placeholder:text-muted-foreground focus:bg-secondary/10 focus:ring-1 focus:ring-primary/50"
         />
         {searchTerm && (
           <GlyphButton

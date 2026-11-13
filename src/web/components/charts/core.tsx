@@ -694,4 +694,4 @@ export function ChartFrame({
 
 /** Shared plot container classes: focusable, ringed on keyboard focus. */
 export const plotClass =
-  'relative w-full min-w-0 rounded-xl outline-none transition-shadow duration-200 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft'
+  'relative w-full min-w-0 rounded-xl outline-none transition-shadow duration-200 focus-visible:ring-2 focus-visible:ring-primary/50'

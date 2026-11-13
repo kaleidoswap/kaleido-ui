@@ -117,7 +117,7 @@ export function WithdrawAmountInput({
           <Label htmlFor={amountId} className="ml-1">
             Amount
           </Label>
-          <div className="overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-card transition-shadow focus-within:ring-1 focus-within:ring-primary/50 focus-within:shadow-glow-primary-soft">
+          <div className="overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-card transition-shadow focus-within:ring-1 focus-within:ring-primary/50">
             <div className="flex items-center gap-3 px-4 pt-3.5 pb-2.5">
               <div className="min-w-0 flex-1">
                 <input
@@ -190,7 +190,7 @@ export function WithdrawAmountInput({
               const value = parseInt(event.target.value, 10)
               if (!Number.isNaN(value)) setWitnessAmountSat(value)
             }}
-            className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-4 py-3 text-body text-foreground shadow-inner transition-all focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
+            className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-4 py-3 text-body text-foreground shadow-inner transition-all focus:outline-none focus:ring-1 focus:ring-primary/50"
           />
           <p className="ml-1 text-caption text-muted-foreground">
             Bitcoin amount sent to create the witness UTXO for the recipient.
@@ -245,7 +245,7 @@ export function WithdrawAmountInput({
                   placeholder={`${feeRates[feeRate]} (${feeRate})`}
                   value={customFeeRate ?? ''}
                   onChange={(event) => setCustomFeeRate?.(event.target.value.replace(/[^\d.]/g, ''))}
-                  className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-4 py-3 text-body text-foreground shadow-inner transition-all focus:outline-none focus:ring-1 focus:ring-primary/50 focus:shadow-glow-primary-soft"
+                  className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-4 py-3 text-body text-foreground shadow-inner transition-all focus:outline-none focus:ring-1 focus:ring-primary/50"
                 />
               )}
               {typeof estimatedFee === 'number' && (

@@ -336,7 +336,7 @@ both modes.
 | `shadow-card-hover` | an interactive card on hover — deeper drop with a violet under-glow |
 | `shadow-raised` | a small control that pops off a card: tab lists, chips that are controls, switch thumbs |
 | `shadow-button-primary` / `shadow-button-violet` | green / violet button: a coloured drop shadow only — no edge line |
-| `shadow-glow-primary(-soft/-strong)` | green halo — hover of green CTAs, checked switch, focused fields, selected cards |
+| `shadow-glow-primary(-soft/-strong)` | green halo — hover of green CTAs, checked switch, selected cards. Never focus: focus is the green ring alone |
 | `shadow-glow-primary-faint` | the green halo held down — the selected option in a row of options (fee rate) |
 | `shadow-glow-violet-faint` | the violet halo held down — an icon tile lit by its row's hover |
 | `shadow-card-hover-soft` | hover on a settings-style card: a soft violet under-glow, no deeper drop |
@@ -406,7 +406,7 @@ Leading icon sits left of the label with spacing `2` (9 px); trailing icon, when
 | `md` (default) | 40 px (`size-9`), `rounded-xl` | 18 px | toolbars, the sidebar's collapse, a menu trigger, an edit |
 | `lg` | 50 px (`size-11`), `rounded-xl` | 20 px | a screen's back, a row of icon actions under a QR, a toolbar beside a field |
 
-Six looks, each a Button variant under the same name, lightest first. **`quiet`** (default) — muted glyph that turns violet on the violet hover: close, back, clear, copy, open. **`surface`** — the violet tint: an action the screen offers (paste, refresh, edit). **`secondary`** — solid violet, the one strong action (new address). **`danger-quiet`** — the danger glyph, tinted on hover only, where a filled square would be too loud (a row's delete). **`danger-subtle`** — the danger tint: an action that deletes or removes, and the controls of an error surface (a destructive toast's copy and close). **`destructive`** — solid red, the danger counterpart of `secondary`. Every look also comes round: `shape="circle"` for a button that sits on a line or over content, like the swap card's flip; the rounded square stays the default. Focus is the green glow. The same steps are `Button size="icon-sm" | "icon" | "icon-lg"` for a trigger that must be a `Button` (`asChild`); `icon-xl` is a deprecated alias of `icon-lg`. Composite controls keep their own parts: a stepper's −/+, the swap card's flip.
+Six looks, each a Button variant under the same name, lightest first. **`quiet`** (default) — muted glyph that turns violet on the violet hover: close, back, clear, copy, open. **`surface`** — the violet tint: an action the screen offers (paste, refresh, edit). **`secondary`** — solid violet, the one strong action (new address). **`danger-quiet`** — the danger glyph, tinted on hover only, where a filled square would be too loud (a row's delete). **`danger-subtle`** — the danger tint: an action that deletes or removes, and the controls of an error surface (a destructive toast's copy and close). **`destructive`** — solid red, the danger counterpart of `secondary`. Every look also comes round: `shape="circle"` for a button that sits on a line or over content, like the swap card's flip; the rounded square stays the default. Focus is the green ring alone, no glow, as on every focusable control. The same steps are `Button size="icon-sm" | "icon" | "icon-lg"` for a trigger that must be a `Button` (`asChild`); `icon-xl` is a deprecated alias of `icon-lg`. Composite controls keep their own parts: a stepper's −/+, the swap card's flip.
 
 ### Card (asset)
 

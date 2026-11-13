@@ -328,7 +328,7 @@ export function TrendChart({
         aria-label={`${label}: ${count} periods. Arrow keys move between them.`}
         onKeyDown={moveActive}
         onBlur={() => setActive(null)}
-        className="relative mt-5 w-full min-w-0 rounded-xl outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:shadow-glow-primary-soft"
+        className="relative mt-5 w-full min-w-0 rounded-xl outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-primary/50"
       >
         <svg
           width="100%"

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
+import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import test from 'node:test'
 import { createElement as h } from 'react'
@@ -29,4 +29,17 @@ test('every field draws the field edge, and focus is the ring without a glow', (
     assert.match(markup, /ring-field-edge/)
     assert.doesNotMatch(markup, /ring-secondary\/15/)
   }
+})
+
+test('no focus state adds a glow: focus is the ring alone everywhere', () => {
+  const root = join(import.meta.dirname, '..', 'src', 'web')
+  const offenders: string[] = []
+  for (const file of readdirSync(root, { recursive: true, encoding: 'utf8' })) {
+    if (!/\.tsx?$/.test(file)) continue
+    const source = readFileSync(join(root, file), 'utf8')
+    for (const match of source.matchAll(/\b(?:group-|peer-)?focus(?:-visible|-within)?:shadow-glow[\w-]*/g)) {
+      offenders.push(`${file}: ${match[0]}`)
+    }
+  }
+  assert.deepEqual(offenders, [])
 })
