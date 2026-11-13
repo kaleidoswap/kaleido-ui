@@ -3,6 +3,7 @@ import { Button } from '../primitives/button'
 import { IconGlyph } from '../primitives/icon-glyph'
 import { Check, ContentCopy, Visibility, VisibilityOff } from '../icons/outlined'
 import { cn } from '../utils/cn'
+import { fieldSurface } from '../utils/field-styles'
 import { useCopyToClipboard } from '../hooks/use-copy-to-clipboard'
 import { COPY_FAILED_MESSAGE } from './copy-button'
 
@@ -49,8 +50,8 @@ export function SecretRevealCard({
   return (
     <div className={cn('space-y-3', className)}>
       <div className="relative">
-        {/* The value sits in a read-only text field: the field surface, at rest. */}
-        <div className="rounded-xl bg-card/55 bg-gradient-card px-3 py-3 shadow-inner ring-1 ring-inset ring-secondary/15 backdrop-blur-xl backdrop-saturate-150">
+        {/* The value sits in a read-only text field: the field surface and its edge. */}
+        <div className={cn(fieldSurface, 'px-3 py-3')}>
           <p
             className={cn(
               'break-all font-mono text-body text-foreground transition-all duration-300',

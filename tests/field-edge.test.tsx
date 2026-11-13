@@ -43,3 +43,20 @@ test('no focus state adds a glow: focus is the ring alone everywhere', () => {
   }
   assert.deepEqual(offenders, [])
 })
+
+test('the wallet fields draw the field edge through fieldSurface, not the old violet outline', () => {
+  const components = join(import.meta.dirname, '..', 'src', 'web', 'components')
+  for (const name of [
+    'activity-filter-bar',
+    'btc-unified-receive',
+    'deposit-asset-selection',
+    'deposit-generated-view',
+    'deposit-pre-generation',
+    'secret-reveal-card',
+    'withdraw-amount-input',
+  ]) {
+    const source = readFileSync(join(components, `${name}.tsx`), 'utf8')
+    assert.match(source, /cn\(fieldSurface\b/, `${name} uses fieldSurface`)
+    assert.doesNotMatch(source, /ring-secondary\/15/, `${name} still draws ring-secondary/15`)
+  }
+})

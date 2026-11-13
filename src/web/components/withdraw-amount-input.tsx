@@ -4,6 +4,7 @@ import { Button } from '../primitives/button'
 import { Label } from '../primitives/label'
 import { DottedLeader } from './dotted-leader'
 import { cn } from '../utils/cn'
+import { fieldSurface } from '../utils/field-styles'
 import { eyebrow } from '../utils/type-roles'
 
 export interface WithdrawDecodedLnInvoice {
@@ -190,7 +191,7 @@ export function WithdrawAmountInput({
               const value = parseInt(event.target.value, 10)
               if (!Number.isNaN(value)) setWitnessAmountSat(value)
             }}
-            className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-4 py-3 text-body text-foreground shadow-inner transition-all focus:outline-none focus:ring-1 focus:ring-primary/50"
+            className={cn(fieldSurface, 'w-full px-4 py-3 text-body text-foreground')}
           />
           <p className="ml-1 text-caption text-muted-foreground">
             Bitcoin amount sent to create the witness UTXO for the recipient.
@@ -245,7 +246,7 @@ export function WithdrawAmountInput({
                   placeholder={`${feeRates[feeRate]} (${feeRate})`}
                   value={customFeeRate ?? ''}
                   onChange={(event) => setCustomFeeRate?.(event.target.value.replace(/[^\d.]/g, ''))}
-                  className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-4 py-3 text-body text-foreground shadow-inner transition-all focus:outline-none focus:ring-1 focus:ring-primary/50"
+                  className={cn(fieldSurface, 'w-full px-4 py-3 text-body text-foreground')}
                 />
               )}
               {typeof estimatedFee === 'number' && (

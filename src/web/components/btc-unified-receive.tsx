@@ -4,6 +4,7 @@ import { IconGlyph } from '../primitives/icon-glyph'
 import { Check, ContentCopy, Edit, ProgressActivity, Refresh } from '../icons/outlined'
 import { Label } from '../primitives/label'
 import { cn } from '../utils/cn'
+import { fieldSurface } from '../utils/field-styles'
 import { QrCode } from './qr-code'
 import { BottomSheet } from './bottom-sheet'
 import {
@@ -213,7 +214,7 @@ export function BtcUnifiedReceive({
               value={amount}
               onChange={handleAmountChange}
               placeholder="Any amount"
-              className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-2.5 font-mono text-caption font-bold text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50"
+              className={cn(fieldSurface, 'w-full px-3 py-2.5 font-mono text-caption font-bold text-foreground')}
               inputMode="decimal"
             />
             {amount && loading && (
@@ -235,7 +236,7 @@ export function BtcUnifiedReceive({
                 value={description ?? ''}
                 onChange={(event) => onDescriptionChange(event.target.value)}
                 placeholder="What's this for?"
-                className="w-full rounded-xl bg-card/55 bg-gradient-card ring-1 ring-inset ring-secondary/15 hover:ring-secondary/35 px-3 py-2.5 text-caption text-foreground shadow-inner transition-all placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50"
+                className={cn(fieldSurface, 'w-full px-3 py-2.5 text-caption text-foreground')}
               />
             </div>
           )}
