@@ -54,7 +54,7 @@ export function PageHeader({
             <GlyphButton icon={ArrowBack} label={backLabel} onClick={onBack} className="-ml-2" />
           )}
           <div className="min-w-0">
-            <h1 className="m-0 text-title font-bold text-foreground">{title}</h1>
+            <h1 className="m-0 text-main-title font-bold text-foreground">{title}</h1>
             {description && (
               <p className="m-0 mt-1 text-caption text-muted-foreground">{description}</p>
             )}

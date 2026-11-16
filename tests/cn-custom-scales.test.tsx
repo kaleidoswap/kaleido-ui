@@ -10,7 +10,7 @@ import { cn, SectionLabel, ToneBadge } from '../src/web/index'
 // back as just `text-danger`, and components lost their font size.
 
 test('cn keeps a kaleido-ui text size next to a text colour', () => {
-  for (const size of ['mini', 'xxs', 'tiny', 'caption', 'body', 'subhead', 'title', 'headline', 'display']) {
+  for (const size of ['mini', 'xxs', 'tiny', 'caption', 'body', 'subhead', 'title', 'headline', 'main-title']) {
     assert.equal(cn(`text-${size}`, 'text-danger'), `text-${size} text-danger`)
     assert.equal(cn('text-primary', `text-${size}`), `text-primary text-${size}`)
   }
