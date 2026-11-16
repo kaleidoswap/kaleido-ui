@@ -42,3 +42,11 @@ test('a toned value carries its semantic colour', () => {
   )
   assert.match(markup, /text-warning/)
 })
+
+test('spacing: short is the default, long gives each row more room', () => {
+  const short = renderToStaticMarkup(createElement(SummaryRows, { rows, as: 'ol' }))
+  const long = renderToStaticMarkup(createElement(SummaryRows, { rows, as: 'ol', spacing: 'long' }))
+  assert.match(short, /data-spacing="short"[^>]*class="[^"]*\bpy-1\b/)
+  assert.match(long, /data-spacing="long"[^>]*class="[^"]*\bpy-2\.5\b/)
+  assert.doesNotMatch(long, /\bpy-1\b/)
+})

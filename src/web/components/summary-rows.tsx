@@ -4,6 +4,8 @@ import { DottedLeader } from './dotted-leader'
 
 export type SummaryRowTone = 'default' | 'primary' | 'warning' | 'danger' | 'success' | 'muted'
 
+export type SummaryRowsSpacing = 'short' | 'long'
+
 export interface SummaryRowItem {
   label: ReactNode
   value: ReactNode
@@ -29,6 +31,12 @@ export interface SummaryRowsProps {
    * `ul` an unordered one; each row is an `li`. The visual is the same.
    */
   as?: 'dl' | 'ol' | 'ul'
+  /**
+   * The line spacing. `short` (default) keeps rows tight, for a review card or
+   * a few lines in a panel; `long` gives each row room, for a list that is the
+   * content of its block, such as a log read top to bottom.
+   */
+  spacing?: SummaryRowsSpacing
   className?: string
 }
 
@@ -41,7 +49,12 @@ const valueTone: Record<SummaryRowTone, string> = {
   muted: 'text-muted-foreground',
 }
 
-const rowClass = 'flex items-center gap-3 py-1'
+const rowSpacing: Record<SummaryRowsSpacing, string> = {
+  short: 'py-1',
+  long: 'py-2.5',
+}
+
+const rowClass = 'flex items-center gap-3'
 
 /**
  * Label-on-the-left, value-on-the-right rows for a review or confirmation
@@ -53,7 +66,7 @@ const rowClass = 'flex items-center gap-3 py-1'
  *
  * Values are `tabular-nums` so a stack of amounts lines up on the decimal.
  */
-export function SummaryRows({ rows, as = 'dl', className }: SummaryRowsProps) {
+export function SummaryRows({ rows, as = 'dl', spacing = 'short', className }: SummaryRowsProps) {
   const List = as
   const isDl = as === 'dl'
   const Label = isDl ? 'dt' : 'span'
@@ -92,7 +105,8 @@ export function SummaryRows({ rows, as = 'dl', className }: SummaryRowsProps) {
         const rowProps = {
           'data-slot': 'summary-row',
           'data-emphasis': row.emphasis ? 'true' : undefined,
-          className: rowClass,
+          'data-spacing': spacing,
+          className: cn(rowClass, rowSpacing[spacing]),
         }
         // A `div` may group each dt/dd pair inside a dl; in a list the row is the li.
         return isDl ? (

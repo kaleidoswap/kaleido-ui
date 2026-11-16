@@ -62,4 +62,20 @@
   50%       { box-shadow: 0 0 30px rgba(21, 233, 154, 0.35); }
 }
 
+/* ─── Search hit: the box a search result points at ─────────────────────── */
+/* A frame drawn 14px out from the box, its corners the card radius, like the
+   rest of the library (an outline would add the offset to the radius). */
+[data-search-hit] {
+  position: relative;
+}
+[data-search-hit]::after {
+  content: '';
+  position: absolute;
+  inset: -14px;
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-card);
+  box-shadow: 0 0 28px color-mix(in srgb, var(--primary) 30%, transparent);
+  pointer-events: none;
+}
+
 .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }

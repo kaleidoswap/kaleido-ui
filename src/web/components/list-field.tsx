@@ -36,7 +36,8 @@ const SEPARATORS = /[\s,]+/
 
 /**
  * A list, entered as a list: one item at a time, each checked as it is added,
- * with what has been accepted shown as the chips that will be sent.
+ * with what has been accepted shown as the chips that will be sent, right
+ * under the box, and the help line under them.
  *
  * Enter or a comma adds what is in the box; Backspace in an empty box takes the
  * last item back; a pasted list is split on commas and whitespace. Items that
@@ -109,7 +110,7 @@ export function ListField({
   const groupLabel = itemsLabel ?? (typeof label === 'string' ? `${label}: added` : undefined)
 
   return (
-    <div data-slot="list-field" className={cn('space-y-2', className)}>
+    <div data-slot="list-field" className={cn('flex flex-col gap-2', className)}>
       <Label htmlFor={id}>
         {label}
         {requirement && <span className="font-normal text-muted-foreground"> ({requirement})</span>}
@@ -131,21 +132,6 @@ export function ListField({
         aria-describedby={`${id}-help${shown ? ` ${id}-error` : ''}`}
         className={cn(mono && 'font-mono')}
       />
-      <p id={`${id}-help`} className="m-0 text-caption text-muted-foreground">
-        {form}
-        {form ? ' ' : ''}
-        {example && (
-          <>
-            Example: <span className="font-mono">{example}</span>.{' '}
-          </>
-        )}
-        Press Enter or comma to add each {noun}.
-      </p>
-      {shown && (
-        <p id={`${id}-error`} role="alert" className="m-0 text-caption text-danger-fg">
-          {shown}
-        </p>
-      )}
       <div role="group" aria-label={groupLabel}>
         {items.length === 0 ? (
           <p className="m-0 text-caption text-muted-foreground">{emptyLabel}</p>
@@ -173,6 +159,21 @@ export function ListField({
           </ul>
         )}
       </div>
+      <p id={`${id}-help`} className="m-0 mt-2 text-caption text-muted-foreground">
+        {form}
+        {form ? ' ' : ''}
+        {example && (
+          <>
+            Example: <span className="font-mono">{example}</span>.{' '}
+          </>
+        )}
+        Press Enter or comma to add each {noun}.
+      </p>
+      {shown && (
+        <p id={`${id}-error`} role="alert" className="m-0 text-caption text-danger-fg">
+          {shown}
+        </p>
+      )}
     </div>
   )
 }

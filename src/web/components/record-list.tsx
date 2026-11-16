@@ -38,6 +38,12 @@ export interface RecordItemProps extends Omit<React.HTMLAttributes<HTMLLIElement
   /** Buttons at the right of the fields, on their line. They do not open the record. */
   actions?: React.ReactNode
   /**
+   * Keep the actions' column when there are none, so the fields sit in the same
+   * place in every item of a list where only some have a button (a Refund on
+   * the failed ones).
+   */
+  reserveActions?: boolean
+  /**
    * Opens the record. The whole item becomes clickable, and an explicit
    * chevron button is added — a clickable `<li>` is not reachable by keyboard.
    */
@@ -55,7 +61,7 @@ const recordColumns = {
 } as const
 
 const RecordItem = React.forwardRef<HTMLLIElement, RecordItemProps>(
-  ({ identifier, status, summary, children, columns = 2, actions, onOpen, openLabel = 'record', selected = false, className, ...props }, ref) => {
+  ({ identifier, status, summary, children, columns = 2, actions, reserveActions = false, onOpen, openLabel = 'record', selected = false, className, ...props }, ref) => {
     const stop = (event: React.MouseEvent) => event.stopPropagation()
     return (
       <li
@@ -91,11 +97,11 @@ const RecordItem = React.forwardRef<HTMLLIElement, RecordItemProps>(
             )}
           </div>
         </div>
-        {(children || actions) && (
+        {(children || actions || reserveActions) && (
           <div className="flex items-end justify-between gap-3">
             {children && <dl className={cn('m-0 grid min-w-0 flex-1 gap-x-2 gap-y-2', recordColumns[columns])}>{children}</dl>}
-            {actions && (
-              <div className="ml-auto flex shrink-0 justify-end gap-2" onClick={stop}>
+            {(actions || reserveActions) && (
+              <div className={cn('ml-auto flex shrink-0 justify-end gap-2', reserveActions && 'w-20')} onClick={stop}>
                 {actions}
               </div>
             )}

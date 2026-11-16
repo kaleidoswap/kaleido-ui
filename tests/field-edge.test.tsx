@@ -48,7 +48,6 @@ test('no focus state adds a glow: focus is the ring alone everywhere', () => {
 test('the wallet fields draw the field edge through fieldSurface, not the old violet outline', () => {
   const components = join(import.meta.dirname, '..', 'src', 'web', 'components')
   for (const name of [
-    'activity-filter-bar',
     'btc-unified-receive',
     'deposit-asset-selection',
     'deposit-generated-view',
@@ -60,6 +59,12 @@ test('the wallet fields draw the field edge through fieldSurface, not the old vi
     assert.match(source, /cn\(fieldSurface\b/, `${name} uses fieldSurface`)
     assert.doesNotMatch(source, /ring-secondary\/15/, `${name} still draws ring-secondary/15`)
   }
+})
+
+test('the activity search is the library Input, which draws the field edge itself', () => {
+  const source = readFileSync(join(import.meta.dirname, '..', 'src', 'web', 'components', 'activity-filter-bar.tsx'), 'utf8')
+  assert.ok(source.includes('<Input'), 'the search is the library Input')
+  assert.doesNotMatch(source, /ring-secondary\/15/)
 })
 
 const brandCss = readFileSync(join(import.meta.dirname, '..', 'src', 'css', 'brand.css'), 'utf8')

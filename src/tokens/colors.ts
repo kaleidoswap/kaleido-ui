@@ -36,7 +36,9 @@ export const lightSemanticColors = {
   foreground: '#15122A', // content-primary
   card: '#FFFFFF', //       surface-overlay
   cardFg: '#15122A',
-  popover: '#FFFFFF',
+  // Floating layers (popover, menu, select, tooltip) are a faint violet grey,
+  // not white, so they part from the white card and the near-white page.
+  popover: '#F4F3F9',
   popoverFg: '#15122A',
   primary: '#17B581', //    brand green (light)
   primaryFg: '#0E0D16', // dark ink on the green, as on the dark theme (white was 2.6:1)
@@ -77,7 +79,9 @@ const darkSemanticColors = {
   ring: '#15E99A',
   card: '#1C1A2A', //      surface-overlay (card)
   cardFg: '#EDECF6',
-  popover: '#211F31',
+  // Floating layers sit a step lighter than the card, in a softer violet, so a
+  // popover over a card reads as its own layer; bg-gradient-floating tints it.
+  popover: '#2A2839',
   popoverFg: '#EDECF6',
   chart1: '#2BEE79',
   chart2: '#F6C343',

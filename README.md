@@ -202,7 +202,9 @@ and `IconGlyph` draws one glyph at the icon scale (`<IconGlyph glyph={Close} siz
 | `KaleidoswapMark` | The K pictogram on its own; size with `size-*` |
 | `HaloBackdrop` | Decorative drifting brand-colour blobs behind a screen (parent needs `relative isolate`) |
 | `TrendChart` | Line/area trend chart with a chart/table switch; pass `view` + `onViewChange` to control the view from the host, or leave them out |
-| `EarningsByPartnerCard` | Partners ranked by revenue beside the selected partner's swap volume, with a 7D / 30D / 90D period; data through props only (`partners`, `period`, `onPeriodChange`, `selectedId`, `onSelect`, `unit`) |
+| `RankedTrendPanel` | A ranking beside the chart it drives: items ranked by `value` over their total, the selected one's `series` charted, with an optional 7D / 30D / 90D period; data through props only (`items`, `title`, `onSelect`, `period`, `onPeriodChange`, `selectedId`) |
+| `StatTrendPanel` | A headline figure with breakdown rows and one action, beside a trend chart (`label`, `value`, `rows`, `action`, `series`, `chartTitle`) |
+| `EarningsByPartnerCard` | Deprecated: `RankedTrendPanel` with partner props (`partners`, `revenue`, `swaps`, `volumeSeries`); kept so existing apps keep working |
 | `WithdrawAmountInput` | Amount card for the withdraw flow; `unitSlot` replaces the unit label with your own control (e.g. a unit picker) inside the card |
 
 ### Hooks and functions

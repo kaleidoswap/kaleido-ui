@@ -15,7 +15,7 @@ const TabsLookContext = React.createContext<TabsLook>({ size: 'default', fullWid
 /** The bar: `TabsList` and `SegmentedTabs` draw the same one. */
 const tabsListClass = ({ size, fullWidth }: TabsLook) =>
   cn(
-    'items-center gap-2 rounded-xl bg-card text-muted-foreground shadow-raised',
+    'group/tabs relative items-center gap-2 rounded-xl bg-card text-muted-foreground shadow-raised',
     size === 'compact' ? 'h-10 p-1' : 'h-12 p-1.5',
     fullWidth ? 'flex w-full' : 'inline-flex justify-center'
   )
@@ -23,16 +23,81 @@ const tabsListClass = ({ size, fullWidth }: TabsLook) =>
 /** One option of the bar; a Radix trigger takes the green fill by its `data-state`. */
 const tabsTriggerClass = ({ size, fullWidth }: TabsLook) =>
   cn(
-    'inline-flex items-center justify-center whitespace-nowrap rounded-lg text-caption font-semibold ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+    'inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg text-caption font-semibold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
     size === 'compact' ? 'px-3 py-1.5' : 'px-4 py-2',
     fullWidth && 'flex-1',
-    'text-foreground/70 hover:bg-foreground/[0.06] hover:text-foreground',
-    'data-[state=active]:bg-primary active-gradient-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-button-primary data-[state=active]:hover:brightness-110'
+    // The hover is the Bottom navigation's: the violet wash and the violet label, a small press on click. The chosen option keeps its own text colour.
+    'relative z-10 text-foreground/70 hover-gradient-violet hover:text-secondary-content active:scale-[0.97]',
+    'data-[state=active]:hover:text-primary-foreground aria-checked:hover:text-primary-foreground',
+    'data-[state=active]:bg-primary active-gradient-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-button-primary data-[state=active]:hover:brightness-110',
+    // Once the bar has measured its sliding indicator, the indicator is the fill: the chosen option keeps only its text colour.
+    slidingClass
   )
 
 /** The same green fill for a checked radio, which has no `data-state`. */
 const tabsCheckedClass =
   'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary hover:bg-primary hover:text-primary-foreground hover:brightness-110'
+
+/** Drops the chosen option's own fill when the bar slides one indicator under it (`data-sliding` on the bar). */
+const slidingClass =
+  'group-data-[sliding=true]/tabs:data-[state=active]:!bg-transparent group-data-[sliding=true]/tabs:data-[state=active]:![background-image:none] group-data-[sliding=true]/tabs:data-[state=active]:!shadow-none group-data-[sliding=true]/tabs:aria-checked:!bg-transparent group-data-[sliding=true]/tabs:aria-checked:![background-image:none] group-data-[sliding=true]/tabs:aria-checked:!shadow-none'
+
+interface IndicatorBox {
+  left: number
+  top: number
+  width: number
+  height: number
+}
+
+/**
+ * Measures the chosen option of a bar (`data-state="active"` or `aria-checked`) and keeps
+ * it up to date, so one indicator can slide from option to option instead of each
+ * option filling in place. `null` until measured (server render, first paint): the
+ * options then draw their own fill, so a bar is never without a visible choice.
+ */
+function useActiveIndicator<T extends HTMLElement>() {
+  const ref = React.useRef<T | null>(null)
+  const [box, setBox] = React.useState<IndicatorBox | null>(null)
+  React.useLayoutEffect(() => {
+    const list = ref.current
+    if (!list) return
+    const measure = () => {
+      const active = list.querySelector<HTMLElement>('[data-state="active"], [aria-checked="true"]')
+      setBox((previous) => {
+        if (!active) return null
+        const next = { left: active.offsetLeft, top: active.offsetTop, width: active.offsetWidth, height: active.offsetHeight }
+        return previous && previous.left === next.left && previous.top === next.top && previous.width === next.width && previous.height === next.height
+          ? previous
+          : next
+      })
+    }
+    measure()
+    if (typeof ResizeObserver === 'undefined' || typeof MutationObserver === 'undefined') return
+    const resize = new ResizeObserver(measure)
+    resize.observe(list)
+    list.querySelectorAll('button').forEach((button) => resize.observe(button))
+    const mutate = new MutationObserver(measure)
+    mutate.observe(list, { attributes: true, attributeFilter: ['data-state', 'aria-checked'], subtree: true, childList: true })
+    return () => {
+      resize.disconnect()
+      mutate.disconnect()
+    }
+  }, [])
+  return { ref, box }
+}
+
+/** The one green fill that slides under the chosen option. Decorative. */
+function ActiveIndicator({ box }: { box: IndicatorBox | null }) {
+  if (!box) return null
+  return (
+    <span
+      aria-hidden="true"
+      data-slot="tabs-indicator"
+      className="pointer-events-none absolute left-0 top-0 z-0 rounded-lg bg-primary bg-gradient-primary shadow-button-primary transition-[transform,width,height] duration-500 [transition-timing-function:cubic-bezier(0.45,0,0.25,1)] motion-reduce:transition-none"
+      style={{ width: box.width, height: box.height, transform: `translate(${box.left}px, ${box.top}px)` }}
+    />
+  )
+}
 
 const Tabs = TabsPrimitive.Root
 
@@ -46,9 +111,19 @@ interface TabsListProps extends React.ComponentPropsWithoutRef<typeof TabsPrimit
 const TabsList = React.forwardRef<React.ElementRef<typeof TabsPrimitive.List>, TabsListProps>(
   ({ className, size = 'default', fullWidth = false, ...props }, ref) => {
     const look = React.useMemo(() => ({ size, fullWidth }), [size, fullWidth])
+    const { ref: listRef, box } = useActiveIndicator<HTMLDivElement>()
+    const setRefs = (node: HTMLDivElement | null) => {
+      listRef.current = node
+      if (typeof ref === 'function') ref(node)
+      else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
+    }
+    const { children, ...rest } = props
     return (
       <TabsLookContext.Provider value={look}>
-        <TabsPrimitive.List ref={ref} className={cn(tabsListClass(look), className)} {...props} />
+        <TabsPrimitive.List ref={setRefs} data-sliding={box ? 'true' : 'false'} className={cn(tabsListClass(look), className)} {...rest}>
+          <ActiveIndicator box={box} />
+          {children}
+        </TabsPrimitive.List>
       </TabsLookContext.Provider>
     )
   }
@@ -85,6 +160,8 @@ TabsContent.displayName = TabsPrimitive.Content.displayName
 export interface SegmentedTabsOption<TValue extends string = string> {
   value: TValue
   label: React.ReactNode
+  /** A glyph before the label (an `<Icon size="sm" />`). */
+  icon?: React.ReactNode
   disabled?: boolean
 }
 
@@ -121,6 +198,7 @@ function SegmentedTabs<TValue extends string = string>({
   className,
 }: SegmentedTabsProps<TValue>) {
   const refs = React.useRef<(HTMLButtonElement | null)[]>([])
+  const { ref: groupRef, box } = useActiveIndicator<HTMLDivElement>()
   const look = { size, fullWidth }
   const enabled = options.map((option, index) => ({ option, index })).filter(({ option }) => !option.disabled)
   // The Tab stop: the checked option, or the first that can be checked.
@@ -146,11 +224,14 @@ function SegmentedTabs<TValue extends string = string>({
       role="radiogroup"
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledBy}
+      ref={groupRef}
       data-slot="segmented-tabs"
       data-size={size}
+      data-sliding={box ? 'true' : 'false'}
       onKeyDown={onKeyDown}
       className={cn(tabsListClass(look), className)}
     >
+      <ActiveIndicator box={box} />
       {options.map((option, index) => {
         const checked = option.value === value
         return (
@@ -167,6 +248,7 @@ function SegmentedTabs<TValue extends string = string>({
             onClick={() => onValueChange(option.value)}
             className={cn(tabsTriggerClass(look), checked && tabsCheckedClass)}
           >
+            {option.icon}
             {option.label}
           </button>
         )
@@ -175,5 +257,6 @@ function SegmentedTabs<TValue extends string = string>({
   )
 }
 
-export { Tabs, TabsList, TabsTrigger, TabsContent, SegmentedTabs }
-export type { TabsListProps }
+// The bar's classes, for a control that is not a Tabs root but must wear the same look (FilterChipGroup's segmented variant).
+export { Tabs, TabsList, TabsTrigger, TabsContent, SegmentedTabs, ActiveIndicator, useActiveIndicator, tabsListClass, tabsTriggerClass, tabsCheckedClass }
+export type { TabsListProps, TabsLook }

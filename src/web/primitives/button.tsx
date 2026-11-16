@@ -8,28 +8,28 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary hover:brightness-110 hover:shadow-button-primary-hover disabled:shadow-none',
-        destructive: 'bg-destructive bg-gradient-destructive text-white shadow-raised hover:brightness-110',
-        outline: 'border border-primary/50 bg-primary/10 text-brand hover:bg-primary/15 hover:border-primary hover:shadow-button-outline-hover hover:brightness-115',
-        secondary: 'bg-secondary bg-gradient-violet text-secondary-foreground shadow-button-violet hover:brightness-110 hover:shadow-glow-violet disabled:shadow-none',
+        default: 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary hover:brightness-110 hover:shadow-button-primary-hover active:brightness-90 active:shadow-none disabled:shadow-none',
+        destructive: 'bg-destructive bg-gradient-destructive text-white shadow-raised hover:brightness-110 active:brightness-90 active:shadow-none',
+        outline: 'border border-primary/50 bg-primary/10 text-brand hover:bg-primary/15 hover:border-primary hover:shadow-button-outline-hover hover:brightness-115 active:bg-primary/25 active:border-primary active:shadow-none active:brightness-100',
+        secondary: 'bg-secondary bg-gradient-violet text-secondary-foreground shadow-button-violet hover:brightness-110 hover:shadow-glow-violet active:brightness-90 active:shadow-none disabled:shadow-none',
         ghost: 'text-brand hover:bg-primary/10 hover:brightness-115 hover:[&_span]:brightness-115 active:bg-primary/15 active:brightness-100',
         link: 'text-brand underline-offset-4 hover:underline',
-        glow: 'bg-primary bg-gradient-primary text-primary-foreground shadow-glow-primary hover:shadow-glow-primary-strong',
+        glow: 'bg-primary bg-gradient-primary text-primary-foreground shadow-glow-primary hover:shadow-glow-primary-strong active:brightness-90 active:shadow-none',
         // Flat: one violet fill, a stronger one on hover, no gradient.
-        surface: 'bg-secondary/15 text-secondary-content hover:bg-secondary/25 hover:shadow-button-surface-hover active:bg-secondary/30',
-        cta: 'w-full bg-primary bg-gradient-primary text-primary-foreground font-bold rounded-2xl shadow-button-primary hover:brightness-110 hover:shadow-button-primary-hover disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none',
+        surface: 'bg-secondary/15 text-secondary-content hover:bg-secondary/20 active:bg-secondary/25',
+        cta: 'w-full bg-primary bg-gradient-primary text-primary-foreground font-bold rounded-2xl shadow-button-primary hover:brightness-110 hover:shadow-button-primary-hover active:brightness-90 active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none',
         'cta-gradient': 'w-full bg-secondary bg-gradient-brand-dark text-white font-extrabold rounded-2xl shadow-glow-brand hover:brightness-115 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-40 disabled:shadow-none disabled:cursor-not-allowed',
-        'danger-subtle': 'bg-danger/10 text-danger-fg font-bold rounded-xl hover:bg-danger/15 hover:brightness-115',
+        'danger-subtle': 'bg-danger/15 text-danger-fg font-bold rounded-xl hover:bg-danger/20 active:bg-danger/25',
         // danger-subtle without its resting tint: the danger glyph alone, tinted on hover.
-        'danger-quiet': 'text-danger-fg hover:bg-danger/10 active:bg-danger/15',
+        'danger-quiet': 'text-danger-fg hover:bg-danger/20 active:bg-danger/25',
         hyperlink: 'group text-muted-foreground underline underline-offset-2 hover:text-foreground hover:decoration-primary hover:[&_.icon]:text-brand bg-transparent font-normal',
         // Hierarchy variants — primary/secondary/tertiary action emphasis.
         // Pair with size="lg" or size="cta" for full-bleed buttons.
-        h1: 'w-full bg-primary bg-gradient-primary text-primary-foreground font-bold rounded-2xl shadow-button-primary hover:brightness-110 hover:shadow-button-primary-hover disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none',
-        h2: 'w-full bg-secondary/15 text-secondary-content font-semibold rounded-xl hover:bg-secondary/25 hover:shadow-button-surface-hover active:bg-secondary/30',
+        h1: 'w-full bg-primary bg-gradient-primary text-primary-foreground font-bold rounded-2xl shadow-button-primary hover:brightness-110 hover:shadow-button-primary-hover active:brightness-90 active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none',
+        h2: 'w-full bg-secondary/15 text-secondary-content font-semibold rounded-xl hover:bg-secondary/20 active:bg-secondary/25',
         h3: 'text-brand font-semibold rounded-lg hover:bg-primary/10 active:bg-primary/15',
         // The icon-only default: a muted glyph that turns violet on the violet hover.
-        quiet: 'text-muted-foreground hover-gradient-violet hover:text-secondary-content',
+        quiet: 'text-muted-foreground hover:bg-secondary/20 active:bg-secondary/25 hover:text-secondary-content',
       },
       size: {
         default: 'h-11 px-5 py-2',

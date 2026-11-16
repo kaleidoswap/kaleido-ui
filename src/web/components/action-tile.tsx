@@ -43,11 +43,12 @@ export function ActionTile({
     // right: the ink at low alpha under a faint secondary wash. Important: the
     // dark surface gradient class is unlayered and would win otherwise.
     '[.light_&]:bg-foreground/[0.05] [.light_&]:!bg-gradient-to-br [.light_&]:from-transparent [.light_&]:to-secondary/[0.08]',
-    'hover:-translate-y-0.5 hover:text-primary-foreground hover:shadow-glow-primary-soft',
+    'hover:text-primary-foreground hover:shadow-glow-primary-soft',
     // The light glow is a 3px ring, which reads as a second border around the
     // green fill: on light the tile keeps its own shadow instead.
     '[.light_&]:hover:shadow-raised',
-    'active:translate-y-0 active:scale-95 disabled:pointer-events-none disabled:opacity-50',
+    // Pressed: like the default button, the fill darkens (its layer, below) and the glow goes out.
+    'active:scale-[0.98] active:shadow-none [.light_&]:active:shadow-none disabled:pointer-events-none disabled:opacity-50',
     // A link has no disabled state of its own.
     href && disabled && 'pointer-events-none opacity-50',
     className
@@ -59,7 +60,7 @@ export function ActionTile({
           hover: variant, so the fill is a layer whose opacity the group toggles. */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-primary bg-gradient-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-0 bg-primary bg-gradient-primary opacity-0 transition-[opacity,filter] duration-200 group-hover:opacity-100 group-active:brightness-90"
       />
       {/* Icon and label are both leading-none so they center on the same
           axis — no baseline wobble between the glyph box and the text. */}

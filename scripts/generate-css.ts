@@ -287,6 +287,7 @@ ${shadowLightVars}
   --gradient-card: linear-gradient(135deg, rgba(111, 50, 255, 0.025) 0%, rgba(111, 50, 255, 0) 55%);
   --card-edge: inset 0 0 0 1px rgba(20, 20, 43, 0.12), inset 1px 1px 0 0 rgba(111, 50, 255, 0.34), inset -1px -1px 0 0 rgba(23, 181, 129, 0.4);
   --gradient-card-hero: linear-gradient(135deg, rgba(111, 50, 255, 0.05) 0%, rgba(111, 50, 255, 0) 50%, rgba(21, 233, 154, 0.06) 100%);
+  --gradient-floating: linear-gradient(135deg, rgba(111, 50, 255, 0.05) 0%, rgba(111, 50, 255, 0) 50%, rgba(21, 233, 154, 0.05) 100%);
   --gradient-hover: linear-gradient(135deg, rgba(111, 50, 255, 0.12) 0%, rgba(111, 50, 255, 0.03) 100%);
   /* A selected card is only this tint: on light it needs a white floor, or it
      takes the grey of whatever it sits on. */
@@ -487,6 +488,7 @@ ${iconBoxSizeTheme}
   --gradient-surface:     ${gradient.surface};
   --gradient-card:        ${gradient.card};
   --gradient-card-hero:   ${gradient.cardHero};
+  --gradient-floating:    ${gradient.floating};
   --gradient-active:      ${gradient.active};
   --gradient-hover:       ${gradient.hover};
 
@@ -620,6 +622,9 @@ ${keyframesCss}
 }
 .bg-gradient-card-hero {
   background-image: var(--gradient-card-hero);
+}
+.bg-gradient-floating {
+  background-image: var(--gradient-floating);
 }
 .bg-gradient-active {
   background-image: var(--gradient-active);

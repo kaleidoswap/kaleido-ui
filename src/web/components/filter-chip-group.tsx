@@ -1,5 +1,9 @@
 import { useRef, type KeyboardEvent, type ReactNode } from 'react'
 import { cn } from '../utils/cn'
+import { ActiveIndicator, tabsCheckedClass, tabsListClass, tabsTriggerClass, useActiveIndicator } from '../primitives/tabs'
+
+// The segmented variant wears the Tabs bar (its padding, its height, its green fill), not a look of its own.
+const segmentedLook = { size: 'default', fullWidth: false } as const
 
 export interface FilterChipOption<TValue extends string = string> {
   value: TValue
@@ -41,6 +45,7 @@ export function FilterChipGroup<TValue extends string = string>({
 }: FilterChipGroupProps<TValue>) {
   const refs = useRef<(HTMLButtonElement | null)[]>([])
   const segmented = variant === 'segmented'
+  const { ref: groupRef, box } = useActiveIndicator<HTMLDivElement>()
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (!segmented) return
@@ -63,17 +68,20 @@ export function FilterChipGroup<TValue extends string = string>({
 
   return (
     <div
+      ref={segmented ? groupRef : undefined}
       role={segmented ? 'radiogroup' : undefined}
       aria-label={ariaLabel}
       data-variant={variant}
+      data-sliding={segmented ? (box ? 'true' : 'false') : undefined}
       onKeyDown={onKeyDown}
       className={cn(
         segmented
-          ? 'inline-flex gap-0.5 rounded-xl bg-card p-0.5 shadow-raised'
+          ? tabsListClass(segmentedLook)
           : 'flex gap-1.5 overflow-x-auto no-scrollbar',
         className,
       )}
     >
+      {segmented && <ActiveIndicator box={box} />}
       {options.map((option, index) => {
         const active = option.value === value
         const iconOnly = option.label === undefined || option.label === null
@@ -94,13 +102,7 @@ export function FilterChipGroup<TValue extends string = string>({
             onClick={() => onChange(option.value)}
             className={cn(
               segmented
-                ? cn(
-                    'flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring',
-                    iconOnly ? 'size-8' : 'h-8 px-3 text-caption',
-                    active
-                      ? 'bg-primary bg-gradient-primary text-primary-foreground shadow-button-primary'
-                      : 'text-muted-foreground hover-gradient-violet hover:text-secondary-content',
-                  )
+                ? cn(tabsTriggerClass(segmentedLook), 'gap-1.5', iconOnly && 'px-3', active && tabsCheckedClass)
                 : cn(
                     'flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-tiny font-bold transition-all',
                     active

@@ -15,6 +15,8 @@ export interface DisclosureCardProps {
   onOpenChange?: (open: boolean) => void
   defaultOpen?: boolean
   icon?: ReactNode
+  /** A call to action (a `Button`) shown under the body, inside the box, once it is open. */
+  action?: ReactNode
   className?: string
   triggerClassName?: string
   contentClassName?: string
@@ -32,6 +34,7 @@ export function DisclosureCard({
   onOpenChange,
   defaultOpen,
   icon,
+  action,
   className,
   triggerClassName,
   contentClassName,
@@ -60,8 +63,9 @@ export function DisclosureCard({
         </span>
         <CollapsibleChevron />
       </CollapsibleTrigger>
-      <CollapsibleContent className={cn('px-3 pb-3 pt-1', contentClassName)}>
+      <CollapsibleContent className={cn('px-3 pb-3 pt-3', contentClassName)}>
         {children}
+        {action ? <div className="mt-3 flex justify-end">{action}</div> : null}
       </CollapsibleContent>
     </Collapsible>
   )

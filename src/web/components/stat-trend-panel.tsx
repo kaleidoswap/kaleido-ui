@@ -1,0 +1,114 @@
+import { useId, type ReactNode } from 'react'
+import { Card } from '../primitives/card'
+import { AreaChart } from './charts/line-chart'
+import { EmptyState } from './empty-state'
+import { SummaryRows, type SummaryRowItem } from './summary-rows'
+import type { TrendPoint } from './ranked-trend-panel'
+import { cn } from '../utils/cn'
+import { eyebrow } from '../utils/type-roles'
+
+export interface StatTrendPanelProps {
+  /** The eyebrow over the figure; it also names the panel. */
+  label: ReactNode
+  /** The figure, already formatted: "3,718". */
+  value: ReactNode
+  /** Beside the figure, smaller: "members", "+126 this month". */
+  valueSuffix?: ReactNode
+  /** The breakdown under the figure, as label · leader line · value rows. */
+  rows?: readonly SummaryRowItem[]
+  /** At the foot of the column: one action, e.g. a ghost `Button` around the host's link. */
+  action?: ReactNode
+  /** The chart's points, oldest first. */
+  series: readonly TrendPoint[]
+  chartTitle: ReactNode
+  /** What the chart measures and on what scale: "Scans per local day · Last 30 days". */
+  chartDescription?: ReactNode
+  /** The chart's accessible name. Defaults to `chartTitle` when it is a string. */
+  chartLabel?: string
+  /** The series' name, in its tooltip and table. */
+  seriesLabel?: string
+  /** The scale's accessible name. Defaults to `seriesLabel`. */
+  scaleLabel?: string
+  formatValue?: (value: number) => string
+  /** Rendered instead of the chart when there are no points. */
+  chartEmpty?: ReactNode
+  className?: string
+}
+
+/**
+ * A headline figure with its breakdown, beside the trend that led to it: a
+ * balance and its parts, members and their states, stock and its movements.
+ *
+ * The panel splits as `RankedTrendPanel` does — a 21rem column on the
+ * `card-hero` gradient, a hairline, the chart beside it; stacked below `lg`.
+ * The column holds the figure under its eyebrow, the breakdown as
+ * `SummaryRows` and an action at its foot. The right is the trend
+ * (`AreaChart` with its own title, description and chart/table switch).
+ *
+ * Data comes in through props only: the panel fetches nothing.
+ */
+export function StatTrendPanel({
+  label,
+  value,
+  valueSuffix,
+  rows = [],
+  action,
+  series,
+  chartTitle,
+  chartDescription,
+  chartLabel = typeof chartTitle === 'string' ? chartTitle : 'Trend',
+  seriesLabel = 'Value',
+  scaleLabel = seriesLabel,
+  formatValue,
+  chartEmpty = <EmptyState title="No data in this period" />,
+  className,
+}: StatTrendPanelProps) {
+  const labelId = useId()
+
+  return (
+    <Card
+      variant="secondary"
+      role="region"
+      aria-labelledby={labelId}
+      data-slot="stat-trend-panel"
+      className={cn('grid min-w-0 overflow-hidden lg:grid-cols-[21rem_minmax(0,1fr)]', className)}
+    >
+      <div
+        data-slot="stat-trend-column"
+        className="flex min-w-0 flex-col gap-5 bg-gradient-card-hero px-6 py-6 lg:border-r lg:border-border"
+      >
+        <div className="space-y-3">
+          <p id={labelId} className={cn('m-0 text-muted-foreground', eyebrow)}>
+            {label}
+          </p>
+          <p data-slot="stat-trend-value" className="m-0 flex flex-wrap items-baseline gap-x-2.5">
+            <span className="text-display font-bold tabular-nums text-foreground">{value}</span>
+            {valueSuffix && <span className="text-body text-muted-foreground">{valueSuffix}</span>}
+          </p>
+        </div>
+        {rows.length > 0 && <SummaryRows rows={[...rows]} className="space-y-3" />}
+        {action && <div className="mt-auto pt-6">{action}</div>}
+      </div>
+
+      <div className="min-w-0 p-6">
+        <AreaChart
+          title={chartTitle}
+          description={chartDescription}
+          data={series.map((point) => ({
+            key: point.key,
+            label: point.label,
+            detail: point.detail,
+            values: { value: point.value },
+          }))}
+          series={[{ id: 'value', label: seriesLabel }]}
+          label={chartLabel}
+          scaleLabel={scaleLabel}
+          formatValue={formatValue}
+          areaFill="gradient"
+          latestMarker="dot"
+          empty={chartEmpty}
+        />
+      </div>
+    </Card>
+  )
+}

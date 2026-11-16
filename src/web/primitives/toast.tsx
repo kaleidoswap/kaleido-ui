@@ -2,6 +2,7 @@ import * as React from 'react'
 import * as ToastPrimitives from '@radix-ui/react-toast'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../utils/cn'
+import { buttonVariants } from './button'
 import { GlyphButton } from './glyph-button'
 import { Close } from '../icons/outlined'
 
@@ -60,7 +61,9 @@ const ToastAction = React.forwardRef<
   <ToastPrimitives.Action
     ref={ref}
     className={cn(
-      'inline-flex h-8 shrink-0 items-center justify-center rounded-lg bg-secondary/15 bg-gradient-surface px-3 text-caption font-semibold text-secondary-content shadow-raised transition-all hover-gradient-violet hover:shadow-button-surface-hover focus:outline-none disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:bg-danger/15 group-[.destructive]:bg-none group-[.destructive]:text-danger-fg group-[.destructive]:hover:bg-danger/25',
+      // The ghost Button, small; a destructive toast turns its text and hover to the danger tint.
+      buttonVariants({ variant: 'ghost', size: 'sm' }),
+      'shrink-0 group-[.destructive]:text-danger-fg group-[.destructive]:hover:bg-danger/15',
       className
     )}
     {...props}

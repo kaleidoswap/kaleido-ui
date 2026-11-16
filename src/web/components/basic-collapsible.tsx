@@ -20,9 +20,10 @@ export interface BasicCollapsibleProps {
 }
 
 /**
- * The plain `Collapsible`, styled: a compact inset row — a caption-size title
- * and the turning chevron — that opens a section of caption text under it.
- * For a lighter disclosure than `DisclosureCard` (advanced settings, a note).
+ * The plain `Collapsible`, styled: a boxless row — a caption-size title and the
+ * turning chevron — that opens a section of caption text under it. It draws no
+ * surface of its own, so it sits inside a card or form that already exists
+ * (advanced settings, a note). For a block of its own, use `DisclosureCard`.
  */
 export function BasicCollapsible({
   title,
@@ -40,18 +41,19 @@ export function BasicCollapsible({
       onOpenChange={onOpenChange}
       defaultOpen={defaultOpen}
       data-slot="basic-collapsible"
-      className={cn('overflow-hidden rounded-xl bg-surface-inset/40 shadow-raised', className)}
+      className={className}
     >
       <CollapsibleTrigger
+        type="button"
         className={cn(
-          'flex w-full items-center justify-between px-3 py-2 text-caption font-semibold text-foreground hover-gradient-violet focus-visible:ring-inset',
+          'flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-left text-caption font-semibold text-foreground hover-gradient-violet focus-visible:ring-inset',
           triggerClassName,
         )}
       >
         {title}
         <CollapsibleChevron />
       </CollapsibleTrigger>
-      <CollapsibleContent className={cn('px-3 pb-3 pt-1 text-caption text-muted-foreground', contentClassName)}>
+      <CollapsibleContent className={cn('px-2 pb-2 pt-1 text-caption text-muted-foreground', contentClassName)}>
         {children}
       </CollapsibleContent>
     </Collapsible>

@@ -48,7 +48,7 @@ export function WithdrawDestinationInput({
   }, [destination])
   return (
     <div className="flex flex-col gap-2">
-      <Label htmlFor={inputId} className="ml-1">
+      <Label htmlFor={inputId} className="sr-only">
         Destination
       </Label>
       <div className="relative">

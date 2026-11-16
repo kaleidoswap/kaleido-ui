@@ -1,6 +1,5 @@
 import { AppIcon } from './app-icon'
-import { cn } from '../utils/cn'
-import { fieldSurface } from '../utils/field-styles'
+import { Input } from '../primitives/input'
 import {
   Select,
   SelectContent,
@@ -41,29 +40,23 @@ export function ActivityFilterBar<TStatus extends string = string>({
     // The row takes the status Select's height, and the search field stretches to
     // match it, so the two read as one bar.
     <div className="flex items-stretch gap-2">
-      <div className="group relative min-w-0 flex-1">
-        <AppIcon
-          name="search"
-          size="sm"
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/55 transition-colors group-focus-within:text-secondary-content"
-        />
-        <input
+      <div className="flex min-w-0 flex-1">
+        {/* The library Input: the glyph is its prefix, the clear button its suffix, so typed text stops short of both. */}
+        <Input
           type="text"
           data-testid="activity-search"
+          aria-label={searchPlaceholder}
           placeholder={searchPlaceholder}
           value={searchTerm}
           onChange={(event) => onSearchTermChange(event.target.value)}
-          className={cn(fieldSurface, 'h-full w-full py-2.5 pl-10 pr-8 text-caption text-foreground')}
+          prefix={<AppIcon name="search" size="sm" />}
+          suffix={
+            searchTerm ? (
+              <GlyphButton icon={Close} label="Clear search" size="sm" onClick={() => onSearchTermChange('')} />
+            ) : undefined
+          }
+          className="h-auto min-h-0 flex-1 gap-2.5 px-3 text-caption text-foreground"
         />
-        {searchTerm && (
-          <GlyphButton
-            icon={Close}
-            label="Clear search"
-            size="sm"
-            onClick={() => onSearchTermChange('')}
-            className="absolute right-1.5 top-1/2 -translate-y-1/2"
-          />
-        )}
       </div>
 
       {/* The library Select as it is: no classes of its own, so it scrolls and

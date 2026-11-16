@@ -17,4 +17,4 @@ export const fieldSurface =
  * and disabled read from the input inside (`focus-within`, `has-[:disabled]`).
  */
 export const fieldShell =
-  'rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-inner ring-1 ring-inset ring-field-edge transition-all hover:ring-field-edge-hover focus-within:ring-focus-ring has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 has-[:disabled]:hover:ring-field-edge'
+  'rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card shadow-inner ring-1 ring-inset ring-field-edge transition-all hover:ring-field-edge-hover focus-within:ring-focus-ring focus-within:hover:ring-focus-ring has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 has-[:disabled]:hover:ring-field-edge'

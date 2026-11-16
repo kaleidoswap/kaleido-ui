@@ -125,7 +125,7 @@ export function WithdrawRouteSelector<TAccount extends string = string>({
 
   return (
     <div className="flex flex-col gap-2">
-      <p id={headingId} className={cn('mb-1 ml-1 block leading-none', eyebrow, 'text-secondary-content')}>
+      <p id={headingId} className="sr-only">
         Route
       </p>
 
