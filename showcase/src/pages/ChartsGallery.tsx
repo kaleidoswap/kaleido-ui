@@ -3,11 +3,6 @@ import {
   AreaChart,
   BarChart,
   BarList,
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
   cn,
   DonutChart,
   LineChart,
@@ -21,6 +16,8 @@ import {
   type ChartTitleProps,
   type TrendChartPoint,
 } from '@kaleido-ui/index'
+import { Demo } from './blocks'
+import { slug } from '../search/slug'
 
 // ─── Sample data ────────────────────────────────────────────────────────────
 //
@@ -263,31 +260,25 @@ function ChartCard({
   // the top right.
   if (isValidElement(content) && FRAMED_CHARTS.has(content.type)) {
     return (
-      <Card variant="secondary" className={wide ? 'xl:col-span-2' : undefined}>
-        <CardContent className="p-4">
-          {cloneElement(content as ReactElement<ChartTitleProps & FilterableProps>, {
-            title,
-            description: use,
-            timeframes,
-            timeframe,
-            onTimeframeChange: setTimeframe,
-            filters,
-            activeFilters,
-            onFiltersChange: setActiveFilters,
-            ...withFilters(content.props as FilterableProps, activeFilters),
-          })}
-        </CardContent>
-      </Card>
+      <div className={wide ? 'xl:col-span-2' : undefined} data-search-key={slug(title)}>
+        {cloneElement(content as ReactElement<ChartTitleProps & FilterableProps>, {
+          title,
+          description: use,
+          timeframes,
+          timeframe,
+          onTimeframeChange: setTimeframe,
+          filters,
+          activeFilters,
+          onFiltersChange: setActiveFilters,
+          ...withFilters(content.props as FilterableProps, activeFilters),
+        })}
+      </div>
     )
   }
   return (
-    <Card variant="secondary" className={wide ? 'xl:col-span-2' : undefined}>
-      <CardHeader className="space-y-1 p-4 pb-0">
-        <CardTitle className="text-subhead">{title}</CardTitle>
-        <CardDescription className="text-caption">{use}</CardDescription>
-      </CardHeader>
-      <CardContent className="p-4">{content}</CardContent>
-    </Card>
+    <Demo title={title} use={use} className={wide ? 'xl:col-span-2' : undefined}>
+      {content}
+    </Demo>
   )
 }
 
@@ -319,8 +310,8 @@ function RankedBarList() {
 
 export function ChartsGallery() {
   return (
-    <div className="space-y-6">
-      <div className="grid gap-4 xl:grid-cols-2">
+    <div className="space-y-12">
+      <div className="grid gap-8 xl:grid-cols-2">
         <ChartCard title="Mixed" use="Volume, BTC · one view at a time: bars, stacked, lines, areas, dots" timeframes={MONTH_FRAMES} wide>
           {(timeframe) => (
             <MixedChart

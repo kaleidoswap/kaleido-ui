@@ -44,16 +44,14 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  FloatingNotice,
   FormField,
   Icon,
   InfoPanel,
   Input,
-  NoticeBar,
-  ListSummary,
   Pager,
   DatePicker,
   Popover,
+  Tooltip,
   PopoverClose,
   PopoverContent,
   PopoverTrigger,
@@ -78,42 +76,11 @@ import {
   ScrollArea,
   HorizontalScrollArea,
 } from '@kaleido-ui/index'
+import { Demo, Grid } from './blocks'
+import { AccountMenuDemo } from './AccountMenuDemo'
 
 // Showcase demos for the components that had none: one card per component or
 // variant, on sample data, each saying when to reach for it.
-
-function Demo({
-  title,
-  use,
-  children,
-  className,
-  align = 'bottom',
-}: {
-  title: string
-  use: string
-  children: ReactNode
-  className?: string
-  /** `top` keeps the demo under the description, for one whose height changes (a state switcher). */
-  align?: 'top' | 'bottom'
-}) {
-  return (
-    <Card variant="secondary" className={cn('min-w-0', className)}>
-      <CardHeader className="p-4 pb-0">
-        <CardTitle className="text-subhead">{title}</CardTitle>
-        <CardDescription className="text-caption">{use}</CardDescription>
-      </CardHeader>
-      {/* mt-auto: in a grid row the cards stretch to the tallest; the demo
-          (its buttons, its trigger) stays on the bottom edge. */}
-      <CardContent className={cn('p-4', align === 'bottom' && 'mt-auto')}>{children}</CardContent>
-    </Card>
-  )
-}
-
-// `min-w-0` on the items: a grid item keeps its content's min-content width by
-// default, so a wide table would stretch its card past the page.
-const Grid = ({ children }: { children: ReactNode }) => (
-  <div className="grid gap-4 xl:grid-cols-2 [&>*]:min-w-0">{children}</div>
-)
 
 // ─── Sample data ────────────────────────────────────────────────────────────
 
@@ -122,8 +89,8 @@ const PAIRS = ['BTC → USDT', 'USDT → BTC', 'BTC → L-BTC', 'L-BTC → USDT'
 const STATUSES = ['completed', 'completed', 'pending', 'completed', 'failed'] as const
 type SwapStatus = (typeof STATUSES)[number]
 
-// A table shows ten rows by default (a page); with fewer rows than that, it says exactly how many exist.
-const PAGE_SIZE = 10
+// A table shows five rows by default; with fewer rows than that, it says exactly how many exist.
+const PAGE_SIZE = 5
 
 const swaps = Array.from({ length: PAGE_SIZE }, (_, index) => ({
   id: `sw_${(0x81f2a9c0 - index * 104729).toString(16)}`,
@@ -134,9 +101,6 @@ const swaps = Array.from({ length: PAGE_SIZE }, (_, index) => ({
   app: index % 3 === 0 ? 'Checkout' : 'Wallet',
   at: `30 Sep, ${String(14 - Math.floor(index / 4)).padStart(2, '0')}:${String(59 - (index % 4) * 13).padStart(2, '0')}`,
 }))
-
-// The swaps that exist in the period; the table shows the first page of them.
-const SWAPS_TOTAL = 128
 
 const statusTone = { completed: 'success', pending: 'warning', failed: 'danger' } as const
 
@@ -163,7 +127,10 @@ const WIDE_COLUMNS = [
   ['channel', 'Channel'], ['order', 'Order'], ['created', 'Created'], ['settled', 'Settled'], ['duration', 'Duration'],
 ] as const
 
-const swapLog = Array.from({ length: 24 }, (_, index) => ({
+// Every swap of the day: a box shows five of them and scrolls through the rest.
+const SWAP_LOG_TOTAL = 128
+const LOG_PAGE_SIZE = 10
+const swapLog = Array.from({ length: SWAP_LOG_TOTAL }, (_, index) => ({
   id: `sw_${(0x81f2a9c0 - index * 7919).toString(16)}`,
   pair: PAIRS[index % PAIRS.length],
   sent: `${((index + 3) * 41_250).toLocaleString('en-US')} sats`,
@@ -179,7 +146,7 @@ export function TableGallery() {
   const [sortKey, setSortKey] = useState<'id' | 'pair' | 'sent' | 'received' | 'at' | null>(null)
   const [dir, setDir] = useState<'asc' | 'desc'>('asc')
   const [logOffset, setLogOffset] = useState(0)
-  const logPage = swapLog.slice(logOffset, logOffset + PAGE_SIZE)
+  const logPage = swapLog.slice(logOffset, logOffset + LOG_PAGE_SIZE)
   const sortBy = (key: NonNullable<typeof sortKey>) => {
     setDir(sortKey === key && dir === 'asc' ? 'desc' : 'asc')
     setSortKey(key)
@@ -196,7 +163,7 @@ export function TableGallery() {
             <h4 className="m-0 text-subhead font-semibold text-foreground">Swaps</h4>
             <p className="m-0 text-caption text-muted-foreground">Swaps in the last 24 hours, newest first.</p>
           </div>
-          <Table showRowCount totalRowCount={SWAPS_TOTAL}>
+          <Table showRowCount>
             <TableHeader>
               <TableRow>
                 <TableHead sortable sortDirection={sortKey === 'id' ? dir : 'none'} onSort={() => sortBy('id')}>Id</TableHead>
@@ -241,7 +208,7 @@ export function TableGallery() {
             <h4 className="m-0 text-subhead font-semibold text-foreground">Settlement report</h4>
             <p className="m-0 text-caption text-muted-foreground">Every field of the swaps above. Scroll sideways for the rest.</p>
           </div>
-          <Table showRowCount totalRowCount={SWAPS_TOTAL}>
+          <Table showRowCount>
             <TableHeader>
               <TableRow>
                 {WIDE_COLUMNS.map(([key, label]) => (
@@ -275,12 +242,12 @@ export function TableGallery() {
         </Demo>
       </div>
       <div className="xl:col-span-2">
-        <Demo title="Table — tall" use="A page of ten rows (of twenty-four) in a box capped at 360px (max-h-80): wrap the Table in a ScrollArea with a max height on its viewport and the grid scrolls up and down on the right-edge thumb. The ListSummary and Pager sit outside the scroll area, under the last row, so they stay put.">
+        <Demo title="Table — tall" use="128 rows, ten to a page, in a box that shows five (max-h-[21rem], the header and five rows): wrap the Table in a ScrollArea with a max height on its viewport and the grid scrolls up and down on the right-edge thumb. The Pager, with its “X of Y rows” summary, sits outside the scroll area, bottom right, so it stays put.">
           <div className="mb-3 space-y-1 px-4">
             <h4 className="m-0 text-subhead font-semibold text-foreground">Swap log</h4>
             <p className="m-0 text-caption text-muted-foreground">Today's swaps, newest first, ten to a page. Scroll down for the rest of the page.</p>
           </div>
-          <ScrollArea viewportClassName="max-h-80">
+          <ScrollArea viewportClassName="max-h-[21rem]">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -312,10 +279,16 @@ export function TableGallery() {
               </TableBody>
             </Table>
           </ScrollArea>
-          <div className="space-y-3 px-4 pt-3">
-            <ListSummary noun="swaps" shown={logPage.length} offset={logOffset} total={swapLog.length} />
-            <Pager offset={logOffset} limit={PAGE_SIZE} returned={logPage.length} onOffsetChange={setLogOffset} noun="swaps" alwaysShow />
-          </div>
+          <Pager
+            className="px-4 pt-3"
+            offset={logOffset}
+            limit={LOG_PAGE_SIZE}
+            returned={logPage.length}
+            onOffsetChange={setLogOffset}
+            noun="swaps"
+            summary={`${logPage.length} of ${SWAP_LOG_TOTAL} rows`}
+            alwaysShow
+          />
         </Demo>
       </div>
     </Grid>
@@ -406,17 +379,13 @@ export function FormsGallery() {
 
 export function AvatarGallery() {
   return (
-    <Grid>
-      <Demo title="Avatar" use="sm 32px, lg 40px. A custom image, or the initials on the violet-to-info gradient. Decorative unless alt is set with an image.">
-        <div className="flex flex-wrap items-center gap-4">
-          <Avatar initials="EJ" />
-          <Avatar initials="EJ" size="lg" />
-          <Avatar src="/brand/kaleidoswap-pictogram.svg" alt="KaleidoSwap" initials="KS" size="lg" className="bg-card" />
-          <Avatar src="/missing-image.png" initials="MW" size="lg" />
-        </div>
-        <p className="mt-3 text-caption text-muted-foreground">The last one points at a missing image and falls back to its initials.</p>
-      </Demo>
-    </Grid>
+    <Demo title="Avatar" use="A circle with the name's initials on the violet-to-info gradient; a custom image takes their place when there is one. 32 px by default, 40 px with size=&quot;lg&quot;. Decorative unless alt is set with an image.">
+      <div className="flex flex-wrap items-center gap-4">
+        <Avatar initials="JD" />
+        <Avatar initials="JD" size="lg" />
+        <Avatar src="/brand/kaleidoswap-pictogram.svg" alt="KaleidoSwap" initials="KS" size="lg" className="bg-card" />
+      </div>
+    </Demo>
   )
 }
 
@@ -424,16 +393,22 @@ export function CollapsibleGallery() {
   const [open, setOpen] = useState(false)
   return (
     <Grid>
-      <Demo title="BasicCollapsible" use="The plain Collapsible, styled: a compact row that opens a section of caption text, with aria-expanded / aria-controls and a turning chevron. Uncontrolled here.">
-        <BasicCollapsible title="Advanced settings">
-          Slippage, route preferences and the fee cap live here.
-        </BasicCollapsible>
+      <Demo title="Collapsible row" use="BasicCollapsible. A compact row that opens a few lines of detail inside a surface that already exists: advanced settings under a form, the fine print under an amount. No box of its own (it takes the surface it sits in), a turning chevron, caption text.">
+        <div className="rounded-xl bg-surface-inset/40 p-2 shadow-raised">
+          <BasicCollapsible title="Advanced settings">
+            Slippage, route preferences and the fee cap live here.
+          </BasicCollapsible>
+        </div>
       </Demo>
-      <Demo title="DisclosureCard" use="A card-styled Collapsible: one box holds the trigger and the body. Controlled here; NetworkInfoDisclosure is built on it.">
+      <Demo title="Disclosure card" use="DisclosureCard. The same Collapsible dressed as a card: the box holds both the trigger and the body, with an optional icon. Use it when the explanation is a block of its own on the page (what these fees are); NetworkInfoDisclosure is built on it.">
         <DisclosureCard title="What are these fees?" open={open} onOpenChange={setOpen} icon={<Icon name="info" className="text-icon-md text-muted-foreground" />}>
           <p className="m-0 text-caption text-muted-foreground">The network fee pays the miners; the swap fee pays the market maker.</p>
         </DisclosureCard>
-        <p className="mt-3 text-caption text-muted-foreground">Open: {String(open)}</p>
+      </Demo>
+      <Demo title="Disclosure card with action" use="DisclosureCard with the action prop. A button under the body, inside the same box, that appears once it is open: use it when the explanation ends in a next step (learn more, change the setting).">
+        <DisclosureCard title="Why is my deposit pending?" defaultOpen icon={<Icon name="info" className="text-icon-md text-muted-foreground" />} action={<Button variant="surface" size="sm">View status</Button>}>
+          <p className="m-0 text-caption text-muted-foreground">On-chain deposits need three confirmations before they are credited.</p>
+        </DisclosureCard>
       </Demo>
     </Grid>
   )
@@ -528,7 +503,7 @@ export function PopoverMenuGallery() {
               <Copyable value="kx_live_9f2c81d0a3b4" label="key prefix">kx_live_9f2c…</Copyable>
               <p className="m-0 text-muted-foreground">Created 12 Sep 2026 · last used 2 hours ago.</p>
               <PopoverClose asChild>
-                <Button variant="ghost" size="sm">Close</Button>
+                <Button variant="ghost" size="sm" className="mt-2">Close</Button>
               </PopoverClose>
             </div>
           </PopoverContent>
@@ -553,6 +528,9 @@ export function PopoverMenuGallery() {
           </DropdownMenu>
           <span className="text-caption text-muted-foreground">Last chosen: {last}</span>
         </div>
+      </Demo>
+      <Demo title="AccountMenu" use="Who is signed in, at the end of the top bar: avatar, name, company and role, and the account's entries. A disclosure, not a menu; the panel is the same surface as Popover and DropdownMenu.">
+        <AccountMenuDemo />
       </Demo>
       <Demo title="DatePicker" use="One date from a month grid in a Popover, under a field-styled trigger. The value is YYYY-MM-DD. The grid is one Tab stop: arrows move by day or week, PageUp/PageDown by month, Enter selects; days outside min/max are disabled.">
         <div className="w-full max-w-64">
@@ -587,52 +565,6 @@ export function PopoverMenuGallery() {
       </Demo>
       <Demo title="FilterDropdown" use="A filter with an icon per option, for a narrow wallet surface: a full-width pill with the label and a +N count, opening a panel of options as wide as itself, over the content below. Past four options it shows four and scrolls the rest; it is not a Select, so there is no search. Used by the extension dashboard's network filter.">
         <NetworkFilterDropdown value={network} onChange={setNetwork} />
-      </Demo>
-    </Grid>
-  )
-}
-
-export function NoticesGallery() {
-  const [bar, setBar] = useState(false)
-  const [floating, setFloating] = useState(false)
-  // Both notices are fixed to the window in an app. Here the bar opens under
-  // its button and the floating notice inside its own card, both absolutely
-  // placed so the cards keep their size.
-  const demoNotice = 'absolute inset-x-0 bottom-auto top-full z-10 mt-3 w-full translate-x-0'
-  return (
-    <Grid>
-      <Demo
-        title="NoticeBar"
-        use="In an app: fixed to the top, full width, above the page, publishing its height as --kui-notice-height so the page can move down."
-        className={cn(bar && 'relative z-30')}
-      >
-        <div className="relative">
-          <Button variant="outline" size="sm" onClick={() => setBar(!bar)}>
-            {bar ? 'Hide the notice bar' : 'Show the notice bar'}
-          </Button>
-          <NoticeBar hidden={!bar} heightVariable="--kui-notice-height-demo" className={cn(demoNotice, cardSurface.secondary, 'bg-card p-4')}>
-            <p className="m-0 text-body font-semibold text-foreground">Scheduled maintenance</p>
-            <p className="m-0 mt-1 text-caption text-muted-foreground">Swaps pause on 3 October from 02:00 to 02:30 UTC.</p>
-          </NoticeBar>
-        </div>
-      </Demo>
-      <Demo
-        title="FloatingNotice"
-        use="In an app: bottom centre of the window, above dialogs, until it is closed. It does not time out or queue like a toast. Here it sits at the bottom centre of this card."
-      >
-        <Button variant="outline" size="sm" onClick={() => setFloating(true)} disabled={floating}>
-          Show the floating notice
-        </Button>
-        {floating && (
-          <FloatingNotice
-            onDismiss={() => setFloating(false)}
-            className="absolute inset-x-4 bottom-4 w-auto translate-x-0"
-          >
-            <InfoPanel tone="info" title="Testnet">
-              You are on signet. Funds here have no value.
-            </InfoPanel>
-          </FloatingNotice>
-        )}
       </Demo>
     </Grid>
   )
@@ -759,6 +691,79 @@ const LIST_FILTERS: { key: FilterKey; label: string; all: string; options: strin
   { key: 'pair', label: 'Pair', all: 'All pairs', options: ['BTC / USDT', 'BTC / L-BTC', 'USDT / L-BTC', 'BTC / USDC', 'USDT / USDC', 'L-BTC / USDC'] },
 ]
 
+const logRows = [
+  { label: 'Quote accepted', value: '14:02:01', tone: 'muted' as const },
+  { label: 'Invoice paid', value: '14:02:09', tone: 'muted' as const },
+  { label: 'Swap settled', value: '14:02:50', tone: 'muted' as const },
+]
+
+/** Display > Lists: the plain lists, a log in two spacings and a checklist. */
+export function DisplayListsGallery() {
+  return (
+    <Grid>
+      <Demo title="Log, short" use='SummaryRows as="ol" and tone="muted". An ordered log: the event, and its timestamp quieter than it. spacing="short" (default) keeps rows tight, for a few lines inside a card.'>
+        <SummaryRows as="ol" rows={logRows} />
+      </Demo>
+      <Demo title="Log, long" use='The same log with spacing="long": more room between lines, for a list that is the content of its block and is read top to bottom.'>
+        <SummaryRows as="ol" spacing="long" rows={logRows} />
+      </Demo>
+      <Demo title="Checklist" use='connector={false}: done / to do / cannot be checked, each with its own glyph and a spoken status, badges and an action.'>
+        <SwapStepList
+          connector={false}
+          steps={[
+            { id: 'key', label: 'Create an API key', status: 'done', description: 'kx_live_9f2c… created 12 Sep.' },
+            {
+              id: 'hook',
+              label: 'Register a webhook',
+              status: 'pending',
+              badges: <ToneBadge tone="warning">Required</ToneBadge>,
+              action: <Button variant="surface" size="sm">Open settings</Button>,
+            },
+            { id: 'sdk', label: 'The SDK reports swaps', status: 'unknown', description: 'We cannot see this until the first swap arrives.' },
+          ]}
+        />
+      </Demo>
+    </Grid>
+  )
+}
+
+/** One swap as a receipt: identity and status, what moved, the fee behind a disclosure, then the log. */
+function SwapReceipt() {
+  return (
+    <div className={cn(cardSurface, 'max-w-md space-y-4 p-5')}>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="text-subhead font-semibold text-foreground">BTC → USDT</div>
+          <Copyable value="swp_7f3a91c2e84b" label="swap id">
+            <span className="text-tiny">swp_7f3a91c2e84b</span>
+          </Copyable>
+        </div>
+        <ToneBadge tone="success">completed</ToneBadge>
+      </div>
+      <SummaryRows
+        rows={[
+          { label: 'You paid', value: '1,005 sats' },
+          { label: 'You received', value: '0.71 USDT', emphasis: true, hint: '0.5% spread' },
+          { label: 'Counterparty', value: '66422c…e3ce', mono: true },
+        ]}
+      />
+      <BasicCollapsible title="Fee breakdown" triggerClassName="px-0">
+        <SummaryRows
+          rows={[
+            { label: 'Network fee', value: '3 sats' },
+            { label: 'Service fee', value: '2 sats' },
+            { label: 'Total fee', value: '5 sats', emphasis: true },
+          ]}
+        />
+      </BasicCollapsible>
+      <div className="border-t border-divider/40 pt-3">
+        <div className="mb-1 text-mini font-medium uppercase tracking-eyebrow text-muted-foreground">History</div>
+        <SummaryRows as="ol" rows={logRows} />
+      </div>
+    </div>
+  )
+}
+
 export function ListsGallery() {
   const narrow = useIsNarrow()
   const [mode, setMode] = useState<'loading' | 'error' | 'forbidden' | 'empty' | 'data'>('data')
@@ -771,9 +776,10 @@ export function ListsGallery() {
   const activeCount =
     LIST_FILTERS.filter((filter) => filters[filter.key] !== ALL).length + (period !== DEFAULT_PERIOD ? 1 : 0)
   const pageRows = [50, 50, 50, 23]
+  const pagerTotal = pageRows.reduce((sum, rows) => sum + rows, 0)
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-16">
       <Grid>
         <Demo title="QueryState" align="top" use="Loading, error and empty kept apart, so a failed read never looks like an empty list. Switch the state.">
           <div className="space-y-4">
@@ -819,7 +825,7 @@ export function ListsGallery() {
         </Demo>
         <Demo title="EmptyState" use="Title, description, one action — centred.">
           <EmptyState
-            icon={<Icon name="receipt_long" className="text-icon-4xl text-muted-foreground" />}
+            icon={<Icon name="receipt_long" className="text-icon-4xl" />}
             title="No payouts yet"
             description="Payouts appear here once your first swap settles."
             action={<Button variant="surface" size="sm">Open Quickstart</Button>}
@@ -889,12 +895,13 @@ export function ListsGallery() {
       <SegmentedControlDemo />
 
       <Grid>
-        <Demo title="Pager" use="Offset paging with no total: a next page only after a full page, never “of N”.">
+        <Demo title="Pager" use="Offset paging: a next page only after a full page. With a known total, summary says “X of Y rows”; without one, the default is the range (“swaps 51–100”), never “of N”.">
           <Pager
             offset={offset}
             limit={50}
             returned={pageRows[offset / 50] ?? 0}
             noun="swaps"
+            summary={`${pageRows[offset / 50] ?? 0} of ${pagerTotal} rows`}
             onOffsetChange={setOffset}
           />
         </Demo>
@@ -903,32 +910,6 @@ export function ListsGallery() {
             singular="address"
             plural="addresses"
             values={['bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh', 'bc1q9h6yzl9kh2y0q3v3r8x7a6f5e4d3c2b1a0z9y8', 'tb1qw508d6qejxtdg4y5r3zarvary0c5xw7kxpjzsx']}
-          />
-        </Demo>
-        <Demo title="Checklist" use='connector={false}: done / to do / cannot be checked, each with its own glyph and a spoken status, badges and an action.'>
-          <SwapStepList
-            connector={false}
-            steps={[
-              { id: 'key', label: 'Create an API key', status: 'done', description: 'kx_live_9f2c… created 12 Sep.' },
-              {
-                id: 'hook',
-                label: 'Register a webhook',
-                status: 'pending',
-                badges: <ToneBadge tone="warning">Required</ToneBadge>,
-                action: <Button variant="surface" size="sm">Open settings</Button>,
-              },
-              { id: 'sdk', label: 'The SDK reports swaps', status: 'unknown', description: 'We cannot see this until the first swap arrives.' },
-            ]}
-          />
-        </Demo>
-        <Demo title='SummaryRows as="ol" and tone="muted"' use="An ordered log: the event, and its timestamp quieter than it.">
-          <SummaryRows
-            as="ol"
-            rows={[
-              { label: 'Quote accepted', value: '14:02:01', tone: 'muted' },
-              { label: 'Invoice paid', value: '14:02:09', tone: 'muted' },
-              { label: 'Swap settled', value: '14:02:50', tone: 'muted' },
-            ]}
           />
         </Demo>
       </Grid>
@@ -940,12 +921,13 @@ export function ListsGallery() {
               key={swap.id}
               identifier={swap.id}
               columns={4}
+              reserveActions
               summary={swap.pair}
               status={<ToneBadge tone={statusTone[swap.status]}>{swap.status}</ToneBadge>}
               onOpen={() => setOpened(swap.id)}
               openLabel={`swap ${swap.id}`}
               selected={opened === swap.id}
-              actions={swap.status === 'failed' ? <Button variant="outline" size="sm">Refund</Button> : undefined}
+              actions={swap.status === 'failed' ? <Button variant="surface" size="sm">Refund</Button> : undefined}
             >
               <RecordField label="Sent">{swap.sent}</RecordField>
               <RecordField label="Received">{swap.received}</RecordField>
@@ -954,7 +936,10 @@ export function ListsGallery() {
             </RecordItem>
           ))}
         </RecordList>
-        <p className="mt-3 text-caption text-muted-foreground">Opened: {opened ?? '—'}</p>
+      </Demo>
+
+      <Demo title="Receipt" use='SummaryRows in a composed card: identity and status, rows with the deciding figure emphasised, a BasicCollapsible holding a second list, and an ordered log with tone="muted".'>
+        <SwapReceipt />
       </Demo>
     </div>
   )

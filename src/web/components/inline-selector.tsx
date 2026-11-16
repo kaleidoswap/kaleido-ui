@@ -130,7 +130,7 @@ export function InlineSelector<TOption extends InlineSelectorOption>({
         <div
           ref={panelRef}
           className={cn(
-            'absolute left-0 top-full z-[var(--z-popover)] mt-2 w-full rounded-2xl bg-popover/95 bg-gradient-card p-1.5 shadow-popover backdrop-blur-xl duration-200 animate-in fade-in slide-in-from-top-1',
+            'absolute left-0 top-full z-[var(--z-popover)] mt-2 w-full rounded-2xl bg-popover bg-gradient-floating p-1.5 shadow-floating duration-200 animate-in fade-in slide-in-from-top-1',
             panelClassName,
           )}
         >

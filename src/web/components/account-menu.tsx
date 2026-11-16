@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { Avatar } from '../primitives/avatar'
+import { Button } from '../primitives/button'
+import { floatingSurface } from '../primitives/popover'
 import { Icon } from '../primitives/icon'
 import { cn } from '../utils/cn'
 
@@ -20,6 +22,10 @@ export interface AccountMenuProps {
   avatar?: React.ReactNode
   /** The panel's top section: the identity in full, the role, an id to copy. */
   header?: React.ReactNode
+  /** Under the identity, across the panel's full width, left-aligned with the avatar: the organization and its id. */
+  details?: React.ReactNode
+  /** Top right of the panel, level with the name: the role. */
+  badge?: React.ReactNode
   /** `AccountMenuItem`s and `AccountMenuSeparator`s. */
   children?: React.ReactNode
   /** Which edge of the trigger the panel lines up with. `end` (default) suits the top bar's right end; `start` a menu at the left of its container. */
@@ -41,7 +47,7 @@ const initialsOf = (name: string) => (name.trim()[0] ?? '?').toUpperCase()
  * focus to the trigger, and a click outside or focus leaving closes it. For a
  * list of actions alone, use `DropdownMenu`.
  */
-export function AccountMenu({ name, secondary, label, avatar, header, children, align = 'end', className }: AccountMenuProps) {
+export function AccountMenu({ name, secondary, label, avatar, header, details, badge, children, align = 'end', className }: AccountMenuProps) {
   const [open, setOpen] = React.useState(false)
   const rootRef = React.useRef<HTMLDivElement>(null)
   const triggerRef = React.useRef<HTMLButtonElement>(null)
@@ -67,7 +73,8 @@ export function AccountMenu({ name, secondary, label, avatar, header, children, 
   }, [open])
 
   const close = React.useCallback(() => setOpen(false), [])
-  const avatarNode = (size: 'sm' | 'lg') => avatar ?? <Avatar size={size} initials={initialsOf(name)} />
+  const triggerAvatar = avatar ?? <Avatar size="sm" initials={initialsOf(name)} />
+  const panelAvatar = avatar ?? <Avatar size="lg" className="size-12 text-body" initials={initialsOf(name)} />
 
   return (
     <div
@@ -81,45 +88,53 @@ export function AccountMenu({ name, secondary, label, avatar, header, children, 
         if (next && !rootRef.current?.contains(next)) setOpen(false)
       }}
     >
-      <button
+      <Button
         ref={triggerRef}
         type="button"
+        variant="surface"
         aria-expanded={open}
         aria-controls={panelId}
         aria-label={label}
         onClick={() => setOpen((next) => !next)}
-        className="group flex items-center gap-2 rounded-xl p-1.5 text-foreground transition-colors duration-300 hover:bg-foreground/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:pr-2"
+        // Closed, the trigger is a card that hugs its content: avatar, name,
+        // chevron. A long name truncates at the max width.
+        className="group h-auto max-w-72 gap-3 px-3 py-2"
       >
-        {avatarNode('sm')}
-        <span className="hidden min-w-0 flex-col text-left sm:flex">
-          <span className="max-w-[14rem] truncate text-caption font-medium">{name}</span>
-          {secondary && <span className="max-w-[14rem] truncate text-mini text-muted-foreground">{secondary}</span>}
+        {triggerAvatar}
+        <span className="hidden min-w-0 flex-1 flex-col gap-0.5 text-left sm:flex">
+          <span className="truncate text-body font-semibold leading-tight text-foreground">{name}</span>
+          {secondary && <span className="truncate text-mini font-normal leading-tight text-muted-foreground">{secondary}</span>}
         </span>
         <Icon
           name="expand_more"
           className={cn(
-            'hidden text-icon-md text-muted-foreground transition-transform motion-reduce:transition-none sm:block',
+            'hidden shrink-0 text-icon-md text-muted-foreground transition-transform motion-reduce:transition-none sm:block',
             open && 'rotate-180'
           )}
         />
-      </button>
+      </Button>
 
       {open && (
         <div
           id={panelId}
+          // The same surface as Popover and DropdownMenu: opaque, the floating light and shadow.
           className={cn(
-            'absolute top-full z-50 mt-2 w-72 max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl bg-popover text-popover-foreground shadow-popover animate-fade-in motion-reduce:animate-none',
+            floatingSurface,
+            'absolute top-full mt-2 w-80 max-w-[calc(100vw-2rem)] overflow-hidden p-2 animate-fade-in',
             align === 'start' ? 'left-0' : 'right-0',
           )}
         >
-          <div className="bg-foreground/[0.03] p-3">
+          {/* Identity first: the avatar beside who and what they are, then `details` across the full width, and one rule under both. */}
+          <div className="relative mx-2 mb-2 border-b border-divider/40 pb-3 pt-2">
             <div className="flex items-center gap-3">
-              {avatarNode('lg')}
-              <div className="min-w-0 flex-1">{header ?? <div className="truncate text-caption font-medium">{name}</div>}</div>
+              {panelAvatar}
+              <div className="min-w-0 flex-1">{header ?? <div className="truncate text-body font-semibold">{name}</div>}</div>
+              {badge && <div className="absolute right-0 top-2">{badge}</div>}
             </div>
+            {details && <div className="mt-3">{details}</div>}
           </div>
           <AccountMenuContext.Provider value={close}>
-            <div className="py-1">{children}</div>
+            <div className="space-y-0.5">{children}</div>
           </AccountMenuContext.Provider>
         </div>
       )}
@@ -146,7 +161,7 @@ export const AccountMenuItem = React.forwardRef<HTMLButtonElement, AccountMenuIt
     )
     const itemProps = {
       className: cn(
-        'flex w-full items-center gap-3 px-4 py-3 text-left text-caption font-medium transition-colors focus-visible:bg-foreground/[0.06] focus-visible:outline-none',
+        'flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-caption font-medium transition-colors focus-visible:bg-foreground/[0.06] focus-visible:outline-none',
         destructive ? 'text-danger-fg hover:bg-danger/10' : 'text-foreground hover:bg-primary/10',
         className
       ),
@@ -182,5 +197,5 @@ AccountMenuItem.displayName = 'AccountMenuItem'
 
 /** The rule between the account's entries and Log out. */
 export function AccountMenuSeparator() {
-  return <div role="separator" className="my-1 border-t border-divider/40" />
+  return <div role="separator" className="mx-2 my-1 border-t border-divider/40" />
 }

@@ -419,6 +419,7 @@ export {
   type SummaryRowItem,
   type SummaryRowsProps,
   type SummaryRowTone,
+  type SummaryRowsSpacing,
 } from './components/summary-rows'
 export { SectionLabel } from './components/section-label'
 export { SectionHeader, type SectionHeaderProps } from './components/section-header'
@@ -444,6 +445,13 @@ export {
   type EarningsPartner,
   type EarningsVolumePoint,
 } from './components/earnings-by-partner-card'
+export {
+  RankedTrendPanel,
+  type RankedTrendPanelProps,
+  type RankedTrendItem,
+  type TrendPoint,
+} from './components/ranked-trend-panel'
+export { StatTrendPanel, type StatTrendPanelProps } from './components/stat-trend-panel'
 export { ErrorBoundary } from './components/error-boundary'
 export { RecoveryPhraseCard, type RecoveryPhraseCardProps } from './components/recovery-phrase-card'
 export {

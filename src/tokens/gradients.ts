@@ -49,6 +49,12 @@ export const gradient = {
   cardHero:
     'linear-gradient(135deg, rgba(111, 50, 255, 0.16) 0%, rgba(111, 50, 255, 0.03) 50%, rgba(21, 233, 154, 0.12) 100%)',
   /**
+   * Floating layers (popover, menu, select, tooltip): a lighter cardHero, so
+   * the popover fill keeps its own tone under the brand violet and green.
+   */
+  floating:
+    'linear-gradient(135deg, rgba(111, 50, 255, 0.12) 0%, rgba(111, 50, 255, 0.02) 50%, rgba(21, 233, 154, 0.08) 100%)',
+  /**
    * Violet hover: a soft violet light from the top-left that fades out. It
    * layers over the element's own background (card, tint, nothing), so a
    * hovered surface lightens instead of losing its fill.

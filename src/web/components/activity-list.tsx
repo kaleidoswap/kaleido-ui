@@ -51,7 +51,7 @@ export interface ActivityListProps<TData = unknown> {
 }
 
 function DefaultEmptyIcon({ name }: { name: IconName }) {
-  return <Icon name={name} className="text-icon-4xl text-secondary-content" />
+  return <Icon name={name} className="text-icon-4xl" />
 }
 
 export function ActivityList<TData = unknown>({
@@ -85,8 +85,6 @@ export function ActivityList<TData = unknown>({
         icon={emptyIcon ?? <DefaultEmptyIcon name="receipt_long" />}
         title={hasActiveFilters ? filteredEmptyTitle : emptyTitle}
         description={hasActiveFilters ? filteredEmptyDescription : emptyDescription}
-        // The activity feed has always set its description a step brighter.
-        descriptionClassName="text-foreground/70"
         action={
           hasActiveFilters && onClearFilters ? (
             <Button variant="surface" size="sm" onClick={onClearFilters}>

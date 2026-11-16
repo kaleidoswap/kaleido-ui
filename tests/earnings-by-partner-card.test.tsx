@@ -27,10 +27,10 @@ test('the left ranks partners by revenue over the total; the right charts the to
     h(EarningsByPartnerCard, { partners, period: '30d', onPeriodChange: noop, onSelect: noop, unit: 'sat', bucketLabel: 'per day' }),
   )
   assert.match(markup, /role="region" aria-labelledby="([^"]+)"[\s\S]*<h3 [^>]*id="\1">Earnings by partner</)
-  // The platform dashboard's split, left on the hero gradient, no divider between the halves.
+  // The platform dashboard's split, left on the hero gradient, a hairline between the halves.
   assert.match(markup, /lg:grid-cols-\[21rem_minmax\(0,1fr\)\]/)
   assert.match(markup, /bg-gradient-card-hero/)
-  assert.doesNotMatch(markup, /lg:border-r|border-l\b|divide-x/)
+  assert.match(markup, /data-slot="ranked-trend-backdrop" class="[^"]*border-r border-border/)
   const order = ['Acme Wallet', 'Nimbus Wallet', 'Orbit Pay'].map((name) => markup.indexOf(`>${name}<`))
   assert.deepEqual([...order].sort((a, b) => a - b), order, 'ranked by revenue')
   assert.match(markup, />412,300 sat</)

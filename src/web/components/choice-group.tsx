@@ -1,6 +1,6 @@
 import { createContext, useContext, useId, type ReactNode } from 'react'
 import { cn } from '../utils/cn'
-import { eyebrow } from '../utils/type-roles'
+import { eyebrowLarge } from '../utils/type-roles'
 
 const ChoiceGroupContext = createContext<string | undefined>(undefined)
 
@@ -24,7 +24,7 @@ export function ChoiceGroup({ legend, children, name, className }: ChoiceGroupPr
   const generated = useId()
   return (
     <fieldset data-slot="choice-group" className={cn('m-0 min-w-0 space-y-2 border-0 p-0', className)}>
-      <legend className={cn(eyebrow, 'mb-1 p-0 text-muted-foreground')}>{legend}</legend>
+      <legend className={cn(eyebrowLarge, 'mb-1 p-0 text-muted-foreground')}>{legend}</legend>
       <ChoiceGroupContext.Provider value={name ?? generated}>{children}</ChoiceGroupContext.Provider>
     </fieldset>
   )

@@ -52,7 +52,7 @@ const DropdownMenuContent = React.forwardRef<
       data-slot="dropdown-menu-content"
       sideOffset={sideOffset}
       align={align}
-      className={cn(floatingSurface, 'min-w-44 p-1.5', className)}
+      className={cn(floatingSurface, 'min-w-44 p-2', className)}
       {...props}
     >
       <MenuBody>{children}</MenuBody>
@@ -75,16 +75,16 @@ const DropdownMenuItem = React.forwardRef<React.ElementRef<typeof MenuPrimitive.
       data-slot="dropdown-menu-item"
       data-destructive={destructive || undefined}
       className={cn(
-        'flex cursor-default select-none items-center gap-2 rounded-xl px-3 py-2 text-caption font-medium outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+        'flex cursor-default select-none items-center gap-3 rounded-xl px-3 py-2.5 text-caption font-medium outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
         destructive
           ? 'text-danger-fg data-[highlighted]:bg-danger/10'
-          : 'text-foreground data-[highlighted]:bg-secondary/15',
+          : 'text-foreground data-[highlighted]:bg-primary/10',
         className,
       )}
       {...props}
     >
       {icon && (
-        <span aria-hidden="true" className="flex shrink-0 text-icon-md">
+        <span aria-hidden="true" className={cn('flex shrink-0 text-icon-md', destructive ? 'text-danger-fg' : 'text-brand')}>
           {icon}
         </span>
       )}
@@ -110,7 +110,7 @@ const DropdownMenuSeparator = React.forwardRef<
   React.ElementRef<typeof MenuPrimitive.Separator>,
   React.ComponentPropsWithoutRef<typeof MenuPrimitive.Separator>
 >(({ className, ...props }, ref) => (
-  <MenuPrimitive.Separator ref={ref} className={cn('-mx-1.5 my-1.5 h-px bg-secondary/15', className)} {...props} />
+  <MenuPrimitive.Separator ref={ref} className={cn('mx-2 my-1 h-px bg-divider/40', className)} {...props} />
 ))
 DropdownMenuSeparator.displayName = MenuPrimitive.Separator.displayName
 

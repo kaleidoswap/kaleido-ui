@@ -3,6 +3,7 @@ import { ChevronRight } from '../icons/outlined'
 import type { ReactNode } from 'react'
 import { cn } from '../utils/cn'
 import { LiquidNetworkIcon, OnchainNetworkIcon } from './network-icon'
+import { protocolIcons } from '../assets/protocol-icons'
 import type { DepositAccountId, DepositNetworkKey } from './deposit-ui-shared'
 import { eyebrow } from '../utils/type-roles'
 
@@ -34,7 +35,7 @@ const NETWORK_OPTIONS: Record<DepositAccountId, DepositNetworkOption> = {
     account: 'SPARK',
     label: 'Spark',
     description: 'Receive directly into your Spark account. Fast and free.',
-    icon: <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" alt="" className="kui-mono-icon h-[18px]" />,
+    icon: <img src={protocolIcons.Spark} alt="" className="kui-mono-icon h-[18px]" />,
     accentBg: 'bg-info/10',
     accentBorder: 'border-info/30',
     accentText: 'text-info-fg',
@@ -44,7 +45,7 @@ const NETWORK_OPTIONS: Record<DepositAccountId, DepositNetworkOption> = {
     account: 'ARKADE',
     label: 'Arkade',
     description: 'Receive directly into your Arkade account. Low fees, near-instant settlement.',
-    icon: <img src="/icons/arkade/arkade-icon.svg" alt="" className="h-[18px]" />,
+    icon: <img src={protocolIcons.Arkade} alt="" className="h-[18px]" />,
     accentBg: 'bg-network-arkade/10',
     accentBorder: 'border-network-arkade/30',
     accentText: 'text-network-arkade-fg',

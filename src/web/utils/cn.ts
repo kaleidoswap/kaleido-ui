@@ -64,6 +64,7 @@ const bgImages = [
   'gradient-violet',
   'gradient-card',
   'gradient-card-hero',
+  'gradient-floating',
   'gradient-active',
   'gradient-headline',
   'page-radial',

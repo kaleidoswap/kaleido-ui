@@ -34,7 +34,7 @@
   --foreground:           #15122A;
   --card:                 #FFFFFF;
   --card-foreground:      #15122A;
-  --popover:              #FFFFFF;
+  --popover:              #F4F3F9;
   --popover-foreground:   #15122A;
   --primary:              #17B581;
   --primary-foreground:   #0E0D16;
@@ -68,7 +68,7 @@
   --foreground:           #EDECF6;
   --card:                 #1C1A2A;
   --card-foreground:      #EDECF6;
-  --popover:              #211F31;
+  --popover:              #2A2839;
   --popover-foreground:   #EDECF6;
   --primary:              #15E99A;
   --primary-foreground:   #0E0D16;
@@ -168,7 +168,7 @@
   --kui-shadow-button-surface-hover: 0 0 12px rgba(111, 50, 255, 0.45);
   --kui-shadow-nav-active: 0 0 8px rgba(21, 233, 154, 0.5);
   --kui-shadow-popover: 0 0 0 1px rgba(164, 138, 255, 0.10), 0 24px 60px -12px rgba(7, 4, 22, 0.8), 0 0 48px -16px rgba(111, 50, 255, 0.35);
-  --kui-shadow-floating: 0 24px 60px -12px rgba(7, 4, 22, 0.8), 0 0 48px -16px rgba(111, 50, 255, 0.35);
+  --kui-shadow-floating: 0 24px 60px -12px rgba(7, 4, 22, 0.8);
   --kui-shadow-toast: 0 0 0 1px rgba(164, 138, 255, 0.10), 0 12px 36px -8px rgba(7, 4, 22, 0.6);
   /* Elevation ink — shadows are cast in a near-black violet. */
   --app-shadow: 7 4 22;
@@ -257,6 +257,7 @@
   --gradient-card: linear-gradient(135deg, rgba(111, 50, 255, 0.025) 0%, rgba(111, 50, 255, 0) 55%);
   --card-edge: inset 0 0 0 1px rgba(20, 20, 43, 0.12), inset 1px 1px 0 0 rgba(111, 50, 255, 0.34), inset -1px -1px 0 0 rgba(23, 181, 129, 0.4);
   --gradient-card-hero: linear-gradient(135deg, rgba(111, 50, 255, 0.05) 0%, rgba(111, 50, 255, 0) 50%, rgba(21, 233, 154, 0.06) 100%);
+  --gradient-floating: linear-gradient(135deg, rgba(111, 50, 255, 0.05) 0%, rgba(111, 50, 255, 0) 50%, rgba(21, 233, 154, 0.05) 100%);
   --gradient-hover: linear-gradient(135deg, rgba(111, 50, 255, 0.12) 0%, rgba(111, 50, 255, 0.03) 100%);
   /* A selected card is only this tint: on light it needs a white floor, or it
      takes the grey of whatever it sits on. */
@@ -620,6 +621,7 @@
   --gradient-surface:     linear-gradient(135deg, rgba(139, 92, 246, 0.16) 0%, rgba(111, 50, 255, 0.04) 100%);
   --gradient-card:        linear-gradient(135deg, rgba(111, 50, 255, 0.06) 0%, rgba(111, 50, 255, 0) 55%);
   --gradient-card-hero:   linear-gradient(135deg, rgba(111, 50, 255, 0.16) 0%, rgba(111, 50, 255, 0.03) 50%, rgba(21, 233, 154, 0.12) 100%);
+  --gradient-floating:    linear-gradient(135deg, rgba(111, 50, 255, 0.12) 0%, rgba(111, 50, 255, 0.02) 50%, rgba(21, 233, 154, 0.08) 100%);
   --gradient-active:      linear-gradient(135deg, rgba(21, 233, 154, 0.16) 0%, rgba(21, 233, 154, 0.04) 100%);
   --gradient-hover:       linear-gradient(135deg, rgba(111, 50, 255, 0.18) 0%, rgba(111, 50, 255, 0.04) 100%);
 
@@ -866,6 +868,9 @@
 }
 .bg-gradient-card-hero {
   background-image: var(--gradient-card-hero);
+}
+.bg-gradient-floating {
+  background-image: var(--gradient-floating);
 }
 .bg-gradient-active {
   background-image: var(--gradient-active);

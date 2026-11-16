@@ -3,9 +3,11 @@ import { Button } from '../primitives/button'
 import { IconGlyph } from '../primitives/icon-glyph'
 import { ArrowBack, ChevronRight, ExpandLess, ExpandMore, SwapHoriz } from '../icons/outlined'
 import { ScrollArea } from '../primitives/scroll-area'
+import { SegmentedTabs } from '../primitives/tabs'
 import { cn } from '../utils/cn'
 import { AlertBanner } from './alert-banner'
 import { NostrNetworkIcon, RgbNetworkIcon } from './network-icon'
+import { protocolIcons } from '../assets/protocol-icons'
 import { eyebrow } from '../utils/type-roles'
 import { GlyphButton } from '../primitives/glyph-button'
 
@@ -69,7 +71,7 @@ export function AccountHeaderIcons({ accountId }: { accountId: AccountSettingsPr
   if (accountId === 'SPARK') {
     return (
       <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-info/10 shadow-raised">
-        <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" alt="Spark" className="kui-mono-icon size-5 object-contain" />
+        <img src={protocolIcons.Spark} alt="Spark" className="kui-mono-icon size-5 object-contain" />
       </span>
     )
   }
@@ -84,7 +86,7 @@ export function AccountHeaderIcons({ accountId }: { accountId: AccountSettingsPr
 
   return (
     <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-network-arkade/10 shadow-raised">
-      <img src="/icons/arkade/arkade-icon.svg" alt="Arkade" className="size-5 rounded-sm object-contain" />
+      <img src={protocolIcons.Arkade} alt="Arkade" className="size-5 rounded-sm object-contain" />
     </span>
   )
 }
@@ -122,38 +124,19 @@ export function AccountNetworkSelector({
 }) {
   const networks = SUPPORTED_ACCOUNT_NETWORKS[accountId]
 
+  // The Tabs bar as a radio group, like every other choice of a few options.
   return (
-    <div
-      role="radiogroup"
+    <SegmentedTabs
       aria-label="Network"
-      className={cn(
-        'grid auto-cols-fr grid-flow-col gap-1 rounded-2xl bg-muted p-1 shadow-inner',
-        disabled && 'opacity-60'
-      )}
-    >
-      {networks.map((network) => {
-        const ui = getAccountNetworkUi(network)
-        const selected = value === network
-        return (
-          <button
-            key={network}
-            type="button"
-            role="radio"
-            aria-checked={selected}
-            disabled={disabled}
-            onClick={() => onChange(network)}
-            className={cn(
-              'rounded-xl px-3 py-2.5 transition-all', eyebrow,
-              selected
-                ? `${ui.badgeClassName} shadow-raised`
-                : 'text-muted-foreground hover-gradient-violet hover:text-secondary-content'
-            )}
-          >
-            {ui.label}
-          </button>
-        )
-      })}
-    </div>
+      value={value}
+      onValueChange={onChange}
+      className={cn(disabled && 'opacity-60')}
+      options={networks.map((network) => ({
+        value: network,
+        label: getAccountNetworkLabel(network),
+        disabled,
+      }))}
+    />
   )
 }
 

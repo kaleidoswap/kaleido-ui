@@ -1,6 +1,5 @@
 import { formatAmount } from '../utils/amount-display'
 import type { WithdrawAddressType } from './withdraw-destination-input'
-import { eyebrow } from '../utils/type-roles'
 import { cn } from '../utils/cn'
 
 export interface WithdrawInvoiceAsset {
@@ -57,10 +56,7 @@ export function WithdrawInvoiceInfo({
   if (decodedLnInvoice && addressType === 'lightning') {
     return (
       <div className="space-y-3 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-5 shadow-card">
-        <p className={cn('text-muted-foreground', eyebrow)}>
-          Lightning Invoice
-        </p>
-        {decodedLnInvoice.amount != null && decodedLnInvoice.amount > 0 && (
+                {decodedLnInvoice.amount != null && decodedLnInvoice.amount > 0 && (
           <div className="flex justify-between text-body">
             <span className="text-muted-foreground">Amount</span>
             <span className="font-bold text-foreground">
@@ -107,8 +103,7 @@ export function WithdrawInvoiceInfo({
   if (decodedRgbInvoice && addressType === 'rgb') {
     return (
       <div className="space-y-3 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-5 shadow-card">
-        <p className={cn('text-muted-foreground', eyebrow)}>RGB Invoice</p>
-        {decodedRgbInvoice.asset_id && (
+                {decodedRgbInvoice.asset_id && (
           <div className="flex justify-between text-body">
             <span className="text-muted-foreground">Asset</span>
             <span className="font-mono text-caption text-foreground">

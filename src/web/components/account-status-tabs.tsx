@@ -185,7 +185,7 @@ export function AccountStatusTabs<TId extends string = string>({
 
               <div
                 className={cn(
-                  'pointer-events-none absolute bottom-[calc(100%+12px)] right-0 z-20 hidden w-64 rounded-2xl bg-popover/95 bg-gradient-card p-3.5 opacity-0 shadow-popover backdrop-blur-xl transition-all duration-150 group-hover:opacity-100 md:block'
+                  'pointer-events-none absolute bottom-[calc(100%+12px)] right-0 z-20 hidden w-64 rounded-2xl bg-popover bg-gradient-card p-3.5 opacity-0 shadow-popover transition-all duration-150 group-hover:opacity-100 md:block'
                 )}
               >
                 <div className="flex items-start gap-3">

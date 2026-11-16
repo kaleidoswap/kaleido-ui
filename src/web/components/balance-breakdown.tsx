@@ -3,6 +3,7 @@ import { ActionTile } from './action-tile'
 import { IconGlyph } from '../primitives/icon-glyph'
 import { ArrowOutward, CallReceived, ExpandLess, ExpandMore, Payments, Refresh, SwapHoriz } from '../icons/outlined'
 import { LiquidNetworkIcon, OnchainNetworkIcon } from './network-icon'
+import { protocolIcons } from '../assets/protocol-icons'
 import { eyebrow } from '../utils/type-roles'
 import { cn } from '../utils/cn'
 import { GlyphButton } from '../primitives/glyph-button'
@@ -278,7 +279,7 @@ export function BalanceBreakdown({
               <NetworkRow
                 icon={
                   <ImageIcon
-                    src="/icons/lightning/lightning.svg"
+                    src={protocolIcons.LN!}
                     alt="Lightning"
                     className="size-3.5"
                   />
@@ -298,7 +299,7 @@ export function BalanceBreakdown({
             <NetworkRow
               icon={
                 <ImageIcon
-                  src="/icons/spark/Asterisk/Spark Asterisk White.svg"
+                  src={protocolIcons.Spark!}
                   alt="Spark"
                   className="kui-mono-icon size-3.5 opacity-90"
                 />
@@ -316,7 +317,7 @@ export function BalanceBreakdown({
             <NetworkRow
               icon={
                 <ImageIcon
-                  src="/icons/arkade/arkade-icon.svg"
+                  src={protocolIcons.Arkade!}
                   alt="Arkade"
                   className="size-3.5 rounded-sm"
                 />
@@ -454,7 +455,7 @@ function RgbAssetsBreakdown({
             <div key={asset.asset_id} className="flex items-start justify-between py-1">
               <div className="flex items-center gap-2.5">
                 <div className="flex size-5 items-center justify-center overflow-hidden rounded bg-network-rgb/10">
-                  <img src="/icons/rgb/rgb-logo.svg" alt="RGB" className="size-3.5 object-contain" />
+                  <img src={protocolIcons.RGB20} alt="RGB" className="size-3.5 object-contain" />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-caption font-semibold text-foreground/90">{asset.ticker}</span>
@@ -475,7 +476,7 @@ function RgbAssetsBreakdown({
                       <span className="inline-flex items-center gap-1 text-network-lightning-fg/80">
                         {formatRgb(offChain)}
                         <ImageIcon
-                          src="/icons/lightning/lightning.svg"
+                          src={protocolIcons.LN!}
                           alt=""
                           className="size-2.5"
                         />

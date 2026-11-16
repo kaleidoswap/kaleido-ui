@@ -3,22 +3,27 @@ import { ProductPreviews } from './pages/ProductPreviews'
 import { version } from '../../package.json'
 import { ChartsGallery } from './pages/ChartsGallery'
 import { MetricsGallery } from './pages/MetricsGallery'
+import { PanelsGallery } from './pages/PanelsGallery'
 import {
   AvatarGallery,
   CollapsibleGallery,
+  DisplayListsGallery,
   CopyGallery,
   DialogShowCloseDemo,
   FormsGallery,
   ListsGallery,
-  NoticesGallery,
-  PopoverMenuGallery,
+    PopoverMenuGallery,
   TableGallery,
   ScrollbarsGallery,
   NetworkFilterDropdown,
 } from './pages/ComponentGalleries'
 import { ActionsGallery } from './pages/ActionsGallery'
 import { InputFieldsGallery } from './pages/InputFieldsGallery'
-import { ScrollArea, ThemeToggle, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput, NativeSelect } from '@kaleido-ui/index'
+import { eyebrow } from '@kaleido-ui/utils/type-roles'
+import { Demo, Grid } from './pages/blocks'
+import { slug } from './search/slug'
+import { SearchBar } from './search/SearchBar'
+import { cn, ScrollArea, ThemeToggle, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput } from '@kaleido-ui/index'
 import {
   Button,
   IconButton,
@@ -67,7 +72,6 @@ import {
   ToneBadge,
   AssetCard,
   SettingItem,
-  SectionLabel,
   AlertBanner,
   ActionTile,
   AccountChoiceChip,
@@ -88,7 +92,6 @@ import {
   NetworkInfoDisclosure,
   PaidOverlay,
   QrCode,
-  SectionTitle,
   SettingsActionButton,
   SettingsStatusPanel,
   SettingsTile,
@@ -105,7 +108,6 @@ import {
   WithdrawDestinationInput,
   WithdrawInvoiceInfo,
   WithdrawRouteSelector,
-  NETWORK_CONFIG,
   SwapStepList,
   SummaryRows,
   KaleidoswapLogo,
@@ -139,7 +141,7 @@ function Section({
   if (useContext(CurrentPage) !== id) return null
   return (
     <section id={id} aria-labelledby={`${id}-title`}>
-      <div className="mb-6">
+      <div className="mb-16">
         <h1 id={`${id}-title`} className="text-xl font-bold text-foreground tracking-tight">{title}</h1>
         {description && (
           <p className="text-sm text-muted-foreground mt-1">{description}</p>
@@ -161,8 +163,8 @@ function Row({
   wrap?: boolean
 }) {
   return (
-    <div className="mb-6">
-      <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-3">{label}</p>
+    <div className="mb-16" data-search-key={slug(label)}>
+      <h3 className={cn('m-0 mb-4', eyebrow, 'text-secondary-content')}>{label}</h3>
       <div className={`flex items-center gap-3 ${wrap ? 'flex-wrap' : ''}`}>{children}</div>
     </div>
   )
@@ -172,8 +174,9 @@ function Row({
 function SegmentedTabsDemo() {
   const [environment, setEnvironment] = useState('test')
   const [period, setPeriod] = useState('30d')
+  const [view, setView] = useState('list')
   return (
-    <div className="mt-8 flex max-w-lg flex-col gap-6">
+    <div className="mt-16 flex max-w-lg flex-col gap-8">
       <div className="flex flex-col gap-2">
         <Label id="environment-label">Environment — full width, Live disabled</Label>
         <SegmentedTabs
@@ -197,6 +200,18 @@ function SegmentedTabsDemo() {
             { value: '7d', label: '7D' },
             { value: '30d', label: '30D' },
             { value: '90d', label: '90D' },
+          ]}
+        />
+      </Row>
+      <Row label="With icon — option.icon before the label">
+        <SegmentedTabs
+          aria-label="View"
+          fullWidth={false}
+          value={view}
+          onValueChange={setView}
+          options={[
+            { value: 'list', label: 'List', icon: <Icon name="menu" size="sm" /> },
+            { value: 'grid', label: 'Grid', icon: <Icon name="grid_view" size="sm" /> },
           ]}
         />
       </Row>
@@ -279,8 +294,8 @@ const LOGO_SWATCH = {
 
 function LogoGroup({ name, variants }: { name: string; variants: LogoVariant[] }) {
   return (
-    <Card variant="secondary" className="p-4">
-      <p className="mb-3 text-sm font-semibold text-foreground">{name}</p>
+    <div>
+      <p className="mb-3 text-body font-semibold text-foreground">{name}</p>
       <div className="flex flex-wrap gap-3">
         {variants.map((v) => (
           <figure key={v.src} className="flex w-28 flex-col gap-1.5">
@@ -296,7 +311,7 @@ function LogoGroup({ name, variants }: { name: string; variants: LogoVariant[] }
           </figure>
         ))}
       </div>
-    </Card>
+    </div>
   )
 }
 
@@ -343,7 +358,8 @@ const NAV_SECTIONS: { label: string; categories: NavCategory[] }[] = [
           { id: 'cards', label: 'Cards', icon: 'grid_view' },
           { id: 'alert-banners', label: 'Alert Banners', icon: 'warning' },
           { id: 'avatar', label: 'Avatars', icon: 'person' },
-          { id: 'collapsible', label: 'Collapsibles', icon: 'expand_more' },
+          { id: 'collapsible', label: 'Disclosures', icon: 'expand_more' },
+          { id: 'display-lists', label: 'Lists', icon: 'menu' },
           { id: 'scrollbars', label: 'Scrollbars', icon: 'swap_vert' },
         ],
       },
@@ -355,7 +371,6 @@ const NAV_SECTIONS: { label: string; categories: NavCategory[] }[] = [
           { id: 'drawer', label: 'Drawer', icon: 'menu' },
           { id: 'toast', label: 'Toast', icon: 'description' },
           { id: 'popover-menu', label: 'Popover & Menu', icon: 'open_in_new' },
-          { id: 'notices', label: 'Notices', icon: 'error' },
         ],
       },
       {
@@ -373,6 +388,7 @@ const NAV_SECTIONS: { label: string; categories: NavCategory[] }[] = [
         pages: [
           { id: 'lists', label: 'Lists & Filters', icon: 'search' },
           { id: 'actions', label: 'Actions', icon: 'touch_app' },
+          { id: 'panels', label: 'Panels', icon: 'layers' },
         ],
       },
     ],
@@ -384,11 +400,11 @@ const NAV_SECTIONS: { label: string; categories: NavCategory[] }[] = [
         label: 'Surfaces',
         icon: 'payments',
         pages: [
-          { id: 'asset-cards', label: 'Asset Cards', icon: 'token' },
-          { id: 'transaction-cards', label: 'Transaction Cards', icon: 'receipt_long' },
-          { id: 'feature-components', label: 'Feature Components', icon: 'inventory_2' },
-          { id: 'account-components', label: 'Account Components', icon: 'fingerprint' },
-          { id: 'setting-items', label: 'Setting Items', icon: 'settings' },
+          { id: 'asset-cards', label: 'Assets', icon: 'token' },
+          { id: 'transaction-cards', label: 'Transactions', icon: 'receipt_long' },
+          { id: 'feature-components', label: 'Wallet', icon: 'account_balance_wallet' },
+          { id: 'account-components', label: 'Account', icon: 'fingerprint' },
+          { id: 'setting-items', label: 'Settings', icon: 'settings' },
         ],
       },
       {
@@ -524,7 +540,7 @@ export function App() {
   const [swapToTicker, setSwapToTicker] = useState('USDB')
   const [swapAmount, setSwapAmount] = useState('21000')
   const [swapPercent, setSwapPercent] = useState<number | null>(null)
-  const [accountNetwork, setAccountNetwork] = useState<'mainnet' | 'testnet' | 'signet' | 'regtest'>('testnet')
+  const [accountNetwork, setAccountNetwork] = useState<'mainnet' | 'testnet' | 'signet' | 'regtest'>('mainnet')
   const [withdrawDestination, setWithdrawDestination] = useState('bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh')
   const [withdrawAmount, setWithdrawAmount] = useState('21000')
   const [feeRate, setFeeRate] = useState<'slow' | 'normal' | 'fast'>('normal')
@@ -608,31 +624,44 @@ export function App() {
   )
 
   // One navigation list, rendered by both drawer demos.
-  const showcaseNav = [
-    { label: 'Wallet',
-    icon: 'account_balance_wallet', items: [
-      { label: 'Dashboard', icon: 'account_balance_wallet' as const },
-      { label: 'Swaps', icon: 'swap_horiz' as const },
-      { label: 'Activity', icon: 'history' as const },
-    ] },
-    { label: 'Account', items: [{ label: 'Settings', icon: 'settings' as const }] },
-  ].map((section) => (
-    <DrawerSection key={section.label} label={section.label}>
-      {section.items.map((item) => (
-        <DrawerNavItem
-          key={item.label}
-          href="#/drawer"
-          label={item.label}
-          icon={<Icon name={item.icon} className="text-icon-xl" />}
-          active={showcaseNavActive === item.label}
-          onClick={(event) => {
-            event.preventDefault()
-            setShowcaseNavActive(item.label)
-          }}
-        />
-      ))}
-    </DrawerSection>
-  ))
+  // The Drawer demo's list: the Wallet section holds a Transact group with a
+  // submenu (it opens by itself while one of its pages is current), then two
+  // plain entries; Account is a plain section.
+  const showcaseNavItem = (item: { label: string; icon: IconName }) => (
+    <DrawerNavItem
+      key={item.label}
+      href="#/drawer"
+      label={item.label}
+      icon={<Icon name={item.icon} className="text-icon-xl" />}
+      active={showcaseNavActive === item.label}
+      onClick={(event) => {
+        event.preventDefault()
+        setShowcaseNavActive(item.label)
+      }}
+    />
+  )
+  const actionPages: { label: string; icon: IconName }[] = [
+    { label: 'Deposit', icon: 'arrow_downward' },
+    { label: 'Withdraw', icon: 'arrow_outward' },
+    { label: 'Swap', icon: 'swap_horiz' },
+  ]
+  const showcaseNav = (
+    <>
+      <DrawerSection label="Wallet">
+        <DrawerNavGroup
+          icon={<Icon name="sync_alt" className="text-icon-xl" />}
+          label="Transact"
+          active={actionPages.some((page) => page.label === showcaseNavActive)}
+          defaultOpen
+        >
+          {actionPages.map(showcaseNavItem)}
+        </DrawerNavGroup>
+        {showcaseNavItem({ label: 'Dashboard', icon: 'grid_view' })}
+        {showcaseNavItem({ label: 'Activity', icon: 'history' })}
+      </DrawerSection>
+      <DrawerSection label="Account">{showcaseNavItem({ label: 'Settings', icon: 'settings' })}</DrawerSection>
+    </>
+  )
 
   return (
     <div className="flex h-screen overflow-hidden bg-background text-foreground">
@@ -657,7 +686,7 @@ export function App() {
 
       <div className="flex h-screen min-w-0 flex-1 flex-col">
         {/* Top bar — the theme switch on the right; on mobile also the navigation drawer */}
-        <header className="z-40 flex h-14 shrink-0 items-center gap-3 border-b border-foreground/5 bg-background/80 px-4 backdrop-blur-xl">
+        <header className="z-40 grid h-14 shrink-0 grid-cols-[1fr_minmax(0,36rem)_1fr] items-center gap-3 border-b border-foreground/5 bg-background/80 px-4 backdrop-blur-xl">
           <div className="lg:hidden">
           <Drawer open={navOpen} onOpenChange={setNavOpen}>
             <DrawerTrigger asChild>
@@ -673,7 +702,8 @@ export function App() {
             </DrawerContent>
           </Drawer>
           </div>
-          <ThemeToggle className="ml-auto" />
+          <div className="col-start-2 row-start-1"><SearchBar page={page} /></div>
+          <ThemeToggle className="col-start-3 row-start-1 justify-self-end" />
         </header>
 
         {/* The current page */}
@@ -879,20 +909,20 @@ export function App() {
               <StatusChip status="warning" label="Needs review" />
               <StatusChip status="danger" label="Offline" />
             </Row>
-            <Row label="Tone badges — a status, any tone">
-              {(['muted', 'primary', 'secondary', 'info', 'success', 'warning', 'danger', 'outline'] as const).map((tone) => (
-                <ToneBadge key={tone} tone={tone}>
-                  {tone}
-                </ToneBadge>
-              ))}
-            </Row>
             <Row label="Tags — what a thing is, no dot">
               <Tag tone="info">Revenue share</Tag>
               <Tag tone="bitcoin">Markup</Tag>
               {(['neutral', 'success', 'warning', 'danger', 'violet'] as const).map((tone) => (
                 <Tag key={tone} tone={tone}>
-                  {tone}
+                  {tone.charAt(0).toUpperCase() + tone.slice(1)}
                 </Tag>
+              ))}
+            </Row>
+            <Row label="Tone badges — a status, any tone">
+              {(['muted', 'primary', 'secondary', 'info', 'success', 'warning', 'danger', 'outline'] as const).map((tone) => (
+                <ToneBadge key={tone} tone={tone}>
+                  {tone}
+                </ToneBadge>
               ))}
             </Row>
             <Row label='Tone badges — case="none", a value'>
@@ -904,71 +934,66 @@ export function App() {
 
           {/* ── Cards ───────────────────────────────────────────────────── */}
           <Section id="cards" title="Cards" description="Compositional card primitives. variant=&quot;secondary&quot; is the same card without the glass edge, for one that ranks under a primary card beside it.">
-            <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Basic Card</CardTitle>
-                  <CardDescription>With header and content.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">Card body content goes here. Cards can hold any child elements.</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Card with Footer</CardTitle>
-                  <CardDescription>Actions in the footer slot.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">Use CardFooter for action buttons or summary information.</p>
-                </CardContent>
-                <CardFooter className="gap-2">
-                  <Button size="sm">Confirm</Button>
-                  <Button variant="outline" size="sm">Cancel</Button>
-                </CardFooter>
-              </Card>
-            </div>
-            <Row label="Secondary — the same card, without the glass edge">
-              <div className="grid w-full grid-cols-1 gap-3 md:grid-cols-2">
-                <Card variant="secondary">
+            <Row label="Primary card">
+              <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
+                <Card>
                   <CardHeader>
-                    <CardTitle>Secondary card</CardTitle>
-                    <CardDescription>Fill, gradient and shadow of a primary card, no edge.</CardDescription>
+                    <CardTitle>Primary Card</CardTitle>
+                    <CardDescription>With header and content.</CardDescription>
                   </CardHeader>
+                  <CardContent>
+                    <p className="text-caption text-muted-foreground">Card body content goes here. Cards can hold any child elements.</p>
+                  </CardContent>
                 </Card>
-                <Card variant="secondary" className="space-y-1.5 p-4 text-caption">
-                  <div className="flex justify-between"><span className="text-muted-foreground">Network fee</span><span>512 sats</span></div>
-                  <div className="flex justify-between"><span className="text-muted-foreground">Arrives</span><span>~10 min</span></div>
-                </Card>
-                <Card variant="secondary">
+                <Card>
                   <CardHeader>
-                    <CardTitle>With a ghost button</CardTitle>
-                    <CardDescription>A quiet action that does not outrank the primary card.</CardDescription>
+                    <CardTitle>With Actions</CardTitle>
+                    <CardDescription>Actions in the footer slot.</CardDescription>
                   </CardHeader>
-                  <CardFooter>
-                    <Button variant="ghost" size="sm"><Icon name="receipt_long" size="sm" />View details</Button>
+                  <CardContent>
+                    <p className="text-caption text-muted-foreground">Use CardFooter for action buttons or summary information.</p>
+                  </CardContent>
+                  <CardFooter className="gap-2">
+                    <Button size="sm">Confirm</Button>
+                    <Button variant="outline" size="sm">Cancel</Button>
                   </CardFooter>
                 </Card>
               </div>
             </Row>
-            <Row label="Primary + secondary — a card that ranks under the one beside it">
-              <div className="flex w-full max-w-md flex-col gap-3">
-                <Card className="p-4">
-                  <p className="text-caption text-muted-foreground">You pay</p>
-                  <p className="text-title font-bold">21,000 sats</p>
+            <Row label="Secondary card — the same composition, without the glass edge">
+              <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
+                <Card variant="secondary">
+                  <CardHeader>
+                    <CardTitle>Secondary Card</CardTitle>
+                    <CardDescription>With header and content.</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-caption text-muted-foreground">Card body content goes here. Cards can hold any child elements.</p>
+                  </CardContent>
                 </Card>
-                <Card variant="secondary" className="space-y-1.5 p-3 text-caption">
-                  <div className="flex justify-between"><span className="text-muted-foreground">Rate</span><span>1 BTC = 99,140 USDB</span></div>
-                  <div className="flex justify-between"><span className="text-muted-foreground">Fee</span><span>0.3%</span></div>
+                <Card variant="secondary">
+                  <CardHeader>
+                    <CardTitle>With Actions</CardTitle>
+                    <CardDescription>Actions in the footer slot.</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-caption text-muted-foreground">Use CardFooter for action buttons or summary information.</p>
+                  </CardContent>
+                  <CardFooter className="gap-2">
+                    <Button size="sm">Confirm</Button>
+                    <Button variant="outline" size="sm">Cancel</Button>
+                  </CardFooter>
                 </Card>
               </div>
             </Row>
           </Section>
 
           {/* ── Asset Cards ─────────────────────────────────────────────── */}
-          <Section id="asset-cards" title="Asset Cards" description="Asset display with icon, name, networks, and balance.">
-            <div className="flex flex-col gap-3 max-w-md">
-              <AssetCard
+          <Section id="asset-cards" title="Assets" description="An asset as the wallet shows it: icon, name, rails and balance, in a list row or opened to its detail.">
+            <Grid>
+              <Demo title="Asset card" use="AssetCard. A row of the asset list: icon, name, the rails it lives on and its balance, tinted with the asset's colour. The balance can be hidden.">
+                <div className="flex max-w-md flex-col gap-3">
+                  <AssetCard
                 ticker="BTC"
                 name="Bitcoin"
                 displayBalance="0.00142000"
@@ -993,19 +1018,47 @@ export function App() {
                 balanceVisible={false}
                 onClick={() => {}}
               />
-            </div>
+                </div>
+              </Demo>
+              <Demo title="Asset card with detail" use="The same card opened: the balance by rail under it, and the three things to do with the asset.">
+                <div className="flex max-w-md flex-col gap-4">
+                  <AssetCard
+                    ticker="BTC"
+                    name="Bitcoin"
+                    displayBalance="0.00276000"
+                    networks={['L1', 'LN', 'Spark']}
+                    accentColor="#F7931A"
+                  />
+                  <SummaryRows
+                    rows={[
+                      { label: 'On-chain', value: '125,000 sats' },
+                      { label: 'Lightning', value: '42,000 sats' },
+                      { label: 'Spark', value: '88,000 sats' },
+                      { label: 'Arkade', value: '21,000 sats' },
+                      { label: 'Total', value: '276,000 sats', emphasis: true },
+                    ]}
+                  />
+                  <div className="flex gap-2.5">
+                    <ActionTile icon={<Icon name="call_received" size="sm" />} label="Deposit" onClick={() => {}} />
+                    <ActionTile icon={<Icon name="swap_horiz" size="sm" />} label="Swap" onClick={() => {}} />
+                    <ActionTile icon={<Icon name="arrow_outward" size="sm" />} label="Withdraw" onClick={() => {}} />
+                  </div>
+                </div>
+              </Demo>
+            </Grid>
           </Section>
 
           {/* ── Transaction Cards ───────────────────────────────────────── */}
-          <Section id="transaction-cards" title="Transaction Cards" description="Transaction rows with direction, status, and amount.">
+          <Section id="transaction-cards" title="Transactions" description="A transaction as a row, with direction, status and amount, opening to its details.">
+            <Demo title="Transaction row" use="ActivityList items. Direction and network, the state, and the amount; a row opens to its reference, network and status.">
             <div className="max-w-md">
               <ActivityList
                 expandedId={expandedTransactionId}
                 onExpandedChange={setExpandedTransactionId}
                 items={[
-                  { id: 'tx-completed', direction: 'inbound', status: 'completed', displayAmount: '21,000', unit: 'sats', timestamp: 1700000000, network: 'LN', label: 'Lightning Receive' },
-                  { id: 'tx-pending', direction: 'outbound', status: 'pending', displayAmount: '5,000', unit: 'sats', timestamp: 1700086400, network: 'L1', label: 'On-chain Send' },
-                  { id: 'tx-failed', direction: 'outbound', status: 'failed', displayAmount: '500', unit: 'sats', timestamp: 1699913600, network: 'Spark', label: 'Spark Transfer' },
+                  { id: 'tx-completed', direction: 'inbound', status: 'completed', displayAmount: '21,000', unit: 'sats', timestamp: 1700000000, network: 'LN', label: 'Lightning Deposit' },
+                  { id: 'tx-pending', direction: 'outbound', status: 'pending', displayAmount: '5,000', unit: 'sats', timestamp: 1700086400, network: 'L1', label: 'On-chain Withdraw' },
+                  { id: 'tx-failed', direction: 'outbound', status: 'failed', displayAmount: '500', unit: 'sats', timestamp: 1699913600, network: 'Spark', label: 'Spark Withdraw' },
                 ]}
                 renderDetails={(item) => (
                   <>
@@ -1016,13 +1069,15 @@ export function App() {
                 )}
               />
             </div>
+            </Demo>
           </Section>
 
           {/* ── Feature Components ─────────────────────────────────────── */}
-          <Section id="feature-components" title="Feature Components" description="Wallet feature surfaces used by the extension.">
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              <div className="space-y-5 max-w-md">
-                <BalanceBreakdown
+          <Section id="feature-components" title="Wallet" description="The wallet's own surfaces: what it holds, how to move around it, and the assets in it.">
+            <Grid>
+              <Demo title="Available Balance" use="BalanceBreakdown. The total, split by rail — on-chain, Lightning, Spark, Arkade and RGB assets — with the node it runs on.">
+                <div className="max-w-md">
+                  <BalanceBreakdown
                   btcOnchain={125000}
                   btcLightning={42000}
                   btcSpark={88000}
@@ -1048,8 +1103,12 @@ export function App() {
                   onNavigate={setActiveView}
                   onRefresh={() => {}}
                 />
-                <div className="relative rounded-2xl bg-card/60 p-4">
-                  <BottomNav
+                </div>
+              </Demo>
+              <div className="space-y-16">
+                <Demo title="Bottom navigation" use="BottomNav. The wallet's main places, one active; inline here, floating over the page in the app.">
+                  <div className="mx-auto w-full max-w-md">
+                    <BottomNav
                     activeView={activeView}
                     onChange={setActiveView}
                     position="inline"
@@ -1062,10 +1121,11 @@ export function App() {
                       { id: 'settings', label: 'Settings', iconName: 'settings' },
                     ]}
                   />
-                </div>
-              </div>
-              <div className="space-y-5 max-w-md">
-                <WalletAssetList
+                  </div>
+                </Demo>
+                <Demo title="Asset list" use="WalletAssetList. The assets held, each with its rails and balance.">
+                  <div className="max-w-md">
+                    <WalletAssetList
                   title="Assets"
                   bottomSpacer={false}
                   items={[
@@ -1073,26 +1133,17 @@ export function App() {
                     { id: 'usdt', ticker: 'USDT', name: 'Tether USD', displayBalance: '1,670.00', networks: ['RGB-LN'], accentColor: '#26A17B' },
                   ]}
                 />
-                {/* The same element as the FilterDropdown demo in Popover & Menu. */}
-                <NetworkFilterDropdown value={featureFilter} onChange={setFeatureFilter} />
-                <div className="space-y-3">
-                  <SettingsTile
-                    icon={<AppIcon name="vault" className="size-5" />}
-                    title="Change Password"
-                    description="Update your wallet password"
-                    onClick={() => {}}
-                  />
-                  <SettingsStatusPanel label="Wallet status" value="ready" />
-                  <SettingsActionButton
-                    icon={<AppIcon name="lock" className="size-5" />}
-                    onClick={() => {}}
-                  >
-                    Lock Wallet
-                  </SettingsActionButton>
-                </div>
+                  </div>
+                </Demo>
               </div>
-              <div className="space-y-5 max-w-md">
-                <AssetSelector
+              <Demo title="Network filter" use="NetworkFilterDropdown. A filter with an icon per option, for a narrow wallet surface.">
+                <div className="max-w-md">
+                  <NetworkFilterDropdown value={featureFilter} onChange={setFeatureFilter} />
+                </div>
+              </Demo>
+              <Demo title="Asset selector" use="AssetSelector. Pick an asset from a searchable list, with categories to narrow it.">
+                <div className="max-w-md">
+                  <AssetSelector
                   label="From"
                   selectedTicker={selectedAssetTicker}
                   onChange={setSelectedAssetTicker}
@@ -1108,12 +1159,281 @@ export function App() {
                     { id: 'kaleidoswap:RGB:mstr', ticker: 'MSTR', name: 'MicroStrategy', network: 'RGB-LN', category: 'rwa' },
                   ]}
                 />
+                </div>
+              </Demo>
+              <Demo title="QR code" use="QrCode. An address or an invoice to scan, on white so every camera reads it.">
                 <div className="w-fit rounded-2xl bg-white p-3">
                   <QrCode value="kaleidoswap:receive:sample" size={168} />
                 </div>
-              </div>
-              <div className="max-w-md rounded-2xl bg-card/60 p-4">
-                <AccountStatusTabs
+              </Demo>
+              <Demo title="Wallet settings" use="SettingsTile, SettingsStatusPanel and SettingsActionButton. A place to go, a state to read, an action to take.">
+                <div className="max-w-md space-y-3">
+                  <SettingsTile
+                    icon={<AppIcon name="vault" className="size-5" />}
+                    title="Change Password"
+                    description="Update your wallet password"
+                    onClick={() => {}}
+                  />
+                  <SettingsStatusPanel label="Wallet status" value="ready" />
+                  <SettingsActionButton
+                    icon={<AppIcon name="lock" className="size-5" />}
+                    onClick={() => {}}
+                  >
+                    Lock Wallet
+                  </SettingsActionButton>
+                </div>
+              </Demo>
+            </Grid>
+          </Section>
+
+          {/* ── Activity Components ────────────────────────────────────── */}
+          <Section id="activity-components" title="Activity" description="Search, filters, tabs, list rows, and expanded details from the extension Activity page.">
+            <Grid>
+              <Demo title="Search and status" use="ActivityFilterBar. Search the history and narrow it by status; Clear appears once a filter is on.">
+                <div className="max-w-md">
+                  <ActivityFilterBar
+                searchTerm={activitySearch}
+                onSearchTermChange={setActivitySearch}
+                statusFilter={activityStatus}
+                onStatusFilterChange={setActivityStatus}
+                hasActiveFilters={activitySearch !== '' || activityStatus !== 'all'}
+                onClearFilters={() => {
+                  setActivitySearch('')
+                  setActivityStatus('all')
+                }}
+                searchPlaceholder="Search assets..."
+                statusOptions={[
+                  { value: 'all', label: 'All Status' },
+                  { value: 'confirmed', label: 'Confirmed' },
+                  { value: 'pending', label: 'Pending' },
+                  { value: 'failed', label: 'Failed' },
+                ]}
+              />
+                </div>
+              </Demo>
+              <Demo title="Network filter" use="ActivityNetworkFilters. One chip per rail; choosing the active one again clears it.">
+                <div className="max-w-md">
+                  <ActivityNetworkFilters
+                activeFilter={activityNetwork}
+                onChange={(nextNetwork) =>
+                  setActivityNetwork((currentNetwork) =>
+                    nextNetwork !== 'all' && nextNetwork === currentNetwork ? 'all' : nextNetwork
+                  )
+                }
+                filters={[
+                  { value: 'all', label: 'All' },
+                  { value: 'onchain', label: 'On-chain' },
+                  { value: 'lightning', label: 'Lightning' },
+                  { value: 'spark', label: 'Spark' },
+                  { value: 'arkade', label: 'Arkade' },
+                ]}
+              />
+                </div>
+              </Demo>
+              <Demo title="Type tabs and list" use="ActivityTypeTabs over an ActivityList: all, in, out or swaps, each row opening to its details.">
+                <div className="max-w-md">
+                  <Tabs value={activityTab} onValueChange={setActivityTab}>
+                <ActivityTypeTabs counts={{ all: 12, received: 7, sent: 3, swaps: 2 }} />
+                <TabsContent value={activityTab} className="mt-3">
+                  <ActivityList
+                    expandedId={expandedActivityId}
+                    onExpandedChange={setExpandedActivityId}
+                    items={[
+                      { id: 'tx-1', direction: 'inbound', status: 'completed', displayAmount: '42,000', unit: 'sats', timestamp: 1700000000, network: 'LN', label: 'Lightning Receive' },
+                      { id: 'tx-2', direction: 'outbound', status: 'pending', displayAmount: '125.00', unit: 'USDT', timestamp: 1700086400, network: 'RGB-LN', label: 'RGB Transfer' },
+                    ]}
+                    renderDetails={(item) => (
+                      <>
+                        <ActivityDetailRow label="Reference" value={item.id} />
+                        <ActivityDetailRow label="Network" value={<NetworkBadge network={item.network ?? 'LN'} showLabel />} />
+                        <ActivityDetailRow label="Status" value={<StatusBadge status={item.status} />} />
+                      </>
+                    )}
+                  />
+                </TabsContent>
+              </Tabs>
+                </div>
+              </Demo>
+              <Demo title="Empty history" use="ActivityList with no items: the shared EmptyState, with one way forward.">
+                <div className="max-w-md">
+                  <ActivityList
+                items={[]}
+                renderEmptyActions={() => (
+                  <Button variant="surface" size="sm">
+                    <AppIcon name="receive" size="sm" />
+                    Deposit
+                  </Button>
+                )}
+              />
+                </div>
+              </Demo>
+            </Grid>
+          </Section>
+
+          {/* ── Deposit Components ─────────────────────────────────────── */}
+          <Section id="deposit-components" title="Deposit" description="The receive flow: choosing where the funds arrive, the invoice to pay and what to do with it.">
+            <Grid>
+              <Demo title="Account" use="AccountChoiceChip. Which account receives the funds; the active one takes the green ring.">
+                <div className="flex flex-wrap gap-2">
+                  <AccountChoiceChip account="RGB" active onClick={() => {}} />
+                  <AccountChoiceChip account="SPARK" active={false} onClick={() => {}} />
+                  <AccountChoiceChip account="ARKADE" active={false} onClick={() => {}} />
+                </div>
+              </Demo>
+              <Demo title="Method" use="MethodChoiceChip. How the funds arrive: the active method is filled, one that is unavailable says why.">
+                <div className="flex flex-wrap gap-2">
+                  <MethodChoiceChip method="bitcoin_l1" active enabled onClick={() => {}} />
+                  <MethodChoiceChip method="lightning" active={false} enabled onClick={() => {}} />
+                  <MethodChoiceChip method="spark" active={false} enabled={false} disabledReason="offline" onClick={() => {}} />
+                </div>
+              </Demo>
+              <Demo title="Invoice" use="QrCode and PaidOverlay. The invoice as a code to scan, which turns to a paid mark once it settles.">
+                <div className="max-w-md">
+                  <div className="relative flex min-h-[220px] items-center justify-center rounded-2xl bg-card/70 p-5">
+                  <div className="relative rounded-2xl border-2 border-primary/30 bg-white p-3">
+                    <QrCode value="lightning:lnbc21000sampleinvoice" size={168} />
+                    <PaidOverlay />
+                  </div>
+                </div>
+                </div>
+              </Demo>
+              <Demo title="Invoice status" use="InvoiceStatusBanner. Where the invoice is: waiting, paid, or expired.">
+                <div className="max-w-md">
+                  <InvoiceStatusBanner
+                  invoiceStatus="pending"
+                  isInvoicePending
+                  isInvoicePaid={false}
+                  isInvoiceFailedOrExpired={false}
+                />
+                </div>
+              </Demo>
+              <Demo title="Invoice actions" use="ActionTile. What to do with the invoice: copy it, set an amount, share it.">
+                <div className="max-w-md">
+                  <div className="flex gap-2.5">
+                  <ActionTile icon={<Icon name="content_copy" size="sm" />} label="Copy" onClick={() => {}} />
+                  <ActionTile icon={<Icon name="edit" size="sm" />} label="Amount" onClick={() => {}} />
+                  <ActionTile icon={<Icon name="ios_share" size="sm" />} label="Share" onClick={() => {}} />
+                </div>
+                </div>
+              </Demo>
+              <Demo title="Network info" use="NetworkInfoDisclosure. A DisclosureCard that explains the rails on offer, closed until asked.">
+                <div className="max-w-md">
+                  <NetworkInfoDisclosure networks={['onchain', 'lightning', 'spark', 'arkade']} />
+                </div>
+              </Demo>
+            </Grid>
+          </Section>
+
+          {/* ── Withdraw Components ────────────────────────────────────── */}
+          <Section id="withdraw-components" title="Withdraw" description="The send flow: where the funds go, how much and at what fee, and which route they take.">
+            <Grid>
+              <Demo title="Destination" use="WithdrawDestinationInput. The address or invoice, pasted or typed, with the network it was recognised as.">
+                <div className="max-w-md">
+                  <WithdrawDestinationInput
+                  destination={withdrawDestination}
+                  setDestination={setWithdrawDestination}
+                  addressType="bitcoin"
+                  detectedNetworkLabel="Bitcoin L1"
+                  isDecoding={false}
+                  isResolvingLnurl={false}
+                  handlePaste={() => setWithdrawDestination('bc1qsampledestinationaddress')}
+                  handleReset={() => {}}
+                />
+                </div>
+              </Demo>
+              <Demo title="Invoice details" use="WithdrawInvoiceInfo. What the destination asks for, against what the wallet can send.">
+                <div className="max-w-md">
+                  <WithdrawInvoiceInfo
+                  addressType="bitcoin"
+                  decodedLnInvoice={null}
+                  decodedRgbInvoice={null}
+                  allAssets={[{ asset_id: 'BTC', ticker: 'BTC', precision: 0 }]}
+                  selectedAssetId="BTC"
+                  selectedAssetTicker="BTC"
+                  assetBalance={125000}
+                  maxLightningCapacity={750000}
+                />
+                </div>
+              </Demo>
+              <Demo title="Amount and fee" use="WithdrawAmountInput. The amount with its Max shortcut, the fee rate and the donation, for an on-chain send.">
+                <div className="flex max-w-md flex-col gap-4">
+                  <WithdrawAmountInput
+                  addressType="bitcoin"
+                  amount={withdrawAmount}
+                  handleAmountChange={(event) => setWithdrawAmount(event.target.value)}
+                  handleSetMax={() => setWithdrawAmount('125000')}
+                  selectedAssetId="BTC"
+                  selectedAssetTicker="BTC"
+                  formattedBalance="125,000"
+                  decodedLnInvoice={null}
+                  decodedRgbInvoice={null}
+                  lnurlPayData={null}
+                  witnessAmountSat={512}
+                  setWitnessAmountSat={() => {}}
+                  feeRate={feeRate}
+                  setFeeRate={setFeeRate}
+                  feeRates={{ slow: 2, normal: 5, fast: 9 }}
+                  donation={donation}
+                  setDonation={setDonation}
+                />
+                </div>
+              </Demo>
+              <Demo title="Amount in another unit" use="WithdrawAmountInput with unitSlot. The unit label is replaced by the caller's own control, here a sats / USD switch.">
+                <div className="max-w-md">
+                  <WithdrawAmountInput
+                  addressType="lightning-address"
+                  amount="4"
+                  handleAmountChange={() => {}}
+                  handleSetMax={() => {}}
+                  selectedAssetId="__fiat__"
+                  selectedAssetTicker="USD"
+                  unitSlot={
+                    <>
+                      <span className="inline-flex items-center gap-0.5 rounded-full bg-muted/40 p-0.5">
+                        <span className="rounded-full px-2.5 py-1 text-xxs font-bold text-muted-foreground">sats</span>
+                        <span className="rounded-full bg-primary/15 px-2.5 py-1 text-xxs font-bold text-primary">USD</span>
+                      </span>
+                      <span className="truncate text-xxs tabular-nums text-muted-foreground">≈ 4,907 sats</span>
+                    </>
+                  }
+                  formattedBalance="16.03"
+                  decodedLnInvoice={null}
+                  decodedRgbInvoice={null}
+                  lnurlPayData={null}
+                  witnessAmountSat={512}
+                  setWitnessAmountSat={() => {}}
+                  feeRate={feeRate}
+                  setFeeRate={setFeeRate}
+                  feeRates={{ slow: 2, normal: 5, fast: 9 }}
+                  donation={donation}
+                  setDonation={setDonation}
+                />
+                </div>
+              </Demo>
+              <Demo title="Route" use="WithdrawRouteSelector. Which account the funds leave from and how, with the recommended route marked.">
+                <div className="max-w-md">
+                  <WithdrawRouteSelector
+                  routes={[
+                    { account: 'RGB', method: 'bitcoin_l1', summary: 'Spend from the RGB on-chain wallet.', accountTitle: 'RGB & Lightning', methodLabel: 'Bitcoin L1 transfer', feeHint: 'Miner fee' },
+                    { account: 'ARKADE', method: 'boarding', summary: 'Spend from Arkade and board out to Bitcoin.', accountTitle: 'Arkade', methodLabel: 'Arkade boarding', feeHint: 'Low' },
+                  ]}
+                  activeRouteAccount="RGB"
+                  recommendedRouteAccount="RGB"
+                  selectedRouteSummary={{ method: 'bitcoin_l1', summary: 'Standard on-chain Bitcoin transfer.', methodLabel: 'Bitcoin L1 transfer' }}
+                  selectedAccountTitle="RGB & Lightning"
+                  onRouteChange={() => {}}
+                />
+                </div>
+              </Demo>
+            </Grid>
+          </Section>
+
+          {/* ── Account Components ─────────────────────────────────────── */}
+          <Section id="account-components" title="Account" description="Settings surfaces shared with the extension: the accounts, their networks and what they can do.">
+            <Grid>
+              <Demo title="Account status" use="AccountStatusTabs. One tab per account — RLN, Spark, Liquid — with its state, what it can do and the network it is on.">
+                <div className="max-w-md">
+                  <AccountStatusTabs
                   accounts={[
                     {
                       id: 'RGB',
@@ -1165,9 +1485,11 @@ export function App() {
                     },
                   ]}
                 />
-              </div>
-              <div className="space-y-4 max-w-md">
-                <AccountSettingsRow
+                </div>
+              </Demo>
+              <Demo title="Account row" use="AccountSettingsRow. An account in the settings list, with its state and network.">
+                <div className="max-w-md">
+                  <AccountSettingsRow
                   accountId="SPARK"
                   title="Spark Account"
                   status="ready"
@@ -1175,7 +1497,11 @@ export function App() {
                   description="Spark balance, operator connection, SDK details, and network selection."
                   onClick={() => {}}
                 />
-                <AccountCapabilitiesCard
+                </div>
+              </Demo>
+              <Demo title="Account capabilities" use="AccountCapabilitiesCard. What an account can do, its details, and the network notices that go with them.">
+                <div className="max-w-md">
+                  <AccountCapabilitiesCard
                   accountId="ARKADE"
                   title="Arkade"
                   description="Arkade BTC and Arkade-native assets are available on mainnet."
@@ -1204,494 +1530,85 @@ export function App() {
                     </AccountNotice>
                   </div>
                 </AccountCapabilitiesCard>
-                <TransferRouteCard
+                </div>
+              </Demo>
+              <Demo title="Transfer route" use="TransferRouteCard. A way to move funds, with how long it takes and what it costs.">
+                <div className="max-w-md">
+                  <TransferRouteCard
                   account="SPARK"
                   label="Spark"
                   summary="Fast Spark-native transfers when the destination supports it."
                   eta="Instant"
                   feeHint="Low fee"
                 />
-              </div>
-            </div>
-          </Section>
-
-          {/* ── Activity Components ────────────────────────────────────── */}
-          <Section id="activity-components" title="Activity Components" description="Search, filters, tabs, list rows, and expanded details from the extension Activity page.">
-            <div className="max-w-md space-y-4">
-              <ActivityFilterBar
-                searchTerm={activitySearch}
-                onSearchTermChange={setActivitySearch}
-                statusFilter={activityStatus}
-                onStatusFilterChange={setActivityStatus}
-                hasActiveFilters={activitySearch !== '' || activityStatus !== 'all'}
-                onClearFilters={() => {
-                  setActivitySearch('')
-                  setActivityStatus('all')
-                }}
-                searchPlaceholder="Search assets..."
-                statusOptions={[
-                  { value: 'all', label: 'All Status' },
-                  { value: 'confirmed', label: 'Confirmed' },
-                  { value: 'pending', label: 'Pending' },
-                  { value: 'failed', label: 'Failed' },
-                ]}
-              />
-              <ActivityNetworkFilters
-                activeFilter={activityNetwork}
-                onChange={(nextNetwork) =>
-                  setActivityNetwork((currentNetwork) =>
-                    nextNetwork !== 'all' && nextNetwork === currentNetwork ? 'all' : nextNetwork
-                  )
-                }
-                filters={[
-                  { value: 'all', label: 'All' },
-                  { value: 'onchain', label: 'On-chain' },
-                  { value: 'lightning', label: 'Lightning' },
-                  { value: 'spark', label: 'Spark' },
-                  { value: 'arkade', label: 'Arkade' },
-                ]}
-              />
-              <Tabs value={activityTab} onValueChange={setActivityTab}>
-                <ActivityTypeTabs counts={{ all: 12, received: 7, sent: 3, swaps: 2 }} />
-                <TabsContent value={activityTab} className="mt-3">
-                  <ActivityList
-                    expandedId={expandedActivityId}
-                    onExpandedChange={setExpandedActivityId}
-                    items={[
-                      { id: 'tx-1', direction: 'inbound', status: 'completed', displayAmount: '42,000', unit: 'sats', timestamp: 1700000000, network: 'LN', label: 'Lightning Receive' },
-                      { id: 'tx-2', direction: 'outbound', status: 'pending', displayAmount: '125.00', unit: 'USDT', timestamp: 1700086400, network: 'RGB-LN', label: 'RGB Transfer' },
-                    ]}
-                    renderDetails={(item) => (
-                      <>
-                        <ActivityDetailRow label="Reference" value={item.id} />
-                        <ActivityDetailRow label="Network" value={<NetworkBadge network={item.network ?? 'LN'} showLabel />} />
-                        <ActivityDetailRow label="Status" value={<StatusBadge status={item.status} />} />
-                      </>
-                    )}
-                  />
-                </TabsContent>
-              </Tabs>
-              <ActivityList
-                items={[]}
-                renderEmptyActions={() => (
-                  <div className="w-full max-w-56">
-                    <Button variant="h1" size="lg">
-                      <AppIcon name="receive" size="sm" />
-                      Receive
-                    </Button>
-                  </div>
-                )}
-              />
-            </div>
-          </Section>
-
-          {/* ── Deposit Components ─────────────────────────────────────── */}
-          <Section id="deposit-components" title="Deposit Components" description="Reusable receive-flow pieces.">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-4xl">
-              <div className="space-y-4">
-                <Row label="Account and Method Choices">
-                  <AccountChoiceChip account="RGB" active onClick={() => {}} />
-                  <AccountChoiceChip account="SPARK" active={false} onClick={() => {}} />
-                  <AccountChoiceChip account="ARKADE" active={false} onClick={() => {}} />
-                  <MethodChoiceChip method="bitcoin_l1" active enabled onClick={() => {}} />
-                  <MethodChoiceChip method="lightning" active={false} enabled onClick={() => {}} />
-                  <MethodChoiceChip method="spark" active={false} enabled={false} disabledReason="offline" onClick={() => {}} />
-                </Row>
-                <InvoiceStatusBanner
-                  invoiceStatus="pending"
-                  isInvoicePending
-                  isInvoicePaid={false}
-                  isInvoiceFailedOrExpired={false}
-                />
-                <NetworkInfoDisclosure networks={['onchain', 'lightning', 'spark', 'arkade']} />
-              </div>
-              <div className="space-y-4">
-                <div className="relative flex min-h-[220px] items-center justify-center rounded-2xl bg-card/70 p-5">
-                  <div className="relative rounded-2xl border-2 border-primary/30 bg-white p-3">
-                    <QrCode value="lightning:lnbc21000sampleinvoice" size={168} />
-                    <PaidOverlay />
-                  </div>
                 </div>
-                <div className="flex gap-2.5">
-                  <ActionTile icon={<Icon name="content_copy" size="sm" />} label="Copy" onClick={() => {}} />
-                  <ActionTile icon={<Icon name="edit" size="sm" />} label="Amount" onClick={() => {}} />
-                  <ActionTile icon={<Icon name="ios_share" size="sm" />} label="Share" onClick={() => {}} />
-                </div>
-                <div className="rounded-xl bg-card/70 p-3">
-                  <div className="mb-2 flex items-center gap-2 text-xs font-bold text-foreground">
-                    <span className={`flex size-5 items-center justify-center rounded-md ${NETWORK_CONFIG.lightning.bg}`}>
-                      {NETWORK_CONFIG.lightning.icon}
-                    </span>
-                    {NETWORK_CONFIG.lightning.label}
+              </Demo>
+            </Grid>
+            <div className="mt-16"></div>
+            <div className="max-w-4xl">
+              <Grid>
+                <Demo title="Network" use="AccountNetworkSelector. The networks an account can run on, as a tab menu; the choice applies after saving in the consuming app.">
+                  <div className="space-y-4">
+                    <AccountNetworkSelector
+                      accountId="SPARK"
+                      value={accountNetwork}
+                      onChange={setAccountNetwork}
+                    />
+                    <AccountNotice>
+                      Spark will reconnect using the selected network after saving in the consuming app.
+                    </AccountNotice>
                   </div>
-                  <p className="text-xs text-muted-foreground">Lightning invoice generation, payment state, copy affordance, and network disclosure all come from the library.</p>
-                </div>
-              </div>
-            </div>
-          </Section>
-
-          {/* ── Withdraw Components ────────────────────────────────────── */}
-          <Section id="withdraw-components" title="Withdraw Components" description="Reusable send-flow controls.">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-4xl">
-              <div className="space-y-4">
-                <WithdrawDestinationInput
-                  destination={withdrawDestination}
-                  setDestination={setWithdrawDestination}
-                  addressType="bitcoin"
-                  detectedNetworkLabel="Bitcoin L1"
-                  isDecoding={false}
-                  isResolvingLnurl={false}
-                  handlePaste={() => setWithdrawDestination('bc1qsampledestinationaddress')}
-                  handleReset={() => {}}
-                />
-                <WithdrawAmountInput
-                  addressType="bitcoin"
-                  amount={withdrawAmount}
-                  handleAmountChange={(event) => setWithdrawAmount(event.target.value)}
-                  handleSetMax={() => setWithdrawAmount('125000')}
-                  selectedAssetId="BTC"
-                  selectedAssetTicker="BTC"
-                  formattedBalance="125,000"
-                  decodedLnInvoice={null}
-                  decodedRgbInvoice={null}
-                  lnurlPayData={null}
-                  witnessAmountSat={512}
-                  setWitnessAmountSat={() => {}}
-                  feeRate={feeRate}
-                  setFeeRate={setFeeRate}
-                  feeRates={{ slow: 2, normal: 5, fast: 9 }}
-                  donation={donation}
-                  setDonation={setDonation}
-                />
-                <WithdrawAmountInput
-                  addressType="lightning-address"
-                  amount="4"
-                  handleAmountChange={() => {}}
-                  handleSetMax={() => {}}
-                  selectedAssetId="__fiat__"
-                  selectedAssetTicker="USD"
-                  unitSlot={
-                    <>
-                      <span className="inline-flex items-center gap-0.5 rounded-full bg-muted/40 p-0.5">
-                        <span className="rounded-full px-2.5 py-1 text-xxs font-bold text-muted-foreground">sats</span>
-                        <span className="rounded-full bg-primary/15 px-2.5 py-1 text-xxs font-bold text-primary">USD</span>
-                      </span>
-                      <span className="truncate text-xxs tabular-nums text-muted-foreground">≈ 4,907 sats</span>
-                    </>
-                  }
-                  formattedBalance="16.03"
-                  decodedLnInvoice={null}
-                  decodedRgbInvoice={null}
-                  lnurlPayData={null}
-                  witnessAmountSat={512}
-                  setWitnessAmountSat={() => {}}
-                  feeRate={feeRate}
-                  setFeeRate={setFeeRate}
-                  feeRates={{ slow: 2, normal: 5, fast: 9 }}
-                  donation={donation}
-                  setDonation={setDonation}
-                />
-              </div>
-              <div className="space-y-4">
-                <WithdrawInvoiceInfo
-                  addressType="bitcoin"
-                  decodedLnInvoice={null}
-                  decodedRgbInvoice={null}
-                  allAssets={[{ asset_id: 'BTC', ticker: 'BTC', precision: 0 }]}
-                  selectedAssetId="BTC"
-                  selectedAssetTicker="BTC"
-                  assetBalance={125000}
-                  maxLightningCapacity={750000}
-                />
-                <WithdrawRouteSelector
-                  routes={[
-                    { account: 'RGB', method: 'bitcoin_l1', summary: 'Spend from the RGB on-chain wallet.', accountTitle: 'RGB & Lightning', methodLabel: 'Bitcoin L1 transfer', feeHint: 'Miner fee' },
-                    { account: 'ARKADE', method: 'boarding', summary: 'Spend from Arkade and board out to Bitcoin.', accountTitle: 'Arkade', methodLabel: 'Arkade boarding', feeHint: 'Low' },
-                  ]}
-                  activeRouteAccount="RGB"
-                  recommendedRouteAccount="RGB"
-                  selectedRouteSummary={{ method: 'bitcoin_l1', summary: 'Standard on-chain Bitcoin transfer.', methodLabel: 'Bitcoin L1 transfer' }}
-                  selectedAccountTitle="RGB & Lightning"
-                  onRouteChange={() => {}}
-                />
-              </div>
-            </div>
-          </Section>
-
-          {/* ── Account Components ─────────────────────────────────────── */}
-          <Section id="account-components" title="Account Components" description="Settings surfaces shared with the extension.">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-4xl">
-              <div className="space-y-4">
-                <SectionTitle>Network</SectionTitle>
-                <AccountNetworkSelector
-                  accountId="SPARK"
-                  value={accountNetwork}
-                  onChange={setAccountNetwork}
-                />
-                <AccountNotice>
-                  Spark will reconnect using the selected network after saving in the consuming app.
-                </AccountNotice>
-              </div>
-              <div className="space-y-4">
-                <SectionTitle>Account Info</SectionTitle>
-                <AccountInfoGrid
-                  items={[
-                    { label: 'Status', value: 'Ready' },
-                    { label: 'Network', value: accountNetwork },
-                    { label: 'Pubkey', value: '02c4f7...91ac' },
-                    { label: 'Assets', value: 'BTC, USDB' },
-                  ]}
-                />
-                <AccountNotice tone="warning">
-                  Network switching affects addresses and invoices generated after the change.
-                </AccountNotice>
-              </div>
+                </Demo>
+                <Demo title="Account Info" use="AccountInfoGrid. The account's status, network, key and assets, as tiles.">
+                  <div className="space-y-4">
+                    <AccountInfoGrid
+                      items={[
+                        { label: 'Status', value: 'Ready' },
+                        { label: 'Network', value: accountNetwork },
+                        { label: 'Pubkey', value: '02c4f7...91ac' },
+                        { label: 'Assets', value: 'BTC, USDB' },
+                      ]}
+                    />
+                    <AccountNotice tone="warning">
+                      Network switching affects addresses and invoices generated after the change.
+                    </AccountNotice>
+                  </div>
+                </Demo>
+              </Grid>
             </div>
           </Section>
 
           {/* ── Alert Banners ───────────────────────────────────────────── */}
-          <Section id="alert-banners" title="Alert Banners" description="Contextual feedback messages.">
-            <div className="flex flex-col gap-3 max-w-lg">
-              <AlertBanner variant="info">
-                Your transaction is being confirmed on the network. This may take a few minutes.
-              </AlertBanner>
-              <AlertBanner variant="success">
-                Swap completed successfully! Funds have been credited to your wallet.
-              </AlertBanner>
-              <AlertBanner variant="warning">
-                High network fees detected. Consider waiting for lower fees.
-              </AlertBanner>
-              <AlertBanner variant="error">
-                Transaction failed. Insufficient funds to cover network fees.
-              </AlertBanner>
-            </div>
+          <Section id="alert-banners" title="Alert Banners" description="Contextual feedback messages, one tone each.">
+            <Grid>
+              <Demo title="Info" use="Something in progress or worth knowing.">
+                <AlertBanner variant="info">
+                  Your transaction is being confirmed on the network. This may take a few minutes.
+                </AlertBanner>
+              </Demo>
+              <Demo title="Success" use="Something that finished as asked.">
+                <AlertBanner variant="success">
+                  Swap completed successfully! Funds have been credited to your wallet.
+                </AlertBanner>
+              </Demo>
+              <Demo title="Warning" use="Something to look at before going on.">
+                <AlertBanner variant="warning">
+                  High network fees detected. Consider waiting for lower fees.
+                </AlertBanner>
+              </Demo>
+              <Demo title="Error" use="Something that failed, and why.">
+                <AlertBanner variant="error">
+                  Transaction failed. Insufficient funds to cover network fees.
+                </AlertBanner>
+              </Demo>
+            </Grid>
           </Section>
 
           {/* ── Setting Items ───────────────────────────────────────────── */}
-          <Section id="swap-flow" title="Swap Flow" description="Deciding on a pending swap (SummaryRows) and following it (SwapStepList).">
-            <div className="grid max-w-3xl gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl bg-card/70 p-4">
-                <span className="text-mini font-medium uppercase tracking-eyebrow text-muted-foreground">Review</span>
-                <SummaryRows
-                  className="mt-3"
-                  rows={[
-                    { label: 'You pay', value: '1,005 sats', emphasis: true },
-                    { label: 'Invoice receives', value: '1,000 sats' },
-                    { label: 'Fee', value: '5 sats', hint: '0.5% spread' },
-                    { label: 'Refund opens', value: 'in 90 min', tone: 'warning' },
-                    { label: 'Solver', value: '66422c…e3ce', mono: true },
-                  ]}
-                />
-              </div>
-              <div className="rounded-2xl bg-card/70 p-4">
-                <span className="text-mini font-medium uppercase tracking-eyebrow text-muted-foreground">Progress</span>
-                <SwapStepList
-                  className="mt-3"
-                  steps={[
-                    {
-                      id: 'quote',
-                      label: 'Quote locked',
-                      description: '1,005 sats → 1,000 sat invoice',
-                      status: 'done',
-                    },
-                    {
-                      id: 'fund',
-                      label: 'Contract funded',
-                      description: 'txid a91c…04d7',
-                      status: 'done',
-                    },
-                    { id: 'fill', label: 'Solver paying invoice', status: 'active' },
-                    { id: 'claim', label: 'Invoice paid', status: 'pending' },
-                  ]}
-                />
-              </div>
-            </div>
-          </Section>
-
-          <Section id="setting-items" title="Setting Items" description="Settings rows with icon, title, description, and value.">
-            <div className="flex flex-col gap-3 max-w-lg">
-              <SectionLabel>Account</SectionLabel>
-              <SettingItem
-                icon="person"
-                title="Profile"
-                description="Manage your account details"
-                onClick={() => {}}
-              />
-              <SettingItem
-                icon="shield"
-                title="Security"
-                description="PIN, biometrics, 2FA"
-                onClick={() => {}}
-              />
-              <SettingItem
-                icon="language"
-                title="Language"
-                showChevron={false}
-                value={
-                  <Select value={language} onValueChange={setLanguage}>
-                    <SelectTrigger hug aria-label="Language">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {[
-                        { value: 'en', label: '🇬🇧 English' },
-                        { value: 'it', label: '🇮🇹 Italiano' },
-                        { value: 'es', label: '🇪🇸 Español' },
-                        { value: 'fr', label: '🇫🇷 Français' },
-                        { value: 'de', label: '🇩🇪 Deutsch' },
-                        { value: 'pt', label: '🇵🇹 Português' },
-                        { value: 'ja', label: '🇯🇵 日本語' },
-                      ].map(opt => (
-                        <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                }
-              />
-              <SectionLabel className="mt-4">Preferences</SectionLabel>
-              <SettingItem
-                icon="dark_mode"
-                title="Dark Mode"
-                value={<Switch checked={darkMode} onCheckedChange={setDarkMode} />}
-                showChevron={false}
-              />
-              <SettingItem
-                icon="notifications"
-                title="Notifications"
-                description="Push alerts for transactions"
-                onClick={() => {}}
-              />
-            </div>
-          </Section>
-
-          {/* ── Toggles ─────────────────────────────────────────────────── */}
-          <Section id="toggle" title="Toggles" description="One switch, two forms: the compact on/off Switch, and the wide pill with a glyph per side — ThemeToggle is that one.">
-            <Row label="Switch — off / on / disabled (the one in SettingItem and SwitchRow)">
-              <Switch aria-label="Off" checked={false} />
-              <Switch aria-label="On" checked />
-              <Switch aria-label="Disabled off" checked={false} disabled />
-              <Switch aria-label="Disabled on" checked disabled />
-            </Row>
-            <Row label="ThemeToggle — light / dark (the one in the top bar drives the page)">
-              <ThemeToggle mode="light" onModeChange={() => {}} />
-              <ThemeToggle mode="dark" onModeChange={() => {}} />
-            </Row>
-          </Section>
-
-          {/* ── Inputs ──────────────────────────────────────────────────── */}
-          <Section id="inputs" title="Inputs & Labels" description="Form controls.">
-            <div className="flex flex-col gap-4 max-w-sm">
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="addr">Bitcoin Address</Label>
-                <Input id="addr" placeholder="bc1q..." />
-              </div>
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="amount">Amount (sats)</Label>
-                <NumberInput id="amount" placeholder="21000" />
-              </div>
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="disabled">Disabled</Label>
-                <Input id="disabled" placeholder="Not editable" disabled />
-              </div>
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="markup">Markup — suffix</Label>
-                <Input id="markup" defaultValue="0.25" inputMode="decimal" suffix="%" className="max-w-56" />
-              </div>
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="share">Revenue share — prefix and suffix</Label>
-                <Input id="share" defaultValue="2500" inputMode="numeric" prefix="≈" suffix="bps" className="max-w-56" />
-              </div>
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="roll-deadline">Old key stops after — NativeSelect</Label>
-                <NativeSelect id="roll-deadline" defaultValue="7d">
-                  <option value="24h">24 hours</option>
-                  <option value="7d">7 days</option>
-                  <option value="30d">30 days</option>
-                </NativeSelect>
-              </div>
-            </div>
-            <div className="mt-6">
-              <InputFieldsGallery />
-            </div>
-          </Section>
-
-          {/* ── Tabs ────────────────────────────────────────────────────── */}
-          <Section id="tabs" title="Tabs" description="Tabbed wallet workflow using send, receive, and swap components together; then SegmentedTabs, the same bar as a radio group.">
-            <div className="max-w-lg">
-              <Tabs defaultValue="send">
-                <TabsList className="w-full">
-                  <TabsTrigger value="send" className="flex-1">Send</TabsTrigger>
-                  <TabsTrigger value="receive" className="flex-1">Receive</TabsTrigger>
-                  <TabsTrigger value="swap" className="flex-1">Swap</TabsTrigger>
-                </TabsList>
-                <TabsContent value="send" className="mt-4">
-                  <div className="space-y-4 rounded-3xl bg-card/60 p-4">
-                    <WithdrawDestinationInput
-                      destination={withdrawDestination}
-                      setDestination={setWithdrawDestination}
-                      addressType="bitcoin"
-                      detectedNetworkLabel="Bitcoin L1"
-                      isDecoding={false}
-                      isResolvingLnurl={false}
-                      handlePaste={() => setWithdrawDestination('bc1qsampledestinationaddress')}
-                      handleReset={() => setWithdrawDestination('')}
-                    />
-                    <WithdrawAmountInput
-                      addressType="bitcoin"
-                      amount={withdrawAmount}
-                      handleAmountChange={(event) => setWithdrawAmount(event.target.value)}
-                      handleSetMax={() => setWithdrawAmount('125000')}
-                      selectedAssetId="BTC"
-                      selectedAssetTicker="BTC"
-                      formattedBalance="125,000"
-                      decodedLnInvoice={null}
-                      decodedRgbInvoice={null}
-                      lnurlPayData={null}
-                      witnessAmountSat={512}
-                      setWitnessAmountSat={() => {}}
-                      feeRate={feeRate}
-                      setFeeRate={setFeeRate}
-                      feeRates={{ slow: 2, normal: 5, fast: 9 }}
-                      donation={donation}
-                      setDonation={setDonation}
-                    />
-                    <Button variant="cta" size="cta"><Icon name="receipt_long" size="sm" />Review Send</Button>
-                  </div>
-                </TabsContent>
-                <TabsContent value="receive" className="mt-4">
-                  <div className="space-y-4 rounded-3xl bg-card/60 p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                          Receive
-                        </p>
-                        <p className="mt-1 text-sm font-semibold text-foreground">Lightning Invoice</p>
-                      </div>
-                      <NetworkBadge network="LN" showLabel />
-                    </div>
-                    <div className="relative flex min-h-[220px] items-center justify-center rounded-2xl bg-black/20 p-5">
-                      <div className="relative rounded-2xl bg-white p-3">
-                        <QrCode value="lightning:lnbc21000sampleinvoice" size={168} />
-                        <PaidOverlay />
-                      </div>
-                    </div>
-                    <InvoiceStatusBanner
-                      invoiceStatus="pending"
-                      isInvoicePending
-                      isInvoicePaid={false}
-                      isInvoiceFailedOrExpired={false}
-                    />
-                    <div className="flex gap-2.5">
-                      <ActionTile icon={<Icon name="content_copy" size="sm" />} label="Copy" onClick={() => {}} />
-                      <ActionTile icon={<Icon name="edit" size="sm" />} label="Amount" onClick={() => {}} />
-                      <ActionTile icon={<Icon name="ios_share" size="sm" />} label="Share" onClick={() => {}} />
-                    </div>
-                    <NetworkInfoDisclosure networks={['onchain', 'lightning', 'spark', 'arkade']} />
-                  </div>
-                </TabsContent>
-                <TabsContent value="swap" className="mt-4">
-                  <div className="rounded-3xl bg-card/60 p-4">
-                    <SwapInputCard
+          <Section id="swap-flow" title="Swap Flow" description="A swap from start to finish: choosing the pair and the amount, reviewing what will happen, then following it.">
+            <Grid>
+              <Demo title="Swap" use="SwapInputCard. The two assets, the amount with its quick percentages, the quote under them, and the one action.">
+                <SwapInputCard
                       fromTicker={selectedAssetTicker}
                       toTicker={swapToTicker}
                       fromInput={swapAmount}
@@ -1746,15 +1663,184 @@ export function App() {
                       }}
                       onSubmit={() => {}}
                     />
-                  </div>
-                </TabsContent>
-              </Tabs>
+              </Demo>
+              <div className="space-y-16">
+                <Demo title="Review" use="SummaryRows. What is paid, what is received and what the swap costs, before anything is sent.">
+                  <SummaryRows
+                                    rows={[
+                    { label: 'You pay', value: '1,005 sats', emphasis: true },
+                    { label: 'Invoice receives', value: '1,000 sats' },
+                    { label: 'Fee', value: '5 sats', hint: '0.5% spread' },
+                    { label: 'Refund opens', value: 'in 90 min', tone: 'warning' },
+                    { label: 'Solver', value: '66422c…e3ce', mono: true },
+                  ]}
+                />
+                </Demo>
+                <Demo title="Progress" use="SwapStepList. Where a swap in flight is: done, in progress, still to come.">
+                  <SwapStepList
+                                    steps={[
+                    {
+                      id: 'quote',
+                      label: 'Quote locked',
+                      description: '1,005 sats → 1,000 sat invoice',
+                      status: 'done',
+                    },
+                    {
+                      id: 'fund',
+                      label: 'Contract funded',
+                      description: 'txid a91c…04d7',
+                      status: 'done',
+                    },
+                    { id: 'fill', label: 'Solver paying invoice', status: 'active' },
+                    { id: 'claim', label: 'Invoice paid', status: 'pending' },
+                  ]}
+                />
+                </Demo>
+              </div>
+            </Grid>
+          </Section>
+
+          <Section id="setting-items" title="Settings" description="Settings rows with icon, title, description, and value.">
+            <Grid>
+              <Demo title="Account" use="SettingItem. A place to go: icon, title, description and a chevron; or a control in the value slot.">
+                <div className="flex max-w-lg flex-col gap-3">
+              <SettingItem
+                icon="person"
+                title="Profile"
+                description="Manage your account details"
+                onClick={() => {}}
+              />
+              <SettingItem
+                icon="shield"
+                title="Security"
+                description="PIN, biometrics, 2FA"
+                onClick={() => {}}
+              />
+              <SettingItem
+                icon="language"
+                title="Language"
+                showChevron={false}
+                value={
+                  <Select value={language} onValueChange={setLanguage}>
+                    <SelectTrigger hug aria-label="Language">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[
+                        { value: 'en', label: '🇬🇧 English' },
+                        { value: 'it', label: '🇮🇹 Italiano' },
+                        { value: 'es', label: '🇪🇸 Español' },
+                        { value: 'fr', label: '🇫🇷 Français' },
+                        { value: 'de', label: '🇩🇪 Deutsch' },
+                        { value: 'pt', label: '🇵🇹 Português' },
+                        { value: 'ja', label: '🇯🇵 日本語' },
+                      ].map(opt => (
+                        <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                }
+              />
+                </div>
+              </Demo>
+              <Demo title="Preferences" use="SettingItem with a Switch in the value slot: the row states the setting, the control sets it.">
+                <div className="flex max-w-lg flex-col gap-3">
+              <SettingItem
+                icon="dark_mode"
+                title="Dark Mode"
+                value={<Switch checked={darkMode} onCheckedChange={setDarkMode} />}
+                showChevron={false}
+              />
+              <SettingItem
+                icon="notifications"
+                title="Notifications"
+                description="Push alerts for transactions"
+                onClick={() => {}}
+              />
+                </div>
+              </Demo>
+            </Grid>
+          </Section>
+
+          {/* ── Toggles ─────────────────────────────────────────────────── */}
+          <Section id="toggle" title="Toggles" description="One switch, two forms: the compact on/off Switch (the one in SettingItem and SwitchRow), and the wide pill with a glyph per side — ThemeToggle is that one.">
+            <Row label="Switch — off">
+              <Switch aria-label="Off" checked={false} />
+            </Row>
+            <Row label="Switch — on">
+              <Switch aria-label="On" checked />
+            </Row>
+            <Row label="Switch — disabled">
+              <Switch aria-label="Disabled off" checked={false} disabled />
+              <Switch aria-label="Disabled on" checked disabled />
+            </Row>
+            <Row label="ThemeToggle — light / dark (the one in the top bar drives the page)">
+              <ThemeToggle mode="light" onModeChange={() => {}} />
+              <ThemeToggle mode="dark" onModeChange={() => {}} />
+            </Row>
+          </Section>
+
+          {/* ── Inputs ──────────────────────────────────────────────────── */}
+          <Section id="inputs" title="Inputs & Labels" description="Form controls, each under its label.">
+            <Grid>
+              <Demo title="Text input" use="Input under its Label. The placeholder shows the shape of the value.">
+                <div className="flex max-w-sm flex-col gap-2">
+                  <Label htmlFor="addr">Bitcoin Address</Label>
+                  <Input id="addr" placeholder="bc1q..." />
+                </div>
+              </Demo>
+              <Demo title="Text input (Disabled)" use="A field that is shown but cannot be edited: dimmed, out of the Tab order.">
+                <div className="flex max-w-sm flex-col gap-2">
+                  <Label htmlFor="disabled">Label</Label>
+                  <Input id="disabled" placeholder="Not editable" disabled />
+                </div>
+              </Demo>
+              <Demo title="Number input" use="NumberInput: digits only, with the numeric keypad on a phone.">
+                <div className="flex max-w-sm flex-col gap-2">
+                  <Label htmlFor="amount">Amount (sats)</Label>
+                  <NumberInput id="amount" placeholder="21000" />
+                </div>
+              </Demo>
+              <Demo title="Amount with a suffix" use="The unit sits inside the field, in the suffix slot: the value stays a plain number, the unit is not typed.">
+                <div className="flex max-w-sm flex-col gap-2">
+                  <Label htmlFor="amount-sats">Amount</Label>
+                  <Input id="amount-sats" defaultValue="50" inputMode="numeric" suffix="%" />
+                </div>
+              </Demo>
+            </Grid>
+            <div className="mt-16">
+              <InputFieldsGallery />
+            </div>
+          </Section>
+
+          {/* ── Tabs ────────────────────────────────────────────────────── */}
+          <Section id="tabs" title="Tabs" description="The Tabs bar; then SegmentedTabs, the same bar as a radio group.">
+            <div className="max-w-lg">
+              <Row label="Tabs">
+                <Tabs defaultValue="send" className="w-full">
+                  <TabsList fullWidth>
+                    <TabsTrigger value="send">Send</TabsTrigger>
+                    <TabsTrigger value="receive">Receive</TabsTrigger>
+                    <TabsTrigger value="swap">Swap</TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </Row>
+              <Row label="Tabs with icon — a glyph before each label">
+                <Tabs defaultValue="send" className="w-full">
+                  <TabsList fullWidth>
+                    <TabsTrigger value="send"><Icon name="arrow_upward" size="sm" />Send</TabsTrigger>
+                    <TabsTrigger value="receive"><Icon name="arrow_downward" size="sm" />Receive</TabsTrigger>
+                    <TabsTrigger value="swap"><Icon name="swap_horiz" size="sm" />Swap</TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </Row>
             </div>
             <SegmentedTabsDemo />
           </Section>
 
           {/* ── Dialog ──────────────────────────────────────────────────── */}
           <Section id="dialog" title="Dialog" description="Modal dialog via Radix UI.">
+            <Demo title="Dialog" use="A decision over the current screen: a title, what is about to happen, and the two ways out.">
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogTrigger asChild>
                 <Button variant="outline">Open Dialog</Button>
@@ -1777,7 +1863,10 @@ export function App() {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
-            <DialogShowCloseDemo />
+            </Demo>
+            <Demo className="mt-16" title="Without a close control" use="showCloseFalse: for a secret shown exactly once, the dialog closes only through its own action.">
+              <DialogShowCloseDemo />
+            </Demo>
           </Section>
 
           {/* ── Drawer ──────────────────────────────────────────────────── */}
@@ -1862,26 +1951,29 @@ export function App() {
           <Section id="scrollbars" title="Scrollbars" description="ScrollArea and HorizontalScrollArea: the one overlay thumb every scroller in the library uses.">
             <ScrollbarsGallery />
           </Section>
-          <Section id="avatar" title="Avatars" description="Image, initials or the person glyph.">
+          <Section id="avatar" title="Avatar" description="The person, as initials or an image.">
             <AvatarGallery />
           </Section>
-          <Section id="collapsible" title="Collapsibles" description="Two disclosures built on the Collapsible primitive: BasicCollapsible, a compact row, and DisclosureCard, a card.">
+          <Section id="collapsible" title="Disclosures" description="Two ways to show and hide a section, both built on the Collapsible primitive: a compact row inside a surface, and a card of its own.">
             <CollapsibleGallery />
+          </Section>
+          <Section id="display-lists" title="Lists" description="Plain lists of rows: a log in two spacings, and a checklist with a status on every step.">
+            <DisplayListsGallery />
           </Section>
           <Section id="popover-menu" title="Popover & Menu" description="An anchored panel, and a real menu.">
             <PopoverMenuGallery />
           </Section>
-          <Section id="notices" title="Notices" description="Notices that stay until closed: the top bar and the floating notice.">
-            <NoticesGallery />
-          </Section>
-          <Section id="lists" title="Lists & Filters" description="QueryState, EmptyState, RecordList, FilterBar, the segmented control, Pager, ValueList, EventTimeline and checklists.">
+          <Section id="lists" title="Lists & Filters" description="QueryState, EmptyState, RecordList, FilterBar, the segmented control, Pager, ValueList and EventTimeline, then a composed receipt.">
             <ListsGallery />
           </Section>
-          <Section id="actions" title="Actions" description="Who is signed in, how fresh the figures are with the refresh that updates them, and copying that says whether it worked.">
+          <Section id="actions" title="Actions" description="How fresh the figures are with the refresh that updates them, and copying that says whether it worked.">
             <ActionsGallery />
-            <div className="mt-4">
+            <div className="mt-16">
               <CopyGallery />
             </div>
+          </Section>
+          <Section id="panels" title="Panels" description="Whole dashboard panels: a ranked list beside the chart it drives.">
+            <PanelsGallery />
           </Section>
 
           {/* ── Charts ──────────────────────────────────────────────────── */}

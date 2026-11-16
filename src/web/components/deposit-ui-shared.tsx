@@ -4,6 +4,7 @@ import { Cancel, Check, CheckCircle, ContentCopy, Info, ProgressActivity, SwapHo
 import { cn } from '../utils/cn'
 import { colors } from '../../tokens/colors'
 import { LiquidNetworkIcon, OnchainNetworkIcon, RgbNetworkIcon } from './network-icon'
+import { protocolIcons } from '../assets/protocol-icons'
 import { DisclosureCard } from './disclosure-card'
 import { eyebrow } from '../utils/type-roles'
 
@@ -63,7 +64,7 @@ export const NETWORK_CONFIG: Record<DepositNetworkKey, DepositNetworkConfigEntry
     border: 'border-network-lightning/40',
     qrBorder: 'border-network-lightning/30',
     qrGlow: qrGlowStyle(colors.network.lightning),
-    icon: <img src="/icons/lightning/lightning.svg" className="size-3" alt="" />,
+    icon: <img src={protocolIcons.LN} className="size-3" alt="" />,
   },
   spark: {
     label: 'Spark',
@@ -73,7 +74,7 @@ export const NETWORK_CONFIG: Record<DepositNetworkKey, DepositNetworkConfigEntry
     border: 'border-info/40',
     qrBorder: 'border-info/30',
     qrGlow: qrGlowStyle(colors.info),
-    icon: <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" className="kui-mono-icon h-3 w-3" alt="" />,
+    icon: <img src={protocolIcons.Spark} className="kui-mono-icon h-3 w-3" alt="" />,
   },
   arkade: {
     label: 'Arkade',
@@ -83,7 +84,7 @@ export const NETWORK_CONFIG: Record<DepositNetworkKey, DepositNetworkConfigEntry
     border: 'border-network-arkade/40',
     qrBorder: 'border-network-arkade/30',
     qrGlow: qrGlowStyle(colors.network.arkade),
-    icon: <img src="/icons/arkade/arkade-icon.svg" className="h-3 w-3 rounded-sm" alt="" />,
+    icon: <img src={protocolIcons.Arkade} className="h-3 w-3 rounded-sm" alt="" />,
   },
   liquid: {
     label: 'Liquid',
@@ -124,7 +125,7 @@ const ACCOUNT_META: Record<
     accentBorder: 'border-network-spark/30',
     icon: (
       <img
-        src="/icons/spark/Asterisk/Spark Asterisk White.svg"
+        src={protocolIcons.Spark}
         alt=""
         className="kui-mono-icon h-2.5 w-2.5 object-contain"
       />
@@ -135,7 +136,7 @@ const ACCOUNT_META: Record<
     accentBg: 'bg-network-arkade/10',
     accentText: 'text-network-arkade-fg',
     accentBorder: 'border-network-arkade/30',
-    icon: <img src="/icons/arkade/arkade-icon.svg" alt="" className="h-2.5 w-2.5 rounded-[1px] object-contain" />,
+    icon: <img src={protocolIcons.Arkade} alt="" className="h-2.5 w-2.5 rounded-[1px] object-contain" />,
   },
   LIQUID: {
     shortLabel: 'Liquid',
@@ -148,12 +149,12 @@ const ACCOUNT_META: Record<
 
 const METHOD_META: Record<DepositTransferMethod, { label: string; icon: ReactNode }> = {
   bitcoin_l1: { label: 'On-chain', icon: <OnchainNetworkIcon className="size-3" /> },
-  lightning: { label: 'Lightning', icon: <img src="/icons/lightning/lightning.svg" className="size-3" alt="" /> },
+  lightning: { label: 'Lightning', icon: <img src={protocolIcons.LN} className="size-3" alt="" /> },
   spark: {
     label: 'Spark',
-    icon: <img src="/icons/spark/Asterisk/Spark Asterisk White.svg" className="kui-mono-icon size-3 object-contain" alt="" />,
+    icon: <img src={protocolIcons.Spark} className="kui-mono-icon size-3 object-contain" alt="" />,
   },
-  arkade: { label: 'Arkade', icon: <img src="/icons/arkade/arkade-icon.svg" className="size-3 rounded-sm object-contain" alt="" /> },
+  arkade: { label: 'Arkade', icon: <img src={protocolIcons.Arkade} className="size-3 rounded-sm object-contain" alt="" /> },
   // Boarding is on-chain BTC joining Arkade; a submarine swap is a swap between rails.
   boarding: { label: 'Boarding', icon: <OnchainNetworkIcon className="size-3" /> },
   submarine_swap: { label: 'Submarine Swap', icon: <IconGlyph glyph={SwapHoriz} className="text-icon-xs" /> },
@@ -341,15 +342,15 @@ const NETWORK_INFO: Record<DepositNetworkKey, NetworkInfoEntry> = {
   },
 }
 
-// The protocol marks (the same files as the showcase's External logos, served
-// from /logos/protocols) and each network's per-theme foreground from Brand.
+// The protocol marks (bundled; the same artwork as the showcase's External
+// logos) and each network's per-theme foreground from Brand.
 // Spark's asterisk is white; kui-mono-icon draws it black on the light theme.
 const NETWORK_INFO_MARK: Record<DepositNetworkKey, { src: string; text: string; mono?: boolean }> = {
-  onchain: { src: '/logos/protocols/bitcoin.svg', text: 'text-network-bitcoin-fg' },
-  lightning: { src: '/logos/protocols/lightning.svg', text: 'text-network-lightning-fg' },
-  spark: { src: '/logos/protocols/spark-asterisk-white.svg', text: 'text-network-spark-fg', mono: true },
-  arkade: { src: '/logos/protocols/arkade.svg', text: 'text-network-arkade-fg' },
-  liquid: { src: '/logos/protocols/liquid.svg', text: 'text-network-liquid-fg' },
+  onchain: { src: protocolIcons.Bitcoin!, text: 'text-network-bitcoin-fg' },
+  lightning: { src: protocolIcons.LN!, text: 'text-network-lightning-fg' },
+  spark: { src: protocolIcons.Spark!, text: 'text-network-spark-fg', mono: true },
+  arkade: { src: protocolIcons.Arkade!, text: 'text-network-arkade-fg' },
+  liquid: { src: protocolIcons.Liquid!, text: 'text-network-liquid-fg' },
 }
 
 export function NetworkInfoDisclosure({
@@ -364,10 +365,9 @@ export function NetworkInfoDisclosure({
   return (
     <DisclosureCard
       className={className}
-      triggerClassName="px-2.5 py-1.5"
-      contentClassName="space-y-2 px-2.5 pb-2.5 pt-1"
-      icon={<IconGlyph glyph={Info} size="xs" className="text-secondary-content" />}
-      title={<span className={cn('text-muted-foreground', eyebrow)}>What are these networks?</span>}
+      contentClassName="space-y-4"
+      icon={<IconGlyph glyph={Info} className="text-icon-md text-muted-foreground" />}
+      title="What are these networks?"
     >
       {networks.map((network) => {
         const info = NETWORK_INFO[network]

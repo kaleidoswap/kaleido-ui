@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.2.20    # must equal package.json's version; check-design-doc fails otherwise
+version: 0.2.21    # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -212,7 +212,7 @@ the surfaces compete with the green.
 
 - **`surface.bg` `#0E0D16`** — the page background. Every full-screen view starts here, washed by `bg-page-radial`.
 - **`surface.raised` `#14131E`** — the `muted` token: rows nested inside a card, quiet fills.
-- **`surface.card` `#1C1A2A`** — the default card / panel / action-tile fill (`popover` is one step lighter, `#211F31`).
+- **`surface.card` `#1C1A2A`** — the default card / panel / action-tile fill (`popover`, the floating layers, is a softer violet a step lighter, `#2A2839`, under `bg-gradient-floating`).
 - **`surface.elevated` `#282638`** — the `accent` token: nested panels, dropdowns, hover states on cards.
 - **`surface.high` `rgb(54 51 74)`** — the topmost step, for a control raised above an elevated surface.
 
@@ -309,6 +309,8 @@ Components set text **only** with these steps — never Tailwind's default sizes
 
 **The eyebrow is written once**, as `eyebrow` in `src/web/utils/type-roles.ts`: `text-mini font-medium uppercase tracking-eyebrow` — Satoshi 500 / 10 px / 0.18em, the `label` token above. The tokens are authoritative (weight tops out at 700; tracking is 0.18em), and this document matches them. Any uppercase letter-spaced label uses `tracking-eyebrow` (or `tracking-eyebrow-wide`); hand-written `tracking-[…]` values are not allowed.
 
+**The large eyebrow** is `eyebrowLarge` beside it: `text-tiny font-semibold uppercase tracking-eyebrow` (12 px, same tracking and case), for a heading that must stand above its content — a settings group, a panel title — where the 10 px eyebrow would read as a caption. `Label size="lg"` is its field-label form; colour is the caller's. A block's title (the showcase's, in violet `text-secondary-content`) is the small eyebrow.
+
 **Every field label is the eyebrow, and it is `Label`.** A form's field (settings, the desk's app and webhook forms, `FormField`) and a wallet flow's (send, receive, swap, deposit) wear the same label: `Label`, the eyebrow in `secondary-content` (violet). It is tied to its control with `htmlFor` / `id`; a hand-written `<label>` with no `htmlFor` names nothing. A heading over a group of buttons (a fee-rate picker, a route list) is not a `<label>`: it is an eyebrow `<p>` with an `id` that the group's `role="group"` points at with `aria-labelledby`.
 
 Spacing is one token, `spacingUnit` (0.28125rem = **4.5 px**, `--spacing` in `kaleido-ui/css`, restated for the v3 preset): every `p-*`, `m-*`, `gap-*`, `space-*`, `w-*`/`h-*` step is a multiple of it, so `p-4` is 18 px. It was Tailwind's 4 px; the UI read cramped (a field label sat on its box). Keep using the step names (`p-4` card, `p-3` inner row, `p-2.5` compact tile) — never px arbitraries.
@@ -344,6 +346,7 @@ both modes.
 | `shadow-glow-violet(-soft)` | violet halo — hover of violet controls and icon tiles |
 | `shadow-glow-brand` | green-left + violet-right halo — brand moments only (hero CTA, success icon) |
 | `shadow-popover` / `shadow-toast` | floating layers, with a violet hairline and bloom |
+| `shadow-floating` | glass popover, menu, select and tooltip panels: the deep drop alone, no violet edge or bloom |
 
 ### Gradients
 
@@ -356,6 +359,7 @@ Brand gradients are always **135° linear**. They are plain classes in
 - `bg-gradient-brand` / `bg-gradient-brand-dark` — green→violet: progress, active steps, brand accents; `-dark` under white text.
 - `bg-gradient-card` — faint violet light on every card (`bg-card bg-gradient-card`).
 - `bg-gradient-card-hero` — stronger violet→green wash for hero surfaces: balance, swap input, dialogs, success.
+- `bg-gradient-floating` — a lighter violet→green wash over `bg-popover`: popover, menu, select, tooltip.
 - `bg-gradient-active` — green wash for a selected row / card / option / nav item (paired with `ring-primary/40`). Radix triggers styled by `data-state` use `active-gradient-primary`.
 - `text-gradient-brand` — gradient text for headlines and hero figures only.
 - `border-gradient-brand` — a 1 px green→violet ring for a featured or selected card.
@@ -563,13 +567,21 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 
 The tile is a `role="group"` named by its label (or `aria-label`), so a failure that replaces the value is announced as belonging to that metric.
 
-### EarningsByPartnerCard
+### RankedTrendPanel
 
-**Intended use.** Earnings by partner on an admin overview or a partner dashboard: one component, so both draw the same card. It takes its data through props and fetches nothing; the period and the selected partner are the host's state.
+**Intended use.** A ranking beside the chart it drives: sales by store, revenue by partner, tickets by venue. One component for every "who leads, and how did they get there" view. It takes its data through props and fetches nothing; the period and the selected item are the host's state.
 
-**Layout.** The header holds the title, a one-line `description` and the period as `SegmentedTabs size="compact"` (7D / 30D / 90D by default, `periods` to change them). Under it the card splits as the platform dashboard's earnings panel does: `lg:grid-cols-[21rem_minmax(0,1fr)]`, stacked below `lg`, with **no divider between the halves**. The left column sits on `bg-gradient-card-hero` and is a ranked, selectable `BarList` — rank, name, swap count, revenue and a bar per partner, largest first — over the total for all partners. The right is the selected partner's swap volume: a `text-subhead` title, the swap count and `bucketLabel` in `tiny`, the total volume in `title`, and an `AreaChart` with `areaFill="gradient"` and `latestMarker="halo"`.
+**Layout.** The header holds the title, a one-line `description` and, when the host passes `onPeriodChange`, the period as `SegmentedTabs size="compact"` (7D / 30D / 90D by default, `periods` to change them). Under it the panel splits: `lg:grid-cols-[21rem_minmax(0,1fr)]`, stacked below `lg`, with a **hairline** (`border-border`) between the halves, the card's full height. The left column sits on `bg-gradient-card-hero` and is a ranked, selectable `BarList` — rank, name, optional count, value and a bar per item, largest first — over the total. The right is the selected item's series: a `text-subhead` title, the count and `bucketLabel` in `tiny`, the series total in `title`, and an `AreaChart` with `areaFill="gradient"` and `latestMarker="halo"`.
 
-**Data.** `partners` is a list of `EarningsPartner` — `id`, `name`, `revenue`, `swaps`, `volumeSeries` — with `revenue` and each point's `volume` in sats; `unit` (`sat` or `BTC`) says how they print, and `formatValue` overrides that. `selectedId` defaults to the top partner. No partners renders `empty`; a partner with no volume renders `chartEmpty` in place of the chart. Every visible label has an English default and a prop.
+**Data.** `items` is a list of `RankedTrendItem` — `id`, `name`, `value`, optional `count`, `series` of `TrendPoint` (`key`, `label`, `detail?`, `value`). `formatValue` prints values and the total, `formatSeriesValue` the chart (defaults to `formatValue`), `countText` the count. `selectedId` defaults to the top item. No items renders `empty`; an item with no points renders `chartEmpty`. Every visible label has a prop.
+
+`EarningsByPartnerCard` is the same panel with partner props (`partners`, `revenue`, `swaps`, `volumeSeries`, sats and `unit`); it is deprecated and kept for existing apps.
+
+### StatTrendPanel
+
+**Intended use.** A headline figure with its breakdown, beside the trend that led to it: members and their states, a balance and its parts, stock and its movements. Same split and hairline as `RankedTrendPanel`.
+
+**Layout.** The 21rem column on `bg-gradient-card-hero` holds the `label` as an eyebrow, the `value` in `display` with an optional `valueSuffix`, the breakdown as `SummaryRows` (label, leader line, value; all values the same colour) and one `action` at the foot, a ghost `Button` around the host's link. The right is an `AreaChart` with its own `chartTitle`, `chartDescription` and chart/table switch.
 
 ### PageHeader
 
@@ -600,7 +612,7 @@ A small pill in a semantic tone, drawn from theme tokens only with no border: th
 
 ### Popover and DropdownMenu
 
-Two floating surfaces on one look — glass: `bg-popover/50 backdrop-blur-xl backdrop-saturate-150` and `shadow-floating` (the popover shadow without its hairline: no edge line, ring or border), the same fade and 0.98 zoom as `Dialog` and `Select` — and two jobs:
+Two floating surfaces on one look — opaque (`bg-popover`, no glass: a panel over content stays legible whatever is behind it): `bg-popover bg-gradient-floating` and `shadow-floating` (the popover shadow without its hairline: no edge line, ring or border), the same fade and 0.98 zoom as `Dialog` and `Select` — and two jobs:
 
 - **`Popover`** is a panel anchored to a trigger for content that is *not* a menu: a note, a few buttons, a copy control. Tab walks everything inside in order.
 - **`DropdownMenu`** is a real menu (`role="menu"`): `DropdownMenuItem`s (with `destructive` for Revoke / Delete, kept last), `DropdownMenuSeparator`, `DropdownMenuLabel`. The arrow keys move between items.
@@ -647,9 +659,9 @@ The pieces a data-dense page is assembled from. None of them carries product tex
 
 - **`QueryState`** keeps loading, error and empty apart, so a failed read never looks like an empty list. Loading: skeleton rows inside `role="status"`, named by `loadingLabel`, no visible text. Error: an `InfoPanel` inside `role="alert"`, worded by `classifyError(error) → { title, message, tone, retryable }` (a minimal default is provided), with `errorConsequence` above the message and "Try again" only when `retryable` and `onRetry`. Empty: `EmptyState`.
 - **`EmptyState`** — title (required), description, one action, optional glyph; centred. `ActivityList`'s empty state renders through it.
-- **`RecordList` / `RecordItem` / `RecordField`** — the stacked form of a table row for narrow screens: the same data, another layout. `identifier` and `status` on the first line, `summary` under the identifier, `RecordField`s (`<dt>`/`<dd>`, `wide` for two columns) in a two-column grid (`columns={3}` or `{4}` for more on a line; four go on one line from `sm` up), `actions` at the right, on the fields' line (fields sit `gap-x-2` apart). With `onOpen` the whole item opens it *and* an explicit chevron button does, since a clickable `<li>` is not reachable by keyboard; the button and the actions stop propagation. `selected` sets `aria-current`. Items divide with a `border` hairline — the `Table` divider exception, because this is a table row laid out differently.
+- **`RecordList` / `RecordItem` / `RecordField`** — the stacked form of a table row for narrow screens: the same data, another layout. `identifier` and `status` on the first line, `summary` under the identifier, `RecordField`s (`<dt>`/`<dd>`, `wide` for two columns) in a two-column grid (`columns={3}` or `{4}` for more on a line; four go on one line from `sm` up), `actions` at the right, on the fields' line (`reserveActions` keeps that column in items without a button, so the fields line up down the list) (fields sit `gap-x-2` apart). With `onOpen` the whole item opens it *and* an explicit chevron button does, since a clickable `<li>` is not reachable by keyboard; the button and the actions stop propagation. `selected` sets `aria-current`. Items divide with a `border` hairline — the `Table` divider exception, because this is a table row laid out differently.
 - **`FilterBar activeCount onClear`** — the filters of a list. Wide: the controls in a row, "N filters applied" and "Clear all" when any is set. Narrow (`useIsNarrow`): one "Filters" toggle whose name carries the count ("Filters, 2 active"), opening the controls stacked under it (a `Collapsible`), "Clear all" still beside it.
-- **`Pager offset limit returned`** — offset paging for an API with no total: a next page only after a full page, "{noun} 51–100" and never "of N", nothing at all when there is one page. `DotPagination` is for carousel steps, not data pages.
+- **`Pager offset limit returned`** — offset paging for an API with no total: a next page only after a full page, "{noun} 51–100" and never "of N", nothing at all when there is one page; `summary` replaces the range where the total is known ("10 of 128 rows"). `DotPagination` is for carousel steps, not data pages.
 - **`DateRangeFilter`** — labelled From / To date inputs, "Clear" (disabled when empty), an optional refresh that spins while `isRefreshing`.
 - **`ValueList values singular plural`** — strings in a cell, never truncated: "3 addresses" closed; one monospaced, selectable, copyable value per line open.
 - **`EventTimeline`** — an ordered log (`<ol>`): the event, then its duration and timestamp, quieter. Values arrive formatted; the component never picks a locale or a time zone.
@@ -680,7 +692,7 @@ Pieces a desk app — a dashboard or a back office — is assembled from, beside
 - **`ReadStatus reads formatTime`** — how old a surface's figures are, beside its one **`RefreshButton`**: the oldest successful read, "Updated" for a moment when a read lands, "Showing the previous read" when a refresh failed. The button is busy, never disabled, while a read is in flight; only a requested refresh is announced.
 - **`Amount figure asset stacked`** — an amount in a table cell: the figure never breaks, the asset is quieter text under it (`stacked`) or beside it, and it stays in the text that is read and copied.
 - **`EnvironmentIndicator name qualifier isTest`** — which environment this is, on every page, the live one included: the network's name and, in plain words, test or live. The words carry it; the amber or green tone is only an accent.
-- **`AccountMenu name secondary label`** — who is signed in, at the end of the top bar: avatar, name and one secondary line as the trigger, the identity and the account's entries (`AccountMenuItem`, `AccountMenuSeparator`, then a `destructive` Log out) in a panel on the `Popover` look, but opaque (`bg-popover`, no glass). A disclosure, not a `menu`, because it may hold an id with its copy button: Tab walks it, Escape closes it and returns focus.
+- **`AccountMenu name secondary label`** — who is signed in, at the end of the top bar: avatar, name and one secondary line as the trigger (a `Button` `surface`, like the `Popover` and `DropdownMenu` triggers), the identity and the account's entries (`AccountMenuItem`, `AccountMenuSeparator`, then a `destructive` Log out) in a panel on the `Popover` look, but opaque (`bg-popover`, no glass). A disclosure, not a `menu`, because it may hold an id with its copy button: Tab walks it, Escape closes it and returns focus.
 - **`MetricCard definition change`** — `definition` says what the figure counts, under the label in `caption`; `change` is the comparison with an earlier period, under the figure. **`Copyable wrap`** shows a value read in full (an org id, an address) across lines instead of truncating it.
 
 ## Do's and Don'ts

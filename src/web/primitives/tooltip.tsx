@@ -17,7 +17,7 @@ export interface TooltipBubbleProps extends React.HTMLAttributes<HTMLSpanElement
 
 /**
  * The bubble alone, for a trigger that wires `aria-describedby` itself. It is
- * shown while its `group/tooltip` ancestor is hovered or holds focus.
+ * shown while its `group/tooltip` ancestor is hovered or holds keyboard focus.
  */
 const TooltipBubble = React.forwardRef<HTMLSpanElement, TooltipBubbleProps>(
   ({ id, placement = 'bottom', className, children, ...props }, ref) => (
@@ -27,8 +27,10 @@ const TooltipBubble = React.forwardRef<HTMLSpanElement, TooltipBubbleProps>(
       role="tooltip"
       data-slot="tooltip"
       className={cn(
-        'pointer-events-none absolute z-50 hidden w-max max-w-[16rem] rounded-lg bg-popover px-3 py-2 text-caption font-normal normal-case tracking-normal text-popover-foreground shadow-popover',
-        'group-hover/tooltip:block group-focus-within/tooltip:block',
+        'pointer-events-none absolute z-50 hidden w-max max-w-[16rem] rounded-lg bg-popover bg-gradient-floating px-3 py-2 text-caption font-normal normal-case tracking-normal text-popover-foreground shadow-floating',
+        // Hover, or keyboard focus only: a mouse click focuses the trigger too,
+        // and the bubble must not stay pinned after the pointer leaves.
+        'group-hover/tooltip:block group-has-[:focus-visible]/tooltip:block',
         placementClasses[placement],
         className
       )}
@@ -52,10 +54,11 @@ export interface TooltipProps {
 }
 
 /**
- * A short description of a control, shown on hover and on keyboard focus.
+ * A short description of a control, shown on hover and on keyboard focus
+ * (`:focus-visible`), not after a mouse click.
  *
  * Pure CSS: the bubble is always in the document, hidden until its wrapper is
- * hovered or holds focus, so it needs no portal or timer and reads the same in
+ * hovered or holds keyboard focus, so it needs no portal or timer and reads the same in
  * a test as in a browser. The control describes itself with it
  * (`aria-describedby`), so a screen reader hears it after the control's name.
  * It is not a place for the control's name: an icon-only button still needs

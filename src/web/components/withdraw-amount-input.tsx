@@ -115,7 +115,7 @@ export function WithdrawAmountInput({
     <>
       {showAmountInput && (
         <div className="flex flex-col gap-2">
-          <Label htmlFor={amountId} className="ml-1">
+          <Label htmlFor={amountId} className="sr-only">
             Amount
           </Label>
           <div className="overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero shadow-card transition-shadow focus-within:ring-1 focus-within:ring-focus-ring">
@@ -201,7 +201,7 @@ export function WithdrawAmountInput({
 
       {(addressType === 'bitcoin' || addressType === 'rgb') && (
         <div className="flex flex-col gap-2">
-          <p id={feeRateId} className={cn('mb-1 ml-1 block leading-none', eyebrow, 'text-secondary-content')}>
+          <p id={feeRateId} className="sr-only">
             Fee Rate
           </p>
           {customFeeEnabled ? (

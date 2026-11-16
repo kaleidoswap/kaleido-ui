@@ -15,3 +15,10 @@
  * one; colour is left to the caller (usually `text-muted-foreground`).
  */
 export const eyebrow = 'text-mini font-medium uppercase tracking-eyebrow'
+
+/**
+ * The large eyebrow: the same micro-label one step up, for a block's title where
+ * the 10 px one would read as a caption (a showcase section, a settings group).
+ * `tiny` (12 px), semibold, same tracking and case. Colour left to the caller.
+ */
+export const eyebrowLarge = 'text-tiny font-semibold uppercase tracking-eyebrow'

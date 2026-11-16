@@ -4,7 +4,7 @@ import { join, relative } from 'node:path'
 import test from 'node:test'
 
 import { letterSpacing, typeScale } from '../src/tokens/typography'
-import { eyebrow } from '../src/web/utils/type-roles'
+import { eyebrow, eyebrowLarge } from '../src/web/utils/type-roles'
 
 // kaleido-ui/tokens ships a named type scale, and two thirds of the size
 // classes in the components were Tailwind defaults instead: 12 and 14 px text
@@ -62,4 +62,9 @@ test('the shared eyebrow is DESIGN.md’s label token', () => {
   assert.equal(eyebrow, 'text-mini font-medium uppercase tracking-eyebrow')
   assert.deepEqual(typeScale.mini, ['10px', '13px'])
   assert.equal(letterSpacing.eyebrow, '0.18em')
+})
+
+test('the large eyebrow is the eyebrow one step up: tiny, semibold, the same tracking', () => {
+  assert.equal(eyebrowLarge, 'text-tiny font-semibold uppercase tracking-eyebrow')
+  assert.ok(eyebrowLarge.includes('tracking-eyebrow') && eyebrowLarge.includes('uppercase'))
 })

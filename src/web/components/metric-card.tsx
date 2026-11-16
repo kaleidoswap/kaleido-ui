@@ -33,6 +33,12 @@ export interface MetricCardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'c
    */
   trend?: ReactNode
   /**
+   * Where the trend starts. `full` (default) runs it the tile's full height,
+   * beside the label. `below-label` gives the label the full width and starts
+   * the trend under it, level with the figure: a shorter tile.
+   */
+  trendPlacement?: 'full' | 'below-label'
+  /**
    * What the figure counts and leaves out, in words, under the label: "Swaps
    * that reached completed, in the period". Set as `caption`, not as the
    * eyebrow, so it reads as a sentence.
@@ -78,6 +84,7 @@ export function MetricCard({
   size = 'compact',
   iconPlacement,
   trend,
+  trendPlacement = 'full',
   definition,
   change,
   labelStyle = 'eyebrow',
@@ -142,6 +149,74 @@ export function MetricCard({
     </span>
   )
 
+  const surface = comfortable
+    ? 'rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero p-4 shadow-card'
+    : 'rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero p-2.5 shadow-raised'
+
+  const figureNodes = (
+    <>
+      <p
+        ref={valueRef}
+        data-slot="metric-card-value"
+        className={cn(
+          'm-0 font-bold tabular-nums text-foreground',
+          hasEnd && 'whitespace-nowrap',
+          comfortable ? 'text-headline' : 'text-body',
+        )}
+      >
+        {value}
+      </p>
+      {change && (
+        <p data-slot="metric-card-change" className={cn('m-0 tabular-nums text-foreground', comfortable ? 'text-caption' : 'text-xxs')}>
+          {change}
+        </p>
+      )}
+      {description && (
+        <p
+          data-slot="metric-card-description"
+          className={cn('m-0 text-muted-foreground', comfortable ? 'text-caption' : 'text-xxs')}
+        >
+          {description}
+        </p>
+      )}
+    </>
+  )
+
+  if (trend && trendPlacement === 'below-label') {
+    // The label spans the tile; under it the figure and the trend share a
+    // row, the trend as tall as the figure and its lines.
+    return (
+      <div
+        role="group"
+        aria-labelledby={rest['aria-label'] ? undefined : labelId}
+        data-slot="metric-card"
+        data-size={size}
+        data-trend-placement="below-label"
+        className={cn(surface, 'flex flex-col gap-2', className)}
+        {...rest}
+      >
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-1.5">
+            {placement === 'label' && iconNode}
+            {labelNode}
+          </div>
+          {placement === 'end' && iconNode}
+        </div>
+        {definition && (
+          <p data-slot="metric-card-definition" className="m-0 -mt-1 text-caption text-muted-foreground">
+            {definition}
+          </p>
+        )}
+        <div className="flex items-stretch justify-between gap-3">
+          <div className="min-w-0 flex-1 space-y-1">{figureNodes}</div>
+          <div data-slot="metric-card-trend" className="min-h-0 shrink-0">
+            {trend}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div
       role="group"
@@ -149,9 +224,7 @@ export function MetricCard({
       data-slot="metric-card"
       data-size={size}
       className={cn(
-        comfortable
-          ? 'rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero p-4 shadow-card'
-          : 'rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero p-2.5 shadow-raised',
+        surface,
         hasEnd ? 'flex items-stretch justify-between gap-3' : 'space-y-1',
         className,
       )}
@@ -172,32 +245,7 @@ export function MetricCard({
           </p>
         )}
         </div>
-        <div className={hasEnd ? 'space-y-1' : 'contents'}>
-        <p
-          ref={valueRef}
-          data-slot="metric-card-value"
-          className={cn(
-            'm-0 font-bold tabular-nums text-foreground',
-            hasEnd && 'whitespace-nowrap',
-            comfortable ? 'text-headline' : 'text-body',
-          )}
-        >
-          {value}
-        </p>
-        {change && (
-          <p data-slot="metric-card-change" className={cn('m-0 tabular-nums text-foreground', comfortable ? 'text-caption' : 'text-xxs')}>
-            {change}
-          </p>
-        )}
-        {description && (
-          <p
-            data-slot="metric-card-description"
-            className={cn('m-0 text-muted-foreground', comfortable ? 'text-caption' : 'text-xxs')}
-          >
-            {description}
-          </p>
-        )}
-        </div>
+        <div className={hasEnd ? 'space-y-1' : 'contents'}>{figureNodes}</div>
       </div>
       {hasEnd && (
         <div className="flex shrink-0 flex-col items-end justify-between gap-3">

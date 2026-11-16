@@ -134,9 +134,11 @@ function QueryStateBody({
             {errorConsequence && <p className="m-0 font-semibold">{errorConsequence}</p>}
             <p className="m-0">{view.message}</p>
             {view.retryable && onRetry && (
-              <Button type="button" variant="surface" size="sm" onClick={onRetry}>
-                {retryLabel}
-              </Button>
+              <div className="flex justify-end">
+                <Button type="button" variant="hyperlink" size="sm" onClick={onRetry}>
+                  {retryLabel}
+                </Button>
+              </div>
             )}
           </div>
         </InfoPanel>

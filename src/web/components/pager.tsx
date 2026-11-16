@@ -1,3 +1,4 @@
+import type * as React from 'react'
 import { Button } from '../primitives/button'
 import { IconGlyph } from '../primitives/icon-glyph'
 import { ChevronLeft, ChevronRight } from '../icons/outlined'
@@ -22,6 +23,8 @@ export interface PagerProps {
   alwaysShow?: boolean
   /** Said in place of the range when the window is empty. Defaults to "No {noun} in this window". */
   emptyLabel?: string
+  /** Said in place of the range ("10 of 128 rows"), for a list whose total is known. */
+  summary?: React.ReactNode
   className?: string
 }
 
@@ -43,6 +46,7 @@ export function Pager({
   nextLabel = 'Next',
   alwaysShow = false,
   emptyLabel,
+  summary,
   className,
 }: PagerProps) {
   const hasPrevious = offset > 0
@@ -54,7 +58,7 @@ export function Pager({
   return (
     <nav aria-label="Pagination" data-slot="pager" className={cn('flex items-center justify-between gap-3', className)}>
       <p className="m-0 text-caption tabular-nums text-muted-foreground">
-        {returned === 0 && alwaysShow ? (emptyLabel ?? `No ${noun} in this window`) : `${noun} ${first}–${last}`}
+        {summary ?? (returned === 0 && alwaysShow ? (emptyLabel ?? `No ${noun} in this window`) : `${noun} ${first}–${last}`)}
       </p>
       <div className="flex gap-2">
         <Button

@@ -77,6 +77,28 @@ const FIXTURES: Record<string, () => ReactElement[]> = {
       unit: 'sat',
     }),
   ],
+  RankedTrendPanel: () => [
+    createElement(ui.RankedTrendPanel, {
+      items: [{ id: 'a', name: 'Lumen Hall', value: 1_000, count: 3, series: [{ key: '1', label: '1 Nov', value: 5_000 }] }],
+      title: 'Sales by venue',
+      period: '30d',
+      onPeriodChange: () => {},
+      onSelect: () => {},
+    }),
+  ],
+  StatTrendPanel: () => [
+    // With points: the chart's view switch draws its icons.
+    createElement(ui.StatTrendPanel, {
+      label: 'Active members',
+      value: '3,718',
+      rows: [{ label: 'On a free trial', value: '284' }],
+      series: [
+        { key: '1', label: '12 Nov', value: 0 },
+        { key: '2', label: '13 Nov', value: 10 },
+      ],
+      chartTitle: 'Daily check-ins',
+    }),
+  ],
   ListField: () => [
     createElement(ui.ListField, { label: 'Origins', noun: 'origin', items: ['https://a.example'], onChange: () => {} }),
   ],
