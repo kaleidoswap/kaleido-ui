@@ -46,7 +46,7 @@ colors:
 typography:
   # Sizes are the typeScale keys in src/tokens/typography.ts, which is what the
   # text-* utilities emit. fontWeight tops out at 700 — there is no 800.
-  display:  { family: "Satoshi", weight: 700, size: 38, line: 44, tracking: -0.02em }
+  main-title: { family: "Satoshi", weight: 700, size: 38, line: 44, tracking: -0.02em }
   headline: { family: "Satoshi", weight: 700, size: 30, line: 36 }
   title:    { family: "Satoshi", weight: 700, size: 22, line: 30, tracking: -0.01em }
   subhead:  { family: "Satoshi", weight: 600, size: 18, line: 26 }
@@ -277,11 +277,11 @@ met. Satoshi's geometric-but-warm feel reads well at both 36 px display sizes an
 the 9 px micro-labels this interface leans on heavily.
 
 The sizes below are the `typeScale` keys, which is what the `text-*` utilities
-emit — `text-display`, `text-body`, `text-mini` and so on:
+emit — `text-main-title`, `text-body`, `text-mini` and so on:
 
-- **`display` — Satoshi 700 / 38 / 44 / tracking -0.02em** — balance numbers, empty-state headlines, the single largest piece of type on any screen.
+- **`main-title` — Satoshi 700 / 38 / 44 / tracking -0.02em** — balance numbers, empty-state headlines, the single largest piece of type on any screen.
 - **`headline` — Satoshi 700 / 30 / 36** — section headlines above a card group.
-- **`title` — Satoshi 700 / 22 / 30 / tracking -0.01em** — screen titles, modal headers.
+- **`title` — Satoshi 700 / 22 / 30 / tracking -0.01em** — modal headers, card titles.
 - **`subhead` — Satoshi 600 / 18 / 26** — a heading inside a card.
 - **`body` — Satoshi 500 / 16 / 24** — the default. Everything not otherwise specified renders here.
 - **`caption` — Satoshi 500 / 14 / 20** — helper text under a field.
@@ -289,7 +289,7 @@ emit — `text-display`, `text-body`, `text-mini` and so on:
 - **`mini` / `label` — Satoshi 500 / 10 / 13 / tracking `eyebrow` 0.18em / uppercase** — the **signature micro-label** of the system. Filter headers ("NETWORKS"), section labels ("RECENT ACTIVITY"), pill captions, table column heads. When you see uppercase 10 px letter-spaced type, you know you are in a KaleidoSwap surface. Use it liberally for structural labels; never use it for content. `eyebrowWide` (0.22em) is the wider variant.
 - **`mono` — Geist Mono 500 / 14** — addresses, tx hashes, raw amounts where digit alignment matters.
 
-Numeric amounts (balances, prices) render in `display` or `body` weight 700, not `mono` — mono is reserved for identifiers that the user copy-pastes.
+Numeric amounts (balances, prices) render in `main-title` or `body` weight 700, not `mono` — mono is reserved for identifiers that the user copy-pastes.
 
 ### Which step carries which role
 
@@ -297,9 +297,9 @@ Components set text **only** with these steps — never Tailwind's default sizes
 
 | Role | Step | Examples |
 | --- | --- | --- |
-| Hero figure | `display` 38 | the amount on a confirmation screen |
+| Hero figure | `main-title` 38 | the amount on a confirmation screen |
 | Big figure | `headline` 30 | a comfortable `MetricCard` value, amount inputs, success titles |
-| Screen / page title | `title` 22 | `PageHeader variant="page"`, dialog titles, `CardTitle` |
+| Dialog / card title | `title` 22 | dialog titles, `CardTitle` |
 | Heading in a card, large button label | `subhead` 18 | CTA buttons |
 | Primary text, card and section titles, values | `body` 16 | `SettingsSectionCard` and `InfoPanel` titles, `Button` |
 | Secondary text, descriptions, data cells | `caption` 14 | `InfoPanel` body, `SettingsSectionCard` description, `Table` cells |
@@ -581,7 +581,7 @@ The tile is a `role="group"` named by its label (or `aria-label`), so a failure 
 
 **Intended use.** A headline figure with its breakdown, beside the trend that led to it: members and their states, a balance and its parts, stock and its movements. Same split and hairline as `RankedTrendPanel`.
 
-**Layout.** The 21rem column on `bg-gradient-card-hero` holds the `label` as an eyebrow, the `value` in `display` with an optional `valueSuffix`, the breakdown as `SummaryRows` (label, leader line, value; all values the same colour) and one `action` at the foot, a ghost `Button` around the host's link. The right is an `AreaChart` with its own `chartTitle`, `chartDescription` and chart/table switch.
+**Layout.** The 21rem column on `bg-gradient-card-hero` holds the `label` as an eyebrow, the `value` in `main-title` with an optional `valueSuffix`, the breakdown as `SummaryRows` (label, leader line, value; all values the same colour) and one `action` at the foot, a ghost `Button` around the host's link. The right is an `AreaChart` with its own `chartTitle`, `chartDescription` and chart/table switch.
 
 ### PageHeader
 

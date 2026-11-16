@@ -108,7 +108,7 @@ export function WithdrawConfirmation({
               {reviewLabels?.recipientReceives ?? 'Recipient receives'}
             </p>
             <p className="mt-1 flex items-baseline gap-2">
-              <span className="text-display font-bold tabular-nums text-gradient-brand">
+              <span className="text-main-title font-bold tabular-nums text-gradient-brand">
                 {formatAmount(displayAmount, { locale })}
               </span>
               <span className="text-body text-muted-foreground">{unit}</span>

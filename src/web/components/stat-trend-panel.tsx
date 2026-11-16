@@ -82,7 +82,7 @@ export function StatTrendPanel({
             {label}
           </p>
           <p data-slot="stat-trend-value" className="m-0 flex flex-wrap items-baseline gap-x-2.5">
-            <span className="text-display font-bold tabular-nums text-foreground">{value}</span>
+            <span className="text-main-title font-bold tabular-nums text-foreground">{value}</span>
             {valueSuffix && <span className="text-body text-muted-foreground">{valueSuffix}</span>}
           </p>
         </div>

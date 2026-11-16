@@ -142,7 +142,7 @@ function Section({
   return (
     <section id={id} aria-labelledby={`${id}-title`}>
       <div className="mb-16">
-        <h1 id={`${id}-title`} className="text-xl font-bold text-foreground tracking-tight">{title}</h1>
+        <h1 id={`${id}-title`} className="text-main-title font-bold text-foreground tracking-tight">{title}</h1>
         {description && (
           <p className="text-sm text-muted-foreground mt-1">{description}</p>
         )}
@@ -716,7 +716,7 @@ export function App() {
         <CurrentPage.Provider value={page}>
         {/* The page scrolls in the library's ScrollArea: the overlay thumb, not the browser's bar. */}
         <ScrollArea className="flex-1" thickness="thick" viewportAs="main" viewportProps={{ id: SHOWCASE_SCROLL_ID }}>
-        <div className="mx-auto w-full max-w-5xl min-w-0 px-6 py-8">
+        <div className="mx-auto w-full max-w-5xl min-w-0 px-6 pb-8 pt-[45px]">
 
           {/* ── Brand ───────────────────────────────────────────────────── */}
           <Section id="brand" title="Brand" description="Logo, per-theme foregrounds, brand gradient, glows and the halo backdrop.">
@@ -742,7 +742,7 @@ export function App() {
               <span className="text-network-rgb-fg">rgb</span>
             </Row>
             <Row label="text-gradient-brand">
-              <span className="text-gradient-brand text-display font-bold">Swap across layers</span>
+              <span className="text-gradient-brand text-main-title font-bold">Swap across layers</span>
             </Row>
             <Row label="bg-page-brand + HaloBackdrop">
               <div className="bg-page-brand h-40 w-64 rounded-2xl bg-background" />

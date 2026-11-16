@@ -200,7 +200,7 @@ export function BalanceBreakdown({
             ) : (
               <>
                 <div className="flex min-w-0 max-w-full flex-wrap items-center gap-x-1.5 gap-y-1">
-                  <span className="text-display font-black leading-[1.1] tracking-tighter tabular-nums text-gradient-brand drop-shadow-sm transition-all duration-300 group-active:scale-95">
+                  <span className="text-main-title font-black leading-[1.1] tracking-tighter tabular-nums text-gradient-brand drop-shadow-sm transition-all duration-300 group-active:scale-95">
                     {balanceVisible ? numberOnly(format(totalBTC)) : '••••••'}
                   </span>
                   {unit !== 'fiat' && (

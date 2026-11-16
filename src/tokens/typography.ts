@@ -19,7 +19,7 @@ export const typeScale = {
   subhead: ['18px', '26px'],
   title: ['22px', '30px'],
   headline: ['30px', '36px'],
-  display: ['38px', '44px'],
+  'main-title': ['38px', '44px'],
 } as const
 
 export const fontWeight = {

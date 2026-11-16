@@ -430,7 +430,7 @@ function WebHome({ onRoute }: { onRoute: (route: WebRoute) => void }) {
   return (
     <div className="space-y-12 py-10">
       <div className="text-center">
-        <h1 className="text-display font-bold tracking-tight text-foreground">
+        <h1 className="text-main-title font-bold tracking-tight text-foreground">
           Swap across <span className="text-gradient-brand">Bitcoin layers</span>
         </h1>
         <p className="mt-3 text-body text-muted-foreground">No account, no custody, no counterparty risk. Just swaps.</p>
