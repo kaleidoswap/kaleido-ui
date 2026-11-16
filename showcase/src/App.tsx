@@ -230,6 +230,8 @@ interface LogoVariant {
   label: string
   src: string
   on?: 'dark' | 'light'
+  /** A mark drawn on its own square background: shown as the circle the wallet clips it to. */
+  round?: boolean
 }
 
 const PROTOCOL_LOGOS: { name: string; variants: LogoVariant[] }[] = [
@@ -273,7 +275,7 @@ const ASSET_LOGOS: { name: string; variants: LogoVariant[] }[] = [
     name: 'Tether USDt',
     variants: [
       { label: 'Token', src: '/logos/assets/usdt.svg' },
-      { label: 'With background', src: '/logos/assets/usdt-background.svg' },
+      { label: 'With background', src: '/logos/assets/usdt-background.svg', round: true },
       { label: 'White', src: '/logos/assets/usdt-white.svg', on: 'dark' },
     ],
   },
@@ -281,7 +283,7 @@ const ASSET_LOGOS: { name: string; variants: LogoVariant[] }[] = [
     name: 'Tether Gold XAUt',
     variants: [
       { label: 'Token', src: '/logos/assets/xaut.svg' },
-      { label: 'With background', src: '/logos/assets/xaut-background.svg' },
+      { label: 'With background', src: '/logos/assets/xaut-background.svg', round: true },
     ],
   },
 ]
@@ -302,7 +304,11 @@ function LogoGroup({ name, variants }: { name: string; variants: LogoVariant[] }
             <div
               className={`flex h-20 items-center justify-center rounded-xl border p-3 ${LOGO_SWATCH[v.on ?? 'card']}`}
             >
-              <img src={v.src} alt={`${name} — ${v.label}`} className="max-h-full max-w-full object-contain" />
+              <img
+                src={v.src}
+                alt={`${name} — ${v.label}`}
+                className={v.round ? 'aspect-square h-full rounded-full object-cover' : 'max-h-full max-w-full object-contain'}
+              />
             </div>
             <figcaption className="font-mono text-xxs leading-tight text-muted-foreground">
               <span className="block text-foreground/80">{v.label}</span>

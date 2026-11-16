@@ -46,6 +46,7 @@ import {
   SelectValue,
   FormField,
   Icon,
+  AssetIcon,
   InfoPanel,
   Input,
   Pager,
@@ -727,13 +728,31 @@ export function DisplayListsGallery() {
   )
 }
 
+/** An asset's logo beside what is written about it: its name, or an amount of it. */
+const ASSET_LOGO_URIS: Record<string, string> = {
+  USDT: '/logos/assets/usdt-background.svg',
+  XAUT: '/logos/assets/xaut-background.svg',
+}
+function WithLogo({ ticker, size = 16, children }: { ticker: string; size?: number; children: ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <AssetIcon ticker={ticker} logoUri={ASSET_LOGO_URIS[ticker]} size={size} />
+      {children}
+    </span>
+  )
+}
+
 /** One swap as a receipt: identity and status, what moved, the fee behind a disclosure, then the log. */
 function SwapReceipt() {
   return (
     <div className={cn(cardSurface, 'max-w-md space-y-4 p-5')}>
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <div className="text-subhead font-semibold text-foreground">BTC → USDT</div>
+          <div className="flex flex-wrap items-center gap-x-2 text-subhead font-semibold text-foreground">
+            <WithLogo ticker="BTC" size={20}>BTC</WithLogo>
+            <span aria-hidden="true">→</span>
+            <WithLogo ticker="USDT" size={20}>USDT</WithLogo>
+          </div>
           <Copyable value="swp_7f3a91c2e84b" label="swap id">
             <span className="text-tiny">swp_7f3a91c2e84b</span>
           </Copyable>
@@ -742,12 +761,12 @@ function SwapReceipt() {
       </div>
       <SummaryRows
         rows={[
-          { label: 'You paid', value: '1,005 sats' },
-          { label: 'You received', value: '0.71 USDT', emphasis: true, hint: '0.5% spread' },
+          { label: 'You paid', value: <WithLogo ticker="BTC">1,005 sats</WithLogo> },
+          { label: 'You received', value: <WithLogo ticker="USDT">0.71 USDT</WithLogo>, emphasis: true, hint: '0.5% spread' },
           { label: 'Counterparty', value: '66422c…e3ce', mono: true },
         ]}
       />
-      <BasicCollapsible title="Fee breakdown" triggerClassName="px-0">
+      <BasicCollapsible title="Fee breakdown">
         <SummaryRows
           rows={[
             { label: 'Network fee', value: '3 sats' },
