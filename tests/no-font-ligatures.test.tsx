@@ -67,6 +67,7 @@ const net = ui.NETWORK_CONFIG.lightning
  */
 const FIXTURES: Record<string, () => ReactElement[]> = {
   AccountMenu: () => [createElement(ui.AccountMenu, { name: 'alex@example.com', label: 'Account' })],
+  AssetLabel: () => [createElement(ui.AssetLabel, { ticker: 'BTC' }, '1,005 sats')],
   EarningsByPartnerCard: () => [
     // With a partner: the chart's view switch draws its icons.
     createElement(ui.EarningsByPartnerCard, {

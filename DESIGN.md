@@ -567,6 +567,13 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 
 The tile is a `role="group"` named by its label (or `aria-label`), so a failure that replaces the value is announced as belonging to that metric.
 
+**What fills it.** The metrics gallery draws every tile with these, and an app uses the same ones rather than its own:
+
+- **`MetricFigure amount unit`** — the `value`: the amount, then its unit in `caption` caps, semibold and muted (`9.4 BTC`). Without a `unit` it is the amount alone.
+- **`MetricDelta direction value good info`** — the `description` when there is a change: the signed change in semibold with an arrow, green when `good` and red when not (up is good by default; pass `good={false}` where a rise is bad news, `null` for neutral), `flat` neutral with no arrow. A screen reader hears the direction in words and `comparisonLabel` after the figure.
+- **`MetricNoDelta info`** — the `description` when there is nothing to compare with: "No prior data" (or `children`) in `muted-foreground`.
+- **`InfoTip label`** — the `info` beside either: an icon-only info button whose note (`children`) says which period the change compares with. It opens on hover with a mouse and pins open on a click or tap, until Escape or a click outside.
+
 ### RankedTrendPanel
 
 **Intended use.** A ranking beside the chart it drives: sales by store, revenue by partner, tickets by venue. One component for every "who leads, and how did they get there" view. It takes its data through props and fetches nothing; the period and the selected item are the host's state.
