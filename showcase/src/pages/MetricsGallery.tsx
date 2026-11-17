@@ -1,5 +1,5 @@
 import { BlockTitle } from './blocks'
-import { InfoTip, MetricCard, MetricDelta, MetricFigure, MetricNoDelta, Sparkline } from '@kaleido-ui/index'
+import { InfoTip, MetricCard, MetricDelta, MetricFigure, MetricNoDelta, Sparkline } from 'kaleido-ui'
 
 /** The periods the sample changes compare with. */
 const WEEK_PERIOD =

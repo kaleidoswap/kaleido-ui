@@ -159,7 +159,8 @@ export {
   type IconGlyphProps,
   type IconSize,
 } from './primitives/icon-glyph'
-export { isIconName } from './icons'
+export { isIconName, iconNames } from './icons'
+export { eyebrow, eyebrowLarge } from './utils/type-roles'
 export {
   DotPagination,
   type DotPaginationProps,

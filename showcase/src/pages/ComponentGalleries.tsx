@@ -77,7 +77,7 @@ import {
   type DateRange,
   ScrollArea,
   HorizontalScrollArea,
-} from '@kaleido-ui/index'
+} from 'kaleido-ui'
 import { Demo, Grid } from './blocks'
 import { AccountMenuDemo } from './AccountMenuDemo'
 

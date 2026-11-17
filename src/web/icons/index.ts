@@ -232,6 +232,9 @@ export const outlinedMap: Record<IconName, React.FC<SVGProps<SVGSVGElement>>> = 
 export const isIconName = (value: unknown): value is IconName =>
   typeof value === 'string' && Object.prototype.hasOwnProperty.call(outlinedMap, value)
 
+/** Every glyph name in the set, sorted: what `<Icon name>` can draw. */
+export const iconNames: readonly IconName[] = (Object.keys(outlinedMap) as IconName[]).sort()
+
 export const filledMap: Partial<Record<IconName, React.FC<SVGProps<SVGSVGElement>>>> = {
   'account_balance_wallet': Filled.AccountBalanceWalletFilled,
   'check_circle': Filled.CheckCircleFilled,

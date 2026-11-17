@@ -19,11 +19,11 @@ import {
 } from './pages/ComponentGalleries'
 import { ActionsGallery } from './pages/ActionsGallery'
 import { InputFieldsGallery } from './pages/InputFieldsGallery'
-import { eyebrow } from '@kaleido-ui/utils/type-roles'
+import { eyebrow } from 'kaleido-ui'
 import { Demo, Grid } from './pages/blocks'
 import { slug } from './search/slug'
 import { SearchBar } from './search/SearchBar'
-import { cn, ScrollArea, ThemeToggle, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput } from '@kaleido-ui/index'
+import { cn, ScrollArea, ThemeToggle, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, NumberInput } from 'kaleido-ui'
 import {
   Button,
   IconButton,
@@ -113,9 +113,9 @@ import {
   KaleidoswapLogo,
   KaleidoswapMark,
   HaloBackdrop,
-} from '@kaleido-ui/index'
-import type { StatusType, NetworkType, IconName } from '@kaleido-ui/index'
-import { outlinedMap } from '@kaleido-ui/icons'
+} from 'kaleido-ui'
+import type { StatusType, NetworkType, IconName } from 'kaleido-ui'
+import { iconNames } from 'kaleido-ui'
 
 // ─── Section wrapper ────────────────────────────────────────────────────────
 
@@ -431,7 +431,7 @@ const NAV_CATEGORIES = NAV_SECTIONS.flatMap((section) => section.categories)
 
 // Every glyph in the set, read from the set itself, so the Icons page cannot
 // list a name that draws nothing.
-const ALL_ICON_NAMES = (Object.keys(outlinedMap) as IconName[]).sort()
+const ALL_ICON_NAMES = iconNames
 
 // The Icons page's grid: fixed, narrow columns, so the space between icons
 // is the same whatever the length of their names; a long name wraps under

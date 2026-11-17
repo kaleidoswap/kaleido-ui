@@ -1,7 +1,7 @@
 /* ─── All @imports must come first ─────────────────────────────────────── */
 @import "tailwindcss";
-@import "../../src/css/kaleido-ui.css";
-@source "../../src/web/**/*.{ts,tsx}";
+@import "../../dist/css/kaleido-ui.css";
+@source "../../dist/web/**/*.js";
 
 /* Class-based dark mode */
 @custom-variant dark (&:where(.dark, .dark *));

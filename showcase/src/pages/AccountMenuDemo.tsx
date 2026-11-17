@@ -4,7 +4,7 @@ import {
   AccountMenuSeparator,
   Icon,
   Tag,
-} from '@kaleido-ui/index'
+} from 'kaleido-ui'
 
 /** Who is signed in, at the end of the top bar. */
 export function AccountMenuDemo() {
