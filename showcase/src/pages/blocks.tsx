@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
-import { cn } from '@kaleido-ui/index'
-import { eyebrow } from '@kaleido-ui/utils/type-roles'
+import { cn } from 'kaleido-ui'
+import { eyebrow } from 'kaleido-ui'
 import { slug } from '../search/slug'
 
 // The showcase's one block: no card, straight on the page. A violet large

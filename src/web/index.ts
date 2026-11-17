@@ -159,7 +159,8 @@ export {
   type IconGlyphProps,
   type IconSize,
 } from './primitives/icon-glyph'
-export { isIconName } from './icons'
+export { isIconName, iconNames } from './icons'
+export { eyebrow, eyebrowLarge } from './utils/type-roles'
 export {
   DotPagination,
   type DotPaginationProps,
@@ -172,6 +173,7 @@ export { StatusIconBadge, type StatusIconBadgeProps } from './components/status-
 export { NetworkBadge, networkChipStyle, type NetworkBadgeProps, type NetworkType } from './components/network-badge'
 export { SwapBadge, type SwapBadgeProps } from './components/swap-badge'
 export { AssetIcon } from './components/asset-icon'
+export { AssetLabel, type AssetLabelProps } from './components/asset-label'
 export { AssetCard, type AssetCardProps } from './components/asset-card'
 export { TransactionCard, type TransactionCardProps } from './components/transaction-card'
 export { AppIcon, type AppIconProps, type AppIconName } from './components/app-icon'
@@ -466,6 +468,16 @@ export {
   type StepperNumberInputProps,
 } from './components/stepper-number-input'
 export { MetricCard, type MetricCardProps, type MetricCardSize } from './components/metric-card'
+export {
+  MetricFigure,
+  MetricDelta,
+  MetricNoDelta,
+  type MetricFigureProps,
+  type MetricDeltaProps,
+  type MetricDeltaDirection,
+  type MetricNoDeltaProps,
+} from './components/metric-parts'
+export { InfoTip, type InfoTipProps } from './components/info-tip'
 export {
   CopyButton,
   COPY_FAILED_MESSAGE,

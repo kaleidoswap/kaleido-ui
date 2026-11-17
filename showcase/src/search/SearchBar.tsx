@@ -1,6 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
-import { cn, AppIcon, GlyphButton, Input } from '@kaleido-ui/index'
-import { Close } from '@kaleido-ui/icons/outlined'
+import { cn, AppIcon, GlyphButton, Input } from 'kaleido-ui'
+import { Close } from 'kaleido-ui/icons'
 import { searchEntries, type SearchEntry } from './index'
 import { SEARCH_HIT_ATTR, SEARCH_KEY_ATTR } from './slug'
 

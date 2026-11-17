@@ -47,6 +47,7 @@ import {
   FormField,
   Icon,
   AssetIcon,
+  AssetLabel,
   InfoPanel,
   Input,
   Pager,
@@ -76,7 +77,7 @@ import {
   type DateRange,
   ScrollArea,
   HorizontalScrollArea,
-} from '@kaleido-ui/index'
+} from 'kaleido-ui'
 import { Demo, Grid } from './blocks'
 import { AccountMenuDemo } from './AccountMenuDemo'
 
@@ -733,14 +734,12 @@ const ASSET_LOGO_URIS: Record<string, string> = {
   USDT: '/logos/assets/usdt-background.svg',
   XAUT: '/logos/assets/xaut-background.svg',
 }
-function WithLogo({ ticker, size = 16, children }: { ticker: string; size?: number; children: ReactNode }) {
-  return (
-    <span className="inline-flex items-center gap-1.5">
-      <AssetIcon ticker={ticker} logoUri={ASSET_LOGO_URIS[ticker]} size={size} />
-      {children}
-    </span>
-  )
-}
+/** The sample's assets, written with their logo: `AssetLabel` with the receipt's logo files. */
+const withLogo = (ticker: string, children: ReactNode, size?: number) => (
+  <AssetLabel ticker={ticker} logoUri={ASSET_LOGO_URIS[ticker]} size={size}>
+    {children}
+  </AssetLabel>
+)
 
 /** One swap as a receipt: identity and status, what moved, the fee behind a disclosure, then the log. */
 function SwapReceipt() {
@@ -749,9 +748,9 @@ function SwapReceipt() {
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-x-2 text-subhead font-semibold text-foreground">
-            <WithLogo ticker="BTC" size={20}>BTC</WithLogo>
+            {withLogo('BTC', 'BTC', 20)}
             <span aria-hidden="true">→</span>
-            <WithLogo ticker="USDT" size={20}>USDT</WithLogo>
+            {withLogo('USDT', 'USDT', 20)}
           </div>
           <Copyable value="swp_7f3a91c2e84b" label="swap id">
             <span className="text-tiny">swp_7f3a91c2e84b</span>
@@ -761,8 +760,8 @@ function SwapReceipt() {
       </div>
       <SummaryRows
         rows={[
-          { label: 'You paid', value: <WithLogo ticker="BTC">1,005 sats</WithLogo> },
-          { label: 'You received', value: <WithLogo ticker="USDT">0.71 USDT</WithLogo>, emphasis: true, hint: '0.5% spread' },
+          { label: 'You paid', value: withLogo('BTC', '1,005 sats') },
+          { label: 'You received', value: withLogo('USDT', '0.71 USDT'), emphasis: true, hint: '0.5% spread' },
           { label: 'Counterparty', value: '66422c…e3ce', mono: true },
         ]}
       />

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {
   ReadStatus,
-} from '@kaleido-ui/index'
+} from 'kaleido-ui'
 import { Demo } from './blocks'
 
 // The actions at the top of a page: how fresh the figures are with the refresh that updates them. On sample data.

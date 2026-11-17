@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.2.21    # must equal package.json's version; check-design-doc fails otherwise
+version: 0.2.22    # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -566,6 +566,13 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 - **`comfortable`** — the desk tile on panel dashboards: `p-4`, `rounded-2xl` `bg-card`, eyebrow label, value in `headline` (30 px) with `tabular-nums`, `description` in `caption` under it, and the icon at the end of the tile, right of the figure. The figure is the point of the tile, so it is the largest text on it. Do not build a second stat tile from `Card`.
 
 The tile is a `role="group"` named by its label (or `aria-label`), so a failure that replaces the value is announced as belonging to that metric.
+
+**What fills it.** The metrics gallery draws every tile with these, and an app uses the same ones rather than its own:
+
+- **`MetricFigure amount unit`** — the `value`: the amount, then its unit in `caption` caps, semibold and muted (`9.4 BTC`). Without a `unit` it is the amount alone.
+- **`MetricDelta direction value good info`** — the `description` when there is a change: the signed change in semibold with an arrow, green when `good` and red when not (up is good by default; pass `good={false}` where a rise is bad news, `null` for neutral), `flat` neutral with no arrow. A screen reader hears the direction in words and `comparisonLabel` after the figure.
+- **`MetricNoDelta info`** — the `description` when there is nothing to compare with: "No prior data" (or `children`) in `muted-foreground`.
+- **`InfoTip label`** — the `info` beside either: an icon-only info button whose note (`children`) says which period the change compares with. It opens on hover with a mouse and pins open on a click or tap, until Escape or a click outside.
 
 ### RankedTrendPanel
 

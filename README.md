@@ -234,6 +234,8 @@ fails when one is missing here.
 | `getFallbackAssetIconUrl(seed)` | A generated gradient placeholder icon URL for an asset with no CDN icon |
 | `createIcon(outlined, filled?)` | Builds an `Icon` that ships only the glyphs you pass (see above) |
 | `isIconName(value)` | Whether a string names a glyph in the set |
+| `iconNames` | Every glyph name in the set, sorted: what `Icon name` can draw |
+| `eyebrow`, `eyebrowLarge` | The micro-label's class strings (`text-mini font-medium uppercase tracking-eyebrow`, and one step up), for a label the components do not draw |
 | `buttonVariants` | `Button`'s variant classes (cva), for an element that must look like a button |
 | `avatarVariants` | `Avatar`'s size classes (cva) |
 | `cardSurface` | The two card surfaces' classes: `primary` (glass card with edge) and `secondary` (no edge, ranks under a primary card) |
@@ -296,9 +298,17 @@ StatusBadge, NetworkBadge, AlertBanner, SectionLabel
 
 ```bash
 npm install --legacy-peer-deps
-npm run build    # Build all entry points
-npm run dev      # Watch mode
+npm run build           # Build all entry points
+npm run dev             # Watch mode
+npm run showcase        # The showcase, on the built package (build first)
+npm run api:update      # Rewrite api/exports.txt after changing an export
 ```
+
+The showcase imports `kaleido-ui` by name, resolved through `exports` to `dist/`,
+so it renders what ships: a component it uses must be exported, and one it
+defines must be a named demo or listed scaffolding (`npm run check:showcase`).
+`api/exports.txt` lists every entry point's exports; CI fails when it differs
+from the build (`npm run check:api`).
 
 ## License
 

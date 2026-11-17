@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { BlockTitle } from './blocks'
-import { Button, EmptyState, Icon, RankedTrendPanel, StatTrendPanel, type RankedTrendItem } from '@kaleido-ui/index'
+import { Button, EmptyState, Icon, RankedTrendPanel, StatTrendPanel, type RankedTrendItem } from 'kaleido-ui'
 
 // The samples are invented on purpose: a ticketing desk and a climbing gym,
 // so the panels read as layouts, not as any one product's screens.

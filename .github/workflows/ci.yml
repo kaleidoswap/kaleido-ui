@@ -42,6 +42,22 @@ jobs:
       - name: Build package
         run: npm run build
 
+      # `build` runs these too; as their own steps a failure names its check.
+      - name: DESIGN.md matches the tokens
+        run: npm run check:design-doc
+
+      - name: Showcase components ship in the package
+        run: npm run check:showcase
+
+      # A changed export is a diff in api/exports.txt, in this pull request.
+      - name: Exported API matches api/exports.txt
+        run: npm run check:api
+
+      # Against dist/, through package.json's exports: what is not exported
+      # fails here.
+      - name: Build showcase from the built package
+        run: npm run showcase:build
+
       # A locale that groups 1000 as "1.000" — amounts must not follow it.
       - name: Test
         run: npm test

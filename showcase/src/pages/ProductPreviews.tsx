@@ -11,7 +11,7 @@
  */
 /// <reference types="vite/client" />
 import { useEffect, useState, type ReactNode } from 'react'
-import brandCss from '../../../src/css/brand.css?inline'
+import brandCss from 'kaleido-ui/css/brand?inline'
 import {
   AccountSettingsRow,
   ActivityDetailRow,
@@ -58,7 +58,7 @@ import {
   WalletAssetList,
   type AssetSelectorOption,
   type IconName,
-} from '@kaleido-ui/index'
+} from 'kaleido-ui'
 
 // ─── rate-extension ──────────────────────────────────────────────────────────
 

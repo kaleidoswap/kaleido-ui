@@ -15,7 +15,7 @@ import {
   type ChartFilter,
   type ChartTitleProps,
   type TrendChartPoint,
-} from '@kaleido-ui/index'
+} from 'kaleido-ui'
 import { Demo } from './blocks'
 import { slug } from '../search/slug'
 

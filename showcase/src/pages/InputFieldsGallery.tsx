@@ -3,7 +3,7 @@ import {
   Choice,
   ChoiceGroup,
   ListField,
-} from '@kaleido-ui/index'
+} from 'kaleido-ui'
 import { Demo, Grid } from './blocks'
 
 // Inputs that take more than one value: a list entered as a list, and a short

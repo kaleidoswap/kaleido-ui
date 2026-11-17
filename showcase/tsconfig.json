@@ -12,9 +12,12 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "strict": true,
+    // The built package's own types, as an app installing it sees them.
     "paths": {
-      "@kaleido-ui/*": ["../src/web/*"]
+      "kaleido-ui": ["../dist/web/index.d.ts"],
+      "kaleido-ui/icons": ["../dist/web/icons.d.ts"],
+      "kaleido-ui/tokens": ["../dist/tokens/index.d.ts"]
     }
   },
-  "include": ["src", "../src/web"]
+  "include": ["src"]
 }
