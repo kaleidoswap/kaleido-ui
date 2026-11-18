@@ -155,7 +155,7 @@ test('the destructive toast no longer says Copied when the copy failed', async (
   const copy = document.querySelector('button[aria-label="Copy error"]') as HTMLButtonElement
   assert.ok(copy, 'no copy button on the destructive toast')
   await interact(() => copy.click())
-  const after = document.querySelector('button[title]')!.getAttribute('aria-label')!
+  const after = copy.getAttribute('aria-label')!
   assert.doesNotMatch(after, /^Copied$/)
   assert.match(after, /Copy failed/)
   view.unmount()

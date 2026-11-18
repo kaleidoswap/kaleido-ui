@@ -5,7 +5,7 @@ import { EmptyState } from './empty-state'
 import { SummaryRows, type SummaryRowItem } from './summary-rows'
 import type { TrendPoint } from './ranked-trend-panel'
 import { cn } from '../utils/cn'
-import { eyebrow } from '../utils/type-roles'
+import { eyebrowLarge } from '../utils/type-roles'
 
 export interface StatTrendPanelProps {
   /** The eyebrow over the figure; it also names the panel. */
@@ -77,8 +77,9 @@ export function StatTrendPanel({
         data-slot="stat-trend-column"
         className="flex min-w-0 flex-col gap-5 bg-gradient-card-hero px-6 py-6 lg:border-r lg:border-border"
       >
-        <div className="space-y-3">
-          <p id={labelId} className={cn('m-0 text-muted-foreground', eyebrow)}>
+        {/* A gap, not space-y: the paragraphs are m-0, which would cancel it. */}
+        <div className="flex flex-col gap-3">
+          <p id={labelId} className={cn('m-0 text-muted-foreground', eyebrowLarge)}>
             {label}
           </p>
           <p data-slot="stat-trend-value" className="m-0 flex flex-wrap items-baseline gap-x-2.5">

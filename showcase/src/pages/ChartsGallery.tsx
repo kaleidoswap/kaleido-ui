@@ -3,6 +3,7 @@ import {
   AreaChart,
   BarChart,
   BarList,
+  ChartFrame,
   cn,
   DonutChart,
   LineChart,
@@ -16,7 +17,7 @@ import {
   type ChartTitleProps,
   type TrendChartPoint,
 } from 'kaleido-ui'
-import { Demo } from './blocks'
+import { BlockTitle, Demo } from './blocks'
 import { slug } from '../search/slug'
 
 // ─── Sample data ────────────────────────────────────────────────────────────
@@ -170,6 +171,11 @@ const LIST_FRAMES: readonly ChartTimeframe[] = [
   { value: '7d', label: '7D' },
   { value: '10d', label: '10D' },
 ]
+const TALL_LIST_FRAMES: readonly ChartTimeframe[] = [
+  { value: '3d', label: '3D' },
+  { value: '4d', label: '4D' },
+  { value: '5d', label: '5D' },
+]
 const WINDOW_FRAMES: readonly ChartTimeframe[] = [
   { value: '1w', label: '1W' },
   { value: '1m', label: '1M' },
@@ -215,7 +221,7 @@ const withFilters = (props: FilterableProps, active: readonly string[]): Filtera
 }
 
 const monthsIn = { '3m': 3, '6m': 6, '1y': 12 } as Record<string, number>
-const daysIn = { '5d': 5, '7d': 7, '10d': 10, '14d': 14, '30d': 30 } as Record<string, number>
+const daysIn = { '3d': 3, '4d': 4, '5d': 5, '7d': 7, '10d': 10, '14d': 14, '30d': 30 } as Record<string, number>
 const windowScale = { '1w': 0.25, '1m': 1, '3m': 3 } as Record<string, number>
 
 /** Each part rescaled for the window, by a little more or less than the rest. */
@@ -231,17 +237,21 @@ const rescaled = (data: readonly ChartDatum[], timeframe: string, round: (value:
 // ─── Layout ─────────────────────────────────────────────────────────────────
 
 /** The charts that carry the chart / table switch. */
-const FRAMED_CHARTS = new Set<unknown>([LineChart, AreaChart, BarChart, BarList, DonutChart, ScatterChart, TrendChart, MixedChart])
+const FRAMED_CHARTS = new Set<unknown>([LineChart, AreaChart, BarChart, BarList, DonutChart, ScatterChart, TrendChart, MixedChart, RankedBarList, MeterDemo])
 
 function ChartCard({
   title,
+  chartTitle,
   use,
   timeframes,
   filters = CHART_FILTERS,
   children,
   wide = false,
 }: {
+  /** The section's name: the violet eyebrow above the chart, as on every page. */
   title: string
+  /** The chart's own title, from the data it shows. */
+  chartTitle: string
   /** What the chart measures, and on what scale. */
   use: string
   /** The windows the chart can show; the widest is selected first. */
@@ -261,8 +271,9 @@ function ChartCard({
   if (isValidElement(content) && FRAMED_CHARTS.has(content.type)) {
     return (
       <div className={wide ? 'xl:col-span-2' : undefined} data-search-key={slug(title)}>
+        <BlockTitle className="mb-3">{title}</BlockTitle>
         {cloneElement(content as ReactElement<ChartTitleProps & FilterableProps>, {
-          title,
+          title: chartTitle,
           description: use,
           timeframes,
           timeframe,
@@ -290,11 +301,12 @@ const revenueByPartner = [
   { id: 'orbit', label: 'Orbit Pay', value: 97_500, detail: '301 swaps' },
 ]
 
-function RankedBarList() {
+function RankedBarList(head: ChartTitleProps) {
   const [selected, setSelected] = useState('acme')
   return (
     <div className="max-w-[21rem]">
       <BarList
+        {...head}
         items={revenueByPartner}
         label="Revenue by partner"
         sort="desc"
@@ -308,11 +320,41 @@ function RankedBarList() {
   )
 }
 
+/** The limits the wallet is measured against: each a Meter, under the common chart head. */
+const LIMITS = [
+  { id: 'capacity', label: 'Channel capacity used', value: 420_000, max: 1_000_000 },
+  { id: 'daily', label: 'Daily swap limit', value: 8_100_000, max: 10_000_000 },
+  { id: 'inbound', label: 'Inbound liquidity used', value: 960_000, max: 1_000_000 },
+]
+const meterWindow = { '1w': 0.7, '1m': 1, '3m': 1.04 } as Record<string, number>
+
+function MeterDemo({ timeframe = '3m', items, ...head }: ChartTitleProps & { items: readonly { id: string; label: string; value: number; max: number }[] }) {
+  const factor = meterWindow[timeframe] ?? 1
+  const rows = items.map((item) => ({ ...item, value: Math.round(item.value * factor) }))
+  return (
+    <ChartFrame
+      {...head}
+      timeframe={timeframe}
+      label="Usage against limits"
+      table={{
+        columns: ['Limit', 'Used', 'Of'],
+        rows: rows.map((row) => [row.label, compactSats(row.value), compactSats(row.max)]),
+      }}
+    >
+      <div className="space-y-3.5 pt-2">
+        {rows.map((row) => (
+          <Meter key={row.id} label={row.label} value={row.value} max={row.max} formatValue={compactSats} />
+        ))}
+      </div>
+    </ChartFrame>
+  )
+}
+
 export function ChartsGallery() {
   return (
     <div className="space-y-12">
       <div className="grid gap-8 xl:grid-cols-2">
-        <ChartCard title="Mixed" use="Volume, BTC · one view at a time: bars, stacked, lines, areas, dots" timeframes={MONTH_FRAMES} wide>
+        <ChartCard title="Mixed" chartTitle="Monthly volume by layer" use="Volume, BTC · one view at a time: bars, stacked, lines, areas, dots" timeframes={MONTH_FRAMES} wide>
           {(timeframe) => (
             <MixedChart
               data={volumeByMonth.slice(-monthsIn[timeframe])}
@@ -328,7 +370,7 @@ export function ChartsGallery() {
           )}
         </ChartCard>
 
-        <ChartCard title="Line" use="Volume, BTC · linear, from 0" timeframes={MONTH_FRAMES}>
+        <ChartCard title="Line" chartTitle="Monthly volume" use="Volume, BTC · linear, from 0" timeframes={MONTH_FRAMES}>
           {(timeframe) => (
             <LineChart
               data={volumeByMonth.slice(-monthsIn[timeframe])}
@@ -344,7 +386,7 @@ export function ChartsGallery() {
           )}
         </ChartCard>
 
-        <ChartCard title="Area" use="Balance, sats · linear, from 0" timeframes={DAY_FRAMES}>
+        <ChartCard title="Area" chartTitle="Wallet balance" use="Balance, sats · linear, from 0" timeframes={DAY_FRAMES}>
           {(timeframe) => (
             <AreaChart
               data={balanceByDay.slice(-daysIn[timeframe])}
@@ -357,7 +399,7 @@ export function ChartsGallery() {
           )}
         </ChartCard>
 
-        <ChartCard title='Area, areaFill="gradient" latestMarker="halo"' use="Balance, sats · the fill fades to the baseline, the latest point stands out" timeframes={DAY_FRAMES}>
+        <ChartCard title='Area, areaFill="gradient" latestMarker="halo"' chartTitle="Wallet balance, September" use="Balance, sats · the fill fades to the baseline, the latest point stands out" timeframes={DAY_FRAMES}>
           {(timeframe) => (
             <AreaChart
               data={balanceByDay.slice(-daysIn[timeframe])}
@@ -372,7 +414,7 @@ export function ChartsGallery() {
           )}
         </ChartCard>
 
-        <ChartCard title="Stacked columns over time" use="Swaps per day · linear, from 0" timeframes={DAY_FRAMES}>
+        <ChartCard title="Stacked columns over time" chartTitle="Daily swaps, completed and not" use="Swaps per day · linear, from 0" timeframes={DAY_FRAMES}>
           {(timeframe) => (
             <TrendChart
               points={trendPoints.slice(-daysIn[timeframe])}
@@ -386,7 +428,7 @@ export function ChartsGallery() {
           )}
         </ChartCard>
 
-        <ChartCard title="Grouped columns" use="Swaps · linear, from 0" timeframes={WINDOW_FRAMES}>
+        <ChartCard title="Grouped columns" chartTitle="Swaps by weekday and layer" use="Swaps · linear, from 0" timeframes={WINDOW_FRAMES}>
           {(timeframe) => (
             <BarChart
               data={rescaled(swapsByWeekday, timeframe, Math.round)}
@@ -402,7 +444,7 @@ export function ChartsGallery() {
           )}
         </ChartCard>
 
-        <ChartCard title="Stacked columns by category" use="Swaps · linear, from 0" timeframes={WINDOW_FRAMES}>
+        <ChartCard title="Stacked columns by category" chartTitle="Swaps by weekday, stacked by layer" use="Swaps · linear, from 0" timeframes={WINDOW_FRAMES}>
           {(timeframe) => (
             <BarChart
               data={rescaled(swapsByWeekday, timeframe, Math.round)}
@@ -419,7 +461,7 @@ export function ChartsGallery() {
           )}
         </ChartCard>
 
-        <ChartCard title="Horizontal bars" use="Volume, BTC · linear, from 0" timeframes={WINDOW_FRAMES}>
+        <ChartCard title="Horizontal bars" chartTitle="Volume by trading pair" use="Volume, BTC · linear, from 0" timeframes={WINDOW_FRAMES}>
           {(timeframe) => (
             <BarChart
               data={volumeByPair.map((d, index) => ({ ...d, values: { volume: tenth(d.values.volume * tilt(timeframe, index)) } }))}
@@ -432,17 +474,25 @@ export function ChartsGallery() {
           )}
         </ChartCard>
 
-        <ChartCard title="Bar list" use="Swaps completed of total, per day" timeframes={LIST_FRAMES}>
-          {(timeframe) => (
-            <BarList items={dailyListFor(timeframe)} label="Swaps completed of total, per day" />
-          )}
-        </ChartCard>
+        <div className="grid grid-cols-2 gap-8 xl:col-span-2 [&>*]:min-w-0">
+          <ChartCard title="Bar list — short" chartTitle="Swap completion by day" use="Swaps completed of total, per day" timeframes={LIST_FRAMES}>
+            {(timeframe) => (
+              <BarList items={dailyListFor(timeframe)} label="Swaps completed of total, per day" />
+            )}
+          </ChartCard>
 
-        <ChartCard title="Ranked, selectable bar list" use="Revenue by partner · a rank, a second line, and the picked row in the selected tint">
+          <ChartCard title="Bar list — tall" chartTitle="Swap completion by day" use="Swaps completed of total, per day" timeframes={TALL_LIST_FRAMES}>
+            {(timeframe) => (
+              <BarList items={dailyListFor(timeframe)} label="Swaps completed of total, per day" rowSize="tall" />
+            )}
+          </ChartCard>
+        </div>
+
+        <ChartCard title="Ranked, selectable bar list" chartTitle="Revenue by partner" use="Sats earned per partner · a rank, a second line, and the picked row in the selected tint" timeframes={WINDOW_FRAMES}>
           <RankedBarList />
         </ChartCard>
 
-        <ChartCard title="Donut" use="Balance by layer" timeframes={WINDOW_FRAMES}>
+        <ChartCard title="Donut" chartTitle="Balance by layer" use="Balance by layer" timeframes={WINDOW_FRAMES}>
           {(timeframe) => (
               <DonutChart
                 segments={balanceByLayer.map((s, index) => ({ ...s, value: Math.round(s.value * tilt(timeframe, index)) }))}
@@ -453,7 +503,7 @@ export function ChartsGallery() {
           )}
         </ChartCard>
 
-        <ChartCard title="Scatter" use="Fee against Amount · both linear, from 0" timeframes={WINDOW_FRAMES}>
+        <ChartCard title="Scatter" chartTitle="Fee against amount" use="Fee against Amount · both linear, from 0" timeframes={WINDOW_FRAMES}>
           {(timeframe) => (
             <ScatterChart
               series={feeVsAmount.map((s) => ({
@@ -469,12 +519,8 @@ export function ChartsGallery() {
           )}
         </ChartCard>
 
-        <ChartCard title="Meter" use="Used against each limit">
-          <div className="space-y-5">
-            <Meter label="Channel capacity used" value={420_000} max={1_000_000} formatValue={compactSats} />
-            <Meter label="Daily swap limit" value={8_100_000} max={10_000_000} formatValue={compactSats} />
-            <Meter label="Inbound liquidity used" value={960_000} max={1_000_000} formatValue={compactSats} />
-          </div>
+        <ChartCard title="Meter" chartTitle="Usage against limits" use="Used against each limit" timeframes={WINDOW_FRAMES}>
+          <MeterDemo items={LIMITS} />
         </ChartCard>
       </div>
     </div>

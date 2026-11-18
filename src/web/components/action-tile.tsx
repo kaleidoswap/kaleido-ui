@@ -36,19 +36,15 @@ export function ActionTile({
   const classes = cn(
     'group relative inline-flex h-10 items-center justify-center gap-1.5 overflow-hidden rounded-xl',
     hideLabel ? 'w-10 shrink-0' : 'flex-1 px-2.5',
-    // Icon and label are both the brand green, and flip together to the
-    // ink on green when the hover fill shows.
+    // Icon and label stay the brand green; hover and press only tint the fill
+    // toward violet, so the tile never floods with colour.
     'bg-foreground/8 bg-gradient-surface text-brand shadow-raised transition-all duration-200',
     // On light, a neutral grey that leans slightly violet toward the bottom
     // right: the ink at low alpha under a faint secondary wash. Important: the
     // dark surface gradient class is unlayered and would win otherwise.
     '[.light_&]:bg-foreground/[0.05] [.light_&]:!bg-gradient-to-br [.light_&]:from-transparent [.light_&]:to-secondary/[0.08]',
-    'hover:text-primary-foreground hover:shadow-glow-primary-soft',
-    // The light glow is a 3px ring, which reads as a second border around the
-    // green fill: on light the tile keeps its own shadow instead.
-    '[.light_&]:hover:shadow-raised',
-    // Pressed: like the default button, the fill darkens (its layer, below) and the glow goes out.
-    'active:scale-[0.98] active:shadow-none [.light_&]:active:shadow-none disabled:pointer-events-none disabled:opacity-50',
+    'hover:bg-secondary/[0.2] [.light_&]:hover:bg-secondary/[0.14]',
+    'active:bg-secondary/[0.28] [.light_&]:active:bg-secondary/[0.2] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50',
     // A link has no disabled state of its own.
     href && disabled && 'pointer-events-none opacity-50',
     className
@@ -56,12 +52,6 @@ export function ActionTile({
 
   const content = (
     <>
-      {/* Green gradient fill revealed on hover: gradient classes cannot take a
-          hover: variant, so the fill is a layer whose opacity the group toggles. */}
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-primary bg-gradient-primary opacity-0 transition-[opacity,filter] duration-200 group-hover:opacity-100 group-active:brightness-90"
-      />
       {/* Icon and label are both leading-none so they center on the same
           axis — no baseline wobble between the glyph box and the text. */}
       <span className="relative flex shrink-0 items-center justify-center text-current leading-none [&_svg]:size-icon-sm">

@@ -10,6 +10,12 @@ type ToasterToast = ToastProps & {
   description?: React.ReactNode
   action?: ToastActionElement
   duration?: number
+  /**
+   * Stays until it is closed: no timeout, no progress bar. The close button sits
+   * top right and the action bottom right. Only one toast shows at a time, so a
+   * later toast replaces it.
+   */
+  persistent?: boolean
 }
 
 const actionTypes = {
@@ -104,7 +110,9 @@ interface Toast extends Omit<ToasterToast, 'id'> {}
 function toast({ duration, ...props }: Toast) {
   // Errors linger longer than the 4s default so there's time to read + copy
   // them (callers can still override with an explicit `duration`).
-  const effectiveDuration = duration ?? (props.variant === 'destructive' ? 12000 : 4000)
+  const effectiveDuration = props.persistent
+    ? Infinity
+    : duration ?? (props.variant === 'destructive' ? 12000 : 4000)
   const id = genId()
 
   const update = (props: ToasterToast) =>
@@ -124,7 +132,7 @@ function toast({ duration, ...props }: Toast) {
     },
   })
 
-  if (effectiveDuration > 0) {
+  if (effectiveDuration > 0 && Number.isFinite(effectiveDuration)) {
     setTimeout(() => dismiss(), effectiveDuration)
   }
 

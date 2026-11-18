@@ -21,8 +21,8 @@ interface AlertBannerProps {
 export function AlertBanner({ variant = 'info', icon, children, className }: AlertBannerProps) {
   const styles = variantStyles[variant]
   return (
-    <div className={cn('rounded-xl p-3 flex items-center gap-2', styles.container, className)}>
-      <Icon name={icon ?? styles.iconName} size="md" className={cn('shrink-0', styles.icon)} />
+    <div className={cn('rounded-xl p-3 flex items-start gap-2', styles.container, className)}>
+      <Icon name={icon ?? styles.iconName} size="md" className={cn('shrink-0 mt-0.5', styles.icon)} />
       <div className={cn('text-body', styles.icon)}>{children}</div>
     </div>
   )

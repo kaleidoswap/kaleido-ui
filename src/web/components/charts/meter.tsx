@@ -58,8 +58,11 @@ export function Meter({
       >
         <div className={cn('h-full rounded-full transition-[width] duration-300 motion-reduce:transition-none', fill)} style={{ width: `${ratio * 100}%` }} />
       </div>
-      {state !== 'normal' && (
-        <p className={cn('m-0 flex items-center gap-1 text-caption', state === 'danger' ? 'text-danger-fg' : 'text-warning-fg')}>
+      {state === 'normal' ? (
+        // Holds the place of the state line, so meters in a list sit at one distance whatever their state.
+        <p aria-hidden="true" className="m-0 h-5" />
+      ) : (
+        <p className={cn('m-0 flex h-5 items-center gap-1 text-caption', state === 'danger' ? 'text-danger-fg' : 'text-warning-fg')}>
           <IconGlyph glyph={state === 'danger' ? Error : Warning} className="text-icon-sm" />
           {state === 'danger' ? `Almost full · ${percent}%` : `Getting full · ${percent}%`}
         </p>
