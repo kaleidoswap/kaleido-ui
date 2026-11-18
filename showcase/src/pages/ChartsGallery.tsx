@@ -237,7 +237,7 @@ const rescaled = (data: readonly ChartDatum[], timeframe: string, round: (value:
 // ─── Layout ─────────────────────────────────────────────────────────────────
 
 /** The charts that carry the chart / table switch. */
-const FRAMED_CHARTS = new Set<unknown>([LineChart, AreaChart, BarChart, BarList, DonutChart, ScatterChart, TrendChart, MixedChart, RankedBarList, MeterPanel])
+const FRAMED_CHARTS = new Set<unknown>([LineChart, AreaChart, BarChart, BarList, DonutChart, ScatterChart, TrendChart, MixedChart, RankedBarList, MeterDemo])
 
 function ChartCard({
   title,
@@ -328,7 +328,7 @@ const LIMITS = [
 ]
 const meterWindow = { '1w': 0.7, '1m': 1, '3m': 1.04 } as Record<string, number>
 
-function MeterPanel({ timeframe = '3m', items, ...head }: ChartTitleProps & { items: readonly { id: string; label: string; value: number; max: number }[] }) {
+function MeterDemo({ timeframe = '3m', items, ...head }: ChartTitleProps & { items: readonly { id: string; label: string; value: number; max: number }[] }) {
   const factor = meterWindow[timeframe] ?? 1
   const rows = items.map((item) => ({ ...item, value: Math.round(item.value * factor) }))
   return (
@@ -520,7 +520,7 @@ export function ChartsGallery() {
         </ChartCard>
 
         <ChartCard title="Meter" chartTitle="Usage against limits" use="Used against each limit" timeframes={WINDOW_FRAMES}>
-          <MeterPanel items={LIMITS} />
+          <MeterDemo items={LIMITS} />
         </ChartCard>
       </div>
     </div>
