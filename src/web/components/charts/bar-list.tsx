@@ -48,6 +48,11 @@ export interface BarListProps extends ChartTitleProps {
   onSelect?: (id: string) => void
   /** The picked row, drawn in the selected tint. */
   selectedId?: string
+  /**
+   * The space between rows. `short` (default) packs them close; `tall` gives
+   * each bar room, for a list of a few rows. Pair `tall` with fewer items.
+   */
+  rowSize?: 'short' | 'tall'
   empty?: ReactNode
   className?: string
 }
@@ -88,6 +93,7 @@ export function BarList({
   ranked = false,
   onSelect,
   selectedId,
+  rowSize = 'short',
   empty,
   className,
   ...head
@@ -108,6 +114,7 @@ export function BarList({
   const label_ = labelWidth ? `minmax(0,${labelWidth})` : 'auto'
   const wideColumns = showPercent ? `${label_} 1fr auto auto` : `${label_} 1fr auto`
 
+  const tall = rowSize === 'tall'
   const stacked = ranked || onSelect !== undefined
   const labelCell = (item: BarListItem, labelClass: string) =>
     item.detail === undefined ? (
@@ -136,7 +143,7 @@ export function BarList({
       data-slot="bar-list"
       data-layout="stacked"
       aria-label={label}
-      className={cn('m-0 flex list-none flex-col gap-0.5 p-0 text-caption', framed && 'pt-2', className)}
+      className={cn('m-0 flex list-none flex-col p-0 text-caption', tall ? 'gap-3' : 'gap-0.5', framed && 'pt-2', className)}
     >
       {rows.map((item, index) => {
         const selected = onSelect !== undefined && item.id === selectedId
@@ -195,7 +202,8 @@ export function BarList({
       data-slot="bar-list"
       aria-label={label}
       className={cn(
-        'm-0 grid list-none gap-y-3 p-0 text-caption sm:items-center sm:gap-x-3 sm:gap-y-2',
+        'm-0 grid list-none p-0 text-caption sm:items-center sm:gap-x-3',
+        tall ? 'gap-y-6 sm:gap-y-6' : 'gap-y-3 sm:gap-y-2',
         'sm:[grid-template-columns:var(--bar-list-columns)]',
         // Under a head, a little more air than the plots' own top margin.
         framed && 'pt-2',

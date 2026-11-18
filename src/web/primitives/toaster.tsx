@@ -22,7 +22,7 @@ function toPlainText(node: any): string {
   return kids != null ? toPlainText(kids) : ''
 }
 
-function ToastWithProgress({ id, title, description, action, duration = 4000, variant, ...props }: any) {
+function ToastWithProgress({ id, title, description, action, duration = 4000, variant, persistent, ...props }: any) {
   const [progress, setProgress] = useState(100)
   const clipboard = useCopyToClipboard()
   const copied = clipboard.state === 'copied'
@@ -37,6 +37,7 @@ function ToastWithProgress({ id, title, description, action, duration = 4000, va
   }, [copied, clipboard.reset])
 
   useEffect(() => {
+    if (persistent) return
     const interval = 50
     const decrement = (interval / duration) * 100
 
@@ -48,7 +49,7 @@ function ToastWithProgress({ id, title, description, action, duration = 4000, va
     }, interval)
 
     return () => clearInterval(timer)
-  }, [duration])
+  }, [duration, persistent])
 
   const getIcon = () => {
     if (variant === 'destructive') {
@@ -68,44 +69,57 @@ function ToastWithProgress({ id, title, description, action, duration = 4000, va
   }
   const copyLabel = copied ? 'Copied' : copyFailed ? 'Copy failed — select the message and copy it by hand' : 'Copy error'
 
+  const copyButton = showCopy && (
+    <>
+      <GlyphButton
+        icon={copied ? Check : copyFailed ? Error : ContentCopy}
+        label={copyLabel}
+        size="sm"
+        variant="danger-subtle"
+        onClick={copyText}
+      />
+      <span aria-live="polite" className="sr-only">
+        {copied ? 'Copied' : copyFailed ? copyLabel : ''}
+      </span>
+    </>
+  )
+
+  // One compact layout: close top right, copy + action bottom left, its label in line with the text (icon 20 + gap 10, less the ghost button's own 12px padding). A timed
+  // toast keeps its progress bar along the bottom edge, and pads below the footer
+  // so the action never sits on it; a persistent one has none.
+  const hasFooter = Boolean(action) || showCopy
   return (
-    <Toast {...props} variant={variant}>
-      <div className="flex items-start gap-3 flex-1">
+    <Toast
+      {...props}
+      variant={variant}
+      {...(persistent ? { duration: Infinity } : {})}
+      className="max-w-sm flex-col items-stretch justify-start space-x-0 gap-2 p-3"
+    >
+      <div className="flex items-start gap-2.5 pr-7">
         {getIcon()}
-        <div className="grid gap-1 flex-1">
+        <div className="grid gap-0.5 flex-1">
           {title && <ToastTitle>{title}</ToastTitle>}
           {/* Selectable so the message can be highlighted + copied manually too. */}
-          {description && (
-            <ToastDescription className="select-text">{description}</ToastDescription>
-          )}
+          {description && <ToastDescription className="select-text">{description}</ToastDescription>}
         </div>
       </div>
-      <div className="flex items-center gap-2 shrink-0">
-        {action}
-        {showCopy && (
-          <GlyphButton
-            icon={copied ? Check : copyFailed ? Error : ContentCopy}
-            label={copyLabel}
-            size="sm"
-            variant="danger-subtle"
-            onClick={copyText}
+      <ToastClose variant={variant} className="absolute right-1.5 top-1.5" />
+      {hasFooter && (
+        <div className={`flex items-center justify-start gap-2 pl-[18px] ${persistent ? '' : 'pb-1'}`}>
+          {copyButton}
+          {action}
+        </div>
+      )}
+      {!persistent && (
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-foreground/10 overflow-hidden">
+          <div
+            className={`h-full transition-all ease-linear ${
+              variant === 'destructive' ? 'bg-danger' : 'bg-primary bg-gradient-brand'
+            }`}
+            style={{ width: `${progress}%` }}
           />
-        )}
-        {showCopy && (
-          <span aria-live="polite" className="sr-only">
-            {copied ? 'Copied' : copyFailed ? copyLabel : ''}
-          </span>
-        )}
-        <ToastClose variant={variant} />
-      </div>
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-foreground/10 overflow-hidden">
-        <div
-          className={`h-full transition-all ease-linear ${
-            variant === 'destructive' ? 'bg-danger' : 'bg-primary bg-gradient-brand'
-          }`}
-          style={{ width: `${progress}%` }}
-        />
-      </div>
+        </div>
+      )}
     </Toast>
   )
 }

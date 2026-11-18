@@ -833,17 +833,6 @@ export function App() {
               <IconButton icon="delete" label="Delete" variant="destructive" size="lg" />
               <IconButton icon="delete" label="Delete" variant="destructive" disabled />
             </Row>
-            <Row label="Icon-only · shape=&quot;circle&quot; — on a line or over content, like the swap flip">
-              <IconButton icon="refresh" label="Refresh" variant="surface" shape="circle" size="sm" />
-              <IconButton icon="refresh" label="Refresh" variant="surface" shape="circle" />
-              <IconButton icon="refresh" label="Refresh" variant="surface" shape="circle" size="lg" />
-              <IconButton icon="swap_vert" label="Swap direction" variant="secondary" shape="circle" size="sm" />
-              <IconButton icon="swap_vert" label="Swap direction" variant="secondary" shape="circle" />
-              <IconButton icon="swap_vert" label="Swap direction" variant="secondary" shape="circle" size="lg" />
-              <IconButton icon="delete" label="Delete" variant="danger-subtle" shape="circle" size="sm" />
-              <IconButton icon="delete" label="Delete" variant="danger-subtle" shape="circle" />
-              <IconButton icon="delete" label="Delete" variant="danger-subtle" shape="circle" size="lg" />
-            </Row>
           </Section>
 
           {/* ── Icons ───────────────────────────────────────────────────── */}
@@ -1944,6 +1933,19 @@ export function App() {
                 }
               >
                 Destructive
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() =>
+                  toast({
+                    title: 'Update available',
+                    description: 'A new version is ready. It stays here until you close it.',
+                    persistent: true,
+                    action: <ToastAction altText="Update now">Update now</ToastAction>,
+                  })
+                }
+              >
+                Persistent
               </Button>
             </Row>
           </Section>

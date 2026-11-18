@@ -1,5 +1,6 @@
-import { useId, type ReactNode } from 'react'
+import { useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { Card, CardDescription, CardHeader, CardTitle } from '../primitives/card'
+import { ScrollArea } from '../primitives/scroll-area'
 import { SegmentedTabs, type SegmentedTabsOption } from '../primitives/tabs'
 import { BarList } from './charts/bar-list'
 import { AreaChart } from './charts/line-chart'
@@ -99,6 +100,9 @@ const formatNumber = (value: number) => formatAmount(Math.round(value))
  * Data comes in through props only: the panel fetches nothing, and `period`
  * and `selectedId` are the host's state.
  */
+const CHART_FALLBACK_HEIGHT = 277
+const CHART_MIN_HEIGHT = 160
+
 export function RankedTrendPanel({
   items,
   title,
@@ -126,11 +130,42 @@ export function RankedTrendPanel({
   className,
 }: RankedTrendPanelProps) {
   const titleId = useId()
+  // The chart fills what the list column leaves: its slot has no height of its
+  // own, so the row is as tall as the list, and the plot takes the slot's height
+  // less the chrome around it (tabs, gaps). Measured, so a taller or shorter list
+  // moves the plot with it.
+  const slotRef = useRef<HTMLDivElement>(null)
+  const [plotHeight, setPlotHeight] = useState(CHART_FALLBACK_HEIGHT)
+  const plotHeightRef = useRef(plotHeight)
+  plotHeightRef.current = plotHeight
+  useLayoutEffect(() => {
+    const slot = slotRef.current
+    const figure = slot?.firstElementChild?.firstElementChild
+    if (!slot || !(figure instanceof HTMLElement) || typeof ResizeObserver === 'undefined') return
+    const fit = () => {
+      const chrome = figure.getBoundingClientRect().height - plotHeightRef.current
+      const next = Math.max(CHART_MIN_HEIGHT, Math.floor(slot.clientHeight - chrome))
+      if (next !== plotHeightRef.current) setPlotHeight(next)
+    }
+    fit()
+    const observer = new ResizeObserver(fit)
+    observer.observe(slot)
+    return () => observer.disconnect()
+  })
   const ranked = [...items].sort((a, b) => b.value - a.value)
   const selected = ranked.find((item) => item.id === selectedId) ?? ranked[0]
   const total = ranked.reduce((sum, item) => sum + item.value, 0)
   const seriesTotal = selected ? selected.series.reduce((sum, point) => sum + point.value, 0) : 0
   const meta = [selected?.count !== undefined && countText ? countText(selected.count) : null, bucketLabel].filter(Boolean).join(' · ')
+
+  const header = (
+    <CardHeader className="relative flex-row flex-wrap items-center justify-between gap-3 space-y-0 px-6 py-5 lg:col-start-1">
+      <div className="min-w-0 space-y-0.5">
+        <CardTitle id={titleId}>{title}</CardTitle>
+        {description && <CardDescription>{description}</CardDescription>}
+      </div>
+    </CardHeader>
+  )
 
   return (
     <Card
@@ -149,45 +184,35 @@ export function RankedTrendPanel({
           className="pointer-events-none absolute inset-y-0 left-0 hidden w-[21rem] rounded-l-[inherit] border-r border-border bg-gradient-card-hero lg:block"
         />
       )}
-      <CardHeader className="relative flex-row flex-wrap items-center justify-between gap-3 space-y-0 px-6 py-5">
-        <div className="min-w-0 space-y-0.5">
-          <CardTitle id={titleId}>{title}</CardTitle>
-          {description && <CardDescription>{description}</CardDescription>}
-        </div>
-        {onPeriodChange && period !== undefined && (
-          <SegmentedTabs
-            aria-label={periodLabel}
-            size="compact"
-            fullWidth={false}
-            options={periods}
-            value={period}
-            onValueChange={onPeriodChange}
-          />
-        )}
-      </CardHeader>
-
+      {!selected && header}
       {selected ? (
+        // The header sits in the left column only: the chart column runs the
+        // card's full height beside it, so its title lines up with the panel's.
         <div className="relative grid rounded-b-[inherit] lg:grid-cols-[21rem_minmax(0,1fr)]">
-          <div className="flex min-w-0 flex-col gap-1 px-3 py-5 max-lg:[background-image:var(--gradient-card-hero)] lg:rounded-bl-[inherit]">
+          {header}
+          <div className="flex min-w-0 flex-col gap-1 px-3 py-5 max-lg:[background-image:var(--gradient-card-hero)] lg:col-start-1 lg:rounded-bl-[inherit]">
             <div className={cn('flex items-baseline justify-between gap-3 px-2.5 pb-1.5 text-muted-foreground', eyebrow)}>
               <span>{nameColumnLabel}</span>
               <span>{valueColumnLabel}</span>
             </div>
-            <BarList
-              label={listLabel}
-              items={ranked.map((item) => ({
-                id: item.id,
-                label: item.name,
-                detail: item.count !== undefined && countText ? countText(item.count) : undefined,
-                value: item.value,
-                valueText: formatValue(item.value),
-              }))}
-              sort="none"
-              ranked
-              showPercent={false}
-              selectedId={selected.id}
-              onSelect={onSelect}
-            />
+            {/* Four rows show; the rest scroll (4 x 4.4rem rows, 0.125rem apart). */}
+            <ScrollArea viewportClassName="max-h-[18.125rem]">
+              <BarList
+                label={listLabel}
+                items={ranked.map((item) => ({
+                  id: item.id,
+                  label: item.name,
+                  detail: item.count !== undefined && countText ? countText(item.count) : undefined,
+                  value: item.value,
+                  valueText: formatValue(item.value),
+                }))}
+                sort="none"
+                ranked
+                showPercent={false}
+                selectedId={selected.id}
+                onSelect={onSelect}
+              />
+            </ScrollArea>
             <div
               data-slot={slots.total ?? 'ranked-trend-total'}
               className="mt-auto flex items-baseline justify-between gap-3 border-t border-border px-2.5 pt-3 text-caption"
@@ -197,7 +222,7 @@ export function RankedTrendPanel({
             </div>
           </div>
 
-          <div className="min-w-0 space-y-3 p-4">
+          <div className="flex min-w-0 flex-col gap-3 px-4 pb-1 pt-5 lg:col-start-2 lg:row-span-2 lg:row-start-1">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="min-w-0 space-y-1">
                 <h4 className="m-0 text-subhead font-semibold text-foreground">{seriesTitle(selected.name)}</h4>
@@ -210,21 +235,39 @@ export function RankedTrendPanel({
                 {formatSeriesValue(seriesTotal)}
               </p>
             </div>
-            <AreaChart
-              data={selected.series.map((point) => ({
-                key: point.key,
-                label: point.label,
-                detail: point.detail,
-                values: { value: point.value },
-              }))}
-              series={[{ id: 'value', label: seriesLabel }]}
-              label={seriesTitle(selected.name)}
-              scaleLabel={scaleLabel}
-              formatValue={formatSeriesValue}
-              areaFill="gradient"
-              latestMarker="halo"
-              empty={chartEmpty}
-            />
+            {/* No height of its own: the list column sets the row, the plot fills it. */}
+            <div ref={slotRef} className="relative mb-[13px] min-h-0 flex-1 max-lg:min-h-[22rem]">
+              <div className="absolute inset-0">
+                <AreaChart
+                  data={selected.series.map((point) => ({
+                    key: point.key,
+                    label: point.label,
+                    detail: point.detail,
+                    values: { value: point.value },
+                  }))}
+                  series={[{ id: 'value', label: seriesLabel }]}
+                  label={seriesTitle(selected.name)}
+                  scaleLabel={scaleLabel}
+                  formatValue={formatSeriesValue}
+                  areaFill="gradient"
+                  latestMarker="halo"
+                  height={plotHeight}
+                  leading={
+                    onPeriodChange && period !== undefined ? (
+                      <SegmentedTabs
+                        aria-label={periodLabel}
+                        size="compact"
+                        fullWidth={false}
+                        options={periods}
+                        value={period}
+                        onValueChange={onPeriodChange}
+                      />
+                    ) : undefined
+                  }
+                  empty={chartEmpty}
+                />
+              </div>
+            </div>
           </div>
         </div>
       ) : (

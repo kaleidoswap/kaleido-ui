@@ -381,6 +381,11 @@ export interface ChartTitleProps {
   title?: ReactNode
   /** A line under the title: what is measured, and on what scale. */
   description?: ReactNode
+  /**
+   * Anything to sit at the head's left in place of a title: a panel's own
+   * timeframe tabs, say, so they share a line with the chart / table switch.
+   */
+  leading?: ReactNode
   timeframes?: readonly ChartTimeframe[]
   timeframe?: string
   onTimeframeChange?: (timeframe: string) => void
@@ -567,6 +572,7 @@ export function ChartFiltersMenu({
 export function ChartHeader({
   title,
   description,
+  leading,
   timeframes,
   timeframe,
   onTimeframeChange,
@@ -581,14 +587,19 @@ export function ChartHeader({
 }: ChartTitleProps & ChartViewsProps & { view: ChartView; onViewChange: (view: ChartView) => void }) {
   const showTimeframes = timeframes && timeframes.length > 0 && onTimeframeChange
   const showFilters = filters && filters.length > 0 && onFiltersChange
-  const hasText = Boolean(title || description)
+  const hasText = Boolean(title || description || leading)
   return (
     <div
       data-slot="chart-header"
-      className={cn('flex flex-wrap items-start gap-x-4 gap-y-2', hasText ? 'justify-between' : 'justify-end')}
+      className={cn(
+        'flex flex-nowrap gap-x-4',
+        leading ? 'items-center' : 'items-start',
+        hasText ? 'justify-between' : 'justify-end',
+      )}
     >
+      {leading && <div className="min-w-0 flex-1">{leading}</div>}
       {hasText && (
-        <div className="flex min-w-0 flex-col gap-1">
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
           {title && (
             <h3 className="m-0 text-subhead font-semibold leading-none tracking-tight text-foreground">{title}</h3>
           )}
