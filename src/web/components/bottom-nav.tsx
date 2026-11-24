@@ -21,6 +21,15 @@ export interface BottomNavProps<TValue extends string = string> {
   className?: string
 }
 
+type Placement = { x: number; w: number }
+
+/**
+ * Where the blob last sat, per set of items. Apps that render a BottomNav on
+ * each page mount a fresh nav on every switch; the new one starts its move
+ * from here, so the blob still travels from the item the user came from.
+ */
+const lastPlacement = new Map<string, Placement>()
+
 export function BottomNav<TValue extends string = string>({
   activeView,
   items,
@@ -32,7 +41,8 @@ export function BottomNav<TValue extends string = string>({
   const blobRef = useRef<HTMLSpanElement>(null)
   const buttonRefs = useRef(new Map<string, HTMLButtonElement>())
   // Where the blob currently sits, so a move can stretch from here to the target.
-  const placed = useRef<{ x: number; w: number } | null>(null)
+  const placed = useRef<Placement | null>(null)
+  const navKey = items.map((item) => item.id).join('|')
 
   // The green sphere is one element that slides under the active item. On a
   // move it stretches toward the target and then settles, like a drop of liquid.
@@ -46,11 +56,12 @@ export function BottomNav<TValue extends string = string>({
       return
     }
     const to = { x: button.offsetLeft, w: button.offsetWidth }
-    const from = placed.current
+    const from = placed.current ?? lastPlacement.get(navKey) ?? null
     blob.style.opacity = '1'
     blob.style.width = `${to.w}px`
     blob.style.transform = `translateX(${to.x}px)`
     placed.current = to
+    lastPlacement.set(navKey, to)
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
     if (!from || reduce || (from.x === to.x && from.w === to.w)) return
     // Without the Web Animations API (older webviews, jsdom) the blob just jumps.
@@ -72,7 +83,7 @@ export function BottomNav<TValue extends string = string>({
       ],
       { duration: 560, easing: 'cubic-bezier(0.45, 0, 0.25, 1)' }
     )
-  }, [activeView, items.length])
+  }, [activeView, items.length, navKey])
 
   // Keep the blob on its item when the nav is resized.
   useLayoutEffect(() => {
@@ -85,10 +96,11 @@ export function BottomNav<TValue extends string = string>({
       blob.style.width = `${button.offsetWidth}px`
       blob.style.transform = `translateX(${button.offsetLeft}px)`
       placed.current = { x: button.offsetLeft, w: button.offsetWidth }
+      lastPlacement.set(navKey, placed.current)
     })
     observer.observe(track)
     return () => observer.disconnect()
-  }, [activeView])
+  }, [activeView, navKey])
 
   return (
     <nav
