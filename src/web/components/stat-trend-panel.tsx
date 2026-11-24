@@ -4,6 +4,7 @@ import { AreaChart } from './charts/line-chart'
 import { EmptyState } from './empty-state'
 import { SummaryRows, type SummaryRowItem } from './summary-rows'
 import type { TrendPoint } from './ranked-trend-panel'
+import { useFillHeight } from '../hooks/use-fill-height'
 import { cn } from '../utils/cn'
 import { eyebrowLarge } from '../utils/type-roles'
 
@@ -14,6 +15,10 @@ export interface StatTrendPanelProps {
   value: ReactNode
   /** Beside the figure, smaller: "members", "+126 this month". */
   valueSuffix?: ReactNode
+  /** The suffix's colour: quiet by default; `success` / `danger` set it as a metric card's change is (semibold, in the tone's colour). */
+  valueSuffixTone?: 'muted' | 'success' | 'danger'
+  /** Where the suffix sits: on a line `below` the figure (default) or `beside` it. */
+  valueSuffixPlacement?: 'beside' | 'below'
   /** The breakdown under the figure, as label · leader line · value rows. */
   rows?: readonly SummaryRowItem[]
   /** At the foot of the column: one action, e.g. a ghost `Button` around the host's link. */
@@ -51,6 +56,8 @@ export function StatTrendPanel({
   label,
   value,
   valueSuffix,
+  valueSuffixTone = 'muted',
+  valueSuffixPlacement = 'below',
   rows = [],
   action,
   series,
@@ -64,6 +71,8 @@ export function StatTrendPanel({
   className,
 }: StatTrendPanelProps) {
   const labelId = useId()
+  // The plot fills the column's height, so the chart is as tall as the panel.
+  const { slotRef, height } = useFillHeight(240)
 
   return (
     <Card
@@ -82,33 +91,54 @@ export function StatTrendPanel({
           <p id={labelId} className={cn('m-0 text-muted-foreground', eyebrowLarge)}>
             {label}
           </p>
-          <p data-slot="stat-trend-value" className="m-0 flex flex-wrap items-baseline gap-x-2.5">
+          <p
+            data-slot="stat-trend-value"
+            className={cn('m-0 flex gap-x-2.5', valueSuffixPlacement === 'below' ? 'flex-col gap-y-1' : 'flex-wrap items-baseline')}
+          >
             <span className="text-main-title font-bold tabular-nums text-foreground">{value}</span>
-            {valueSuffix && <span className="text-body text-muted-foreground">{valueSuffix}</span>}
+            {valueSuffix && (
+              <span
+                data-slot="stat-trend-suffix"
+                className={cn(
+                  'text-body',
+                  valueSuffixTone === 'muted' && 'text-muted-foreground',
+                  valueSuffixTone === 'success' && 'font-semibold text-success-fg',
+                  valueSuffixTone === 'danger' && 'font-semibold text-danger-fg',
+                )}
+              >
+                {valueSuffix}
+              </span>
+            )}
           </p>
         </div>
         {rows.length > 0 && <SummaryRows rows={[...rows]} className="space-y-3" />}
         {action && <div className="mt-auto pt-6">{action}</div>}
       </div>
 
-      <div className="min-w-0 p-6">
-        <AreaChart
-          title={chartTitle}
-          description={chartDescription}
-          data={series.map((point) => ({
-            key: point.key,
-            label: point.label,
-            detail: point.detail,
-            values: { value: point.value },
-          }))}
-          series={[{ id: 'value', label: seriesLabel }]}
-          label={chartLabel}
-          scaleLabel={scaleLabel}
-          formatValue={formatValue}
-          areaFill="gradient"
-          latestMarker="dot"
-          empty={chartEmpty}
-        />
+      <div className="flex min-w-0 flex-col p-6">
+        {/* No height of its own: the column sets the row, the plot fills it. */}
+        <div ref={slotRef} className="relative min-h-0 flex-1 max-lg:min-h-[20rem]">
+          <div className="absolute inset-0">
+            <AreaChart
+              title={chartTitle}
+              description={chartDescription}
+              data={series.map((point) => ({
+                key: point.key,
+                label: point.label,
+                detail: point.detail,
+                values: { value: point.value },
+              }))}
+              series={[{ id: 'value', label: seriesLabel }]}
+              label={chartLabel}
+              scaleLabel={scaleLabel}
+              formatValue={formatValue}
+              areaFill="gradient"
+              latestMarker="dot"
+              height={height}
+              empty={chartEmpty}
+            />
+          </div>
+        </div>
       </div>
     </Card>
   )

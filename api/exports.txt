@@ -316,6 +316,8 @@ interface MixedChartProps
 interface MixedChartSeries
 function MobileHeroAnimation
 interface MobileHeroAnimationProps
+function MoneyTrendPanel
+interface MoneyTrendPanelProps
 const NETWORK_CONFIG
 function NativeSelect
 interface NativeSelectProps

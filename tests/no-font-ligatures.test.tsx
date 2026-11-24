@@ -100,6 +100,18 @@ const FIXTURES: Record<string, () => ReactElement[]> = {
       chartTitle: 'Daily check-ins',
     }),
   ],
+  MoneyTrendPanel: () => [
+    createElement(ui.MoneyTrendPanel, {
+      label: 'Wallet revenue',
+      btc: 0.0842,
+      usd: 5120.45,
+      series: [
+        { key: '1', label: '12 Nov', value: 0 },
+        { key: '2', label: '13 Nov', value: 0.001 },
+      ],
+      chartTitle: 'Daily revenue',
+    }),
+  ],
   ListField: () => [
     createElement(ui.ListField, { label: 'Origins', noun: 'origin', items: ['https://a.example'], onChange: () => {} }),
   ],

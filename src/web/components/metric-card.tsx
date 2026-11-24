@@ -11,6 +11,18 @@ export interface MetricCardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'c
   value: ReactNode
   /** A line under the value: a comparison, a period, a hint. */
   description?: ReactNode
+  /**
+   * Where the `description` sits: `below` the value (default), or `above` it,
+   * so a change reads before the figure and what hangs under the figure (its
+   * USD equivalent, say) stays with it.
+   */
+  descriptionPlacement?: 'below' | 'above'
+  /**
+   * Keep the line a `MetricFigure`'s `usd` takes free when the value has none,
+   * so the figure sits at the same height on every tile of a row, with or
+   * without a USD equivalent.
+   */
+  reserveSubline?: boolean
   icon?: IconName | ReactNode
   tone?: 'primary' | 'purple' | 'blue' | 'info' | 'warning' | 'success' | 'muted'
   /**
@@ -79,6 +91,8 @@ export function MetricCard({
   label,
   value,
   description,
+  descriptionPlacement = 'below',
+  reserveSubline = false,
   icon,
   tone = 'muted',
   size = 'compact',
@@ -153,32 +167,45 @@ export function MetricCard({
     ? 'rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero p-4 shadow-card'
     : 'rounded-xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card-hero p-2.5 shadow-raised'
 
+  const descriptionNode = description ? (
+    <p
+      data-slot="metric-card-description"
+      className={cn('m-0 text-muted-foreground', comfortable ? 'text-caption' : 'text-xxs')}
+    >
+      {description}
+    </p>
+  ) : null
+
   const figureNodes = (
     <>
+      {descriptionPlacement === 'above' && descriptionNode}
       <p
         ref={valueRef}
         data-slot="metric-card-value"
         className={cn(
-          'm-0 font-bold tabular-nums text-foreground',
+          'group/value m-0 font-bold tabular-nums text-foreground',
           hasEnd && 'whitespace-nowrap',
           comfortable ? 'text-headline' : 'text-body',
         )}
       >
         {value}
+        {reserveSubline && (
+          // Hidden when the value draws its own USD line (see `MetricFigure`).
+          <span
+            aria-hidden="true"
+            data-slot="metric-card-subline-space"
+            className="invisible mt-0.5 block text-caption font-medium group-has-[[data-slot=metric-figure-usd]]/value:hidden"
+          >
+            &nbsp;
+          </span>
+        )}
       </p>
       {change && (
         <p data-slot="metric-card-change" className={cn('m-0 tabular-nums text-foreground', comfortable ? 'text-caption' : 'text-xxs')}>
           {change}
         </p>
       )}
-      {description && (
-        <p
-          data-slot="metric-card-description"
-          className={cn('m-0 text-muted-foreground', comfortable ? 'text-caption' : 'text-xxs')}
-        >
-          {description}
-        </p>
-      )}
+      {descriptionPlacement === 'below' && descriptionNode}
     </>
   )
 

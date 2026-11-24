@@ -1,10 +1,11 @@
-import { useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
+import { useId, type ReactNode } from 'react'
 import { Card, CardDescription, CardHeader, CardTitle } from '../primitives/card'
 import { ScrollArea } from '../primitives/scroll-area'
 import { SegmentedTabs, type SegmentedTabsOption } from '../primitives/tabs'
 import { BarList } from './charts/bar-list'
 import { AreaChart } from './charts/line-chart'
 import { EmptyState } from './empty-state'
+import { useFillHeight } from '../hooks/use-fill-height'
 import { cn } from '../utils/cn'
 import { formatAmount } from '../utils/amount-display'
 import { eyebrow } from '../utils/type-roles'
@@ -101,7 +102,6 @@ const formatNumber = (value: number) => formatAmount(Math.round(value))
  * and `selectedId` are the host's state.
  */
 const CHART_FALLBACK_HEIGHT = 277
-const CHART_MIN_HEIGHT = 160
 
 export function RankedTrendPanel({
   items,
@@ -130,28 +130,8 @@ export function RankedTrendPanel({
   className,
 }: RankedTrendPanelProps) {
   const titleId = useId()
-  // The chart fills what the list column leaves: its slot has no height of its
-  // own, so the row is as tall as the list, and the plot takes the slot's height
-  // less the chrome around it (tabs, gaps). Measured, so a taller or shorter list
-  // moves the plot with it.
-  const slotRef = useRef<HTMLDivElement>(null)
-  const [plotHeight, setPlotHeight] = useState(CHART_FALLBACK_HEIGHT)
-  const plotHeightRef = useRef(plotHeight)
-  plotHeightRef.current = plotHeight
-  useLayoutEffect(() => {
-    const slot = slotRef.current
-    const figure = slot?.firstElementChild?.firstElementChild
-    if (!slot || !(figure instanceof HTMLElement) || typeof ResizeObserver === 'undefined') return
-    const fit = () => {
-      const chrome = figure.getBoundingClientRect().height - plotHeightRef.current
-      const next = Math.max(CHART_MIN_HEIGHT, Math.floor(slot.clientHeight - chrome))
-      if (next !== plotHeightRef.current) setPlotHeight(next)
-    }
-    fit()
-    const observer = new ResizeObserver(fit)
-    observer.observe(slot)
-    return () => observer.disconnect()
-  })
+  // The plot fills what the list column leaves (see useFillHeight).
+  const { slotRef, height: plotHeight } = useFillHeight(CHART_FALLBACK_HEIGHT)
   const ranked = [...items].sort((a, b) => b.value - a.value)
   const selected = ranked.find((item) => item.id === selectedId) ?? ranked[0]
   const total = ranked.reduce((sum, item) => sum + item.value, 0)

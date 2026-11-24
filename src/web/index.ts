@@ -454,6 +454,7 @@ export {
   type TrendPoint,
 } from './components/ranked-trend-panel'
 export { StatTrendPanel, type StatTrendPanelProps } from './components/stat-trend-panel'
+export { MoneyTrendPanel, type MoneyTrendPanelProps } from './components/money-trend-panel'
 export { ErrorBoundary } from './components/error-boundary'
 export { RecoveryPhraseCard, type RecoveryPhraseCardProps } from './components/recovery-phrase-card'
 export {

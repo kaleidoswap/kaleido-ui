@@ -203,6 +203,7 @@ and `IconGlyph` draws one glyph at the icon scale (`<IconGlyph glyph={Close} siz
 | `HaloBackdrop` | Decorative drifting brand-colour blobs behind a screen (parent needs `relative isolate`) |
 | `TrendChart` | Line/area trend chart with a chart/table switch; pass `view` + `onViewChange` to control the view from the host, or leave them out |
 | `RankedTrendPanel` | A ranking beside the chart it drives: items ranked by `value` over their total, the selected one's `series` charted, with an optional 7D / 30D / 90D period; data through props only (`items`, `title`, `onSelect`, `period`, `onPeriodChange`, `selectedId`) |
+| `MoneyTrendPanel` | `StatTrendPanel` for money: the figure in BTC with its USD counter-value smaller beside it (`btc`, `usd`, `rows`, `series` in BTC) |
 | `StatTrendPanel` | A headline figure with breakdown rows and one action, beside a trend chart (`label`, `value`, `rows`, `action`, `series`, `chartTitle`) |
 | `EarningsByPartnerCard` | Deprecated: `RankedTrendPanel` with partner props (`partners`, `revenue`, `swaps`, `volumeSeries`); kept so existing apps keep working |
 | `WithdrawAmountInput` | Amount card for the withdraw flow; `unitSlot` replaces the unit label with your own control (e.g. a unit picker) inside the card |
