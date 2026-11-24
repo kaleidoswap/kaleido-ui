@@ -44,7 +44,7 @@ test('MetricDelta and MetricNoDelta put their info beside the line', () => {
 
   const none = renderToStaticMarkup(createElement(MetricNoDelta, { info }))
   assert.match(none, /data-slot="metric-no-delta"/)
-  assert.match(none, />No prior data</)
+  assert.match(none, />No trend data</)
   assert.match(none, /aria-label="Compared period"/)
   assert.match(renderToStaticMarkup(createElement(MetricNoDelta, null, 'Comparing…')), />Comparing…</)
 })

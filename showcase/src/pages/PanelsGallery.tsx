@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { BlockTitle } from './blocks'
-import { Button, EmptyState, Icon, RankedTrendPanel, StatTrendPanel, type RankedTrendItem } from 'kaleido-ui'
+import { Button, EmptyState, Icon, MoneyTrendPanel, RankedTrendPanel, StatTrendPanel, type RankedTrendItem } from 'kaleido-ui'
 
 // The samples are invented on purpose: a ticketing desk and a climbing gym,
 // so the panels read as layouts, not as any one product's screens.
@@ -102,6 +102,7 @@ function MembershipsDemo() {
       label="Active members"
       value="3,718"
       valueSuffix="+126 this month"
+      valueSuffixTone="success"
       rows={[
         { label: 'On a free trial', value: '284' },
         { label: 'Frozen memberships', value: '57' },
@@ -129,6 +130,50 @@ function MembershipsDemo() {
   )
 }
 
+// ─── Wallet revenue (MoneyTrendPanel) ──────────────────────────────────
+
+/** Daily revenue in BTC over 30 days: a slow climb with a few larger receipts. */
+const REVENUE_BTC = Array.from({ length: 30 }, (_, index) => {
+  const day = new Date(Date.UTC(2026, 9, 15) + index * 86_400_000)
+  const wave = Math.sin(index * 0.8) * 0.0006 + (index % 7 === 3 ? 0.0011 : 0)
+  return {
+    key: day.toISOString().slice(0, 10),
+    label: day.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' }),
+    detail: day.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }),
+    value: Math.max(0, Number((0.0016 + index * 0.00004 + wave).toFixed(8))),
+  }
+})
+
+function RevenueDemo() {
+  return (
+    <MoneyTrendPanel
+      label="Wallet revenue"
+      btc={0.0842}
+      usd={5_120.45}
+      rows={[
+        { label: 'Swap fees', value: '0.0516 BTC' },
+        { label: 'Lightning routing', value: '0.0198 BTC' },
+        { label: 'Channel opening fees', value: '0.0094 BTC' },
+        { label: 'Refunds', value: '−0.0013 BTC' },
+      ]}
+      action={
+        <Button asChild variant="ghost" size="sm" className="-ml-3">
+          <a href="#panels">
+            Open transactions
+            <Icon name="arrow_forward" className="text-icon-md" aria-hidden="true" />
+          </a>
+        </Button>
+      }
+      series={REVENUE_BTC}
+      chartTitle="Daily revenue"
+      chartDescription="Net of refunds, per local day · Last 30 days"
+      chartLabel="Daily revenue"
+      seriesLabel="Revenue"
+      chartEmpty={<EmptyState title="No revenue in this period" />}
+    />
+  )
+}
+
 /** Panels: whole dashboard panels built from the library's parts. */
 export function PanelsGallery() {
   return (
@@ -138,6 +183,9 @@ export function PanelsGallery() {
 
       <BlockTitle className="mb-3 pt-12">StatTrendPanel</BlockTitle>
       <MembershipsDemo />
+
+      <BlockTitle className="mb-3 pt-12">MoneyTrendPanel</BlockTitle>
+      <RevenueDemo />
     </div>
   )
 }

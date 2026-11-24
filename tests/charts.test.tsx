@@ -233,6 +233,14 @@ test('without onSelect or ranked a bar list keeps its rows; detail adds a second
   assert.match(markup, />BTC<\/span><span class="truncate text-tiny tabular-nums text-muted-foreground">3 swaps</)
 })
 
+test('a bar list prints subValue under the value, and beside it in the table view', () => {
+  const items = [{ id: 'x', label: 'Mon', value: 412_300, valueText: '412,300 SAT', subValue: '$280.36' }]
+  const markup = renderToStaticMarkup(h(BarList, { label: 'Revenue', items, rowSize: 'tall', showPercent: false }))
+  assert.match(markup, /412,300 SAT<\/span><span data-slot="bar-list-sub-value"[^>]*>\$280\.36</)
+  const plain = renderToStaticMarkup(h(BarList, { label: 'Revenue', items: [{ id: 'x', label: 'Mon', value: 1 }] }))
+  assert.doesNotMatch(plain, /bar-list-sub-value/)
+})
+
 test('a donut folds the tail into Other past six parts, keeping survivors in order', () => {
   const segments = Array.from({ length: 8 }, (_, index) => ({ id: `s${index}`, label: `S${index}`, value: 10 - index }))
   const folded = foldSegments(segments)

@@ -25,9 +25,11 @@ export function MetricsGallery() {
           size="comfortable"
           labelStyle="title"
           trendPlacement="below-label"
+          reserveSubline
           className="p-3"
           label="Orders this week"
           value="1,284"
+          descriptionPlacement="above"
           description={delta('+12.7%', WEEK_PERIOD)}
           trend={<Sparkline height="fill" pulse values={[40, 44, 39, 52, 48, 57, 55, 61, 58, 66, 63, 71]} label="Orders, last 12 weeks: 39 to 71" />}
         />
@@ -35,9 +37,11 @@ export function MetricsGallery() {
           size="comfortable"
           labelStyle="title"
           trendPlacement="below-label"
+          reserveSubline
           className="p-3"
           label="Revenue"
-          value={<MetricFigure amount="9.4" unit="BTC" />}
+          value={<MetricFigure amount="9.4" unit="BTC" usd="$940,000" />}
+          descriptionPlacement="above"
           description={delta('-8.7%', WEEK_PERIOD)}
           trend={<Sparkline height="fill" pulse tone="negative" values={[12.9, 12.4, 12.8, 11.9, 12.1, 11.2, 11.6, 10.8, 10.9, 10.1, 10.3, 9.4]} label="Revenue, last 12 weeks: 12.9 down to 9.4 BTC" />}
         />
@@ -45,9 +49,11 @@ export function MetricsGallery() {
           size="comfortable"
           labelStyle="title"
           trendPlacement="below-label"
+          reserveSubline
           className="p-3"
           label="Conversion rate"
           value="96.4%"
+          descriptionPlacement="above"
           description={<MetricNoDelta info={periodInfo(WEEK_PERIOD)} />}
           trend={<Sparkline height="fill" values={[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]} label="Conversion rate, last 12 weeks: no data" />}
         />
@@ -62,7 +68,9 @@ export function MetricsGallery() {
           icon="trending_up"
           label="Revenue"
           definition="Total income in the period."
-          value={<MetricFigure amount="47,429" unit="sat" />}
+          value={<MetricFigure amount="47,429" unit="sat" usd="$47.43" />}
+          descriptionPlacement="above"
+          reserveSubline
           description={delta('+12.7%', YEAR_PERIOD)}
           className="p-3"
           trend={<Sparkline height="fill" pulse values={[0, 0, 2, 0, 1, 9, 22, 14, 31, 18, 40, 26, 47]} label="Revenue, recent period: 0 to 47,429 sats" />}
@@ -74,7 +82,9 @@ export function MetricsGallery() {
           icon="toll"
           label="Volume"
           definition="Total value processed."
-          value={<MetricFigure amount="1,840,000" unit="sat" />}
+          value={<MetricFigure amount="1,840,000" unit="sat" usd="$1,840.00" />}
+          descriptionPlacement="above"
+          reserveSubline
           description={delta('-8.0%', YEAR_PERIOD)}
           className="p-3"
           trend={<Sparkline height="fill" pulse tone="negative" values={[2, 1.95, 2.05, 1.9, 1.96, 1.85, 1.88, 1.84]} label="Volume, recent period: 2,000,000 down to 1,840,000 sats" />}
@@ -87,6 +97,8 @@ export function MetricsGallery() {
           label="Orders"
           definition="Orders that completed."
           value="4"
+          descriptionPlacement="above"
+          reserveSubline
           description={<MetricNoDelta info={periodInfo(YEAR_PERIOD)} />}
           className="p-3"
           trend={<Sparkline height="fill" values={[0, 0, 0, 0, 0, 0]} label="Orders, recent period: no data" />}

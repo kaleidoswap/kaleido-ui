@@ -143,7 +143,17 @@ const feeVsAmount = (() => {
 })()
 
 const sats = (value: number) => `${new Intl.NumberFormat('en-US').format(value)} sats`
-const compactSats = (value: number) =>
+const sat = (value: number) => `${new Intl.NumberFormat('en-US').format(Math.round(value))} SAT`
+const USD_PER_BTC = 68_000
+const usd = (satoshis: number) =>
+  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((satoshis / 100_000_000) * USD_PER_BTC)
+/** Revenue per day: the sats as the main value, their USD under it. */
+const dailyRevenueFor = (timeframe: string) =>
+  trendPoints.slice(-(daysIn[timeframe] ?? 7)).reverse().map((point) => {
+    const value = Math.round((point.values.completed + point.values.failed) * 1_870)
+    return { id: point.key, label: point.label, value, subValue: usd(value) }
+  })
+const compactSats =(value: number) =>
   new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(value)
 const btc = (value: number) => `${value} BTC`
 
@@ -304,7 +314,7 @@ const revenueByPartner = [
 function RankedBarList(head: ChartTitleProps) {
   const [selected, setSelected] = useState('acme')
   return (
-    <div className="max-w-[21rem]">
+    <div>
       <BarList
         {...head}
         items={revenueByPartner}
@@ -474,21 +484,31 @@ export function ChartsGallery() {
           )}
         </ChartCard>
 
-        <div className="grid grid-cols-2 gap-8 xl:col-span-2 [&>*]:min-w-0">
-          <ChartCard title="Bar list — short" chartTitle="Swap completion by day" use="Swaps completed of total, per day" timeframes={LIST_FRAMES}>
-            {(timeframe) => (
-              <BarList items={dailyListFor(timeframe)} label="Swaps completed of total, per day" />
-            )}
-          </ChartCard>
+        <ChartCard title="Bar list — short" chartTitle="Swap completion by day" use="Swaps completed of total, per day" timeframes={LIST_FRAMES}>
+          {(timeframe) => (
+            <BarList items={dailyListFor(timeframe)} label="Swaps completed of total, per day" />
+          )}
+        </ChartCard>
 
-          <ChartCard title="Bar list — tall" chartTitle="Swap completion by day" use="Swaps completed of total, per day" timeframes={TALL_LIST_FRAMES}>
-            {(timeframe) => (
-              <BarList items={dailyListFor(timeframe)} label="Swaps completed of total, per day" rowSize="tall" />
-            )}
-          </ChartCard>
-        </div>
+        <ChartCard title="Bar list — tall" chartTitle="Swap completion by day" use="Swaps completed of total, per day" timeframes={TALL_LIST_FRAMES}>
+          {(timeframe) => (
+            <BarList items={dailyListFor(timeframe)} label="Swaps completed of total, per day" rowSize="tall" />
+          )}
+        </ChartCard>
 
-        <ChartCard title="Ranked, selectable bar list" chartTitle="Revenue by partner" use="Sats earned per partner · a rank, a second line, and the picked row in the selected tint" timeframes={WINDOW_FRAMES}>
+        <ChartCard title="Bar list — tall, revenue" chartTitle="Revenue by day" use="Sats earned per day, with the USD value under each">
+          {() => (
+            <BarList
+              items={dailyRevenueFor('3d')}
+              label="Revenue per day, in sats and USD"
+              rowSize="tall"
+              showPercent={false}
+              formatValue={sat}
+            />
+          )}
+        </ChartCard>
+
+      <ChartCard title="Ranked, selectable bar list" chartTitle="Revenue by partner" use="Sats earned per partner" timeframes={WINDOW_FRAMES}>
           <RankedBarList />
         </ChartCard>
 

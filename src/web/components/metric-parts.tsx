@@ -11,15 +11,33 @@ export interface MetricFigureProps {
   amount: ReactNode
   /** Shown after the amount in caps, smaller than the number. Omit for none. */
   unit?: ReactNode
+  /**
+   * The same amount in USD, as shown: `$47.43`. Drawn under the figure in the
+   * muted caption size, followed by USD. Omit for a count, which has no USD value.
+   */
+  usd?: ReactNode
   className?: string
 }
 
-/** A figure with its unit: the unit in caps, smaller than the number. */
-export function MetricFigure({ amount, unit, className }: MetricFigureProps) {
-  if (unit === undefined || unit === null || unit === '') return <span className={className}>{amount}</span>
+/** A figure with its unit (the unit in caps, smaller than the number) and, optionally, its USD equivalent under it. */
+export function MetricFigure({ amount, unit, usd, className }: MetricFigureProps) {
+  const hasUnit = unit !== undefined && unit !== null && unit !== ''
+  const hasUsd = usd !== undefined && usd !== null && usd !== ''
+  if (!hasUnit && !hasUsd) return <span className={className}>{amount}</span>
   return (
     <span className={cn('whitespace-nowrap', className)} data-slot="metric-figure">
-      {amount} <span className="text-caption font-semibold uppercase tracking-eyebrow text-muted-foreground">{unit}</span>
+      {amount}
+      {hasUnit && (
+        <>
+          {' '}
+          <span className="text-caption font-semibold uppercase tracking-eyebrow text-muted-foreground">{unit}</span>
+        </>
+      )}
+      {hasUsd && (
+        <span data-slot="metric-figure-usd" className="mt-0.5 block text-caption font-medium normal-case tracking-normal tabular-nums text-muted-foreground">
+          {usd} <span className="uppercase">USD</span>
+        </span>
+      )}
     </span>
   )
 }
@@ -83,7 +101,7 @@ export interface MetricNoDeltaProps {
 }
 
 /** In place of a change: there is nothing to compare with, or it is not known yet. */
-export function MetricNoDelta({ children = 'No prior data', info, className }: MetricNoDeltaProps) {
+export function MetricNoDelta({ children = 'No trend data', info, className }: MetricNoDeltaProps) {
   return (
     <span className={cn('inline-flex items-center gap-1 whitespace-nowrap', className)} data-slot="metric-no-delta">
       <span className="text-muted-foreground">{children}</span>

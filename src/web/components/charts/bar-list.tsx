@@ -18,6 +18,11 @@ export interface BarListItem {
   percent?: number
   /** A second, quieter line under the label: "1,284 swaps". */
   detail?: ReactNode
+  /**
+   * A second, quieter line under the value: the same amount in another unit,
+   * "412,300 sat" over "$284.10". Pair with `rowSize="tall"`.
+   */
+  subValue?: ReactNode
 }
 
 export interface BarListProps extends ChartTitleProps {
@@ -125,6 +130,16 @@ export function BarList({
         <span className="truncate text-tiny tabular-nums text-muted-foreground">{item.detail}</span>
       </span>
     )
+  const valueCell = (item: BarListItem, valueClass: string) => (
+    <span className={cn('whitespace-nowrap text-right tabular-nums', item.subValue === undefined ? valueClass : 'flex flex-col')}>
+      <span className={cn(item.subValue !== undefined && valueClass)}>{item.valueText ?? formatValue(item.value)}</span>
+      {item.subValue !== undefined && (
+        <span data-slot="bar-list-sub-value" className="text-tiny text-muted-foreground">
+          {item.subValue}
+        </span>
+      )}
+    </span>
+  )
   const bar = (item: BarListItem, trackClass: string) => (
     <span className={cn('h-2 overflow-hidden rounded-full bg-primary/15 shadow-inner', trackClass)} aria-hidden="true">
       <span
@@ -164,9 +179,7 @@ export function BarList({
               </span>
             )}
             {labelCell(item, 'font-semibold text-foreground')}
-            <span className="whitespace-nowrap text-right font-bold tabular-nums text-foreground">
-              {item.valueText ?? formatValue(item.value)}
-            </span>
+            {valueCell(item, 'font-bold text-foreground')}
             {showPercent && <span className="text-right tabular-nums text-muted-foreground">{percentOf(item)}</span>}
             {bar(item, cn(ranked ? 'col-start-2' : 'col-start-1', STACKED_COLUMN_END[columns]))}
           </>
@@ -225,9 +238,7 @@ export function BarList({
           >
             {labelCell(item, cn('text-muted-foreground', !labelWidth && 'sm:max-w-[10rem]'))}
             {bar(item, 'order-last col-span-full sm:order-none sm:col-span-1')}
-            <span className="whitespace-nowrap text-right font-semibold tabular-nums text-foreground">
-              {item.valueText ?? formatValue(item.value)}
-            </span>
+            {valueCell(item, 'font-semibold text-foreground')}
             {showPercent && (
               <span className="text-right tabular-nums text-muted-foreground">
                 {percentOf(item)}
@@ -248,7 +259,8 @@ export function BarList({
       table={{
         columns: showPercent ? ['Item', 'Value', 'Percent'] : ['Item', 'Value'],
         rows: rows.map((item) => {
-          const value = item.valueText ?? formatValue(item.value)
+          const main = item.valueText ?? formatValue(item.value)
+          const value = item.subValue === undefined ? main : <>{main} · {item.subValue}</>
           return showPercent ? [item.label, value, percentOf(item)] : [item.label, value]
         }),
       }}

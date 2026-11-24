@@ -1,7 +1,7 @@
 ---
 name: KaleidoSwap
 description: KaleidoSwap shared design system — brand green first, violet as the supporting accent, Bitcoin-native wallet UI.
-version: 0.2.23    # must equal package.json's version; check-design-doc fails otherwise
+version: 0.2.24    # must equal package.json's version; check-design-doc fails otherwise
 # The values below are transcribed from src/tokens/. Those files are the source
 # of truth; if the two disagree, this file is the bug. See "Keeping this file
 # honest" at the end.
@@ -556,6 +556,8 @@ Inactive slots use `text.muted` for both icon and label, and have no background.
 
 **A selectable `BarList`.** With `onSelect` each row is a button (`aria-pressed`) that picks its item, with the violet hover; `selectedId`'s row takes the `gradient-active` tint and no outline, and its `ranked` badge turns green. `ranked` or `onSelect` stacks every row at any width — the rank badge, the label over its `detail`, the value, the bar under them — so the list fits a 21rem side column.
 
+**A revenue `BarList`.** `rowSize="tall"` with `showPercent={false}`: each item's `valueText` (or `formatValue`) prints the amount in SAT as the main value, and `subValue` prints its USD equivalent under it in the quiet `text-tiny` muted step. The table view reads "412,300 SAT · $280.36".
+
 **Every chart has** a value axis linear from zero whose top label is the largest value; a legend for two or more series (none for one — the label names it); a hover layer (a crosshair and every series at that x on line and area charts, the whole category band as the target on bars, the nearest point on a scatter) with the same readout on keyboard focus through ←/→, Home/End and Escape and a polite live region; a **table view** one toggle away, which is also the relief channel for the two light-theme slots below 3:1 on white; and an `empty` node instead of an empty frame.
 
 ### MetricCard
@@ -571,7 +573,7 @@ The tile is a `role="group"` named by its label (or `aria-label`), so a failure 
 
 - **`MetricFigure amount unit`** — the `value`: the amount, then its unit in `caption` caps, semibold and muted (`9.4 BTC`). Without a `unit` it is the amount alone.
 - **`MetricDelta direction value good info`** — the `description` when there is a change: the signed change in semibold with an arrow, green when `good` and red when not (up is good by default; pass `good={false}` where a rise is bad news, `null` for neutral), `flat` neutral with no arrow. A screen reader hears the direction in words and `comparisonLabel` after the figure.
-- **`MetricNoDelta info`** — the `description` when there is nothing to compare with: "No prior data" (or `children`) in `muted-foreground`.
+- **`MetricNoDelta info`** — the `description` when there is nothing to compare with: "No trend data" (or `children`) in `muted-foreground`.
 - **`InfoTip label`** — the `info` beside either: an icon-only info button whose note (`children`) says which period the change compares with. It opens on hover with a mouse and pins open on a click or tap, until Escape or a click outside.
 
 ### RankedTrendPanel
@@ -589,6 +591,12 @@ The tile is a `role="group"` named by its label (or `aria-label`), so a failure 
 **Intended use.** A headline figure with its breakdown, beside the trend that led to it: members and their states, a balance and its parts, stock and its movements. Same split and hairline as `RankedTrendPanel`.
 
 **Layout.** The 21rem column on `bg-gradient-card-hero` holds the `label` as an eyebrow, the `value` in `main-title` with an optional `valueSuffix`, the breakdown as `SummaryRows` (label, leader line, value; all values the same colour) and one `action` at the foot, a ghost `Button` around the host's link. The right is an `AreaChart` with its own `chartTitle`, `chartDescription` and chart/table switch.
+
+### MoneyTrendPanel
+
+**Intended use.** `StatTrendPanel` for an amount of money: a wallet's revenue and the trend that led to it. Same split, column, rows, action and chart; it only changes how the figure reads.
+
+**Layout.** The `btc` amount is the headline in `main-title` with a quiet `BTC` unit; on the line under it sits the `usd` counter-value (`$5,120.45`, quiet), and nothing else. In `StatTrendPanel` the `valueSuffix` is under the figure by default (`valueSuffixPlacement="beside"` puts it next to it); `valueSuffixTone="success"` or `"danger"` colours a change like a metric card's. The chart is drawn in BTC (`series` values are BTC amounts, `btcDecimals` defaults to 8). The panel converts and fetches nothing: the host passes the USD figure it already priced.
 
 ### PageHeader
 
