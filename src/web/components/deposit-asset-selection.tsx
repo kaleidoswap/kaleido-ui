@@ -3,6 +3,7 @@ import { DotPagination } from '../primitives/dot-pagination'
 import { IconGlyph } from '../primitives/icon-glyph'
 import { Add, ArrowBack, ArrowForward, ExpandLess, ExpandMore, Search, SwapCalls } from '../icons/outlined'
 import { AssetIcon } from './asset-icon'
+import { protocolIcons } from '../assets/protocol-icons'
 import { BottomSheet } from './bottom-sheet'
 import { NetworkBadge } from './network-badge'
 import { LiquidNetworkIcon } from './network-icon'
@@ -25,10 +26,19 @@ export interface DepositSelectionAsset {
   ticker: string
   name?: string
   precision?: number
+  /** Asset logo URL; falls back to AssetIcon's local/CDN resolution. */
+  icon?: string
   /** Account/protocol the asset lives on — drives the protocol badge in "Your assets". */
   accountId?: DepositAccountId
   /** Spendable balance in raw (smallest) units; used for sorting and the right-aligned amount. */
   balance?: number
+}
+
+const PROTOCOL_ICON: Record<DepositAccountId, string | undefined> = {
+  RGB: protocolIcons.RGB20,
+  SPARK: protocolIcons.Spark,
+  ARKADE: protocolIcons.Arkade,
+  LIQUID: protocolIcons.Liquid,
 }
 
 const PROTOCOL_BADGE: Record<DepositAccountId, { label: string; className: string }> = {
@@ -242,7 +252,13 @@ export function DepositAssetSelection<TView extends string = string>({
                       className="group flex w-full min-w-0 items-center gap-3 overflow-hidden rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card px-4 py-3 text-body shadow-card transition-all duration-200 hover-gradient-violet hover:shadow-card-hover"
                       onClick={() => onSelectAsset(asset)}
                     >
-                      <AssetIcon ticker={asset.ticker} size={40} className="flex-shrink-0" />
+                      <AssetIcon
+                        ticker={asset.ticker}
+                        logoUri={asset.icon}
+                        networkLogoSrc={asset.accountId ? PROTOCOL_ICON[asset.accountId] : undefined}
+                        size={40}
+                        className="flex-shrink-0"
+                      />
                       <div className="min-w-0 flex-1 text-left">
                         <div className="flex min-w-0 items-center gap-1.5">
                           <span className="truncate font-bold tracking-wide text-foreground transition-colors group-hover:text-secondary-content">

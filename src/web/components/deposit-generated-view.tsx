@@ -51,6 +51,8 @@ export interface DepositGeneratedViewProps {
   setRecipientId: (value: string) => void
   setAmount: (value: string) => void
   setInvoiceStatus: (value: string | null) => void
+  /** Image drawn in the centre of the QR instead of the KaleidoSwap mark. */
+  qrLogoSrc?: string
   showQrNetworkBadge?: boolean
   /**
    * @deprecated Done button removed in v0.1.8 per the v1.0.0 wallet redesign;
@@ -111,6 +113,7 @@ export function DepositGeneratedView({
   setRecipientId,
   setAmount,
   setInvoiceStatus,
+  qrLogoSrc,
   showQrNetworkBadge = true,
   showRegenerate = true,
   onRegenerate,
@@ -204,7 +207,7 @@ export function DepositGeneratedView({
               <span>{net.label}</span>
             </div>
           )}
-          <QrCode value={address} size={188} />
+          <QrCode value={address} size={188} logoSrc={qrLogoSrc} />
           {isInvoicePaid && <PaidOverlay />}
           {loading && !isInvoicePaid && (
             // Loading scrim — sits over the QR while a fresh address/invoice

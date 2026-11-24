@@ -14,6 +14,8 @@ export interface QrCodeProps {
    * background so the QR sits directly on the app background.
    */
   tone?: 'onLight' | 'onDark'
+  /** Image drawn in the centre instead of the KaleidoSwap mark, e.g. a network logo. */
+  logoSrc?: string
 }
 
 function isFinderPattern(row: number, col: number, size: number): boolean {
@@ -82,7 +84,7 @@ const LOGO_PATHS = (
   </>
 )
 
-export function QrCode({ value, size = 160, className, tone = 'onLight' }: QrCodeProps) {
+export function QrCode({ value, size = 160, className, tone = 'onLight', logoSrc }: QrCodeProps) {
   const svgContent = useMemo(() => {
     if (!value) return null
 
@@ -144,9 +146,21 @@ export function QrCode({ value, size = 160, className, tone = 'onLight' }: QrCod
     const scale = logoBox / LOGO_VIEWBOX
 
     elements.push(
-      <g key="logo" transform={`translate(${logoX}, ${logoY}) scale(${scale})`}>
-        {LOGO_PATHS}
-      </g>
+      logoSrc ? (
+        <image
+          key="logo"
+          href={logoSrc}
+          x={logoX}
+          y={logoY}
+          width={logoBox}
+          height={logoBox}
+          preserveAspectRatio="xMidYMid meet"
+        />
+      ) : (
+        <g key="logo" transform={`translate(${logoX}, ${logoY}) scale(${scale})`}>
+          {LOGO_PATHS}
+        </g>
+      )
     )
 
     return (
@@ -160,7 +174,7 @@ export function QrCode({ value, size = 160, className, tone = 'onLight' }: QrCod
         {elements}
       </svg>
     )
-  }, [value, tone])
+  }, [value, tone, logoSrc])
 
   return (
     <div className={className} style={{ width: size, height: size }}>

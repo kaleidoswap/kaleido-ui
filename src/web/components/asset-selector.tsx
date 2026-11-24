@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { AssetIcon } from './asset-icon'
+import { protocolIcons } from '../assets/protocol-icons'
 import { InlineSelector, type InlineSelectorOption } from './inline-selector'
 import { NetworkBadge, type NetworkType } from './network-badge'
 import { iconBadgeOverlayClass } from './status-icon-badge'
@@ -27,6 +28,11 @@ export interface AssetSelectorOption {
   networkIconUrl?: string
   /** Right-aligned network tag: label pill tinted with `color`, ticker beneath. */
   networkTag?: { label: string; color?: string }
+}
+
+/** The option's network mark: its own URL, else the bundled protocol mark. */
+function networkMark(option: { networkIconUrl?: string; network?: NetworkType }): string | undefined {
+  return option.networkIconUrl || (option.network ? protocolIcons[option.network] : undefined)
 }
 
 /**
@@ -423,7 +429,7 @@ export function AssetSelector({
   ) => {
     const optionCategoryLabel =
       option.categoryLabel || (option.category ? categoryLabelById.get(option.category) : undefined)
-    const hasNetworkBadge = Boolean(option.networkIconUrl || option.networkTag)
+    const hasNetworkBadge = Boolean(networkMark(option) || option.networkTag)
 
     return (
       <span className="group flex w-full items-center gap-3 text-body">
@@ -439,7 +445,7 @@ export function AssetSelector({
           />
           {hasNetworkBadge && (
             <NetworkMiniBadge
-              iconUrl={option.networkIconUrl}
+              iconUrl={networkMark(option)}
               label={option.networkTag?.label}
             />
           )}
@@ -523,9 +529,9 @@ export function AssetSelector({
             <>
               <span className="relative shrink-0">
                 <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={38} />
-                {selected.networkIconUrl || selected.networkTag ? (
+                {networkMark(selected) || selected.networkTag ? (
                   <NetworkMiniBadge
-                    iconUrl={selected.networkIconUrl}
+                    iconUrl={networkMark(selected)}
                     label={selected.networkTag?.label}
                   />
                 ) : (
@@ -573,7 +579,7 @@ export function AssetSelector({
                     {networkFilterButton ||
                       (selected && (
                         <div className="flex items-center gap-2 rounded-full bg-secondary/15 px-2.5 py-1 shadow-raised">
-                          <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={18} />
+                          <AssetIcon ticker={selected.ticker} logoUri={selected.icon} networkLogoSrc={networkMark(selected)} size={18} />
                           <span className="text-tiny font-semibold text-foreground">
                             {selected.ticker}
                           </span>
@@ -672,7 +678,7 @@ export function AssetSelector({
             <span className="flex items-center gap-3">
               {selected ? (
                 <>
-                  <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={32} />
+                  <AssetIcon ticker={selected.ticker} logoUri={selected.icon} networkLogoSrc={networkMark(selected)} size={32} />
                   <span>
                     <span className="text-body font-semibold text-foreground">
                       {selected.ticker}
@@ -710,7 +716,7 @@ export function AssetSelector({
               {networkFilterButton ||
                 (selected && (
                   <div className="flex items-center gap-2 rounded-full bg-secondary/15 px-2.5 py-1 shadow-raised">
-                    <AssetIcon ticker={selected.ticker} logoUri={selected.icon} size={18} />
+                    <AssetIcon ticker={selected.ticker} logoUri={selected.icon} networkLogoSrc={networkMark(selected)} size={18} />
                     <span className="text-tiny font-semibold text-foreground">{selected.ticker}</span>
                   </div>
                 ))}

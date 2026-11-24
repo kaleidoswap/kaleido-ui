@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { cn } from '../utils/cn'
 import { NetworkBadge, type NetworkType } from './network-badge'
 import { AssetIcon } from './asset-icon'
+import { protocolIcons } from '../assets/protocol-icons'
 import { formatDisplayAmountText } from '../utils/amount-display'
 import { StatusBadge, type StatusType } from './status-badge'
 import { eyebrow } from '../utils/type-roles'
@@ -75,6 +76,7 @@ export function AssetCard({
             ticker={ticker}
             logoUri={logoUri}
             size={44}
+            networkLogoSrc={networks.length === 1 ? protocolIcons[networks[0]] : undefined}
             className="group-hover:scale-105 transition-transform"
           />
           <div className="flex min-w-0 flex-col">

@@ -2,14 +2,17 @@ import { useEffect, useState } from 'react'
 import { getFallbackAssetIconUrl, useAssetIcon } from '../hooks/use-asset-icon'
 import { protocolIcons } from '../assets/protocol-icons'
 import { cn } from '../utils/cn'
+import { iconBadgeOverlayClass } from './status-icon-badge'
 
-interface AssetIconProps {
+export interface AssetIconProps {
   ticker: string
   logoUri?: string
   /** CDN base URL for icon resolution (defaults to KaleidoSwap CDN) */
   cdnBaseUrl?: string
   size?: number
   className?: string
+  /** Network mark shown as a small badge over the bottom-right of the icon. */
+  networkLogoSrc?: string
 }
 
 const ASSET_COLORS: Record<string, string> = {
@@ -33,10 +36,22 @@ const LOCAL_ICONS: Record<string, string> = {
 }
 
 /**
- * Renders a circular asset icon.
+ * Renders a circular asset icon, with an optional network badge.
  * First checks local SVG map, then tries CDN, then placeholder.
  */
-export function AssetIcon({ ticker, logoUri, cdnBaseUrl, size = 40, className }: AssetIconProps) {
+export function AssetIcon({ networkLogoSrc, ...props }: AssetIconProps) {
+  if (!networkLogoSrc) return <BaseAssetIcon {...props} />
+  return (
+    <span className="relative inline-flex shrink-0">
+      <BaseAssetIcon {...props} />
+      <span data-asset-network-badge="" className={cn(iconBadgeOverlayClass, 'overflow-hidden bg-card')}>
+        <img src={networkLogoSrc} alt="" className="h-full w-full object-contain" />
+      </span>
+    </span>
+  )
+}
+
+function BaseAssetIcon({ ticker, logoUri, cdnBaseUrl, size = 40, className }: Omit<AssetIconProps, 'networkLogoSrc'>) {
   const normTicker = ticker.toUpperCase()
   const localIcon = LOCAL_ICONS[normTicker]
   const cdnUrl = useAssetIcon(ticker, cdnBaseUrl)
