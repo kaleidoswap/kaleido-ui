@@ -22,8 +22,19 @@ export interface RecoveryPhraseCardProps {
   onCopy?: () => void
   title?: string
   emptyMessage?: string
+  /** The reveal button's text. */
+  revealLabel?: string
+  /** The hide button's text. */
+  hideLabel?: string
+  /** Offer a Hide button once revealed. On by default. */
+  hideable?: boolean
+  /** Test id on the words grid. */
+  secretTestId?: string
   className?: string
 }
+
+/** What stands in for a word until the phrase is revealed. */
+const MASK = '••••••'
 
 export function RecoveryPhraseCard({
   words,
@@ -36,6 +47,10 @@ export function RecoveryPhraseCard({
   onCopy,
   title = 'Recovery Phrase',
   emptyMessage = 'Recovery phrase is not available yet.',
+  revealLabel = 'Tap to reveal',
+  hideLabel = 'Hide',
+  hideable = true,
+  secretTestId,
   className,
 }: RecoveryPhraseCardProps) {
   const hasWords = words.length > 0
@@ -48,7 +63,7 @@ export function RecoveryPhraseCard({
     <section className={cn('space-y-2', className)}>
       <div className="flex items-center justify-between px-0.5">
         <p className={cn('text-muted-foreground', eyebrow)}>{title}</p>
-        {hasWords && revealed && onRevealChange && (
+        {hasWords && revealed && hideable && onRevealChange && (
           <Button
             type="button"
             variant="surface"
@@ -56,7 +71,7 @@ export function RecoveryPhraseCard({
             onClick={() => onRevealChange(!revealed)}
           >
             <IconGlyph glyph={VisibilityOff} className="text-icon-md" />
-            Hide
+            {hideLabel}
           </Button>
         )}
       </div>
@@ -64,17 +79,21 @@ export function RecoveryPhraseCard({
       <div className="relative">
         {hasWords ? (
           <div
+            data-testid={secretTestId}
+            data-revealed={revealed}
             className={cn(
               'grid grid-cols-3 gap-2 transition-all duration-300',
               !revealed && 'pointer-events-none select-none blur-sm',
             )}
           >
+            {/* Until revealed, each word is a mask: the phrase is not in the
+                document, so nothing reading the page can lift it early. */}
             {words.map((word, index) => (
-              <div key={`${index}-${word}`} className="flex items-center gap-2 rounded-xl bg-card bg-gradient-card px-3 py-2.5 shadow-raised">
+              <div key={index} className="flex items-center gap-2 rounded-xl bg-card bg-gradient-card px-3 py-2.5 shadow-raised">
                 <span className="w-4 shrink-0 text-caption font-bold text-secondary-content">
                   {index + 1}
                 </span>
-                <span className="font-mono text-body text-foreground">{word}</span>
+                <span className="font-mono text-body text-foreground">{revealed ? word : MASK}</span>
               </div>
             ))}
           </div>
@@ -93,7 +112,7 @@ export function RecoveryPhraseCard({
               onClick={() => onRevealChange(true)}
             >
               <IconGlyph glyph={Visibility} className="text-icon-lg" />
-              Tap to reveal
+              {revealLabel}
             </Button>
           </div>
         )}

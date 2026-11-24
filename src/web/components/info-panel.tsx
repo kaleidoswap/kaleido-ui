@@ -46,6 +46,7 @@ export interface InfoPanelProps {
   icon?: IconName | ReactNode
   children: ReactNode
   className?: string
+  'data-testid'?: string
 }
 
 export function InfoPanel({
@@ -54,6 +55,7 @@ export function InfoPanel({
   icon = tone === 'danger' ? 'warning' : tone === 'success' ? 'check_circle' : 'info',
   children,
   className,
+  'data-testid': testId,
 }: InfoPanelProps) {
   const styles = toneClass[tone]
   const renderedIcon =
@@ -64,7 +66,7 @@ export function InfoPanel({
     )
 
   return (
-    <div className={cn('rounded-xl p-4', styles.panel, className)}>
+    <div data-testid={testId} className={cn('rounded-xl p-4', styles.panel, className)}>
       <div className="flex items-start gap-3">
         {renderedIcon}
         <div className="min-w-0 flex-1">

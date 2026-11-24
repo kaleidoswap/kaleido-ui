@@ -36,6 +36,7 @@ export type IconName =
   | 'error'
   | 'expand_less'
   | 'expand_more'
+  | 'more_vert'
   | 'fingerprint'
   | 'folder_zip'
   | 'grid_view'
@@ -151,6 +152,7 @@ export const outlinedMap: Record<IconName, React.FC<SVGProps<SVGSVGElement>>> = 
   'error': Outlined.Error,
   'expand_less': Outlined.ExpandLess,
   'expand_more': Outlined.ExpandMore,
+  'more_vert': Outlined.MoreVert,
   'fingerprint': Outlined.Fingerprint,
   'folder_zip': Outlined.FolderZip,
   'grid_view': Outlined.GridView,

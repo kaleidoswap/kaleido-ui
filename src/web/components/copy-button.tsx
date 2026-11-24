@@ -1,4 +1,4 @@
-import type { MouseEvent } from 'react'
+import type { MouseEvent, ReactNode } from 'react'
 import { Button, type ButtonProps } from '../primitives/button'
 import { CopyIcon } from './deposit-ui-shared'
 import { useCopyToClipboard, type CopyState } from '../hooks/use-copy-to-clipboard'
@@ -21,6 +21,12 @@ export interface CopyButtonProps
   copiedAnnouncement?: string
   onCopied?: () => void
   onCopyError?: (error: unknown) => void
+  /**
+   * Visible text beside the glyph ("Copy invoice"), turning the icon button
+   * into a small labelled pill. The text is then the button's name, unless
+   * `copyLabel` says otherwise.
+   */
+  visibleLabel?: ReactNode
 }
 
 export const COPY_FAILED_MESSAGE = 'Copy failed — select it and copy by hand.'
@@ -42,6 +48,7 @@ export function CopyButton({
   copiedAnnouncement,
   onCopied,
   onCopyError,
+  visibleLabel,
   variant = 'quiet',
   className,
   disabled,
@@ -59,8 +66,8 @@ export function CopyButton({
       <Button
         type="button"
         variant={variant}
-        size="icon-sm"
-        aria-label={copyLabel ?? `Copy ${label}`}
+        size={visibleLabel ? 'xs' : 'icon-sm'}
+        aria-label={visibleLabel ? copyLabel : (copyLabel ?? `Copy ${label}`)}
         disabled={disabled}
         onClick={onClick}
         className={cn(
@@ -71,6 +78,7 @@ export function CopyButton({
         {...props}
       >
         <CopyIcon copied={state === 'copied'} variant="bare" />
+        {visibleLabel}
       </Button>
       {state === 'failed' && (
         <span data-slot="copy-button-error" role="alert" className="text-caption text-danger-fg">

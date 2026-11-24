@@ -721,6 +721,10 @@ Pieces a wallet popup reaches for on almost every screen.
 - **`AssetCard loading`** — a balance being fetched again: the amount keeps its place, so the row does not jump, and a labelled `Spinner` stands in for it.
 - **`QrCode size="fluid" maxSize`** — a code that fills its container's width and stays square, for a popup narrower than the code's natural size.
 - **`SegmentedTabsOption description`** — a short second line under an option's label, when the name alone does not say what it is ("KaleidoSwap" / "RGB Lightning").
+- **`CopyButton visibleLabel`** — the copy button as a small labelled pill ("Copy invoice") where an icon alone is not enough; the text names the button. `Copyable` passes `copyLabel`, `copiedAnnouncement` and `failedMessage` on, so its button speaks the app's language.
+- **`SettingItem` / `SelectableCard`** — clickable ones are real buttons (keyboard-reachable, `disabled`); `SelectableCard` takes an `icon`.
+- **`Tooltip placement="bottom-end" block`** — start/end placements for a trigger near a screen edge, and `block` for a bubble holding rows. It opens on plain `:hover`, not only on hover-capable pointers.
+- **`RecoveryPhraseCard`** — the words are not in the document until revealed (each is a mask); `revealLabel`, `hideLabel`, `hideable`.
 - **`AmountUnitToggle baseUnit altUnit choices`** — the unit switch beside an amount field: the base unit and one alternative as a two-segment pill, the other alternatives in a `BottomSheet` behind a chevron.
 
 ## Do's and Don'ts

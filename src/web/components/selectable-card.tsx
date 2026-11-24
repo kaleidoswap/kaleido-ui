@@ -10,6 +10,11 @@ export interface SelectableCardProps {
   preview?: ReactNode
   indicator?: boolean
   children?: ReactNode
+  /** A glyph or logo tile before the title. */
+  icon?: ReactNode
+  /** Cannot be picked now; stays visible, dimmed. */
+  disabled?: boolean
+  'data-testid'?: string
   className?: string
 }
 
@@ -22,13 +27,16 @@ export function SelectableCard({
   preview,
   indicator = true,
   children,
+  icon,
+  disabled = false,
+  'data-testid': testId,
   className,
 }: SelectableCardProps) {
   const content = (
-    <div className="flex items-start justify-between gap-3">
-      <div className="flex min-w-0 flex-1 items-start gap-3">
+    <span className="flex items-start justify-between gap-3">
+      <span className="flex min-w-0 flex-1 items-start gap-3">
         {indicator && (
-          <div
+          <span
             className={cn(
               'mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors',
               selected
@@ -36,22 +44,27 @@ export function SelectableCard({
                 : 'border-secondary/40',
             )}
           >
-            {selected && <div className="size-2 rounded-full bg-white" />}
-          </div>
+            {selected && <span className="size-2 rounded-full bg-white" />}
+          </span>
         )}
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
+        {icon && (
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary/15 text-secondary-content">
+            {icon}
+          </span>
+        )}
+        <span className="min-w-0 flex-1">
+          <span className="flex flex-wrap items-center gap-2">
             <span className="text-body font-bold text-foreground">{title}</span>
             {badge}
-          </div>
+          </span>
           {description && (
-            <p className="mt-0.5 text-caption leading-relaxed text-muted-foreground">{description}</p>
+            <span className="mt-0.5 block text-caption leading-relaxed text-muted-foreground">{description}</span>
           )}
           {children}
-        </div>
-      </div>
-      {preview && <div className="shrink-0 text-right">{preview}</div>}
-    </div>
+        </span>
+      </span>
+      {preview && <span className="shrink-0 text-right">{preview}</span>}
+    </span>
   )
 
   const cardClassName = cn(
@@ -59,16 +72,28 @@ export function SelectableCard({
     selected
       ? 'bg-gradient-active ring-1 ring-inset ring-primary/40 shadow-glow-primary-soft'
       : cn('bg-gradient-card shadow-card', onClick && 'hover:-translate-y-0.5 hover:shadow-card-hover'),
+    onClick && 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring disabled:pointer-events-none disabled:opacity-50',
     className,
   )
 
   if (onClick) {
     return (
-      <button type="button" onClick={onClick} className={cardClassName}>
+      <button
+        type="button"
+        onClick={onClick}
+        disabled={disabled}
+        aria-pressed={selected}
+        data-testid={testId}
+        className={cardClassName}
+      >
         {content}
       </button>
     )
   }
 
-  return <div className={cardClassName}>{content}</div>
+  return (
+    <div data-testid={testId} className={cardClassName}>
+      {content}
+    </div>
+  )
 }

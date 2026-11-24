@@ -345,6 +345,14 @@ export const LockOpen = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 )
 
+export const MoreVert = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 128 128" fill="currentColor" aria-hidden="true" {...props}>
+    <circle cx="64" cy="26.67" r="10.13" />
+    <circle cx="64" cy="64" r="10.13" />
+    <circle cx="64" cy="101.33" r="10.13" />
+  </svg>
+)
+
 export const Menu = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 128 128" fill="currentColor" aria-hidden="true" {...props}>
     <path d="M15.9941 95.9606H111.955V85.2983H15.9941V95.9606ZM15.9941 69.3049H111.955V58.6426H15.9941V69.3049ZM15.9941 31.9868V42.6491H111.955V31.9868H15.9941Z"/>

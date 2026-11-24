@@ -178,6 +178,7 @@ export interface SegmentedTabsProps<TValue extends string = string> {
   /** The group's name. One of the two is required: a radio group needs a name. */
   'aria-label'?: string
   'aria-labelledby'?: string
+  'data-testid'?: string
   className?: string
 }
 
@@ -197,8 +198,11 @@ function SegmentedTabs<TValue extends string = string>({
   fullWidth = true,
   'aria-label': ariaLabel,
   'aria-labelledby': ariaLabelledBy,
+  'data-testid': testId,
   className,
 }: SegmentedTabsProps<TValue>) {
+  // A description adds a second line, so the bar grows with it instead of clipping.
+  const hasDescription = options.some((option) => option.description)
   const refs = React.useRef<(HTMLButtonElement | null)[]>([])
   const { ref: groupRef, box } = useActiveIndicator<HTMLDivElement>()
   const look = { size, fullWidth }
@@ -228,10 +232,11 @@ function SegmentedTabs<TValue extends string = string>({
       aria-labelledby={ariaLabelledBy}
       ref={groupRef}
       data-slot="segmented-tabs"
+      data-testid={testId}
       data-size={size}
       data-sliding={box ? 'true' : 'false'}
       onKeyDown={onKeyDown}
-      className={cn(tabsListClass(look), className)}
+      className={cn(tabsListClass(look), hasDescription && 'h-auto', className)}
     >
       <ActiveIndicator box={box} />
       {options.map((option, index) => {

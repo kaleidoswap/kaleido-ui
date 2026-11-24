@@ -20,6 +20,11 @@ export interface CopyableProps {
    * than recognised by its start in a dense row.
    */
   wrap?: boolean
+  /** Passed to the CopyButton: its accessible name, announcement and failure text. */
+  copyLabel?: string
+  copiedAnnouncement?: string
+  failedMessage?: string
+  onCopied?: () => void
   className?: string
 }
 
@@ -28,7 +33,18 @@ export interface CopyableProps {
  * one click selects it all for a manual copy) and carries the full value as
  * its `title`, so a shortened display never hides what will be copied.
  */
-export function Copyable({ value, label, children, mono = true, wrap = false, className }: CopyableProps) {
+export function Copyable({
+  value,
+  label,
+  children,
+  mono = true,
+  wrap = false,
+  copyLabel,
+  copiedAnnouncement,
+  failedMessage,
+  onCopied,
+  className,
+}: CopyableProps) {
   return (
     <span data-slot="copyable" className={cn('inline-flex min-w-0 max-w-full items-center gap-1', className)}>
       <span
@@ -37,7 +53,14 @@ export function Copyable({ value, label, children, mono = true, wrap = false, cl
       >
         {children ?? value}
       </span>
-      <CopyButton value={value} label={label} />
+      <CopyButton
+        value={value}
+        label={label}
+        copyLabel={copyLabel}
+        copiedAnnouncement={copiedAnnouncement}
+        failedMessage={failedMessage}
+        onCopied={onCopied}
+      />
     </span>
   )
 }

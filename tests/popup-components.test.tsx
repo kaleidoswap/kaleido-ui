@@ -188,3 +188,106 @@ test('BottomSheet closes from its close button and Escape, unless closing is hel
   assert.equal(closed, 2)
   open.unmount()
 })
+
+test('LoadingCard uses the Spinner; ErrorCard can leave out the description', async () => {
+  const { LoadingCard, ErrorCard } = await import('../src/web/components/page-shell')
+  const loading = html(createElement(LoadingCard, { message: 'Loading…' }))
+  assert.match(loading, /role="status"/)
+  assert.match(loading, /data-slot="spinner"/)
+  assert.doesNotMatch(loading, /border-t-primary/)
+  const error = html(createElement(ErrorCard, { title: 'Could not load' }))
+  assert.match(error, /Could not load/)
+  assert.doesNotMatch(error, /<p class="mb-4/)
+})
+
+test('SegmentedTabs grows with a description and takes a test id; InfoPanel takes a test id', async () => {
+  const { InfoPanel } = await import('../src/web/components/info-panel')
+  const tabs = html(
+    createElement(SegmentedTabs, {
+      'aria-label': 'Venue',
+      'data-testid': 'venue',
+      value: 'a',
+      onValueChange: () => undefined,
+      options: [{ value: 'a', label: 'A', description: 'first' }],
+    }),
+  )
+  assert.match(tabs, /data-testid="venue"/)
+  assert.match(tabs, /class="[^"]*\bh-auto\b/)
+  assert.doesNotMatch(tabs.match(/data-slot="segmented-tabs"[^>]*/)![0], /\bh-12\b/)
+  assert.match(html(createElement(InfoPanel, { 'data-testid': 'note' }, 'x')), /data-testid="note"/)
+})
+
+test('CopyButton visibleLabel shows text and lets it name the button; Copyable passes labels on', async () => {
+  const { CopyButton } = await import('../src/web/components/copy-button')
+  const { Copyable } = await import('../src/web/components/copyable')
+  const pill = html(createElement(CopyButton, { value: 'lnbc1', label: 'invoice', visibleLabel: 'Copy invoice' }))
+  assert.match(pill, /Copy invoice<\/button>/)
+  assert.doesNotMatch(pill, /aria-label=/)
+  const icon = html(createElement(CopyButton, { value: 'lnbc1', label: 'invoice' }))
+  assert.match(icon, /aria-label="Copy invoice"/)
+  const copyable = html(createElement(Copyable, { value: 'abc', label: 'id', copyLabel: 'Copier l’id' }))
+  assert.match(copyable, /aria-label="Copier l’id"/)
+})
+
+test('A clickable SettingItem is a keyboard-reachable button; a static one is not', async () => {
+  const { SettingItem } = await import('../src/web/components/setting-item')
+  const clickable = html(createElement(SettingItem, { title: 'Pay', onClick: () => undefined, disabled: true, 'data-testid': 'pay' }))
+  assert.match(clickable, /^<button type="button" disabled="" data-testid="pay"/)
+  assert.doesNotMatch(clickable, /<div/)
+  assert.match(html(createElement(SettingItem, { title: 'Info' })), /^<div/)
+})
+
+test('SelectableCard takes an icon, disabled and a test id', async () => {
+  const { SelectableCard } = await import('../src/web/components/selectable-card')
+  const markup = html(
+    createElement(SelectableCard, {
+      title: 'Phrase',
+      onClick: () => undefined,
+      disabled: true,
+      icon: createElement('svg', { 'data-icon': 'x' }),
+      'data-testid': 'method',
+    }),
+  )
+  assert.match(markup, /^<button type="button" disabled="" data-testid="method"/)
+  assert.match(markup, /data-icon="x"/)
+  assert.doesNotMatch(markup, /<div/)
+})
+
+test('Tooltip aligns to an edge, opens on plain :hover and can hold blocks', async () => {
+  const { Tooltip } = await import('../src/web/primitives/tooltip')
+  const markup = html(
+    createElement(Tooltip, { content: createElement('div', null, 'rows'), placement: 'bottom-end', block: true }, createElement('button', null, 'i')),
+  )
+  assert.match(markup, /^<div class="group\/tooltip/)
+  assert.match(markup, /<div[^>]*role="tooltip"[^>]*class="[^"]*right-0 top-full/)
+  assert.match(markup, /group-\[:hover\]\/tooltip:block/)
+  assert.doesNotMatch(markup, /group-hover\/tooltip/)
+})
+
+test('The icon set has more_vert', async () => {
+  const { isIconName } = await import('../src/web/icons/index')
+  assert.equal(isIconName('more_vert'), true)
+})
+
+test('RecoveryPhraseCard keeps the words out of the page until revealed', async () => {
+  const { RecoveryPhraseCard } = await import('../src/web/components/recovery-phrase-card')
+  const words = ['abandon', 'ability', 'able']
+  const hidden = html(
+    createElement(RecoveryPhraseCard, {
+      words,
+      revealed: false,
+      onRevealChange: () => undefined,
+      revealLabel: 'Révéler',
+      secretTestId: 'secret',
+    }),
+  )
+  // As element text, not class names ("disabled:" contains "able").
+  assert.doesNotMatch(hidden, />(abandon|ability|able)</)
+  assert.match(hidden, /Révéler/)
+  assert.match(hidden, /data-testid="secret" data-revealed="false"/)
+  const shown = html(
+    createElement(RecoveryPhraseCard, { words, revealed: true, onRevealChange: () => undefined, hideable: false }),
+  )
+  assert.match(shown, />abandon</)
+  assert.doesNotMatch(shown, />Hide</)
+})

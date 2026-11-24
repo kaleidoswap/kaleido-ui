@@ -1,4 +1,5 @@
 import { IconGlyph } from '../primitives/icon-glyph'
+import { Spinner } from '../primitives/spinner'
 import { Error } from '../icons/outlined'
 import type { ReactNode } from 'react'
 import { cn } from '../utils/cn'
@@ -78,12 +79,13 @@ export interface LoadingCardProps {
 export function LoadingCard({ message = 'Loading...', className }: LoadingCardProps) {
   return (
     <div
+      role="status"
       className={cn(
         'flex flex-col items-center justify-center py-16 text-muted-foreground',
         className,
       )}
     >
-      <div className="mb-4 size-12 animate-spin rounded-full border-4 border-secondary/25 border-t-primary shadow-glow-violet-soft" />
+      <Spinner size="4xl" tone="brand" className="mb-4" />
       <p className="text-body">{message}</p>
     </div>
   )
@@ -95,7 +97,8 @@ export function LoadingCard({ message = 'Loading...', className }: LoadingCardPr
  */
 export interface ErrorCardProps {
   title?: string
-  description: string
+  /** A line under the title; leave it out when the title says enough. */
+  description?: string
   onRetry?: () => void
   retryLabel?: string
   className?: string
@@ -116,7 +119,11 @@ export function ErrorCard({
         <IconGlyph glyph={Error} className="text-danger-fg text-icon-4xl" />
       </div>
       <h3 className="mb-1 text-body font-semibold">{title}</h3>
-      <p className="mb-4 max-w-xs text-caption text-muted-foreground">{description}</p>
+      {description ? (
+        <p className="mb-4 max-w-xs text-caption text-muted-foreground">{description}</p>
+      ) : (
+        <div className="mb-3" />
+      )}
       {onRetry && (
         <button
           type="button"
