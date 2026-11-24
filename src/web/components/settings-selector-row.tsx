@@ -19,7 +19,15 @@ export function SettingsSelectorRow({
   iconClassName,
 }: SettingsSelectorRowProps) {
   return (
-    <div className={cn('flex items-start justify-between gap-3 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-5 shadow-card-secondary', className)}>
+    // The glass surface (backdrop-blur) makes each row its own stacking
+    // context, so an open selector's panel would sit under the next row. The
+    // row rises above its neighbours while its selector is open.
+    <div
+      className={cn(
+        'relative flex items-start justify-between gap-3 rounded-2xl bg-card/55 backdrop-blur-xl backdrop-saturate-150 bg-gradient-card p-5 shadow-card-secondary has-[[aria-expanded=true]]:z-30',
+        className,
+      )}
+    >
       <div className="flex min-w-0 flex-1 items-start gap-3">
         <div
           className={cn(

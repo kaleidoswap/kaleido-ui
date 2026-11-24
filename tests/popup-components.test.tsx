@@ -291,3 +291,9 @@ test('RecoveryPhraseCard keeps the words out of the page until revealed', async 
   assert.match(shown, />abandon</)
   assert.doesNotMatch(shown, />Hide</)
 })
+
+test('SettingsSelectorRow rises above the next row while its selector is open', async () => {
+  const { SettingsSelectorRow } = await import('../src/web/components/settings-selector-row')
+  const markup = html(createElement(SettingsSelectorRow, { icon: null, title: 'Network', control: createElement('button', { 'aria-expanded': true }, 'x') }))
+  assert.match(markup, /class="relative [^"]*has-\[\[aria-expanded=true\]\]:z-30/)
+})
