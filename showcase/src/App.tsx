@@ -19,6 +19,7 @@ import {
 } from './pages/ComponentGalleries'
 import { ActionsGallery } from './pages/ActionsGallery'
 import { InputFieldsGallery } from './pages/InputFieldsGallery'
+import { PopupBlocksGallery } from './pages/PopupBlocksGallery'
 import { eyebrow } from 'kaleido-ui'
 import { Demo, Grid } from './pages/blocks'
 import { slug } from './search/slug'
@@ -1805,6 +1806,9 @@ export function App() {
             </Grid>
             <div className="mt-16">
               <InputFieldsGallery />
+            </div>
+            <div className="mt-16">
+              <PopupBlocksGallery />
             </div>
           </Section>
 

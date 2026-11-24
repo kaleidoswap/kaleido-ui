@@ -6,7 +6,13 @@ import { kaleidoswapMarkArtwork } from '../assets/kaleidoswap-brand'
 
 export interface QrCodeProps {
   value: string
-  size?: number
+  /**
+   * Side in px, or `'fluid'` to fill the container's width (capped by
+   * `maxSize`) and stay square, for codes that should shrink on narrow screens.
+   */
+  size?: number | 'fluid'
+  /** With `size="fluid"`: the largest side in px. */
+  maxSize?: number
   className?: string
   /**
    * 'onLight' (default) renders dark modules on a white card — use inside a
@@ -84,7 +90,7 @@ const LOGO_PATHS = (
   </>
 )
 
-export function QrCode({ value, size = 160, className, tone = 'onLight', logoSrc }: QrCodeProps) {
+export function QrCode({ value, size = 160, maxSize, className, tone = 'onLight', logoSrc }: QrCodeProps) {
   const svgContent = useMemo(() => {
     if (!value) return null
 
@@ -177,7 +183,11 @@ export function QrCode({ value, size = 160, className, tone = 'onLight', logoSrc
   }, [value, tone, logoSrc])
 
   return (
-    <div className={className} style={{ width: size, height: size }}>
+    <div
+      className={className}
+      data-qr-size={size === 'fluid' ? 'fluid' : undefined}
+      style={size === 'fluid' ? { width: '100%', maxWidth: maxSize, aspectRatio: '1 / 1' } : { width: size, height: size }}
+    >
       {svgContent}
     </div>
   )

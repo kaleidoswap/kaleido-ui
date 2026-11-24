@@ -6,6 +6,7 @@ import { protocolIcons } from '../assets/protocol-icons'
 import { formatDisplayAmountText } from '../utils/amount-display'
 import { StatusBadge, type StatusType } from './status-badge'
 import { eyebrow } from '../utils/type-roles'
+import { Spinner } from '../primitives/spinner'
 
 export interface AssetCardProps {
   /** Asset ticker symbol (e.g. "BTC", "USDT") */
@@ -26,6 +27,11 @@ export interface AssetCardProps {
   status?: StatusType
   /** Whether the asset is yield generating */
   isYielding?: boolean
+  /**
+   * The balance is being (re)fetched: the amount keeps its place, so the row
+   * does not jump, and a spinner stands in for it until it arrives.
+   */
+  loading?: boolean
   onClick?: () => void
   className?: string
 }
@@ -40,6 +46,7 @@ export function AssetCard({
   accentColor,
   status,
   isYielding,
+  loading = false,
   onClick,
   className,
 }: AssetCardProps) {
@@ -97,12 +104,23 @@ export function AssetCard({
           </div>
         </div>
         <div className="flex min-w-0 max-w-[45%] flex-col items-end text-right">
-          <p
-            className="max-w-full truncate font-bold text-subhead tabular-nums tracking-tight text-foreground transition-colors group-hover:opacity-90"
-            title={shown}
-          >
-            {displayShown}
-          </p>
+          <div className="relative max-w-full">
+            <p
+              className={cn(
+                'max-w-full truncate font-bold text-subhead tabular-nums tracking-tight text-foreground transition-colors group-hover:opacity-90',
+                loading && 'invisible',
+              )}
+              title={loading ? undefined : shown}
+              aria-hidden={loading || undefined}
+            >
+              {displayShown}
+            </p>
+            {loading && (
+              <span className="absolute inset-y-0 right-0 flex items-center">
+                <Spinner size="lg" tone="brand" label="Loading balance" />
+              </span>
+            )}
+          </div>
           <div className="mt-0.5 flex min-h-6 items-center justify-end gap-1">
             {status && <StatusBadge status={status} />}
             {status && ticker && <span className="text-tiny text-muted-foreground">·</span>}

@@ -20,6 +20,9 @@ export {
 
 // Primitives
 export { Button, buttonVariants, type ButtonProps } from './primitives/button'
+export { Spinner, type SpinnerProps, type SpinnerSize, type SpinnerTone } from './primitives/spinner'
+export { Textarea, type TextareaProps } from './primitives/textarea'
+export { Checkbox, CheckboxRow, type CheckboxProps, type CheckboxRowProps } from './primitives/checkbox'
 export { IconButton, type IconButtonProps } from './primitives/icon-button'
 export { GlyphButton, type GlyphButtonProps } from './primitives/glyph-button'
 export {
@@ -425,7 +428,12 @@ export {
 } from './components/summary-rows'
 export { SectionLabel } from './components/section-label'
 export { SectionHeader, type SectionHeaderProps } from './components/section-header'
-export { AlertBanner } from './components/alert-banner'
+export { AlertBanner, type AlertBannerProps } from './components/alert-banner'
+export {
+  AmountUnitToggle,
+  type AmountUnitToggleProps,
+  type AmountUnitChoice,
+} from './components/amount-unit-toggle'
 export { InfoPanel, type InfoPanelProps } from './components/info-panel'
 export {
   InfoChip,

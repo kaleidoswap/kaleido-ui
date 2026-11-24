@@ -710,6 +710,19 @@ Pieces a desk app — a dashboard or a back office — is assembled from, beside
 - **`AccountMenu name secondary label`** — who is signed in, at the end of the top bar: avatar, name and one secondary line as the trigger (a `Button` `surface`, like the `Popover` and `DropdownMenu` triggers), the identity and the account's entries (`AccountMenuItem`, `AccountMenuSeparator`, then a `destructive` Log out) in a panel on the `Popover` look, but opaque (`bg-popover`, no glass). A disclosure, not a `menu`, because it may hold an id with its copy button: Tab walks it, Escape closes it and returns focus.
 - **`MetricCard definition change`** — `definition` says what the figure counts, under the label in `caption`; `change` is the comparison with an earlier period, under the figure. **`Copyable wrap`** shows a value read in full (an org id, an address) across lines instead of truncating it.
 
+### Popup building blocks
+
+Pieces a wallet popup reaches for on almost every screen.
+
+- **`Spinner size tone label`** — the one busy glyph, the progress-activity arc turning in place (still under `prefers-reduced-motion`). Never a hand-made border ring or a spinning refresh glyph. Decorative by default; give it a `label` when it is the only sign that something is loading. **`Button loading`** puts one before the label, disables the button and sets `aria-busy`.
+- **`Textarea`** — free text longer than a line, on the `Input` field surface; resizes vertically only.
+- **`Checkbox` / `CheckboxRow label description`** — an opt-in that takes effect when a form is submitted ("include logs", "I have written it down"); a real checkbox, the whole row its label. A setting that applies at once is a `SwitchRow`.
+- **`AlertBanner action onDismiss`** — a banner the reader can act on (one small `Button` under the message) or put away (a close button at the top right). Keep to one action.
+- **`AssetCard loading`** — a balance being fetched again: the amount keeps its place, so the row does not jump, and a labelled `Spinner` stands in for it.
+- **`QrCode size="fluid" maxSize`** — a code that fills its container's width and stays square, for a popup narrower than the code's natural size.
+- **`SegmentedTabsOption description`** — a short second line under an option's label, when the name alone does not say what it is ("KaleidoSwap" / "RGB Lightning").
+- **`AmountUnitToggle baseUnit altUnit choices`** — the unit switch beside an amount field: the base unit and one alternative as a two-segment pill, the other alternatives in a `BottomSheet` behind a chevron.
+
 ## Do's and Don'ts
 
 - **DO** use `brand.primary` only for CTAs, active states, and success. It is a signal, not a decoration.
@@ -738,6 +751,7 @@ These rules exist because generated UIs kept drifting: ad-hoc borders, wrong but
 ### Rows and toggles use the shipped primitives
 
 - Setting/permission toggle → `SwitchRow` (label, description, Switch). Never hand-roll a flex row around `Switch`.
+- Opt-in submitted with a form → `CheckboxRow`. Loading → `Spinner` (in a button, `Button loading`). Multi-line text → `Textarea`.
 - Navigation row in Settings → `SettingsTile` / `SettingItem`. Notice/callout → `InfoPanel` (pick a `tone`; don't build colored boxes). Small status chip → `ToneBadge`. Collapsible detail → `DisclosureCard`.
 - If the primitive you need doesn't exist, add it HERE (kaleido-ui) first, then consume it — never prototype it inline in the consumer app.
 

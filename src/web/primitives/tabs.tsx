@@ -162,6 +162,8 @@ export interface SegmentedTabsOption<TValue extends string = string> {
   label: React.ReactNode
   /** A glyph before the label (an `<Icon size="sm" />`). */
   icon?: React.ReactNode
+  /** A short second line under the label ("RGB Lightning", "Spark AMM"). */
+  description?: React.ReactNode
   disabled?: boolean
 }
 
@@ -248,8 +250,20 @@ function SegmentedTabs<TValue extends string = string>({
             onClick={() => onValueChange(option.value)}
             className={cn(tabsTriggerClass(look), checked && tabsCheckedClass)}
           >
-            {option.icon}
-            {option.label}
+            {option.description ? (
+              <span className="flex flex-col items-center gap-0.5">
+                <span className="inline-flex items-center gap-1.5">
+                  {option.icon}
+                  {option.label}
+                </span>
+                <span className="text-xxs font-normal leading-tight opacity-70">{option.description}</span>
+              </span>
+            ) : (
+              <>
+                {option.icon}
+                {option.label}
+              </>
+            )}
           </button>
         )
       })}
