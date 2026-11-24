@@ -1,4 +1,6 @@
-import type { ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
+import { GlyphButton } from '../primitives/glyph-button'
+import { Close } from '../icons/outlined'
 import { cn } from '../utils/cn'
 import { Button, type ButtonProps } from '../primitives/button'
 import { Icon } from '../primitives/icon'
@@ -23,6 +25,8 @@ export interface BottomSheetProps {
   actions?: BottomSheetAction[]
   className?: string
   contentClassName?: string
+  /** Accessible name of the close button, shown while the sheet can be closed. */
+  closeLabel?: string
 }
 
 export function BottomSheet({
@@ -35,7 +39,22 @@ export function BottomSheet({
   actions,
   className,
   contentClassName,
+  closeLabel = 'Close',
 }: BottomSheetProps) {
+  // Closable whenever a close handler is given and closing is not held back
+  // (closeOnBackdrop false while an operation runs): then the close button,
+  // Escape and the backdrop all close it.
+  const closable = Boolean(onClose) && closeOnBackdrop
+
+  useEffect(() => {
+    if (!open || !closable) return
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose?.()
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [open, closable, onClose])
+
   if (!open) return null
 
   const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -49,6 +68,9 @@ export function BottomSheet({
         className,
       )}
       onClick={handleBackdropClick}
+      role="dialog"
+      aria-modal="true"
+      aria-label={typeof title === 'string' ? title : undefined}
     >
       <ScrollArea
         className={cn(
@@ -60,13 +82,16 @@ export function BottomSheet({
         <div className="-mt-1 flex justify-center">
           <div className="h-1 w-10 rounded-full bg-secondary/40" />
         </div>
-        {(title || icon) && (
+        {(title || icon || closable) && (
           <div className="mt-4 flex items-center gap-2">
             {icon}
-            <p className="text-body font-bold text-foreground">{title}</p>
+            <p className="min-w-0 flex-1 text-body font-bold text-foreground">{title}</p>
+            {closable && (
+              <GlyphButton icon={Close} label={closeLabel} size="sm" variant="quiet" onClick={() => onClose?.()} className="-my-1 -mr-1 shrink-0" />
+            )}
           </div>
         )}
-        <div className={cn((title || icon) && 'mt-3')}>{children}</div>
+        <div className={cn((title || icon || closable) && 'mt-3')}>{children}</div>
         {actions && actions.length > 0 && (
           <div className="mt-4 flex gap-2">
             {actions.map((action, index) => (

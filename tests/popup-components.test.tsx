@@ -160,3 +160,31 @@ test('AmountUnitToggle has no chooser with a single alternative', () => {
   )
   assert.doesNotMatch(markup, /amount-unit-more/)
 })
+
+test('AssetCard loading takes a custom spinner label and keeps the amount a direct child', () => {
+  const markup = html(
+    createElement(AssetCard, { ticker: 'USDT', displayBalance: '1', loading: true, loadingLabel: 'Loading asset balance' }),
+  )
+  assert.match(markup, /aria-label="Loading asset balance"/)
+  assert.match(markup, /max-w-\[45%\][^"]*"><p /)
+})
+
+test('BottomSheet closes from its close button and Escape, unless closing is held back', async () => {
+  const { BottomSheet } = await import('../src/web/components/bottom-sheet')
+  let closed = 0
+  const sheet = (closeOnBackdrop: boolean) =>
+    createElement(BottomSheet, { open: true, title: 'Choose', onClose: () => closed++, closeOnBackdrop }, 'Body')
+
+  const held = mount(sheet(false))
+  assert.equal(document.querySelector('button[aria-label="Close"]'), null)
+  act(() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })))
+  assert.equal(closed, 0)
+  held.unmount()
+
+  const open = mount(sheet(true))
+  assert.equal(document.querySelector('[role="dialog"]')?.getAttribute('aria-label'), 'Choose')
+  act(() => (document.querySelector('button[aria-label="Close"]') as HTMLButtonElement).click())
+  act(() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })))
+  assert.equal(closed, 2)
+  open.unmount()
+})

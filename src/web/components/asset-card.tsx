@@ -32,6 +32,8 @@ export interface AssetCardProps {
    * does not jump, and a spinner stands in for it until it arrives.
    */
   loading?: boolean
+  /** Accessible name of the loading spinner. */
+  loadingLabel?: string
   onClick?: () => void
   className?: string
 }
@@ -47,6 +49,7 @@ export function AssetCard({
   status,
   isYielding,
   loading = false,
+  loadingLabel = 'Loading balance',
   onClick,
   className,
 }: AssetCardProps) {
@@ -103,24 +106,23 @@ export function AssetCard({
             </div>
           </div>
         </div>
-        <div className="flex min-w-0 max-w-[45%] flex-col items-end text-right">
-          <div className="relative max-w-full">
-            <p
-              className={cn(
-                'max-w-full truncate font-bold text-subhead tabular-nums tracking-tight text-foreground transition-colors group-hover:opacity-90',
-                loading && 'invisible',
-              )}
-              title={loading ? undefined : shown}
-              aria-hidden={loading || undefined}
-            >
-              {displayShown}
-            </p>
-            {loading && (
-              <span className="absolute inset-y-0 right-0 flex items-center">
-                <Spinner size="lg" tone="brand" label="Loading balance" />
-              </span>
+        <div className="relative flex min-w-0 max-w-[45%] flex-col items-end text-right">
+          <p
+            className={cn(
+              'max-w-full truncate font-bold text-subhead tabular-nums tracking-tight text-foreground transition-colors group-hover:opacity-90',
+              loading && 'invisible',
             )}
-          </div>
+            title={loading ? undefined : shown}
+            aria-hidden={loading || undefined}
+          >
+            {displayShown}
+          </p>
+          {loading && (
+            // On the amount's first line (same text size, one line tall), right-aligned like it.
+            <span className="absolute right-0 top-0 flex h-[1lh] items-center text-subhead">
+              <Spinner size="lg" tone="brand" label={loadingLabel} />
+            </span>
+          )}
           <div className="mt-0.5 flex min-h-6 items-center justify-end gap-1">
             {status && <StatusBadge status={status} />}
             {status && ticker && <span className="text-tiny text-muted-foreground">·</span>}
