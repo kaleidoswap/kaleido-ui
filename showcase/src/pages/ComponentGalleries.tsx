@@ -244,7 +244,7 @@ export function TableGallery() {
         </Demo>
       </div>
       <div className="xl:col-span-2">
-        <Demo title="Table — tall" use="128 rows, ten to a page, in a box that shows five (max-h-[21rem], the header and five rows): wrap the Table in a ScrollArea with a max height on its viewport and the grid scrolls up and down on the right-edge thumb. The Pager, with its “X of Y rows” summary, sits outside the scroll area, bottom right, so it stays put.">
+        <Demo title="Table — tall" use="128 rows, ten to a page, in a box that shows five (max-h-[21rem], the header and five rows): wrap the Table in a ScrollArea with a max height on its viewport and the grid scrolls up and down on the right-edge thumb. The Pager, with its “X–Y of Z rows” summary, sits outside the scroll area, bottom right, so it stays put.">
           <div className="mb-3 space-y-1 px-4">
             <h4 className="m-0 text-subhead font-semibold text-foreground">Swap log</h4>
             <p className="m-0 text-caption text-muted-foreground">Today's swaps, newest first, ten to a page. Scroll down for the rest of the page.</p>
@@ -288,7 +288,7 @@ export function TableGallery() {
             returned={logPage.length}
             onOffsetChange={setLogOffset}
             noun="swaps"
-            summary={`${logPage.length} of ${SWAP_LOG_TOTAL} rows`}
+            summary={`${logOffset + 1}–${logOffset + logPage.length} of ${SWAP_LOG_TOTAL} rows`}
             alwaysShow
           />
         </Demo>

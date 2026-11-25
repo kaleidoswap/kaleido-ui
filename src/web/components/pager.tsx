@@ -23,7 +23,7 @@ export interface PagerProps {
   alwaysShow?: boolean
   /** Said in place of the range when the window is empty. Defaults to "No {noun} in this window". */
   emptyLabel?: string
-  /** Said in place of the range ("10 of 128 rows"), for a list whose total is known. */
+  /** Said in place of the range ("1–10 of 128 rows"), for a list whose total is known. */
   summary?: React.ReactNode
   className?: string
 }
