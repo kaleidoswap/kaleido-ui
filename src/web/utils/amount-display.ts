@@ -63,12 +63,15 @@ export interface FormatAmountOptions {
   /** BCP 47 locale. Defaults to {@link DEFAULT_AMOUNT_LOCALE}. */
   locale?: string
   maximumFractionDigits?: number
+  /** Pad to at least this many decimals (e.g. 2 for currency). Defaults to none. */
+  minimumFractionDigits?: number
 }
 
 /** Group a number for display in an explicit locale — the one formatter the amount-bearing components share. */
 export function formatAmount(value: number, options: FormatAmountOptions = {}): string {
   if (!Number.isFinite(value)) return String(value)
   return new Intl.NumberFormat(options.locale ?? DEFAULT_AMOUNT_LOCALE, {
+    minimumFractionDigits: options.minimumFractionDigits,
     maximumFractionDigits: options.maximumFractionDigits ?? 20,
   }).format(value)
 }

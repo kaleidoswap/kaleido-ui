@@ -8,9 +8,17 @@ import { useFillHeight } from '../hooks/use-fill-height'
 import { cn } from '../utils/cn'
 import { eyebrowLarge } from '../utils/type-roles'
 
+/** The value-axis gutter every panel chart shares, so their plots are the same width. */
+const PANEL_AXIS_WIDTH = 72
+
 export interface StatTrendPanelProps {
   /** The eyebrow over the figure; it also names the panel. */
   label: ReactNode
+  /**
+   * Over the figure instead of the eyebrow, e.g. a tab menu. The `label` then
+   * stays as the panel's accessible name only, not drawn.
+   */
+  header?: ReactNode
   /** The figure, already formatted: "3,718". */
   value: ReactNode
   /** Beside the figure, smaller: "members", "+126 this month". */
@@ -54,6 +62,7 @@ export interface StatTrendPanelProps {
  */
 export function StatTrendPanel({
   label,
+  header,
   value,
   valueSuffix,
   valueSuffixTone = 'muted',
@@ -88,7 +97,8 @@ export function StatTrendPanel({
       >
         {/* A gap, not space-y: the paragraphs are m-0, which would cancel it. */}
         <div className="flex flex-col gap-3">
-          <p id={labelId} className={cn('m-0 text-muted-foreground', eyebrowLarge)}>
+          {header && <div data-slot="stat-trend-header">{header}</div>}
+          <p id={labelId} className={cn('m-0 text-muted-foreground', eyebrowLarge, header && 'sr-only')}>
             {label}
           </p>
           <p
@@ -115,7 +125,7 @@ export function StatTrendPanel({
         {action && <div className="mt-auto pt-6">{action}</div>}
       </div>
 
-      <div className="flex min-w-0 flex-col p-6">
+      <div className="flex min-w-0 flex-col px-4 py-6">
         {/* No height of its own: the column sets the row, the plot fills it. */}
         <div ref={slotRef} className="relative min-h-0 flex-1 max-lg:min-h-[20rem]">
           <div className="absolute inset-0">
@@ -133,6 +143,7 @@ export function StatTrendPanel({
               scaleLabel={scaleLabel}
               formatValue={formatValue}
               areaFill="gradient"
+              axisWidth={PANEL_AXIS_WIDTH}
               latestMarker="dot"
               height={height}
               empty={chartEmpty}
