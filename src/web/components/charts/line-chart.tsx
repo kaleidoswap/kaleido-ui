@@ -52,6 +52,11 @@ export interface LineChartProps extends ChartTitleProps {
   formatValue?: (value: number) => string
   /** Plot height in px, axes included. */
   height?: number
+  /**
+   * Fixes the value-axis gutter, in px, instead of measuring the labels, so
+   * charts side by side keep plots of the same width whatever their labels.
+   */
+  axisWidth?: number
   /** Rendered instead of the chart when there is no data. Never an empty frame. */
   empty?: ReactNode
   className?: string
@@ -78,6 +83,7 @@ export function LineChart({
   integer = false,
   formatValue = defaultChartFormat,
   height = 240,
+  axisWidth,
   empty,
   className,
   ...head
@@ -95,7 +101,7 @@ export function LineChart({
   const max = Math.max(0, ...data.flatMap((d) => series.map((s) => d.values[s.id] ?? 0)))
   const ticks = chartValueTicks(max, { integer })
   const tickLabels = ticks.map(formatValue)
-  const plotLeft = MARGIN.left + axisTextWidth(tickLabels) + 8
+  const plotLeft = MARGIN.left + (axisWidth ?? axisTextWidth(tickLabels)) + 8
   const plotRight = width - MARGIN.right
   const plotTop = MARGIN.top
   const plotBottom = height - MARGIN.bottom

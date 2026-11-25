@@ -144,17 +144,33 @@ const REVENUE_BTC = Array.from({ length: 30 }, (_, index) => {
   }
 })
 
-function RevenueDemo() {
+function RevenueDemo({ withTabs = false }: { withTabs?: boolean }) {
+  const [account, setAccount] = useState('1')
+  // Each account is the same shape at a different size, so the tabs visibly switch the figures.
+  const factor = { '1': 1, '2': 0.62, '3': 0.28 }[account] ?? 1
+  const btc = (amount: number) => `${amount < 0 ? '−' : ''}${Math.abs(amount * factor).toFixed(4)} BTC`
+  const tabProps = withTabs
+    ? {
+        tabs: [
+          { value: '1', label: 'Wallet 1' },
+          { value: '2', label: 'Wallet 2' },
+          { value: '3', label: 'Wallet 3' },
+        ],
+        tab: account,
+        onTabChange: setAccount,
+      }
+    : {}
   return (
     <MoneyTrendPanel
+      {...tabProps}
       label="Wallet revenue"
-      btc={0.0842}
-      usd={5_120.45}
+      btc={Number((0.0842 * factor).toFixed(4))}
+      usd={Number((5_120.45 * factor).toFixed(2))}
       rows={[
-        { label: 'Swap fees', value: '0.0516 BTC' },
-        { label: 'Lightning routing', value: '0.0198 BTC' },
-        { label: 'Channel opening fees', value: '0.0094 BTC' },
-        { label: 'Refunds', value: '−0.0013 BTC' },
+        { label: 'Swap fees', value: btc(0.0516), usd: 3_137.9 * factor },
+        { label: 'Lightning routing', value: btc(0.0198), usd: 1_204.1 * factor },
+        { label: 'Channel opening fees', value: btc(0.0094), usd: 571.6 * factor },
+        { label: 'Refunds', value: btc(-0.0013), usd: -79.05 * factor },
       ]}
       action={
         <Button asChild variant="ghost" size="sm" className="-ml-3">
@@ -164,7 +180,7 @@ function RevenueDemo() {
           </a>
         </Button>
       }
-      series={REVENUE_BTC}
+      series={REVENUE_BTC.map((point) => ({ ...point, value: point.value * factor }))}
       chartTitle="Daily revenue"
       chartDescription="Net of refunds, per local day · Last 30 days"
       chartLabel="Daily revenue"
@@ -186,6 +202,9 @@ export function PanelsGallery() {
 
       <BlockTitle className="mb-3 pt-12">MoneyTrendPanel</BlockTitle>
       <RevenueDemo />
+
+      <BlockTitle className="mb-3 pt-12">MoneyTrendPanel · with tabs</BlockTitle>
+      <RevenueDemo withTabs />
     </div>
   )
 }

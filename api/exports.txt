@@ -318,6 +318,7 @@ function MobileHeroAnimation
 interface MobileHeroAnimationProps
 function MoneyTrendPanel
 interface MoneyTrendPanelProps
+interface MoneyTrendRow
 const NETWORK_CONFIG
 function NativeSelect
 interface NativeSelectProps

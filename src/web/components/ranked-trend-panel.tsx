@@ -11,6 +11,9 @@ import { formatAmount } from '../utils/amount-display'
 import { eyebrow } from '../utils/type-roles'
 
 /** One period of an item's series, for the chart. */
+/** The value-axis gutter every panel chart shares, so their plots are the same width. */
+const PANEL_AXIS_WIDTH = 72
+
 export interface TrendPoint {
   /** Stable identity of the period, e.g. its ISO start. */
   key: string
@@ -230,6 +233,7 @@ export function RankedTrendPanel({
                   scaleLabel={scaleLabel}
                   formatValue={formatSeriesValue}
                   areaFill="gradient"
+                  axisWidth={PANEL_AXIS_WIDTH}
                   latestMarker="halo"
                   height={plotHeight}
                   leading={
