@@ -28,6 +28,11 @@ export interface ActivityListItem<TData = unknown> {
    * so the hop is legible without reading the label.
    */
   networkTo?: NetworkType
+  /**
+   * Network glyph on the collapsed row. Independent of `network`, which labels
+   * the expanded details.
+   */
+  networkBadge?: ReactNode
   label?: string
   data?: TData
 }
@@ -119,6 +124,7 @@ export function ActivityList<TData = unknown>({
               subAmount={item.subAmount}
               onSubAmountInfo={item.onSubAmountInfo}
               timestamp={item.timestamp}
+              networkBadge={item.networkBadge}
               onClick={() => onExpandedChange?.(isExpanded ? null : item.id)}
               className={cn(isExpanded && 'rounded-b-none')}
             />

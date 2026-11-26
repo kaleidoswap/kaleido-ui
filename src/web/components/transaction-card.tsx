@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { IconGlyph } from '../primitives/icon-glyph'
 import { ArrowOutward, Info, SouthWest } from '../icons/outlined'
 import { cn } from '../utils/cn'
@@ -24,6 +25,8 @@ export interface TransactionCardProps {
   timestamp: number
   onClick?: () => void
   className?: string
+  /** Network glyph next to the title, so the row says where it moved. */
+  networkBadge?: ReactNode
 }
 
 export function TransactionCard({
@@ -36,6 +39,7 @@ export function TransactionCard({
   timestamp,
   onClick,
   className,
+  networkBadge,
 }: TransactionCardProps) {
   const isInbound = direction === 'inbound'
 
@@ -93,8 +97,11 @@ export function TransactionCard({
           }
         />
         <div className="flex flex-col">
-          <span className="font-bold text-body tracking-wide text-foreground">
-            {isInbound ? 'Received' : 'Sent'}
+          <span className="flex items-center gap-1.5">
+            <span className="font-bold text-body tracking-wide text-foreground">
+              {isInbound ? 'Received' : 'Sent'}
+            </span>
+            {networkBadge}
           </span>
           <span className="mt-1 text-tiny text-muted-foreground font-medium tracking-wide">
             {formatDate(timestamp)}
