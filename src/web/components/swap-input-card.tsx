@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Skeleton } from './skeleton'
 import { Button, type ButtonProps } from '../primitives/button'
 import { IconGlyph } from '../primitives/icon-glyph'
 import { SwapVert, Warning } from '../icons/outlined'
@@ -244,7 +245,7 @@ export function SwapInputCard({
             />
             <div className="min-w-0 flex-1 text-right">
               {isLoadingQuote ? (
-                <div className="ml-auto h-8 w-28 animate-pulse rounded-lg bg-secondary/15" />
+                <Skeleton className="ml-auto h-8 w-28 rounded-lg" />
               ) : receiveAmount ? (
                 <span
                   className="block max-w-full truncate text-headline font-bold tabular-nums text-brand"

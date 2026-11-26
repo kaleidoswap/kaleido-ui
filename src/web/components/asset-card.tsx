@@ -120,7 +120,7 @@ export function AssetCard({
           {loading && (
             // On the amount's first line (same text size, one line tall), right-aligned like it.
             <span className="absolute right-0 top-0 flex h-[1lh] items-center text-subhead">
-              <Spinner size="lg" tone="brand" label={loadingLabel} />
+              <Spinner size="sm" tone="brand" label={loadingLabel} />
             </span>
           )}
           <div className="mt-0.5 flex min-h-6 items-center justify-end gap-1">

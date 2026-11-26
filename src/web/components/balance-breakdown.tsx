@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from 'react'
+import { Skeleton } from './skeleton'
 import { ActionTile } from './action-tile'
 import { IconGlyph } from '../primitives/icon-glyph'
 import { ArrowOutward, CallReceived, ExpandLess, ExpandMore, Payments, Refresh, SwapHoriz } from '../icons/outlined'
@@ -194,8 +195,8 @@ export function BalanceBreakdown({
             </p>
             {isLoading ? (
               <div className="mt-1 space-y-2">
-                <div className="h-9 w-36 animate-pulse rounded-lg bg-foreground/10" />
-                <div className="h-3 w-20 animate-pulse rounded bg-foreground/5" />
+                <Skeleton className="h-9 w-36 rounded-lg" />
+                <Skeleton tone="secondary" className="h-3 w-20" delay={55} />
               </div>
             ) : (
               <>
@@ -553,7 +554,7 @@ function NetworkRow({
       <div className="flex flex-col items-end">
         {isPending ? (
           <div className="flex items-center gap-1.5">
-            <div className="h-3.5 w-12 animate-pulse rounded bg-foreground/10" />
+            <Skeleton className="h-3.5 w-12" />
             <span className="inline-flex size-3 items-center justify-center rounded-full bg-secondary/15">
               <span className="size-1.5 animate-spin rounded-full border border-primary/30 border-t-primary" />
             </span>

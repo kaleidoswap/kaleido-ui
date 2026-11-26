@@ -21,6 +21,7 @@ export {
 // Primitives
 export { Button, buttonVariants, type ButtonProps } from './primitives/button'
 export { Spinner, type SpinnerProps, type SpinnerSize, type SpinnerTone } from './primitives/spinner'
+export { LoadingState, type LoadingStateProps } from './components/loading-state'
 export { Textarea, type TextareaProps } from './primitives/textarea'
 export { Checkbox, CheckboxRow, type CheckboxProps, type CheckboxRowProps } from './primitives/checkbox'
 export { IconButton, type IconButtonProps } from './primitives/icon-button'

@@ -714,7 +714,9 @@ Pieces a desk app — a dashboard or a back office — is assembled from, beside
 
 Pieces a wallet popup reaches for on almost every screen.
 
-- **`Spinner size tone label`** — the one busy glyph, the progress-activity arc turning in place (still under `prefers-reduced-motion`). Never a hand-made border ring or a spinning refresh glyph. Decorative by default; give it a `label` when it is the only sign that something is loading. **`Button loading`** puts one before the label, disables the button and sets `aria-busy`.
+- **`Spinner size tone label`** — the one indeterminate loading indicator: a single ring whose arc tapers from full colour to a faint track (`kui-spinner`, a conic gradient under a radial mask), turning in place. It is radially symmetric, so it does not wobble the way a rotating glyph does; under `prefers-reduced-motion` it breathes instead. Never a hand-made border ring or a spinning glyph. Decorative by default; give it a `label` when it is the only sign that something is loading. **`Button loading`** puts one before the label, disables the button and sets `aria-busy`.
+- **`LoadingState label hint immediate`** — the centred "this area is loading" block. Invisible for 160 ms, then it fades in, so a fast load never flashes a spinner; `immediate` skips the delay for a wait known to be long. `LoadingCard` is the same block.
+- **`Skeleton delay` / `ListSkeletonRows titleWidth sublineWidth`** — placeholders with a highlight sweeping across them, not a pulse; `delay` staggers siblings into a wave, and list rows start one after another.
 - **`Textarea`** — free text longer than a line, on the `Input` field surface; resizes vertically only.
 - **`Checkbox` / `CheckboxRow label description`** — an opt-in that takes effect when a form is submitted ("include logs", "I have written it down"); a real checkbox, the whole row its label. A setting that applies at once is a `SwitchRow`.
 - **`AlertBanner action onDismiss`** — a banner the reader can act on (one small `Button` under the message) or put away (a close button at the top right). Keep to one action.
@@ -725,7 +727,7 @@ Pieces a wallet popup reaches for on almost every screen.
 - **`SettingItem` / `SelectableCard`** — clickable ones are real buttons (keyboard-reachable, `disabled`); `SelectableCard` takes an `icon`.
 - **`Tooltip placement="bottom-end" block`** — start/end placements for a trigger near a screen edge, and `block` for a bubble holding rows. It opens on plain `:hover`, not only on hover-capable pointers.
 - **`RecoveryPhraseCard`** — the words are not in the document until revealed (each is a mask); `revealLabel`, `hideLabel`, `hideable`.
-- **`AmountUnitToggle baseUnit altUnit choices`** — the unit switch beside an amount field: the base unit and one alternative as a two-segment pill, the other alternatives in a `BottomSheet` behind a chevron.
+- **`AmountUnitToggle units choices`** — the unit switch beside an amount field: a pill of segments (`sats | BTC | USD`), the alternatives for the last segment in a `BottomSheet` behind a chevron. `baseUnit` / `altUnit` is the two-segment shorthand.
 
 ## Do's and Don'ts
 

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { ExpandMore } from '../icons/outlined'
 import { IconGlyph } from '../primitives/icon-glyph'
 import { cn } from '../utils/cn'
@@ -12,17 +12,23 @@ export interface AmountUnitChoice {
 }
 
 export interface AmountUnitToggleProps {
-  /** The unit amounts are native to, always the first segment: "sats". */
-  baseUnit: string
-  /** The second segment: the alternative unit the user thinks in, e.g. a fiat currency. */
-  altUnit: string
+  /**
+   * The segments, in order: `["sats", "BTC", "USD"]`. The last one is the
+   * changeable segment the chooser picks for. Takes precedence over
+   * `baseUnit` / `altUnit`.
+   */
+  units?: readonly string[]
+  /** Two-segment shorthand: the unit amounts are native to ("sats")… */
+  baseUnit?: string
+  /** …and the alternative the user thinks in, e.g. a fiat currency. */
+  altUnit?: string
   /** The unit the field currently takes input in. */
   value: string
   onChange: (unit: string) => void
   /**
-   * Every alternative the second segment can become. With more than one, a
-   * chevron opens a sheet listing them; the pick is passed to `onChange`, and
-   * the caller makes it the new `altUnit`.
+   * Every unit the last segment can become. With more than one, a chevron
+   * after it opens a sheet listing them; the pick is passed to `onChange`, and
+   * the caller makes it the new last segment.
    */
   choices?: readonly AmountUnitChoice[]
   /** Title of the chooser sheet, and the chevron's accessible name. */
@@ -39,12 +45,13 @@ export interface AmountUnitToggleProps {
 }
 
 /**
- * The unit switch beside an amount field: a two-segment pill, base unit and
- * one alternative (`sats | USD`), because flipping between sats and the one
- * currency you think in is almost every use. When there are more
- * alternatives, a chevron opens the full list in a BottomSheet.
+ * The unit switch beside an amount field: a pill of segments (`sats | BTC |
+ * USD`), so the unit the user thinks in is one tap away. When the last
+ * segment has alternatives (other currencies), a chevron opens the full list
+ * in a BottomSheet.
  */
 export function AmountUnitToggle({
+  units,
   baseUnit,
   altUnit,
   value,
@@ -56,6 +63,7 @@ export function AmountUnitToggle({
   className,
 }: AmountUnitToggleProps) {
   const [chooserOpen, setChooserOpen] = useState(false)
+  const segments = units ?? [baseUnit, altUnit].filter((unit): unit is string => Boolean(unit))
   const tid = (suffix?: string) => (testId ? (suffix ? `${testId}-${suffix}` : testId) : undefined)
 
   const segment = (unit: string) => {
@@ -84,8 +92,9 @@ export function AmountUnitToggle({
         data-testid={tid()}
         className={cn('inline-flex shrink-0 items-center gap-0.5 rounded-full bg-foreground/[0.06] p-0.5', className)}
       >
-        {segment(baseUnit)}
-        {segment(altUnit)}
+        {segments.map((unit) => (
+          <Fragment key={unit}>{segment(unit)}</Fragment>
+        ))}
         {choices.length > 1 && (
           <button
             type="button"

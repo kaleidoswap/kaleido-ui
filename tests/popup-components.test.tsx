@@ -17,11 +17,33 @@ import { Textarea } from '../src/web/primitives/textarea'
 
 const html = (element: Parameters<typeof renderToStaticMarkup>[0]) => renderToStaticMarkup(element)
 
-test('Spinner is decorative by default and a status when labelled', () => {
-  assert.match(html(createElement(Spinner)), /^<svg[^>]*aria-hidden="true"[^>]*class="[^"]*animate-spin/)
-  assert.doesNotMatch(html(createElement(Spinner)), /role="status"/)
+test('Spinner is a tapered ring, decorative by default and a status when labelled', () => {
+  const plain = html(createElement(Spinner))
+  assert.match(plain, /^<span data-slot="spinner" aria-hidden="true" class="kui-spinner inline-block animate-spin size-5 text-primary"/)
+  assert.match(plain, /--kui-spinner-ring:2px/)
+  assert.doesNotMatch(plain, /role="status"|<svg/)
   assert.match(html(createElement(Spinner, { label: 'Loading' })), /role="status" aria-label="Loading"/)
-  assert.match(html(createElement(Spinner, { size: 'xl', tone: 'brand' })), /text-icon-xl text-brand/)
+  assert.match(html(createElement(Spinner, { size: 'xl', tone: 'brand' })), /size-12 text-brand/)
+})
+
+test('LoadingState fades in after a delay unless immediate, and names itself', async () => {
+  const { LoadingState } = await import('../src/web/components/loading-state')
+  const delayed = html(createElement(LoadingState, { label: 'Loading trading data', hint: 'Hold on' }))
+  assert.match(delayed, /role="status" aria-live="polite" class="kui-loading-reveal /)
+  assert.doesNotMatch(delayed, /kui-loading-reveal-now/)
+  assert.match(delayed, /Loading trading data[^]*Hold on/)
+  assert.match(html(createElement(LoadingState, { label: 'x', immediate: true })), /kui-loading-reveal-now/)
+})
+
+test('Skeleton shimmers with a stagger; list rows form a wave', async () => {
+  const { Skeleton, ListSkeletonRows } = await import('../src/web/components/skeleton')
+  const one = html(createElement(Skeleton, { delay: 110 }))
+  assert.match(one, /class="kui-skeleton rounded/)
+  assert.match(one, /--kui-skeleton-delay:110ms/)
+  assert.doesNotMatch(one, /animate-pulse/)
+  const rows = html(createElement(ListSkeletonRows, { rows: 2, titleWidth: 'w-24' }))
+  assert.match(rows, /--kui-skeleton-delay:220ms/)
+  assert.match(rows, /h-3 w-24/)
 })
 
 test('Button loading shows a spinner, disables the button and sets aria-busy', () => {
@@ -296,4 +318,21 @@ test('SettingsSelectorRow rises above the next row while its selector is open', 
   const { SettingsSelectorRow } = await import('../src/web/components/settings-selector-row')
   const markup = html(createElement(SettingsSelectorRow, { icon: null, title: 'Network', control: createElement('button', { 'aria-expanded': true }, 'x') }))
   assert.match(markup, /class="relative [^"]*has-\[\[aria-expanded=true\]\]:z-30/)
+})
+
+test('AmountUnitToggle takes any number of segments', () => {
+  const markup = html(
+    createElement(AmountUnitToggle, {
+      units: ['sats', 'BTC', 'USD'],
+      value: 'BTC',
+      onChange: () => undefined,
+      choices: [{ id: 'USD' }, { id: 'EUR' }],
+      testId: 'amount-unit',
+    }),
+  )
+  for (const unit of ['sats', 'BTC', 'USD']) assert.match(markup, new RegExp(`data-testid="amount-unit-${unit}"`))
+  assert.match(markup, /aria-pressed="true" data-testid="amount-unit-BTC"/)
+  assert.match(markup, /data-testid="amount-unit-more"/)
+  const twoOnly = html(createElement(AmountUnitToggle, { units: ['sats', 'BTC'], value: 'sats', onChange: () => undefined }))
+  assert.doesNotMatch(twoOnly, /amount-unit-more|USD/)
 })

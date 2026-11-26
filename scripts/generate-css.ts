@@ -591,6 +591,105 @@ ${keyframesCss}
   50% { transform: translate3d(-5%, -5%, 0) scale(1.08); }
   to { transform: translate3d(7%, -26%, 0) scale(0.95); }
 }
+/* ─── Loading: Spinner, Skeleton shimmer, LoadingState reveal ──────────────
+   Base rules sit in the components layer so a consumer's utility classes still
+   win; the reduced-motion fallbacks below are unlayered so they outrank
+   Tailwind's animate-spin, which lives in the utilities layer. */
+@layer components {
+  /* One-element ring: a conic sweep from a faint track to full currentColor
+     (the head reads as a comet, the tail doubles as the rest ring), the middle
+     punched out by a radial mask. --kui-spinner-ring is the stroke. Rotation is
+     Tailwind's animate-spin on the same element. */
+  .kui-spinner {
+    --kui-spinner-ring: 2px;
+    aspect-ratio: 1;
+    flex: none;
+    border-radius: 9999px;
+    background: conic-gradient(
+      from 0deg,
+      color-mix(in oklab, currentColor 10%, transparent) 0deg,
+      color-mix(in oklab, currentColor 40%, transparent) 190deg,
+      currentColor 348deg,
+      currentColor 360deg
+    );
+    -webkit-mask: radial-gradient(
+      farthest-side,
+      transparent calc(100% - var(--kui-spinner-ring)),
+      #000 calc(100% - var(--kui-spinner-ring) + 0.5px)
+    );
+    mask: radial-gradient(
+      farthest-side,
+      transparent calc(100% - var(--kui-spinner-ring)),
+      #000 calc(100% - var(--kui-spinner-ring) + 0.5px)
+    );
+    will-change: transform;
+  }
+  /* A highlight sweeping across the placeholder instead of the block pulsing:
+     compositor-only, and --kui-skeleton-delay staggers rows into a wave. */
+  .kui-skeleton {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .kui-skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent 0%, rgb(255 255 255 / 0.07) 45%, rgb(255 255 255 / 0.09) 55%, transparent 100%);
+    animation: kui-skeleton-sweep 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    animation-delay: var(--kui-skeleton-delay, 0ms);
+    will-change: transform;
+  }
+  .light .kui-skeleton::after {
+    background: linear-gradient(90deg, transparent 0%, rgb(0 0 0 / 0.04) 45%, rgb(0 0 0 / 0.05) 55%, transparent 100%);
+  }
+  /* A loader for a wait that may resolve quickly stays transparent for 160 ms,
+     then fades in, so fast loads never flash a spinner. */
+  .kui-loading-reveal {
+    animation: kui-loading-reveal 260ms ease-out both;
+    animation-delay: 160ms;
+  }
+  .kui-loading-reveal-now {
+    animation-delay: 0ms;
+  }
+}
+@keyframes kui-skeleton-sweep {
+  to { transform: translateX(100%); }
+}
+@keyframes kui-loading-reveal {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+/* Reduced motion: loading indicators still indicate, as a slow opacity breath. */
+@media (prefers-reduced-motion: reduce) {
+  .kui-spinner {
+    background: none;
+    border: var(--kui-spinner-ring) solid color-mix(in oklab, currentColor 45%, transparent);
+    -webkit-mask: none;
+    mask: none;
+    animation: kui-breathe 1.8s ease-in-out infinite;
+  }
+  .kui-skeleton::after {
+    animation: kui-breathe 2s ease-in-out infinite;
+    transform: none;
+    background: rgb(255 255 255 / 0.05);
+  }
+  .kui-refresh-spin {
+    animation: kui-breathe 1.8s ease-in-out infinite;
+  }
+  .kui-loading-reveal {
+    animation-name: kui-fade-only;
+  }
+}
+@keyframes kui-breathe {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+@keyframes kui-fade-only {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 /* Brand gradients — 135° linear, from src/tokens/gradients.ts. They set only
    background-image, so they layer over a bg-* colour utility. */
 .bg-gradient-brand {

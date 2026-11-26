@@ -1,5 +1,5 @@
 import { IconGlyph } from '../primitives/icon-glyph'
-import { Spinner } from '../primitives/spinner'
+import { LoadingState } from './loading-state'
 import { Error } from '../icons/outlined'
 import type { ReactNode } from 'react'
 import { cn } from '../utils/cn'
@@ -77,18 +77,8 @@ export interface LoadingCardProps {
 }
 
 export function LoadingCard({ message = 'Loading...', className }: LoadingCardProps) {
-  return (
-    <div
-      role="status"
-      className={cn(
-        'flex flex-col items-center justify-center py-16 text-muted-foreground',
-        className,
-      )}
-    >
-      <Spinner size="4xl" tone="brand" className="mb-4" />
-      <p className="text-body">{message}</p>
-    </div>
-  )
+  // The same block as LoadingState: a delayed fade-in, a Spinner, the message.
+  return <LoadingState label={message} className={cn('py-16', className)} />
 }
 
 /**

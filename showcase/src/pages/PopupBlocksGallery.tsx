@@ -8,6 +8,8 @@ import {
   QrCode,
   SegmentedTabs,
   Spinner,
+  LoadingState,
+  ListSkeletonRows,
   Textarea,
 } from 'kaleido-ui'
 import { Demo, Grid } from './blocks'
@@ -25,13 +27,21 @@ export function PopupBlocksGallery() {
 
   return (
     <Grid>
-      <Demo title="Spinner" use="The one busy glyph. Label it when it is the only sign of loading; inside a busy control it stays decorative.">
+      <Demo title="Spinner" use="The one loading ring. Label it when it is the only sign of loading; inside a busy control it stays decorative.">
         <div className="flex items-center gap-4">
+          <Spinner size="xs" />
           <Spinner size="sm" />
           <Spinner />
-          <Spinner size="xl" tone="brand" label="Loading" />
-          <Spinner size="4xl" tone="secondary" label="Loading" />
+          <Spinner size="lg" tone="muted" />
+          <Spinner size="xl" label="Loading" />
+          <Spinner size="2xl" tone="secondary" label="Loading" />
         </div>
+      </Demo>
+      <Demo title="LoadingState" use="An area that is loading. It appears only if the wait outlasts 160 ms.">
+        <LoadingState label="Loading trading data…" hint="Don't close the popup" />
+      </Demo>
+      <Demo title="Skeleton" use="Placeholders shaped like the content; the list rows shimmer in a wave.">
+        <ListSkeletonRows rows={2} />
       </Demo>
       <Demo title="Button loading" use="A submit in flight: the spinner leads the label and the button cannot be pressed twice.">
         <Button
@@ -99,11 +109,10 @@ export function PopupBlocksGallery() {
       </Demo>
       <Demo title="AmountUnitToggle" use="Beside an amount field: sats and the currency the user thinks in, the rest one tap away.">
         <AmountUnitToggle
-          baseUnit="sats"
-          altUnit={fiat}
+          units={['sats', 'BTC', fiat]}
           value={unit}
           onChange={(next) => {
-            if (next !== 'sats') setFiat(next)
+            if (next !== 'sats' && next !== 'BTC') setFiat(next)
             setUnit(next)
           }}
           choices={[
